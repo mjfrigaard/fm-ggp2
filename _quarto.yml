@@ -8,12 +8,23 @@ book:
   date: "1/6/2023"
   chapters:
     - index.qmd
-    - part: part_01.qmd
+    - part: "Univariate"
       chapters: 
+        - uni/bar_graphs.qmd
+        - uni/histograms.qmd
+        - uni/frequency_polygons.qmd
+    - part: "Amounts"
+      chapters:
         - chapter_01.qmd
-    - part: part_02.qmd
+    - part: "Proportions"
       chapters:
         - chapter_02.qmd
+    - part: "Distributions"
+      chapters:
+        - chapter_03.qmd
+    - part: "Relationships"
+      chapters:
+        - chapter_04.qmd
     - part: "References"
       chapters:
         - references.qmd
@@ -22,11 +33,23 @@ bibliography: references.bib
 
 format:
   html:
+    toc: true
+    toc-depth: 4
+    toc-location: left
+    toc-title: Contents
+    code-fold: show
+    code-tools: false
+    code-overflow: wrap
+    embed-resources: true
+    smooth-scroll: true
+    highlight-style: arrow
+    out-height: '100%'
+    out-width: '100%'
     theme:
-      dark: darkly
       light: flatly
-  pdf:
-    documentclass: scrreprt
+      dark: darkly
+  #pdf:
+    #documentclass: scrreprt
 
 
 

@@ -4,35 +4,126 @@
     "href": "index.html",
     "title": "fm-ggp2",
     "section": "",
-    "text": "This is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books.\n\n1 + 1\n\n[1] 2"
+    "text": "Welcome! This website contains a collection of graphs created using ggplot2 (and friends!).\n\n\n\n\n\n\n\nInstall ggplot2 using the code below:\n\n\nCode\ninstall.packages(\"ggplot2\")\nlibrary(ggplot2)\n\n\nOr you can install ggplot2 as part of the tidyverse:\n\n\n\n\n\n\n\n\n\nCode\ninstall.packages(\"tidyverse\")\nlibrary(tidyverse)\n\n\n\n\nTo improve reproducibility, the majority of the graphs are built using the palmerpenguins::penguins data.\n\n\n\n…so…many…PENGUINS!\n\n\n\n\nArtwork by allison_horst\n\n\n\n\nCode\ninstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins)\n\n\nSome of the graphs use datasets from the fivethirtyeight package.\n\n\nCode\ninstall.packages(\"fivethirtyeight\")\nlibrary(fivethirtyeight)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpand to view the data in the fivethirtyeight package\n\n\n\n\n\n\nTo view a table of available datasets in the fivethirtyeight package, view the Data Frame Name and Article Title columns in the datasets_master table:\n\n\n\n\n\n\n\n\n\n\n\n\n\nA few of the graphs are built using the ggplot2movies::movies data.\n\n\n\n\n\n\n\n\n\nCode\ninstall.packages(\"ggplot2movies\")\nlibrary(ggplot2movies)\n\n\n\n\n\nThe gallery follows a Rule of Least Power Principle, in the sense that “a language with a straightforward syntax may be easier to analyze than an otherwise equivalent one with more complex structure.”\nIn other words, assuming the reader has some understanding of R and the tidyverse, the code for each graph is meant to be read and understood without having to run it.\n\n\nGraphs have been categorized into the following types:\n\nUnivariate graphs\n\nAmounts\nProportions\n\nComparing Distributions\n\nRelationships\n\nSome graphs would justifiably belong in more than one category, and wherever this is the case, I’ve tried to include links to other uses in the notes.\n\n\n\n\nEach graph has, at minimum, the same two sections and four tabs:\n\nPackages and Data\n\nCode for installing development version of packages (if necessary) for graphs and data\n\nAny steps used to create (i.e., manipulate and prepare) the data for the graph\n\n\nCode and Graph\n\nCode to build the labels and graph layers\n\nGraph labels have the labs_ prefix\n\nGraph layers have a ggp2_ prefix\n\n\n\n\n\n\n\n\n\nExpand to view the graph code structure\n\n\n\n\n\n\nPackagesData\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\n\nCode\nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\nDescription of data\n\n\n\n\nCode\ndf <- tibble::tibble(X = sample(x = 1:100, 10, FALSE),\n                     Y = rlnorm(10, 1, 3))\n\n\n\n\n\n\n\nCodeGraph\n\n\n\nCODE:\n\n\nCode for creating graph\n\n\n\n\nCode\n# labels\nlabs_graph <- ggplot2::labs(title = \"Title\", \n                            subtitle = \"subtitle\", \n                            x = \"X\", y = \"Y\")\n# layers\nggp2_graph <- ggplot2::ggplot(data = df, \n    mapping = aes(x = X, y = Y)) + \n    ggplot2::geom_blank()\n# graph\nggp2_graph + \n    labs_graph\n\n\n\n\n\n\nGRAPH:\n\n\n\n\n\n\n\n\n\n\n\n\nCode Style:\nI’ve attempted to balance brevity and clarity, but with the assumption that its best to err on the latter. I’ve also followed the general principle that if a graph can be easily built using one of ggplot2 ’s geom_* functions, that method is shown first.\n\n\n\nBelow are the graphs requiring additional packages/extensions:\n\nWaffle charts\nggwaffle package\n\n\nCode\n# Waffle Charts\ndevtools::install_github(\"liamgilbey/ggwaffle\")\nlibrary(ggwaffle)\n\n\n\nPie Charts\nggpubr package\n\n\nCode\n# Pie Charts \ndevtools::install_github(\"kassambara/ggpubr\")\nlibrary(ggpubr)\n\n\n\nMosaic Plots\nggmosaic package\n\n\nCode\n# Mosaic Charts \ndevtools::install_github(\"haleyjeppson/ggmosaic\")\nlibrary(ggmosaic)\n\n\n\nTreemaps\ntreemapify package\n\n\nCode\n# Treemaps\ndevtools::install_github(\"wilkox/treemapify\")\nlibrary(treemapify)\n\n\n\nBee-swarm Plots\nggbeeswarm package\n\n\nCode\n# Bee-swarm Plots\ndevtools::install_github(\"eclarke/ggbeeswarm\")\nlibrary(ggbeeswarm)\n\n\n\nRidgeline Plots\nggridges package\n\n\nCode\n# Ridgeline plots \ndevtools::install_github(\"wilkelab/ggridges\")\nlibrary(ggridges)\n\n\n\nRain-cloud plots\nraincloudplots and ggdist packages\n\n\nCode\n# Rain-cloud plots \nremotes::install_github('jorvlan/raincloudplots')\nremotes::install_github('mjskay/ggdist')\nlibrary(raincloudplots)\nlibrary(ggdist)\n\n\n\nAlluvial charts\nggalluvial package\n\n\nCode\n# Alluvial charts\ndevtools::install_github(\"corybrunson/ggalluvial\")\nlibrary(ggalluvial)\n\n\n\nBump charts\nggbump package\n\n\nCode\n# Bump charts\ndevtools::install_github(\"davidsjoberg/ggbump\")\nlibrary(ggbump)\n\n\n\nParallel Sets\nggforce package\n\n\nCode\n# Bump charts\ndevtools::install_github(\"thomasp85/ggforce\")\nlibrary(ggforce)\n\n\n\nStream Plots\nggstream package\n\n\nCode\n# Stream plots\ndevtools::install_github(\"davidsjoberg/ggstream\")\nlibrary(ggstream)\n\n\n\n\n\n\n\nThe theme used in the graphs is custom and uses combined elements from ggplot2::theme_minimal() and ggplot2::theme_void(). View it here."
   },
   {
-    "objectID": "part_01.html",
-    "href": "part_01.html",
-    "title": "Part 1",
+    "objectID": "uni/bar_graphs.html",
+    "href": "uni/bar_graphs.html",
+    "title": "Bar graphs",
     "section": "",
-    "text": "1 + 1\n\n[1] 2"
+    "text": "Graph info\n\n\n\n\n\n\nShould I use this graph?\n\n\n\n\n\n\n\n\n\n\n\n\nThis graph requires:\n\n\n✅ a categorical variable"
+  },
+  {
+    "objectID": "uni/bar_graphs.html#description",
+    "href": "uni/bar_graphs.html#description",
+    "title": "Bar graphs",
+    "section": "Description",
+    "text": "Description\nA bar graph (or bar chart) is typically used to display counts for the discrete levels of a categorical variable, like political affiliation, hair color, or race/ethnicity (or species of penguin!).\nBar graphs can be arranged vertically or horizontally, but the length of the bar represents the ‘count’ for each category value.\nIn ggplot2, bar graphs can be built using geom_bar() (see also: geom_col())."
+  },
+  {
+    "objectID": "uni/bar_graphs.html#getting-set-up",
+    "href": "uni/bar_graphs.html#getting-set-up",
+    "title": "Bar graphs",
+    "section": "Getting set up",
+    "text": "Getting set up\n\nPackagesData\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\n\nCode\ninstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\n\nArtwork by Allison Horst\n\n\n\nFilter the missing values from species in the palmerpenguins::penguins data and store it in penguins_bar.\n\n\n\n\nCode\npenguins_bar <- palmerpenguins::penguins |> \n    dplyr::filter(!is.na(species))\nglimpse(penguins_bar)\n\n\nRows: 344\nColumns: 8\n$ species           <fct> Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adel…\n$ island            <fct> Torgersen, Torgersen, Torgersen, Torgersen, Torgerse…\n$ bill_length_mm    <dbl> 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, …\n$ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, …\n$ flipper_length_mm <int> 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186…\n$ body_mass_g       <int> 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, …\n$ sex               <fct> male, female, female, NA, female, male, female, male…\n$ year              <int> 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…"
+  },
+  {
+    "objectID": "uni/bar_graphs.html#the-grammar",
+    "href": "uni/bar_graphs.html#the-grammar",
+    "title": "Bar graphs",
+    "section": "The grammar",
+    "text": "The grammar\n\nCodeGraph\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap species to the x axis\nMap species to the fill aesthetic inside the aes() of geom_bar()\nRemove the legend with show.legend = FALSE\n\n\n\n\nCode\nlabs_bar <- labs(\n  title = \"Adult foraging penguins\",\n  subtitle = \"Distribution of flipper length\",\n  x = \"Species\", y = \"Count\", \n  fill = \"Species\")\nggp2_bar <- ggplot(data = penguins_bar,\n       aes(x = species)) +\n    geom_bar(aes(fill = species), \n        show.legend = FALSE)\nggp2_bar +\n  labs_bar\n\n\n\n\n\n\nGRAPH:"
+  },
+  {
+    "objectID": "uni/bar_graphs.html#more-info",
+    "href": "uni/bar_graphs.html#more-info",
+    "title": "Bar graphs",
+    "section": "More info",
+    "text": "More info\n\nThe connection between statistical transformations and geoms is an important principle for building graphs (and mastering the grammar) with ggplot2\n\nBelow we cover why geom_bar(stat = \"count\") produces the same result as stat_count(geom = \"bar\")\n\n\n\n\n“every geom has a default stat, and every stat a default geom.” - ggplot2 book\n\nBar graphs can also be created with geom_col()\n\n\nstats and geomsgeom_col()\n\n\n\nstat_count():\n\n\nThe default stat argument in geom_bar() is set to \"count\", which ‘counts the number of cases at each x position’, so it’s ideal for categorical variables (or factors).\nThe stat_count() function can also be used to create bar graphs using the geom argument.\nThe link between geom_geom_name(stat = \"stat_name\") and stat_stat_name(geom = \"geom_name\") is shown below:\n\n\n\n\nCode\nggp2_geom_bar <- ggplot(data = penguins_bar,\n       aes(x = species)) +\n    geom_bar(aes(fill = species), \n        stat = \"count\") + \n    labs(title = \"geom_bar(stat = 'count')\")\nggp2_geom_bar\n\n\n\n\n\nCode\nggp2_stat_count <- ggplot(data = penguins_bar,\n       aes(x = species)) +\n    stat_count(aes(fill = species), \n        geom = \"bar\") + \n    labs(title = \"stat_count(geom = 'bar')\")\nggp2_stat_count\n\n\n\n\n\n\n\n\n\ngeom_col:\n\n\nTo create a bar graph with geom_col(), the count variable needs to be computed before being mapped into the graph y aesthetic.\n\n\n\n\nCode\npenguins_bar |> \n    # create column of counts \n    dplyr::count(species, name = \"count\") |> \n    # map into x and y\n    ggplot(mapping = aes(x = species, y = count)) +\n    geom_col(aes(fill = species), \n        show.legend = FALSE) + \n    labs_bar +\n    labs(caption = \"*created with geom_col()\")\n\n\n\n\n\nCode\n# compare to geom_bar()\nggp2_bar +\n  labs_bar"
+  },
+  {
+    "objectID": "uni/histograms.html",
+    "href": "uni/histograms.html",
+    "title": "Histograms",
+    "section": "",
+    "text": "Graph info\n\n\n\n\n\n\nShould I use this graph?\n\n\n\n\n\n\n\n\n\n\n\n\nThis graph requires:\n\n\n✅ a numeric (continuous) variable"
+  },
+  {
+    "objectID": "uni/histograms.html#description",
+    "href": "uni/histograms.html#description",
+    "title": "Histograms",
+    "section": "Description",
+    "text": "Description\nHistograms are a special kind of bar graph. The x axis is divided into ‘bins’ that cover the range of a variable’s values, and the height of the bars is the frequency (or count) of the value occurrence (displayed on the y axis).\nUnlike a typical bar graph, histograms can be used to visually asses the ‘normality’ (i.e. are the bars symmetrical, with a single peak in the middle of the x axis? Or do the bars form multiple peaks?) or ‘skewness’ (i.e., is there a long ‘tail’ of bars with decreasing length on either end of the x axis?) of a variable’s distribution."
+  },
+  {
+    "objectID": "uni/histograms.html#getting-set-up",
+    "href": "uni/histograms.html#getting-set-up",
+    "title": "Histograms",
+    "section": "Getting set up",
+    "text": "Getting set up\n\nPackagesData\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\n\nCode\ninstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\n\nArtwork by Allison Horst\n\n\n\nThe penguins data.\n\n\n\n\nCode\npenguins <- palmerpenguins::penguins\nglimpse(penguins)\n\n\nRows: 344\nColumns: 8\n$ species           <fct> Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adel…\n$ island            <fct> Torgersen, Torgersen, Torgersen, Torgersen, Torgerse…\n$ bill_length_mm    <dbl> 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, …\n$ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, …\n$ flipper_length_mm <int> 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186…\n$ body_mass_g       <int> 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, …\n$ sex               <fct> male, female, female, NA, female, male, female, male…\n$ year              <int> 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…"
+  },
+  {
+    "objectID": "uni/histograms.html#the-grammar",
+    "href": "uni/histograms.html#the-grammar",
+    "title": "Histograms",
+    "section": "The grammar",
+    "text": "The grammar\n\nCodeGraph\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nAssign flipper_length_mm to the x\nAdd the geom_histogram()\nAdjust the bins accordingly\n\n\n\n\nCode\nlabs_histogram <- labs(\n  title = \"Adult foraging penguins\",\n  subtitle = \"Distribution of flipper length\",\n  x = \"Flipper length (millimeters)\")\n\nggp2_hist <- ggplot(data = penguins,\n     aes(x = flipper_length_mm)) + \n     geom_histogram() \n\nggp2_hist + \n  labs_histogram\n\n\n\n\n\n\nGRAPH:\n\n\n\n\n\n\n\nThe standard number of bins is 30, but ‘you should always override this value, exploring multiple widths to find the best to illustrate the stories in your data.’"
+  },
+  {
+    "objectID": "uni/frequency_polygons.html",
+    "href": "uni/frequency_polygons.html",
+    "title": "Frequency polygons",
+    "section": "",
+    "text": "Graph info\n\n\n\n\n\n\nShould I use this graph?\n\n\n\n\n\n\n\n\n\n\n\n\nThis graph requires:\n\n\n✅ a numeric (continuous) variable"
+  },
+  {
+    "objectID": "uni/frequency_polygons.html#description",
+    "href": "uni/frequency_polygons.html#description",
+    "title": "Frequency polygons",
+    "section": "Description",
+    "text": "Description\nFrequency polygons are similar to histograms, but they use lines instead of bars to represent the variable’s distribution. The height of the line represents the frequency (or count) of the value occurrence.\nWhen viewing frequency polygons, we’re still assessing the shape of the lines for symmetry and skewness.."
+  },
+  {
+    "objectID": "uni/frequency_polygons.html#getting-set-up",
+    "href": "uni/frequency_polygons.html#getting-set-up",
+    "title": "Frequency polygons",
+    "section": "Getting set up",
+    "text": "Getting set up\n\nPackagesData\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\n\nCode\ninstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\n\nArtwork by Allison Horst\n\n\n\nThe penguins data\n\n\n\n\nCode\npenguins <- palmerpenguins::penguins\nglimpse(penguins)\n\n\nRows: 344\nColumns: 8\n$ species           <fct> Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adel…\n$ island            <fct> Torgersen, Torgersen, Torgersen, Torgersen, Torgerse…\n$ bill_length_mm    <dbl> 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, …\n$ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, …\n$ flipper_length_mm <int> 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186…\n$ body_mass_g       <int> 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, …\n$ sex               <fct> male, female, female, NA, female, male, female, male…\n$ year              <int> 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…"
+  },
+  {
+    "objectID": "uni/frequency_polygons.html#the-grammar",
+    "href": "uni/frequency_polygons.html#the-grammar",
+    "title": "Frequency polygons",
+    "section": "The grammar",
+    "text": "The grammar\n\nCodeGraph\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap flipper_length_mm to the x axis\nAdd the geom_freqpoly() layer\n\n\n\n\nCode\nlabs_freqpoly <- labs(\n  title = \"Adult foraging penguins\",\n  subtitle = \"Distribution of flipper length\",\n  x = \"Flipper length (millimeters)\")\nggp2_freqpoly <- ggplot(data = penguins,\n      aes(x = flipper_length_mm)) + \n    geom_freqpoly()\nggp2_freqpoly + \n  labs_freqpoly\n\n\n\n\n\n\nGRAPH:\n\n\n\n\n\n\n\nExperiment to see how many bins fit your variable’s distribution"
   },
   {
     "objectID": "chapter_01.html",
     "href": "chapter_01.html",
     "title": "1  Chapter 1",
     "section": "",
-    "text": "See Knuth (1984) for additional discussion of literate programming.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97."
-  },
-  {
-    "objectID": "part_02.html",
-    "href": "part_02.html",
-    "title": "Part 2",
-    "section": "",
-    "text": "2 + 2\n\n[1] 4"
+    "text": "See Knuth (1984) for additional discussion of literate programming.\n\n\nCode\n1 + 1\n\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97."
   },
   {
     "objectID": "chapter_02.html",
     "href": "chapter_02.html",
     "title": "2  Chapter 2",
     "section": "",
-    "text": "2 + 2\n\n[1] 4"
+    "text": "See Knuth (1984) for additional discussion of literate programming.\n\n\nCode\n2 + 2\n\n\n[1] 4\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97."
+  },
+  {
+    "objectID": "chapter_03.html",
+    "href": "chapter_03.html",
+    "title": "3  Chapter 3",
+    "section": "",
+    "text": "See Knuth (1984) for additional discussion of literate programming.\n\n\nCode\n3 + 3\n\n\n[1] 6\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97."
+  },
+  {
+    "objectID": "chapter_04.html",
+    "href": "chapter_04.html",
+    "title": "4  Chapter 4",
+    "section": "",
+    "text": "See Knuth (1984) for additional discussion of literate programming.\n\n\nCode\n4 + 4\n\n\n[1] 8\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97."
   },
   {
     "objectID": "references.html",
