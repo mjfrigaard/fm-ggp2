@@ -1,0 +1,31 @@
+project:
+  type: book
+
+book:
+  title: "fm-ggp2"
+  author: "Martin Frigaard"
+  date: "1/6/2023"
+  chapters:
+    - index.qmd
+    - part: part_01.qmd
+      chapters: 
+        - chapter_01.qmd
+    - part: part_02.qmd
+      chapters:
+        - chapter_02.qmd
+    - part: "References"
+      chapters:
+        - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      dark: darkly
+      light: flatly
+  pdf:
+    documentclass: scrreprt
+
+
+
