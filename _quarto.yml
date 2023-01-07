@@ -3,28 +3,32 @@ project:
   output-dir: docs
 
 book:
-  title: "fm-ggp2"
+  title: "ggplot2: field manual"
   author: "Martin Frigaard"
-  date: "1/6/2023"
+  reader-mode: true
   chapters:
     - index.qmd
-    - part: "Univariate"
+    - part: univariate.qmd
       chapters: 
-        - uni/bar_graphs.qmd
-        - uni/histograms.qmd
-        - uni/frequency_polygons.qmd
-    - part: "Amounts"
+        - bar_graphs.qmd
+        - histograms.qmd
+        - frequency_polygons.qmd
+        - dot_plots.qmd
+        - density_plots.qmd
+        - violin_plots.qmd
+        - box_plots.qmd
+    - part: amounts.qmd
       chapters:
-        - chapter_01.qmd
-    - part: "Proportions"
+        - chapter_amnts.qmd
+    - part: proportions.qmd
       chapters:
-        - chapter_02.qmd
-    - part: "Distributions"
+        - chapter_prp.qmd
+    - part: distributions.qmd
       chapters:
-        - chapter_03.qmd
-    - part: "Relationships"
+        - chapter_dist.qmd
+    - part: relationships.qmd
       chapters:
-        - chapter_04.qmd
+        - chapter_rela.qmd
     - part: "References"
       chapters:
         - references.qmd
@@ -40,16 +44,13 @@ format:
     code-fold: show
     code-tools: false
     code-overflow: wrap
-    embed-resources: true
-    smooth-scroll: true
     highlight-style: arrow
-    out-height: '100%'
-    out-width: '100%'
     theme:
       light: flatly
       dark: darkly
-  #pdf:
-    #documentclass: scrreprt
+    code-link: true
+    callout-appearance: simple
+
 
 
 

@@ -36,16 +36,16 @@ library(extrafont)
 library(sysfonts)
 # import font
 extrafont::font_import(
-    paths = "../assets/Ubuntu/",
+    paths = "assets/Ubuntu/",
     prompt = FALSE)
 # add font
 sysfonts::font_add(
     family =  "Ubuntu", 
-    regular = "../assets/Ubuntu/Ubuntu-Regular.ttf")
+    regular = "assets/Ubuntu/Ubuntu-Regular.ttf")
 # use font
 showtext::showtext_auto()
 # add theme
-source("../R/theme_ggp2g.R")
+source("R/theme_ggp2g.R")
 # set theme
 ggplot2::theme_set(theme_ggp2g(
     base_size = 16))
@@ -145,7 +145,7 @@ library(ggplot2)
 :::
 
 ::: {.column-margin}
-![Artwork by Allison Horst](../www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
 ::: {style="font-size: 0.85em;"}
