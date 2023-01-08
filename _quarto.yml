@@ -55,7 +55,20 @@ book:
         #- chapter_dist.qmd
     - part: relationships.qmd
       chapters:
-        - chapter_rela.qmd
+        - scatter_plot.qmd
+        - grouped_scatter_plots.qmd
+        - bubble_charts.qmd
+        - grouped_bubble_charts.qmd
+        - line_graphs.qmd
+        - grp_line_graphs.qmd
+        - alluvial_charts.qmd
+        - parallel_sets.qmd
+        - bump_charts.qmd
+        - slope_graphs.qmd
+        - density_contours.qmd
+        - bins_2d.qmd
+        - hex_bins.qmd
+        #- chapter_rela.qmd
     - part: "References"
       chapters:
         - references.qmd

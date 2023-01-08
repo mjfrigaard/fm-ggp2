@@ -1,5 +1,5 @@
 set.seed(1014)
-
+# knitr settings ----
 knitr::opts_chunk$set(
   comment = "#>",
   collapse = TRUE,
@@ -9,7 +9,7 @@ knitr::opts_chunk$set(
   fig.asp = 2/3,
   fig.show = "hold"
 )
-
+# options  ----
 options(
   dplyr.print_min = 6,
   dplyr.print_max = 6,
@@ -21,18 +21,23 @@ options(
   scipen = 9999
 )
 
-# import font
+# import font ----
 extrafont::font_import(
     paths = "assets/Ubuntu/",
     prompt = FALSE)
 
-# add font
+# add font ----
 sysfonts::font_add(
     family =  "Ubuntu", 
     regular = "assets/Ubuntu/Ubuntu-Regular.ttf")
 
-# add theme
+# add theme ----
 source("R/theme_ggp2g.R")
+
+# Not in ----
+"%nin%" <- function(x, y) {
+  return( !(x %in% y) )
+}
 
 
 status <- function(type) {
