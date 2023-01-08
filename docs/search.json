@@ -926,30 +926,30 @@
   {
     "objectID": "scatter_plot.html",
     "href": "scatter_plot.html",
-    "title": "\n1  Graph info\n",
+    "title": "Scatter plots",
     "section": "",
-    "text": "Scatter plots"
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "scatter_plot.html#description",
     "href": "scatter_plot.html#description",
-    "title": "\n1  Graph info\n",
-    "section": "\n1.1 Description",
-    "text": "1.1 Description\nScatter plots are used to display two continuous variables.\nIf one of the continuous variables is assumed to affect the other (i.e., outcome vs. predictor), place the outcome on the y axis and the predictor on the x axis."
+    "title": "Scatter plots",
+    "section": "Description",
+    "text": "Description\nScatter plots are used to display two continuous variables.\nIf one of the continuous variables is assumed to affect the other (i.e., outcome vs. predictor), place the outcome on the y axis and the predictor on the x axis."
   },
   {
     "objectID": "scatter_plot.html#getting-set-up",
     "href": "scatter_plot.html#getting-set-up",
-    "title": "\n1  Graph info\n",
-    "section": "\n1.2 Getting set up",
-    "text": "1.2 Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins)\nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by allison horst\n\n\n\nThe penguins data\n\n\n\nCodepenguins <- palmerpenguins::penguins\nglimpse(penguins)\n#> Rows: 344\n#> Columns: 8\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Torgersen, Torgersen, Torgersen,…\n#> $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, NA, 36.7, 39.3…\n#> $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, NA, 19.3, 20.6…\n#> $ flipper_length_mm <int> 181, 186, 195, NA, 193, 190, 181…\n#> $ body_mass_g       <int> 3750, 3800, 3250, NA, 3450, 3650…\n#> $ sex               <fct> male, female, female, NA, female…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…"
+    "title": "Scatter plots",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins)\nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by allison horst\n\n\n\nThe penguins data\n\n\n\nCodepenguins <- palmerpenguins::penguins\nglimpse(penguins)\n#> Rows: 344\n#> Columns: 8\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Torgersen, Torgersen, Torgersen,…\n#> $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, NA, 36.7, 39.3…\n#> $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, NA, 19.3, 20.6…\n#> $ flipper_length_mm <int> 181, 186, 195, NA, 193, 190, 181…\n#> $ body_mass_g       <int> 3750, 3800, 3250, NA, 3450, 3650…\n#> $ sex               <fct> male, female, female, NA, female…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…"
   },
   {
     "objectID": "scatter_plot.html#the-grammar",
     "href": "scatter_plot.html#the-grammar",
-    "title": "\n1  Graph info\n",
-    "section": "\n1.3 The grammar",
-    "text": "1.3 The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap bill_length_mm to the x axis\nMap flipper_length_mm to the y axis\nAdd geom_point()\n\n\n\nCodelabs_scatter <- labs(\n  title = \"Bill Length vs. Flipper Length\",\n  x = \"Bill Length (mm)\", y = \"Flipper length (mm)\")\nggp2_scatter <- penguins |>\n  ggplot(\n    aes(x = bill_length_mm, \n      y = flipper_length_mm)) +\n  geom_point()\n\nggp2_scatter + \n  labs_scatter\n\n\n\n\n\n\nGRAPH:\n\n\nIf multiple points occupy the same value position, use transparency (alpha) to improve visibility."
+    "title": "Scatter plots",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap bill_length_mm to the x axis\nMap flipper_length_mm to the y axis\nAdd geom_point()\n\n\n\nCodelabs_scatter <- labs(\n  title = \"Bill Length vs. Flipper Length\",\n  x = \"Bill Length (mm)\", y = \"Flipper length (mm)\")\nggp2_scatter <- penguins |>\n  ggplot(\n    aes(x = bill_length_mm, \n      y = flipper_length_mm)) +\n  geom_point()\n\nggp2_scatter + \n  labs_scatter\n\n\n\n\n\n\nGRAPH:\n\n\nIf multiple points occupy the same value position, use transparency (alpha) to improve visibility."
   },
   {
     "objectID": "grouped_scatter_plots.html",
