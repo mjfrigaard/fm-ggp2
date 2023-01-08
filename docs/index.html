@@ -1,3 +1,998 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9f6965c01266d366a732f416ec5d11ef6362ece3a949e63a1a7cb87c551db5b1
-size 65491
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Martin Frigaard">
+<title>ggplot2: field manual</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./univariate.html" rel="next">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script src="site_libs/core-js-2.5.3/shim.min.js"></script><script src="site_libs/react-17.0.0/react.min.js"></script><script src="site_libs/react-17.0.0/react-dom.min.js"></script><script src="site_libs/reactwidget-1.0.0/react-tools.js"></script><script src="site_libs/htmlwidgets-1.6.0/htmlwidgets.js"></script><link href="site_libs/reactable-0.4.1/reactable.css" rel="stylesheet">
+<script src="site_libs/reactable-binding-0.4.1/reactable.js"></script>
+</head>
+<body class="nav-sidebar floating slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">ggplot2: field manual</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">ggplot2: field manual</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle sidebar-tool" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle sidebar-tool" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link active">Overview</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./univariate.html" class="sidebar-item-text sidebar-link">Univariate</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bar_graphs.html" class="sidebar-item-text sidebar-link">Bar graphs</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./histograms.html" class="sidebar-item-text sidebar-link">Histograms</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./frequency_polygons.html" class="sidebar-item-text sidebar-link">Frequency polygons</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dot_plots.html" class="sidebar-item-text sidebar-link">Dot plots</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./density_plots.html" class="sidebar-item-text sidebar-link">Density plots</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./violin_plots.html" class="sidebar-item-text sidebar-link">Violin plots</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./box_plots.html" class="sidebar-item-text sidebar-link">Box plots</a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./amounts.html" class="sidebar-item-text sidebar-link">Amounts</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter_amnts.html" class="sidebar-item-text sidebar-link">Graph: amounts</a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./proportions.html" class="sidebar-item-text sidebar-link">Proportions</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter_prp.html" class="sidebar-item-text sidebar-link">Graph: proportions</a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./distributions.html" class="sidebar-item-text sidebar-link">Distributions</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter_dist.html" class="sidebar-item-text sidebar-link">Graph: distributions</a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./relationships.html" class="sidebar-item-text sidebar-link">Relationships</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter_rela.html" class="sidebar-item-text sidebar-link">Graph: relationships</a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">References</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+    <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Contents</h2>
+   
+  <ul>
+<li>
+<a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
+  <ul>
+<li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
+  <li>
+<a href="#other-resources" id="toc-other-resources" class="nav-link" data-scroll-target="#other-resources">Other resources</a>
+  <ul class="collapse">
+<li><a href="#graph-categories" id="toc-graph-categories" class="nav-link" data-scroll-target="#graph-categories">Graph Categories</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#get-started" id="toc-get-started" class="nav-link" data-scroll-target="#get-started">Get started</a>
+  <ul class="collapse">
+<li><a href="#datasets" id="toc-datasets" class="nav-link" data-scroll-target="#datasets">Datasets</a></li>
+  </ul>
+</li>
+  <li><a href="#code-style-structure" id="toc-code-style-structure" class="nav-link" data-scroll-target="#code-style-structure">Code style &amp; structure</a></li>
+  <li><a href="#extensions" id="toc-extensions" class="nav-link" data-scroll-target="#extensions">Extensions</a></li>
+  <li><a href="#theme" id="toc-theme" class="nav-link" data-scroll-target="#theme">Theme</a></li>
+  </ul>
+</li>
+  </ul></nav>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title d-none d-lg-block">ggplot2: field manual</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Martin Frigaard </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header><section id="overview" class="level1 unnumbered page-columns page-full"><h1 class="unnumbered">Overview</h1>
+<p>Welcome to the ggplot2 field manual! This text contains a collection of code and graphs created using <code>ggplot2</code> (and friends!).</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="www/ggplot2.png" style="width:40.0%;height:40.0%" class="figure-img"></p>
+</figure>
+</div>
+</div></div><section id="purpose" class="level2"><h2 class="anchored" data-anchor-id="purpose">Purpose</h2>
+<p>This manual is designed to help you answer the question, “<em>what graph should I use?</em>”</p>
+<p>The structure of this manual assumes the reader has already answered the questions, “<em>what kind of data do I have?</em>” and “<em>who is the audience for the graph?</em>”</p>
+</section><section id="other-resources" class="level2"><h2 class="anchored" data-anchor-id="other-resources">Other resources</h2>
+<p>If you want to learn about <code>ggplot2</code>, you should start with the <a href="https://ggplot2-book.org/">excellent free text</a>, or if you know what kind of graph you’d like to build, but you need the code or packages in order to build it, check out the <a href="https://r-graph-gallery.com/ggplot2-package.html">R graph gallery</a> or <a href="https://r-graphics.org/">R graphics cookbook</a>.</p>
+<section id="graph-categories" class="level3"><h3 class="anchored" data-anchor-id="graph-categories">Graph Categories</h3>
+<p>Graphs have been categorized into the following types:</p>
+<ul>
+<li>Univariate graphs<br>
+</li>
+<li>Amounts<br>
+</li>
+<li>Proportions<br>
+</li>
+<li>Distributions<br>
+</li>
+<li>Relationships</li>
+</ul>
+<p>Some graphs would justifiably belong in more than one category, and wherever this is the case, I’ve tried to include links to other uses in the notes.</p>
+</section></section><section id="get-started" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="get-started">Get started</h2>
+<p>Install <code>ggplot2</code> using the code below:</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Or you can install <code>ggplot2</code> as part of the <code>tidyverse</code>:</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="www/tidyverse.png" style="width:40.0%;height:40.0%" class="figure-img"></p>
+</figure>
+</div>
+</div></div><div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"tidyverse"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="datasets" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="datasets">Datasets</h3>
+<p>The majority of the graphs in the manual are built using the <code><a href="https://allisonhorst.github.io/palmerpenguins/reference/penguins.html">palmerpenguins::penguins</a></code> data.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div style="font-size: 0.95em; color: #fa7b3c;">
+<p><strong><em>…so…many…PENGUINS!</em></strong></p>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="www/lter_penguins.png" style="width:50.0%;height:50.0%" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">Artwork by allison_horst</figcaption><p></p>
+</figure>
+</div>
+</div></div><div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"palmerpenguins"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Some of the graphs use datasets from the <code>fivethirtyeight</code> package.</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"fivethirtyeight"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rudeboybert/fivethirtyeight">fivethirtyeight</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="www/538.png" style="width:30.0%;height:30.0%" class="figure-img"></p>
+</figure>
+</div>
+</div></div><div class="callout-tip callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand to view the data in the <code>fivethirtyeight</code> package
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div style="font-size: 0.75em;">
+<p>To view a table of available datasets in the <code>fivethirtyeight</code> package, view the <code>Data Frame Name</code> and <code>Article Title</code> columns in the <code>datasets_master</code> table:</p>
+</div>
+<div style="font-size: 0.70em;">
+<div class="cell">
+<div class="cell-output-display">
+
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-9302ab0ce45dbf6c217d" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-9302ab0ce45dbf6c217d">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Data Frame Name":["ahca_polls","airline_safety","antiquities_act","august_senate_polls","avengers","bachelorette","bad_drivers","bechdel","biopics","bob_ross","cabinet_turnover","cand_events_20150114","cand_events_20150130","cand_state_20150114","cand_state_20150130","candy_rankings","castle_solutions","castle_solutions_2","castle_solutions_3","chess_transfers","classic_rock_raw_data","classic_rock_song_list","college_all_ages","college_grad_students","college_recent_grads","comic_characters","comma_survey","congress_age","cousin_marriage","daily_show_guests","dem_candidates","democratic_bench","drinks","drug_use","elasticity_by_district","elasticity_by_state","elo_blatter","endorsements","endorsements_2020","fandango","fifa_audience","fight_songs","flying","food_world_cup","forecast_results_2018","foul_balls","generic_polllist","generic_topline","google_trends","goose","governor_national_forecast","governor_state_forecast","hate_crimes","hiphop_cand_lyrics","hist_ncaa_bball_casts","hist_senate_preds","house_district_forecast","house_national_forecast","impeachment_polls","librarians","love_actually_adj","love_actually_appearance","mad_men","male_flight_attend","masculinity_survey","mayweather_mcgregor_tweets","media_mentions_cable","media_mentions_online","mediacloud_hurricanes","mediacloud_online_news","mediacloud_states","mediacloud_trump","mlb_as_play_talent","mlb_as_team_talent","mlb_elo","mueller_approval_polls","murder_2015_final","murder_2016_prelim","nba_all_elo","nba_carmelo","nba_draft_2015","nba_draymond","nba_elo","nba_elo_latest","nba_tattoos","ncaa_w_bball_tourney","nfl_elo","nfl_elo","nfl_fandom_google","nfl_fandom_surveymonkey","nfl_fav_team","nfl_suspensions","nfltix_div_avgprice","nfltix_usa_avg","nflwr_aging_curve","nflwr_hist","nutrition_pvalues","partisan_lean_district","partisan_lean_state","police_deaths","police_killings","police_locals","pres_2016_trail","pres_commencement","pulitzer","quasi_winshares","raptor_by_player","raptor_by_team","ratings","riddler_castles","riddler_castles2","riddler_pick_lowest","russia_investigation","san_andreas","sandy_311","senate_national_forecast","senate_polls","senate_seat_forecast","senators","spi_global_rankings","spi_matches","state_index","state_info","state_words","steak_survey","tarantino","tennis_events_time","tennis_players_time","tennis_serve_time","tenth_circuit","trump_approval_poll","trump_approval_trend","trump_lawsuits","trump_news","trump_twitter","trumpworld_issues","trumpworld_polls","tv_hurricanes","tv_hurricanes_by_network","tv_states","twitter_presidents","undefeated","unisex_names","US_births_1994_2003","US_births_2000_2014","weather_check","wwc_2019_forecasts","wwc_2019_matches"],"Article Title":["Why The GOP Is So Hell-Bent On Passing An Unpopular Health Care Bill","Should Travelers Avoid Flying Airlines That Have Had Crashes in the Past?","Trump Might Be The First President To Scrap A National Monument","How Much Trouble Is Ted Cruz Really In?","Joining The Avengers Is As Deadly As Jumping Off A Four-Story Building","How To Spot A Front-Runner On The ‘Bachelor’ Or ‘Bachelorette’","Dear Mona, Which State Has The Worst Drivers?","The Dollar-And-Cents Case Against Hollywood's Exclusion of Women","Straight Outta Compton Is The Rare Biopic Not About White Dudes","A Statistical Analysis of the Work of Bob Ross","Two Years In, Turnover In Trump’s Cabinet Is Still Historically High","Looking For Clues: Who Is Going To Run For President In 2016?","Who Will Run For President: Romney Is Out","Looking For Clues: Who Is Going To Run For President In 2016?","Who Will Run For President: Romney Is Out","The Ultimate Halloween Candy Power Ranking","Can You Rule Riddler Nations?","The Battle For Riddler Nation, Round 2","Riddler Nation - Castles Puzzle Final","American Chess Is Great Again","Why Classic Rock Isn't What It Used To Be","Why Classic Rock Isn't What It Used To Be","The Economic Guide To Picking A College Major","The Economic Guide To Picking A College Major","The Economic Guide To Picking A College Major","Comic Books Are Still Made By Men, For Men And About Men","Elitist, Superfluous, Or Popular? We Polled Americans on the Oxford Comma","Both Republicans And Democrats Have an Age Problem","How Many Americans Are Married To Their Cousins?","Every Guest Jon Stewart Ever Had On 'The Daily Show'","We Researched Hundreds Of Races. Here’s Who Democrats Are Nominating","Some Democrats Who Could Step Up If Hillary Isn't Ready For Hillary","Dear Mona Followup: Where Do People Drink The Most Beer, Wine And Spirits?","How Baby Boomers Get High","Election Update: The Most (And Least) Elastic States And Districts","Election Update: The Most (And Least) Elastic States And Districts","Blatter's Reign At FIFA Hasn't Helped Soccer's Poor","Pols And Polls Say The Same Thing: Jeb Bush Is A Weak Front-Runner","The 2020 Endorsement Primary","Be Suspicious Of Online Movie Ratings, Especially Fandango's","How To Break FIFA","Our Guide To The Exuberant Nonsense Of College Fight Songs","41 Percent Of Fliers Think You're Rude If You Recline Your Seat","The FiveThirtyEight International Food Association's 2014 World Cup","How FiveThirtyEight's 2018 Midterm Forecasts Did","We Watched 906 Foul Balls To Find Out Where The Most Dangerous Ones","Are Democrats Winning The Race For Congress?","Are Democrats Winning The Race For Congress?","The Media Really Started Paying Attention to Puerto Rico When Trump Did","The Save Ruined Relief Pitching. The Goose Egg Can Fix It.","How FiveThirtyEight's 2018 Midterm Forecasts Did","How FiveThirtyEight's 2018 Midterm Forecasts Did","Higher Rates Of Hate Crimes Are Tied To Income Inequality","Every mention of the 2016 primary candidates in hip-hop songs","The NCAA Bracket: Checking Our Work","How The FiveThirtyEight Senate Forecast Model Works","Forecasting the race for the House","Forecasting the race for the House","Did Americans Support Removing Trump From Office?","Where Are America's Librarians?","The Definitive Analysis Of 'Love Actually,' The Greatest Christmas Movie Of Our Time","The Definitive Analysis Of 'Love Actually,' The Greatest Christmas Movie Of Our Time","Mad Men Is Ending. What's Next For The Cast?","Dear Mona, How Many Flight Attendants Are Men?","What Do Men Think It Means To Be A Man?","The Mayweather-McGregor Fight As Told Through Emojis","Beto O'Rourke Ignored Cable News - And It Ignored Him","Beto O'Rourke Ignored Cable News - And It Ignored Him","The Media Really Started Paying Attention to Puerto Rico When Trump Did","The Media Really Started Paying Attention to Puerto Rico When Trump Did","The Media Really Started Paying Attention to Puerto Rico When Trump Did","The Media Really Started Paying Attention to Puerto Rico When Trump Did","The Best MLB All-Star Teams Ever","The Best MLB All-Star Teams Ever","The Complete History Of MLB","Both Parties Think The Mueller Report Was Fair. They Just Completely Disagree On What It Says.","A Handful Of Cities Are Driving 2016's Rise In Murder","A Handful Of Cities Are Driving 2016's Rise In Murder","The Complete History Of The NBA","The Complete History Of The NBA","Projecting The Top 50 Players In The 2015 NBA Draft Class","A Better Way to Evaluate NBA Defense","The Complete History Of The NBA","The Complete History Of The NBA","Accurately Counting NBA Tattoos Isn't Easy, Even If You're Up Close","The Rise And Fall of Women’s College Basketball Dynasties","2017 NFL Predictions","The Complete History of the NFL","How Every NFL Team’s Fans Lean Politically","How Every NFL Team’s Fans Lean Politically","The Rams Are Dead To Me, So I Answered 3,352 Questions To Find A New NFL Team","The NFL's Uneven History Of Punishing Domestic Violence","Who Goes To Meaningless NFL Games And Why?","Who Goes To Meaningless NFL Games And Why?","The Football Hall Of Fame Has A Receiver Problem","The Football Hall Of Fame Has A Receiver Problem","You Can't Trust What You Read About Nutrition","FiveThirtyEight's Partisan Lean","FiveThirtyEight's Partisan Lean","The Dallas Shooting Was Among The Deadliest For Police In U.S. History","Where Police Have Killed Americans In 2015","Most Police Don't Live In The Cities They Serve","The Last 10 Weeks Of 2016 Campaign Stops In One Handy Gif","Sitting Presidents Give Way More Commencement Speeches Than They Used To","Do Pulitzers Help Newspapers Keep Readers?","The Twins’ Magical Run Will Likely Go Through The Yankees. (Because Of Course.)","Introducing RAPTOR, Our New Metric For The Modern NBA","Introducing RAPTOR, Our New Metric For The Modern NBA","Al Gore’s New Movie Exposes The Big Flaw In Online Movie Ratings","Can You Rule Riddler Nation?","The Battle For Riddler Nation, Round 2","Pick A Number, Any Number","Is The Russia Investigation Really Another Watergate?","The Rock Isn't Alone: Lots Of People Are Worried About 'The Big One'","The (Very) Long Tail Of Hurricane Recovery","Senate forecasts","Early Senate Polls Have Plenty to Tell Us About November","Senate forecasts","The Worst Tweeter In Politics Isn't Trump","Global Club Soccer Rankings","Club Soccer Predictions","What America’s Governors Are Talking About",null,"What America’s Governors Are Talking About","How Americans Like Their Steak","A Complete Catalog Of Every Time Someone Cursed Or Bled Out In A Quentin Tarantino Movie","Why Some Tennis Matches Take Forever","Why Some Tennis Matches Take Forever","Why Some Tennis Matches Take Forever","For A Trump Nominee, Neil Gorsuch’s Record Is Surprisingly Moderate On Immigration","How Popular is Donald Trump","How Popular is Donald Trump","MANY","How Trump Hacked The Media","The World's Favorite Donald Trump Tweets","What the World Thinks of Trump","What the World Thinks of Trump","The Media Really Started Paying Attention to Puerto Rico When Trump Did","The Media Really Started Paying Attention to Puerto Rico When Trump Did","The Media Really Started Paying Attention to Puerto Rico When Trump Did","The Worst Tweeter In Politics Isn't Trump","Mayweather Is Defined By The Zero Next To His Name","The Most Common Unisex Names In America: Is Yours One Of Them?","Some People Are Too Superstitious To Have A Baby On Friday The 13th","Some People Are Too Superstitious To Have A Baby On Friday The 13th","Where People Go To Check The Weather","2019 Women’s World Cup Predictions","2019 Women’s World Cup Predictions"]},"columns":[{"id":"Data Frame Name","name":"Data Frame Name","type":"character"},{"id":"Article Title","name":"Article Title","type":"character"}],"defaultPageSize":5,"dataKey":"334013cafcf15806122c72eaedd11ea7"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>A <em>few</em> of the graphs are built using the <code><a href="https://rdrr.io/pkg/ggplot2movies/man/movies.html">ggplot2movies::movies</a></code> data.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="www/imdb.png" style="width:30.0%;height:30.0%" class="figure-img"></p>
+</figure>
+</div>
+</div></div><div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2movies"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ggplot2movies</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><em>Why not manually create the graph datasets with <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> or <code><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble()</a></code>/<code><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble()</a></code>?</em></p>
+<p>In my opinion, using manually generated data is great for reproducible examples, but they rarely look like data ‘caught in the wild.’ The data packages above are also well maintained and can be used to provide a variety of examples.</p>
+</section></section><section id="code-style-structure" class="level2"><h2 class="anchored" data-anchor-id="code-style-structure">Code style &amp; structure</h2>
+<p>The field manual follows a <a href="https://www.w3.org/2001/tag/doc/leastPower.html">Rule of Least Power Principle</a>, in the sense that “<em>a language with a straightforward syntax may be easier to analyze than an otherwise equivalent one with more complex structure.</em>”</p>
+<p>In other words, assuming the reader has some understanding of R and the <code>tidyverse</code>, the code for each graph is meant to be read and understood <em>without</em> having to run it.</p>
+<p>Each graph has, at minimum, the following sections and tabs:</p>
+<ol type="1">
+<li>
+<strong>Graph info</strong>
+<ul>
+<li>
+<em>Should I use this graph?</em><br>
+</li>
+<li>
+<em>This graph requires:</em><br>
+</li>
+</ul>
+</li>
+<li>
+<strong>Description</strong><br>
+</li>
+<li>
+<strong>Getting set up</strong>
+<ul>
+<li>
+<em>Packages and Data</em>
+<ul>
+<li>Code for installing development version of packages (if necessary) for graphs <em>and</em> data<br>
+</li>
+<li>Any steps used to create (i.e., manipulate and prepare) the data for the graph<br>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<strong>The grammar</strong>
+<ul>
+<li>
+<em>Code to build the labels and graph layers</em>
+<ul>
+<li>Graph labels have the <code>labs_</code> prefix<br>
+</li>
+<li>Graph layers have a <code>ggp2_</code> prefix<br>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<strong>More info</strong>
+<ul>
+<li>
+<em>Additional methods, arguments, or applications</em>
+<ul>
+<li>Color palettes<br>
+</li>
+<li>Complimentary packages</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<div class="callout-note callout callout-style-simple callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Expand to view an example of the graph code structure
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<section id="description" class="level2"><h2 class="anchored" data-anchor-id="description">Description</h2>
+<p>Description of the graph</p>
+</section><section id="getting-set-up" class="level2"><h2 class="anchored" data-anchor-id="getting-set-up">Getting set up</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Packages</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Data</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div style="font-size: 1.15em; color: #1e83c8;">
+<p><strong>PACKAGES:</strong></p>
+</div>
+<div style="font-size: 0.85em;">
+<p>Install packages.</p>
+</div>
+<div style="font-size: 0.75em;">
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div style="font-size: 1.15em; color: #1e83c8;">
+<p><strong>DATA:</strong></p>
+</div>
+<!-- 
+![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="30%" height="30%"}
+![](../www/538.png){fig-align="right" width="15%" height="15%"}
+![](../www/imdb.png){fig-align="right" width="20%" height="20%"}
+-->
+<div style="font-size: 0.85em;">
+<p>Description of data</p>
+</div>
+<div style="font-size: 0.75em;">
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>X <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="fl">10</span>, <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>                     Y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">rlnorm</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="the-grammar" class="level2"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Code</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Graph</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div style="font-size: 1.15em; color: #1e83c8;">
+<p><strong>CODE:</strong></p>
+</div>
+<div style="font-size: 0.85em;">
+<p>Code for creating graph</p>
+</div>
+<div style="font-size: 0.75em;">
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># labels</span></span>
+<span><span class="va">labs_graph</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Title"</span>, </span>
+<span>                            subtitle <span class="op">=</span> <span class="st">"subtitle"</span>, </span>
+<span>                            x <span class="op">=</span> <span class="st">"X"</span>, y <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span></span>
+<span><span class="co"># layers</span></span>
+<span><span class="va">ggp2_graph</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, </span>
+<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">X</span>, y <span class="op">=</span> <span class="va">Y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_blank.html">geom_blank</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># graph</span></span>
+<span><span class="va">ggp2_graph</span> <span class="op">+</span> </span>
+<span>    <span class="va">labs_graph</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div style="font-size: 1.15em; color: #1e83c8;">
+<p><strong>GRAPH:</strong></p>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/create_graph_example-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+<p><strong>Code Style:</strong></p>
+<p>I’ve attempted to balance brevity and clarity, but with the assumption that its best to err on the latter. I’ve also followed the general principle that if a graph can be <em>easily</em> built using one of <code>ggplot2</code> ’s <code>geom_*</code> functions, that method is shown first.</p>
+</section><section id="extensions" class="level2"><h2 class="anchored" data-anchor-id="extensions">Extensions</h2>
+<p>Below are the graphs requiring additional packages/extensions:</p>
+<ul class="task-list">
+<li>
+<p><input type="checkbox" disabled="" checked="">Waffle charts</p>
+<ul>
+<li>
+<p><a href="https://liamgilbey.github.io/ggwaffle/"><code>ggwaffle</code> package</a></p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Waffle Charts</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"liamgilbey/ggwaffle"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/liamgilbey/ggwaffle">ggwaffle</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p><input type="checkbox" disabled="" checked="">Pie Charts</p>
+<ul>
+<li>
+<p><a href="https://rpkgs.datanovia.com/ggpubr/"><code>ggpubr</code> package</a></p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Pie Charts </span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"kassambara/ggpubr"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/ggpubr/">ggpubr</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p><input type="checkbox" disabled="" checked="">Mosaic Plots</p>
+<ul>
+<li>
+<p><a href="https://haleyjeppson.github.io/ggmosaic/"><code>ggmosaic</code> package</a></p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Mosaic Charts </span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"haleyjeppson/ggmosaic"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/haleyjeppson/ggmosaic">ggmosaic</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p><input type="checkbox" disabled="" checked="">Treemaps</p>
+<ul>
+<li>
+<p><a href="https://wilkox.org/treemapify/"><code>treemapify</code> package</a></p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Treemaps</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"wilkox/treemapify"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkox.org/treemapify/">treemapify</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p><input type="checkbox" disabled="" checked="">Bee-swarm Plots</p>
+<ul>
+<li>
+<p><a href="https://github.com/eclarke/ggbeeswarm"><code>ggbeeswarm</code> package</a></p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Bee-swarm Plots</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"eclarke/ggbeeswarm"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/eclarke/ggbeeswarm">ggbeeswarm</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p><input type="checkbox" disabled="" checked="">Ridgeline Plots</p>
+<ul>
+<li>
+<p><a href="https://wilkelab.org/ggridges/"><code>ggridges</code> package</a></p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Ridgeline plots </span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"wilkelab/ggridges"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/ggridges/">ggridges</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p><input type="checkbox" disabled="" checked="">Rain-cloud plots</p>
+<ul>
+<li>
+<p><a href="https://github.com/jorvlan/raincloudplots"><code>raincloudplots</code></a> and <a href="https://mjskay.github.io/ggdist/reference/index.html"><code>ggdist</code></a> packages</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Rain-cloud plots </span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">'jorvlan/raincloudplots'</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">'mjskay/ggdist'</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">raincloudplots</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mjskay.github.io/ggdist/">ggdist</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p><input type="checkbox" disabled="" checked="">Alluvial charts</p>
+<ul>
+<li>
+<p><a href="https://corybrunson.github.io/ggalluvial/">ggalluvial package</a></p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Alluvial charts</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"corybrunson/ggalluvial"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://corybrunson.github.io/ggalluvial/">ggalluvial</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p><input type="checkbox" disabled="" checked="">Bump charts</p>
+<ul>
+<li>
+<p><a href="https://github.com/davidsjoberg/ggbump">ggbump package</a></p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Bump charts</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"davidsjoberg/ggbump"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ggbump</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p><input type="checkbox" disabled="" checked="">Parallel Sets</p>
+<ul>
+<li>
+<p><a href="https://ggforce.data-imaginist.com/index.html">ggforce package</a></p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Bump charts</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"thomasp85/ggforce"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggforce.data-imaginist.com">ggforce</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p><input type="checkbox" disabled="" checked="">Stream Plots</p>
+<ul>
+<li>
+<p><a href="https://github.com/davidsjoberg/ggstream">ggstream package</a></p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Stream plots</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"davidsjoberg/ggstream"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ggstream</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</li>
+</ul>
+</li>
+</ul></section><section id="theme" class="level2"><h2 class="anchored" data-anchor-id="theme">Theme</h2>
+<p>The theme used in the graphs is custom and uses combined elements from <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">ggplot2::theme_minimal()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">ggplot2::theme_void()</a></code>. View it <a href="https://github.com/mjfrigaard/fm-ggp2/blob/main/R/theme_ggp2g.R">here</a>.</p>
+
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./univariate.html" class="pagination-link">
+        <span class="nav-page-text">Univariate</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
