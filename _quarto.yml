@@ -6,6 +6,12 @@ book:
   title: "ggplot2: field manual"
   author: "Martin Frigaard"
   reader-mode: true
+  page-footer:
+    left: |
+      ggplot2: field manual was written by Martin Frigaard.
+    right: |
+      This book was built with <a href="https://quarto.org/">Quarto</a>.
+  page-navigation: true
   chapters:
     - index.qmd
     - part: univariate.qmd
@@ -19,19 +25,42 @@ book:
         - box_plots.qmd
     - part: amounts.qmd
       chapters:
-        - chapter_amnts.qmd
+        - grp_bar_graphs.qmd
+        - sum_bar_graphs.qmd
+        - overlapping_bar_graphs.qmd
+        - heatmaps.qmd
+        - waffle_charts.qmd
+        - cleveland_dot_plots.qmd
+        #- chapter_amnts.qmd
     - part: proportions.qmd
       chapters:
-        - chapter_prp.qmd
+        - diverging_bar_graphs.qmd
+        - stacked_filled_density_graphs.qmd
+        - mosaic_plots.qmd
+        - pie_charts.qmd
+        - treemaps.qmd
+        - stream_plots.qmd
+        #- chapter_prp.qmd
     - part: distributions.qmd
       chapters:
-        - chapter_dist.qmd
+        - overlapping_histograms.qmd
+        - overlapping_frequency_polygons.qmd
+        - overlapping_dot_plots.qmd
+        - beeswarm_plots.qmd
+        - overlapping_stacked_density_plots.qmd
+        - ridgeline_plots.qmd
+        - grouped_box_plots.qmd
+        - grouped_violin_plots.qmd
+        - raincloud_plots.qmd
+        #- chapter_dist.qmd
     - part: relationships.qmd
       chapters:
         - chapter_rela.qmd
     - part: "References"
       chapters:
         - references.qmd
+  appendices:
+        - xtnsns_tbl.qmd
 
 bibliography: references.bib
 
@@ -39,16 +68,15 @@ format:
   html:
     toc: true
     toc-depth: 4
-    toc-location: left
+    toc-location: right
     toc-title: Contents
     code-fold: show
-    code-tools: false
     code-overflow: wrap
+    code-link: true
     highlight-style: arrow
     theme:
-      light: flatly
-      dark: darkly
-    code-link: true
+      light: materia
+      dark: superhero
     callout-appearance: simple
 
 

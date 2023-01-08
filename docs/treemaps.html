@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>ggplot2: field manual - Treemaps</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./stream_plots.html" rel="next">
+<link href="./pie_charts.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+</head>
+<body class="nav-sidebar floating slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Treemaps</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">ggplot2: field manual</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle sidebar-tool" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle sidebar-tool" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome!</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./univariate.html" class="sidebar-item-text sidebar-link">Univariate</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bar_graphs.html" class="sidebar-item-text sidebar-link">Bar graphs</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./histograms.html" class="sidebar-item-text sidebar-link">Histograms</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./frequency_polygons.html" class="sidebar-item-text sidebar-link">Frequency polygons</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dot_plots.html" class="sidebar-item-text sidebar-link">Dot plots</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./density_plots.html" class="sidebar-item-text sidebar-link">Density plots</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./violin_plots.html" class="sidebar-item-text sidebar-link">Violin plots</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./box_plots.html" class="sidebar-item-text sidebar-link">Box plots</a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./amounts.html" class="sidebar-item-text sidebar-link">Amounts</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./grp_bar_graphs.html" class="sidebar-item-text sidebar-link">Grouped bar graphs</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sum_bar_graphs.html" class="sidebar-item-text sidebar-link">Summary bar graphs</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./overlapping_bar_graphs.html" class="sidebar-item-text sidebar-link">Overlapping bar graphs</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./heatmaps.html" class="sidebar-item-text sidebar-link">Heatmaps</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./waffle_charts.html" class="sidebar-item-text sidebar-link">Waffle charts</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cleveland_dot_plots.html" class="sidebar-item-text sidebar-link">Cleveland dot plot</a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./proportions.html" class="sidebar-item-text sidebar-link">Proportions</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./diverging_bar_graphs.html" class="sidebar-item-text sidebar-link">Diverging bar graphs</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stacked_filled_density_graphs.html" class="sidebar-item-text sidebar-link">Stacked densities</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mosaic_plots.html" class="sidebar-item-text sidebar-link">Mosaic plots</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pie_charts.html" class="sidebar-item-text sidebar-link">Pie charts</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./treemaps.html" class="sidebar-item-text sidebar-link active">Treemaps</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stream_plots.html" class="sidebar-item-text sidebar-link">Stream plots</a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./distributions.html" class="sidebar-item-text sidebar-link">Distributions</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./overlapping_histograms.html" class="sidebar-item-text sidebar-link">Overlapping histograms</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./overlapping_frequency_polygons.html" class="sidebar-item-text sidebar-link">Overlapping frequency polygons</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./overlapping_dot_plots.html" class="sidebar-item-text sidebar-link">Overlapping dot plots</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./beeswarm_plots.html" class="sidebar-item-text sidebar-link">Beeswarm plots</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./overlapping_stacked_density_plots.html" class="sidebar-item-text sidebar-link">Overlapping density plot</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ridgeline_plots.html" class="sidebar-item-text sidebar-link">Ridgeline plots</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./grouped_box_plots.html" class="sidebar-item-text sidebar-link">Grouped box plots</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./grouped_violin_plots.html" class="sidebar-item-text sidebar-link">Grouped violin plots</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./raincloud_plots.html" class="sidebar-item-text sidebar-link">Raincloud plots</a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./relationships.html" class="sidebar-item-text sidebar-link">Relationships</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter_rela.html" class="sidebar-item-text sidebar-link">Graph: relationships</a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">References</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">Appendices</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./xtnsns_tbl.html" class="sidebar-item-text sidebar-link"><code>ggplot2</code> extensions</a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Contents</h2>
+   
+  <ul>
+<li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description">Description</a></li>
+  <li><a href="#getting-set-up" id="toc-getting-set-up" class="nav-link" data-scroll-target="#getting-set-up">Getting set up</a></li>
+  <li><a href="#the-grammar" id="toc-the-grammar" class="nav-link" data-scroll-target="#the-grammar">The grammar</a></li>
+  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info">More info</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title d-none d-lg-block">Treemaps</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header><div class="callout-tip callout callout-style-simple no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>You are reading a work-in-progress. This graph is largely complete and just needs final proof reading.</p>
+</div>
+</div>
+</div>
+<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Graph info
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div style="font-size: 1.25em; color: #007bff;">
+<p><strong>Should I use this graph?</strong></p>
+</div>
+<p><br></p>
+<div class="cell" data-layout-align="right">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-right">
+<figure class="figure"><p><img src="treemaps_files/figure-html/full_code_display-1.png" style="width:60.0%;height:60.0%" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #007bff;">
+<p><strong>This graph requires:</strong></p>
+</div>
+<div style="font-size: 1.05em; color: #fa7b3c;">
+<p>✅ at least two categorical variables</p>
+</div>
+<div style="font-size: 1.05em; color: #fa7b3c;">
+<p>✅ a numeric variable of counts (for each level of the categorical variables)</p>
+</div>
+</div>
+</div>
+</div>
+<section id="description" class="level2"><h2 class="anchored" data-anchor-id="description">Description</h2>
+<p>Treemaps display proportionally divided rectangular hierarchies for levels of categorical variables. The layout consists of ‘squarified’ tiles, which display the relative contribution of each categorical value to the overall graph space.</p>
+<p>We’ll build a treemap using the <a href="http://wilkox.org/treemapify/"><code>treemapify</code> package.</a> Also check out <a href="https://mjfrigaard.github.io/ggp2-gallery/prp/mosaic_plot.html">mosaic plots</a>.</p>
+</section><section id="getting-set-up" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="getting-set-up">Getting set up</h2>
+<div class="panel-tabset page-columns page-full">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Packages</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Data</a></li>
+</ul>
+<div class="tab-content page-columns page-full">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div style="font-size: 1.15em; color: #1e83c8;">
+<p><strong>PACKAGES:</strong></p>
+</div>
+<div style="font-size: 0.85em;">
+<p>Install packages.</p>
+</div>
+<div style="font-size: 0.75em;">
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"wilkox/treemapify"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"palmerpenguins"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkox.org/treemapify/">treemapify</a></span><span class="op">)</span> </span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div style="font-size: 1.15em; color: #1e83c8;">
+<p><strong>DATA:</strong></p>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div class="quarto-figure quarto-figure-right">
+<figure class="figure"><p><img src="www/lter_penguins.png" style="width:100.0%;height:100.0%" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">Artwork by <span class="citation" data-cites="allison_horst">(<a href="references.html#ref-allison_horst" role="doc-biblioref"><strong>allison_horst?</strong></a>)</span></figcaption><p></p>
+</figure>
+</div>
+</div></div><div style="font-size: 0.85em;">
+<p>Filter the missing values from <code>sex</code>, group the data by <code>species</code>, <code>island</code>, and <code>sex</code>, then count the <code>species</code> and <code>island</code> (then <code>ungroup()</code>).</p>
+</div>
+<div style="font-size: 0.75em;">
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">treemap_peng</span> <span class="op">&lt;-</span> <span class="va">penguins</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">species</span>, <span class="va">island</span>, <span class="va">sex</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html">drop_na</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">species</span>, <span class="va">island</span>, <span class="va">sex</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">species</span>, <span class="va">island</span>, <span class="va">sex</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">glimpse</span><span class="op">(</span><span class="va">treemap_peng</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 10</span></span>
+<span><span class="co">#&gt; Columns: 4</span></span>
+<span><span class="co">#&gt; $ species &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Ad…</span></span>
+<span><span class="co">#&gt; $ island  &lt;fct&gt; Biscoe, Biscoe, Dream, Dream, Torgersen, T…</span></span>
+<span><span class="co">#&gt; $ sex     &lt;fct&gt; female, male, female, male, female, male, …</span></span>
+<span><span class="co">#&gt; $ n       &lt;int&gt; 22, 22, 27, 28, 24, 23, 34, 34, 58, 61</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="the-grammar" class="level2"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Code</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Graph</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div style="font-size: 1.15em; color: #1e83c8;">
+<p><strong>CODE:</strong></p>
+</div>
+<div style="font-size: 0.85em;">
+<p>Create labels with <code><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs()</a></code></p>
+<p>Initialize the graph with <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code> and provide <code>data</code></p>
+<ul>
+<li><p>Map the <code>n</code> to <code>area</code>, <code>sex</code> to <code>fill</code> and <code>label</code>, <code>species</code> to <code>subgroup</code>, and <code>island</code> to <code>subgroup2</code></p></li>
+<li><p>Add <code><a href="https://wilkox.org/treemapify/reference/geom_treemap.html">geom_treemap()</a></code></p></li>
+<li>
+<p>Add <code><a href="https://wilkox.org/treemapify/reference/geom_treemap_text.html">geom_treemap_text()</a></code></p>
+<ul>
+<li>
+<code>place</code>: this controls where the boxes start<br>
+</li>
+<li>
+<code>color</code>: text color<br>
+</li>
+<li>
+<code>min.size</code>: the minimum font size (when re-sizing)<br>
+</li>
+<li>
+<code>alpha</code>: opacity<br>
+</li>
+<li>
+<code>fontface</code>: <code>itlalic</code>/<code>bond</code><br>
+</li>
+<li>
+<code>family</code>: <code>"sans"</code>/<code>"sansserif"</code>/<code>"mono"</code>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div style="font-size: 0.75em;">
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_treemap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>  title <span class="op">=</span> <span class="st">"Adult foraging penguins"</span>,</span>
+<span>    fill <span class="op">=</span> <span class="st">"Sex"</span><span class="op">)</span></span>
+<span><span class="va">ggp2_treemap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">treemap_peng</span>, </span>
+<span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>area <span class="op">=</span> <span class="va">n</span>, </span>
+<span>           fill <span class="op">=</span> <span class="va">sex</span>, </span>
+<span>           label <span class="op">=</span> <span class="va">sex</span>,</span>
+<span>           subgroup <span class="op">=</span> <span class="va">species</span>,</span>
+<span>           subgroup2 <span class="op">=</span> <span class="va">island</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>       <span class="fu">treemapify</span><span class="fu">::</span><span class="fu"><a href="https://wilkox.org/treemapify/reference/geom_treemap.html">geom_treemap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>       <span class="fu">treemapify</span><span class="fu">::</span><span class="fu"><a href="https://wilkox.org/treemapify/reference/geom_treemap_text.html">geom_treemap_text</a></span><span class="op">(</span></span>
+<span>           place <span class="op">=</span> <span class="st">"bottomright"</span>,</span>
+<span>           color <span class="op">=</span> <span class="st">"#d0d0d0"</span>,</span>
+<span>           min.size <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>           alpha <span class="op">=</span> <span class="fl">0.90</span>,</span>
+<span>           fontface <span class="op">=</span> <span class="st">"italic"</span>,</span>
+<span>           family <span class="op">=</span> <span class="st">"sans"</span><span class="op">)</span> </span>
+<span><span class="va">ggp2_treemap</span> <span class="op">+</span> </span>
+<span>  <span class="va">labs_treemap</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div style="font-size: 1.15em; color: #1e83c8;">
+<p><strong>GRAPH:</strong></p>
+</div>
+<div style="font-size: 0.75em;">
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_treemap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>  title <span class="op">=</span> <span class="st">"Adult foraging penguins"</span>,</span>
+<span>    fill <span class="op">=</span> <span class="st">"Sex"</span><span class="op">)</span></span>
+<span><span class="va">ggp2_treemap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">treemap_peng</span>, </span>
+<span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>area <span class="op">=</span> <span class="va">n</span>, </span>
+<span>           fill <span class="op">=</span> <span class="va">sex</span>, </span>
+<span>           label <span class="op">=</span> <span class="va">sex</span>,</span>
+<span>           subgroup <span class="op">=</span> <span class="va">species</span>,</span>
+<span>           subgroup2 <span class="op">=</span> <span class="va">island</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>       <span class="fu">treemapify</span><span class="fu">::</span><span class="fu"><a href="https://wilkox.org/treemapify/reference/geom_treemap.html">geom_treemap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>       <span class="fu">treemapify</span><span class="fu">::</span><span class="fu"><a href="https://wilkox.org/treemapify/reference/geom_treemap_text.html">geom_treemap_text</a></span><span class="op">(</span></span>
+<span>           place <span class="op">=</span> <span class="st">"bottomright"</span>,</span>
+<span>           color <span class="op">=</span> <span class="st">"#d0d0d0"</span>,</span>
+<span>           min.size <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>           alpha <span class="op">=</span> <span class="fl">0.90</span>,</span>
+<span>           fontface <span class="op">=</span> <span class="st">"italic"</span>,</span>
+<span>           family <span class="op">=</span> <span class="st">"sans"</span><span class="op">)</span> </span>
+<span><span class="va">ggp2_treemap</span> <span class="op">+</span> </span>
+<span>  <span class="va">labs_treemap</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="treemaps_files/figure-html/create_graph_treemap-1.png" style="width:100.0%;height:100.0%"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="more-info" class="level2"><h2 class="anchored" data-anchor-id="more-info">More info</h2>
+<p><code>treemapify</code> has multiple options for building treemaps. We cover a few of these below, but you should check out the <a href="https://cran.r-project.org/web/packages/treemapify/vignettes/introduction-to-treemapify.html">package vignette</a>.</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Subgroup</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Subgroup 2</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div style="font-size: 1.15em; color: #1e83c8;">
+<p><strong>SUBGROUP:</strong></p>
+</div>
+<div style="font-size: 0.85em;">
+<p><code>ggplot2</code> build layers in the order they’re written, so it’s <a href="https://cran.r-project.org/web/packages/treemapify/vignettes/introduction-to-treemapify.html">advised</a> to build the subgroups in order from “<em>from deepest to shallowest</em>”, with <code>subgroups2</code> first (ending on <code>subgroup</code>)</p>
+<ul>
+<li>
+<p>Add <code><a href="https://wilkox.org/treemapify/reference/geom_treemap_subgroup_border.html">geom_treemap_subgroup2_border()</a></code></p>
+<ul>
+<li>Set the <code>size</code> and <code>color</code>
+</li>
+</ul>
+</li>
+<li>
+<p>Add <code><a href="https://wilkox.org/treemapify/reference/geom_treemap_subgroup_text.html">geom_treemap_subgroup2_text()</a></code></p>
+<ul>
+<li>
+<code>place</code>: this controls where the boxes start<br>
+</li>
+<li>
+<code>color</code>: text color<br>
+</li>
+<li>
+<code>min.size</code>: the minimum font size (when re-sizing)<br>
+</li>
+<li>
+<code>alpha</code>: opacity<br>
+</li>
+<li>
+<code>fontface</code>: <code>itlalic</code>/<code>bond</code><br>
+</li>
+<li>
+<code>family</code>: <code>"sans"</code>/<code>"sansserif"</code>/<code>"mono"</code>
+</li>
+</ul>
+</li>
+</ul>
+<p>See full list of arguments <a href="http://wilkox.org/treemapify/">here</a>.</p>
+</div>
+<div style="font-size: 0.75em;">
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_tm_subgroup</span> <span class="op">&lt;-</span> <span class="va">ggp2_treemap</span> <span class="op">+</span></span>
+<span>    <span class="fu">treemapify</span><span class="fu">::</span><span class="fu"><a href="https://wilkox.org/treemapify/reference/geom_treemap_subgroup_border.html">geom_treemap_subgroup2_border</a></span><span class="op">(</span></span>
+<span>           color <span class="op">=</span> <span class="st">"#282b2d"</span>,</span>
+<span>           size <span class="op">=</span> <span class="fl">4.0</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>       <span class="fu">treemapify</span><span class="fu">::</span><span class="fu"><a href="https://wilkox.org/treemapify/reference/geom_treemap_subgroup_text.html">geom_treemap_subgroup2_text</a></span><span class="op">(</span></span>
+<span>           place <span class="op">=</span> <span class="st">"center"</span>,</span>
+<span>           alpha <span class="op">=</span> <span class="fl">0.65</span>,</span>
+<span>           color <span class="op">=</span> <span class="st">"#282b2d"</span>,</span>
+<span>           min.size <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>           family <span class="op">=</span> <span class="st">"sans"</span><span class="op">)</span></span>
+<span><span class="va">ggp2_tm_subgroup</span> <span class="op">+</span></span>
+<span>  <span class="va">labs_treemap</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="treemaps_files/figure-html/code_graph_treemap_sgb-1.png" style="width:100.0%;height:100.0%"></p>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div style="font-size: 1.15em; color: #1e83c8;">
+<p><strong>SUBGROUP 2:</strong></p>
+</div>
+<div style="font-size: 0.85em;">
+<p>Add <code><a href="https://wilkox.org/treemapify/reference/geom_treemap_subgroup_border.html">geom_treemap_subgroup_border()</a></code></p>
+<ul>
+<li>Set the <code>size</code> and <code>color</code>
+</li>
+</ul>
+<p>Add <code><a href="https://wilkox.org/treemapify/reference/geom_treemap_subgroup_text.html">geom_treemap_subgroup_text()</a></code></p>
+<ul>
+<li>
+<code>place</code>: this controls where the boxes start<br>
+</li>
+<li>
+<code>color</code>: text color<br>
+</li>
+<li>
+<code>min.size</code>: the minimum font size (when re-sizing)<br>
+</li>
+<li>
+<code>alpha</code>: opacity<br>
+</li>
+<li>
+<code>fontface</code>: <code>itlalic</code>/<code>bond</code><br>
+</li>
+<li>
+<code>family</code>: <code>"sans"</code>/<code>"sansserif"</code>/<code>"mono"</code>
+</li>
+</ul>
+</div>
+<div style="font-size: 0.75em;">
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_tm_subgroup2</span> <span class="op">&lt;-</span> <span class="va">ggp2_tm_subgroup</span> <span class="op">+</span> </span>
+<span>       <span class="fu">treemapify</span><span class="fu">::</span><span class="fu"><a href="https://wilkox.org/treemapify/reference/geom_treemap_subgroup_border.html">geom_treemap_subgroup_border</a></span><span class="op">(</span></span>
+<span>           color <span class="op">=</span> <span class="st">"#ffffff"</span>, </span>
+<span>           size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>       <span class="fu">treemapify</span><span class="fu">::</span><span class="fu"><a href="https://wilkox.org/treemapify/reference/geom_treemap_subgroup_text.html">geom_treemap_subgroup_text</a></span><span class="op">(</span></span>
+<span>           place <span class="op">=</span> <span class="st">"topleft"</span>,</span>
+<span>           alpha <span class="op">=</span> <span class="fl">0.65</span>,</span>
+<span>           grow <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>           color <span class="op">=</span> <span class="st">"#ffffff"</span>,</span>
+<span>           min.size <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>           family <span class="op">=</span> <span class="st">"mono"</span>,</span>
+<span>           fontface <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ggp2_tm_subgroup2</span> <span class="op">+</span> </span>
+<span>  <span class="va">labs_treemap</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="treemaps_files/figure-html/code_graph_tmap_sgb_2-1.png" style="width:100.0%;height:100.0%"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./pie_charts.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Pie charts</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./stream_plots.html" class="pagination-link">
+        <span class="nav-page-text">Stream plots</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">ggplot2: field manual was written by Martin Frigaard.</div>   
+    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+</body></html>

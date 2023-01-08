@@ -1,0 +1,788 @@
+---
+title: "`geom_path()`"
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-location: right
+    toc-title: Contents
+    code-fold: true
+    out-height: '100%'
+    out-width: '100%'
+    df-print: paged
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+library(patchwork)
+library(faux)
+# options ----
+options(
+  repos = "https://cloud.r-project.org",
+  dplyr.print_min = 6, 
+  dplyr.print_max = 6, 
+  scipen = 9999)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+# import font
+extrafont::font_import(
+    paths = "../assets/Ubuntu/",
+    prompt = FALSE)
+# add font
+sysfonts::font_add(
+    family =  "Ubuntu", 
+    regular = "../assets/Ubuntu/Ubuntu-Regular.ttf")
+# use font
+showtext::showtext_auto()
+# add theme
+source("../R/theme_ggp2g.R")
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 16))
+# install data packages ----
+install.packages("palmerpenguins")
+```
+
+
+:::: {.callout-note collapse="false" icon=false}
+## Lines in `ggplot2`
+
+::: {style="color: #043b67;"}
+#### Geoms for lines
+:::
+
+```{r}
+#| label: full_code_display
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '65%'
+#| out-width: '65%'
+#| fig-align: right
+library(palmerpenguins) 
+library(ggplot2)
+library(patchwork)
+economics <- ggplot2::economics
+seals <- ggplot2::seals
+ggp2_line_base <- ggplot(data = economics, 
+    aes(x = date, y = unemploy))
+# geom_path ----
+pth <- ggp2_line_base + 
+    geom_path(color = "#E74A2F") + 
+    theme_void() + 
+    labs(title = "geom_path()")
+# geom_line ----
+ln <- ggp2_line_base + 
+    geom_line() + 
+    theme_void() + 
+    labs(title = "geom_line()")
+# geom_step ----
+stp <- ggp2_line_base + 
+    geom_step() + 
+    theme_void() + 
+    labs(title = "geom_step()")
+# path, line, step ----
+pth + ln + stp + 
+    patchwork::plot_layout(ncol = 2)
+```
+
+:::{style="font-size: 0.90em; color: #E74A2F;"}
+  - **geom_path()** 
+:::
+
+  - `geom_line()`  
+
+  - `geom_step()` 
+  
+::::
+
+## Getting set up
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {.column-margin}
+::: {style="font-size: 0.75em;"}
+![](../www/ggplot2.png){fig-align="right" width="33%" height="33%"}
+:::
+:::
+
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_lines
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+#| out-height: '100%'
+#| out-width: '100%'
+install.packages("ggplot2")
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Load the `ggplot2::economics` data.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_lines
+#| eval: true
+#| echo: true
+#| out-height: '100%'
+#| out-width: '100%'
+economics <- ggplot2::economics
+dplyr::glimpse(economics)
+```
+:::
+::::
+
+## `geom_path()`
+
+:::: {.panel-tabset}
+
+### Basic Use
+
+:::: {.column-margin}
+::: {style="font-size: 0.85em;"}
+ [`geom_path()` *connects the observations in the order in which they appear in the data.*](https://ggplot2.tidyverse.org/reference/geom_path.html)
+:::
+::::
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**BASICS:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Below is a demonstration of a line graph using `geom_path()`, with a date variable mapped to the `x` axis, and a numeric (double) variable on the `y` axis. 
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: basic_path
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 1
+ggp2_path_base <- ggplot(data = economics, 
+    aes(x = date, y = unemploy))
+ggp2_path_base + geom_path()
+```
+:::
+
+### Aesthetics
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**AESTHETICS:**
+:::
+
+::: {style="font-size: 0.85em;"}
+The required aesthetics are: `x` and `y` positions 
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_path_x_y
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 1
+ggp2_path_base <- ggplot(data = economics, 
+    aes(x = date, y = uempmed))
+ggp2_path_base + geom_path()
+```
+:::
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**OPTIONAL AESTHETICS:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Optional aesthetics include: 
+
+  - `group`  
+  
+  - `color`   
+  
+  - `linewidth`  
+  
+  - `alpha`  
+  
+  - `linetype`  
+
+:::
+
+#### `group`
+
+::: {style="font-size: 0.85em;"}
+To explore `group`, we'll load some data on *Building Permit Data for United States* from [Texas A & M's Real Estate Research Center](https://www.recenter.tamu.edu/data/building-permits#!/state/United_States). 
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_path_group_data
+#| eval: true
+#| echo: true
+#| code-fold: show
+#| warning: false
+#| message: false
+permits_raw <- readr::read_csv(file = "../data/dataPermit_full.csv", 
+    na = "null")
+dplyr::glimpse(permits_raw)
+```
+:::
+
+::: {style="font-size: 0.85em;"}
+First we'll create the `yr_shift` and `yr_mnth` variables, and limit the data to `2010` - `2020`.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_path_group_yr_shift
+#| eval: true
+#| echo: true
+#| code-fold: show
+#| warning: false
+#| message: false
+permits <- permits_raw |> 
+    tidyr::separate(col = date, 
+                  into = c("month", "year"), 
+                  sep = "/", 
+                  convert = TRUE, 
+                  remove = FALSE) |> 
+    dplyr::mutate(
+        yr_shift = year + (month - 1) / 12,
+        yr_mnth = paste0(year, "-", month),
+        yr_mnth = lubridate::ym(yr_mnth)) |> 
+    dplyr::filter(year >= 2010 & year <= 2020) |> 
+    dplyr::select(year, yr_shift, date, 
+        yr_mnth, area, contains("units")) 
+utils::head(permits, 10)
+```
+:::
+
+::: {style="font-size: 0.85em;"}
+`yr_shift` leaves `01/2010` as `2010.000`, but  `02/2010` becomes `2010.083`, and `03/2010` shifts a little bit more to `2010.167`, and so on.
+
+If we try to view the change in `f1units` using `geom_path()` with `yr_shift` and `yr_mnth`, we see the following:
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_path_group_yr_shift_mnth_f1units
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+ggplot(data = permits, 
+    mapping = aes(x = yr_shift, y = f1units)) + 
+    geom_path() + 
+    labs(title = "yr_shift = year + (month - 1) / 12")
+
+ggplot(data = permits, 
+    mapping = aes(x = yr_mnth, y = f1units)) + 
+    geom_path() + 
+    labs(title = "yr_mnth = lubridate::ym(yr_mnth)")
+```
+:::
+
+::: {style="font-size: 0.85em;"}
+We can see the lines aren't acting like we expected, but if we map the `area` variable to `group`...
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_path_group_yr_shift_f1units
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+ggplot(data = permits, 
+    mapping = aes(x = yr_shift, y = f1units)) + 
+    geom_path(aes(group = area))
+
+ggplot(data = permits, 
+    mapping = aes(x = yr_mnth, y = f1units)) + 
+    geom_path(aes(group = area))
+```
+:::
+
+::: {style="font-size: 0.85em;"}
+We can see the lines are now separated by `area`.
+:::
+
+#### `color`
+
+::: {style="font-size: 0.85em;"}
+The `color` aesthetic can be set or mapped, and is useful for differentiating categorical levels.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: permits_long
+#| eval: false
+#| echo: false
+#| code-fold: true
+#| warning: false
+#| message: false
+permits_long <- tidyr::pivot_longer(data = permits, 
+    cols = contains("units"), 
+    names_to = "fkey", 
+    values_to = "units")
+```
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_path_color
+#| eval: true
+#| echo: true
+#| code-fold: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+ggp2_path_base <- ggplot(economics) 
+ggp2_path_base_long <- ggplot(economics_long)
+# mapped color
+ggp2_path_base_long + 
+    geom_path(aes(x = date, 
+        y = value01, 
+        color = variable))
+# set color
+ggp2_path_base + 
+    geom_path(aes(x = date, 
+        y = uempmed),
+        color = "#007bff")
+```
+:::
+
+#### `linewidth`
+
+::: {style="font-size: 0.85em;"}
+The `linewidth` determines the size of the line. 
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_path_linewidth
+#| eval: true
+#| echo: true
+#| code-fold: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 1
+# color, linewidth
+ggp2_path_base_long + 
+    geom_path(aes(x = date, 
+        y = value01, 
+        color = variable),
+        linewidth = 0.75)
+```
+:::
+
+#### `alpha`
+
+::: {style="font-size: 0.85em;"}
+The alpha sets the opacity of the line (and is useful for overlapping lines).
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_path_alpha
+#| eval: true
+#| echo: true
+#| code-fold: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 1
+# color, alpha, linewidth
+ggp2_path_base_long + 
+    geom_path(aes(x = date, 
+        y = value01, 
+        color = variable), 
+        alpha = 1 / 2,
+        linewidth = 0.75)
+```
+:::
+
+#### `linetype`
+
+::: {style="font-size: 0.85em;"}
+The `linetype` can be mapped or set with values from [ggplot2-specs](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html#lines)
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_path_linetype
+#| eval: true
+#| echo: true
+#| code-fold: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 1
+# map group, color, linetype, with facets 
+ggp2_path_base_long + 
+    geom_path(aes(x = date, 
+        y = value01, 
+        color = variable, 
+        group = variable,
+        linetype = variable)) + 
+    facet_wrap(. ~ variable, ncol = 2) + 
+    theme(legend.position = "none")
+```
+:::
+
+### Arguments
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**ARGUMENTS:**
+:::
+
+::: {style="font-size: 0.85em;"}
+We've defined two functions for displaying the arguments in `geom_path()`: `path_linetype()` displays the different `linetype` options, and `path_lines()` displays the options for `lineend` and `linejoin`.
+:::
+
+#### `linetype`
+
+::: {style="font-size: 0.85em;"}
+We've defined `path_linetype()`, a function that lets us quickly specify the `linetype` aesthetic for `geom_path()`:
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: path_linetype
+#| eval: true
+#| echo: true
+#| code-fold: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+path_linetype <- function(type = "solid") {
+    df <- data.frame(x = 1:5, y = c(5, 1, 4, 2, 7))
+    ggplot2::ggplot(data = df,
+        mapping = aes(x = x, y = y)) +
+            xlim(0.5, 5.5) +
+            ylim(0, 10) + 
+        ggplot2::geom_path(
+            linewidth = 15,
+            lineend = "round",
+            linetype = "solid") + 
+        ggplot2::geom_path(
+            linewidth = 1.5,
+            color = "#ffffff",
+            linetype = type) + 
+        ggplot2::labs(subtitle = type)
+}
+```
+:::
+
+::: {style="font-size: 0.85em;"}
+The white line displays the `linetype` against a black backdrop to enhance visibility. See the `lineend` argument in the section below: 
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: draw_path_linetype_use
+#| eval: true
+#| echo: true
+#| code-fold: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+# manually set linetype
+# type = one of: "solid", "dashed", "dotted", "dotdash",
+# "longdash", "twodash"
+path_linetype(type = "dashed")
+path_linetype(type = "dotted")
+path_linetype(type = "dotdash")
+path_linetype(type = "longdash")
+path_linetype(type = "twodash")
+path_linetype(type = "solid")
+```
+:::
+
+::: {style="font-size: 0.85em;"}
+Below the define `path_lines()`, which builds line graphs with  `geom_path()`'s `lineend` and `linejoin` arguments set to `"round"`, `"butt"`, or `"square"` and `"bevel"`, `"round"`, and `"mitre"`. 
+
+The `linewidth` (`lw`) and `linemitre` (`lnmtr`) can be adjusted to exaggerate their effects.
+
+We've added white lines/points to illustrate the data points.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: path_lines
+#| code-fold: true
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+path_lines <- function(lw = 5, lend = 'r', ljoin = 'r', lnmtr = NULL) {
+    lineends <- c('r' = 'round', 'b' = 'butt', 's' = 'square')
+    linejoins <- c('r' = 'round', 'm' = 'mitre', 'b' = 'bevel')
+    ljoin <- linejoins[ljoin]
+    lend <- lineends[lend]
+    df <- data.frame(x = 1:5, y = c(5, 1, 4, 2, 7))
+    ggplot2::ggplot(data = df,
+        mapping = aes(x = x, y = y)) +
+        xlim(0.5, 5.5) +
+        ylim(0, 10) +
+        ggplot2::geom_path(
+            linewidth = lw,
+            lineend = lend,
+            linejoin = ljoin,
+            linemitre = lnmtr
+        ) + 
+        geom_path(color = "#ffffff") +
+        geom_point(size = 3, color = "#ffffff") +
+        ggplot2::labs(title = paste0(
+            "lineend = ", lend,
+            " / ", 
+            "linejoin = ", ljoin), 
+            subtitle = paste0("linewidth = ", lw))
+}
+```
+:::
+
+#### Lineend: `round`
+
+::: {style="font-size: 0.85em;"}
+A "round" line ending extends the line width slightly and produces curved caps at the start and end of the line (with the intersecting values at the center).
+
+*The white line/points are the data points*
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: args_path_lend_round
+#| code-fold: true
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+path_lines(lw = 15, lend = "r", ljoin = "r") # round/round
+path_lines(lw = 15, lend = "r", ljoin = "m") # round/mitre 
+path_lines(lw = 15, lend = "r", ljoin = "b") # round/bevel 
+```
+:::
+
+#### Linejoin: `round`
+
+::: {style="font-size: 0.85em;"}
+A "round" line join produces a curve at the intersection of points on the line.
+
+*The white line/points are the data points*
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: args_path_ljoin_round
+#| code-fold: true
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+path_lines(lw = 15, lend = "r", ljoin = "r") # round/round
+path_lines(lw = 15, lend = "b", ljoin = "r") # butt/round
+path_lines(lw = 15, lend = "s", ljoin = "r") # square/round
+```
+:::
+
+#### Lineend: `butt`
+
+::: {style="font-size: 0.85em;"}
+A "butt" line end produces an abrupt ending at the start and end of the data points along the line.
+
+*The white line/points are the data points*
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: args_path_lend_butt
+#| code-fold: true
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+path_lines(lw = 15, lend = "b", ljoin = "r") # butt/round
+path_lines(lw = 15, lend = "b", ljoin = "m") # butt/mitre 
+path_lines(lw = 15, lend = "b", ljoin = "b") # butt/bevel 
+```
+:::
+
+#### Linejoin: `mitre`
+
+::: {style="font-size: 0.85em;"}
+A "mitre" line join extends the area of the line width between intersecting points, giving each connecting point a straight edge. 
+
+*The white line/points are the data points*
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: args_path_ljoin_mitre
+#| code-fold: true
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+path_lines(lw = 15, lend = "b", ljoin = "m") # butt/mitre 
+path_lines(lw = 15, lend = "s", ljoin = "m") # square/mitre 
+path_lines(lw = 15, lend = "r", ljoin = "m") # round/mitre 
+```
+:::
+
+#### Lineend: `square`
+
+::: {style="font-size: 0.85em;"}
+A "square" line ending extends the line width slightly and produces a square cap at the start and end of the line (with the intersecting values at the center).
+
+*The white line/points are the data points*
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: args_path_lend_square
+#| code-fold: true
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+path_lines(lw = 15, lend = "s", ljoin = "r") # square/round
+path_lines(lw = 15, lend = "s", ljoin = "m") # square/mitre 
+path_lines(lw = 15, lend = "s", ljoin = "b") # square/bevel
+```
+:::
+
+#### Linejoin: `bevel`
+
+::: {style="font-size: 0.85em;"}
+A "bevel" line join 'shaves' the line width at the intersection of data points and curves the line with by producing two additional angles (with the intersecting values at the center of the two angles).
+
+*The white line/points are the data points*
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: args_path_ljoin_bevel
+#| code-fold: true
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+path_lines(lw = 15, lend = "b", ljoin = "b") # butt/bevel 
+path_lines(lw = 15, lend = "s", ljoin = "b") # square/bevel
+path_lines(lw = 15, lend = "r", ljoin = "b") # round/bevel 
+```
+:::
+
+### Examples 
+
+#### Multiple `x` variables
+
+::: {style="font-size: 0.85em;"}
+[`geom_path()` *lets you explore how two variables are related over time, e.g. unemployment and personal savings rate*](https://ggplot2.tidyverse.org/reference/geom_path.html)
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: example_geom_path_multp_y
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+ggp2_path_unemploy_pop <- ggplot(data = economics, 
+    mapping = aes(x = unemploy/pop, y = psavert))
+
+ggp2_path_unemploy_pop + 
+    geom_path() + 
+    labs(title = "geom_path()")
+
+ggp2_path_unemploy_pop +  
+    geom_path(aes(colour = as.numeric(date))) + 
+    labs(title = "geom_path(aes(colour = as.numeric(date)))")
+```
+:::
+
+::::

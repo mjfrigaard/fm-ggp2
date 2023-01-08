@@ -4,21 +4,21 @@
     "href": "index.html",
     "title": "ggplot2: field manual",
     "section": "",
-    "text": "Welcome to the ggplot2 field manual! This text contains a collection of code and graphs created using ggplot2 (and friends!).\n\n\n\n\n\n\n\nThis manual is designed to help you answer the question, “what graph should I use?”\nThe structure of this manual assumes the reader has already answered the questions, “what kind of data do I have?” and “who is the audience for the graph?”\n\nIf you want to learn about ggplot2, you should start with the excellent free text, or if you know what kind of graph you’d like to build, but you need the code or packages in order to build it, check out the R graph gallery or R graphics cookbook.\n\nGraphs have been categorized into the following types:\n\nUnivariate graphs\n\nAmounts\n\nProportions\n\nDistributions\n\nRelationships\n\nSome graphs would justifiably belong in more than one category, and wherever this is the case, I’ve tried to include links to other uses in the notes.\n\nInstall ggplot2 using the code below:\n\nCodeinstall.packages(\"ggplot2\")\nlibrary(ggplot2)\n\n\nOr you can install ggplot2 as part of the tidyverse:\n\n\n\n\n\n\n\nCodeinstall.packages(\"tidyverse\")\nlibrary(tidyverse)\n\n\n\nThe majority of the graphs in the manual are built using the palmerpenguins::penguins data.\n\n\n\n…so…many…PENGUINS!\n\n\n\nArtwork by allison_horst\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins)\n\n\nSome of the graphs use datasets from the fivethirtyeight package.\n\nCodeinstall.packages(\"fivethirtyeight\")\nlibrary(fivethirtyeight)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpand to view the data in the fivethirtyeight package\n\n\n\n\n\n\nTo view a table of available datasets in the fivethirtyeight package, view the Data Frame Name and Article Title columns in the datasets_master table:\n\n\n\n\n\n\n\n\n\n\n\n\n\nA few of the graphs are built using the ggplot2movies::movies data.\n\n\n\n\n\n\n\nCodeinstall.packages(\"ggplot2movies\")\nlibrary(ggplot2movies)\n\n\nWhy not manually create the graph datasets with data.frame() or tibble()/tribble()?\nIn my opinion, using manually generated data is great for reproducible examples, but they rarely look like data ‘caught in the wild.’ The data packages above are also well maintained and can be used to provide a variety of examples.\n\nThe field manual follows a Rule of Least Power Principle, in the sense that “a language with a straightforward syntax may be easier to analyze than an otherwise equivalent one with more complex structure.”\nIn other words, assuming the reader has some understanding of R and the tidyverse, the code for each graph is meant to be read and understood without having to run it.\nEach graph has, at minimum, the following sections and tabs:\n\n\nGraph info\n\n\nShould I use this graph?\n\n\nThis graph requires:\n\n\n\n\nDescription\n\n\nGetting set up\n\n\nPackages and Data\n\nCode for installing development version of packages (if necessary) for graphs and data\n\nAny steps used to create (i.e., manipulate and prepare) the data for the graph\n\n\n\n\n\n\nThe grammar\n\n\nCode to build the labels and graph layers\n\nGraph labels have the labs_ prefix\n\nGraph layers have a ggp2_ prefix\n\n\n\n\n\n\nMore info\n\n\nAdditional methods, arguments, or applications\n\nColor palettes\n\nComplimentary packages\n\n\n\n\n\n\n\n\n\n\n\nExpand to view an example of the graph code structure\n\n\n\n\n\n\nDescription of the graph\n\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodelibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\nDescription of data\n\n\n\nCodedf <- tibble::tibble(X = sample(x = 1:100, 10, FALSE),\n                     Y = rlnorm(10, 1, 3))\n\n\n\n\n\n\n\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCode for creating graph\n\n\n\nCode# labels\nlabs_graph <- ggplot2::labs(title = \"Title\", \n                            subtitle = \"subtitle\", \n                            x = \"X\", y = \"Y\")\n# layers\nggp2_graph <- ggplot2::ggplot(data = df, \n    mapping = aes(x = X, y = Y)) + \n    ggplot2::geom_blank()\n# graph\nggp2_graph + \n    labs_graph\n\n\n\n\n\n\nGRAPH:\n\n\n\n\n\n\n\n\n\n\n\n\n\nCode Style:\nI’ve attempted to balance brevity and clarity, but with the assumption that its best to err on the latter. I’ve also followed the general principle that if a graph can be easily built using one of ggplot2 ’s geom_* functions, that method is shown first.\n\nBelow are the graphs requiring additional packages/extensions:\n\n\nWaffle charts\n\n\nggwaffle package\n\nCode# Waffle Charts\ndevtools::install_github(\"liamgilbey/ggwaffle\")\nlibrary(ggwaffle)\n\n\n\n\n\n\nPie Charts\n\n\nggpubr package\n\nCode# Pie Charts \ndevtools::install_github(\"kassambara/ggpubr\")\nlibrary(ggpubr)\n\n\n\n\n\n\nMosaic Plots\n\n\nggmosaic package\n\nCode# Mosaic Charts \ndevtools::install_github(\"haleyjeppson/ggmosaic\")\nlibrary(ggmosaic)\n\n\n\n\n\n\nTreemaps\n\n\ntreemapify package\n\nCode# Treemaps\ndevtools::install_github(\"wilkox/treemapify\")\nlibrary(treemapify)\n\n\n\n\n\n\nBee-swarm Plots\n\n\nggbeeswarm package\n\nCode# Bee-swarm Plots\ndevtools::install_github(\"eclarke/ggbeeswarm\")\nlibrary(ggbeeswarm)\n\n\n\n\n\n\nRidgeline Plots\n\n\nggridges package\n\nCode# Ridgeline plots \ndevtools::install_github(\"wilkelab/ggridges\")\nlibrary(ggridges)\n\n\n\n\n\n\nRain-cloud plots\n\n\nraincloudplots and ggdist packages\n\nCode# Rain-cloud plots \nremotes::install_github('jorvlan/raincloudplots')\nremotes::install_github('mjskay/ggdist')\nlibrary(raincloudplots)\nlibrary(ggdist)\n\n\n\n\n\n\nAlluvial charts\n\n\nggalluvial package\n\nCode# Alluvial charts\ndevtools::install_github(\"corybrunson/ggalluvial\")\nlibrary(ggalluvial)\n\n\n\n\n\n\nBump charts\n\n\nggbump package\n\nCode# Bump charts\ndevtools::install_github(\"davidsjoberg/ggbump\")\nlibrary(ggbump)\n\n\n\n\n\n\nParallel Sets\n\n\nggforce package\n\nCode# Bump charts\ndevtools::install_github(\"thomasp85/ggforce\")\nlibrary(ggforce)\n\n\n\n\n\n\nStream Plots\n\n\nggstream package\n\nCode# Stream plots\ndevtools::install_github(\"davidsjoberg/ggstream\")\nlibrary(ggstream)\n\n\n\n\n\n\nThe theme used in the graphs is custom and uses combined elements from ggplot2::theme_minimal() and ggplot2::theme_void(). View it here."
+    "text": "Welcome to the ggplot2 field manual! This manual intends to be a bookmark/quick reference for building graphs with ggplot2 (even if you can’t quite recall what that graph was called).\n\n\n\n\n\n\n\nThis manual was written to help answer questions like,\n\n“What graph should I use?”\n“Can I build this graph (given the data I have)?”\nWhat was the name of that visualization I saw on #TidyTuesday?\n\nThe code and examples assume the reader has already answered the question, “what kind of data do I have?”\nIf not, I highly recommend the skimr and inspectdf packages for getting to know your data better.\nAnother question to consider–but is not covered in this manual–is, “who will the audience be for this graph?” Great resources for this include Communicating with Data: The Art of Writing for Data Science by Deborah Nolan and Sara Stoudt and Truthful Art, The: Data, Charts, and Maps for Communication, by Alberto Cairo.\n\nI created this resource with the following learner personas in mind:\n\nGarth is a data analyst putting together a slide deck for an upcoming meeting. He had a few statistics courses with R in college, and has picked up additional experience and skills from the different positions he’s held and various online tutorials. He’s currently building the graphs in his slides with ggplot2, but had grown tired of them and would like to customize his presentation to make it more engaging.\nMatilda is a data journalist hoping to add a few graphs to a piece she has been working on. She has 10 years of experience working with WordPress, writes and publishes on her own blog, and has an intermediate understanding of HTML & CSS. However, she has only been programming in R for about 6 months.\nIgor is a researcher who has been working in academia for 15 years. He’s comfortable writing R code, knows the kinds of graphs he’d like to build, but he only knows how to build these using the base R graphics. He’d like to learn how to duplicate the graphs he’s already created in base R using ggplot2.\n\n\nBecause this is intended to be a field manual (and not a textbook), I’ve omitted most of the underlying principles and structure of the ggplot2 syntax.\n\nIf you’re looking for a comprehensive resource on ggplot2, I recommend the excellent free text, the ggplot2 website, and Data Visualization: a practical guide by Kieran Healy.\nIf you know the graph you’d like to build, and you’re just looking for the code or package(s) to build it, I’d check out the R graph gallery or R graphics cookbook.\n\nGraphs have been categorized into the following types:\n\nUnivariate: if you have a single column you’re trying to visualize\nAmounts: counts or simple summary statistics of one or two columns in a dataset\nProportions: ratio displays of part-to-whole\nDistributions: displaying the shape of a variable’s values (normalcy, skewness, kurtosis, etc.)\nRelationships: how does the change of values in variable x affect the values in variable y (and possibly z)?\n\nSome graphs can justifiably belong to more than one category, and wherever this is the case, I’ve tried to include links to other applications in the notes.\n\nInstall ggplot2 using the code below:\n\nCodeinstall.packages(\"ggplot2\")\nlibrary(ggplot2)\n\n\nOr you can install ggplot2 as part of the tidyverse:\n\n\n\n\n\n\n\nCodeinstall.packages(\"tidyverse\")\nlibrary(tidyverse)\n\n\n\nThe majority of the graphs in the manual are built using the palmerpenguins::penguins data.\n\n\n\n…so…many…PENGUINS!\n\n\n\nArtwork by allison_horst\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins)\n\n\nSome of the graphs use datasets from the fivethirtyeight package.\n\nCodeinstall.packages(\"fivethirtyeight\")\nlibrary(fivethirtyeight)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpand to view the data in the fivethirtyeight package\n\n\n\n\n\n\nTo view a table of available datasets in the fivethirtyeight package, view the Data Frame Name and Article Title columns in the datasets_master table:\n\n\n\n\n\n\n\n\n\n\n\n\n\nA few of the graphs are built using the ggplot2movies::movies data.\n\n\n\n\n\n\n\nCodeinstall.packages(\"ggplot2movies\")\nlibrary(ggplot2movies)\n\n\nWhy not manually create the graph datasets with data.frame() or tibble()/tribble()?\nIn my opinion, using manually generated data is great for reproducible examples, but they rarely look like data ‘caught in the wild.’ The data packages above are also well maintained and can be used to provide a variety of examples.\n\nThe field manual follows a Rule of Least Power Principle, in the sense that “a language with a straightforward syntax may be easier to analyze than an otherwise equivalent one with more complex structure.”\nIn other words, assuming the reader has some understanding of R and the tidyverse, the code for each graph is meant to be read and understood without having to run it.\nEach graph has, at minimum, the following sections and tabs:\n\n\nGraph info\n\n\nShould I use this graph?\n\n\nThis graph requires:\n\n\n\n\nDescription\n\n\nGetting set up\n\n\nPackages and Data\n\nCode for installing development version of packages (if necessary) for graphs and data\n\nAny steps used to create (i.e., manipulate and prepare) the data for the graph\n\n\n\n\n\n\nThe grammar\n\n\nCode to build the labels and graph layers\n\nGraph labels have the labs_ prefix\n\nGraph layers have a ggp2_ prefix\n\n\n\n\n\n\nMore info\n\n\nAdditional methods, arguments, or applications\n\nColor palettes\n\nComplimentary packages\n\n\n\n\n\n\n\n\n\n\n\nExpand to view an example of the graph code structure\n\n\n\n\n\n\nDescription of the graph\n\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodelibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\nDescription of data\n\n\n\nCodedf <- tibble::tibble(X = sample(x = 1:100, 10, FALSE),\n                     Y = rlnorm(10, 1, 3))\n\n\n\n\n\n\n\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCode for creating graph\n\n\n\nCode# labels\nlabs_graph <- ggplot2::labs(title = \"Title\", \n                            subtitle = \"subtitle\", \n                            x = \"X\", y = \"Y\")\n# layers\nggp2_graph <- ggplot2::ggplot(data = df, \n    mapping = aes(x = X, y = Y)) + \n    ggplot2::geom_blank()\n# graph\nggp2_graph + \n    labs_graph\n\n\n\n\n\n\nGRAPH:\n\n\n\n\n\n\n\n\n\n\n\n\n\nCode Style:\nI’ve attempted to balance brevity and clarity, but with the assumption that its best to err on the latter. I’ve also followed the general principle that if a graph can be easily built using one of ggplot2 ’s geom_* functions, that method is shown first.\n. ## Theme\nThe theme used in the graphs is custom and uses combined elements from ggplot2::theme_minimal() and ggplot2::theme_void(). View it here."
   },
   {
     "objectID": "univariate.html",
     "href": "univariate.html",
     "title": "Univariate",
     "section": "",
-    "text": "You are reading a work-in-progress. This chapter is largely complete and just needs final proof reading."
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "bar_graphs.html",
     "href": "bar_graphs.html",
     "title": "Bar graphs",
     "section": "",
-    "text": "You are reading a work-in-progress. This chapter is largely complete and just needs final proof reading."
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "bar_graphs.html#description",
@@ -53,7 +53,7 @@
     "href": "histograms.html",
     "title": "Histograms",
     "section": "",
-    "text": "Graph info\n\n\n\n\n\n\nShould I use this graph?\n\n\n\n\n\n\n\n\n\n\n\nThis graph requires:\n\n\n✅ a numeric (continuous) variable"
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "histograms.html#description",
@@ -81,7 +81,7 @@
     "href": "frequency_polygons.html",
     "title": "Frequency polygons",
     "section": "",
-    "text": "You are reading a work-in-progress. This chapter is largely complete and just needs final proof reading."
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "frequency_polygons.html#description",
@@ -109,7 +109,7 @@
     "href": "dot_plots.html",
     "title": "Dot plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This chapter is largely complete and just needs final proof reading."
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "dot_plots.html#description",
@@ -137,7 +137,7 @@
     "href": "density_plots.html",
     "title": "Density plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This chapter is largely complete and just needs final proof reading."
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "density_plots.html#description",
@@ -165,7 +165,7 @@
     "href": "violin_plots.html",
     "title": "Violin plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This chapter is largely complete and just needs final proof reading."
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "violin_plots.html#description",
@@ -193,7 +193,7 @@
     "href": "box_plots.html",
     "title": "Box plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This chapter is largely complete and just needs final proof reading."
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "box_plots.html#description",
@@ -221,55 +221,720 @@
     "href": "amounts.html",
     "title": "Amounts",
     "section": "",
-    "text": "You are reading a work-in-progress. This chapter is undergoing heavy restructuring and may be confusing or incomplete."
+    "text": "You are reading a work-in-progress. This graph is still in development and may be confusing or incomplete."
   },
   {
-    "objectID": "chapter_amnts.html",
-    "href": "chapter_amnts.html",
-    "title": "Graph: amounts",
+    "objectID": "grp_bar_graphs.html",
+    "href": "grp_bar_graphs.html",
+    "title": "Grouped bar graphs",
     "section": "",
-    "text": "You are reading a work-in-progress. This chapter is currently a dumping ground for ideas, and we don’t recommend reading it."
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "grp_bar_graphs.html#description",
+    "href": "grp_bar_graphs.html#description",
+    "title": "Grouped bar graphs",
+    "section": "Description",
+    "text": "Description\ngeom_col() allows us to display ‘grouped’ numerical values across levels (or groups) of a categorical variable. Grouped bar graphs assume the statistical measure (i.e., the value that the length of the bars will be derived from) is contained in a variable and mapped to the x or y aesthetic."
+  },
+  {
+    "objectID": "grp_bar_graphs.html#getting-set-up",
+    "href": "grp_bar_graphs.html#getting-set-up",
+    "title": "Grouped bar graphs",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by Allison Horst\n\n\n\nRemove the missing values and reduce the palmerpenguins::penguins dataset to only body_mass_g and island, then group the data by island and calculate the mean body_mass_g (as avg_body_mass_g).\n\n\n\nCodepeng_grp_col <- palmerpenguins::penguins |>\n    dplyr::select(body_mass_g, island) |> \n    tidyr::drop_na() |> \n    dplyr::group_by(island) |>\n    dplyr::summarise(\n        avg_body_mass_g = mean(body_mass_g)\n        ) |>\n    dplyr::ungroup()\nglimpse(peng_grp_col)\n#> Rows: 3\n#> Columns: 2\n#> $ island          <fct> Biscoe, Dream, Torgersen\n#> $ avg_body_mass_g <dbl> 4716.018, 3712.903, 3706.373"
+  },
+  {
+    "objectID": "grp_bar_graphs.html#the-grammar",
+    "href": "grp_bar_graphs.html#the-grammar",
+    "title": "Grouped bar graphs",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap island to the x and avg_body_mass_g to the y\nMap island to fill inside the aes() of geom_col()\n\n\n\nCodelabs_grp_col <- labs(\n    title = \"Average Penguin Mass\",\n    subtitle = \"What's the average mass of penguins per Island?\",\n    x = \"Island\",\n    y = \"Average penguin body mass (g)\")\nggp2_grp_col <- ggplot(data = peng_grp_col,\n              aes(x = island, \n                  y = avg_body_mass_g)) + \n        geom_col(aes(fill = island),\n            show.legend = FALSE)\nggp2_grp_col + \n    labs_grp_col\n\n\n\n\n\n\nGRAPH:"
+  },
+  {
+    "objectID": "sum_bar_graphs.html",
+    "href": "sum_bar_graphs.html",
+    "title": "Summary bar graphs",
+    "section": "",
+    "text": "Graph info\n\n\n\n\n\n\nShould I use this graph?\n\n\n\n\n\n\n\n\n\n\n\nThis graph requires:\n\n\n✅ a numeric (continuous) variable\n✅ a categorical variable"
+  },
+  {
+    "objectID": "sum_bar_graphs.html#description",
+    "href": "sum_bar_graphs.html#description",
+    "title": "Summary bar graphs",
+    "section": "Description",
+    "text": "Description\nSummary bar graphs display the sum (or total) of a numerical variable across the levels of a second categorical variable. Color is used to make comparisons and distinguish between groups (or levels) of the categorical variable.\nIn ggplot2, we can create summary bar graphs with geom_bar()."
+  },
+  {
+    "objectID": "sum_bar_graphs.html#getting-set-up",
+    "href": "sum_bar_graphs.html#getting-set-up",
+    "title": "Summary bar graphs",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by Allison Horst\n\n\n\nRemove the missing values from body_mass_g and island in the palmerpenguins::penguins data and convert body mass in grams to kilograms (body_mass_kg).\nWe’ll also reduce the number of columns in the penguins data for clarity.\n\n\n\nCodepeng_sum_col <- palmerpenguins::penguins |> \n    dplyr::select(body_mass_g, island) |> \n    tidyr::drop_na() |> \n    # divide the mass value by 1000\n    dplyr::mutate(\n        body_mass_kg = body_mass_g / 1000\n    )\ndplyr::glimpse(peng_sum_col)\n#> Rows: 342\n#> Columns: 3\n#> $ body_mass_g  <int> 3750, 3800, 3250, 3450, 3650, 3625, 4…\n#> $ island       <fct> Torgersen, Torgersen, Torgersen, Torg…\n#> $ body_mass_kg <dbl> 3.750, 3.800, 3.250, 3.450, 3.650, 3.…"
+  },
+  {
+    "objectID": "sum_bar_graphs.html#the-grammar",
+    "href": "sum_bar_graphs.html#the-grammar",
+    "title": "Summary bar graphs",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap island to x and body_mass_kg to y\nInside the aes() of geom_col(), map island to fill\nOutside the aes() of geom_col(), remove the legend with show.legend = FALSE\n\n\n\nCodelabs_sum_col <- labs(\n    title = \"Total Penguin Mass\",\n    subtitle = \"How many kilograms of penguin per Island?\",\n    x = \"Island\",\n    y = \"Total Penguin Body Mass (kg)\")\nggp2_sum_col <- ggplot(data = peng_sum_col,\n    aes(x = island,\n        y = body_mass_kg)) +\n    geom_col(aes(fill = island), \n        show.legend = FALSE)  \nggp2_sum_col + \n    labs_sum_col\n\n\n\n\n\n\nGRAPH:"
+  },
+  {
+    "objectID": "sum_bar_graphs.html#more-info",
+    "href": "sum_bar_graphs.html#more-info",
+    "title": "Summary bar graphs",
+    "section": "More Info",
+    "text": "More Info\nNote that we didn’t have to write any code to calculate the total body_mass_g (displayed on the y axis) by island.\nThat’s because ggplot2 does this for us!\n\n\nSummary\nIdentity vs. Count\n\n\n\n\nSUMMARY:\n\n\nIf we pass a categorical variable to the x (like island) and a continuous variable to y (like body_mass_kg), geom_col() will calculate the sum() of y by levels of x\n\n\nWe can see the underlying summary of budget using dplyr’s group_by() and summarise() functions.\n\n\n\nCodepalmerpenguins::penguins |> \n    dplyr::select(body_mass_g, island) |> \n    tidyr::drop_na() |> \n    # divide the mass value by 1000\n    dplyr::mutate(\n        body_mass_kg = body_mass_g / 1000\n    ) |> \n    dplyr::group_by(island) |>\n    dplyr::summarise(\n       `Total Penguin Body Mass (kg)` = sum(body_mass_kg)) |>\n    dplyr::ungroup() |> \n    dplyr::select(`Island` = island, \n        `Total Penguin Body Mass (kg)`)\n\n\n\n\n\n\n\n\n\n Island \n    Total Penguin Body Mass (kg) \n  \n\n\n Biscoe \n    787.575 \n  \n\n Dream \n    460.400 \n  \n\n Torgersen \n    189.025 \n  \n\n\n\n\n\n\n\n\nSTATS:\n\n\nThe geom_bar() geom will also create grouped bar graphs, but we have to switch the stat argument to \"identity\".\n\n\n\nCodeggplot(data = peng_sum_col,\n    aes(x = island,\n        y = body_mass_kg)) +\n    geom_col(aes(fill = island), \n        show.legend = FALSE,\n        stat = \"identity\")  +\n    labs_sum_col\n\n\n\n\n\n\ngeom_bar() vs. geom_col():\n\n\ngeom_bar() will map a categorical variable to the x or y and display counts for the discrete levels (see stat_count() for more info)\ngeom_col() will map both x and y aesthetics, and is used when we want to display numerical (quantitative) values across the levels of a categorical variable. geom_col() assumes these values have been created in their own column (see stat_identity() for more info)"
+  },
+  {
+    "objectID": "overlapping_bar_graphs.html",
+    "href": "overlapping_bar_graphs.html",
+    "title": "Overlapping bar graphs",
+    "section": "",
+    "text": "Graph info\n\n\n\n\n\n\nShould I use this graph?\n\n\n\n\n\n\n\n\n\n\n\nThis graph requires:\n\n\n✅ a numeric (continuous) variable\n✅ a categorical variable"
+  },
+  {
+    "objectID": "overlapping_bar_graphs.html#desription",
+    "href": "overlapping_bar_graphs.html#desription",
+    "title": "Overlapping bar graphs",
+    "section": "Desription",
+    "text": "Desription\nOverlapping bar graphs display counts for categorical levels, resulting in bars differentiated by color and ‘stacked’ on top of each other.\nIn ggplot2, we can build overlapping bar graphs using the fill argument in geom_bar() or geom_col()"
+  },
+  {
+    "objectID": "overlapping_bar_graphs.html#getting-set-up",
+    "href": "overlapping_bar_graphs.html#getting-set-up",
+    "title": "Overlapping bar graphs",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins)\nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by Allison Horst\n\n\n\nRemove missing species from penguins and filter the data to only penguins on \"Dream\" island.\n\n\n\nCodepenguins_ovrlp <- filter(penguins,\n                      !is.na(species) & \n                            island == \"Dream\")\nglimpse(penguins_ovrlp)\n#> Rows: 124\n#> Columns: 8\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Dream, Dream, Dream, Dream, Drea…\n#> $ bill_length_mm    <dbl> 39.5, 37.2, 39.5, 40.9, 36.4, 39…\n#> $ bill_depth_mm     <dbl> 16.7, 18.1, 17.8, 18.9, 17.0, 21…\n#> $ flipper_length_mm <int> 178, 178, 188, 184, 195, 196, 19…\n#> $ body_mass_g       <int> 3250, 3900, 3300, 3900, 3325, 41…\n#> $ sex               <fct> female, male, female, male, fema…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…"
+  },
+  {
+    "objectID": "overlapping_bar_graphs.html#the-grammar",
+    "href": "overlapping_bar_graphs.html#the-grammar",
+    "title": "Overlapping bar graphs",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap flipper_length_mm to the x and species to fill\nAdd the geom_bar() layer\n\n\n\nCodelabs_bar_ovrlp <- labs(\n  title = \"Adult foraging penguins on Dream island\",\n  x = \"Flipper length (mm)\",\n  y = \"Count\",\n  fill = \"Species\")\nggp2_bar_ovrlp <- ggplot(data = penguins_ovrlp,\n          aes(x = flipper_length_mm, fill = species)) +\n                geom_bar() \nggp2_bar_ovrlp + \n  labs_bar_ovrlp\n\n\n\n\n\n\nGRAPH:"
+  },
+  {
+    "objectID": "overlapping_bar_graphs.html#more-info",
+    "href": "overlapping_bar_graphs.html#more-info",
+    "title": "Overlapping bar graphs",
+    "section": "More info",
+    "text": "More info\nOverlapping bar graphs can also be built with geom_col().\ngeom_bar() has additional options for arranging overlapping bars. We can set the position argument to \"dodge\" or \"dodge2, depending on how we’d like the data displayed.\n\n\ngeom_col()\ndodge\ndodge2\n\n\n\n\ngeom_col():\n\n\nTo build an overlapping bar graph with geom_col(), we need to create a column with the counts for flipper_length_mm and species in the dataset.\nCreate the penguins_col data:\n\n\n\nCodepenguins_col <- penguins_ovrlp |>\n    count(species, flipper_length_mm, name = \"Count\")\n\n\n\n\nMap the counts to the y axis, flipper_length_mm to the x axis, and species to fill.\n\n\n\nCodelabs_col_ovrlp <- labs(\n  title = \"Adult foraging penguins on Dream island\",\n  subtitle = \"built with 'geom_col()'\",\n  x = \"Flipper length (mm)\",\n  y = \"Count\",\n  fill = \"Species\")\nggp2_col_ovrlp <- ggplot(data = penguins_col, \n    mapping = aes(y = Count, \n        x = flipper_length_mm, \n        fill = species)) + \n    geom_col()\nggp2_col_ovrlp + \n    labs_col_ovrlp\n\n\n\n\n\n\nCompare the two graphs below:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nposition = \"dodge\" preserves the vertical position of a geom while adjusting the horizontal position\nrequires the grouping variable to be be specified in the global or ⁠geom_⁠ layer\n\n\ndodge:\n\n\nCreate the penguins_dodge data.\n\n\n\nCodepenguins_dodge <- filter(penguins,\n                      !is.na(species) & \n                        !is.na(sex) &\n                            island == \"Dream\")\nglimpse(penguins_dodge)\n#> Rows: 123\n#> Columns: 8\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Dream, Dream, Dream, Dream, Drea…\n#> $ bill_length_mm    <dbl> 39.5, 37.2, 39.5, 40.9, 36.4, 39…\n#> $ bill_depth_mm     <dbl> 16.7, 18.1, 17.8, 18.9, 17.0, 21…\n#> $ flipper_length_mm <int> 178, 178, 188, 184, 195, 196, 19…\n#> $ body_mass_g       <int> 3250, 3900, 3300, 3900, 3325, 41…\n#> $ sex               <fct> female, male, female, male, fema…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…\n\n\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap species to the x and island to group and fill\nInside the geom_bar() function, set position to \"dodge\"\n\n\n\nCodelabs_bar_dodge <- labs(\n  title = \"Adult foraging penguins on Dream island\",\n  subtitle = \"position = 'dodge'\",\n  x = \"Sex\",\n  y = \"Count\",\n  fill = \"Species\")\nggp2_bar_dodge <- ggplot(data = penguins_dodge,\n                    aes(x = sex, \n                        group = species, \n                        fill = species)) +\n                    geom_bar(\n                        position = \"dodge\")\nggp2_bar_dodge +\n  labs_bar_dodge\n\n\n\n\n\n\n\n\ndodge2:\n\n\n\n\nworks without a grouping variable in a layer\nworks with bars and rectangles\nuseful for arranging graphs with variable widths.\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap species to x and island to fill\nInside geom_bar(), set position to \"dodge2\"\n\n\n\nCodelabs_bar_dodge2 <- labs(\n  title = \"Adult foraging penguins on Dream island\",\n  subtitle = \"position = 'dodge2'\",\n  x = \"Sex\",\n  y = \"Count\",\n  fill = \"Species\")\nggp2_bar_dodge2 <- ggplot(data = penguins_dodge,\n                    aes(x = sex, \n                        fill = species)) +\n                    geom_bar(\n                        position = \"dodge2\")\nggp2_bar_dodge2 +\n  labs_bar_dodge2\n\n\n\n\n\n\nCompare the two graphs below:"
+  },
+  {
+    "objectID": "heatmaps.html",
+    "href": "heatmaps.html",
+    "title": "Heatmaps",
+    "section": "",
+    "text": "Graph info\n\n\n\n\n\n\nShould I use this graph?\n\n\n\n\n\n\n\n\n\n\n\nThis graph requires:\n\n\n✅ two numeric (continuous) variables\n✅ a categorical variable"
+  },
+  {
+    "objectID": "heatmaps.html#description",
+    "href": "heatmaps.html#description",
+    "title": "Heatmaps",
+    "section": "Description",
+    "text": "Description\nHeatmaps display quantitative values across an intersection of two categorical (or discrete) variables.\nThe intersecting cells contain variations of color saturation (i.e., the grade of purity or vividness) to represent the numerical values between groups.\nHeatmap legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability."
+  },
+  {
+    "objectID": "heatmaps.html#getting-set-up",
+    "href": "heatmaps.html#getting-set-up",
+    "title": "Heatmaps",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"fivethirtyeight\")\nlibrary(fivethirtyeight) \nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\n\n\n\nFor the heatmap, we’re going to re-structure and filter the bob_ross data from the fivethirtyeight package.\n\n\n\nCodeheatmap_ross <- fivethirtyeight::bob_ross |>\n  pivot_longer(-c(episode, season,\n    episode_num, title),\n    names_to = \"object\",\n    values_to = \"present\") |>\n  mutate(present = as.logical(present),\n    object = str_replace_all(object, \"_\", \" \")) |>\n  arrange(episode, object) |> \n  filter(object %in% c(\"conifer\", \"trees\", \n    \"tree\", \"snow\", \"palm trees\", \"grass\", \n    \"flowers\", \"cactus\", \"bushes\", \"cirrus\", \n    \"cumulus\", \"deciduous\", \"clouds\", \"fog\")) |>\n  group_by(season, object) |>\n  summarise(occurrences = sum(present)) |>\n  ungroup()\n#> `summarise()` has grouped output by 'season'. You can\n#> override using the `.groups` argument."
+  },
+  {
+    "objectID": "heatmaps.html#the-grammar",
+    "href": "heatmaps.html#the-grammar",
+    "title": "Heatmaps",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nAssign season to x, object to y, and occurrences to fill\nAdd the geom_tile()\nMove the legend to the bottom with theme(legend.position = \"bottom\")\n\n\n\nCodelabs_heatmap_tile <- labs(\n  title = \"Bob Ross' plants & clouds\", \n  x = \"Episode\", \n  y = \"Plant & Cloud Objects\", \n  fill = \"Occurrences\")\nggp2_heatmap_tile <- ggplot(data = heatmap_ross, \n       aes(x = season, \n           y = object, \n           fill = occurrences)) + \n       geom_tile() + \n    theme(legend.position = \"bottom\")\nggp2_heatmap_tile + \n  labs_heatmap_tile\n\n\n\n\n\n\nGRAPH:"
+  },
+  {
+    "objectID": "heatmaps.html#more-info",
+    "href": "heatmaps.html#more-info",
+    "title": "Heatmaps",
+    "section": "More info",
+    "text": "More info\nIn addition to geom_tile(), heatmaps can also be created with the geom_raster() function.\n\ngeom_raster()\n\n\n\ngeom_raster():\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nAssign season to x, object to y, and occurrences to fill\nAdd the geom_raster()\nMove the legend to the bottom with theme(legend.position = \"bottom\")\n\n\n\nCodelabs_heatmap_raster <- labs(\n  title = \"Bob Ross' plants & clouds\", \n  x = \"Episode\", \n  y = \"Plant/Cloud Object\", \n  fill = \"Occurrences\")\nggp2_heatmap_raster <- ggplot(data = heatmap_ross, \n       aes(x = season, \n           y = object, \n           fill = occurrences)) + \n       geom_raster() + \n    theme(legend.position = \"bottom\")\nggp2_heatmap_raster + \n  labs_heatmap_raster"
+  },
+  {
+    "objectID": "waffle_charts.html",
+    "href": "waffle_charts.html",
+    "title": "Waffle charts",
+    "section": "",
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "waffle_charts.html#description",
+    "href": "waffle_charts.html#description",
+    "title": "Waffle charts",
+    "section": "Description",
+    "text": "Description\nWaffle charts use color to display the levels that make up the values in a categorical variable. The counts for each level are divided into separate colors into a square or grid display.\nWaffle chart legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability.\nWe’ll build a waffle chart using the ggwaffle package."
+  },
+  {
+    "objectID": "waffle_charts.html#getting-set-up",
+    "href": "waffle_charts.html#getting-set-up",
+    "title": "Waffle charts",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodedevtools::install_github(\"liamgilbey/ggwaffle\")\nlibrary(ggwaffle)\ninstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by Allison Horst\n\n\n\nWaffle charts require a special data transformation with ggwaffle::waffle_iron()\nSet the group argument in ggwaffle::aes_d() as the categorical variable you want to see the relative counts for:\n\n\n\nCodepenguins <- palmerpenguins::penguins\npenguins <- dplyr::mutate(penguins, \n              species = as.character(species))\nwaffle_peng <- ggwaffle::waffle_iron(penguins,\n                      aes_d(group = species))\n\nglimpse(waffle_peng)\n#> Rows: 344\n#> Columns: 3\n#> $ y     <int> 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7,…\n#> $ x     <int> 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2,…\n#> $ group <chr> \"Adelie\", \"Adelie\", \"Adelie\", \"Adelie\", \"Ade…"
+  },
+  {
+    "objectID": "waffle_charts.html#the-grammar",
+    "href": "waffle_charts.html#the-grammar",
+    "title": "Waffle charts",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap the x and y to the x and y axes\nMap group to fill\nAdd ggwaffle::geom_waffle()\nAdd ggwaffle::theme_waffle()\nMove the legend to the top with theme(legend.position = \"top\")\n\n\n\nCodelabs_waffle <- labs(\n  title = \"Palmer penguin species\",\n  x = \"\", y = \"\", fill = \"Species\")\nggp2_waffle <- ggplot(data = waffle_peng, \n       aes(x = x, \n           y = y, \n           fill = group)) + \n  ggwaffle::geom_waffle() +\n  theme(legend.position = \"top\")\nggp2_waffle + \n  labs_waffle +\n  ggwaffle::theme_waffle()\n\n\n\n\n\n\nGRAPH:"
+  },
+  {
+    "objectID": "cleveland_dot_plots.html",
+    "href": "cleveland_dot_plots.html",
+    "title": "Cleveland dot plot",
+    "section": "",
+    "text": "Graph info\n\n\n\n\n\n\nShould I use this graph?\n\n\n\n\n\n\n\n\n\n\n\nThis graph requires:\n\n\n✅ a numeric (continuous) variable\n✅ at least one categorical variable (with two levels)"
+  },
+  {
+    "objectID": "cleveland_dot_plots.html#description",
+    "href": "cleveland_dot_plots.html#description",
+    "title": "Cleveland dot plot",
+    "section": "Description",
+    "text": "Description\nA Cleveland dot plot displays differences in a numerical variable for different levels of a categorical variable.\nTypically, the graph contains two points representing the numerical value on the y axis, differentiated by color. A line connecting the two points represents the difference between the two categorical levels (the width of the line is the size of the difference)."
+  },
+  {
+    "objectID": "cleveland_dot_plots.html#getting-set-up",
+    "href": "cleveland_dot_plots.html#getting-set-up",
+    "title": "Cleveland dot plot",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins)\nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by Allison Horst\n\n\n\nRemove missing values from sex and flipper_length_mm and group on sex and island to the calculate the median flipper length (med_flip_length_mm).\n\n\n\nCodepeng_clev_dots <- palmerpenguins::penguins |>\n    dplyr::filter(!is.na(sex) & !is.na(flipper_length_mm)) |>\n    dplyr::group_by(sex, island) |>\n    dplyr::summarise(\n        med_flip_length_mm = median(flipper_length_mm)\n        ) |>\n    dplyr::ungroup()\n#> `summarise()` has grouped output by 'sex'. You can override\n#> using the `.groups` argument.\nglimpse(peng_clev_dots)\n#> Rows: 6\n#> Columns: 3\n#> $ sex                <fct> female, female, female, male, m…\n#> $ island             <fct> Biscoe, Dream, Torgersen, Bisco…\n#> $ med_flip_length_mm <dbl> 210, 190, 189, 219, 196, 195"
+  },
+  {
+    "objectID": "cleveland_dot_plots.html#the-grammar",
+    "href": "cleveland_dot_plots.html#the-grammar",
+    "title": "Cleveland dot plot",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap the med_flip_length_mm to the x axis, and island to the y axis, but wrap island in forcats::fct_rev().\nAdd geom_line(), and map island to the group aesthetic. Set the linewidth to 0.75\nAdd geom_point() and map sex to color aesthetic. Set the size to 2.25\n\n\n\nCodelabs_clev_dots <- labs(\n    title = \"Flipper Length Differences\",\n    subtitle = \"Male and female penguins\",\n    x = \"Median Flipper Length\",\n    y = \"Island\",\n    color = \"Sex\")\n\nggp2_clev_dots <- ggplot(data = peng_clev_dots,\n                mapping = aes(x = med_flip_length_mm, \n                              y = fct_rev(island))) +\n                geom_line(aes(group = island), \n                    linewidth = 0.75) + \n                geom_point(aes(color = sex), \n                    size = 2.25) \n\nggp2_clev_dots + \n    labs_clev_dots\n\n\n\n\n\n\nGRAPH:"
+  },
+  {
+    "objectID": "cleveland_dot_plots.html#more-info",
+    "href": "cleveland_dot_plots.html#more-info",
+    "title": "Cleveland dot plot",
+    "section": "More info",
+    "text": "More info\nCleveland dot plots are also helpful when comparing multiple differences on a common scale.\n\n\nData\nGraph\n\n\n\n\nDATA:\n\n\nRemove missing values from sex, bill_length_mm and bill_depth_mm, and group on sex and island to the calculate the median bill length and median bill depth. These variables need to have ‘showtime-ready’ names because they’ll be used in our facets. After un-grouping the data, pivot the new columns into a long (tidy) format with median_measure containing the name of the variable, and median_value containing the numbers.\nFinally, convert median_measure into a factor.\n\n\n\nCodepeng_clev_dots2 <- palmerpenguins::penguins |>\n    dplyr::filter(!is.na(sex) & \n            !is.na(bill_length_mm) & \n                !is.na(bill_depth_mm)) |>\n    dplyr::group_by(sex, island) |>\n    dplyr::summarise(\n        `Median Bill Length` = median(bill_length_mm),\n        `Median Bill Depth` = median(bill_depth_mm)) |>\n    dplyr::ungroup() |> \n    tidyr::pivot_longer(cols = starts_with(\"Med\"), \n        names_to = \"median_measure\", \n        values_to = \"median_value\") |> \n    dplyr::mutate(median_measure = factor(median_measure))\n#> `summarise()` has grouped output by 'sex'. You can override\n#> using the `.groups` argument.\nglimpse(peng_clev_dots2)\n#> Rows: 12\n#> Columns: 4\n#> $ sex            <fct> female, female, female, female, fem…\n#> $ island         <fct> Biscoe, Biscoe, Dream, Dream, Torge…\n#> $ median_measure <fct> Median Bill Length, Median Bill Dep…\n#> $ median_value   <dbl> 44.90, 14.50, 42.50, 17.80, 37.60, …\n\n\n\n\n\n\nGRAPH:\n\n\nRe-create labels\nInitialize the graph with ggplot() and provide data\nMap the median_value to the x axis, and island to the y axis, but wrap island in forcats::fct_rev().\nAdd geom_line(), and map island to the group aesthetic. Set the linewidth to 0.75\nAdd geom_point() and map sex to color aesthetic. Set the size to 2.25\nAdd facet_wrap() and facet by median_measure, setting shrink to TRUE and scales to \"free_x\"\nMove the legend with theme(legend.position = \"top\")\n\n\n\nCodelabs_clev_dots2 <- labs(\n    title = \"Penguin Measurements Differences\",\n    subtitle = \"Male and female penguins\",\n    x = \"Median Bill Length/Depth (mm)\",\n    y = \"Island\",\n    color = \"Sex\")\n\nggp2_clev_dots2 <- ggplot(data = peng_clev_dots2,\n    mapping = aes(x = median_value,\n        y = fct_rev(island))) +\n    geom_line(aes(group = island),\n        linewidth = 0.75) +\n    geom_point(aes(color = sex),\n        size = 2.25) +\n    facet_wrap(. ~ median_measure,\n        shrink = TRUE,\n        scales = \"free_x\") +\n    theme(legend.position = \"top\")\n\nggp2_clev_dots2 +\n    labs_clev_dots2\n\n\n\n\n\n\nCAUTION when using scales = \"free_x\": The graph above shows that the median bill length and depth is larger for male penguins on all three islands, but the magnitude of the differences should be interpreted with caution because the length of the lines can’t be directly compared!"
   },
   {
     "objectID": "proportions.html",
     "href": "proportions.html",
     "title": "Proportions",
     "section": "",
-    "text": "You are reading a work-in-progress. This chapter is undergoing heavy restructuring and may be confusing or incomplete."
+    "text": "You are reading a work-in-progress. This graph is still in development and may be confusing or incomplete."
   },
   {
-    "objectID": "chapter_prp.html",
-    "href": "chapter_prp.html",
-    "title": "Graph: proportions",
+    "objectID": "diverging_bar_graphs.html",
+    "href": "diverging_bar_graphs.html",
+    "title": "Diverging bar graphs",
     "section": "",
-    "text": "You are reading a work-in-progress. This chapter is currently a dumping ground for ideas, and we don’t recommend reading it."
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "diverging_bar_graphs.html#description",
+    "href": "diverging_bar_graphs.html#description",
+    "title": "Diverging bar graphs",
+    "section": "Description",
+    "text": "Description\nIf you have two proportions that contain positive and negative values, consider using diverging bars with geom_bar().\nUnlike a standard or stacked bar graphs, diverging bar graphs display positive and negative quantities on both sides of a reference or baseline value (zero in this example). Color, length and position are used to compare the quantities across categorical levels (and within variable values).\n\n\nVertical bars\nHorizontal bars\n\n\n\n\n\n\n\n\n\n\n\n\nFor example, we can use the length of the bar from the reference line to compare disapproval estimates across all months (i.e., comparing red bars to each other).\n\n\n\n\n\n\n\n\n\n\n\n\nWe can also compare approval vs. disapproval for each month (i.e., compare the blue vs. red bars to each other within each month)."
+  },
+  {
+    "objectID": "diverging_bar_graphs.html#getting-set-up",
+    "href": "diverging_bar_graphs.html#getting-set-up",
+    "title": "Diverging bar graphs",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"fivethirtyeight\")\nlibrary(fivethirtyeight) \nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\n\n\n\nCreate trump_approval_diverg from the trump_approval_trend dataset in the fivethirtyeight package.\n\n\n\nCodefivethirtyeight::trump_approval_trend |> \n  dplyr::filter(subgroup == \"All polls\") |> \n  dplyr::mutate(\n    month = lubridate::month(modeldate,\n                label = TRUE, abbr = TRUE),\n    approve = approve_estimate*0.01,\n    disapprove = disapprove_estimate*0.01,\n    disapprove = disapprove * -1) |> \n  tidyr::pivot_longer(cols = c(approve, disapprove), \n    names_to = \"poll\", values_to = \"values\") |> \n  dplyr::group_by(month, poll) |> \n    dplyr::summarise(\n      month_avg = mean(values, na.rm = TRUE)\n    ) |> \n  dplyr::ungroup() -> trump_approval_diverg\n#> `summarise()` has grouped output by 'month'. You can\n#> override using the `.groups` argument.\nglimpse(trump_approval_diverg)\n#> Rows: 24\n#> Columns: 3\n#> $ month     <ord> Jan, Jan, Feb, Feb, Mar, Mar, Apr, Apr, …\n#> $ poll      <chr> \"approve\", \"disapprove\", \"approve\", \"dis…\n#> $ month_avg <dbl> 0.4029758, -0.5234634, 0.4226055, -0.515…"
+  },
+  {
+    "objectID": "diverging_bar_graphs.html#the-grammar",
+    "href": "diverging_bar_graphs.html#the-grammar",
+    "title": "Diverging bar graphs",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap the month to the x and month_avg to the y\nInsidegeom_bar()\n\nmap poll to fill\nuse stat = \"identity\" and width = .5\n\nAdd scale_y_continuous() to manually set the limits and format the axis with scales::percent\n\n\n\nCodelabs_geom_bar_diverg <- labs(\n  title = \"Trump Approval Ratings\",\n  subtitle = \"From 'How Popular is Donald Trump'\",\n  x = \"Month\",\n  y = \"Monthly average percent\",\n  fill = \"Estimate\")\nggp2_bars_diverg <- ggplot(\n  data = trump_approval_diverg, \n    aes(x = month, y = month_avg)) +\n  geom_bar(aes(fill = poll),\n    stat = \"identity\", width = .5) + \n  scale_y_continuous(limits = c(-1, 1), \n    labels = scales::percent) \n\nggp2_bars_diverg + \n  labs_geom_bar_diverg\n\n\n\n\n\n\nGRAPH:"
+  },
+  {
+    "objectID": "diverging_bar_graphs.html#more-info",
+    "href": "diverging_bar_graphs.html#more-info",
+    "title": "Diverging bar graphs",
+    "section": "More info",
+    "text": "More info\nFor horizontally arranged bars, we switch the x and y axis variables.\n\nHorizontally arranged bars\n\n\n\nHorizontal bars:\n\n\nCreate labels with labs()\nMap the month_avg to the x and month to the y\nInside geom_bar()\n\nmap poll to fill\nuse stat = \"identity\" and width = .5\n\nAdd scale_y_continuous() to manually set the limits and format the axis with scales::percent\n\n\n\nCodelabs_geom_bar_diverg_vert <- labs(\n  title = \"Trump Approval Ratings\",\n  subtitle = \"From 'How Popular is Donald Trump'\",\n  x = \"Monthly average percent\",\n  y = \"Month\",\n  fill = \"Estimate\")\nggp2_bar_diverg_vert <- ggplot(\n  data = trump_approval_diverg,\n      aes(x = month_avg, y =  month)) +\n  geom_bar(\n      aes(fill = poll), \n        stat = \"identity\", width = .5) + \n  scale_x_continuous(limits = c(-1, 1), \n        labels = scales::percent)\nggp2_bar_diverg_vert + \n  labs_geom_bar_diverg_vert"
+  },
+  {
+    "objectID": "stacked_filled_density_graphs.html",
+    "href": "stacked_filled_density_graphs.html",
+    "title": "Stacked densities",
+    "section": "",
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "stacked_filled_density_graphs.html#description",
+    "href": "stacked_filled_density_graphs.html#description",
+    "title": "Stacked densities",
+    "section": "Description",
+    "text": "Description\nDensity graphs are typically used to visualize the distribution of a single variable, but stacked density graphs are great for visualizing how proportions vary across numeric (continuous) variables."
+  },
+  {
+    "objectID": "stacked_filled_density_graphs.html#getting-set-up",
+    "href": "stacked_filled_density_graphs.html#getting-set-up",
+    "title": "Stacked densities",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins)\nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by (allison_horst?)\n\n\n\nRemove missing sex from the penguins data\n\n\n\nCodepeng_density <- dplyr::filter(palmerpenguins::penguins, !is.na(sex))\ndplyr::glimpse(peng_density)\n#> Rows: 333\n#> Columns: 8\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Torgersen, Torgersen, Torgersen,…\n#> $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, 36.7, 39.3, 38…\n#> $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, 19.3, 20.6, 17…\n#> $ flipper_length_mm <int> 181, 186, 195, 193, 190, 181, 19…\n#> $ body_mass_g       <int> 3750, 3800, 3250, 3450, 3650, 36…\n#> $ sex               <fct> male, female, female, female, ma…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…"
+  },
+  {
+    "objectID": "stacked_filled_density_graphs.html#the-grammar",
+    "href": "stacked_filled_density_graphs.html#the-grammar",
+    "title": "Stacked densities",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap the flipper_length_mm to the x and add after_stat(count)\nMap sex to fill\nInside the geom_density() function, set position to \"fill\"\n\n\n\nCodelabs_fill_density <- labs(\n  title = \"Adult foraging penguins\",\n  x = \"Flipper length (mm)\",\n  fill = \"Sex\")\nggp2_fill_density <- ggplot(data = peng_density, \n       aes(x = flipper_length_mm, \n           after_stat(count),\n          fill = sex)) +\n      geom_density(position = \"fill\") \nggp2_fill_density + \n  labs_fill_density\n\n\n\n\n\n\nGRAPH:"
+  },
+  {
+    "objectID": "mosaic_plots.html",
+    "href": "mosaic_plots.html",
+    "title": "Mosaic plots",
+    "section": "",
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "mosaic_plots.html#description",
+    "href": "mosaic_plots.html#description",
+    "title": "Mosaic plots",
+    "section": "Description",
+    "text": "Description\nA mosaic plot is similar to a stacked bar graph, but instead of only relying on height and color to display the relative amount for each value, mosaic plots also use width.\nMosaic plot legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability.\nWe can build mosaic plots using the ggmosaic package."
+  },
+  {
+    "objectID": "mosaic_plots.html#getting-set-up",
+    "href": "mosaic_plots.html#getting-set-up",
+    "title": "Mosaic plots",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"fivethirtyeight\")\nlibrary(fivethirtyeight) \ndevtools::install_github(\"haleyjeppson/ggmosaic\")\nlibrary(ggmosaic)\nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\n\n\n\nFor this graph, we’ll be using the fivethirtyeight::flying dataset, after removing the missing values from baby, recline_rude, and unruly_child.\n\n\n\nCodefly_mosaic <- fivethirtyeight::flying |> \n                dplyr::select(baby, unruly_child, recline_rude) |> \n                tidyr::drop_na()\nglimpse(fly_mosaic)\n#> Rows: 849\n#> Columns: 3\n#> $ baby         <ord> No, Somewhat, Somewhat, Somewhat, Ver…\n#> $ unruly_child <ord> No, Very, Very, Very, Very, Somewhat,…\n#> $ recline_rude <ord> Somewhat, No, No, No, No, Somewhat, N…"
+  },
+  {
+    "objectID": "mosaic_plots.html#the-grammar",
+    "href": "mosaic_plots.html#the-grammar",
+    "title": "Mosaic plots",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\nDetails\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap the product() of unruly_child and baby to the x axis\nMap baby to fill\nAdd theme_mosaic()\nMove the legend to the bottom with theme(legend.position = \"bottom\")\n\n\n\nCodelabs_mosaic <- labs(\n      title = \"In general...\", \n      subtitle = \"...is it rude to...\",\n      x = \"... bring a baby on a plane?\",\n      y = \"...knowingly bring unruly children on a plane?\",\n      fill = \"Response\") \nggp2_mosaic <- ggplot(data = fly_mosaic) +\n   ggmosaic::geom_mosaic(mapping = \n          aes(x = product(unruly_child, baby), \n              fill = baby)) + \n    ggmosaic::theme_mosaic(base_size = 10) + \n    theme(legend.position = \"bottom\")\nggp2_mosaic + \n    labs_mosaic\n\n\n\n\n\n\nGRAPH:\n\n\n\n\n\n\n\n\n\n\n\nDETAILS:\n\n\nWe’ve re-written the labels for the mosaic plot (ggp2_mosaic) to illustrate what’s happening in the aes() of geom_mosaic().\n\n\n\n\nIt’s a good idea to adjust the fig-height and fig-width of your graph\n\n\n\n\n\n\n\n unruly_child \n    No \n    Somewhat \n    Very \n  \n\n\n Very \n    152 \n    125 \n    74 \n  \n\n Somewhat \n    296 \n    54 \n    1 \n  \n\n No \n    144 \n    3 \n     \n  \n\n\n\n\n\n\n\n\n\n\n\n\nThe table above displays the counts for each combined response. As we can see, the counts are represented by height and width in the graph."
+  },
+  {
+    "objectID": "mosaic_plots.html#more-info",
+    "href": "mosaic_plots.html#more-info",
+    "title": "Mosaic plots",
+    "section": "More info",
+    "text": "More info\nI recommend reading the ggmosaic vignette, particularly the sections on ordering and conditioning.\n\n\nTwo variables\nFacets\n\n\n\n\n\n\n\n\n\n\n unruly_child \n    No \n    Somewhat \n    Very \n  \n\n\n Very \n    193 \n    119 \n    39 \n  \n\n Somewhat \n    204 \n    123 \n    24 \n  \n\n No \n    102 \n    38 \n    7 \n  \n\n\n\n\n\nTWO VARIABLES:\n\n\nBelow is another example of a two-variable mosaic plot, mapping the product() variables as unruly_child and recline_rude, and the fill variable as recline_rude.\nOnce again we can see the counts for each category in the cross-tabulation:\n\n\n\nCode# build 2-variable mosiac plot\nlabs_mosaic_2var <- labs(\n  title = \"In general...is it rude to...\", \n  subtitle = \"2-Variable plot\",\n  x = \"... recline your seat on a plane?\",\n  y = \"...knowingly bring unruly children on a plane?\",\n  fill = \"recline_rude responses\")\n\nggp2_mosaic_2var <- ggplot(data = fly_mosaic) +\n  geom_mosaic(aes(\n    x = product(unruly_child, recline_rude),\n    fill = recline_rude)) +\n  ggmosaic::theme_mosaic(base_size = 10) + \n  theme(legend.position = \"bottom\")\n  \nggp2_mosaic_2var + \n    labs_mosaic_2var\n\n\n\n\n\n\nFor conditional variables, we map the product() variable as unruly_child and the fill variable as baby, but include a conds variable (as product(recline_rude)).\n\n\n\nCode# build conditional mosiac plot\nlabs_mosaic_cond <- labs(\n  title = \"In general...is it rude to...\", \n  subtitle = \"Conditional plot\",\n  x = \"...recline your seat on a plane?\",\n  y = \"...knowingly bring unruly children on a plane?\",\n  fill = \"unruly_child responses\")\nggp2_mosaic_cond <- ggplot(data = fly_mosaic) +\n  geom_mosaic(aes(\n    x = product(unruly_child), # product variable\n    fill = unruly_child,\n    conds = product(recline_rude))) + # conditional variable\n  ggmosaic::theme_mosaic(base_size = 10) + \n  theme(legend.position = \"bottom\")\n\nggp2_mosaic_cond + \n    labs_mosaic_cond\n\n\n\n\n\n\n\n\nFACETS:\n\n\nAnother option for including a conditioning variable is including facets. In the example below we use recline_rude in both x and fill (we don’t need to wrap recline_rude in product() because it’s the only variable).\nThe divider argument let’s us control the spine partitions (vertically and horizontally). Below are the two vertical orientation options for the divider argument.\n\n\n\n\n\n\n\n\n\nThe two horizontal orientation options make the axis text harder to read, so these need to be manipulated manually."
+  },
+  {
+    "objectID": "pie_charts.html",
+    "href": "pie_charts.html",
+    "title": "Pie charts",
+    "section": "",
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "pie_charts.html#description",
+    "href": "pie_charts.html#description",
+    "title": "Pie charts",
+    "section": "Description",
+    "text": "Description\n“In general, pie charts work well when the goal is to emphasize simple fractions, such as one-half, one-third, or one-quarter.”\n“They also work well when we have very small datasets.” - Claus O. Wilke, Fundamentals of Data Visualization (2019)\nPie-charts are ideal for comparing the proportions of categorical variable values, and we can build pie-charts using the ggpubr package."
+  },
+  {
+    "objectID": "pie_charts.html#getting-set-up",
+    "href": "pie_charts.html#getting-set-up",
+    "title": "Pie charts",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"ggpubr\")\nlibrary(ggpubr)\ninstall.packages(\"ggplot2movies\")\nlibrary(ggplot2movies) \nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\n\n\n\nRemove the missing values and \"NC-17\" from mpaa and summarise the count and percent.\n\n\n\nCodemovie_pie <- ggplot2movies::movies |>\n  filter(mpaa != \"\" & mpaa != \"NC-17\") |> \n  group_by(mpaa) |> \n  summarise(cnt = n()) |> \n  mutate(\n    perc = round(cnt / sum(cnt), 3),\n    mpaa = factor(mpaa, \n          levels = c(\"PG\", \"PG-13\", \"R\")))\nglimpse(movie_pie)\n#> Rows: 3\n#> Columns: 3\n#> $ mpaa <fct> PG, PG-13, R\n#> $ cnt  <int> 528, 1003, 3377\n#> $ perc <dbl> 0.108, 0.204, 0.688"
+  },
+  {
+    "objectID": "pie_charts.html#the-grammar",
+    "href": "pie_charts.html#the-grammar",
+    "title": "Pie charts",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nAssign \"perc\" to x\nAssign labs to label\nAssign \"in\" to lab.pos\nAssign \"white\" to lab.font and color\nAssign \"mpaa\" to fill\nRemove legend with theme(legend.position = \"none\")\n\n\n\nCodelabs <- paste0(movie_pie$mpaa, \" (\", \n               (100*movie_pie$perc), \"%)\")\nlabs_pie <- labs(\n  title = \"Percent MPAA ratings for IMDB movies\",\n  x = \"Percent MPAA rating\")\n\nggp2_pie <- ggpubr::ggpie(movie_pie, \n          x = \"perc\", label = labs, \n          lab.pos = \"in\", lab.font = \"#ffffff\",\n          fill = \"mpaa\", color = \"#ffffff\") + \n    theme(legend.position = \"none\")  \n    \nggp2_pie + \n  labs_pie\n\n\n\n\n\n\nGRAPH:"
+  },
+  {
+    "objectID": "treemaps.html",
+    "href": "treemaps.html",
+    "title": "Treemaps",
+    "section": "",
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "treemaps.html#description",
+    "href": "treemaps.html#description",
+    "title": "Treemaps",
+    "section": "Description",
+    "text": "Description\nTreemaps display proportionally divided rectangular hierarchies for levels of categorical variables. The layout consists of ‘squarified’ tiles, which display the relative contribution of each categorical value to the overall graph space.\nWe’ll build a treemap using the treemapify package. Also check out mosaic plots."
+  },
+  {
+    "objectID": "treemaps.html#getting-set-up",
+    "href": "treemaps.html#getting-set-up",
+    "title": "Treemaps",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodedevtools::install_github(\"wilkox/treemapify\")\ninstall.packages(\"palmerpenguins\")\nlibrary(treemapify) \nlibrary(palmerpenguins)\nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by (allison_horst?)\n\n\n\nFilter the missing values from sex, group the data by species, island, and sex, then count the species and island (then ungroup()).\n\n\n\nCodetreemap_peng <- penguins |> \n    dplyr::select(species, island, sex) |>\n    tidyr::drop_na() |>\n    dplyr::group_by(species, island, sex) |>\n    dplyr::count(species, island, sex) |>\n    ungroup()\nglimpse(treemap_peng)\n#> Rows: 10\n#> Columns: 4\n#> $ species <fct> Adelie, Adelie, Adelie, Adelie, Adelie, Ad…\n#> $ island  <fct> Biscoe, Biscoe, Dream, Dream, Torgersen, T…\n#> $ sex     <fct> female, male, female, male, female, male, …\n#> $ n       <int> 22, 22, 27, 28, 24, 23, 34, 34, 58, 61"
+  },
+  {
+    "objectID": "treemaps.html#the-grammar",
+    "href": "treemaps.html#the-grammar",
+    "title": "Treemaps",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\n\nMap the n to area, sex to fill and label, species to subgroup, and island to subgroup2\nAdd geom_treemap()\n\nAdd geom_treemap_text()\n\n\nplace: this controls where the boxes start\n\n\ncolor: text color\n\n\nmin.size: the minimum font size (when re-sizing)\n\n\nalpha: opacity\n\n\nfontface: itlalic/bond\n\n\nfamily: \"sans\"/\"sansserif\"/\"mono\"\n\n\n\n\n\n\n\nCodelabs_treemap <- labs(\n  title = \"Adult foraging penguins\",\n    fill = \"Sex\")\nggp2_treemap <- ggplot(treemap_peng, \n       aes(area = n, \n           fill = sex, \n           label = sex,\n           subgroup = species,\n           subgroup2 = island)) +\n       treemapify::geom_treemap() +\n       treemapify::geom_treemap_text(\n           place = \"bottomright\",\n           color = \"#d0d0d0\",\n           min.size = 0,\n           alpha = 0.90,\n           fontface = \"italic\",\n           family = \"sans\") \nggp2_treemap + \n  labs_treemap\n\n\n\n\n\n\nGRAPH:\n\n\n\nCodelabs_treemap <- labs(\n  title = \"Adult foraging penguins\",\n    fill = \"Sex\")\nggp2_treemap <- ggplot(treemap_peng, \n       aes(area = n, \n           fill = sex, \n           label = sex,\n           subgroup = species,\n           subgroup2 = island)) +\n       treemapify::geom_treemap() +\n       treemapify::geom_treemap_text(\n           place = \"bottomright\",\n           color = \"#d0d0d0\",\n           min.size = 0,\n           alpha = 0.90,\n           fontface = \"italic\",\n           family = \"sans\") \nggp2_treemap + \n  labs_treemap"
+  },
+  {
+    "objectID": "treemaps.html#more-info",
+    "href": "treemaps.html#more-info",
+    "title": "Treemaps",
+    "section": "More info",
+    "text": "More info\ntreemapify has multiple options for building treemaps. We cover a few of these below, but you should check out the package vignette.\n\n\nSubgroup\nSubgroup 2\n\n\n\n\nSUBGROUP:\n\n\nggplot2 build layers in the order they’re written, so it’s advised to build the subgroups in order from “from deepest to shallowest”, with subgroups2 first (ending on subgroup)\n\n\nAdd geom_treemap_subgroup2_border()\n\nSet the size and color\n\n\n\n\nAdd geom_treemap_subgroup2_text()\n\n\nplace: this controls where the boxes start\n\n\ncolor: text color\n\n\nmin.size: the minimum font size (when re-sizing)\n\n\nalpha: opacity\n\n\nfontface: itlalic/bond\n\n\nfamily: \"sans\"/\"sansserif\"/\"mono\"\n\n\n\n\nSee full list of arguments here.\n\n\n\nCodeggp2_tm_subgroup <- ggp2_treemap +\n    treemapify::geom_treemap_subgroup2_border(\n           color = \"#282b2d\",\n           size = 4.0) + \n       treemapify::geom_treemap_subgroup2_text(\n           place = \"center\",\n           alpha = 0.65,\n           color = \"#282b2d\",\n           min.size = 0,\n           family = \"sans\")\nggp2_tm_subgroup +\n  labs_treemap\n\n\n\n\n\n\n\n\nSUBGROUP 2:\n\n\nAdd geom_treemap_subgroup_border()\n\nSet the size and color\n\n\nAdd geom_treemap_subgroup_text()\n\n\nplace: this controls where the boxes start\n\n\ncolor: text color\n\n\nmin.size: the minimum font size (when re-sizing)\n\n\nalpha: opacity\n\n\nfontface: itlalic/bond\n\n\nfamily: \"sans\"/\"sansserif\"/\"mono\"\n\n\n\n\n\nCodeggp2_tm_subgroup2 <- ggp2_tm_subgroup + \n       treemapify::geom_treemap_subgroup_border(\n           color = \"#ffffff\", \n           size = 4) + \n       treemapify::geom_treemap_subgroup_text(\n           place = \"topleft\",\n           alpha = 0.65,\n           grow = TRUE,\n           color = \"#ffffff\",\n           min.size = 0,\n           family = \"mono\",\n           fontface = \"bold\")\n\nggp2_tm_subgroup2 + \n  labs_treemap"
+  },
+  {
+    "objectID": "stream_plots.html",
+    "href": "stream_plots.html",
+    "title": "Stream plots",
+    "section": "",
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "stream_plots.html#description",
+    "href": "stream_plots.html#description",
+    "title": "Stream plots",
+    "section": "Description",
+    "text": "Description\nStream graphs display how a numerical variable (typically on the y axis) changes over time (on the x axis) across levels of a categorical variable. These graphs are handy if the numerical value varies wildly (or isn’t always present) over the time measurement.\nCategorical groups are differentiated by color layers, with the area of the layer representing the change in y value. In ggplot2, we can create stream graphs using ggstream."
+  },
+  {
+    "objectID": "stream_plots.html#getting-set-up",
+    "href": "stream_plots.html#getting-set-up",
+    "title": "Stream plots",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCoderemotes::install_github(\"davidsjoberg/ggstream\")\ninstall.packages(\"ggplot2movies\")\nlibrary(ggstream)\nlibrary(ggplot2movies)\nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\n\n\n\nWe’re going to use only the mpaa, year, and budget columns from ggplot2movies::movies, then drop all missing values (we have to remove special missing characters from mpaa).\nWe’ll then convert mpaa to an ordered factor, then group by year and mpaa to calculate the average budget and filter to only those movies after 1984.\n\n\n\nCodemovies_stream <- ggplot2movies::movies |> \n    dplyr::select(mpaa, year, budget) |> \n    tidyr::drop_na() |> \n    dplyr::filter(mpaa != \"\") |> \n    dplyr::mutate(mpaa = factor(mpaa, \n                            levels = c(\"NC-17\", \"R\", \n                                       \"PG-13\", \"PG\"), \n                            ordered = TRUE)) |> \n    dplyr::group_by(year, mpaa) |> \n    dplyr::summarise(\n        avg_budget = mean(budget, na.rm = TRUE)) |> \n    dplyr::ungroup() |> \n    dplyr::filter(year > 1984)\n#> `summarise()` has grouped output by 'year'. You can\n#> override using the `.groups` argument.\ndplyr::glimpse(movies_stream)\n#> Rows: 47\n#> Columns: 3\n#> $ year       <int> 1986, 1989, 1989, 1990, 1991, 1991, 199…\n#> $ mpaa       <ord> R, R, PG-13, R, R, PG, R, R, PG-13, R, …\n#> $ avg_budget <dbl> 17250000, 787000, 39250000, 3866667, 35…"
+  },
+  {
+    "objectID": "stream_plots.html#the-grammar",
+    "href": "stream_plots.html#the-grammar",
+    "title": "Stream plots",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\n\nuse paste0() in the subtitle to automatically update the year when the movies_stream changes\n\nInitialize the graph with ggplot() and provide data\nMap year to the x, avg_budget to y, and mpaa to fill\nAdd the geom_stream() layer\nAdjust the y axis with scale_y_continuous() and scales::dollar\nFinally, move the legend with theme(legend.position = \"bottom\")\n\n\n\nCodelabs_stream <- labs(\n    title = \"20 years of movie budgets\", \n    subtitle = \n        paste0(\"movies between\", \n            min(movies_stream$year), \n            \" and \", \n            max(movies_stream$year)),\n    x = \"Year\", \n    y = \"Average Movie Budget\")\n\nggp2_stream <- ggplot(data = movies_stream, \n    mapping = aes(x = year, \n                  y = avg_budget, \n                  fill = mpaa)) + \n    ggstream::geom_stream() + \n    scale_y_continuous(labels = scales::dollar)\nggp2_stream + \n    labs_stream + \n    theme(legend.position = \"bottom\")\n\n\n\n\n\n\nGRAPH:"
+  },
+  {
+    "objectID": "stream_plots.html#more-info",
+    "href": "stream_plots.html#more-info",
+    "title": "Stream plots",
+    "section": "More info",
+    "text": "More info\nThe ggstream package has multiple arguments for adjusting the shape and look of the categorical levels (and text labels).\n\n\nType\nSorting\n\n\n\n\nTYPE:\n\n\nMap mpaa to fill (wrapped in forcats::fct_rev())\nWe can adjust the look of the graph by setting the type argument in geom_stream()\n\n\ntype: change type from \"mirror\" (the default) to \"proportional\"\n\n\nAdjust colors:\n\n\nscale_fill_manual(): Add colors as a named vector to values\n\n\nFinally, add the fill to the labels and move the legend with theme(legend.position = \"bottom\")\n\n\n\nCodeggp2_stream_prp <- ggplot(data = movies_stream, \n    mapping = aes(x = year, \n                  y = avg_budget, \n                  fill = forcats::fct_rev(mpaa))) + \n    ggstream::geom_stream(type = \"proportional\") + \n    scale_y_continuous(labels = scales::percent) + \n  scale_fill_manual(\n      values = c(\"PG-13\" = \"#0bd3d3\", \n                 \"PG\" = \"#f890e7\", \n                 \"R\" = \"#fa7b3c\", \n                 \"NC-17\" = \"#772953\"))\nggp2_stream_prp + \n    labs_stream + \n    labs(fill = \"mpaa\") + \n    theme(legend.position = \"bottom\")\n\n\n\n\n\n\n\n\nSORTING:\n\n\nTo change how the categorical areas are sorted, adjust the sorting argument to either \"none\", \"onset\", or \"inside_out\"\n\n\nsorting: set the sorting method to \"inside_out\" in both ggstream::geom_stream() and ggstream::geom_stream_label()\n\n\ntype: change the type to \"ridge\" in both ggstream::geom_stream() and ggstream::geom_stream_label()\n\n\nWe can also add text labels using ggstream::geom_stream_label():\n\nMap mpaa (wrapped in forcats::fct_rev()) to label globally\n\nInside ggstream::geom_stream_label():\n\nset color to white (\"#ffffff\") and the size to 2.7\n\nRemove the legend with show.legend = FALSE\n\n\n\n\nColors:\n\nUse scale_colour_manual() and scale_fill_manual() to manually set the values using a named vector\n\nChange the y axis to US dollars using scale_y_continuous() and scales::dollar\nFinally, add the fill to the labels and move the legend with theme(legend.position = \"bottom\")\n\n\n\nCodeggp2_stream_srt <- ggplot(data = movies_stream, \n    mapping = aes(x = year, \n                  y = avg_budget, \n                  fill = fct_rev(mpaa),\n                  label = fct_rev(mpaa))) + \n    ggstream::geom_stream(\n        type = \"ridge\", \n        sorting = \"inside_out\") + \n    ggstream::geom_stream_label(\n        type = \"ridge\", \n        sorting = \"inside_out\", \n        color = \"#ffffff\", \n        size = 2.7,\n        show.legend = FALSE) +\n    scale_colour_manual(\n      values = c(\"PG-13\" = \"#0bd3d3\", \n                 \"PG\" = \"#f890e7\", \n                 \"R\" = \"#fa7b3c\", \n                 \"NC-17\" = \"#772953\")) +\n    scale_fill_manual(\n      values = c(\"PG-13\" = \"#0bd3d3\", \n                 \"PG\" = \"#f890e7\", \n                 \"R\" = \"#fa7b3c\", \n                 \"NC-17\" = \"#772953\")) + \n    scale_y_continuous(labels = scales::dollar) \n    \nggp2_stream_srt + \n    labs_stream + \n    labs(fill = \"mpaa\") + \n    theme(legend.position = \"bottom\")"
   },
   {
     "objectID": "distributions.html",
     "href": "distributions.html",
     "title": "Distributions",
     "section": "",
-    "text": "You are reading a work-in-progress. This chapter is undergoing heavy restructuring and may be confusing or incomplete."
+    "text": "You are reading a work-in-progress. This graph is still in development and may be confusing or incomplete."
   },
   {
-    "objectID": "chapter_dist.html",
-    "href": "chapter_dist.html",
-    "title": "Graph: distributions",
+    "objectID": "overlapping_histograms.html",
+    "href": "overlapping_histograms.html",
+    "title": "Overlapping histograms",
     "section": "",
-    "text": "You are reading a work-in-progress. This chapter is currently a dumping ground for ideas, and we don’t recommend reading it."
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "overlapping_histograms.html#description",
+    "href": "overlapping_histograms.html#description",
+    "title": "Overlapping histograms",
+    "section": "Description",
+    "text": "Description\nOverlapping histograms allow us to compare distributions across the groups of a categorical (or ordinal) variable."
+  },
+  {
+    "objectID": "overlapping_histograms.html#getting-set-up",
+    "href": "overlapping_histograms.html#getting-set-up",
+    "title": "Overlapping histograms",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by allison horst\n\n\n\nThe penguins data\n\n\n\nCodepenguins <- palmerpenguins::penguins\nglimpse(penguins)\n#> Rows: 344\n#> Columns: 8\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Torgersen, Torgersen, Torgersen,…\n#> $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, NA, 36.7, 39.3…\n#> $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, NA, 19.3, 20.6…\n#> $ flipper_length_mm <int> 181, 186, 195, NA, 193, 190, 181…\n#> $ body_mass_g       <int> 3750, 3800, 3250, NA, 3450, 3650…\n#> $ sex               <fct> male, female, female, NA, female…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…"
+  },
+  {
+    "objectID": "overlapping_histograms.html#the-grammar",
+    "href": "overlapping_histograms.html#the-grammar",
+    "title": "Overlapping histograms",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap flipper_length_mm to the x axis and species to fill\nSet alpha to 2/3 inside geom_histogram()\n\n\n\nCodelabs_ovrlp_hist <- labs(\n  title = \"Adult foraging penguins\",\n  x = \"Flipper length (mm)\", \n  fill = \"Species\")\nggp2_ovrlp_hist <- ggplot(data = penguins,\n     aes(x = flipper_length_mm, \n         fill = species)) + \n     geom_histogram(alpha = 2/3) \nggp2_ovrlp_hist + \n  labs_ovrlp_hist\n\n\n\n\n\n\n\nExperiment with different binwidths when comparing distributions across groups.\n\nGRAPH:\n\n\nHistograms work by dividing the variable provided to x into bins and counting the number of observations in each bin."
+  },
+  {
+    "objectID": "overlapping_frequency_polygons.html",
+    "href": "overlapping_frequency_polygons.html",
+    "title": "Overlapping frequency polygons",
+    "section": "",
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "overlapping_frequency_polygons.html#description",
+    "href": "overlapping_frequency_polygons.html#description",
+    "title": "Overlapping frequency polygons",
+    "section": "Description",
+    "text": "Description\nOverlapping frequency polygons are similar to overlapping histograms–they allow us to compare distributions of a continuous variable across the levels of a categorical variable.\nInstead of using bars, frequency polygons use lines to show the shape of the distribution."
+  },
+  {
+    "objectID": "overlapping_frequency_polygons.html#getting-set-up",
+    "href": "overlapping_frequency_polygons.html#getting-set-up",
+    "title": "Overlapping frequency polygons",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by allison horst\n\n\n\nThe penguins data.\n\n\n\nCodepenguins <- palmerpenguins::penguins\nglimpse(penguins)\n#> Rows: 344\n#> Columns: 8\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Torgersen, Torgersen, Torgersen,…\n#> $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, NA, 36.7, 39.3…\n#> $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, NA, 19.3, 20.6…\n#> $ flipper_length_mm <int> 181, 186, 195, NA, 193, 190, 181…\n#> $ body_mass_g       <int> 3750, 3800, 3250, NA, 3450, 3650…\n#> $ sex               <fct> male, female, female, NA, female…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…"
+  },
+  {
+    "objectID": "overlapping_frequency_polygons.html#the-grammar",
+    "href": "overlapping_frequency_polygons.html#the-grammar",
+    "title": "Overlapping frequency polygons",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap flipper_length_mm to the x and species to group\nMap species to the color aesthetic inside the geom_freqpoly()\n\n\n\nCodelabs_ovrlp_freq_poly <- labs(\n  title = \"Adult foraging penguins\",\n  x = \"Flipper length (mm)\",\n  color = \"Species\")\nggp2_ovrlp_freq_poly <- ggplot(data = penguins, \n       aes(x = flipper_length_mm,\n           group = species)) + \n  geom_freqpoly(aes(color = species))\nggp2_ovrlp_freq_poly + \n  labs_ovrlp_freq_poly\n\n\n\n\n\n\nGRAPH:"
+  },
+  {
+    "objectID": "overlapping_dot_plots.html",
+    "href": "overlapping_dot_plots.html",
+    "title": "Overlapping dot plots",
+    "section": "",
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "overlapping_dot_plots.html#description",
+    "href": "overlapping_dot_plots.html#description",
+    "title": "Overlapping dot plots",
+    "section": "Description",
+    "text": "Description\nOverlapping dot plots display distributions of a continuous variable across the levels of a categorical variable.\nTo adjust the dot plot display to look similar to a histogram or frequency polygon, change the method and binposition arguments."
+  },
+  {
+    "objectID": "overlapping_dot_plots.html#getting-set-up",
+    "href": "overlapping_dot_plots.html#getting-set-up",
+    "title": "Overlapping dot plots",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by allison horst\n\n\n\nRemove missing sex from penguins\n\n\n\nCodepeng_dotplot <- dplyr::filter(penguins, !is.na(sex))\ndplyr::glimpse(peng_dotplot)\n#> Rows: 333\n#> Columns: 8\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Torgersen, Torgersen, Torgersen,…\n#> $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, 36.7, 39.3, 38…\n#> $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, 19.3, 20.6, 17…\n#> $ flipper_length_mm <int> 181, 186, 195, 193, 190, 181, 19…\n#> $ body_mass_g       <int> 3750, 3800, 3250, 3450, 3650, 36…\n#> $ sex               <fct> male, female, female, female, ma…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…"
+  },
+  {
+    "objectID": "overlapping_dot_plots.html#the-grammar",
+    "href": "overlapping_dot_plots.html#the-grammar",
+    "title": "Overlapping dot plots",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\n\n\nbinwidth = When method is “histodot”, this specifies bin width. Defaults to 1/30 of the range of the data\nbinpositions = “all” determines positions of the bins with all the data taken together; this is used for aligning dot stacks across multiple groups.\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap flipper_length_mm to x\nMap species to fill (inside factor())\nInside geom_dotplot, set method to \"histodot\", binwidth to 1.35, and binpositions to \"all\"\n\n\n\nCodelabs_ovrlp_dotplot <- labs(\n  title = \"Adult foraging penguins\",\n  x = \"Flipper length (millimeters)\",\n  y = \"Count\",\n  fill = \"Species\")\nggp2_ovrlp_dotplot <- ggplot(data = peng_dotplot, \n    aes(x = flipper_length_mm,\n        fill = factor(species))) +\n  geom_dotplot(\n    method = \"histodot\",\n    binwidth = 1.35,\n    binpositions = \"all\")\nggp2_ovrlp_dotplot + \n  labs_ovrlp_dotplot\n\n\n\n\n\n\nGRAPH:"
+  },
+  {
+    "objectID": "beeswarm_plots.html",
+    "href": "beeswarm_plots.html",
+    "title": "Beeswarm plots",
+    "section": "",
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "beeswarm_plots.html#description",
+    "href": "beeswarm_plots.html#description",
+    "title": "Beeswarm plots",
+    "section": "Description",
+    "text": "Description\nThe beeswarm plot uses points to display the distribution of a continuous variable across the levels of a categorical variable.\nThe points are grouped by level, and the shape (or swarm) of the distribution is mirrored above and below the quantitative axis (similar to a violin plot).\nWe can create beeswarm plot using geom_jitter() or the ggbeeswarm package."
+  },
+  {
+    "objectID": "beeswarm_plots.html#getting-set-up",
+    "href": "beeswarm_plots.html#getting-set-up",
+    "title": "Beeswarm plots",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodedevtools::install_github(\"eclarke/ggbeeswarm\")\nlibrary(ggbeeswarm)\ninstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by (allison_horst?)\n\n\n\nCreate peng_beeswarm by grouping penguins by species, then calculating the bill_ratio (bill_length_mm / bill_depth_mm), and then removing any missing values from bill_ratio\n\n\n\nCodepeng_beeswarm <- palmerpenguins::penguins |> \n    dplyr::group_by(species) |> \n    dplyr::mutate(bill_ratio = bill_length_mm / bill_depth_mm) |>  \n    dplyr::filter(!is.na(bill_ratio)) |> \n    dplyr::ungroup()\nglimpse(peng_beeswarm)\n#> Rows: 342\n#> Columns: 9\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Torgersen, Torgersen, Torgersen,…\n#> $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, 36.7, 39.3, 38…\n#> $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, 19.3, 20.6, 17…\n#> $ flipper_length_mm <int> 181, 186, 195, 193, 190, 181, 19…\n#> $ body_mass_g       <int> 3750, 3800, 3250, 3450, 3650, 36…\n#> $ sex               <fct> male, female, female, female, ma…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…\n#> $ bill_ratio        <dbl> 2.090909, 2.270115, 2.238889, 1.…"
+  },
+  {
+    "objectID": "beeswarm_plots.html#the-grammar",
+    "href": "beeswarm_plots.html#the-grammar",
+    "title": "Beeswarm plots",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap species to the x axis and color\nMap bill_ratio to the y axis\nAdd the ggbeeswarm::geom_beeswarm() layer (with alpha)\nRemove the legend with show.legend = FALSE\n\n\n\nCodelabs_beeswarm <- labs(\n    title = \"Adult Foraging Penguins\",\n    subtitle = \"Bill Length (mm) / Bill Depth (mm) = Bill Ratio\",\n    x = \"Species\",\n    y = \"Bill Ratio\")\nggp2_beeswarm <- ggplot(data = peng_beeswarm,\n    aes(x = species,\n        y = bill_ratio,\n        color = species)) +\n    ggbeeswarm::geom_beeswarm(alpha = 2 / 3,\n        show.legend = FALSE)\nggp2_beeswarm +\n    labs_beeswarm\n\n\n\n\n\n\nGRAPH:\n\n\nAdjust the size/shape of the swarm using method = or the geom_quasirandom() function"
+  },
+  {
+    "objectID": "beeswarm_plots.html#more-info",
+    "href": "beeswarm_plots.html#more-info",
+    "title": "Beeswarm plots",
+    "section": "More info",
+    "text": "More info\nBelow we cover some additional arguments and methods for beeswarm plots.\n\n\nmethod\nside\ncex\ngeom_jitter()\n\n\n\n\nMETHOD:\n\n\nUse method to adjust the shape of the beeswarm (swarm, compactswarm, hex, square, center, or centre)\n\n\n\n\nSet the point shape to 21 to control the fill and color\n\n\n\nCodeggp2_compact_swarm <- ggplot(data = peng_beeswarm,\n    mapping = aes(x = species,\n                  y = bill_ratio,\n                color = species)) +\n    ggbeeswarm::geom_beeswarm(\n      aes(fill = species),\n        method = 'compactswarm', \n        dodge.width = 0.5,\n        shape = 21,\n        color = \"#ffffff\",\n        alpha = 2/3, size = 1.7,\n        show.legend = FALSE) \nggp2_compact_swarm + \n    # add labels\n    labs_beeswarm\n\n\n\n\n\n\n\n\nSIDE:\n\n\nFor a beeswarm that falls across the vertical axis, use the side argument.\n\n\n\nCodeggp2_rside_swarm <- ggplot(data = peng_beeswarm,\n    mapping = aes(x = species,\n                  y = bill_ratio,\n                color = species)) +\n    ggbeeswarm::geom_beeswarm(\n      aes(fill = species),\n        side = 1, # right/upwards\n        shape = 21,\n        color = \"#ffffff\",\n        alpha = 2/3, \n        size = 1.7,\n        show.legend = FALSE) \nggp2_rside_swarm + \n    # add labels\n    labs_beeswarm\n\n\n\n\n\n\n\n\nCEX:\n\n\nThe cex argument controls the “scaling for adjusting point spacing”\n\n\n\nCodeggp2_beeswarm_cex <- ggplot(data = peng_beeswarm,\n    mapping = aes(x = species,\n                  y = bill_ratio,\n                color = species)) +\n    ggbeeswarm::geom_beeswarm(\n      aes(fill = species),\n        cex = 1.6,\n        shape = 21,\n        color = \"#ffffff\",\n        alpha = 2/3, \n        size = 1.7,\n        show.legend = FALSE) \nggp2_beeswarm_cex + \n    # add labels\n    labs_beeswarm\n\n\n\n\n\n\n\n\nJITTER:\n\n\nWe can also create a beeswarm using the geom_jitter() and setting the height and width.\n\n\n\nCodeggp2_jitter_swarm <- ggplot(data = peng_beeswarm,\n    mapping = aes(x = species,\n        y = bill_ratio,\n        color = species)) +\n    geom_jitter(\n        aes(fill = species),\n        height = 0.05,\n        width = 0.11,\n        shape = 21,\n        color = \"#ffffff\",\n        alpha = 2 / 3,\n        size = 1.7,\n        show.legend = FALSE)\nggp2_jitter_swarm + \n    # add labels\n    labs_beeswarm"
+  },
+  {
+    "objectID": "overlapping_stacked_density_plots.html",
+    "href": "overlapping_stacked_density_plots.html",
+    "title": "Overlapping density plot",
+    "section": "",
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "overlapping_stacked_density_plots.html#description",
+    "href": "overlapping_stacked_density_plots.html#description",
+    "title": "Overlapping density plot",
+    "section": "Description",
+    "text": "Description\nDensity plots are smoothed version(s) of histogram(s). They can are great for comparing the distributions of a continuous variable across the levels of a categorical variable.\ngeom_density() creates a kernel density estimate. The default position argument is \"identity\", which takes the data as is. However, we can change position to \"stack\" to display overlapping distributions."
+  },
+  {
+    "objectID": "overlapping_stacked_density_plots.html#getting-set-up",
+    "href": "overlapping_stacked_density_plots.html#getting-set-up",
+    "title": "Overlapping density plot",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins)\nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by allison horst\n\n\n\nRemove missing sex from the penguins data\n\n\n\nCodepeng_density <- dplyr::filter(penguins, !is.na(sex))\ndplyr::glimpse(peng_density)\n#> Rows: 333\n#> Columns: 8\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Torgersen, Torgersen, Torgersen,…\n#> $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, 36.7, 39.3, 38…\n#> $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, 19.3, 20.6, 17…\n#> $ flipper_length_mm <int> 181, 186, 195, 193, 190, 181, 19…\n#> $ body_mass_g       <int> 3750, 3800, 3250, 3450, 3650, 36…\n#> $ sex               <fct> male, female, female, female, ma…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…"
+  },
+  {
+    "objectID": "overlapping_stacked_density_plots.html#the-grammar",
+    "href": "overlapping_stacked_density_plots.html#the-grammar",
+    "title": "Overlapping density plot",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap the flipper_length_mm to the x and sex to fill\nAdd the geom_density()\nSet the alpha to 1/3 (to handle the overlapping areas)\n\n\n\nCodelabs_ovrlp_density <- labs(\n  title = \"Adult foraging penguins\",\n  x = \"Flipper length (millimeters)\",\n  fill = \"Sex\")\nggp2_ovrlp_density <- ggplot(data = peng_density, \n       aes(x = flipper_length_mm, \n           fill = sex)) +\n      geom_density(alpha = 1/3) \nggp2_ovrlp_density + \n  labs_ovrlp_density\n\n\n\n\n\n\nGRAPH:\n\n\n\nA downside of density plots is the lack of interpretability of the y axis\n\nMake density area slightly transparent to handle over-plotting"
+  },
+  {
+    "objectID": "overlapping_stacked_density_plots.html#more-info",
+    "href": "overlapping_stacked_density_plots.html#more-info",
+    "title": "Overlapping density plot",
+    "section": "More info",
+    "text": "More info\nggplot2 has multiple options for overlapping density plots, so which one to use will depend on how you’d like to display the relative distributions in your data. We’ll cover three options below:\n\n\n\"stack\"\nafter_stat(count)\n\"fill\"\n\n\n\n\nSTACK:\n\n\nIf we change the position to \"stack\" we can see the smoothed estimates are ‘stacked’ on top each other (and the y axis shifts slightly).\n\n\n\nCodelabs_stack_density <- labs(\n    title = \"Adult foraging penguins\",\n    x = \"Flipper length (millimeters)\",\n    fill = \"Sex\")\nggp2_stack_density <- ggplot(data = peng_density,\n    mapping = aes(x = flipper_length_mm,\n               fill = sex)) +\n    geom_density(position = \"stack\",\n                 alpha = 1 / 3)\nggp2_stack_density +\n    labs_stack_density\n\n\n\n\n\n\nSetting position to 'stack' loses marginal densities\n\n\n\n\nAFTER STAT:\n\n\nIf we include after_stat(count) as one of our mapped aesthetics, the mapping is postponed until after statistical transformation, and uses the density * n instead of the default density.\n\n\n\nCodelabs_after_stat_density <- labs(\n  title = \"Adult foraging penguins\",\n  x = \"Flipper length (millimeters)\", \n  fill = \"Sex\")\nggp2_after_stat_density <- ggplot(data = peng_density, \n       aes(x = flipper_length_mm, \n           after_stat(count),\n           fill = sex)) +\n      geom_density(position = \"stack\", \n                   alpha = 1/3) \nggp2_after_stat_density + \n  labs_after_stat_density\n\n\n\n\n\n\nAdding after_stat(count) ‘preserves marginal densities.’, which result in more a interpretable y axis (depending on the audience)\n\n\n\n\nFILL:\n\n\nUsing after_stat(count) with position = \"fill\" creates in a conditional density estimate.\n\n\n\nCodelabs_fill_density <- labs(\n  title = \"Adult foraging penguins\",\n  x = \"Flipper length (millimeters)\", \n  fill = \"Sex\")\nggp2_fill_density <- ggplot(data = peng_density, \n       aes(x = flipper_length_mm, \n           after_stat(count),\n           fill = sex)) +\n      geom_density(position = \"fill\", \n                   alpha = 1/3) \nggp2_fill_density + \n  labs_fill_density\n\n\n\n\n\n\nThis results in a y axis ranging from 0-1, and the area filled with the relative proportional values."
+  },
+  {
+    "objectID": "ridgeline_plots.html",
+    "href": "ridgeline_plots.html",
+    "title": "Ridgeline plots",
+    "section": "",
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "ridgeline_plots.html#description",
+    "href": "ridgeline_plots.html#description",
+    "title": "Ridgeline plots",
+    "section": "Description",
+    "text": "Description\nIf we want to plot density curves but retain the interpretability of the axes, consider comparing multiple distributions using the ggridges package."
+  },
+  {
+    "objectID": "ridgeline_plots.html#getting-set-up",
+    "href": "ridgeline_plots.html#getting-set-up",
+    "title": "Ridgeline plots",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins)\nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by allison horst\n\n\n\nRemove missing island from penguins\n\n\n\nCodepeng_ridges <- filter(penguins, !is.na(island))\nglimpse(peng_ridges)\n#> Rows: 344\n#> Columns: 8\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Torgersen, Torgersen, Torgersen,…\n#> $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, NA, 36.7, 39.3…\n#> $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, NA, 19.3, 20.6…\n#> $ flipper_length_mm <int> 181, 186, 195, NA, 193, 190, 181…\n#> $ body_mass_g       <int> 3750, 3800, 3250, NA, 3450, 3650…\n#> $ sex               <fct> male, female, female, NA, female…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…"
+  },
+  {
+    "objectID": "ridgeline_plots.html#the-grammar",
+    "href": "ridgeline_plots.html#the-grammar",
+    "title": "Ridgeline plots",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap bill_length_mm to the x axis\nMap island to the y axis and fill\nAdd the ggridges::geom_density_ridges() layer (with alpha set to 2/3)\nRemove the legend with show.legend = FALSE\n\n\n\nCodelabs_ridges <- labs(\n  title = \"Adult foraging penguins\",\n  x = \"Bill length (millimeters)\",\n  y = \"Island\", fill = \"Island\")\nggp2_ridges <- ggplot(data = peng_ridges,\n       aes(x = bill_length_mm, \n           y = island, \n        fill = island)) +\n  ggridges::geom_density_ridges(alpha = 2/3, \n      show.legend = FALSE)\nggp2_ridges + \n  labs_ridges\n\n\n\n\n\n\nGRAPH:\n\n\nRidgeline plots are excellent for comparing continuous distributions across groups."
+  },
+  {
+    "objectID": "grouped_box_plots.html",
+    "href": "grouped_box_plots.html",
+    "title": "Grouped box plots",
+    "section": "",
+    "text": "You are reading a work-in-progress. This graph should be readable but is currently undergoing final polishing."
+  },
+  {
+    "objectID": "grouped_box_plots.html#description",
+    "href": "grouped_box_plots.html#description",
+    "title": "Grouped box plots",
+    "section": "Description",
+    "text": "Description\nGrouped box plots display five different statistical measures across a series of categories, or groups, of a discrete, ordinal, or interval variable.\nThe five statistical measures are 1) the first quartile, 2) the second quartile, and 3) the third quartile. The fourth and fifth values are the largest/smallest values no further than 1.5 X inter-quartile range from the hinges."
+  },
+  {
+    "objectID": "grouped_box_plots.html#getting-set-up",
+    "href": "grouped_box_plots.html#getting-set-up",
+    "title": "Grouped box plots",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by (allison_horst?)\n\n\n\nRemove the missing island values from the penguins data.\n\n\n\nCodepeng_box <- filter(penguins, !is.na(island))\nglimpse(peng_box)\n#> Rows: 344\n#> Columns: 8\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Torgersen, Torgersen, Torgersen,…\n#> $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, NA, 36.7, 39.3…\n#> $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, NA, 19.3, 20.6…\n#> $ flipper_length_mm <int> 181, 186, 195, NA, 193, 190, 181…\n#> $ body_mass_g       <int> 3750, 3800, 3250, NA, 3450, 3650…\n#> $ sex               <fct> male, female, female, NA, female…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…"
+  },
+  {
+    "objectID": "grouped_box_plots.html#the-grammar",
+    "href": "grouped_box_plots.html#the-grammar",
+    "title": "Grouped box plots",
+    "section": "The grammar",
+    "text": "The grammar\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap island to the x axis and to fill\nMap bill_length_mm to the y axis\nAdd geom_boxplot() and set the alpha to 2/3\nRemove the legend with show.legend = FALSE\n\n\n\nCodelabs_grp_boxplots <- labs(\n  title = \"Adult foraging penguins\", \n  subtitle = \"Palmer Archipelago, Antarctica\",\n  x = \"Island\", fill = \"Island\",\n  y = \"Bill length (millimeters)\")\nggp2_grp_boxplots <- ggplot(data = peng_box,\n       aes(x = island, \n           y = bill_length_mm, \n        fill = island)) +\n  geom_boxplot(alpha = 2/3, \n      show.legend = FALSE) \nggp2_grp_boxplots + \n  labs_grp_boxplots\n\n\n\n\n\n\nGRAPH:\n\n\nWhen a categorical variable is supplied, the plot will contain a box for each level or group."
+  },
+  {
+    "objectID": "grouped_box_plots.html#more-info",
+    "href": "grouped_box_plots.html#more-info",
+    "title": "Grouped box plots",
+    "section": "More info",
+    "text": "More info\n\n\nNotches\nOutliers\n\n\n\n\nNOTCHES:\n\n\nAdd notches to the box plot using the notch = TRUE and notchwidth arguments.\n\n\n\nCodeggp2_grp_box_notch <- ggplot(data = peng_box,\n       aes(x = island, \n           y = bill_length_mm, \n        fill = island)) +\n  geom_boxplot(\n      notch = TRUE, \n      notchwidth = 0.85, \n      alpha = 2/3, \n      show.legend = FALSE) \nggp2_grp_box_notch + \n    labs_grp_boxplots\n\n\n\n\n\n\n\n\nOUTLIERS:\n\n\nBox plots display outliers using points, and we can change the color these using the outlier.colour argument. Inside the geom_boxplot(), we map island to color and set outlier.colour to NULL:\n\n\n\nCodeggp2_grp_box_outliers <- ggplot(data = peng_box,\n       aes(x = island, \n           y = bill_length_mm,\n           fill = island)) +\n  geom_boxplot(aes(color = island),\n      outlier.colour = NULL, \n      outlier.size = 2,\n      notch = TRUE, \n      notchwidth = 0.85, \n      alpha = 2/3, \n      show.legend = FALSE) \nggp2_grp_box_outliers + \n    labs_grp_boxplots"
+  },
+  {
+    "objectID": "grouped_violin_plots.html",
+    "href": "grouped_violin_plots.html",
+    "title": "Grouped violin plots",
+    "section": "",
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "grouped_violin_plots.html#description",
+    "href": "grouped_violin_plots.html#description",
+    "title": "Grouped violin plots",
+    "section": "Description",
+    "text": "Description\nA ‘violin plot’ is a variation of a density or ridgeline plot, where the distribution is plotted symmetrically, creating a two-sided, smoothed distribution."
+  },
+  {
+    "objectID": "grouped_violin_plots.html#getting-set-up",
+    "href": "grouped_violin_plots.html#getting-set-up",
+    "title": "Grouped violin plots",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins)\nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by allison horst\n\n\n\nRemove missing island from penguins\n\n\n\nCodepeng_violin <- filter(penguins, !is.na(island))\nglimpse(peng_violin)\n#> Rows: 344\n#> Columns: 8\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Torgersen, Torgersen, Torgersen,…\n#> $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, NA, 36.7, 39.3…\n#> $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, NA, 19.3, 20.6…\n#> $ flipper_length_mm <int> 181, 186, 195, NA, 193, 190, 181…\n#> $ body_mass_g       <int> 3750, 3800, 3250, NA, 3450, 3650…\n#> $ sex               <fct> male, female, female, NA, female…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…\n\n\n\n\n\n\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap island to the x, bill_length_mm to the y, and island to fill\nSet alpha to 2/3\nRemove the legend with show.legend = FALSE\n\n\n\nCodelabs_grp_violin <- labs(\n  title = \"Adult foraging penguins\", \n  subtitle = \"Palmer Archipelago, Antarctica\",\n  x = \"Island\", fill = \"Island\",\n  y = \"Bill length (millimeters)\")\nggp2_grp_violin <- ggplot(data = peng_violin,\n       aes(x = island, \n           y = bill_length_mm, \n        fill = island)) +\n  geom_violin(alpha = 2/3, \n      show.legend = FALSE) \nggp2_grp_violin + \n  labs_grp_violin\n\n\n\n\n\n\nGRAPH:\n\n\nViolin plots can allow us to compare the ‘center’ and ‘spread’ of continuous variables across categorical groups.\n\n\n\nCodelabs_grp_violin <- labs(\n  title = \"Adult foraging penguins\", \n  subtitle = \"Palmer Archipelago, Antarctica\",\n  x = \"Island\", fill = \"Island\",\n  y = \"Bill length (millimeters)\")\nggp2_grp_violin <- ggplot(data = peng_violin,\n       aes(x = island, \n           y = bill_length_mm, \n        fill = island)) +\n  geom_violin(alpha = 2/3, \n      show.legend = FALSE) \nggp2_grp_violin + \n  labs_grp_violin"
+  },
+  {
+    "objectID": "grouped_violin_plots.html#more-info",
+    "href": "grouped_violin_plots.html#more-info",
+    "title": "Grouped violin plots",
+    "section": "More info",
+    "text": "More info\n\n\nQuartiles\nKernel\nBandwidth\n\n\n\n\n\nChange the shape of the line with linetype and linewidth.\n\ndraw_quantiles:\n\n\nWe can include lines for the 25th, 50th, and 75th quartiles using the draw_quantiles argument.\n\n\n\nCodeggplot(data = peng_violin,\n       aes(x = island, \n           y = bill_length_mm, \n        fill = island)) +\n  geom_violin(\n      draw_quantiles = c(0.25, 0.5, 0.75),\n      alpha = 1/2, \n      linewidth = 0.5, \n      show.legend = FALSE) \n\n\n\n\n\n\n\n\nkernel:\n\n\nThe kernel argument let’s us change the “kernel density estimate” used to create the violin shape. The possible kernel density estimates are \"gaussian\", \"epanechnikov\", \"rectangular\", \"triangular\", \"biweight\", \"cosine\", and \"optcosine\"\n\n\n\nCodeggplot(data = peng_violin,\n       aes(x = island, \n           y = bill_length_mm, \n        fill = island)) +\n  geom_violin(alpha = 1/2, \n      linewidth = 0.5, \n      kernel = \"rectangular\",\n      show.legend = FALSE) \n\n\n\n\n\n\n\n\nbw:\n\n\nWe can directly adjust the shape of the violin with the bw argument, which is the standard deviation of the smoothing kernel. The trim argument trim(s) the tails of the violins to the range of the data.\n\n\n\nCode# bw of 0.5\ngrp_violin_bw0p5 <- ggplot(data = peng_violin,\n       aes(x = island, \n           y = bill_length_mm, \n        fill = island)) +\n  geom_violin(bw = 0.5, \n      alpha = 2/3, \n      trim = TRUE,\n      show.legend = FALSE) \ngrp_violin_bw0p5 + \n    labs_grp_violin + \n    labs(caption = \"bw = 0.5\")\n# bw of 4.5\ngrp_violin_bw4p5 <- ggplot(data = peng_violin,\n       aes(x = island, \n           y = bill_length_mm, \n        fill = island)) +\n  geom_violin(bw = 4.5, \n      alpha = 2/3, \n      trim = TRUE,\n      show.legend = FALSE) \ngrp_violin_bw4p5 + \n    labs_grp_violin + \n    labs(caption = \"bw = 4.5\")"
+  },
+  {
+    "objectID": "raincloud_plots.html",
+    "href": "raincloud_plots.html",
+    "title": "Raincloud plots",
+    "section": "",
+    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+  },
+  {
+    "objectID": "raincloud_plots.html#description",
+    "href": "raincloud_plots.html#description",
+    "title": "Raincloud plots",
+    "section": "Description",
+    "text": "Description\nRaincloud plots are a combination of density graph, a box plot, and a beeswarm (or jitter) plot, and are used to compare distributions of quantitative/numerical variables across the levels of a categorical (or discrete) grouping variable.\nWe can use the raincloudplots package to create raincloud plots, or they can be built using the ggdist package and geoms from ggplot2."
+  },
+  {
+    "objectID": "raincloud_plots.html#getting-set-up",
+    "href": "raincloud_plots.html#getting-set-up",
+    "title": "Raincloud plots",
+    "section": "Getting set up",
+    "text": "Getting set up\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCoderemotes::install_github('jorvlan/raincloudplots')\nremotes::install_github('mjskay/ggdist')\nlibrary(raincloudplots)\nlibrary(ggdist)\nlibrary(palmerpenguins)\nlibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by allison horst\n\n\n\nRemove the missing values from year and flipper_length_mm the penguins data. The raincloudplots package has a data_1x1() function we can use to build the dataset for a 1x1 repeated measure graph (peng_1x1).\nThis function takes two array arguments (array_1 and array_2), which we create with the flipper length (flipper_length_mm) for two levels of year in the peng_raincloud data.\nThe jit_distance and jit_seed refer to the points in the plot.\n\n\n\nCode# remove missing\npeng_raincloud <- palmerpenguins::penguins |> \n    filter(!is.na(year) & !is.na(body_mass_g))\n# filter flipper length by years 2008 & 2009\npeng_1x1 <- raincloudplots::data_1x1(\n  array_1 = dplyr::filter(peng_raincloud, year == 2008)$flipper_length_mm,\n  array_2 = dplyr::filter(peng_raincloud, year == 2009)$flipper_length_mm,\n  jit_distance = 0.2, # distance between points\n  jit_seed = 2736) # used in set.seed() \nglimpse(peng_1x1)\n#> Rows: 233\n#> Columns: 4\n#> $ y_axis <int> 186, 188, 190, 200, 187, 191, 186, 193, 181…\n#> $ x_axis <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…\n#> $ id     <fct> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, …\n#> $ jit    <dbl> 1.0200375, 0.9498208, 0.8820888, 0.9516411,…"
+  },
+  {
+    "objectID": "raincloud_plots.html#the-grammar-raincloudplots",
+    "href": "raincloud_plots.html#the-grammar-raincloudplots",
+    "title": "Raincloud plots",
+    "section": "The grammar (raincloudplots)",
+    "text": "The grammar (raincloudplots)\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCreate labels with labs()\nUse the raincloudplots::raincloud_1x1() to build the plot, assigning peng_1x1 to data_1x1\n- assign colors and fills\n- set the size (of the points) and alpha (for opacity)\n\n\n\nCodeggp2_raincloud <- raincloudplots::raincloud_1x1(\n    data_1x1 = peng_1x1,\n    colors = (c('#0bd3d3', '#fa7b3c')),\n    fills = (c('#0bd3d3', '#fa7b3c')),\n    size = 0.8,\n    alpha = 3/4,\n    ort = 'h') \n\nggp2_raincloud_x <- ggp2_raincloud +\n    ggplot2::scale_x_continuous(\n        breaks = c(1, 2),\n        labels = c(\"2008\", \"2009\"),\n        limits = c(0, 3))\n\nggp2_raincloud_x + \n    ggplot2::labs(\n        title = \"Flipper length of Palmer penguins\",\n        subtitle = \"Years 2008 & 2009\", \n        x = \"Year\", \n        y = \"Flipper length (mm)\")\n\n\n\n\n\n\nGRAPH:"
+  },
+  {
+    "objectID": "raincloud_plots.html#more-info",
+    "href": "raincloud_plots.html#more-info",
+    "title": "Raincloud plots",
+    "section": "More info",
+    "text": "More info\n\n\nData\nBox-plot\nDensity\nPoints\n\n\n\n\nDATA:\n\n\n\n\n\nArtwork by allison_horst\n\n\n\nWe’ll use the peng_raincloud data (with the missing values removed from species and body_mass_g).\n\n\n\nCode# remove missing\npeng_raincloud <- palmerpenguins::penguins |> \n                    filter(!is.na(species) & \n                            !is.na(body_mass_g))\nglimpse(peng_raincloud)\n#> Rows: 342\n#> Columns: 8\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Torgersen, Torgersen, Torgersen,…\n#> $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, 36.7, 39.3, 38…\n#> $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, 19.3, 20.6, 17…\n#> $ flipper_length_mm <int> 181, 186, 195, 193, 190, 181, 19…\n#> $ body_mass_g       <int> 3750, 3800, 3250, 3450, 3650, 36…\n#> $ sex               <fct> male, female, female, female, ma…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…\n\n\n\n\n\n\nggplot2::geom_boxplot()\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nFor the first layer, we create a box plot with geom_boxplot(), but include notches and remove the outliers.\n\n\n\nCodelabs_raincloud_2 <- ggplot2::labs(\n    title = \"Flipper length of Palmer penguins\",\n         x = \"Flipper length (mm)\",\n         y = \"Species\")\nggp2_box <- ggplot(peng_raincloud,\n    aes( x = flipper_length_mm, y = species)) + \n  geom_boxplot(aes(fill = species),\n    notch = TRUE, \n    notchwidth = 0.9,\n    width = 0.15, \n    outlier.shape = NA,\n    show.legend = FALSE)\nggp2_box + \n    labs_raincloud_2\n\n\n\n\n\n\n\n\nggdist::stat_halfeye()\n\n\nWe then add a horizontal density curve with ggdist::stat_halfeye(), mapping species to fill, and adjusting the size and shape of the density curve and shifting it slightly above the box plot.\n\n\n\nCodeggp2_stat_halfeye <- ggp2_box +\n  ggdist::stat_halfeye(aes(fill = species),\n    adjust = 0.6, # shape = adjust * density estimator\n    .width = 0, # can use probabilities or 0\n    point_colour = NA, # removes the point in center\n    orientation = \"horizontal\", # like the box plot\n    height = 0.5, # height of curve\n    justification = -0.3, # shift vertically above box\n    show.legend = FALSE # don't need this \n) \nggp2_stat_halfeye + \n    labs_raincloud_2\n\n\n\n\n\n\n\n\nggplot2::geom_point()\n\n\nThe final layer is a geom_point(), mapping fill to species and setting position to position_jitter(). Additional adjustments to the points include:\n\nUsing shape = 21, we can color the outside of the point (white makes it appear to glow).\nManually set the height, which refers to the vertical area for the points\n\n\n\n\nCodeggp2_jitter <- ggp2_stat_halfeye + \n    geom_point(aes(fill = species),\n        position = position_jitter(\n          seed = 321, \n          height = .07),\n            shape = 21, \n            color = \"#ffffff\", \n            alpha = 1/3, \n            size = 1.8,\n            show.legend = FALSE) \nggp2_jitter + \n    labs_raincloud_2"
+  },
+  {
+    "objectID": "raincloud_plots.html#more-examples-resources",
+    "href": "raincloud_plots.html#more-examples-resources",
+    "title": "Raincloud plots",
+    "section": "More examples & resources",
+    "text": "More examples & resources\n\n\nPoint shape\n#TidyTuesday example\nMore resources\n\n\n\n\nPoint shape\n\n\nCédric Scherer covered raincloud plots in this great write-up for #TidyTuesday.\nCédric also covers some alternative methods for plotting the points (I particularly like using bands instead of points when displaying the rainclouds vertically).\nWe can switch to this layout by applying ggplot2::coord_flip() to the ggp2_stat_halfeye layer, then adding geom_point() with shape set to 95\n\n\n\nCodeggp2_stat_halfeye + \n    ggplot2::coord_flip() + \nggplot2::geom_point(\n    shape = 95,\n    size = 8,\n    alpha = 0.2) + \n    theme(legend.position = \"none\") + \n    labs_raincloud_2\n\n\n\n\n\n\n\n\nPolished Graph\n\n\nThe code to re-create the #TidyTuesday graph is contained in this gist.\n\n\n\n\n\n\n\n\nMORE RESOURCES\n\n\n\nRaincloud plots: a multi-platform tool for robust data visualization. 1\nShape and point sizes in R. 2\nRainCloudPlots package on GitHub. 3"
   },
   {
     "objectID": "relationships.html",
     "href": "relationships.html",
     "title": "Relationships",
     "section": "",
-    "text": "You are reading a work-in-progress. This chapter is undergoing heavy restructuring and may be confusing or incomplete."
+    "text": "You are reading a work-in-progress. This graph is still in development and may be confusing or incomplete."
   },
   {
     "objectID": "chapter_rela.html",
     "href": "chapter_rela.html",
     "title": "Graph: relationships",
     "section": "",
-    "text": "You are reading a work-in-progress. This chapter is currently a dumping ground for ideas, and we don’t recommend reading it."
+    "text": "You are reading a work-in-progress. This graph is currently a dumping ground for ideas, and we don’t recommend reading it."
+  },
+  {
+    "objectID": "xtnsns_tbl.html",
+    "href": "xtnsns_tbl.html",
+    "title": "ggplot2 extensions",
+    "section": "",
+    "text": "Graph\nPackage\nCode\n\n\n\n\nWaffle charts\nggwaffle\nremotes::install_github(\"liamgilbey/ggwaffle\")\nlibrary(ggwaffle)\n\n\nPie charts\nggpubr\nremotes::install_github(\"kassambara/ggpubr\")\nlibrary(ggpubr)\n\n\nMosaic Plots\nggmosaic\nremotes::install_github(\"haleyjeppson/ggmosaic\")\nlibrary(ggmosaic)\n\n\nTreemaps\ntreemapify\nremotes::install_github(\"wilkox/treemapify\")\nlibrary(treemapify)\n\n\nBeeswarm Plots\nggbeeswarm\nremotes::install_github(\"eclarke/ggbeeswarm\")\nlibrary(ggbeeswarm)\n\n\nRidgeline Plots\nggridges\nremotes::install_github(\"wilkelab/ggridges\")\nlibrary(ggridges)\n\n\nRaincloud plots\nraincloudplots & ggdist\nremotes::install_github('jorvlan/raincloudplots')\nremotes::install_github('mjskay/ggdist')\nlibrary(raincloudplots)\nlibrary(ggdist)\n\n\nAlluvial charts\nggalluvial\nremotes::install_github(\"corybrunson/ggalluvial\")\nlibrary(ggalluvial)\n\n\nParallel Sets\nggforce\nremotes::install_github(\"thomasp85/ggforce\")\nlibrary(ggforce)\n\n\nBump charts\nggbump\nremotes::install_github(\"davidsjoberg/ggbump\")\nlibrary(ggbump)\n\n\nStream Plots\nggstream\nremotes::install_github(\"davidsjoberg/ggstream\")\nlibrary(ggstream)"
   }
 ]

@@ -1,4 +1,4 @@
-# Overview {.unnumbered}
+# Welcome! {.unnumbered}
 
 ```{r}
 #| label: setup
@@ -12,48 +12,79 @@ library(knitr)
 library(kableExtra)
 library(colorblindr)
 library(downlit)
-install.packages("tidyverse")
-install.packages("fivethirtyeight")
-install.packages("palmerpenguins")
-install.packages("ggplot2movies")
-# options ----
-options(
-  dplyr.print_min = 6, 
-  dplyr.print_max = 6, 
-  scipen = 9999)
-ggplot2::theme_set(
-  ggplot2::theme_minimal(base_size = 14))
+# _common.R ----
+source("_common.R")
+# use font
+showtext::showtext_auto()
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 15))
 ```
 
 
 
-Welcome to the ggplot2 field manual! This text contains a collection of code and graphs created using `ggplot2` (and friends!).
+Welcome to the `ggplot2` field manual! This manual intends to be a bookmark/quick reference for building graphs with `ggplot2` (even if you can't quite recall what that graph was called).
 
 ::: {.column-margin}
 ![](www/ggplot2.png){fig-align="center" width="40%" height="40%"}
 :::
 
-## Purpose 
+## Intent
 
-This manual is designed to help you answer the question, "*what graph should I use?*" 
+This manual was written to help answer questions like, 
 
-The structure of this manual assumes the reader has already answered the questions, "*what kind of data do I have?*" and "*who is the audience for the graph?*"
+  - "*What graph should I use?*"    
+  
+  - "*Can I build this graph (given the data I have)?*"   
+  
+  - *What was the name of that visualization I saw on [#TidyTuesday](https://twitter.com/search?lang=en&q=%23tidytuesday)*?
 
-## Other resources
+## Assumptions 
 
-If you want to learn about `ggplot2`, you should start with the [excellent free text](https://ggplot2-book.org/), or if you know what kind of graph you'd like to build, but you need the code or packages in order to build it, check out the [R graph gallery](https://r-graph-gallery.com/ggplot2-package.html) or [R graphics cookbook](https://r-graphics.org/). 
+The code and examples assume the reader has already answered the question, “*what kind of data do I have?*” 
 
-### Graph Categories 
+If not, I highly recommend the [`skimr`](https://docs.ropensci.org/skimr/) and [`inspectdf`](https://alastairrushworth.github.io/inspectdf/) packages for getting to know your data better.
+
+Another question to consider--but is not covered in this manual--is, "*who will the audience be for this graph?*" 
+Great resources for this include [Communicating with Data: The Art of Writing for Data Science](https://www.amazon.com/Communicating-Data-Art-Writing-Science/dp/0198862741) by Deborah Nolan and Sara Stoudt and [Truthful Art, The: Data, Charts, and Maps for Communication](https://www.amazon.com/Truthful-Art-Data-Charts-Communication/dp/0321934075/), by  Alberto Cairo.
+
+## Who was this written for? 
+
+I created this resource with the following [learner personas](http://teachtogether.tech/en/index.html#s:process-personas) in mind: 
+
+1. **Garth** is a data analyst putting together a slide deck for an upcoming meeting. He had a few statistics courses with R in college, and has picked up additional experience and skills from the different positions he's held and various online tutorials. He's currently building the graphs in his slides with `ggplot2`, but had grown tired of them and would like to customize his presentation to make it more engaging. 
+
+2. **Matilda** is a data journalist hoping to add a few graphs to a piece she has been working on. She has 10 years of experience working with WordPress, writes and publishes on her own blog, and has an intermediate understanding of HTML & CSS. However, she has only been programming in R for about 6 months.
+
+3. **Igor** is a researcher who has been working in academia for 15 years. He's comfortable writing R code, knows the kinds of graphs he'd like to build, but he only knows how to build these using the [base R graphics](https://bookdown.org/rdpeng/exdata/the-base-plotting-system-1.html). He'd like to learn how to duplicate the graphs he's already created in base R using `ggplot2`.
+
+### What's been left out?
+
+Because this is intended to be a field manual (and not a textbook), I've omitted most of the underlying principles and structure of the `ggplot2` syntax. 
+
+### Where can I find what's been left out?
+
+If you're looking for a comprehensive resource on `ggplot2`, I recommend the [excellent free text](https://ggplot2-book.org/), the [`ggplot2` website](https://ggplot2.tidyverse.org/), and [Data Visualization: a practical guide](https://socviz.co/) by Kieran Healy. 
+
+If you know the graph you'd like to build, and you're just looking for the code or package(s) to build it, I'd check out the [R graph gallery](https://r-graph-gallery.com/ggplot2-package.html) or [R graphics cookbook](https://r-graphics.org/). 
+
+## Graph Categories 
 
 Graphs have been categorized into the following types:
 
-- Univariate graphs   
-- Amounts  
-- Proportions   
-- Distributions   
-- Relationships  
+- **Univariate**: if you have a single column you're trying to visualize 
 
-Some graphs would justifiably belong in more than one category, and wherever this is the case, I've tried to include links to other uses in the notes.
+- **Amounts**: counts or simple summary statistics of one or two columns in a dataset     
+
+- **Proportions**: ratio displays of part-to-whole    
+
+- **Distributions**: displaying the shape of a variable's values (normalcy, skewness, kurtosis, etc.)    
+
+- **Relationships**: how does the change of values in variable `x` affect the values in variable `y` (and possibly `z`)?   
+
+Some graphs can justifiably belong to more than one category, and wherever this is the case, I've tried to include links to other applications in the notes.  
+
+***
 
 ## Get started
 
@@ -118,7 +149,7 @@ library(fivethirtyeight)
 ![](www/538.png){fig-align="center" width="30%" height="30%"}
 :::
 
-:::: {.callout-tip collapse="true" icon=false}
+:::: {.callout-note collapse="true" icon=false}
 ## Expand to view the data in the `fivethirtyeight` package
 
 ::: {style="font-size: 0.75em;"}
@@ -154,7 +185,7 @@ install.packages("ggplot2movies")
 library(ggplot2movies)
 ```
 
-*Why not manually create the graph datasets with `data.frame()` or `tibble()`/`tribble()`?* 
+***Why not manually create the graph datasets with `data.frame()` or `tibble()`/`tribble()`?*** 
 
 In my opinion, using manually generated data is great for reproducible examples, but they rarely look like data 'caught in the wild.' The data packages above are also well maintained and can be used to provide a variety of examples.
 
@@ -184,7 +215,7 @@ Each graph has, at minimum, the following sections and tabs:
      - Complimentary packages  
 
 
-::::: {.callout-note collapse="true"}
+:::: {.callout-note collapse="true" icon=false}
 ### Expand to view an example of the graph code structure
 
 
@@ -198,7 +229,7 @@ Description of the graph
 
 ### Packages
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
@@ -221,7 +252,7 @@ library(ggplot2)
 
 ### Data
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DATA:**
 :::
 
@@ -252,7 +283,7 @@ df <- tibble::tibble(X = sample(x = 1:100, 10, FALSE),
 
 ### Code
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
 :::
 
@@ -286,7 +317,7 @@ ggp2_graph +
 
 ### Graph
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {style="font-size: 1.10em; color: #1e83c8;"}
 **GRAPH:**
 :::
 
@@ -317,146 +348,7 @@ ggp2_graph +
 
 I've attempted to balance brevity and clarity, but with the assumption that its best to err on the latter. I've also followed the general principle that if a graph can be *easily* built using one of `ggplot2` 's `geom_*` functions, that method is shown first. 
 
-## Extensions
-
-Below are the graphs requiring additional packages/extensions:
-
--   [x] Waffle charts
-
-    -   [`ggwaffle` package](https://liamgilbey.github.io/ggwaffle/)
-
-        ```{r}
-        #| eval: false
-        #| echo: true
-        # Waffle Charts
-        devtools::install_github("liamgilbey/ggwaffle")
-        library(ggwaffle)
-        ```
-
--   [x] Pie Charts
-
-    -   [`ggpubr` package](https://rpkgs.datanovia.com/ggpubr/)
-
-        ```{r}
-        #| eval: false
-        #| echo: true
-        # Pie Charts 
-        devtools::install_github("kassambara/ggpubr")
-        library(ggpubr)
-        ```
-
--   [x] Mosaic Plots
-
-    -   [`ggmosaic` package](https://haleyjeppson.github.io/ggmosaic/)
-
-        ```{r}
-        #| eval: false
-        #| echo: true
-        # Mosaic Charts 
-        devtools::install_github("haleyjeppson/ggmosaic")
-        library(ggmosaic)
-        ```
-
--   [x] Treemaps
-
-    -   [`treemapify` package](https://wilkox.org/treemapify/)
-
-        ```{r}
-        #| eval: false
-        #| echo: true
-        # Treemaps
-        devtools::install_github("wilkox/treemapify")
-        library(treemapify)
-        ```
-
--   [x] Bee-swarm Plots
-
-    -   [`ggbeeswarm` package](https://github.com/eclarke/ggbeeswarm)
-
-        ```{r}
-        #| eval: false
-        #| echo: true
-        # Bee-swarm Plots
-        devtools::install_github("eclarke/ggbeeswarm")
-        library(ggbeeswarm)
-        ```
-
--   [x] Ridgeline Plots
-
-    -   [`ggridges` package](https://wilkelab.org/ggridges/)
-
-        ```{r}
-        #| eval: false
-        #| echo: true
-        # Ridgeline plots 
-        devtools::install_github("wilkelab/ggridges")
-        library(ggridges)
-        ```
-
--   [x] Rain-cloud plots
-
-    -   [`raincloudplots`](https://github.com/jorvlan/raincloudplots) and [`ggdist`](https://mjskay.github.io/ggdist/reference/index.html) packages
-
-        ```{r}
-        #| eval: false
-        #| echo: true
-        # Rain-cloud plots 
-        remotes::install_github('jorvlan/raincloudplots')
-        remotes::install_github('mjskay/ggdist')
-        library(raincloudplots)
-        library(ggdist)
-        ```
-
--   [x] Alluvial charts
-
-    -   [ggalluvial package](https://corybrunson.github.io/ggalluvial/)
-
-        ```{r}
-        #| eval: false
-        #| echo: true
-        # Alluvial charts
-        devtools::install_github("corybrunson/ggalluvial")
-        library(ggalluvial)
-        ```
-
-
--   [x] Bump charts
-
-    -   [ggbump package](https://github.com/davidsjoberg/ggbump)
-
-        ```{r}
-        #| eval: false
-        #| echo: true
-        # Bump charts
-        devtools::install_github("davidsjoberg/ggbump")
-        library(ggbump)
-        ```
-
--   [x] Parallel Sets
-
-    -   [ggforce package](https://ggforce.data-imaginist.com/index.html)
-
-        ```{r}
-        #| eval: false
-        #| echo: true
-        # Bump charts
-        devtools::install_github("thomasp85/ggforce")
-        library(ggforce)
-        ```
-
--   [x] Stream Plots
-
-    -   [ggstream package](https://github.com/davidsjoberg/ggstream)
-
-        ```{r}
-        #| eval: false
-        #| echo: true
-        # Stream plots
-        devtools::install_github("davidsjoberg/ggstream")
-        library(ggstream)
-        ```
-
-
+.
 ## Theme
 
 The theme used in the graphs is custom and uses combined elements from `ggplot2::theme_minimal()` and `ggplot2::theme_void()`. View it [here](https://github.com/mjfrigaard/fm-ggp2/blob/main/R/theme_ggp2g.R).

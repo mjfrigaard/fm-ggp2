@@ -1,0 +1,229 @@
+---
+title: "`geom_curve()`"
+format:
+  html:
+    toc: true
+    code-fold: show
+    df-print: paged
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+library(patchwork)
+library(faux)
+# options ----
+options(
+  repos = "https://cloud.r-project.org",
+  dplyr.print_min = 6, 
+  dplyr.print_max = 6, 
+  scipen = 9999)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+# import font
+extrafont::font_import(
+    paths = "../assets/Ubuntu/",
+    prompt = FALSE)
+# add font
+sysfonts::font_add(
+    family =  "Ubuntu", 
+    regular = "../assets/Ubuntu/Ubuntu-Regular.ttf")
+# use font
+showtext::showtext_auto()
+# add theme
+source("../R/theme_ggp2g.R")
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 16))
+# install data packages ----
+install.packages("palmerpenguins")
+```
+
+## ( *in development* )
+
+:::: {.callout-tip collapse="false" icon=false}
+## Complex lines in `ggplot2`
+
+
+::: {style="color: #043b67;"}
+#### Complex line geoms:
+:::
+  
+```{r}
+#| label: other_lines
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '55%'
+#| out-width: '55%'
+#| fig-align: right
+library(palmerpenguins) 
+library(ggplot2)
+library(patchwork)
+economics <- ggplot2::economics
+seals <- ggplot2::seals
+df <- data.frame(x = 1:5, y = c(5, 1, 4, 2, 7))
+# geom_curve ----
+ggp2_curve_base <- ggplot2::ggplot(data = df,
+    mapping = aes(x = x, y = y)) +
+    xlim(0.5, 5.5) +
+    ylim(0, 10)
+crv <- ggp2_curve_base +
+  geom_curve(aes(yend = y + 1, xend = x + 1), 
+      curvature = -1) + 
+    theme_void() + 
+    labs(title = "geom_curve()")
+# geom_segment ----
+ggp2_seg_base <- ggplot2::ggplot(data = df,
+    mapping = aes(x = x, y = y)) +
+    xlim(0.5, 5.5) +
+    ylim(0, 10)
+sgmnt <- ggp2_seg_base +
+    geom_segment(aes(xend = x + 1, yend = y + 1)) + 
+    theme_void() + 
+    labs(title = "geom_segment()")
+# geom_abline ----
+ggp2_abline_base <- ggplot2::ggplot(data = df,
+    mapping = aes(x = x, y = y)) +
+    xlim(0.5, 5.5) +
+    ylim(0, 10)
+abln <- ggp2_abline_base + 
+    geom_abline(aes(intercept = 2, slope = 1)) +
+    theme_void() + 
+    labs(title = "geom_abline()")
+# geom_hline ----
+ggp2_hline_base <- ggplot2::ggplot(data = df,
+    mapping = aes(x = x, y = y)) +
+    xlim(0.5, 5.5) +
+    ylim(0, 10) 
+hln <- ggp2_hline_base +
+    geom_hline(aes(yintercept = 3)) + 
+    theme_void() + 
+    labs(title = "geom_hline()")
+# geom_vline ----
+ggp2_vline_base <- ggplot2::ggplot(data = df,
+    mapping = aes(x = x, y = y)) +
+    xlim(0.5, 5.5) +
+    ylim(0, 10) 
+vln <- ggp2_vline_base +
+    geom_vline(aes(xintercept = 2)) + 
+    theme_void() + 
+    labs(title = "geom_vline()")
+# geom_spoke ----
+ggp2_spoke_base <- ggplot2::ggplot(data = df,
+    mapping = aes(x = x, y = y)) +
+    xlim(0.5, 5.5) +
+    ylim(0, 10) 
+spk <- ggp2_spoke_base + 
+    geom_spoke(aes(angle = 1:5, radius = 1)) +
+    theme_void() + 
+    labs(title = "geom_spoke()")
+crv + abln + sgmnt + hln + vln + spk + 
+    patchwork::plot_layout(ncol = 2)
+```
+
+  - `geom_curve()`
+  
+  - `geom_abline()`
+
+  - `geom_segment()`
+  
+  - `geom_hline()`
+  
+  - `geom_vline()`
+  
+::::
+
+## `geom_curve()`
+
+:::: {.panel-tabset}
+
+### Basic Use
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**BASICS:**
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: basic_curve
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+ggp2_curve_base <- ggplot(data = seals,
+  mapping = aes(x = long, y = lat)) 
+ggp2_curve_base +
+  geom_curve(aes(yend = lat + 1, xend = long + 1), 
+      curvature = 2)
+```
+
+:::
+
+### Additional Aesthetics
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**AESTHETICS:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+The required aesthetics are: 
+
+Optional aesthetics include: 
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_curve
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+```
+:::
+
+### Arguments
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**ARGUMENTS:**
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: args_1_curve
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+
+```
+
+```{r}
+#| label: args_2_curve
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+
+```
+:::
+
+::::
+

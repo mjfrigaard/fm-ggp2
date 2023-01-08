@@ -37,25 +37,25 @@ source("R/theme_ggp2g.R")
 
 status <- function(type) {
   status <- switch(type,
-    polishing = "should be readable but is currently undergoing final polishing",
-    restructuring = "is undergoing heavy restructuring and may be confusing or incomplete",
-    drafting = "is currently a dumping ground for ideas, and we don't recommend reading it",
+    polish = "should be readable but is currently undergoing final polishing",
+    dev = "is still in development and may be confusing or incomplete",
+    draft = "is currently a dumping ground for ideas, and we don't recommend reading it",
     complete = "is largely complete and just needs final proof reading",
     stop("Invalid `type`", call. = FALSE)
   )
 
   class <- switch(type,
-    polishing = "note",
-    restructuring = "important",
-    drafting = "important",
-    complete = "note"
+    polish = "note",
+    dev = "important",
+    draft = "danger",
+    complete = "tip"
   )
 
   cat(paste0(
     "\n",
     "::: {.callout-", class, " icon=false}", "\n",
     "You are reading a work-in-progress.", "\n",
-    "This chapter ", status, ". ", "\n",
+    "This graph ", status, ". ", "\n",
     ":::", "\n"
   ))
 }
