@@ -51,16 +51,15 @@ status <- function(type) {
 
   class <- switch(type,
     polish = "note",
-    dev = "important",
-    draft = "danger",
+    dev = "warning",
+    draft = "caution",
     complete = "tip"
   )
 
   cat(paste0(
     "\n",
-    "::: {.callout-", class, " icon=false}", "\n",
-    "You are reading a work-in-progress.", "\n",
-    "This graph ", status, ". ", "\n",
+    "::: {.callout-", class, " appearance='simple'", " icon=false}", "\n",
+    "***This graph ", status, ".*** ", "\n",
     ":::", "\n"
   ))
 }

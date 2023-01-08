@@ -23,11 +23,7 @@ ggplot2::theme_set(theme_ggp2g(
 
 
 
-Welcome to the `ggplot2` field manual! This manual intends to be a bookmark/quick reference for building graphs with `ggplot2` (even if you can't quite recall what that graph was called).
-
-::: {.column-margin}
-![](www/ggplot2.png){fig-align="center" width="40%" height="40%"}
-:::
+Welcome to the `ggplot2` field manual! The goal for this resource is to serve as a bookmark/quick reference for building graphs with `ggplot2`.
 
 ## Intent
 
@@ -38,6 +34,168 @@ This manual was written to help answer questions like,
   - "*Can I build this graph (given the data I have)?*"   
   
   - *What was the name of that visualization I saw on [#TidyTuesday](https://twitter.com/search?lang=en&q=%23tidytuesday)*?
+  
+## Getting started
+
+### Install `tidyverse` (option 1)
+
+`ggplot2` is part of the `tidyverse`, but you can also install this package separately.
+
+::: {.column-margin}
+![](www/tidyverse.png){fig-align="center" width="40%" height="40%"}
+:::
+
+```{r}
+#| label: tidyverse-pkg
+#| eval: false
+#| echo: true
+#| code-fold: show
+install.packages("tidyverse")
+library(tidyverse)
+```
+
+### Install `ggplot2` (option 2)
+
+Install `ggplot2` using the code below:
+
+::: {.column-margin}
+![](www/ggplot2.png){fig-align="center" width="40%" height="40%"}
+:::
+
+```{r}
+#| label: ggp2-pkg
+#| eval: false
+#| echo: true
+#| code-fold: show
+install.packages("ggplot2")
+library(ggplot2)
+```
+
+## Data 
+
+The data packages used in this manual are listed below. You can install them using: 
+
+```{r}
+#| label: inst-data
+#| eval: false
+#| echo: true
+#| code-fold: show
+data_pkgs <- c("palmerpenguins", "fivethirtyeight", "ggplot2movies", "babynames")
+install.packages(data_pkgs)
+```
+
+
+### `palmerpenguins::penguins`
+
+The majority of the graphs in the manual are built using the `palmerpenguins::penguins` data. 
+
+:::: {.column-margin}
+
+::: {style="font-size: 0.95em; color: #fa7b3c;"}
+***...so...many...PENGUINS!***
+:::
+
+![Artwork by allison_horst](www/lter_penguins.png){fig-align="center" width="50%" height="50%"}
+::::
+
+:::: {.callout-note collapse="true" icon=false}
+## Expand to view the data in `palmerpenguins::penguins`
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: paged_penguins
+#| eval: true
+#| echo: false
+rmarkdown::paged_table(palmerpenguins::penguins)
+```
+:::
+
+::::
+
+Source: [https://github.com/allisonhorst/palmerpenguins/](https://github.com/allisonhorst/palmerpenguins/)
+
+### `fivethirtyeight`
+
+Use the table below to view the datasets in this package. 
+
+::: {.column-margin}
+![](www/538.png){fig-align="center" width="30%" height="30%"}
+:::
+
+:::: {.callout-note collapse="true" icon=false}
+## Expand to view the data in the `fivethirtyeight` package
+
+::: {style="font-size: 0.75em;"}
+*To view a table of available datasets in the `fivethirtyeight` package, view the `Data Frame Name` and `Article Title` columns in the `datasets_master` table*
+:::
+
+::: {style="font-size: 0.80em;"}
+```{r}
+#| label: 538-pkg
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+library(fivethirtyeight)
+reactable::reactable(fivethirtyeight::datasets_master |> 
+    select(`Data Frame Name`, `Article Title`), 
+    defaultPageSize = 5)
+```
+:::
+::::
+
+Source: [https://github.com/fivethirtyeight/data](https://github.com/fivethirtyeight/data)
+
+### `ggplot2movies::movies`
+
+::: {.column-margin}
+![](www/imdb.png){fig-align="center" width="30%" height="30%"}
+:::
+
+:::: {.callout-note collapse="true" icon=false}
+## Expand to view *a sample* of the data in `ggplot2movies::movies`
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: paged_ggplot2movies
+#| eval: true
+#| echo: false
+rmarkdown::paged_table(x = 
+    dplyr::slice_sample(ggplot2movies::movies, 
+      n = 1000, replace = FALSE))
+```
+:::
+
+::::
+
+Source: [https://www.imdb.com/](https://www.imdb.com/)
+
+### `babynames::babynames`
+
+::: {.column-margin}
+![](www/ssa.png){fig-align="center" width="40%" height="40%"}
+:::
+
+:::: {.callout-note collapse="true" icon=false}
+## Expand to view *a sample* of the data in `babynames::babynames`
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: paged_babynames
+#| eval: true
+#| echo: false
+rmarkdown::paged_table(x = 
+    dplyr::slice_sample(babynames::babynames, 
+      n = 1000, replace = FALSE))
+```
+:::
+::::
+
+Source: [http://www.ssa.gov/oact/babynames/limits.html](http://www.ssa.gov/oact/babynames/limits.html)
+
+***Why not manually create the graph datasets with `data.frame()` or `tibble()`/`tribble()`?*** 
+
+In my opinion, using manually generated data is great for reproducible examples, but they rarely look like data 'caught in the wild.' The data packages above are also well maintained and can be used to provide a variety of examples.
 
 ## Assumptions 
 
@@ -45,7 +203,8 @@ The code and examples assume the reader has already answered the question, “*w
 
 If not, I highly recommend the [`skimr`](https://docs.ropensci.org/skimr/) and [`inspectdf`](https://alastairrushworth.github.io/inspectdf/) packages for getting to know your data better.
 
-Another question to consider--but is not covered in this manual--is, "*who will the audience be for this graph?*" 
+Another question to consider--but not covered in this manual--is, "*who will the audience be for this graph?*" 
+
 Great resources for this include [Communicating with Data: The Art of Writing for Data Science](https://www.amazon.com/Communicating-Data-Art-Writing-Science/dp/0198862741) by Deborah Nolan and Sara Stoudt and [Truthful Art, The: Data, Charts, and Maps for Communication](https://www.amazon.com/Truthful-Art-Data-Charts-Communication/dp/0321934075/), by  Alberto Cairo.
 
 ## Who was this written for? 
@@ -85,109 +244,6 @@ Graphs have been categorized into the following types:
 Some graphs can justifiably belong to more than one category, and wherever this is the case, I've tried to include links to other applications in the notes.  
 
 ***
-
-## Get started
-
-Install `ggplot2` using the code below:
-
-```{r}
-#| label: ggp2-pkg
-#| eval: false
-#| echo: true
-#| code-fold: show
-install.packages("ggplot2")
-library(ggplot2)
-```
-
-Or you can install `ggplot2` as part of the `tidyverse`:
-
-::: {.column-margin}
-![](www/tidyverse.png){fig-align="center" width="40%" height="40%"}
-:::
-
-```{r}
-#| label: tidyverse-pkg
-#| eval: false
-#| echo: true
-#| code-fold: show
-install.packages("tidyverse")
-library(tidyverse)
-```
-
-### Datasets
-
-The majority of the graphs in the manual are built using the `palmerpenguins::penguins` data. 
-
-:::: {.column-margin}
-
-::: {style="font-size: 0.95em; color: #fa7b3c;"}
-***...so...many...PENGUINS!***
-:::
-
-![Artwork by allison_horst](www/lter_penguins.png){fig-align="center" width="50%" height="50%"}
-::::
-
-```{r}
-#| label: penguins-pkg-show
-#| eval: false
-#| echo: true
-install.packages("palmerpenguins")
-library(palmerpenguins)
-```
-
-Some of the graphs use datasets from the `fivethirtyeight` package.
-
-```{r}
-#| label: 538-pkg-show
-#| eval: false
-#| echo: true
-install.packages("fivethirtyeight")
-library(fivethirtyeight)
-```
-
-::: {.column-margin}
-![](www/538.png){fig-align="center" width="30%" height="30%"}
-:::
-
-:::: {.callout-note collapse="true" icon=false}
-## Expand to view the data in the `fivethirtyeight` package
-
-::: {style="font-size: 0.75em;"}
-To view a table of available datasets in the `fivethirtyeight` package, view the `Data Frame Name` and `Article Title` columns in the `datasets_master` table:
-:::
-
-::: {style="font-size: 0.70em;"}
-```{r}
-#| label: 538-pkg
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-library(fivethirtyeight)
-reactable::reactable(fivethirtyeight::datasets_master |> 
-    select(`Data Frame Name`, `Article Title`), 
-    defaultPageSize = 5)
-```
-:::
-::::
-
-A *few* of the graphs are built using the `ggplot2movies::movies` data. 
-
-::: {.column-margin}
-![](www/imdb.png){fig-align="center" width="30%" height="30%"}
-:::
-
-```{r}
-#| label: movies-pkg-show
-#| eval: false
-#| echo: true
-install.packages("ggplot2movies")
-library(ggplot2movies)
-```
-
-***Why not manually create the graph datasets with `data.frame()` or `tibble()`/`tribble()`?*** 
-
-In my opinion, using manually generated data is great for reproducible examples, but they rarely look like data 'caught in the wild.' The data packages above are also well maintained and can be used to provide a variety of examples.
 
 ## Code style & structure
 

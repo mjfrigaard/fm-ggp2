@@ -1,0 +1,132 @@
+---
+title: "geom callout"
+format:
+  html:
+    toc: true
+    code-fold: show
+    df-print: paged
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+library(patchwork)
+library(faux)
+# options ----
+options(
+  repos = "https://cloud.r-project.org",
+  dplyr.print_min = 6, 
+  dplyr.print_max = 6, 
+  scipen = 9999)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+# import font
+extrafont::font_import(
+    paths = "../assets/Ubuntu/",
+    prompt = FALSE)
+# add font
+sysfonts::font_add(
+    family =  "Ubuntu", 
+    regular = "../assets/Ubuntu/Ubuntu-Regular.ttf")
+# use font
+showtext::showtext_auto()
+# add theme
+source("../R/theme_ggp2g.R")
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 16))
+# install data packages ----
+install.packages("palmerpenguins")
+```
+
+::::: {.callout-note collapse="false" icon=false}
+## `geom_()`
+
+:::: {.panel-tabset}
+
+### Basic Use
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**BASICS:**
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: basic__
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+# ggp2_bar_base <- ggplot(data = peng_primitive)
+# ggp2_bar_x <- ggp2_bar_base + 
+#     geom_bar(mapping = aes(x = island))
+```
+
+:::
+
+### Additional Aesthetics
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**AESTHETICS:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+The required aesthetics are: 
+
+Optional aesthetics include: 
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes__
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+```
+:::
+
+### Arguments
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**ARGUMENTS:**
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: args_1__
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+
+```
+
+```{r}
+#| label: args_2__
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+
+```
+:::
+
+::::
+:::::

@@ -4,21 +4,21 @@
     "href": "index.html",
     "title": "ggplot2: field manual",
     "section": "",
-    "text": "Welcome to the ggplot2 field manual! This manual intends to be a bookmark/quick reference for building graphs with ggplot2 (even if you can’t quite recall what that graph was called).\n\n\n\n\n\n\n\nThis manual was written to help answer questions like,\n\n“What graph should I use?”\n“Can I build this graph (given the data I have)?”\nWhat was the name of that visualization I saw on #TidyTuesday?\n\nThe code and examples assume the reader has already answered the question, “what kind of data do I have?”\nIf not, I highly recommend the skimr and inspectdf packages for getting to know your data better.\nAnother question to consider–but is not covered in this manual–is, “who will the audience be for this graph?” Great resources for this include Communicating with Data: The Art of Writing for Data Science by Deborah Nolan and Sara Stoudt and Truthful Art, The: Data, Charts, and Maps for Communication, by Alberto Cairo.\n\nI created this resource with the following learner personas in mind:\n\nGarth is a data analyst putting together a slide deck for an upcoming meeting. He had a few statistics courses with R in college, and has picked up additional experience and skills from the different positions he’s held and various online tutorials. He’s currently building the graphs in his slides with ggplot2, but had grown tired of them and would like to customize his presentation to make it more engaging.\nMatilda is a data journalist hoping to add a few graphs to a piece she has been working on. She has 10 years of experience working with WordPress, writes and publishes on her own blog, and has an intermediate understanding of HTML & CSS. However, she has only been programming in R for about 6 months.\nIgor is a researcher who has been working in academia for 15 years. He’s comfortable writing R code, knows the kinds of graphs he’d like to build, but he only knows how to build these using the base R graphics. He’d like to learn how to duplicate the graphs he’s already created in base R using ggplot2.\n\n\nBecause this is intended to be a field manual (and not a textbook), I’ve omitted most of the underlying principles and structure of the ggplot2 syntax.\n\nIf you’re looking for a comprehensive resource on ggplot2, I recommend the excellent free text, the ggplot2 website, and Data Visualization: a practical guide by Kieran Healy.\nIf you know the graph you’d like to build, and you’re just looking for the code or package(s) to build it, I’d check out the R graph gallery or R graphics cookbook.\n\nGraphs have been categorized into the following types:\n\nUnivariate: if you have a single column you’re trying to visualize\nAmounts: counts or simple summary statistics of one or two columns in a dataset\nProportions: ratio displays of part-to-whole\nDistributions: displaying the shape of a variable’s values (normalcy, skewness, kurtosis, etc.)\nRelationships: how does the change of values in variable x affect the values in variable y (and possibly z)?\n\nSome graphs can justifiably belong to more than one category, and wherever this is the case, I’ve tried to include links to other applications in the notes.\n\nInstall ggplot2 using the code below:\n\nCodeinstall.packages(\"ggplot2\")\nlibrary(ggplot2)\n\n\nOr you can install ggplot2 as part of the tidyverse:\n\n\n\n\n\n\n\nCodeinstall.packages(\"tidyverse\")\nlibrary(tidyverse)\n\n\n\nThe majority of the graphs in the manual are built using the palmerpenguins::penguins data.\n\n\n\n…so…many…PENGUINS!\n\n\n\nArtwork by allison_horst\n\n\n\nCodeinstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins)\n\n\nSome of the graphs use datasets from the fivethirtyeight package.\n\nCodeinstall.packages(\"fivethirtyeight\")\nlibrary(fivethirtyeight)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpand to view the data in the fivethirtyeight package\n\n\n\n\n\n\nTo view a table of available datasets in the fivethirtyeight package, view the Data Frame Name and Article Title columns in the datasets_master table:\n\n\n\n\n\n\n\n\n\n\n\n\n\nA few of the graphs are built using the ggplot2movies::movies data.\n\n\n\n\n\n\n\nCodeinstall.packages(\"ggplot2movies\")\nlibrary(ggplot2movies)\n\n\nWhy not manually create the graph datasets with data.frame() or tibble()/tribble()?\nIn my opinion, using manually generated data is great for reproducible examples, but they rarely look like data ‘caught in the wild.’ The data packages above are also well maintained and can be used to provide a variety of examples.\n\nThe field manual follows a Rule of Least Power Principle, in the sense that “a language with a straightforward syntax may be easier to analyze than an otherwise equivalent one with more complex structure.”\nIn other words, assuming the reader has some understanding of R and the tidyverse, the code for each graph is meant to be read and understood without having to run it.\nEach graph has, at minimum, the following sections and tabs:\n\n\nGraph info\n\n\nShould I use this graph?\n\n\nThis graph requires:\n\n\n\n\nDescription\n\n\nGetting set up\n\n\nPackages and Data\n\nCode for installing development version of packages (if necessary) for graphs and data\n\nAny steps used to create (i.e., manipulate and prepare) the data for the graph\n\n\n\n\n\n\nThe grammar\n\n\nCode to build the labels and graph layers\n\nGraph labels have the labs_ prefix\n\nGraph layers have a ggp2_ prefix\n\n\n\n\n\n\nMore info\n\n\nAdditional methods, arguments, or applications\n\nColor palettes\n\nComplimentary packages\n\n\n\n\n\n\n\n\n\n\n\nExpand to view an example of the graph code structure\n\n\n\n\n\n\nDescription of the graph\n\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodelibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\nDescription of data\n\n\n\nCodedf <- tibble::tibble(X = sample(x = 1:100, 10, FALSE),\n                     Y = rlnorm(10, 1, 3))\n\n\n\n\n\n\n\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCode for creating graph\n\n\n\nCode# labels\nlabs_graph <- ggplot2::labs(title = \"Title\", \n                            subtitle = \"subtitle\", \n                            x = \"X\", y = \"Y\")\n# layers\nggp2_graph <- ggplot2::ggplot(data = df, \n    mapping = aes(x = X, y = Y)) + \n    ggplot2::geom_blank()\n# graph\nggp2_graph + \n    labs_graph\n\n\n\n\n\n\nGRAPH:\n\n\n\n\n\n\n\n\n\n\n\n\n\nCode Style:\nI’ve attempted to balance brevity and clarity, but with the assumption that its best to err on the latter. I’ve also followed the general principle that if a graph can be easily built using one of ggplot2 ’s geom_* functions, that method is shown first.\n. ## Theme\nThe theme used in the graphs is custom and uses combined elements from ggplot2::theme_minimal() and ggplot2::theme_void(). View it here."
+    "text": "Welcome to the ggplot2 field manual! The goal for this resource is to serve as a bookmark/quick reference for building graphs with ggplot2.\n\nThis manual was written to help answer questions like,\n\n“What graph should I use?”\n“Can I build this graph (given the data I have)?”\nWhat was the name of that visualization I saw on #TidyTuesday?\n\n\nggplot2 is part of the tidyverse, but you can also install this package separately.\n\n\n\n\n\n\n\nCodeinstall.packages(\"tidyverse\")\nlibrary(tidyverse)\n\n\n\nInstall ggplot2 using the code below:\n\n\n\n\n\n\n\nCodeinstall.packages(\"ggplot2\")\nlibrary(ggplot2)\n\n\n\nThe data packages used in this manual are listed below. You can install them using:\n\nCodedata_pkgs <- c(\"palmerpenguins\", \"fivethirtyeight\", \"ggplot2movies\", \"babynames\")\ninstall.packages(data_pkgs)\n\n\n\nThe majority of the graphs in the manual are built using the palmerpenguins::penguins data.\n\n\n\n…so…many…PENGUINS!\n\n\n\nArtwork by allison_horst\n\n\n\n\n\n\n\n\nExpand to view the data in palmerpenguins::penguins\n\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\nSource: https://github.com/allisonhorst/palmerpenguins/\n\nUse the table below to view the datasets in this package.\n\n\n\n\n\n\n\n\n\n\n\n\nExpand to view the data in the fivethirtyeight package\n\n\n\n\n\n\nTo view a table of available datasets in the fivethirtyeight package, view the Data Frame Name and Article Title columns in the datasets_master table\n\n\n\n\n\n\n\n\n\n\n\n\n\nSource: https://github.com/fivethirtyeight/data\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpand to view a sample of the data in ggplot2movies::movies\n\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\nSource: https://www.imdb.com/\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpand to view a sample of the data in babynames::babynames\n\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\nSource: http://www.ssa.gov/oact/babynames/limits.html\nWhy not manually create the graph datasets with data.frame() or tibble()/tribble()?\nIn my opinion, using manually generated data is great for reproducible examples, but they rarely look like data ‘caught in the wild.’ The data packages above are also well maintained and can be used to provide a variety of examples.\n\nThe code and examples assume the reader has already answered the question, “what kind of data do I have?”\nIf not, I highly recommend the skimr and inspectdf packages for getting to know your data better.\nAnother question to consider–but not covered in this manual–is, “who will the audience be for this graph?”\nGreat resources for this include Communicating with Data: The Art of Writing for Data Science by Deborah Nolan and Sara Stoudt and Truthful Art, The: Data, Charts, and Maps for Communication, by Alberto Cairo.\n\nI created this resource with the following learner personas in mind:\n\nGarth is a data analyst putting together a slide deck for an upcoming meeting. He had a few statistics courses with R in college, and has picked up additional experience and skills from the different positions he’s held and various online tutorials. He’s currently building the graphs in his slides with ggplot2, but had grown tired of them and would like to customize his presentation to make it more engaging.\nMatilda is a data journalist hoping to add a few graphs to a piece she has been working on. She has 10 years of experience working with WordPress, writes and publishes on her own blog, and has an intermediate understanding of HTML & CSS. However, she has only been programming in R for about 6 months.\nIgor is a researcher who has been working in academia for 15 years. He’s comfortable writing R code, knows the kinds of graphs he’d like to build, but he only knows how to build these using the base R graphics. He’d like to learn how to duplicate the graphs he’s already created in base R using ggplot2.\n\n\nBecause this is intended to be a field manual (and not a textbook), I’ve omitted most of the underlying principles and structure of the ggplot2 syntax.\n\nIf you’re looking for a comprehensive resource on ggplot2, I recommend the excellent free text, the ggplot2 website, and Data Visualization: a practical guide by Kieran Healy.\nIf you know the graph you’d like to build, and you’re just looking for the code or package(s) to build it, I’d check out the R graph gallery or R graphics cookbook.\n\nGraphs have been categorized into the following types:\n\nUnivariate: if you have a single column you’re trying to visualize\nAmounts: counts or simple summary statistics of one or two columns in a dataset\nProportions: ratio displays of part-to-whole\nDistributions: displaying the shape of a variable’s values (normalcy, skewness, kurtosis, etc.)\nRelationships: how does the change of values in variable x affect the values in variable y (and possibly z)?\n\nSome graphs can justifiably belong to more than one category, and wherever this is the case, I’ve tried to include links to other applications in the notes.\n\nThe field manual follows a Rule of Least Power Principle, in the sense that “a language with a straightforward syntax may be easier to analyze than an otherwise equivalent one with more complex structure.”\nIn other words, assuming the reader has some understanding of R and the tidyverse, the code for each graph is meant to be read and understood without having to run it.\nEach graph has, at minimum, the following sections and tabs:\n\n\nGraph info\n\n\nShould I use this graph?\n\n\nThis graph requires:\n\n\n\n\nDescription\n\n\nGetting set up\n\n\nPackages and Data\n\nCode for installing development version of packages (if necessary) for graphs and data\n\nAny steps used to create (i.e., manipulate and prepare) the data for the graph\n\n\n\n\n\n\nThe grammar\n\n\nCode to build the labels and graph layers\n\nGraph labels have the labs_ prefix\n\nGraph layers have a ggp2_ prefix\n\n\n\n\n\n\nMore info\n\n\nAdditional methods, arguments, or applications\n\nColor palettes\n\nComplimentary packages\n\n\n\n\n\n\n\n\n\n\n\nExpand to view an example of the graph code structure\n\n\n\n\n\n\nDescription of the graph\n\n\n\nPackages\nData\n\n\n\n\nPACKAGES:\n\n\nInstall packages.\n\n\n\nCodelibrary(ggplot2)\n\n\n\n\n\n\nDATA:\n\n\n\nDescription of data\n\n\n\nCodedf <- tibble::tibble(X = sample(x = 1:100, 10, FALSE),\n                     Y = rlnorm(10, 1, 3))\n\n\n\n\n\n\n\n\n\nCode\nGraph\n\n\n\n\nCODE:\n\n\nCode for creating graph\n\n\n\nCode# labels\nlabs_graph <- ggplot2::labs(title = \"Title\", \n                            subtitle = \"subtitle\", \n                            x = \"X\", y = \"Y\")\n# layers\nggp2_graph <- ggplot2::ggplot(data = df, \n    mapping = aes(x = X, y = Y)) + \n    ggplot2::geom_blank()\n# graph\nggp2_graph + \n    labs_graph\n\n\n\n\n\n\nGRAPH:\n\n\n\n\n\n\n\n\n\n\n\n\n\nCode Style:\nI’ve attempted to balance brevity and clarity, but with the assumption that its best to err on the latter. I’ve also followed the general principle that if a graph can be easily built using one of ggplot2 ’s geom_* functions, that method is shown first.\n. ## Theme\nThe theme used in the graphs is custom and uses combined elements from ggplot2::theme_minimal() and ggplot2::theme_void(). View it here."
   },
   {
     "objectID": "univariate.html",
     "href": "univariate.html",
     "title": "Univariate",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "bar_graphs.html",
     "href": "bar_graphs.html",
     "title": "Bar graphs",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "bar_graphs.html#description",
@@ -53,7 +53,7 @@
     "href": "histograms.html",
     "title": "Histograms",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "histograms.html#description",
@@ -81,7 +81,7 @@
     "href": "frequency_polygons.html",
     "title": "Frequency polygons",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "frequency_polygons.html#description",
@@ -109,7 +109,7 @@
     "href": "dot_plots.html",
     "title": "Dot plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "dot_plots.html#description",
@@ -137,7 +137,7 @@
     "href": "density_plots.html",
     "title": "Density plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "density_plots.html#description",
@@ -165,7 +165,7 @@
     "href": "violin_plots.html",
     "title": "Violin plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "violin_plots.html#description",
@@ -193,7 +193,7 @@
     "href": "box_plots.html",
     "title": "Box plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "box_plots.html#description",
@@ -221,14 +221,14 @@
     "href": "amounts.html",
     "title": "Amounts",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is still in development and may be confusing or incomplete."
+    "text": "This graph is still in development and may be confusing or incomplete."
   },
   {
     "objectID": "grp_bar_graphs.html",
     "href": "grp_bar_graphs.html",
     "title": "Grouped bar graphs",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "grp_bar_graphs.html#description",
@@ -361,7 +361,7 @@
     "href": "waffle_charts.html",
     "title": "Waffle charts",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "waffle_charts.html#description",
@@ -424,14 +424,14 @@
     "href": "proportions.html",
     "title": "Proportions",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is still in development and may be confusing or incomplete."
+    "text": "This graph is still in development and may be confusing or incomplete."
   },
   {
     "objectID": "diverging_bar_graphs.html",
     "href": "diverging_bar_graphs.html",
     "title": "Diverging bar graphs",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "diverging_bar_graphs.html#description",
@@ -466,7 +466,7 @@
     "href": "stacked_filled_density_graphs.html",
     "title": "Stacked densities",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "stacked_filled_density_graphs.html#description",
@@ -494,7 +494,7 @@
     "href": "mosaic_plots.html",
     "title": "Mosaic plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "mosaic_plots.html#description",
@@ -529,7 +529,7 @@
     "href": "pie_charts.html",
     "title": "Pie charts",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "pie_charts.html#description",
@@ -557,7 +557,7 @@
     "href": "treemaps.html",
     "title": "Treemaps",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "treemaps.html#description",
@@ -592,7 +592,7 @@
     "href": "stream_plots.html",
     "title": "Stream plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "stream_plots.html#description",
@@ -627,14 +627,14 @@
     "href": "distributions.html",
     "title": "Distributions",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is still in development and may be confusing or incomplete."
+    "text": "This graph is still in development and may be confusing or incomplete."
   },
   {
     "objectID": "overlapping_histograms.html",
     "href": "overlapping_histograms.html",
     "title": "Overlapping histograms",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "overlapping_histograms.html#description",
@@ -662,7 +662,7 @@
     "href": "overlapping_frequency_polygons.html",
     "title": "Overlapping frequency polygons",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "overlapping_frequency_polygons.html#description",
@@ -690,7 +690,7 @@
     "href": "overlapping_dot_plots.html",
     "title": "Overlapping dot plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "overlapping_dot_plots.html#description",
@@ -718,7 +718,7 @@
     "href": "beeswarm_plots.html",
     "title": "Beeswarm plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "beeswarm_plots.html#description",
@@ -753,7 +753,7 @@
     "href": "overlapping_stacked_density_plots.html",
     "title": "Overlapping density plot",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "overlapping_stacked_density_plots.html#description",
@@ -788,7 +788,7 @@
     "href": "ridgeline_plots.html",
     "title": "Ridgeline plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "ridgeline_plots.html#description",
@@ -816,7 +816,7 @@
     "href": "grouped_box_plots.html",
     "title": "Grouped box plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph should be readable but is currently undergoing final polishing."
+    "text": "This graph should be readable but is currently undergoing final polishing."
   },
   {
     "objectID": "grouped_box_plots.html#description",
@@ -851,7 +851,7 @@
     "href": "grouped_violin_plots.html",
     "title": "Grouped violin plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "grouped_violin_plots.html#description",
@@ -879,7 +879,7 @@
     "href": "raincloud_plots.html",
     "title": "Raincloud plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "raincloud_plots.html#description",
@@ -921,14 +921,14 @@
     "href": "relationships.html",
     "title": "Relationships",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is still in development and may be confusing or incomplete."
+    "text": "This graph is still in development and may be confusing or incomplete."
   },
   {
     "objectID": "scatter_plot.html",
     "href": "scatter_plot.html",
     "title": "Scatter plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "scatter_plot.html#description",
@@ -956,7 +956,7 @@
     "href": "grouped_scatter_plots.html",
     "title": "Grouped scatter plots",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "grouped_scatter_plots.html#description",
@@ -984,7 +984,7 @@
     "href": "bubble_charts.html",
     "title": "Bubble charts",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "bubble_charts.html#description",
@@ -1012,7 +1012,7 @@
     "href": "grouped_bubble_charts.html",
     "title": "Grouped bubble graph",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "grouped_bubble_charts.html#description",
@@ -1047,7 +1047,7 @@
     "href": "line_graphs.html",
     "title": "Line graphs",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "line_graphs.html#description",
@@ -1075,7 +1075,7 @@
     "href": "grp_line_graphs.html",
     "title": "Grouped line graphs",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "grp_line_graphs.html#description",
@@ -1110,7 +1110,7 @@
     "href": "alluvial_charts.html",
     "title": "Alluvial charts",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "alluvial_charts.html#description",
@@ -1145,7 +1145,7 @@
     "href": "parallel_sets.html",
     "title": "Parallel sets",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "parallel_sets.html#description",
@@ -1180,7 +1180,7 @@
     "href": "bump_charts.html",
     "title": "Bump charts",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "bump_charts.html#description",
@@ -1208,7 +1208,7 @@
     "href": "slope_graphs.html",
     "title": "Slope graphs",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "slope_graphs.html#description",
@@ -1243,7 +1243,7 @@
     "href": "density_contours.html",
     "title": "Density contours",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "density_contours.html#description",
@@ -1292,7 +1292,7 @@
     "href": "bins_2d.html",
     "title": "2D histograms",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "bins_2d.html#description",
@@ -1327,7 +1327,7 @@
     "href": "hex_bins.html",
     "title": "Hexagon bins",
     "section": "",
-    "text": "You are reading a work-in-progress. This graph is largely complete and just needs final proof reading."
+    "text": "This graph is largely complete and just needs final proof reading."
   },
   {
     "objectID": "hex_bins.html#description",

@@ -1,0 +1,421 @@
+# Instance chart {.unnumbered}
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+source("_common.R")
+# use font
+showtext::showtext_auto()
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 12))
+```
+
+```{r}
+#| label: status
+#| results: "asis"
+#| echo: false
+# status ----
+# polish, dev, draft, complete
+status("complete")
+```
+
+
+:::: {.callout-note collapse="false" icon=false}
+## Graph info
+::: {style="font-size: 1.25em; color: #007bff;"}
+**Should I use this graph?**
+:::
+
+<br>
+
+```{r}
+#| label: full_code_display
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: right
+library(palmerpenguins) 
+library(ggplot2movies)
+library(ggplot2)
+library(babynames)
+beatles <- c("John", "Paul", "George", "Ringo")
+beatle_bby_nms <- babynames::babynames |> 
+  dplyr::filter(year > 1900 & name %in% beatles & n > 0) 
+labs_inst_beatles <- labs(
+  title = "Beatles name appearances over time", 
+  subtitle = "Appearances of John, Paul, George and Ringo since 1900",
+  x = "Year", y = "Name")
+ggp2_inst_beatles <- ggplot(data = beatle_bby_nms, 
+    mapping = aes(x = year, y = name, color = name)) + 
+  geom_point(shape = 124, size = 5, show.legend = FALSE)
+ggp2_inst_beatles + 
+  labs_inst_beatles
+```
+
+::: {style="font-size: 1.10em; color: #007bff;"}
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a categorical variable**      
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a numeric (count) variable**
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a numeric (date) variable**
+:::
+
+::::
+
+## Description 
+
+<!-- Description of graph aesthetics, appropriate use, similar graphs, etc.  -->
+
+## Getting set up 
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_inst
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+install.packages("babynames")
+library(babynames)
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {.column-margin}
+![](www/ssa.png){fig-align="center" width="30%" height="30%"}
+:::
+
+<!-- 
+::: {.column-margin}
+![Artwork by @allison_horst](www/lter_penguins.png){fig-align="right" width="30%" height="30%"}
+![](www/538.png){fig-align="right" width="15%" height="15%"}
+![](www/imdb.png){fig-align="right" width="20%" height="20%"}
+:::
+-->
+
+
+
+::: {style="font-size: 0.85em;"}
+<!-- Description of data -->
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_code_inst
+#| eval: true
+#| echo: true
+library(babynames)
+beatles <- c("John", "Paul", "George", "Ringo")
+beatle_bby_nms <- babynames::babynames |> 
+  dplyr::filter(year > 1900 & name %in% beatles & n > 0) 
+```
+:::
+::::
+
+## The grammar
+
+:::: {.panel-tabset}
+
+### Code
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**CODE:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()`
+
+Initialize the graph with `ggplot()` and provide `data`
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: code_graph_
+#| eval: false
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_inst_beatles <- labs(
+  title = "Beatles name appearances over time", 
+  subtitle = "Appearances of John, Paul, George and Ringo since 1900",
+  x = "Year", y = "Name")
+ggp2_inst_beatles <- ggplot(data = beatle_bby_nms, 
+    mapping = aes(x = year, y = name, color = name)) + 
+      geom_point(shape = 124, 
+                 size = 7, 
+                 show.legend = FALSE)
+ggp2_inst_beatles + 
+  labs_inst_beatles
+```
+:::
+
+### Graph
+
+:::: {.column-margin}
+::: {style="font-size: 0.80em; color: #02577A;"}
+<!-- More description of graph and code.  -->
+:::
+::::
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**GRAPH:**
+:::
+
+```{r}
+#| label: create_graph_
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_inst_beatles <- labs(
+  title = "Beatles name appearances over time",
+  subtitle = "Appearances of John, Paul, George and Ringo since 1900",
+  x = "Year",
+  y = "Name"
+)
+ggp2_inst_beatles <- ggplot(data = beatle_bby_nms,
+    mapping = aes(x = year, y = name, color = name)) +
+      geom_point(shape = 124, 
+                 size = 7, 
+                 show.legend = FALSE)
+ggp2_inst_beatles +
+  labs_inst_beatles
+```
+
+::::
+
+## More info
+
+:::: {.panel-tabset}
+
+### Color
+
+:::: {.column-margin}
+::: {style="font-size: 0.80em; color: #02577A;"}
+Info 
+:::
+::::
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**COLOR:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: more_info_color
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+bbynms_ngt_55k <- babynames::babynames |> 
+  dplyr::filter(n > 50000) 
+
+min_ngt_55k_nms <- min(bbynms_ngt_55k$year, na.rm = TRUE)
+max_ngt_55k_nms <- max(bbynms_ngt_55k$year, na.rm = TRUE)
+
+labs_inst_ngt_55k <- labs(
+  title = "Popular Baby Names", 
+  subtitle = paste(
+    "Name appearances over 50K times between ", 
+    min_ngt_55k_nms, 
+    " and ", 
+    max_ngt_55k_nms),
+  x = "Year",
+  y = "Name")
+
+ggp2_inst_ngt_55k <- ggplot(data = bbynms_ngt_55k, 
+    mapping = aes(x = year, y = name, color = sex)) +
+      geom_point(shape = "|", # 124
+                 size = 3.2) + 
+  xlim(c(min_ngt_55k_nms, max_ngt_55k_nms))
+
+ggp2_inst_ngt_55k + 
+  labs_inst_ngt_55k + 
+  theme(legend.position = "top")
+```
+
+:::
+
+### Facets 
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**FACETS:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: bby_nms_fct
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+bby_nms_fct <- babynames::babynames |> 
+  dplyr::mutate(
+    # proportion range 
+    prop_range = ggplot2::cut_interval(x = prop, length = 0.01),
+    prop_range = stringr::str_replace_all(prop_range, "\\[", "("),
+    prop_range = stringr::str_replace_all(prop_range, "\\]", ")"),
+    prop_range = stringr::str_replace_all(prop_range, ",", " - "),
+    prop_range = factor(prop_range, 
+      labels = c("(0.07 - 0.08)", "(0.02 - 0.03)", 
+                  "(0.01 - 0.02)", "(0 - 0.01)", 
+                  "(0.08 - 0.09)", "(0.05 - 0.06)",
+                  "(0.04 - 0.05)", "(0.06 - 0.07)", 
+                  "(0.03 - 0.04)"), ordered = TRUE),
+    # year range 
+    year_range = ggplot2::cut_width(year, width = 10),
+    year_range = stringr::str_replace_all(year_range, "\\[", "("),
+    year_range = stringr::str_replace_all(year_range, "\\]", ")"),
+    decade = stringr::str_replace_all(year_range, ",", " - "),
+    decade = factor(decade, 
+      labels = c(
+        "(1875 - 1885)", "(1885 - 1895)", "(1895 - 1905)", 
+        "(1905 - 1915)", "(1915 - 1925)", "(1925 - 1935)", 
+        "(1935 - 1945)", "(1945 - 1955)", "(1955 - 1965)", 
+        "(1965 - 1975)", "(1975 - 1985)", "(1985 - 1995)", 
+        "(1995 - 2005)", "(2005 - 2015)", "(2015 - 2025)"), 
+      ordered = TRUE)) |> 
+    dplyr::select(-year_range)
+dplyr::glimpse(bby_nms_fct)
+```
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: bby_nms_facet
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+bby_nms_fct |> 
+  dplyr::filter(year >= 1875 & year <= 1935 & prop > 0.05) |>
+  ggplot(mapping = aes(x = year, y = name, color = name, group = prop_range)) +
+      geom_point(shape = "|", # 124
+                 size = 3, 
+        show.legend = FALSE) + 
+  facet_wrap(decade ~ prop_range, ncol = 4)
+```
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+
+```
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: baby_name_trends
+#| eval: false
+#| echo: false
+#| warning: false
+#| message: false
+baby_name_trends <- function(start_year, end_year, proportion) {
+  bby_nms_fct <- babynames::babynames |> 
+  dplyr::mutate(
+    # proportion range 
+    prop_range = ggplot2::cut_interval(x = prop, length = 0.01),
+    prop_range = stringr::str_replace_all(prop_range, "\\[", "("),
+    prop_range = stringr::str_replace_all(prop_range, "\\]", ")"),
+    prop_range = stringr::str_replace_all(prop_range, ",", " - "),
+    prop_range = factor(prop_range, 
+      labels = c("(0.07 - 0.08)", "(0.02 - 0.03)", 
+                  "(0.01 - 0.02)", "(0 - 0.01)", 
+                  "(0.08 - 0.09)", "(0.05 - 0.06)",
+                  "(0.04 - 0.05)", "(0.06 - 0.07)", 
+                  "(0.03 - 0.04)"), ordered = TRUE),
+    # year range 
+    year_range = ggplot2::cut_width(year, width = 10),
+    year_range = stringr::str_replace_all(year_range, "\\[", "("),
+    year_range = stringr::str_replace_all(year_range, "\\]", ")"),
+    decade = stringr::str_replace_all(year_range, ",", " - "),
+    decade = factor(decade, 
+      labels = c(
+        "(1875 - 1885)", "(1885 - 1895)", "(1895 - 1905)", 
+        "(1905 - 1915)", "(1915 - 1925)", "(1925 - 1935)", 
+        "(1935 - 1945)", "(1945 - 1955)", "(1955 - 1965)", 
+        "(1965 - 1975)", "(1975 - 1985)", "(1985 - 1995)", 
+        "(1995 - 2005)", "(2005 - 2015)", "(2015 - 2025)"), 
+      ordered = TRUE)) |> 
+    dplyr::select(-year_range)
+  
+    graph_data <- dplyr::filter(.data = bby_nms_fct, 
+      year >= start_year & year <= end_year & prop > proportion)
+    
+    ggplot(data = graph_data, 
+      mapping = aes(x = year, y = name, color = name, group = prop_range)) +
+        geom_point(shape = "|", # 124
+                   size = 3, 
+          show.legend = FALSE) + 
+    facet_wrap(decade ~ prop_range, ncol = 4) + 
+      labs(title = "Baby name popularity by decade and proprotion",
+        subtitle = paste0("From", start_year, " to ", end_year, ", proportion = ", proportion),
+        x = "Name", y = "Year")
+}
+```
+:::
+
+
+::::
