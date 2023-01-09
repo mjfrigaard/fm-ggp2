@@ -89,8 +89,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./parallel_sets.html" rel="next">
-<link href="./grouped_bubble_charts.html" rel="prev">
+<link href="./relationships.html" rel="next">
+<link href="./stream_plots.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -365,6 +365,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./stream_plots.html" class="sidebar-item-text sidebar-link">Stream plots</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./alluvial_charts.html" class="sidebar-item-text sidebar-link active">Alluvial charts</a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -393,11 +398,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./grouped_bubble_charts.html" class="sidebar-item-text sidebar-link">Grouped bubble graph</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./alluvial_charts.html" class="sidebar-item-text sidebar-link active">Alluvial charts</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -519,7 +519,7 @@ Graph info
 <p><strong>✅ multiple categorical variables</strong></p>
 </div>
 <div style="font-size: 1.05em; color: #fa7b3c;">
-<p><strong>✅ a date variable</strong></p>
+<p><strong>✅ a date or time variable</strong></p>
 </div>
 </div>
 </div>
@@ -574,7 +574,7 @@ Graph info
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">island</span>, <span class="va">sex</span>, <span class="va">species</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>freq <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span>
-<span><span class="fu">glimpse</span><span class="op">(</span><span class="va">peng_wide</span><span class="op">)</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">peng_wide</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 30</span></span>
 <span><span class="co">#&gt; Columns: 5</span></span>
 <span><span class="co">#&gt; $ year    &lt;fct&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, …</span></span>
@@ -588,13 +588,13 @@ Graph info
 </div>
 </div>
 </div>
-</section><section id="the-grammar" class="level2"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
-<div class="panel-tabset">
+</section><section id="the-grammar" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
+<div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Code</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Graph</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content page-columns page-full">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -625,6 +625,7 @@ Graph info
 <span>      size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ggp2_alluvial_w</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span>
 <span>  <span class="va">labs_alluvial</span> <span class="op">+</span> </span>
 <span>  <span class="va">labs_alluvial_y</span> <span class="op">+</span> </span>
 <span>  <span class="va">labs_alluvial_fill</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -632,32 +633,35 @@ Graph info
 </div>
 </div>
 </div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="tabset-2-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
 <div style="font-size: 0.85em;">
 <p>The <code>ggalluvial</code> functions can handle wide or long data.</p>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="alluvial_charts_files/figure-html/create_graph_alluvial-1.png" style="width:100.0%;height:100.0%"></p>
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="alluvial_charts_files/figure-html/create_graph_alluvial-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
 </div>
-</section><section id="more-info" class="level2"><h2 class="anchored" data-anchor-id="more-info">More info</h2>
+</div>
+</section><section id="more-info" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="more-info">More info</h2>
 <p>The <code>ggalluvial</code> package can also help reshape data with the <code><a href="http://corybrunson.github.io/ggalluvial/reference/alluvial-data.html">to_lodes_form()</a></code> function.</p>
-<div class="panel-tabset">
+<div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Data</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Graph</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true"><code>to_lodes_form()</code></a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false"><code>geom_flow()</code></a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false"><code>legend.position</code></a></li>
 </ul>
-<div class="tab-content">
-<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="tab-content page-columns page-full">
+<div id="tabset-3-1" class="tab-pane active page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
-<p><strong>DATA:</strong></p>
+<p><strong>to_lodes_form():</strong></p>
 </div>
 <div style="font-size: 0.85em;">
 <p>Below we create <code>peng_lodes</code> from the <code>penguins</code> dataset using the <code><a href="http://corybrunson.github.io/ggalluvial/reference/alluvial-data.html">to_lodes_form()</a></code> from the <code>ggalluvial</code> package.</p>
@@ -683,11 +687,6 @@ Graph info
 </details>
 </div>
 </div>
-</div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div style="font-size: 1.15em; color: #1e83c8;">
-<p><strong>CODE:</strong></p>
-</div>
 <div style="font-size: 0.85em;">
 <p>Create labels with <code><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs()</a></code></p>
 <p>Map <code>Measure</code> to <code>x</code>, <code>Frequency</code> to <code>y</code>, <code>stratum</code> to <code>stratum</code>, <code>alluvium</code> to <code>alluvium</code>, and <code>label</code> to <code>stratum</code>.</p>
@@ -695,10 +694,121 @@ Graph info
 <p>Add the <code><a href="http://corybrunson.github.io/ggalluvial/reference/geom_stratum.html">geom_stratum()</a></code> and set the <code>width</code> to <code>0.45</code></p>
 <p>Add <code><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text()</a></code> and set <code>stat</code> to <code>"stratum"</code></p>
 </div>
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
+<details><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_alluvial</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Palmer Penguins"</span>, </span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Stratified by year, island and species"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ggp2_alluvial_lf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">peng_lodes</span>,</span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Measure</span>,</span>
+<span>        y <span class="op">=</span> <span class="va">Freqency</span>,</span>
+<span>        stratum <span class="op">=</span> <span class="va">stratum</span>,</span>
+<span>        alluvium <span class="op">=</span> <span class="va">alluvium</span>,</span>
+<span>        label <span class="op">=</span> <span class="va">stratum</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ggalluvial</span><span class="fu">::</span><span class="fu"><a href="http://corybrunson.github.io/ggalluvial/reference/geom_alluvium.html">geom_alluvium</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">Sex</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ggalluvial</span><span class="fu">::</span><span class="fu"><a href="http://corybrunson.github.io/ggalluvial/reference/geom_stratum.html">geom_stratum</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.45</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"stratum"</span>, size <span class="op">=</span> <span class="fl">2.5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ggp2_alluvial_lf</span> <span class="op">+</span></span>
+<span>    <span class="va">labs_alluvial</span> <span class="op">+</span></span>
+<span>    <span class="fu">theme_ggp2g</span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">13</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="alluvial_charts_files/figure-html/create_graph_alluvial_lf-1.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div style="font-size: 1.15em; color: #1e83c8;">
+<p><strong>geom_flow():</strong></p>
+</div>
+<div style="font-size: 0.85em;">
+<p>If you’d like to arrange the date or time variable across the <code>x</code>, you can use the <code><a href="http://corybrunson.github.io/ggalluvial/reference/geom_flow.html">ggalluvial::geom_flow()</a></code> with <code><a href="http://corybrunson.github.io/ggalluvial/reference/geom_stratum.html">ggalluvial::geom_stratum()</a></code>.</p>
+<p>First create <code>peng_alluvial</code>, a subset of <code><a href="https://allisonhorst.github.io/palmerpenguins/reference/penguins_raw.html">palmerpenguins::penguins_raw</a></code> with all variables turned to factors.</p>
+</div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<div class="cell-output-display">
-<p><img src="alluvial_charts_files/figure-html/create_graph_alluvial_lf-1.png" style="width:100.0%;height:100.0%"></p>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">peng_alluvial</span> <span class="op">&lt;-</span> <span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/reference/penguins_raw.html">penguins_raw</a></span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/janitor/man/clean_names.html">clean_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html">year</a></span><span class="op">(</span><span class="va">date_egg</span><span class="op">)</span>,</span>
+<span>         year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span>,</span>
+<span>         individual_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">individual_id</span><span class="op">)</span>,</span>
+<span>         island <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">island</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">individual_id</span>, <span class="va">island</span><span class="op">)</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">peng_alluvial</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 344</span></span>
+<span><span class="co">#&gt; Columns: 3</span></span>
+<span><span class="co">#&gt; $ year          &lt;fct&gt; 2007, 2007, 2007, 2007, 2007, 2007, …</span></span>
+<span><span class="co">#&gt; $ individual_id &lt;fct&gt; N1A1, N1A2, N2A1, N2A2, N3A1, N3A2, …</span></span>
+<span><span class="co">#&gt; $ island        &lt;fct&gt; Torgersen, Torgersen, Torgersen, Tor…</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div style="font-size: 0.85em;">
+<p>Create labels with <code><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs()</a></code></p>
+<p>Initiate graph with <code>data</code></p>
+<p>Map the <code>year</code> to the <code>x</code>, <code>island</code> to <code>stratum</code>, <code>individual_id</code> to <code>alluvium</code>, <code>island</code> to <code>fill</code>, and <code>island</code> to <code>label</code>.</p>
+<p>Add <code><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_brewer()</a></code>, and set the <code>type</code> to <code>"qual"</code> and choose a <code>palette</code></p>
+<p>Add the <code><a href="http://corybrunson.github.io/ggalluvial/reference/geom_flow.html">geom_flow()</a></code>, with <code>stat</code> set to <code>"alluvium"</code>, <code>lode.guidance</code> set to <code>"frontback"</code>, and <code>color</code> to <code>"#A9A9A9"</code></p>
+<p>Add <code><a href="http://corybrunson.github.io/ggalluvial/reference/geom_stratum.html">ggalluvial::geom_stratum()</a></code></p>
+</div>
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
+<details><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># labels</span></span>
+<span><span class="va">labs_alluvial</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>  title <span class="op">=</span> <span class="st">"Penguin measurements across three years"</span><span class="op">)</span></span>
+<span><span class="co"># add geom_flow() </span></span>
+<span><span class="va">ggp2_alluvial_flow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">peng_alluvial</span>,</span>
+<span>  mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, stratum <span class="op">=</span> <span class="va">island</span>, </span>
+<span>    alluvium <span class="op">=</span> <span class="va">individual_id</span>, </span>
+<span>    fill <span class="op">=</span> <span class="va">island</span>, label <span class="op">=</span> <span class="va">island</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_brewer</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"qual"</span>, palette <span class="op">=</span> <span class="st">"Pastel2"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="http://corybrunson.github.io/ggalluvial/reference/geom_flow.html">geom_flow</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"alluvium"</span>,</span>
+<span>    lode.guidance <span class="op">=</span> <span class="st">"frontback"</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"#A9A9A9"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ggp2_alluvial_flow</span></span>
+<span></span>
+<span><span class="co"># add geom_stratum()</span></span>
+<span><span class="va">ggp2_alluvial_stratum</span> <span class="op">&lt;-</span> <span class="va">ggp2_alluvial_flow</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="http://corybrunson.github.io/ggalluvial/reference/geom_stratum.html">geom_stratum</a></span><span class="op">(</span><span class="op">)</span> </span>
+<span><span class="va">ggp2_alluvial_stratum</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="alluvial_charts_files/figure-html/ggp2_alluvial_flow-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="alluvial_charts_files/figure-html/ggp2_alluvial_flow-2.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-3" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+<div style="font-size: 1.15em; color: #1e83c8;">
+<p><strong>legend.position:</strong></p>
+</div>
+<div style="font-size: 0.85em;">
+<p>Move legend to bottom with <code>theme(legend.position = "bottom")</code></p>
+</div>
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
+<details><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_alluvial_stratum</span> <span class="op">+</span> </span>
+<span>  <span class="va">labs_alluvial</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="alluvial_charts_files/figure-html/ggp2_alluvial_legend_position-1.png" class="img-fluid"></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -918,13 +1028,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./grouped_bubble_charts.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Grouped bubble graph</span>
+      <a href="./stream_plots.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Stream plots</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./parallel_sets.html" class="pagination-link">
-        <span class="nav-page-text">Parallel sets</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./relationships.html" class="pagination-link">
+        <span class="nav-page-text">RELATIONSHIPS</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

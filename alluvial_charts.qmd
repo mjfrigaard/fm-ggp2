@@ -77,16 +77,14 @@ ggp2_alluvial_w <- ggplot(data = peng_wide,
   geom_alluvium(aes(fill = sex)) +
   geom_stratum() +
   geom_text(stat = "stratum", 
-    aes(label = after_stat(stratum)), 
+    aes(label = after_stat(stratum)),
       size = 3)
 
-ggalluvial_wide <- ggp2_alluvial_w + 
+ggp2_alluvial_w + 
+  theme(legend.position = "bottom") +
   labs_alluvial + 
   labs_alluvial_y + 
-  labs_alluvial_fill + 
-    theme_ggp2g(base_size = 12)
-
-ggalluvial_wide
+  labs_alluvial_fill
 ```
 
 ::: {style="font-size: 1.10em; color: #007bff;"}
@@ -98,7 +96,7 @@ ggalluvial_wide
 :::
 
 ::: {style="font-size: 1.05em; color: #fa7b3c;"}
-**`r emo::ji("check")` a date variable**    
+**`r emo::ji("check")` a date or time variable**    
 :::
 
 ::::
@@ -166,7 +164,7 @@ peng_wide <- penguins |>
   dplyr::count(year, island, sex, species) |> 
   dplyr::mutate(year = factor(year)) |> 
   dplyr::rename(freq = n)
-glimpse(peng_wide)
+dplyr::glimpse(peng_wide)
 ```
 :::
 ::::
@@ -220,6 +218,7 @@ ggp2_alluvial_w <- ggplot(data = peng_wide,
       size = 3)
 
 ggp2_alluvial_w + 
+  theme(legend.position = "bottom")
   labs_alluvial + 
   labs_alluvial_y + 
   labs_alluvial_fill
@@ -244,6 +243,8 @@ The `ggalluvial` functions can handle wide or long data.
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_alluvial <- ggtitle(label = "Palmer Penguins", 
     subtitle = "Stratified by year, island and species")
 labs_alluvial_y <- ylab("Frequency") 
@@ -259,13 +260,13 @@ ggp2_alluvial_w <- ggplot(data = peng_wide,
   geom_stratum() +
   geom_text(stat = "stratum", 
     aes(label = after_stat(stratum)),
-      size = 2.5)
+      size = 3)
 
 ggp2_alluvial_w + 
+  theme(legend.position = "bottom") +
   labs_alluvial + 
   labs_alluvial_y + 
-  labs_alluvial_fill + 
-    theme_ggp2g(base_size = 13)
+  labs_alluvial_fill
 ```
 
 ::::
@@ -276,10 +277,10 @@ The `ggalluvial` package can also help reshape data with the `to_lodes_form()` f
 
 :::: {.panel-tabset}
 
-### Data 
+### `to_lodes_form()` 
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
+**to_lodes_form():**
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -303,12 +304,6 @@ glimpse(peng_lodes)
 ```
 :::
 
-### Graph
-
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
-
 ::: {style="font-size: 0.85em;"}
 
 Create labels with `labs()`
@@ -326,12 +321,15 @@ Add `geom_text()` and set `stat` to `"stratum"`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: create_graph_alluvial_lf
+#| code-fold: true
 #| eval: true
-#| echo: false
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_alluvial <- ggtitle(label = "Palmer Penguins", 
     subtitle = "Stratified by year, island and species")
 
@@ -349,6 +347,115 @@ ggp2_alluvial_lf <- ggplot(
 ggp2_alluvial_lf +
     labs_alluvial +
     theme_ggp2g(base_size = 13)
+```
+:::
+
+### `geom_flow()` 
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**geom_flow():**
+:::
+
+::: {style="font-size: 0.85em;"}
+If you'd like to arrange the date or time variable across the `x`, you can use the `ggalluvial::geom_flow()` with `ggalluvial::geom_stratum()`. 
+
+First create `peng_alluvial`, a subset of `palmerpenguins::penguins_raw` with all variables turned to factors. 
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: peng_alluvial
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+peng_alluvial <- palmerpenguins::penguins_raw |> 
+  janitor::clean_names() |> 
+  dplyr::mutate(year = lubridate::year(date_egg),
+         year = factor(year),
+         individual_id = factor(individual_id),
+         island = factor(island)) |> 
+  dplyr::select(year, individual_id, island)
+dplyr::glimpse(peng_alluvial)
+```
+:::
+
+::: {style="font-size: 0.85em;"}
+Create labels with `labs()`
+
+Initiate graph with `data`
+
+Map the `year` to the `x`, `island` to `stratum`, `individual_id` to `alluvium`, `island` to `fill`, and `island` to `label`.
+
+Add `scale_fill_brewer()`, and set the `type` to `"qual"` and choose a `palette`
+
+Add the `geom_flow()`, with `stat` set to `"alluvium"`, `lode.guidance` set to `"frontback"`, and `color` to `"#A9A9A9"`
+
+Add `ggalluvial::geom_stratum()`
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: ggp2_alluvial_flow
+#| code-fold: true
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+# labels
+labs_alluvial <- labs(
+  title = "Penguin measurements across three years")
+# add geom_flow() 
+ggp2_alluvial_flow <- ggplot(data = peng_alluvial,
+  mapping = aes(x = year, stratum = island, 
+    alluvium = individual_id, 
+    fill = island, label = island)) +
+  scale_fill_brewer(type = "qual", palette = "Pastel2") +
+  geom_flow(stat = "alluvium",
+    lode.guidance = "frontback",
+    color = "#A9A9A9")
+
+ggp2_alluvial_flow
+
+# add geom_stratum()
+ggp2_alluvial_stratum <- ggp2_alluvial_flow +
+  geom_stratum() 
+ggp2_alluvial_stratum
+```
+:::
+
+### `legend.position`
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**legend.position:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Move legend to bottom with `theme(legend.position = "bottom")`
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: ggp2_alluvial_legend_position
+#| code-fold: true
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+ggp2_alluvial_stratum + 
+  labs_alluvial + 
+  theme(legend.position = "bottom")
 ```
 :::
 
