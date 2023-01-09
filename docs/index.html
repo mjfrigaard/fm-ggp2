@@ -455,14 +455,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
 <li><a href="#intent" id="toc-intent" class="nav-link" data-scroll-target="#intent">Intent</a></li>
   <li>
-<a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting started</a>
+<a href="#get-started" id="toc-get-started" class="nav-link" data-scroll-target="#get-started">Get started</a>
   <ul class="collapse">
-<li><a href="#install-tidyverse-option-1" id="toc-install-tidyverse-option-1" class="nav-link" data-scroll-target="#install-tidyverse-option-1">Install <code>tidyverse</code> (option 1)</a></li>
-  <li><a href="#install-ggplot2-option-2" id="toc-install-ggplot2-option-2" class="nav-link" data-scroll-target="#install-ggplot2-option-2">Install <code>ggplot2</code> (option 2)</a></li>
+<li><a href="#install-ggplot2-option-1" id="toc-install-ggplot2-option-1" class="nav-link" data-scroll-target="#install-ggplot2-option-1">Install <code>ggplot2</code> (option 1)</a></li>
+  <li><a href="#install-tidyverse-option-2" id="toc-install-tidyverse-option-2" class="nav-link" data-scroll-target="#install-tidyverse-option-2">Install <code>tidyverse</code> (option 2)</a></li>
   </ul>
 </li>
+  <li><a href="#graph-categories" id="toc-graph-categories" class="nav-link" data-scroll-target="#graph-categories">Graph Categories</a></li>
   <li>
-<a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a>
+<a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">The Data</a>
   <ul class="collapse">
 <li><a href="#palmerpenguinspenguins" id="toc-palmerpenguinspenguins" class="nav-link" data-scroll-target="#palmerpenguinspenguins"><code>palmerpenguins::penguins</code></a></li>
   <li><a href="#fivethirtyeight" id="toc-fivethirtyeight" class="nav-link" data-scroll-target="#fivethirtyeight"><code>fivethirtyeight</code></a></li>
@@ -478,7 +479,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#where-can-i-find-whats-been-left-out" id="toc-where-can-i-find-whats-been-left-out" class="nav-link" data-scroll-target="#where-can-i-find-whats-been-left-out">Where can I find what’s been left out?</a></li>
   </ul>
 </li>
-  <li><a href="#graph-categories" id="toc-graph-categories" class="nav-link" data-scroll-target="#graph-categories">Graph Categories</a></li>
   <li><a href="#code-style-structure" id="toc-code-style-structure" class="nav-link" data-scroll-target="#code-style-structure">Code style &amp; structure</a></li>
   </ul>
 </li>
@@ -505,15 +505,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   
 
 </header><section id="welcome" class="level1 unnumbered page-columns page-full"><h1 class="unnumbered">Welcome!</h1>
-<p>Welcome to the <code>ggplot2</code> field manual! The goal for this resource is to serve as a bookmark/quick reference for building graphs with <code>ggplot2</code>.</p>
+<p>Welcome to the <code>ggplot2</code> field manual! This resource was created to serve as a bookmark/quick reference for building graphs with <code>ggplot2</code>.</p>
 <section id="intent" class="level2"><h2 class="anchored" data-anchor-id="intent">Intent</h2>
 <p>This manual was written to help answer questions like,</p>
 <ul>
 <li><p>“<em>What graph should I use?</em>”</p></li>
 <li><p>“<em>Can I build this graph (given the data I have)?</em>”</p></li>
 <li><p><em>What was the name of that visualization I saw on <a href="https://twitter.com/search?lang=en&amp;q=%23tidytuesday">#TidyTuesday</a></em>?</p></li>
-</ul></section><section id="getting-started" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="getting-started">Getting started</h2>
-<section id="install-tidyverse-option-1" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="install-tidyverse-option-1">Install <code>tidyverse</code> (option 1)</h3>
+</ul></section><section id="get-started" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="get-started">Get started</h2>
+<p>In order to maximize reproducibility, this manual only relies on a few packages:</p>
+<section id="install-ggplot2-option-1" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="install-ggplot2-option-1">Install <code>ggplot2</code> (option 1)</h3>
+<p>Install <code>ggplot2</code> and the data packages using the code below:</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="www/ggplot2.png" style="width:40.0%;height:40.0%" class="figure-img"></p>
+</figure>
+</div>
+</div></div><div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"palmerpenguins"</span>, <span class="st">"fivethirtyeight"</span>, <span class="st">"ggplot2movies"</span>, <span class="st">"babynames"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">data_pkgs</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rudeboybert/fivethirtyeight">fivethirtyeight</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ggplot2movies</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/babynames">babynames</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="install-tidyverse-option-2" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="install-tidyverse-option-2">Install <code>tidyverse</code> (option 2)</h3>
 <p><code>ggplot2</code> is part of the <code>tidyverse</code>, but you can also install this package separately.</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
@@ -522,30 +542,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </figure>
 </div>
 </div></div><div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"tidyverse"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"palmerpenguins"</span>, <span class="st">"fivethirtyeight"</span>, <span class="st">"ggplot2movies"</span>, <span class="st">"babynames"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"tidyverse"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rudeboybert/fivethirtyeight">fivethirtyeight</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ggplot2movies</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/babynames">babynames</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section><section id="install-ggplot2-option-2" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="install-ggplot2-option-2">Install <code>ggplot2</code> (option 2)</h3>
-<p>Install <code>ggplot2</code> using the code below:</p>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="www/ggplot2.png" style="width:40.0%;height:40.0%" class="figure-img"></p>
-</figure>
-</div>
-</div></div><div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section></section><section id="data" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="data">Data</h2>
-<p>The data packages used in this manual are listed below. You can install them using:</p>
-<div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"palmerpenguins"</span>, <span class="st">"fivethirtyeight"</span>, <span class="st">"ggplot2movies"</span>, <span class="st">"babynames"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">data_pkgs</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
+</section></section><section id="graph-categories" class="level2"><h2 class="anchored" data-anchor-id="graph-categories">Graph Categories</h2>
+<p>Graphs have been categorized into the following types (you can see them in the floating table of contents to your left).</p>
+<ul>
+<li><p><strong>Univariate</strong>: if you have a single column you’re trying to visualize</p></li>
+<li><p><strong>Amounts</strong>: counts or simple summary statistics of one or two columns in a dataset</p></li>
+<li><p><strong>Proportions</strong>: ratio displays of part-to-whole</p></li>
+<li><p><strong>Distributions</strong>: displaying the shape of a variable’s values (normalcy, skewness, kurtosis, etc.)</p></li>
+<li><p><strong>Relationships</strong>: how does the change of values in variable <code>x</code> affect the values in variable <code>y</code> (and possibly <code>z</code>)?</p></li>
+</ul>
+<p>Some graphs can justifiably belong to more than one category, and wherever this is the case, I’ve tried to include links to other applications in the notes.</p>
+</section><section id="the-data" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="the-data">The Data</h2>
+<p>The data packages used in this manual are available to preview below.</p>
 <section id="palmerpenguinspenguins" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="palmerpenguinspenguins"><code>palmerpenguins::penguins</code></h3>
 <p>The majority of the graphs in the manual are built using the <code><a href="https://allisonhorst.github.io/palmerpenguins/reference/penguins.html">palmerpenguins::penguins</a></code> data.</p>
 
@@ -711,17 +728,7 @@ Expand to view <em>a sample</em> of the data in <code><a href="https://rdrr.io/p
 </section><section id="where-can-i-find-whats-been-left-out" class="level3"><h3 class="anchored" data-anchor-id="where-can-i-find-whats-been-left-out">Where can I find what’s been left out?</h3>
 <p>If you’re looking for a comprehensive resource on <code>ggplot2</code>, I recommend the <a href="https://ggplot2-book.org/">excellent free text</a>, the <a href="https://ggplot2.tidyverse.org/"><code>ggplot2</code> website</a>, and <a href="https://socviz.co/">Data Visualization: a practical guide</a> by Kieran Healy.</p>
 <p>If you know the graph you’d like to build, and you’re just looking for the code or package(s) to build it, I’d check out the <a href="https://r-graph-gallery.com/ggplot2-package.html">R graph gallery</a> or <a href="https://r-graphics.org/">R graphics cookbook</a>.</p>
-</section></section><section id="graph-categories" class="level2"><h2 class="anchored" data-anchor-id="graph-categories">Graph Categories</h2>
-<p>Graphs have been categorized into the following types:</p>
-<ul>
-<li><p><strong>Univariate</strong>: if you have a single column you’re trying to visualize</p></li>
-<li><p><strong>Amounts</strong>: counts or simple summary statistics of one or two columns in a dataset</p></li>
-<li><p><strong>Proportions</strong>: ratio displays of part-to-whole</p></li>
-<li><p><strong>Distributions</strong>: displaying the shape of a variable’s values (normalcy, skewness, kurtosis, etc.)</p></li>
-<li><p><strong>Relationships</strong>: how does the change of values in variable <code>x</code> affect the values in variable <code>y</code> (and possibly <code>z</code>)?</p></li>
-</ul>
-<p>Some graphs can justifiably belong to more than one category, and wherever this is the case, I’ve tried to include links to other applications in the notes.</p>
-<hr></section><section id="code-style-structure" class="level2"><h2 class="anchored" data-anchor-id="code-style-structure">Code style &amp; structure</h2>
+<hr></section></section><section id="code-style-structure" class="level2"><h2 class="anchored" data-anchor-id="code-style-structure">Code style &amp; structure</h2>
 <p>The field manual follows a <a href="https://www.w3.org/2001/tag/doc/leastPower.html">Rule of Least Power Principle</a>, in the sense that “<em>a language with a straightforward syntax may be easier to analyze than an otherwise equivalent one with more complex structure.</em>”</p>
 <p>In other words, assuming the reader has some understanding of R and the <code>tidyverse</code>, the code for each graph is meant to be read and understood <em>without</em> having to run it.</p>
 <p>Each graph has, at minimum, the following sections and tabs:</p>
@@ -812,7 +819,7 @@ Expand to view an example of the graph code structure
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
@@ -831,7 +838,7 @@ Expand to view an example of the graph code structure
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>X <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="fl">10</span>, <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>X <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="fl">10</span>, <span class="cn">FALSE</span><span class="op">)</span>,</span>
 <span>                     Y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">rlnorm</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -855,7 +862,7 @@ Expand to view an example of the graph code structure
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># labels</span></span>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># labels</span></span>
 <span><span class="va">labs_graph</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Title"</span>, </span>
 <span>                            subtitle <span class="op">=</span> <span class="st">"subtitle"</span>, </span>
 <span>                            x <span class="op">=</span> <span class="st">"X"</span>, y <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span></span>

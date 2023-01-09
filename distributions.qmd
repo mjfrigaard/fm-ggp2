@@ -1,7 +1,5 @@
 # Distributions {.unnumbered}
 
-Graphs displaying distributions.
-
 ```{r}
 #| label: setup
 #| message: false
@@ -31,5 +29,7 @@ ggplot2::theme_set(theme_ggp2g(
 #| echo: false
 # status ----
 # polish, dev, draft, complete
-status("dev")
+status("complete")
 ```
+
+**Distributions**: these graphs display the shape of a variable's values (good for assessing [normalcy](https://en.wikipedia.org/wiki/Normal_distribution), [skewness](https://en.wikipedia.org/wiki/Skewness), [kurtosis](https://en.wikipedia.org/wiki/Kurtosis), etc.)

@@ -1,7 +1,5 @@
 # Relationships {.unnumbered}
 
-Graphs displaying relationships.
-
 ```{r}
 #| label: setup
 #| message: false
@@ -31,5 +29,7 @@ ggplot2::theme_set(theme_ggp2g(
 #| echo: false
 # status ----
 # polish, dev, draft, complete
-status("dev")
+status("complete")
 ```
+
+**Relationships**: these graphs show how the change of values in variable `x` affect the values in variable `y` (and possibly `z`)? 

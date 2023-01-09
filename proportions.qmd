@@ -1,7 +1,5 @@
 # Proportions {.unnumbered}
 
-Graphs displaying proportions.
-
 ```{r}
 #| label: setup
 #| message: false
@@ -31,5 +29,8 @@ ggplot2::theme_set(theme_ggp2g(
 #| echo: false
 # status ----
 # polish, dev, draft, complete
-status("dev")
+status("complete")
 ```
+
+
+**Proportions**: These graphs display stratified counts, percentages, or part-to-whole relationships of values within variables (or between variables).

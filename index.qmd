@@ -23,7 +23,7 @@ ggplot2::theme_set(theme_ggp2g(
 
 
 
-Welcome to the `ggplot2` field manual! The goal for this resource is to serve as a bookmark/quick reference for building graphs with `ggplot2`.
+Welcome to the `ggplot2` field manual! This resource was created to serve as a bookmark/quick reference for building graphs with `ggplot2`.
 
 ## Intent
 
@@ -35,9 +35,34 @@ This manual was written to help answer questions like,
   
   - *What was the name of that visualization I saw on [#TidyTuesday](https://twitter.com/search?lang=en&q=%23tidytuesday)*?
   
-## Getting started
+## Get started
 
-### Install `tidyverse` (option 1)
+In order to maximize reproducibility, this manual only relies on a few packages:
+
+### Install `ggplot2` (option 1)
+
+Install `ggplot2` and the data packages using the code below:
+
+::: {.column-margin}
+![](www/ggplot2.png){fig-align="center" width="40%" height="40%"}
+:::
+
+```{r}
+#| label: ggp2-pkg
+#| eval: false
+#| echo: true
+#| code-fold: show
+data_pkgs <- c("palmerpenguins", "fivethirtyeight", "ggplot2movies", "babynames")
+install.packages(data_pkgs)
+install.packages("ggplot2")
+library(ggplot2)
+library(palmerpenguins)
+library(fivethirtyeight)
+library(ggplot2movies)
+library(babynames)
+```
+
+### Install `tidyverse` (option 2)
 
 `ggplot2` is part of the `tidyverse`, but you can also install this package separately.
 
@@ -50,40 +75,34 @@ This manual was written to help answer questions like,
 #| eval: false
 #| echo: true
 #| code-fold: show
+data_pkgs <- c("palmerpenguins", "fivethirtyeight", "ggplot2movies", "babynames")
 install.packages("tidyverse")
 library(tidyverse)
+library(palmerpenguins)
+library(fivethirtyeight)
+library(ggplot2movies)
+library(babynames)
 ```
 
-### Install `ggplot2` (option 2)
+## Graph Categories 
 
-Install `ggplot2` using the code below:
+Graphs have been categorized into the following types (you can see them in the floating table of contents to your left).
 
-::: {.column-margin}
-![](www/ggplot2.png){fig-align="center" width="40%" height="40%"}
-:::
+- **Univariate**: if you have a single column you're trying to visualize 
 
-```{r}
-#| label: ggp2-pkg
-#| eval: false
-#| echo: true
-#| code-fold: show
-install.packages("ggplot2")
-library(ggplot2)
-```
+- **Amounts**: counts or simple summary statistics of one or two columns in a dataset     
 
-## Data 
+- **Proportions**: ratio displays of part-to-whole    
 
-The data packages used in this manual are listed below. You can install them using: 
+- **Distributions**: displaying the shape of a variable's values (normalcy, skewness, kurtosis, etc.)    
 
-```{r}
-#| label: inst-data
-#| eval: false
-#| echo: true
-#| code-fold: show
-data_pkgs <- c("palmerpenguins", "fivethirtyeight", "ggplot2movies", "babynames")
-install.packages(data_pkgs)
-```
+- **Relationships**: how does the change of values in variable `x` affect the values in variable `y` (and possibly `z`)?   
 
+Some graphs can justifiably belong to more than one category, and wherever this is the case, I've tried to include links to other applications in the notes.
+
+## The Data 
+
+The data packages used in this manual are available to preview below. 
 
 ### `palmerpenguins::penguins`
 
@@ -226,22 +245,6 @@ Because this is intended to be a field manual (and not a textbook), I've omitted
 If you're looking for a comprehensive resource on `ggplot2`, I recommend the [excellent free text](https://ggplot2-book.org/), the [`ggplot2` website](https://ggplot2.tidyverse.org/), and [Data Visualization: a practical guide](https://socviz.co/) by Kieran Healy. 
 
 If you know the graph you'd like to build, and you're just looking for the code or package(s) to build it, I'd check out the [R graph gallery](https://r-graph-gallery.com/ggplot2-package.html) or [R graphics cookbook](https://r-graphics.org/). 
-
-## Graph Categories 
-
-Graphs have been categorized into the following types:
-
-- **Univariate**: if you have a single column you're trying to visualize 
-
-- **Amounts**: counts or simple summary statistics of one or two columns in a dataset     
-
-- **Proportions**: ratio displays of part-to-whole    
-
-- **Distributions**: displaying the shape of a variable's values (normalcy, skewness, kurtosis, etc.)    
-
-- **Relationships**: how does the change of values in variable `x` affect the values in variable `y` (and possibly `z`)?   
-
-Some graphs can justifiably belong to more than one category, and wherever this is the case, I've tried to include links to other applications in the notes.  
 
 ***
 

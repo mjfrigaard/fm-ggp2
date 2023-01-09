@@ -1,7 +1,5 @@
 # Univariate {.unnumbered}
 
-Univariate graphs.
-
 ```{r}
 #| label: setup
 #| message: false
@@ -33,3 +31,5 @@ ggplot2::theme_set(theme_ggp2g(
 # polish, dev, draft, complete
 status("complete")
 ```
+
+**Univariate graphs**: These graphs are useful if you have a single column you're trying to visualize. 

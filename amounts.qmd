@@ -1,7 +1,5 @@
 # Amounts {.unnumbered}
 
-Graphs displaying amounts.
-
 ```{r}
 #| label: setup
 #| message: false
@@ -31,5 +29,7 @@ ggplot2::theme_set(theme_ggp2g(
 #| echo: false
 # status ----
 # polish, dev, draf, complete
-status("dev")
+status("complete")
 ```
+
+**Amounts**: These graphs display counts or simple summary statistics of one or two columns in a dataset.      
