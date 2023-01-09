@@ -365,6 +365,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./stream_plots.html" class="sidebar-item-text sidebar-link">Stream plots</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./alluvial_charts.html" class="sidebar-item-text sidebar-link">Alluvial charts</a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -393,11 +398,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./grouped_bubble_charts.html" class="sidebar-item-text sidebar-link">Grouped bubble graph</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./alluvial_charts.html" class="sidebar-item-text sidebar-link">Alluvial charts</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -700,12 +700,11 @@ Graph info
 <span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">median_value</span>,</span>
 <span>        y <span class="op">=</span> <span class="fu">fct_rev</span><span class="op">(</span><span class="va">island</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>group <span class="op">=</span> <span class="va">island</span><span class="op">)</span>,</span>
-<span>        linewidth <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span> <span class="op">+</span></span>
+<span>        linewidth <span class="op">=</span> <span class="fl">0.55</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">sex</span><span class="op">)</span>,</span>
-<span>        size <span class="op">=</span> <span class="fl">2.25</span><span class="op">)</span> <span class="op">+</span></span>
+<span>        size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="va">.</span> <span class="op">~</span> <span class="va">median_measure</span>,</span>
-<span>        shrink <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>        scales <span class="op">=</span> <span class="st">"free_x"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>        shrink <span class="op">=</span> <span class="cn">TRUE</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ggp2_clev_dots2</span> <span class="op">+</span></span>
@@ -719,8 +718,40 @@ Graph info
 </div>
 </div>
 </div>
-<div style="font-size: 0.85em;">
-<p><strong>CAUTION when using <code>scales = "free_x"</code>:</strong> The graph above shows that the median bill length and depth is larger for male penguins on all three islands, but the magnitude of the differences should be interpreted with caution because the length of the lines can’t be directly compared!</p>
+<div style="font-size: 0.85em; color: #E74A2F;">
+<p><strong>CAUTION when using <code>scales = "free_x"</code>:</strong> The graph below shows that the median bill length and depth is larger for male penguins on all three islands, but the magnitude of the differences should be interpreted with caution because the length of the lines can’t be directly compared!</p>
+</div>
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_clev_dots2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Penguin Measurements Differences"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Male and female penguins"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Median Bill Length/Depth (mm)"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Island"</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"Sex"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ggp2_clev_dots2_free_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">peng_clev_dots2</span>,</span>
+<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">median_value</span>,</span>
+<span>        y <span class="op">=</span> <span class="fu">fct_rev</span><span class="op">(</span><span class="va">island</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>group <span class="op">=</span> <span class="va">island</span><span class="op">)</span>,</span>
+<span>        linewidth <span class="op">=</span> <span class="fl">0.55</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">sex</span><span class="op">)</span>,</span>
+<span>        size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="va">.</span> <span class="op">~</span> <span class="va">median_measure</span>,</span>
+<span>        shrink <span class="op">=</span> <span class="cn">TRUE</span>, nrow <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>        scales <span class="op">=</span> <span class="st">"free_x"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ggp2_clev_dots2_free_x</span> <span class="op">+</span></span>
+<span>    <span class="va">labs_clev_dots2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="cleveland_dot_plots_files/figure-html/graph_run_clev_dots2_free_x-1.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>

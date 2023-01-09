@@ -321,12 +321,11 @@ ggp2_clev_dots2 <- ggplot(data = peng_clev_dots2,
     mapping = aes(x = median_value,
         y = fct_rev(island))) +
     geom_line(aes(group = island),
-        linewidth = 0.75) +
+        linewidth = 0.55) +
     geom_point(aes(color = sex),
-        size = 2.25) +
+        size = 2) +
     facet_wrap(. ~ median_measure,
-        shrink = TRUE,
-        scales = "free_x") +
+        shrink = TRUE, nrow = 2) +
     theme(legend.position = "top")
 
 ggp2_clev_dots2 +
@@ -334,9 +333,42 @@ ggp2_clev_dots2 +
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.85em; color: #E74A2F;"}
 **CAUTION when using `scales = "free_x"`:**
-The graph above shows that the median bill length and depth is larger for male penguins on all three islands, but the magnitude of the differences should be interpreted with caution because the length of the lines can't be directly compared! 
+The graph below shows that the median bill length and depth is larger for male penguins on all three islands, but the magnitude of the differences should be interpreted with caution because the length of the lines can't be directly compared! 
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: graph_run_clev_dots2_free_x
+#| eval: true
+#| echo: true
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+labs_clev_dots2 <- labs(
+    title = "Penguin Measurements Differences",
+    subtitle = "Male and female penguins",
+    x = "Median Bill Length/Depth (mm)",
+    y = "Island",
+    color = "Sex")
+
+ggp2_clev_dots2_free_x <- ggplot(data = peng_clev_dots2,
+    mapping = aes(x = median_value,
+        y = fct_rev(island))) +
+    geom_line(aes(group = island),
+        linewidth = 0.55) +
+    geom_point(aes(color = sex),
+        size = 2) +
+    facet_wrap(. ~ median_measure,
+        shrink = TRUE, nrow = 2,
+        scales = "free_x") +
+    theme(legend.position = "top")
+
+ggp2_clev_dots2_free_x +
+    labs_clev_dots2
+```
 :::
 
 ::::
