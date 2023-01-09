@@ -21,7 +21,7 @@ source("_common.R")
 showtext::showtext_auto()
 # set theme
 ggplot2::theme_set(theme_ggp2g(
-    base_size = 14))
+    base_size = 12))
 "%nin%" <- function(x, y) {
   return( !(x %in% y) )
 }
