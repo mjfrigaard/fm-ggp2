@@ -66,7 +66,6 @@ movies_stream <- ggplot2movies::movies |>
         avg_budget = mean(budget, na.rm = TRUE)) |> 
     dplyr::ungroup() |> 
     dplyr::filter(year > 1984)
-# glimpse(movies_stream)
 labs_stream <- labs(
     title = "20 years of movie budgets", 
     subtitle = 
@@ -256,6 +255,8 @@ ggp2_stream +
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_stream <- labs(
     title = "20 years of movie budgets", 
     subtitle = 
@@ -315,6 +316,8 @@ Finally, add the `fill` to the labels and move the legend with  `theme(legend.po
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 ggp2_stream_prp <- ggplot(data = movies_stream, 
     mapping = aes(x = year, 
                   y = avg_budget, 
@@ -372,6 +375,8 @@ Finally, add the `fill` to the labels and move the legend with  `theme(legend.po
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 ggp2_stream_srt <- ggplot(data = movies_stream, 
     mapping = aes(x = year, 
                   y = avg_budget, 
