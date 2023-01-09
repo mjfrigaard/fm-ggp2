@@ -541,7 +541,7 @@ Graph info
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"fivethirtyeight"</span><span class="op">)</span></span>
+<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"fivethirtyeight"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rudeboybert/fivethirtyeight">fivethirtyeight</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -571,7 +571,7 @@ Graph info
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">US_births_2004_2014</span> <span class="op">&lt;-</span></span>
+<details><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">US_births_2004_2014</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="fu">fivethirtyeight</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/fivethirtyeight/man/US_births_2000_2014.html">US_births_2000_2014</a></span>, <span class="va">year</span> <span class="op">&gt;</span> <span class="fl">2003</span><span class="op">)</span></span>
 <span><span class="va">avg_birth_ym</span> <span class="op">&lt;-</span> <span class="va">US_births_2004_2014</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="fu">fivethirtyeight</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/fivethirtyeight/man/US_births_1994_2003.html">US_births_1994_2003</a></span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -622,7 +622,7 @@ Graph info
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_line</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Average US births"</span>, </span>
+<details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_line</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Average US births"</span>, </span>
 <span>                subtitle <span class="op">=</span> <span class="st">"1994-2014"</span>,</span>
 <span>                y <span class="op">=</span> <span class="st">"Average number of US births"</span>,</span>
 <span>                x <span class="op">=</span> <span class="st">"Year/Month"</span><span class="op">)</span></span>

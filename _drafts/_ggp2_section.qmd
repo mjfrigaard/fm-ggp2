@@ -1,0 +1,188 @@
+---
+title: "ggp2-section"
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-location: right
+    toc-title: Contents
+    code-fold: show
+    code-overflow: wrap
+    code-link: true
+    highlight-style: arrow
+    theme:
+      light: materia
+      dark: superhero
+    callout-appearance: simple
+---
+
+
+```{r}
+#| label: setup
+#| include: false
+set.seed(1014)
+# knitr settings ----
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  # cache = TRUE,
+  fig.retina = 2,
+  fig.width = 6,
+  fig.asp = 2/3,
+  fig.show = "hold"
+)
+# options  ----
+options(
+  dplyr.print_min = 6,
+  dplyr.print_max = 6,
+  stringr.view_n = 10,
+  # Activate crayon output - temporarily disabled for quarto
+  # crayon.enabled = TRUE,
+  pillar.bold = TRUE,
+  width = 60, # 80 - 3 for #> comment
+  scipen = 9999
+)
+
+# import font ----
+extrafont::font_import(
+    paths = "assets/Ubuntu/",
+    prompt = FALSE)
+
+# add font ----
+sysfonts::font_add(
+    family =  "Ubuntu", 
+    regular = "assets/Ubuntu/Ubuntu-Regular.ttf")
+
+# add theme ----
+source("R/theme_ggp2g.R")
+```
+
+
+:::: {.callout-note collapse="false" icon=false}
+### Graph
+
+
+## Description
+
+Description of the graph
+
+## Getting set up
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_example
+#| eval: false
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DATA:**
+:::
+
+<!-- 
+![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="30%" height="30%"}
+![](../www/538.png){fig-align="right" width="15%" height="15%"}
+![](../www/imdb.png){fig-align="right" width="20%" height="20%"}
+-->
+
+::: {style="font-size: 0.85em;"}
+Description of data
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_code_example
+#| eval: true
+#| echo: true
+df <- tibble::tibble(X = sample(x = 1:100, 10, FALSE),
+                     Y = rlnorm(10, 1, 3))
+```
+:::
+::::
+
+## The grammar
+
+:::: {.panel-tabset}
+
+### Code
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**CODE:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Code for creating graph
+
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: code_graph_example
+#| eval: false
+#| echo: true 
+#| warning: false
+#| message: false
+# labels
+labs_graph <- ggplot2::labs(title = "Title", 
+                            subtitle = "subtitle", 
+                            x = "X", y = "Y")
+# layers
+ggp2_graph <- ggplot2::ggplot(data = df, 
+    mapping = aes(x = X, y = Y)) + 
+    ggplot2::geom_blank()
+# graph
+ggp2_graph + 
+    labs_graph
+```
+:::
+
+### Graph
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**GRAPH:**
+:::
+
+```{r}
+#| label: create_graph_example
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+# labels
+labs_graph <- ggplot2::labs(title = "Title", 
+                            subtitle = "subtitle", 
+                            x = "X", y = "Y")
+# layers
+ggp2_graph <- ggplot2::ggplot(data = df, 
+    mapping = aes(x = X, y = Y)) + 
+    ggplot2::geom_blank()
+# graph
+ggp2_graph + 
+    labs_graph
+```
+
+::::
+
+:::::
