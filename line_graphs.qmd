@@ -248,6 +248,8 @@ ggp2_line +
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_line <- labs(title = "Average US births", 
                 subtitle = "1994-2014",
                 y = "Average number of US births",

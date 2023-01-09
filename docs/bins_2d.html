@@ -572,13 +572,13 @@ Graph info
 </div>
 </div>
 </div>
-</section><section id="the-grammar" class="level2"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
-<div class="panel-tabset">
+</section><section id="the-grammar" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
+<div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Code</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Graph</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content page-columns page-full">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -608,13 +608,15 @@ Graph info
 </div>
 </div>
 </div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="tabset-2-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="bins_2d_files/figure-html/create_graph_2d_hist-1.png" style="width:100.0%;height:100.0%"></p>
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="bins_2d_files/figure-html/create_graph_2d_hist-1.png" class="img-fluid"></p>
+</div>
 </div>
 </div>
 </div>
@@ -628,7 +630,7 @@ Graph info
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">Options</a></li>
 </ul>
 <div class="tab-content page-columns page-full">
-<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div id="tabset-3-1" class="tab-pane active page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>BINS:</strong></p>
 </div>
@@ -636,8 +638,8 @@ Graph info
 <p>The value for <code>bins</code> will be vary depending on the variable values–there is no correct number. If the number of <code>bins</code> is too low, the density may hide important nuances between the variables. If the number of <code>bins</code> is too high, the noise might drown out the signal.</p>
 <p>Below we change the <code>bins</code> to <code>15</code> and save this layer as <code>ggp2_2dbins15</code>:</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">penguins_2dhist</span>, </span>
 <span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bill_length_mm</span>, </span>
 <span>                  y <span class="op">=</span> <span class="va">flipper_length_mm</span><span class="op">)</span><span class="op">)</span> </span>
@@ -645,13 +647,17 @@ Graph info
 <span>                    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bin_2d.html">geom_bin2d</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> </span>
 <span><span class="va">ggp2_2dbins15</span> <span class="op">+</span> </span>
 <span>     <span class="va">labs_2dhist</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="bins_2d_files/figure-html/bins_2d_hist-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="bins_2d_files/figure-html/bins_2d_hist-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>SCALES:</strong></p>
 </div>
@@ -659,8 +665,8 @@ Graph info
 <p><code>scale_fill_continuous_sequential()</code> comes with a variety of palettes to choose from (run <code>hcl_palettes(type = "sequential")</code> to view the full list).</p>
 <p>We can also reverse the order of the fill color scale with <code>rev</code> (<code>TRUE</code> or <code>FALSE</code>).</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_2dbins15</span> <span class="op">+</span> </span>
 <span>    <span class="fu">scale_fill_continuous_sequential</span><span class="op">(</span></span>
 <span>        palette <span class="op">=</span> <span class="st">"Mako"</span>, </span>
@@ -672,11 +678,15 @@ Graph info
 <span>        palette <span class="op">=</span> <span class="st">"Mako"</span>, </span>
 <span>        rev <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="va">labs_2dhist</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="bins_2d_files/figure-html/scales_2d_hist-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="bins_2d_files/figure-html/scales_2d_hist-1.png" class="img-fluid"></p>
 </div>
-<div class="cell-output-display">
-<p><img src="bins_2d_files/figure-html/scales_2d_hist-2.png" style="width:100.0%;height:100.0%"></p>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="bins_2d_files/figure-html/scales_2d_hist-2.png" class="img-fluid"></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -692,8 +702,8 @@ Graph info
 <p>In the previous example we showed how to <code>rev</code>erse the color scale for the <code>palette</code> in <code>scale_fill_continuous_sequential()</code>. Below we reverse the color scale, but also manually set which colors on the scale we want to <code>begin</code> with (i.e., smallest data value) and which color we want to <code>end</code> with (i.e., the largest data value). Possible values range from <code>0</code> - <code>1</code>.</p>
 <p>We also add a <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code> layer.</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_2dbins15</span> <span class="op">+</span> </span>
 <span>    <span class="fu">scale_fill_continuous_sequential</span><span class="op">(</span></span>
 <span>        palette <span class="op">=</span> <span class="st">"SunsetDark"</span>,</span>
@@ -703,8 +713,12 @@ Graph info
 <span>        fill <span class="op">=</span> <span class="st">"#FFFFFF"</span>, shape <span class="op">=</span> <span class="fl">21</span>,</span>
 <span>        size <span class="op">=</span> <span class="fl">2.2</span>, alpha <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="va">labs_2dhist</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="bins_2d_files/figure-html/pals_2d_hist-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="bins_2d_files/figure-html/pals_2d_hist-1.png" class="img-fluid"></p>
+</div>
+</div>
 </div>
 </div>
 </div>

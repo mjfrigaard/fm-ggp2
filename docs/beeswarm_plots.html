@@ -551,7 +551,7 @@ Graph info
 <div class="no-row-height column-margin column-container"><div class="">
 <div class="quarto-figure quarto-figure-right">
 <figure class="figure"><p><img src="www/lter_penguins.png" style="width:100.0%;height:100.0%" class="figure-img"></p>
-<p></p><figcaption class="figure-caption">Artwork by <span class="citation" data-cites="allison_horst">(<a href="references.html#ref-allison_horst" role="doc-biblioref"><strong>allison_horst?</strong></a>)</span></figcaption><p></p>
+<p></p><figcaption class="figure-caption">Artwork by allison horst</figcaption><p></p>
 </figure>
 </div>
 </div></div><div style="font-size: 0.85em;">
@@ -582,13 +582,13 @@ Graph info
 </div>
 </div>
 </div>
-</section><section id="the-grammar" class="level2"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
-<div class="panel-tabset">
+</section><section id="the-grammar" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
+<div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Code</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Graph</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content page-columns page-full">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -620,17 +620,19 @@ Graph info
 </div>
 </div>
 </div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="tabset-2-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
 <div style="font-size: 0.85em;">
 <p>Adjust the size/shape of the swarm using <code>method =</code> or the <code><a href="https://rdrr.io/pkg/ggbeeswarm/man/geom_quasirandom.html">geom_quasirandom()</a></code> function</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="beeswarm_plots_files/figure-html/create_graph_beeswarm-1.png" style="width:100.0%;height:100.0%"></p>
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="beeswarm_plots_files/figure-html/create_graph_beeswarm-1.png" class="img-fluid"></p>
+</div>
 </div>
 </div>
 </div>
@@ -659,8 +661,8 @@ Graph info
 <div style="font-size: 0.85em;">
 <p>Set the point <code>shape</code> to <code>21</code> to control the <code>fill</code> and <code>color</code></p>
 </div>
-</div></div><div style="font-size: 0.75em;">
-<div class="cell">
+</div></div><div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_compact_swarm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">peng_beeswarm</span>,</span>
 <span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">species</span>,</span>
 <span>                  y <span class="op">=</span> <span class="va">bill_ratio</span>,</span>
@@ -676,21 +678,25 @@ Graph info
 <span><span class="va">ggp2_compact_swarm</span> <span class="op">+</span> </span>
 <span>    <span class="co"># add labels</span></span>
 <span>    <span class="va">labs_beeswarm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="beeswarm_plots_files/figure-html/create_graph_beeswarm_method-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="beeswarm_plots_files/figure-html/create_graph_beeswarm_method-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>SIDE:</strong></p>
 </div>
 <div style="font-size: 0.85em;">
 <p>For a beeswarm that falls across the vertical axis, use the <code>side</code> argument.</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_rside_swarm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">peng_beeswarm</span>,</span>
 <span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">species</span>,</span>
 <span>                  y <span class="op">=</span> <span class="va">bill_ratio</span>,</span>
@@ -706,21 +712,25 @@ Graph info
 <span><span class="va">ggp2_rside_swarm</span> <span class="op">+</span> </span>
 <span>    <span class="co"># add labels</span></span>
 <span>    <span class="va">labs_beeswarm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="beeswarm_plots_files/figure-html/create_graph_beeswarm_side-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="beeswarm_plots_files/figure-html/create_graph_beeswarm_side-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+</div>
+</div>
+<div id="tabset-3-3" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-3-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CEX:</strong></p>
 </div>
 <div style="font-size: 0.85em;">
 <p>The <code>cex</code> argument controls the “<em>scaling for adjusting point spacing</em>”</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_beeswarm_cex</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">peng_beeswarm</span>,</span>
 <span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">species</span>,</span>
 <span>                  y <span class="op">=</span> <span class="va">bill_ratio</span>,</span>
@@ -736,21 +746,25 @@ Graph info
 <span><span class="va">ggp2_beeswarm_cex</span> <span class="op">+</span> </span>
 <span>    <span class="co"># add labels</span></span>
 <span>    <span class="va">labs_beeswarm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="beeswarm_plots_files/figure-html/create_graph_beeswarm_cex-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="beeswarm_plots_files/figure-html/create_graph_beeswarm_cex-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
+</div>
+</div>
+<div id="tabset-3-4" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-4-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>JITTER:</strong></p>
 </div>
 <div style="font-size: 0.85em;">
 <p>We can also create a beeswarm using the <code><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter()</a></code> and setting the <code>height</code> and <code>width</code>.</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_jitter_swarm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">peng_beeswarm</span>,</span>
 <span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">species</span>,</span>
 <span>        y <span class="op">=</span> <span class="va">bill_ratio</span>,</span>
@@ -767,8 +781,12 @@ Graph info
 <span><span class="va">ggp2_jitter_swarm</span> <span class="op">+</span> </span>
 <span>    <span class="co"># add labels</span></span>
 <span>    <span class="va">labs_beeswarm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="beeswarm_plots_files/figure-html/create_graph_beeswarm_jitter-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="beeswarm_plots_files/figure-html/create_graph_beeswarm_jitter-1.png" class="img-fluid"></p>
+</div>
+</div>
 </div>
 </div>
 </div>

@@ -211,6 +211,8 @@ ggp2_clev_dots +
 #| echo: false
 #| warning: false
 #| message: false
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_clev_dots <- labs(
     title = "Flipper Length Differences",
     subtitle = "Male and female penguins",
@@ -306,6 +308,8 @@ Move the legend with `theme(legend.position = "top")`
 #| echo: true
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_clev_dots2 <- labs(
     title = "Penguin Measurements Differences",
     subtitle = "Male and female penguins",

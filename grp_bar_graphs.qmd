@@ -215,6 +215,8 @@ ggp2_grp_col +
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_grp_col <- labs(
     title = "Average Penguin Mass",
     subtitle = "What's the average mass of penguins per Island?",

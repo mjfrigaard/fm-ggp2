@@ -218,6 +218,8 @@ ggp2_grp_bubble +
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_grp_bubble <- labs(
   title = "Bill Length vs. Flipper Length",
   x = "Bill Length (mm)", 
@@ -264,6 +266,8 @@ Inside `geom_point()`, we can set `shape` to `21`, and `color` to `"#000000"` to
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 ggp2_grp_bubble_s21 <- penguins |> 
   ggplot(aes(
     x = bill_length_mm, y = flipper_length_mm)) + 
@@ -296,6 +300,8 @@ Inside the `aes()` of `geom_point()`, we can set `shape` to `21`, and map `color
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 ggp2_grp_bubble_s21_color <- penguins |> 
   ggplot(aes(
     x = bill_length_mm, y = flipper_length_mm)) + 

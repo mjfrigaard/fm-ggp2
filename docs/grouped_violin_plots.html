@@ -572,12 +572,12 @@ Graph info
 </div>
 </div>
 </div>
-<div class="panel-tabset">
+<div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Code</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Graph</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content page-columns page-full">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -608,15 +608,15 @@ Graph info
 </div>
 </div>
 </div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="tabset-2-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
 <div style="font-size: 0.85em;">
 <p>Violin plots can allow us to compare the ‘center’ and ‘spread’ of continuous variables across categorical groups.</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_grp_violin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>  title <span class="op">=</span> <span class="st">"Adult foraging penguins"</span>, </span>
 <span>  subtitle <span class="op">=</span> <span class="st">"Palmer Archipelago, Antarctica"</span>,</span>
@@ -630,8 +630,12 @@ Graph info
 <span>      show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span>
 <span><span class="va">ggp2_grp_violin</span> <span class="op">+</span> </span>
 <span>  <span class="va">labs_grp_violin</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="grouped_violin_plots_files/figure-html/create_graph_grp_violin-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="grouped_violin_plots_files/figure-html/create_graph_grp_violin-1.png" class="img-fluid"></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -656,8 +660,8 @@ Graph info
 <div style="font-size: 0.85em;">
 <p>We can include lines for the 25th, 50th, and 75th quartiles using the <code>draw_quantiles</code> argument.</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">peng_violin</span>,</span>
 <span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">island</span>, </span>
 <span>           y <span class="op">=</span> <span class="va">bill_length_mm</span>, </span>
@@ -667,21 +671,25 @@ Graph info
 <span>      alpha <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span>, </span>
 <span>      linewidth <span class="op">=</span> <span class="fl">0.5</span>, </span>
 <span>      show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="grouped_violin_plots_files/figure-html/grp_violin_draw_quantiles-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="grouped_violin_plots_files/figure-html/grp_violin_draw_quantiles-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>kernel:</strong></p>
 </div>
 <div style="font-size: 0.85em;">
 <p>The <a href="https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments"><code>kernel</code> argument</a> let’s us change the “<em>kernel density estimate</em>” used to create the violin shape. The possible <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/density.html">kernel density estimates</a> are <code>"gaussian"</code>, <code>"epanechnikov"</code>, <code>"rectangular"</code>, <code>"triangular"</code>, <code>"biweight"</code>, <code>"cosine"</code>, and <code>"optcosine"</code></p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">peng_violin</span>,</span>
 <span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">island</span>, </span>
 <span>           y <span class="op">=</span> <span class="va">bill_length_mm</span>, </span>
@@ -690,21 +698,25 @@ Graph info
 <span>      linewidth <span class="op">=</span> <span class="fl">0.5</span>, </span>
 <span>      kernel <span class="op">=</span> <span class="st">"rectangular"</span>,</span>
 <span>      show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="grouped_violin_plots_files/figure-html/grp_violin_kernel-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="grouped_violin_plots_files/figure-html/grp_violin_kernel-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+</div>
+</div>
+<div id="tabset-3-3" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-3-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>bw:</strong></p>
 </div>
 <div style="font-size: 0.85em;">
 <p>We can directly adjust the shape of the violin with the <a href="https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments"><code>bw</code> argument</a>, which is the <em>standard deviation of the smoothing kernel.</em> The <a href="https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments"><code>trim</code> argument</a> <em>trim(s) the tails of the violins to the range of the data.</em></p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># bw of 0.5</span></span>
 <span><span class="va">grp_violin_bw0p5</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">peng_violin</span>,</span>
 <span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">island</span>, </span>
@@ -729,11 +741,15 @@ Graph info
 <span><span class="va">grp_violin_bw4p5</span> <span class="op">+</span> </span>
 <span>    <span class="va">labs_grp_violin</span> <span class="op">+</span> </span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"bw = 4.5"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="grouped_violin_plots_files/figure-html/grp_violin_bw-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="grouped_violin_plots_files/figure-html/grp_violin_bw-1.png" class="img-fluid"></p>
 </div>
-<div class="cell-output-display">
-<p><img src="grouped_violin_plots_files/figure-html/grp_violin_bw-2.png" style="width:100.0%;height:100.0%"></p>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="grouped_violin_plots_files/figure-html/grp_violin_bw-2.png" class="img-fluid"></p>
+</div>
+</div>
 </div>
 </div>
 </div>

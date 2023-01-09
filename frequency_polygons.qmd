@@ -189,6 +189,8 @@ ggp2_freqpoly +
 #| echo: false
 #| warning: false
 #| message: false
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_freqpoly <- labs(
   title = "Adult foraging penguins",
   subtitle = "Distribution of flipper length",

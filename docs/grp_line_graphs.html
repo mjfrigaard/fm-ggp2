@@ -630,13 +630,13 @@ Graph info
 </div>
 </div>
 </div>
-</section><section id="the-grammar" class="level2"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
-<div class="panel-tabset">
+</section><section id="the-grammar" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
+<div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Code</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Graph</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content page-columns page-full">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -665,29 +665,31 @@ Graph info
 </div>
 </div>
 </div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="tabset-2-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="grp_line_graphs_files/figure-html/create_graph_line-1.png" style="width:100.0%;height:100.0%"></p>
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="grp_line_graphs_files/figure-html/create_graph_line-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
 </div>
-</section><section id="more-info" class="level2"><h2 class="anchored" data-anchor-id="more-info">More info</h2>
+</div>
+</section><section id="more-info" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="more-info">More info</h2>
 <p>Line graphs are great for displaying relationships across variables with multiple groups (or levels). We can also use facets for multiple comparisons (i.e., small multiples).</p>
-<div class="panel-tabset">
+<div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Groups</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Line Styles</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">Labels</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" role="tab" aria-controls="tabset-3-4" aria-selected="false">Facets</a></li>
 </ul>
-<div class="tab-content">
-<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="tab-content page-columns page-full">
+<div id="tabset-3-1" class="tab-pane active page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
@@ -721,8 +723,8 @@ Graph info
 <li>move the legend to the top of the graph using <code>theme(legend.position = "top")</code> (to improve readability).</li>
 </ul>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># here we create the labels (with the subtitle updating with the data)</span></span>
 <span><span class="va">labs_line_graph_grp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Average US births"</span>, </span>
 <span>                        subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"Between "</span>,</span>
@@ -732,11 +734,13 @@ Graph info
 <span>                        y <span class="op">=</span> <span class="st">"Average births"</span>, </span>
 <span>                        x <span class="op">=</span> <span class="st">"Year/Quarter"</span>,  </span>
 <span>                        color <span class="op">=</span> <span class="st">"Day of Week"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+
 </div>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+</div>
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Build layer with yr_qtr and day_of_week</span></span>
 <span><span class="va">ggp2_line_grp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">avg_births_dow_qtr</span>, </span>
 <span>                   mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">yr_qtr</span>, </span>
@@ -747,13 +751,17 @@ Graph info
 <span><span class="va">ggp2_line_grp</span> <span class="op">+</span> </span>
 <span>    <span class="va">labs_line_graph_grp</span> <span class="op">+</span> </span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="grp_line_graphs_files/figure-html/avg_births_dow_qtr_grp_line-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="grp_line_graphs_files/figure-html/avg_births_dow_qtr_grp_line-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <div style="font-size: 0.85em;">
 <p>We can make it easier to distinguish between lines in our graph by adjusting the line style (<code>linetype</code> and <code>linewidth</code>), or by changing overall opacity (<code>alpha</code>).</p>
 <p>We’ll work through some examples below using another subset from <code>usbirth_1994_2014</code>.</p>
@@ -764,8 +772,8 @@ Graph info
 <div style="font-size: 0.85em;">
 
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">avg_births_dow_mnth</span> <span class="op">&lt;-</span> <span class="va">usbirth_1994_2014</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">&gt;=</span> <span class="fl">2008</span> <span class="op">&amp;</span> <span class="va">year</span> <span class="op">&lt;</span> <span class="fl">2010</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">yr_mnth</span>, <span class="va">day_of_week</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -777,11 +785,13 @@ Graph info
 <span><span class="co">#&gt; $ yr_mnth     &lt;date&gt; 2008-01-01, 2008-01-01, 2008-01-01, 2…</span></span>
 <span><span class="co">#&gt; $ day_of_week &lt;ord&gt; Sun, Mon, Tues, Wed, Thurs, Fri, Sat, …</span></span>
 <span><span class="co">#&gt; $ avg_births  &lt;dbl&gt; 7535.25, 12344.00, 12280.60, 12925.00,…</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+
 </div>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+</div>
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_line_styles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Average US births"</span>,</span>
 <span>    subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span></span>
@@ -794,7 +804,9 @@ Graph info
 <span>    x <span class="op">=</span> <span class="st">"Year-Month"</span>,</span>
 <span>    color <span class="op">=</span> <span class="st">"Day of Week"</span></span>
 <span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+
+</div>
 </div>
 </div>
 <div style="font-size: 1.15em; color: #1e83c8;">
@@ -804,8 +816,8 @@ Graph info
 <p>Color palettes are a excellent too for highlighting or emphasizing certain lines over others.</p>
 <p>We’ll start by creating a line graph layer for Monday (<code>"Mon"</code>), Thursday (<code>"Thurs"</code>), and Friday (<code>"Fri"</code>) adjusting the opacity with <code>alpha</code>.</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_line_mon_thur_fri</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">avg_births_dow_mnth</span>,</span>
 <span>        <span class="va">day_of_week</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Mon"</span>, <span class="st">"Thurs"</span>, <span class="st">"Fri"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -820,8 +832,12 @@ Graph info
 <span><span class="va">ggp2_line_mon_thur_fri</span> <span class="op">+</span></span>
 <span>    <span class="va">labs_line_styles</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="grp_line_graphs_files/figure-html/ggp2_line_mon_thur_fri-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="grp_line_graphs_files/figure-html/ggp2_line_mon_thur_fri-1.png" class="img-fluid"></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -831,8 +847,8 @@ Graph info
 <div style="font-size: 0.85em;">
 <p>Then we’ll change the <code>linetype</code> of Saturday and Sunday to <code>"longdash'</code> (and make this <em>somewhat</em> transparent with a slightly higher <code>alpha</code>).</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_line_sat_sun</span> <span class="op">&lt;-</span> <span class="va">ggp2_line_mon_thur_fri</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">avg_births_dow_mnth</span>,</span>
 <span>            <span class="va">day_of_week</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Sat"</span>, <span class="st">"Sun"</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -847,8 +863,12 @@ Graph info
 <span><span class="va">ggp2_line_sat_sun</span> <span class="op">+</span></span>
 <span>    <span class="va">labs_line_styles</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="grp_line_graphs_files/figure-html/ggp2_line_sat_sun-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="grp_line_graphs_files/figure-html/ggp2_line_sat_sun-1.png" class="img-fluid"></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -859,8 +879,8 @@ Graph info
 <p>Add <code><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line()</a></code> for Wednesday and Tuesday, but change the color pallete with <code>paletteer</code> and <code>ggthemes</code>.</p>
 <p>We also manually set the legend order by supplying the original factor levels to the <code>breaks</code> argument.</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/EmilHvitfeldt/paletteer">paletteer</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jrnold/ggthemes">ggthemes</a></span><span class="op">)</span></span>
 <span><span class="co"># original factor levels</span></span>
@@ -887,8 +907,12 @@ Graph info
 <span>    <span class="va">labs_line_styles</span> <span class="op">+</span></span>
 <span>    <span class="co"># legend position</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="grp_line_graphs_files/figure-html/ggp2_line_pal_d-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="grp_line_graphs_files/figure-html/ggp2_line_pal_d-1.png" class="img-fluid"></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -896,7 +920,7 @@ Graph info
 <p>Changing the look of the lines is a great way to highlight or emphasize some lines over others.</p>
 </div>
 </div>
-<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+<div id="tabset-3-3" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-3-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>LABELS:</strong></p>
 </div>
@@ -993,8 +1017,8 @@ Graph info
 <div style="font-size: 0.85em;">
 <p>Add <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_label()</a></code> for Wednesday.</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># point for max births/day</span></span>
 <span><span class="va">ggp2_line_wed_max_births_pnts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">label_max_wed_dow</span>,</span>
@@ -1047,8 +1071,12 @@ Graph info
 <span>    <span class="va">labs_line_styles</span> <span class="op">+</span></span>
 <span>    <span class="co"># move legend to top</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="grp_line_graphs_files/figure-html/ggp2_line_wed_births_lbl-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="grp_line_graphs_files/figure-html/ggp2_line_wed_births_lbl-1.png" class="img-fluid"></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1079,8 +1107,8 @@ Graph info
 <div style="font-size: 0.85em;">
 <p>Add <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_label()</a></code> for Tuesday.</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># point for max births/day</span></span>
 <span><span class="va">ggp2_line_tues_max_births_pnts</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">label_max_tues_dow</span>,</span>
@@ -1140,13 +1168,17 @@ Graph info
 <span>    <span class="va">labs_line_styles</span> <span class="op">+</span></span>
 <span>    <span class="co"># move legend to top</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="grp_line_graphs_files/figure-html/ggp2_line_min_births_lbl-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="grp_line_graphs_files/figure-html/ggp2_line_min_births_lbl-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
+</div>
+</div>
+<div id="tabset-3-4" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-4-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
@@ -1178,8 +1210,8 @@ Graph info
 <div style="font-size: 0.85em;">
 <p>Using <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap()</a></code> with a single categorical variable (<code>. ~ var</code>) will create a plot for each discrete level, while <code><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid()</a></code> will create a level-by-level grid (specified as <code>var ~ var</code>).</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># labels</span></span>
 <span><span class="va">labs_line_graph_facet_wrap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Median US births"</span>,</span>
@@ -1214,16 +1246,20 @@ Graph info
 <span><span class="va">ggp2_line_facet_wrap</span> <span class="op">+</span></span>
 <span>    <span class="va">labs_line_graph_facet_wrap</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="grp_line_graphs_files/figure-html/ggp2_line_facet_wrap-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="grp_line_graphs_files/figure-html/ggp2_line_facet_wrap-1.png" class="img-fluid"></p>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div style="font-size: 0.85em;">
 <p>It’s always a good idea to check the <code>x</code> and <code>y</code> axis text when using facets. I’ve adjusted the <code>x</code> and <code>y</code> axes above using <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/scale_date.html">scale_x_date()</a></code> before adding <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap()</a></code></p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># labels</span></span>
 <span><span class="va">labs_line_graph_facet_grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Median US births"</span>,</span>
@@ -1258,8 +1294,12 @@ Graph info
 <span></span>
 <span><span class="va">ggp2_line_facet_grid</span> <span class="op">+</span></span>
 <span>    <span class="va">labs_line_graph_facet_grid</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="grp_line_graphs_files/figure-html/ggp2_line_facet_grid-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="grp_line_graphs_files/figure-html/ggp2_line_facet_grid-1.png" class="img-fluid"></p>
+</div>
+</div>
 </div>
 </div>
 </div>

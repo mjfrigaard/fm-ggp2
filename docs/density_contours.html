@@ -585,13 +585,13 @@ across both the x and the y dimensions.
 </div>
 </div>
 </div>
-</section><section id="the-grammar" class="level2"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
-<div class="panel-tabset">
+</section><section id="the-grammar" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
+<div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Code</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Graph</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content page-columns page-full">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -640,29 +640,31 @@ across both the x and the y dimensions.
 </div>
 </div>
 </div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="tabset-2-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="density_contours_files/figure-html/create_graph_geom_density_2d-1.png" style="width:100.0%;height:100.0%"></p>
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="density_contours_files/figure-html/create_graph_geom_density_2d-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
 </div>
-</section><section id="more-info" class="level2"><h2 class="anchored" data-anchor-id="more-info">More info</h2>
+</div>
+</section><section id="more-info" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="more-info">More info</h2>
 <p>We’re going to break down how to create the density contour layer-by-layer using the <code><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">stat_density_2d()</a></code> function (which allows us to access some of the inner-workings of <code><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">geom_density_2d()</a></code>)</p>
-<div class="panel-tabset">
+<div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Base</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Stat</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">Fill</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" role="tab" aria-controls="tabset-3-4" aria-selected="false">Points</a></li>
 </ul>
-<div class="tab-content">
-<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="tab-content page-columns page-full">
+<div id="tabset-3-1" class="tab-pane active page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>BASE:</strong></p>
 </div>
@@ -675,8 +677,8 @@ across both the x and the y dimensions.
 <li><p>Expand the <code>x</code> and <code>y</code> values with <code><a href="https://ggplot2.tidyverse.org/reference/expand_limits.html">expand_limits()</a></code> (using the values we created above)</p></li>
 </ul>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_sdens_2d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>  title <span class="op">=</span> <span class="st">"Bill Length vs. Flipper Length"</span>,</span>
 <span>  x <span class="op">=</span> <span class="st">"Bill Length (mm)"</span>,</span>
@@ -697,13 +699,17 @@ across both the x and the y dimensions.
 <span>  <span class="op">)</span></span>
 <span><span class="va">base_sdens_2d</span> <span class="op">+</span></span>
 <span>  <span class="va">labs_sdens_2d</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="density_contours_files/figure-html/code_graph_base_layer-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="density_contours_files/figure-html/code_graph_base_layer-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>STAT:</strong></p>
 </div>
@@ -716,8 +722,8 @@ across both the x and the y dimensions.
 <li><p>adjust the <code>linewidth</code> to <code>0.35</code></p></li>
 </ul>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">stat_sdens_2d</span> <span class="op">&lt;-</span> <span class="va">base_sdens_2d</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">stat_density_2d</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html">after_stat</a></span><span class="op">(</span><span class="va">level</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -727,16 +733,20 @@ across both the x and the y dimensions.
 <span>  <span class="op">)</span></span>
 <span><span class="va">stat_sdens_2d</span> <span class="op">+</span></span>
 <span>  <span class="va">labs_sdens_2d</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="density_contours_files/figure-html/code_graph_stat_layer-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="density_contours_files/figure-html/code_graph_stat_layer-1.png" class="img-fluid"></p>
 </div>
 </div>
-<div class="cell">
+</div>
+</div>
+<div class="cell column-page-inset-right quarto-layout-panel">
 
 </div>
 </div>
 </div>
-<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+<div id="tabset-3-3" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-3-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>FILL:</strong></p>
 </div>
@@ -759,8 +769,8 @@ across both the x and the y dimensions.
 </ul>
 <p>We’ll set these to white (<code>"#ffffff"</code>) and dark gray (<code>"#404040"</code>)</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fill_sdens_2d</span> <span class="op">&lt;-</span> <span class="va">stat_sdens_2d</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient</a></span><span class="op">(</span></span>
 <span>    low <span class="op">=</span> <span class="st">"#ffffff"</span>,</span>
@@ -769,16 +779,20 @@ across both the x and the y dimensions.
 <span>  <span class="op">)</span></span>
 <span><span class="va">fill_sdens_2d</span> <span class="op">+</span></span>
 <span>  <span class="va">labs_sdens_2d</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="density_contours_files/figure-html/code_graph_fill_layer_pw-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+
 </div>
 </div>
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="density_contours_files/figure-html/code_graph_fill_layer_pw-1.png" class="img-fluid"></p>
 </div>
 </div>
-<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
+</div>
+</div>
+</div>
+<div id="tabset-3-4" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-4-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>POINTS:</strong></p>
 </div>
@@ -791,8 +805,8 @@ across both the x and the y dimensions.
 <li><p>Change the <code>alpha</code> to <code>2/3</code></p></li>
 </ul>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># geom_point()</span></span>
 <span><span class="va">pnts_sdens_2d</span> <span class="op">&lt;-</span> <span class="va">fill_sdens_2d</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">species</span><span class="op">)</span>,</span>
@@ -802,28 +816,32 @@ across both the x and the y dimensions.
 <span><span class="co"># final</span></span>
 <span><span class="va">pnts_sdens_2d</span> <span class="op">+</span></span>
 <span>  <span class="va">labs_sdens_2d</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</div>
-<div style="font-size: 0.75em;">
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="density_contours_files/figure-html/code_graph_points_layer_pw-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+
 </div>
 </div>
 </div>
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="density_contours_files/figure-html/code_graph_points_layer_pw-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
-</section><section id="adding-groups" class="level2"><h2 class="anchored" data-anchor-id="adding-groups">Adding groups</h2>
+</div>
+</div>
+</div>
+</div>
+</section><section id="adding-groups" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="adding-groups">Adding groups</h2>
 <p>In the previous plot, we used the <code>species</code> variable in the <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code> layer to identify the points using color. In the section below, we’ll show more methods of displaying groups with density contour lines.</p>
-<div class="panel-tabset">
+<div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">Groups</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Facets</a></li>
 </ul>
-<div class="tab-content">
-<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="tab-content page-columns page-full">
+<div id="tabset-4-1" class="tab-pane active page-columns page-full" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GROUPS:</strong></p>
 </div>
@@ -842,8 +860,8 @@ across both the x and the y dimensions.
 <li><p>set the <code>alpha</code> and remove the <code>legend</code></p></li>
 </ul>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_dnsty_2d_grp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>  title <span class="op">=</span> <span class="st">"Bill Length vs. Flipper Length"</span>,</span>
 <span>  x <span class="op">=</span> <span class="st">"Bill Length (mm)"</span>,</span>
@@ -873,13 +891,17 @@ across both the x and the y dimensions.
 <span></span>
 <span><span class="va">ggp2_dnsty_2d_pnts</span> <span class="op">+</span></span>
 <span>  <span class="va">labs_dnsty_2d_grp</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="density_contours_files/figure-html/code_graph_points-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="density_contours_files/figure-html/code_graph_points-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-4-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>FACETING:</strong></p>
 </div>
@@ -907,8 +929,8 @@ across both the x and the y dimensions.
 </li>
 </ul>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_dnsty_2d_facet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>  title <span class="op">=</span> <span class="st">"Bill Length vs. Flipper Length"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"By Species"</span>,</span>
@@ -941,26 +963,30 @@ across both the x and the y dimensions.
 <span></span>
 <span><span class="va">ggp2_dnsty_2d_facet</span> <span class="op">+</span></span>
 <span>  <span class="va">labs_dnsty_2d_facet</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="density_contours_files/figure-html/code_graph_facets_run-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+
 </div>
 </div>
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="density_contours_files/figure-html/code_graph_facets_run-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
-</section><section id="using-fill-and-line-color" class="level2"><h2 class="anchored" data-anchor-id="using-fill-and-line-color">Using fill and line color</h2>
+</div>
+</div>
+</div>
+</section><section id="using-fill-and-line-color" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="using-fill-and-line-color">Using fill and line color</h2>
 <p>In the previous section, we defined the color values used in <code><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">geom_density_2d_filled()</a></code> with <code><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_discrete_manual()</a></code>. Below we give an example using the default colors:</p>
-<div class="panel-tabset">
+<div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">Fill</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Lines</a></li>
 </ul>
-<div class="tab-content">
-<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="tab-content page-columns page-full">
+<div id="tabset-5-1" class="tab-pane active page-columns page-full" role="tabpanel" aria-labelledby="tabset-5-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>Fill:</strong></p>
 </div>
@@ -975,8 +1001,8 @@ across both the x and the y dimensions.
 <p>Add the <code><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">geom_density_2d()</a></code> layer</p>
 <p>Add the <code><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">geom_density_2d_filled()</a></code>, setting <code>alpha</code> to <code>0.8</code></p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_dnsty_2d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>  title <span class="op">=</span> <span class="st">"Bill Length vs. Flipper Length"</span>,</span>
 <span>  x <span class="op">=</span> <span class="st">"Bill Length (mm)"</span>,</span>
@@ -1002,16 +1028,20 @@ across both the x and the y dimensions.
 <span></span>
 <span><span class="va">ggp2_dnsty_2d_fill</span> <span class="op">+</span></span>
 <span>  <span class="va">labs_dnsty_2d</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="density_contours_files/figure-html/code_graph_fill_run-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+
 </div>
 </div>
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="density_contours_files/figure-html/code_graph_fill_run-1.png" class="img-fluid"></p>
 </div>
 </div>
-<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+</div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-5-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>LINES:</strong></p>
 </div>
@@ -1022,8 +1052,8 @@ across both the x and the y dimensions.
 <li><p>set <code>color</code> to <code>"#ffffff"</code></p></li>
 </ul>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_dnsty_2d_fill_lns</span> <span class="op">&lt;-</span> <span class="va">ggp2_dnsty_2d_fill</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">geom_density_2d</a></span><span class="op">(</span></span>
 <span>    linewidth <span class="op">=</span> <span class="fl">0.30</span>,</span>
@@ -1031,11 +1061,15 @@ across both the x and the y dimensions.
 <span>  <span class="op">)</span></span>
 <span><span class="va">ggp2_dnsty_2d_fill_lns</span> <span class="op">+</span></span>
 <span>  <span class="va">labs_dnsty_2d</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="density_contours_files/figure-html/code_graph_lines_run-1.png" style="width:100.0%;height:100.0%"></p>
+</div>
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="density_contours_files/figure-html/code_graph_lines_run-1.png" class="img-fluid"></p>
+</div>
 </div>
 </div>
 </div>

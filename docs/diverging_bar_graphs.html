@@ -618,13 +618,13 @@ Graph info
 </div>
 </div>
 </div>
-</section><section id="the-grammar" class="level2"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
-<div class="panel-tabset">
+</section><section id="the-grammar" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
+<div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Code</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Graph</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content page-columns page-full">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -662,24 +662,26 @@ Graph info
 </div>
 </div>
 </div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div id="tabset-3-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="diverging_bar_graphs_files/figure-html/create_graph_diverging_bar-1.png" style="width:100.0%;height:100.0%"></p>
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="diverging_bar_graphs_files/figure-html/create_graph_diverging_bar-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
 </div>
-</section><section id="more-info" class="level2"><h2 class="anchored" data-anchor-id="more-info">More info</h2>
+</div>
+</section><section id="more-info" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="more-info">More info</h2>
 <p>For horizontally arranged bars, we switch the <code>x</code> and <code>y</code> axis variables.</p>
-<div class="panel-tabset">
+<div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">Horizontally arranged bars</a></li></ul>
-<div class="tab-content">
-<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="tab-content page-columns page-full">
+<div id="tabset-4-1" class="tab-pane active page-columns page-full" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>Horizontal bars:</strong></p>
 </div>
@@ -693,8 +695,8 @@ Graph info
 </ul>
 <p>Add <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous()</a></code> to manually set the limits and format the axis with <code><a href="https://scales.r-lib.org/reference/percent_format.html">scales::percent</a></code></p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_geom_bar_diverg_vert</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>  title <span class="op">=</span> <span class="st">"Trump Approval Ratings"</span>,</span>
 <span>  subtitle <span class="op">=</span> <span class="st">"From 'How Popular is Donald Trump'"</span>,</span>
@@ -711,8 +713,12 @@ Graph info
 <span>        labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html">percent</a></span><span class="op">)</span></span>
 <span><span class="va">ggp2_bar_diverg_vert</span> <span class="op">+</span> </span>
 <span>  <span class="va">labs_geom_bar_diverg_vert</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="diverging_bar_graphs_files/figure-html/create_graph_vert_diverg_bars-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="diverging_bar_graphs_files/figure-html/create_graph_vert_diverg_bars-1.png" class="img-fluid"></p>
+</div>
+</div>
 </div>
 </div>
 </div>

@@ -205,6 +205,8 @@ Violin plots can allow us to compare the 'center' and 'spread' of continuous var
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_grp_violin <- labs(
   title = "Adult foraging penguins", 
   subtitle = "Palmer Archipelago, Antarctica",
@@ -250,6 +252,8 @@ We can include lines for the 25th, 50th, and 75th quartiles using the `draw_quan
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 ggplot(data = peng_violin,
        aes(x = island, 
            y = bill_length_mm, 
@@ -281,6 +285,8 @@ The [`kernel` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 ggplot(data = peng_violin,
        aes(x = island, 
            y = bill_length_mm, 
@@ -311,6 +317,8 @@ We can directly adjust the shape of the violin with the [`bw` argument](https://
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 # bw of 0.5
 grp_violin_bw0p5 <- ggplot(data = peng_violin,
        aes(x = island, 

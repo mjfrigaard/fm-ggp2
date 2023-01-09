@@ -210,6 +210,8 @@ ggp2_bubble +
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_bubble <- labs(
   title = "Bill Length vs. Flipper Length",
   x = "Bill Length (mm)", y = "Flipper length (mm)", 

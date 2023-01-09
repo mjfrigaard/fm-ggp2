@@ -610,14 +610,16 @@ Graph info
 </div>
 </div>
 </div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="tabset-2-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="mosaic_plots_files/figure-html/run_graph_mosaic-1.png" style="width:100.0%;height:100.0%"></p>
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="mosaic_plots_files/figure-html/run_graph_mosaic-1.png" class="img-fluid"></p>
+</div>
 </div>
 </div>
 </div>
@@ -634,9 +636,10 @@ Graph info
 <div style="font-size: 0.95em; color: #9d40f5;">
 <p>It’s a good idea to adjust the <code>fig-height</code> and <code>fig-width</code> of your graph</p>
 </div>
-</div></div><div style="font-size: 0.75em;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
+</div></div><div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 
 <table class=" lightable-paper" style="font-size: 14px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
 <thead><tr>
@@ -667,10 +670,11 @@ Graph info
 </tbody>
 </table>
 </div>
-<div class="cell-output-display">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="mosaic_plots_files/figure-html/create_table_mosaic-1.png" style="width:100.0%;height:100.0%" class="figure-img"></p>
+<figure class="figure"><p><img src="mosaic_plots_files/figure-html/create_table_mosaic-1.png" class="img-fluid figure-img"></p>
 </figure>
+</div>
 </div>
 </div>
 </div>
@@ -732,8 +736,8 @@ Graph info
 <p>Below is another example of a two-variable mosaic plot, mapping the <code><a href="https://rdrr.io/pkg/ggmosaic/man/product.html">product()</a></code> variables as <code>unruly_child</code> and <code>recline_rude</code>, and the <code>fill</code> variable as <code>recline_rude</code>.</p>
 <p>Once again we can see the counts for each category in the cross-tabulation:</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># build 2-variable mosiac plot</span></span>
 <span><span class="va">labs_mosaic_2var</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>  title <span class="op">=</span> <span class="st">"In general...is it rude to..."</span>, </span>
@@ -751,16 +755,20 @@ Graph info
 <span>  </span>
 <span><span class="va">ggp2_mosaic_2var</span> <span class="op">+</span> </span>
 <span>    <span class="va">labs_mosaic_2var</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="mosaic_plots_files/figure-html/ggp2_mosaic_2var-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="mosaic_plots_files/figure-html/ggp2_mosaic_2var-1.png" class="img-fluid"></p>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div style="font-size: 0.85em;">
 <p>For conditional variables, we map the <code><a href="https://rdrr.io/pkg/ggmosaic/man/product.html">product()</a></code> variable as <code>unruly_child</code> and the <code>fill</code> variable as <code>baby</code>, but include a <code>conds</code> variable (as <code>product(recline_rude)</code>).</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># build conditional mosiac plot</span></span>
 <span><span class="va">labs_mosaic_cond</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>  title <span class="op">=</span> <span class="st">"In general...is it rude to..."</span>, </span>
@@ -778,13 +786,17 @@ Graph info
 <span></span>
 <span><span class="va">ggp2_mosaic_cond</span> <span class="op">+</span> </span>
 <span>    <span class="va">labs_mosaic_cond</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="mosaic_plots_files/figure-html/ggp2_mosaic_cond-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="mosaic_plots_files/figure-html/ggp2_mosaic_cond-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>FACETS:</strong></p>
 </div>
@@ -792,20 +804,24 @@ Graph info
 <p>Another option for including a conditioning variable is including facets. In the example below we use <code>recline_rude</code> in both <code>x</code> and <code>fill</code> (we don’t need to wrap <code>recline_rude</code> in <code><a href="https://rdrr.io/pkg/ggmosaic/man/product.html">product()</a></code> because it’s the only variable).</p>
 <p>The <code>divider</code> argument let’s us control the spine partitions (vertically and horizontally). Below are the two vertical orientation options for the <code>divider</code> argument.</p>
 </div>
-<div style="font-size: 0.85em;">
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="mosaic_plots_files/figure-html/patchwork_mosaic_run_v-1.png" style="width:100.0%;height:100.0%"></p>
+<div style="font-size: 0.85em;" class="page-columns page-full">
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="mosaic_plots_files/figure-html/patchwork_mosaic_run_v-1.png" class="img-fluid"></p>
+</div>
 </div>
 </div>
 </div>
 <div style="font-size: 0.85em;">
 <p>The two horizontal orientation options make the axis text harder to read, so these need to be manipulated manually.</p>
 </div>
-<div style="font-size: 0.85em;">
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="mosaic_plots_files/figure-html/patchwork_mosaic_run_h-1.png" style="width:100.0%;height:100.0%"></p>
+<div style="font-size: 0.85em;" class="page-columns page-full">
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="mosaic_plots_files/figure-html/patchwork_mosaic_run_h-1.png" class="img-fluid"></p>
+</div>
 </div>
 </div>
 </div>

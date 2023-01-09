@@ -217,6 +217,8 @@ ggp2_inst_beatles +
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_inst_beatles <- labs(
   title = "Beatles name appearances over time",
   subtitle = "Appearances of John, Paul, George and Ringo since 1900",
@@ -263,6 +265,8 @@ Info
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 bbynms_ngt_55k <- babynames::babynames |> 
   dplyr::filter(n > 50000) 
 
@@ -349,6 +353,8 @@ dplyr::glimpse(bby_nms_fct)
 #| echo: true
 #| warning: false
 #| message: false
+#| layout-nrow: 1
+#| column: page-inset-right
 bby_nms_fct |> 
   dplyr::filter(year >= 1875 & year <= 1935 & prop > 0.05) |>
   ggplot(mapping = aes(x = year, y = name, color = name, group = prop_range)) +

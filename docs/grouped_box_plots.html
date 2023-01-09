@@ -574,13 +574,13 @@ Graph info
 </div>
 </div>
 </div>
-</section><section id="the-grammar" class="level2"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
-<div class="panel-tabset">
+</section><section id="the-grammar" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
+<div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Code</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Graph</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content page-columns page-full">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -612,39 +612,41 @@ Graph info
 </div>
 </div>
 </div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="tabset-2-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
 <div style="font-size: 0.85em;">
 <p>When a categorical variable is supplied, the plot will contain a box for each level or group.</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="grouped_box_plots_files/figure-html/create_graph_grp_boxplots-1.png" style="width:100.0%;height:100.0%"></p>
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="grouped_box_plots_files/figure-html/create_graph_grp_boxplots-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-</section><section id="more-info" class="level2"><h2 class="anchored" data-anchor-id="more-info">More info</h2>
-<div class="panel-tabset">
+</div>
+</section><section id="more-info" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="more-info">More info</h2>
+<div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Notches</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Outliers</a></li>
 </ul>
-<div class="tab-content">
-<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="tab-content page-columns page-full">
+<div id="tabset-3-1" class="tab-pane active page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>NOTCHES:</strong></p>
 </div>
 <div style="font-size: 0.85em;">
 <p>Add notches to the box plot using the <code>notch = TRUE</code> and <code>notchwidth</code> arguments.</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_grp_box_notch</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">peng_box</span>,</span>
 <span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">island</span>, </span>
 <span>           y <span class="op">=</span> <span class="va">bill_length_mm</span>, </span>
@@ -656,21 +658,25 @@ Graph info
 <span>      show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span>
 <span><span class="va">ggp2_grp_box_notch</span> <span class="op">+</span> </span>
 <span>    <span class="va">labs_grp_boxplots</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="grouped_box_plots_files/figure-html/notches_boxplots-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="grouped_box_plots_files/figure-html/notches_boxplots-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>OUTLIERS:</strong></p>
 </div>
 <div style="font-size: 0.85em;">
 <p>Box plots display outliers using points, and we can change the color these using the <code>outlier.colour</code> argument. Inside the <code><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot()</a></code>, we map <code>island</code> to <code>color</code> and set <code>outlier.colour</code> to <code>NULL</code>:</p>
 </div>
-<div style="font-size: 0.75em;">
-<div class="cell">
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_grp_box_outliers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">peng_box</span>,</span>
 <span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">island</span>, </span>
 <span>           y <span class="op">=</span> <span class="va">bill_length_mm</span>,</span>
@@ -684,8 +690,12 @@ Graph info
 <span>      show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span>
 <span><span class="va">ggp2_grp_box_outliers</span> <span class="op">+</span> </span>
 <span>    <span class="va">labs_grp_boxplots</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="grouped_box_plots_files/figure-html/outliers_boxplots-1.png" style="width:100.0%;height:100.0%"></p>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="grouped_box_plots_files/figure-html/outliers_boxplots-1.png" class="img-fluid"></p>
+</div>
+</div>
 </div>
 </div>
 </div>

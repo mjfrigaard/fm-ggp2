@@ -208,6 +208,8 @@ ggp2_2dhist +
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_2dhist <- labs(
     title = "Adult Foraging Penguins", 
     subtitle = "Near Palmer Station, Antarctica", 
@@ -251,6 +253,8 @@ Below we change the `bins` to `15` and save this layer as `ggp2_2dbins15`:
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 ggp2_base <- ggplot(data = penguins_2dhist, 
     mapping = aes(x = bill_length_mm, 
                   y = flipper_length_mm)) 
@@ -283,6 +287,8 @@ We can also reverse the order of the fill color scale with `rev` (`TRUE` or `FAL
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 ggp2_2dbins15 + 
     scale_fill_continuous_sequential(
         palette = "Mako", 
@@ -324,6 +330,8 @@ We also add a `geom_point()` layer.
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 ggp2_2dbins15 + 
     scale_fill_continuous_sequential(
         palette = "SunsetDark",

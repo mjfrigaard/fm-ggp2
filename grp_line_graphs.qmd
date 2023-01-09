@@ -404,6 +404,8 @@ ggp2_line +
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_line_graph <- labs(title = "Average US births", 
                         subtitle = "1994-2014",
                         y = "Average number of US births", 
@@ -481,6 +483,8 @@ Now when we create our line graph, we will have a categorical variable with seve
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 # here we create the labels (with the subtitle updating with the data)
 labs_line_graph_grp <- labs(title = "Average US births", 
                         subtitle = paste0("Between ",
@@ -502,6 +506,8 @@ labs_line_graph_grp <- labs(title = "Average US births",
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 # Build layer with yr_qtr and day_of_week
 ggp2_line_grp <- ggplot(data = avg_births_dow_qtr, 
                    mapping = aes(x = yr_qtr, 
@@ -540,6 +546,8 @@ We'll work through some examples below using another subset from `usbirth_1994_2
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 avg_births_dow_mnth <- usbirth_1994_2014 |>
     dplyr::filter(year >= 2008 & year < 2010) |>
     dplyr::group_by(yr_mnth, day_of_week) |>
@@ -560,6 +568,8 @@ dplyr::glimpse(avg_births_dow_mnth)
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_line_styles <- labs(
     title = "Average US births",
     subtitle = paste0(
@@ -594,6 +604,8 @@ We'll start by creating a line graph layer for Monday (`"Mon"`), Thursday (`"Thu
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 ggp2_line_mon_thur_fri <-
     ggplot(data = dplyr::filter(avg_births_dow_mnth,
         day_of_week %in% c("Mon", "Thurs", "Fri"))) +
@@ -628,6 +640,8 @@ Then we'll change the `linetype` of Saturday and Sunday to `"longdash'` (and mak
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 ggp2_line_sat_sun <- ggp2_line_mon_thur_fri +
     geom_line(data = dplyr::filter(avg_births_dow_mnth,
             day_of_week %in% c("Sat", "Sun")),
@@ -666,6 +680,8 @@ We also manually set the legend order by supplying the original factor levels to
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 library(paletteer)
 library(ggthemes)
 # original factor levels
@@ -816,6 +832,8 @@ Add `geom_point()` and `geom_label()` for Wednesday.
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 # point for max births/day
 ggp2_line_wed_max_births_pnts <- geom_point(
     data = label_max_wed_dow,
@@ -909,6 +927,8 @@ Add `geom_point()` and `geom_label()` for Tuesday.
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 # point for max births/day
 ggp2_line_tues_max_births_pnts <-
     geom_point(data = label_max_tues_dow,
@@ -1020,6 +1040,8 @@ Using `facet_wrap()` with a single categorical variable (`. ~ var`) will create 
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 # labels
 labs_line_graph_facet_wrap <- labs(
     title = "Median US births",
@@ -1070,6 +1092,8 @@ It's always a good idea to check the `x` and `y` axis text when using facets. I'
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 # labels
 labs_line_graph_facet_grid <- labs(
     title = "Median US births",

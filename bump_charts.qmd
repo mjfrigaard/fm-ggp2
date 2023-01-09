@@ -227,6 +227,8 @@ ggp2_bump +
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_bump <- labs(title = "TV News Hurricane Mentions",   
   subtitle = "Between Sep 15-25th, 2017", 
   x = "Date", y = "Rank", 
