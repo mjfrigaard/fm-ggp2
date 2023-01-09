@@ -732,7 +732,7 @@ They will each have 7 rows (one for each day of the week) and a label variable (
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: label_max_dow
-#| eval: true
+#| eval: false
 #| echo: true
 #| warning: false
 #| message: false
@@ -760,8 +760,33 @@ dplyr::arrange(label_max_dow, desc(max_births)) |>
 
 ::: {style="font-size: 0.75em;"}
 ```{r}
-#| label: label_max_avg_dow
+#| label: label_max_dow_show
 #| eval: true
+#| echo: false
+label_max_dow <- usbirth_1994_2014 |>
+    dplyr::group_by(day_of_week) |>
+    dplyr::summarise(max_births = max(births, na.rm = TRUE)) |>
+    dplyr::ungroup() |>
+    dplyr::arrange(desc(max_births)) |>
+    dplyr::inner_join(y = usbirth_1994_2014,
+        by = c("max_births" = "births", "day_of_week")) |>
+    dplyr::mutate(lbl = paste0(day_of_week,
+        " (",
+        date,
+        " )",
+        ", max births = ",
+        max_births)) |>
+    dplyr::select(day_of_week, yr_mnth, max_births, lbl)
+
+dplyr::arrange(label_max_dow, desc(max_births)) |>
+    dplyr::slice(1:2) |> rmarkdown::paged_table()
+```
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: label_max_avg_dow
+#| eval: false
 #| echo: true
 #| warning: false
 #| message: false
@@ -794,6 +819,38 @@ dplyr::arrange(label_max_avg_dow, desc(max_avg_births)) |>
 ```
 :::
 
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: label_max_avg_dow_show
+#| eval: true
+#| echo: false
+label_max_avg_dow <- avg_births_dow_mnth |>
+    # group by mon-sun
+    dplyr::group_by(day_of_week) |>
+    # get max avg
+    dplyr::summarise(max_avg_births = max(avg_births, na.rm = TRUE)) |>
+    # ungroup
+    dplyr::ungroup() |>
+    # join back to table
+    dplyr::inner_join(y = avg_births_dow_mnth,
+        by = "day_of_week") |>
+    # check for max
+    dplyr::mutate(is_max = case_when(
+        avg_births == max_avg_births ~ TRUE,
+        avg_births != max_avg_births ~ FALSE,
+    )) |>
+    # remove non-maxes
+    filter(is_max == TRUE) |>
+    dplyr::mutate(lbl = paste0(day_of_week,
+        ": Max avg births = ",
+        max_avg_births)) |>
+    # reduce
+    select(day_of_week, yr_mnth, max_avg_births, lbl)
+dplyr::arrange(label_max_avg_dow, desc(max_avg_births)) |>
+    dplyr::slice(1:2) |> rmarkdown::paged_table()
+```
+:::
+
 ::: {style="font-size: 0.85em;"}
 Now that we have label tables for each metric, we can filter them to the days we want to label. 
 
@@ -803,7 +860,7 @@ We'll use `filter()` to get the maximum values for `"Wed"` (in `label_max_wed_do
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: label_wed_tues_dow
-#| eval: true
+#| eval: false
 #| echo: true
 #| warning: false
 #| message: false
@@ -816,6 +873,20 @@ label_max_wed_dow
 label_max_avg_wed_dow <- label_max_avg_dow |>
     filter(day_of_week == "Wed")
 label_max_avg_wed_dow
+```
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: label_wed_tues_dow_show
+#| eval: true
+#| echo: false
+label_max_wed_dow <- label_max_dow |>
+    filter(day_of_week == "Wed")
+label_max_wed_dow |> rmarkdown::paged_table()
+label_max_avg_wed_dow <- label_max_avg_dow |>
+    filter(day_of_week == "Wed")
+label_max_avg_wed_dow |> rmarkdown::paged_table()
 ```
 :::
 
@@ -862,7 +933,7 @@ ggp2_line_wed_max_births_lbl <- geom_label(
     fill = "#ffffff",
     nudge_y = -480,
     nudge_x = 25,
-    size = 1.7,
+    size = 1.3,
     show.legend = FALSE)
 
 ggp2_line_wed_max_avg_births_lbl <-
@@ -874,7 +945,7 @@ ggp2_line_wed_max_avg_births_lbl <-
         fill = "#ffffff",
         nudge_y = 145,
         nudge_x = 85,
-        size = 1.7,
+        size = 1.3,
         show.legend = FALSE)
 
 ggp2_line_pal_d + 
@@ -897,7 +968,7 @@ We'll use `filter()` to get the maximum values for `"Tues"` (in `label_max_tues_
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: label_max_tues_dow_label_max_avg_tues_dow
-#| eval: true
+#| eval: false
 #| echo: true
 #| warning: false
 #| message: false
@@ -911,6 +982,26 @@ label_max_tues_dow
 label_max_avg_tues_dow <- label_max_avg_dow |> 
     filter(day_of_week == "Tues")
 label_max_avg_tues_dow
+```
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: label_max_tues_dow_label_max_avg_tues_dow_show
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+# point for max births/day
+# get tues
+label_max_tues_dow <- label_max_dow |> 
+    filter(day_of_week == "Tues")
+label_max_tues_dow |> rmarkdown::paged_table()
+label_max_avg_tues_dow <- label_max_avg_dow |> 
+    filter(day_of_week == "Tues")
+label_max_avg_tues_dow |> rmarkdown::paged_table()
 ```
 :::
 
@@ -957,7 +1048,7 @@ ggp2_line_tues_max_births_lbl <-
         fill = "#ffffff",
         nudge_y = -480,
         nudge_x = 50,
-        size = 1.7,
+        size = 1.3,
         show.legend = FALSE)
 
 ggp2_line_tues_max_avg_births_lbl <-
@@ -969,7 +1060,7 @@ ggp2_line_tues_max_avg_births_lbl <-
         fill = "#ffffff",
         nudge_y = 300,
         nudge_x = -80,
-        size = 1.7,
+        size = 1.3,
         show.legend = FALSE)
 
 
