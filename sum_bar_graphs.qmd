@@ -204,6 +204,8 @@ ggp2_sum_col +
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_sum_col <- labs(
     title = "Total Penguin Mass",
     subtitle = "How many kilograms of penguin per Island?",
@@ -272,6 +274,8 @@ palmerpenguins::penguins |>
 #| echo: false
 #| warning: false
 #| message: false
+#| layout-nrow: 1
+#| column: page-inset-right
 palmerpenguins::penguins |> 
     dplyr::select(body_mass_g, island) |> 
     tidyr::drop_na() |> 
@@ -309,6 +313,8 @@ The `geom_bar()` geom will also create grouped bar graphs, but we have to switch
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 ggplot(data = peng_sum_col,
     aes(x = island,
         y = body_mass_kg)) +

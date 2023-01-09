@@ -192,6 +192,8 @@ ggp2_bar_ovrlp +
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_bar_ovrlp <- labs(
   title = "Adult foraging penguins on Dream island",
   x = "Flipper length (mm)",
@@ -247,6 +249,8 @@ Map the counts to the `y` axis, `flipper_length_mm` to the `x` axis, and `specie
 #| label: data_code_bar_penguins_dodge
 #| eval: true
 #| echo: true
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_col_ovrlp <- labs(
   title = "Adult foraging penguins on Dream island",
   subtitle = "built with 'geom_col()'",
@@ -271,6 +275,8 @@ Compare the two graphs below:
 #| label: compare_bar_col
 #| eval: true
 #| echo: false
+#| layout-nrow: 1
+#| column: page-inset-right
 ggp2_bar_ovrlp + 
   labs_bar_ovrlp
 ggp2_col_ovrlp + 
@@ -332,6 +338,8 @@ Inside the `geom_bar()` function, set `position` to `"dodge"`
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_bar_dodge <- labs(
   title = "Adult foraging penguins on Dream island",
   subtitle = "position = 'dodge'",
@@ -386,6 +394,8 @@ Inside `geom_bar()`, set `position` to `"dodge2"`
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_bar_dodge2 <- labs(
   title = "Adult foraging penguins on Dream island",
   subtitle = "position = 'dodge2'",
@@ -414,6 +424,8 @@ Compare the two graphs below:
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 ggp2_bar_dodge +
   labs_bar_dodge
 

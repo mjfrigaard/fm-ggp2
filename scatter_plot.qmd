@@ -200,6 +200,8 @@ If multiple points occupy the same value position, use transparency (`alpha`) to
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_scatter <- labs(
   title = "Bill Length vs. Flipper Length",
   x = "Bill Length (mm)", y = "Flipper length (mm)")

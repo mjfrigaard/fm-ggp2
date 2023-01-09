@@ -265,6 +265,8 @@ ggp2_psets_labs +
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_psets <- labs(
         title = "Categories of Palmer Penguins", 
         y = "Count", fill = "Sex")
@@ -324,6 +326,8 @@ Manually setting the `limits` of the `x` axis in `scale_x_continuous()` will als
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 ggp2_psets_axes + 
   geom_parallel_sets_labels(
       size = 3.2, 

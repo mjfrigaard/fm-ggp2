@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.1.251">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>ggplot2: field manual - Grouped bubble graph</title>
+<title>ggplot2: field manual - TIMES &amp; DATES</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,69 +17,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -89,8 +26,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./alluvial_charts.html" rel="next">
-<link href="./bubble_charts.html" rel="prev">
+<link href="./line_graphs.html" rel="next">
+<link href="./raincloud_plots.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -121,11 +58,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 </head>
-<body class="nav-sidebar floating slimcontent">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Grouped bubble graph</h1>
+      <h1 class="quarto-secondary-nav-title">TIMES &amp; DATES</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -334,7 +271,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./time_and_date.html" class="sidebar-item-text sidebar-link">TIMES &amp; DATES</a>
+            <a href="./time_and_date.html" class="sidebar-item-text sidebar-link active">TIMES &amp; DATES</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -392,7 +329,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./grouped_bubble_charts.html" class="sidebar-item-text sidebar-link active">Grouped bubble graph</a>
+  <a href="./grouped_bubble_charts.html" class="sidebar-item-text sidebar-link">Grouped bubble graph</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -455,18 +392,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </ul>
 </div>
 </nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Contents</h2>
-   
-  <ul>
-<li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description">Description</a></li>
-  <li><a href="#getting-set-up" id="toc-getting-set-up" class="nav-link" data-scroll-target="#getting-set-up">Getting set up</a></li>
-  <li><a href="#the-grammar" id="toc-the-grammar" class="nav-link" data-scroll-target="#the-grammar">The grammar</a></li>
-  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info">More info</a></li>
-  </ul></nav>
+        
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title d-none d-lg-block">Grouped bubble graph</h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title d-none d-lg-block">TIMES &amp; DATES</h1>
 </div>
 
 
@@ -488,241 +418,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-<div class="callout-note callout callout-style-simple no-icon callout-captioned">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Graph info
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<div style="font-size: 1.25em; color: #007bff;">
-<p><strong>Should I use this graph?</strong></p>
-</div>
-<p><br></p>
-<div class="cell" data-layout-align="right">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure"><p><img src="grouped_bubble_charts_files/figure-html/full_code_display-1.png" style="width:60.0%;height:60.0%" class="figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div style="font-size: 1.10em; color: #007bff;">
-<p><strong>This graph requires:</strong></p>
-</div>
-<div style="font-size: 1.05em; color: #fa7b3c;">
-<p><strong>✅ a categorical variable</strong></p>
-</div>
-<div style="font-size: 1.05em; color: #fa7b3c;">
-<p><strong>✅ two numeric (continuous) variables</strong></p>
-</div>
-</div>
-</div>
-</div>
-<section id="description" class="level2"><h2 class="anchored" data-anchor-id="description">Description</h2>
-<p>Grouped bubble graphs use position, color, and size to display the relationships between four variables (three numerical/quantitative, one categorical).</p>
-<p>The position on the x and y axis captures the relationship between two numerical variables. The size and color of the points display a third numerical variable across the levels of a (fourth) categorical variable.</p>
-</section><section id="getting-set-up" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="getting-set-up">Getting set up</h2>
-<div class="panel-tabset page-columns page-full">
-<ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Packages</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Data</a></li>
-</ul>
-<div class="tab-content page-columns page-full">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div style="font-size: 1.15em; color: #1e83c8;">
-<p><strong>PACKAGES:</strong></p>
-</div>
-<div style="font-size: 0.85em;">
-<p>Install packages.</p>
-</div>
-<div style="font-size: 0.75em;">
-<div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"palmerpenguins"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</div>
-</div>
-<div id="tabset-1-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div style="font-size: 1.15em; color: #1e83c8;">
-<p><strong>DATA:</strong></p>
-</div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure"><p><img src="www/lter_penguins.png" style="width:100.0%;height:100.0%" class="figure-img"></p>
-<p></p><figcaption class="figure-caption">Artwork by allison horst</figcaption><p></p>
-</figure>
-</div>
-</div></div><div style="font-size: 0.85em;">
-<p>The <code>penguins</code> data</p>
-</div>
-<div style="font-size: 0.75em;">
-<div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">penguins</span> <span class="op">&lt;-</span> <span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/reference/penguins.html">penguins</a></span></span>
-<span><span class="fu">glimpse</span><span class="op">(</span><span class="va">penguins</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rows: 344</span></span>
-<span><span class="co">#&gt; Columns: 8</span></span>
-<span><span class="co">#&gt; $ species           &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, …</span></span>
-<span><span class="co">#&gt; $ island            &lt;fct&gt; Torgersen, Torgersen, Torgersen,…</span></span>
-<span><span class="co">#&gt; $ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3…</span></span>
-<span><span class="co">#&gt; $ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6…</span></span>
-<span><span class="co">#&gt; $ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193, 190, 181…</span></span>
-<span><span class="co">#&gt; $ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650…</span></span>
-<span><span class="co">#&gt; $ sex               &lt;fct&gt; male, female, female, NA, female…</span></span>
-<span><span class="co">#&gt; $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 20…</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section><section id="the-grammar" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
-<div class="panel-tabset page-columns page-full">
-<ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Code</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Graph</a></li>
-</ul>
-<div class="tab-content page-columns page-full">
-<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div style="font-size: 1.15em; color: #1e83c8;">
-<p><strong>CODE:</strong></p>
-</div>
-<div style="font-size: 0.85em;">
-<p>Create labels with <code><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs()</a></code></p>
-<p>Initialize the graph with <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code> and provide <code>data</code></p>
-<p>Map <code>bill_length_mm</code> to the <code>x</code> axis and <code>flipper_length_mm</code> to the <code>y</code> axis</p>
-<p>Inside <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code></p>
-<ul>
-<li>map <code>body_mass_g</code> to <code>size</code> and <code>species</code> to <code>fill</code><br>
-</li>
-<li>set the <code>alpha</code> to <code>2/3</code>
-</li>
-</ul>
-<p>In the <code><a href="https://ggplot2.tidyverse.org/reference/scale_size.html">scale_size()</a></code></p>
-<ul>
-<li>set <code>range</code> to <code>c(.04, 6)</code>
-</li>
-</ul>
-</div>
-<div style="font-size: 0.75em;">
-<div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_grp_bubble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
-<span>  title <span class="op">=</span> <span class="st">"Bill Length vs. Flipper Length"</span>,</span>
-<span>  x <span class="op">=</span> <span class="st">"Bill Length (mm)"</span>, </span>
-<span>  y <span class="op">=</span> <span class="st">"Flipper length (mm)"</span>, </span>
-<span>  size <span class="op">=</span> <span class="st">"Body Mass"</span>, </span>
-<span>  fill <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">ggp2_grp_bubble</span> <span class="op">&lt;-</span> <span class="va">penguins</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span></span>
-<span>    x <span class="op">=</span> <span class="va">bill_length_mm</span>, y <span class="op">=</span> <span class="va">flipper_length_mm</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>size <span class="op">=</span> <span class="va">body_mass_g</span>, </span>
-<span>        color <span class="op">=</span> <span class="va">species</span><span class="op">)</span>, </span>
-<span>            alpha <span class="op">=</span> <span class="fl">2</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_size.html">scale_size</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.04</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="va">ggp2_grp_bubble</span> <span class="op">+</span> </span>
-<span>  <span class="va">labs_grp_bubble</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</div>
-</div>
-<div id="tabset-2-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div style="font-size: 1.15em; color: #1e83c8;">
-<p><strong>GRAPH:</strong></p>
-</div>
-<div class="cell column-page-inset-right quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="grouped_bubble_charts_files/figure-html/create_graph_grp_bubble-1.png" class="img-fluid"></p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section><section id="more-info" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="more-info">More info</h2>
-<p>We can change the <code>shape</code> of the points for more control of the <code>color</code> and <code>fill</code>.</p>
-<div class="panel-tabset page-columns page-full">
-<ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Shape</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Color</a></li>
-</ul>
-<div class="tab-content page-columns page-full">
-<div id="tabset-3-1" class="tab-pane active page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div style="font-size: 1.15em; color: #1e83c8;">
-<p><strong>SHAPE:</strong></p>
-</div>
-<div style="font-size: 0.85em;">
-<p>Inside <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code>, we can set <code>shape</code> to <code>21</code>, and <code>color</code> to <code>"#000000"</code> to outline the points in black</p>
-</div>
-<div style="font-size: 0.75em;" class="page-columns page-full">
-<div class="page-columns page-full">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_grp_bubble_s21</span> <span class="op">&lt;-</span> <span class="va">penguins</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span></span>
-<span>    x <span class="op">=</span> <span class="va">bill_length_mm</span>, y <span class="op">=</span> <span class="va">flipper_length_mm</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>size <span class="op">=</span> <span class="va">body_mass_g</span>, fill <span class="op">=</span> <span class="va">species</span><span class="op">)</span>, </span>
-<span>        alpha <span class="op">=</span> <span class="fl">2</span><span class="op">/</span><span class="fl">3</span>, shape <span class="op">=</span> <span class="fl">21</span>, color <span class="op">=</span> <span class="st">"#000000"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_size.html">scale_size</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.04</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="va">ggp2_grp_bubble_s21</span> <span class="op">+</span> </span>
-<span>  <span class="va">labs_grp_bubble</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell column-page-inset-right quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="grouped_bubble_charts_files/figure-html/shape_21-1.png" class="img-fluid"></p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-3-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div style="font-size: 1.15em; color: #1e83c8;">
-<p><strong>COLOR:</strong></p>
-</div>
-<div style="font-size: 0.85em;">
-<p>Inside the <code><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes()</a></code> of <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code>, we can set <code>shape</code> to <code>21</code>, and map <code>color</code> to <code>"species"</code> to outline the points in the same colors as <code>fill</code></p>
-</div>
-<div style="font-size: 0.75em;" class="page-columns page-full">
-<div class="page-columns page-full">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_grp_bubble_s21_color</span> <span class="op">&lt;-</span> <span class="va">penguins</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span></span>
-<span>    x <span class="op">=</span> <span class="va">bill_length_mm</span>, y <span class="op">=</span> <span class="va">flipper_length_mm</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>size <span class="op">=</span> <span class="va">body_mass_g</span>, </span>
-<span>        fill <span class="op">=</span> <span class="va">species</span>, </span>
-<span>        color <span class="op">=</span> <span class="va">species</span><span class="op">)</span>, </span>
-<span>        alpha <span class="op">=</span> <span class="fl">2</span><span class="op">/</span><span class="fl">3</span>, shape <span class="op">=</span> <span class="fl">21</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_size.html">scale_size</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.04</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="va">ggp2_grp_bubble_s21_color</span> <span class="op">+</span> </span>
-<span>  <span class="va">labs_grp_bubble</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell column-page-inset-right quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="grouped_bubble_charts_files/figure-html/shape_21_color_aes-1.png" class="img-fluid"></p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+<p><strong>Times &amp; dates</strong>: These graphs display changes in quantitative or categorical variables over a dimension of time (date-time, date, year, month, quarter, etc.).</p>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+
+</main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -933,13 +633,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./bubble_charts.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Bubble charts</span>
+      <a href="./raincloud_plots.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Raincloud plots</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./alluvial_charts.html" class="pagination-link">
-        <span class="nav-page-text">Alluvial charts</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./line_graphs.html" class="pagination-link">
+        <span class="nav-page-text">Line graphs</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

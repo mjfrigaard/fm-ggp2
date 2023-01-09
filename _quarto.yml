@@ -31,7 +31,6 @@ book:
         - heatmaps.qmd
         - waffle_charts.qmd
         - cleveland_dot_plots.qmd
-        #- chapter_amnts.qmd
     - part: proportions.qmd
       chapters:
         - diverging_bar_graphs.qmd
@@ -39,8 +38,6 @@ book:
         - mosaic_plots.qmd
         - pie_charts.qmd
         - treemaps.qmd
-        - stream_plots.qmd
-        #- chapter_prp.qmd
     - part: distributions.qmd
       chapters:
         - overlapping_histograms.qmd
@@ -52,23 +49,24 @@ book:
         - grouped_box_plots.qmd
         - grouped_violin_plots.qmd
         - raincloud_plots.qmd
-        #- chapter_dist.qmd
+    - part: time_and_date.qmd
+      chapters:
+        - line_graphs.qmd
+        - grp_line_graphs.qmd
+        - bump_charts.qmd
+        - slope_graphs.qmd
+        - stream_plots.qmd
     - part: relationships.qmd
       chapters:
         - scatter_plot.qmd
         - grouped_scatter_plots.qmd
         - bubble_charts.qmd
         - grouped_bubble_charts.qmd
-        - line_graphs.qmd
-        - grp_line_graphs.qmd
         - alluvial_charts.qmd
         - parallel_sets.qmd
-        - bump_charts.qmd
-        - slope_graphs.qmd
         - density_contours.qmd
         - bins_2d.qmd
         - hex_bins.qmd
-        #- chapter_rela.qmd
     - part: "References"
       chapters:
         - references.qmd

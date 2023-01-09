@@ -210,6 +210,8 @@ Ridgeline plots are excellent for comparing continuous distributions across grou
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_ridges <- labs(
   title = "Adult foraging penguins",
   x = "Bill length (millimeters)",

@@ -222,6 +222,8 @@ ggp2_waffle +
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_waffle <- labs(
   title = "Palmer penguin species",
   x = "", y = "", fill = "Species")

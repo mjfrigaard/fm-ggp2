@@ -206,6 +206,8 @@ Histograms work by dividing the variable provided to `x` [*into bins and countin
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_ovrlp_hist <- labs(
   title = "Adult foraging penguins",
   x = "Flipper length (mm)", 

@@ -229,6 +229,8 @@ Make density area slightly transparent to handle over-plotting
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_ovrlp_density <- labs(
   title = "Adult foraging penguins",
   x = "Flipper length (millimeters)",
@@ -268,6 +270,8 @@ If we change the `position` to `"stack"` we can see the smoothed estimates are '
 #| warning: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_stack_density <- labs(
     title = "Adult foraging penguins",
     x = "Flipper length (millimeters)",
@@ -305,6 +309,8 @@ If we include `after_stat(count)` as one of our mapped aesthetics, the mapping i
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_after_stat_density <- labs(
   title = "Adult foraging penguins",
   x = "Flipper length (millimeters)", 
@@ -344,6 +350,8 @@ Using `after_stat(count)` with `position = "fill"` creates in a conditional dens
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_fill_density <- labs(
   title = "Adult foraging penguins",
   x = "Flipper length (millimeters)", 
