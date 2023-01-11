@@ -106,6 +106,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_grp_boxplots
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -134,6 +135,7 @@ Remove the missing `island` values from the `penguins` data.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_grp_boxplots
+#| code-fold: show
 #| eval: true
 #| echo: true
 peng_box <- filter(penguins, !is.na(island))
@@ -171,6 +173,7 @@ Remove the legend with `show.legend = FALSE`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_grp_boxplots
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

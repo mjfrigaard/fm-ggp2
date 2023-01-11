@@ -141,6 +141,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_treemap
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -171,6 +172,7 @@ Filter the missing values from `sex`, group the data by `species`, `island`, and
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_treemap
+#| code-fold: show
 #| eval: true
 #| echo: true
 treemap_peng <- penguins |> 
@@ -218,6 +220,7 @@ Initialize the graph with `ggplot()` and provide `data`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_treemap
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

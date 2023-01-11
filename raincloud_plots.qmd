@@ -164,6 +164,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_raincloud
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -200,6 +201,7 @@ The `jit_distance` and `jit_seed` refer to the points in the plot.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_raincloud
+#| code-fold: show
 #| eval: true
 #| echo: true
 # remove missing
@@ -238,6 +240,7 @@ Use the `raincloudplots::raincloud_1x1()` to build the plot, assigning `peng_1x1
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_raincloud
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

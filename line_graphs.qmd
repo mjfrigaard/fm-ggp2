@@ -120,6 +120,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_line_graph
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -162,6 +163,7 @@ Save as `avg_birth_ym`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_line
+#| code-fold: show
 #| eval: true
 #| echo: true
 US_births_2004_2014 <-
@@ -216,6 +218,7 @@ Add `geom_line()`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_line
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

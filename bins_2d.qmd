@@ -108,6 +108,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_2d_hist
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -136,6 +137,7 @@ We'll take the `flipper_length_mm`, `bill_length_mm`, and `species` variables fr
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_2d_hist
+#| code-fold: show
 #| eval: true
 #| echo: true
 penguins_2dhist <- palmerpenguins::penguins |> 
@@ -172,6 +174,7 @@ Add the `geom_bin2d()` layer
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_2d_hist
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false
@@ -187,7 +190,7 @@ labs_2dhist <- labs(
 ggp2_2dhist <- ggplot(data = penguins_2dhist, 
     mapping = aes(x = bill_length_mm, 
                   y = flipper_length_mm)) + 
-    geom_bin2d()
+    geom_bin2d(bins = 15)
             
 ggp2_2dhist + 
     labs_2dhist
@@ -208,7 +211,7 @@ ggp2_2dhist +
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-#| layout-nrow: 1
+#| layout-ncol: 1
 #| column: page-inset-right
 labs_2dhist <- labs(
     title = "Adult Foraging Penguins", 
@@ -219,7 +222,7 @@ labs_2dhist <- labs(
 ggp2_2dhist <- ggplot(data = penguins_2dhist, 
     mapping = aes(x = bill_length_mm, 
                   y = flipper_length_mm)) + 
-    geom_bin2d()
+    geom_bin2d(bins = 15)
             
 ggp2_2dhist + 
     labs_2dhist
@@ -241,7 +244,7 @@ ggp2_2dhist +
 ::: {style="font-size: 0.85em;"}
 The value for `bins` will be vary depending on the variable values--there is no correct number. If the number of `bins` is too low, the density may hide important nuances between the variables. If the number of `bins` is too high, the noise might drown out the signal.
 
-Below we change the `bins` to `15` and save this layer as `ggp2_2dbins15`:
+Below we change the `bins` to `9`, `12` and `18` to compare the display:
 :::
 
 ::: {style="font-size: 0.75em;"}
@@ -253,15 +256,32 @@ Below we change the `bins` to `15` and save this layer as `ggp2_2dbins15`:
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-#| layout-nrow: 1
+#| layout-nrow: 2
 #| column: page-inset-right
 ggp2_base <- ggplot(data = penguins_2dhist, 
     mapping = aes(x = bill_length_mm, 
-                  y = flipper_length_mm)) 
-ggp2_2dbins15 <- ggp2_base + 
-                    geom_bin2d(bins = 15) 
-ggp2_2dbins15 + 
+                  y = flipper_length_mm))
+
+ggp2_2dhist_bins18 <- ggp2_base + 
+                    geom_bin2d(bins = 18)
+
+ggp2_2dhist_bins12 <- ggp2_base + 
+                    geom_bin2d(bins = 12) 
+
+ggp2_2dhist_bins9 <- ggp2_base + 
+                    geom_bin2d(bins = 9)
+
+ggp2_2dhist_bins18 + 
      labs_2dhist 
+
+ggp2_2dhist + 
+    labs_2dhist
+
+ggp2_2dhist_bins12 + 
+     labs_2dhist 
+
+ggp2_2dhist_bins9 + 
+  labs_2dhist
 ```
 
 :::
@@ -287,15 +307,15 @@ We can also reverse the order of the fill color scale with `rev` (`TRUE` or `FAL
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-#| layout-nrow: 1
+#| layout-ncol: 1
 #| column: page-inset-right
-ggp2_2dbins15 + 
+ggp2_2dhist_bins12 + 
     scale_fill_continuous_sequential(
         palette = "Mako", 
         rev = TRUE) +
     labs_2dhist 
 
-ggp2_2dbins15 + 
+ggp2_2dhist_bins12 + 
     scale_fill_continuous_sequential(
         palette = "Mako", 
         rev = FALSE) +
@@ -332,15 +352,19 @@ We also add a `geom_point()` layer.
 #| out-width: '100%'
 #| layout-nrow: 1
 #| column: page-inset-right
-ggp2_2dbins15 + 
-    scale_fill_continuous_sequential(
-        palette = "SunsetDark",
-        rev = TRUE,
-        begin = 0.7, end = 0.2) +
-    geom_point(color = "#007bff",
-        fill = "#FFFFFF", shape = 21,
-        size = 2.2, alpha = 0.75) +
-    labs_2dhist
+ggp2_2dhist_bins12 +
+  scale_fill_continuous_sequential(
+    palette = "SunsetDark",
+    rev = TRUE,
+    begin = 1.0,
+    end = 0.3) +
+  geom_point(
+    fill = "#D4F0FC",
+    color = "#007bff",
+    shape = 21,
+    size = 1.8,
+    alpha = 0.60) +
+  labs_2dhist 
 ```
 :::
 

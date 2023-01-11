@@ -334,7 +334,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./time_and_date.html" class="sidebar-item-text sidebar-link">TIMES &amp; DATES</a>
+            <a href="./dates_and_times.html" class="sidebar-item-text sidebar-link">DATES &amp; TIMES</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -462,8 +462,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#getting-set-up" id="toc-getting-set-up" class="nav-link" data-scroll-target="#getting-set-up">Getting set up</a></li>
   <li><a href="#the-grammar" id="toc-the-grammar" class="nav-link" data-scroll-target="#the-grammar">The grammar</a></li>
   <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info">More info</a></li>
-  <li><a href="#adding-groups" id="toc-adding-groups" class="nav-link" data-scroll-target="#adding-groups">Adding groups</a></li>
-  <li><a href="#using-fill-and-line-color" id="toc-using-fill-and-line-color" class="nav-link" data-scroll-target="#using-fill-and-line-color">Using fill and line color</a></li>
+  <li><a href="#even-more-info" id="toc-even-more-info" class="nav-link" data-scroll-target="#even-more-info">Even more info</a></li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -550,7 +549,7 @@ across both the x and the y dimensions.
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"palmerpenguins"</span><span class="op">)</span></span>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"palmerpenguins"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -573,7 +572,7 @@ across both the x and the y dimensions.
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">peng_dnsty_2d</span> <span class="op">&lt;-</span> <span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/reference/penguins.html">penguins</a></span> <span class="op">|&gt;</span></span>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">peng_dnsty_2d</span> <span class="op">&lt;-</span> <span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/reference/penguins.html">penguins</a></span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">bill_length_mm</span><span class="op">)</span> <span class="op">&amp;</span></span>
 <span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">flipper_length_mm</span><span class="op">)</span> <span class="op">&amp;</span></span>
 <span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">species</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -616,7 +615,7 @@ across both the x and the y dimensions.
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># labels</span></span>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># labels</span></span>
 <span><span class="va">labs_dnsty_2d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>  title <span class="op">=</span> <span class="st">"Bill Length vs. Flipper Length"</span>,</span>
 <span>  x <span class="op">=</span> <span class="st">"Bill Length (mm)"</span>,</span>
@@ -843,12 +842,14 @@ across both the x and the y dimensions.
 </div>
 </div>
 </div>
-</section><section id="adding-groups" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="adding-groups">Adding groups</h2>
+</section><section id="even-more-info" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="even-more-info">Even more info</h2>
 <p>In the previous plot, we used the <code>species</code> variable in the <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code> layer to identify the points using color. In the section below, we’ll show more methods of displaying groups with density contour lines.</p>
 <div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">Groups</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Facets</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-3" role="tab" aria-controls="tabset-4-3" aria-selected="false">Fill</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-4" role="tab" aria-controls="tabset-4-4" aria-selected="false">Lines</a></li>
 </ul>
 <div class="tab-content page-columns page-full">
 <div id="tabset-4-1" class="tab-pane active page-columns page-full" role="tabpanel" aria-labelledby="tabset-4-1-tab">
@@ -986,19 +987,12 @@ across both the x and the y dimensions.
 </div>
 </div>
 </div>
-</div>
-</div>
-</section><section id="using-fill-and-line-color" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="using-fill-and-line-color">Using fill and line color</h2>
-<p>In the previous section, we defined the color values used in <code><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">geom_density_2d_filled()</a></code> with <code><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_discrete_manual()</a></code>. Below we give an example using the default colors:</p>
-<div class="panel-tabset page-columns page-full">
-<ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">Fill</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Lines</a></li>
-</ul>
-<div class="tab-content page-columns page-full">
-<div id="tabset-5-1" class="tab-pane active page-columns page-full" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div id="tabset-4-3" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-4-3-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>Fill:</strong></p>
+</div>
+<div style="font-size: 0.85em;">
+<p>In the previous section, we defined the color values used in <code><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">geom_density_2d_filled()</a></code> with <code><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_discrete_manual()</a></code>. Below we give an example using the default colors:</p>
 </div>
 <div style="font-size: 0.85em;">
 <p>Re-create the labels</p>
@@ -1051,7 +1045,7 @@ across both the x and the y dimensions.
 </div>
 </div>
 </div>
-<div id="tabset-5-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div id="tabset-4-4" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-4-4-tab">
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>LINES:</strong></p>
 </div>

@@ -335,7 +335,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./time_and_date.html" class="sidebar-item-text sidebar-link">TIMES &amp; DATES</a>
+            <a href="./dates_and_times.html" class="sidebar-item-text sidebar-link">DATES &amp; TIMES</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -505,13 +505,11 @@ Graph info
 <p><strong>Should I use this graph?</strong></p>
 </div>
 <p><br></p>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-left">
-<figure class="figure"><p><img src="grp_line_graphs_files/figure-html/full_code_display-1.png" class="img-fluid figure-img"></p>
+<div class="cell" data-layout-align="right">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-right">
+<figure class="figure"><p><img src="grp_line_graphs_files/figure-html/full_code_display-1.png" style="width:60.0%;height:60.0%" class="figure-img"></p>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -548,7 +546,7 @@ Graph info
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"fivethirtyeight"</span><span class="op">)</span></span>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"fivethirtyeight"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rudeboybert/fivethirtyeight">fivethirtyeight</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -577,7 +575,7 @@ Graph info
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">US_births_2004_2014</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="fu">fivethirtyeight</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/fivethirtyeight/man/US_births_2000_2014.html">US_births_2000_2014</a></span>, <span class="va">year</span> <span class="op">&gt;</span> <span class="fl">2003</span><span class="op">)</span></span>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">US_births_2004_2014</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="fu">fivethirtyeight</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/fivethirtyeight/man/US_births_2000_2014.html">US_births_2000_2014</a></span>, <span class="va">year</span> <span class="op">&gt;</span> <span class="fl">2003</span><span class="op">)</span></span>
 <span><span class="va">usbirth_1994_2014</span> <span class="op">&lt;-</span> <span class="va">US_births_2004_2014</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="fu">fivethirtyeight</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/fivethirtyeight/man/US_births_1994_2003.html">US_births_1994_2003</a></span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
@@ -623,7 +621,7 @@ Graph info
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">avg_birth_day_cat_yr</span> <span class="op">&lt;-</span> <span class="va">usbirth_1994_2014</span> <span class="op">|&gt;</span></span>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">avg_birth_day_cat_yr</span> <span class="op">&lt;-</span> <span class="va">usbirth_1994_2014</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">day_category</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>avg_births <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">births</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> </span>
@@ -659,7 +657,7 @@ Graph info
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_line_graph</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Average US births"</span>, </span>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_line_graph</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Average US births"</span>, </span>
 <span>                        subtitle <span class="op">=</span> <span class="st">"1994-2014"</span>,</span>
 <span>                        y <span class="op">=</span> <span class="st">"Average number of US births"</span>,</span>
 <span>                        x <span class="op">=</span> <span class="st">"Year"</span>,  </span>

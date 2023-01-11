@@ -128,6 +128,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_stream
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -161,6 +162,7 @@ We'll then convert `mpaa` to an ordered factor, then group by `year` and `mpaa` 
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_stream
+#| code-fold: show
 #| eval: true
 #| echo: true
 movies_stream <- ggplot2movies::movies |> 
@@ -213,6 +215,7 @@ Finally, move the legend with  `theme(legend.position = "bottom")`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_stream
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

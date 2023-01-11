@@ -105,6 +105,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_ridges
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -133,6 +134,7 @@ Remove missing `island` from `penguins`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_ridges
+#| code-fold: show
 #| eval: true
 #| echo: true
 peng_ridges <- filter(penguins, !is.na(island))
@@ -171,6 +173,7 @@ Remove the legend with `show.legend = FALSE`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_ridges
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

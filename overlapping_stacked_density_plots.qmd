@@ -152,6 +152,7 @@ Remove missing `sex` from the `penguins` data
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_ovrlp_density
+#| code-fold: show
 #| eval: true
 #| echo: true
 peng_density <- dplyr::filter(penguins, !is.na(sex))
@@ -187,6 +188,7 @@ Set the `alpha` to `1/3` (to handle the overlapping areas)
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_ovrlp_density
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

@@ -47,8 +47,8 @@ status("complete")
 #| echo: false
 #| warning: false
 #| message: false
-#| out-height: '80%'
-#| out-width: '80%'
+#| out-height: '60%'
+#| out-width: '60%'
 #| fig-align: right
 library(fivethirtyeight) 
 library(ggplot2)
@@ -71,8 +71,10 @@ fivethirtyeight::trump_approval_trend |>
   ungroup() -> trump_approval_diverg
 
 labs_geom_bar_diverg <- labs(
+  title = "Trump Approval Ratings",
+  subtitle = "From 'How Popular is Donald Trump'",
   x = "Month",
-  y = "Monthly Avg percent",
+  y = "Monthly average percent",
   fill = "Estimate")
 ggp2_bars_diverg <- ggplot(
   data = trump_approval_diverg, 
@@ -80,36 +82,12 @@ ggp2_bars_diverg <- ggplot(
   geom_bar(aes(fill = poll),
     stat = "identity", width = .5) + 
   scale_y_continuous(limits = c(-1, 1), 
-    labels = scales::percent) + 
-    theme(legend.position = "bottom")
+    labels = scales::percent) 
 
-labs_geom_bar_diverg_vert <- labs(
-  x = "Monthly Avg percent",
-  y = "Month",
-  fill = "Estimate")
-
-ggp2_bar_diverg_vert <- ggplot(
-  data = trump_approval_diverg,
-      aes(x = month_avg, y =  month)) +
-  geom_bar(
-      aes(fill = poll), 
-        stat = "identity", width = .5) + 
-  scale_x_continuous(limits = c(-1, 1), 
-        labels = scales::percent)
-# diverging bar-charts ----
-diverg <- ggp2_bars_diverg + 
-  labs_geom_bar_diverg + 
-    ggplot2::theme_minimal(base_size = 9)
-# diverging bar-charts vertical ----
-diverg_vert <- ggp2_bar_diverg_vert + 
-  labs_geom_bar_diverg_vert + 
-    ggplot2::theme_minimal(base_size = 9)
-# combine ----
-plot_spacer() + diverg + 
-    plot_spacer() + diverg_vert + 
-    patchwork::plot_layout(nrow = 2, widths = c(1, 4)) + 
-    plot_annotation(theme = theme_minimal(base_size = 9), 
-        title = "Trump Approval Ratings\nFrom 'How Popular is Donald Trump'")
+ggp2_bars_diverg + 
+  labs_geom_bar_diverg +
+  theme_ggp2g(
+    base_size = 9)
 ```
 
 ::: {style="font-size: 1.10em; color: #007bff;"}
@@ -134,7 +112,7 @@ Unlike a standard or stacked bar graphs, diverging bar graphs display positive a
 
 :::: {.panel-tabset}
 
-### Vertical bars
+### Horizontal bars
 
 ```{r}
 #| label: diverg
@@ -145,6 +123,18 @@ Unlike a standard or stacked bar graphs, diverging bar graphs display positive a
 #| out-height: '75%'
 #| out-width: '75%'
 #| fig-align: center
+labs_geom_bar_diverg <- labs(
+  x = "Month",
+  y = "Monthly Avg percent",
+  fill = "Estimate")
+ggp2_bars_diverg <- ggplot(
+  data = trump_approval_diverg, 
+    aes(x = month, y = month_avg)) +
+  geom_bar(aes(fill = poll),
+    stat = "identity", width = .5) + 
+  scale_y_continuous(limits = c(-1, 1), 
+    labels = scales::percent) + 
+    theme(legend.position = "bottom")
 ggp2_bars_diverg + 
   labs_geom_bar_diverg + 
     theme_ggp2g(base_size = 11)
@@ -154,7 +144,7 @@ ggp2_bars_diverg +
 For example, we can use the length of the bar from the reference line to compare disapproval estimates across all months (i.e., comparing red bars to each other). 
 :::
 
-### Horizontal bars
+### Vertical bars
 
 ```{r}
 #| label: diverg_vert
@@ -165,6 +155,19 @@ For example, we can use the length of the bar from the reference line to compare
 #| out-height: '75%'
 #| out-width: '75%'
 #| fig-align: center
+labs_geom_bar_diverg_vert <- labs(
+  x = "Monthly Avg percent",
+  y = "Month",
+  fill = "Estimate")
+
+ggp2_bar_diverg_vert <- ggplot(
+  data = trump_approval_diverg,
+      aes(x = month_avg, y =  month)) +
+  geom_bar(
+      aes(fill = poll), 
+        stat = "identity", width = .5) + 
+  scale_x_continuous(limits = c(-1, 1), 
+        labels = scales::percent)
 ggp2_bar_diverg_vert + 
   labs_geom_bar_diverg_vert + 
     theme_ggp2g(base_size = 11)
@@ -194,6 +197,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_diverging_bar
+#| code-fold: show
 #| eval: true
 #| echo: true
 #| warning: false
@@ -222,6 +226,7 @@ Create `trump_approval_diverg` from the `trump_approval_trend` dataset in the `f
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_diverging_bar
+#| code-fold: show
 #| eval: true
 #| echo: true
 fivethirtyeight::trump_approval_trend |> 
@@ -275,6 +280,7 @@ Add `scale_y_continuous()` to manually set the limits and format the axis with `
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_diverging_bar
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false
@@ -338,14 +344,14 @@ ggp2_bars_diverg +
 
 ## More info
 
-For horizontally arranged bars, we switch the `x` and `y` axis variables.
+For vertically arranged bars, we switch the `x` and `y` axis variables.
 
 :::: {.panel-tabset}
 
-### Horizontally arranged bars
+### Vertically arranged bars
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
-**Horizontal bars:**
+**Vertical bars:**
 :::
 
 ::: {style="font-size: 0.85em;"}

@@ -108,6 +108,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_ovrlp_dot_plots
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -136,6 +137,7 @@ Remove missing `sex` from `penguins`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_ovrlp_dot_plots
+#| code-fold: show
 #| eval: true
 #| echo: true
 peng_dotplot <- dplyr::filter(penguins, !is.na(sex))
@@ -177,6 +179,7 @@ Inside `geom_dotplot`, set `method` to `"histodot"`, `binwidth` to `1.35`, and `
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_ovrlp_dot_plots
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

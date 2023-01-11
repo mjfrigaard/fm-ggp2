@@ -127,6 +127,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_alluvial
+#| code-fold: show
 #| eval: true
 #| echo: true
 #| warning: false
@@ -157,6 +158,7 @@ Below we create a wide example of the `penguins` data (as `peng_wide`)
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_alluvial
+#| code-fold: show
 #| eval: true
 #| echo: true
 peng_wide <- penguins |> 
@@ -194,6 +196,7 @@ Add `geom_text()`, with `stat` set to `stratum` and label set to `after_stat(str
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_alluvial
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false
@@ -365,7 +368,6 @@ First create `peng_alluvial`, a subset of `palmerpenguins::penguins_raw` with al
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: peng_alluvial
-#| code-fold: show
 #| eval: true
 #| echo: true
 #| warning: false

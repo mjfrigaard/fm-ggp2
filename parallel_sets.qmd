@@ -135,6 +135,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_parallel_sets
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -167,6 +168,7 @@ We're going to remove the missing values from `palmerpenguins::penguins`, count 
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_parallel_sets
+#| code-fold: show
 #| eval: true
 #| echo: true
 peng_wide <- palmerpenguins::penguins |> 
@@ -214,6 +216,7 @@ Finally, remove the `x` title with `axis.title.x = element_blank()`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_parallel_sets
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

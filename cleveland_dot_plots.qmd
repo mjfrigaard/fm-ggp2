@@ -106,6 +106,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_clev_dots
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -134,6 +135,7 @@ Remove missing values from `sex` and `flipper_length_mm` and group on `sex` and 
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_clev_dots
+#| code-fold: show
 #| eval: true
 #| echo: true
 peng_clev_dots <- palmerpenguins::penguins |>
@@ -175,6 +177,7 @@ Add `geom_point()` and map `sex` to `color` aesthetic. Set the `size` to `2.25`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_clev_dots
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false
@@ -241,10 +244,10 @@ Cleveland dot plots are also helpful when comparing multiple differences on a co
 
 :::: {.panel-tabset}
 
-### Data
+### Common scale
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DATA:**
+**SCALE:**
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -277,10 +280,10 @@ glimpse(peng_clev_dots2)
 ```
 :::
 
-### Graph
+### Scales
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
-**GRAPH:**
+**`scales`:**
 :::
 
 ::: {style="font-size: 0.85em;"}

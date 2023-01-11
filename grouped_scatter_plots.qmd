@@ -105,6 +105,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_grp_scatter
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -133,6 +134,7 @@ The `penguins` data
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_grp_scatter
+#| code-fold: show
 #| eval: true
 #| echo: true
 penguins <- palmerpenguins::penguins
@@ -168,6 +170,7 @@ Map `species` to `color` inside the `geom_point()`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_grp_scatter
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

@@ -89,7 +89,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./time_and_date.html" rel="next">
+<link href="./dates_and_times.html" rel="next">
 <link href="./grouped_violin_plots.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -334,7 +334,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./time_and_date.html" class="sidebar-item-text sidebar-link">TIMES &amp; DATES</a>
+            <a href="./dates_and_times.html" class="sidebar-item-text sidebar-link">DATES &amp; TIMES</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -547,7 +547,7 @@ Graph info
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">'jorvlan/raincloudplots'</span><span class="op">)</span></span>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">'jorvlan/raincloudplots'</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">'mjskay/ggdist'</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jorvlan/raincloudplots">raincloudplots</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mjskay.github.io/ggdist/">ggdist</a></span><span class="op">)</span></span>
@@ -575,7 +575,7 @@ Graph info
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># remove missing</span></span>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># remove missing</span></span>
 <span><span class="va">peng_raincloud</span> <span class="op">&lt;-</span> <span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/reference/penguins.html">penguins</a></span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">body_mass_g</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># filter flipper length by years 2008 &amp; 2009</span></span>
@@ -616,7 +616,7 @@ Graph info
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_raincloud</span> <span class="op">&lt;-</span> <span class="fu">raincloudplots</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raincloudplots/man/raincloud_1x1.html">raincloud_1x1</a></span><span class="op">(</span></span>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ggp2_raincloud</span> <span class="op">&lt;-</span> <span class="fu">raincloudplots</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raincloudplots/man/raincloud_1x1.html">raincloud_1x1</a></span><span class="op">(</span></span>
 <span>    data_1x1 <span class="op">=</span> <span class="va">peng_1x1</span>,</span>
 <span>    colors <span class="op">=</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'#0bd3d3'</span>, <span class="st">'#fa7b3c'</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    fills <span class="op">=</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'#0bd3d3'</span>, <span class="st">'#fa7b3c'</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -1082,8 +1082,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./time_and_date.html" class="pagination-link">
-        <span class="nav-page-text">TIMES &amp; DATES</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./dates_and_times.html" class="pagination-link">
+        <span class="nav-page-text">DATES &amp; TIMES</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

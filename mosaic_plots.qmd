@@ -112,6 +112,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_mosaic
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -142,6 +143,7 @@ For this graph, we'll be using the `fivethirtyeight::flying` dataset, after remo
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_mosaic
+#| code-fold: show
 #| eval: true
 #| echo: true
 fly_mosaic <- fivethirtyeight::flying |> 
@@ -181,6 +183,7 @@ Move the legend to the bottom with `theme(legend.position = "bottom")`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_mosaic
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

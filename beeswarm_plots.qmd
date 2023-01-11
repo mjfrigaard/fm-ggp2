@@ -118,6 +118,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_beeswarm
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -148,6 +149,7 @@ Create `peng_beeswarm` by grouping `penguins` by `species`, then calculating the
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_beeswarm
+#| code-fold: show
 #| eval: true
 #| echo: true
 peng_beeswarm <- palmerpenguins::penguins |> 
@@ -189,9 +191,9 @@ Remove the legend with `show.legend = FALSE`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_beeswarm
+#| code-fold: show
 #| eval: false
 #| echo: true 
-#| code-fold: show
 #| warning: false
 #| message: false
 #| out-height: '100%'

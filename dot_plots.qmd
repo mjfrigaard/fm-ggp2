@@ -96,6 +96,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_dotplot
+#| code-fold: show
 #| eval: true
 #| echo: true
 #| warning: false
@@ -124,6 +125,7 @@ The `penguins` data
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_dotplot
+#| code-fold: show
 #| eval: true
 #| echo: true
 penguins <- palmerpenguins::penguins
@@ -188,6 +190,8 @@ ggp2_dotplot +
 #| echo: false
 #| warning: false
 #| message: false
+#| layout-nrow: 1
+#| column: page-inset-right
 labs_dotplot <- labs(
   title = "Adult foraging penguins",
   subtitle = "Distribution of flipper length",

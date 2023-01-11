@@ -97,6 +97,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_boxplot
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -125,6 +126,7 @@ We'll be using the `penguins` data from `palmerpenguins`.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_box
+#| code-fold: show
 #| eval: true
 #| echo: true
 penguins <- palmerpenguins::penguins 
@@ -160,6 +162,7 @@ Add the `geom_boxplot()` layer
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_box
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

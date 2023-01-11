@@ -50,7 +50,6 @@ status("complete")
 #| message: false
 #| out-height: '60%'
 #| out-width: '60%'
-#| fig-align: center
 library(ggbump)
 library(fivethirtyeight) 
 library(ggplot2)
@@ -120,6 +119,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_bump
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -150,6 +150,7 @@ We'll use the `fivethirtyeight::tv_hurricanes` data, but slightly restructured a
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_bump
+#| code-fold: show
 #| eval: true
 #| echo: true
 fivethirtyeight::tv_hurricanes |> 
@@ -191,6 +192,7 @@ Move legend to bottom with `theme(legend.position = "bottom")`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_bump
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

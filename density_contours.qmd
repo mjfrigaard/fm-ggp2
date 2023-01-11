@@ -146,6 +146,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_geom_density_2d
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -174,6 +175,7 @@ We'll use the `penguins` data from the `palmerpenguins` package, but remove the 
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_geom_density_2d
+#| code-fold: show
 #| eval: true
 #| echo: true
 peng_dnsty_2d <- palmerpenguins::penguins |>
@@ -217,6 +219,7 @@ Add the `geom_density_2d()`
 ```{r}
 #| label: code_graph_geom_density_2d
 #| eval: false
+#| code-fold: show
 #| echo: true
 #| warning: false
 #| message: false
@@ -575,7 +578,7 @@ pnts_sdens_2d +
 
 ::::
 
-## Adding groups
+## Even more info
 
 In the previous plot, we used the `species` variable in the `geom_point()` layer to identify the points using color. In the section below, we'll show more methods of displaying groups with density contour lines. 
 
@@ -789,13 +792,6 @@ ggp2_dnsty_2d_facet +
 
 :::
 
-::::
-
-## Using fill and line color  
-
-In the previous section, we defined the color values used in `geom_density_2d_filled()` with `scale_discrete_manual()`. Below we give an example using the default colors: 
-
-:::: {.panel-tabset}
 
 ### Fill 
 
@@ -803,6 +799,9 @@ In the previous section, we defined the color values used in `geom_density_2d_fi
 **Fill:**
 :::
 
+::: {style="font-size: 0.85em;"}
+In the previous section, we defined the color values used in `geom_density_2d_filled()` with `scale_discrete_manual()`. Below we give an example using the default colors: 
+:::
 
 ::: {style="font-size: 0.85em;"}
 
@@ -975,3 +974,4 @@ ggp2_dnsty_2d_fill_lns +
 :::
 
 ::::
+

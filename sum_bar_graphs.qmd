@@ -98,6 +98,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_sum_col
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -128,6 +129,7 @@ Remove the missing values from `body_mass_g` and `island` in the `palmerpenguins
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_sum_col
+#| code-fold: show
 #| eval: true
 #| echo: true
 peng_sum_col <- palmerpenguins::penguins |> 
@@ -169,6 +171,7 @@ Map `island` to `x` and `body_mass_kg` to `y`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_sum_col
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

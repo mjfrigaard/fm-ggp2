@@ -104,6 +104,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_bubble
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -132,6 +133,7 @@ The `penguins` data
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_bubble
+#| code-fold: show
 #| eval: true
 #| echo: true
 penguins <- palmerpenguins::penguins

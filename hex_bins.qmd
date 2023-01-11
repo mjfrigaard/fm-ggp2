@@ -101,6 +101,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_hex
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -130,6 +131,7 @@ We'll take the `flipper_length_mm`, `bill_length_mm`, `bill_depth_mm`, `species`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_hex
+#| code-fold: show
 #| eval: true
 #| echo: true
 penguins_hex <- palmerpenguins::penguins |> 
@@ -166,6 +168,7 @@ Add the `geom_hex()` layer
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_hex
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

@@ -112,6 +112,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_grp_col
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -140,6 +141,7 @@ Remove the missing values and reduce the `palmerpenguins::penguins` dataset to o
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_grp_col
+#| code-fold: show
 #| eval: true
 #| echo: true
 peng_grp_col <- palmerpenguins::penguins |>
@@ -180,6 +182,7 @@ Map `island` to `fill` *inside* the `aes()` of `geom_col()`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_grp_col
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

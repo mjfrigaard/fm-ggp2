@@ -96,6 +96,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_bar_ovrlp
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -124,6 +125,7 @@ Remove missing `species` from `penguins` and filter the data to only penguins on
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_bar_ovrlp
+#| code-fold: show
 #| eval: true
 #| echo: true
 penguins_ovrlp <- filter(penguins,
@@ -159,6 +161,7 @@ Add the `geom_bar()` layer
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_bar_ovrlp
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false

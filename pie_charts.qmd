@@ -116,6 +116,7 @@ Install packages.
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pkg_code_pie
+#| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
@@ -146,6 +147,7 @@ Remove the missing values and `"NC-17"` from `mpaa` and summarise the count and 
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_pie
+#| code-fold: show
 #| eval: true
 #| echo: true
 movie_pie <- ggplot2movies::movies |>
@@ -194,6 +196,7 @@ Remove legend with `theme(legend.position = "none")`
 ::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_pie
+#| code-fold: show
 #| eval: false
 #| echo: true 
 #| warning: false
