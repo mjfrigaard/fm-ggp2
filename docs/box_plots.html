@@ -120,6 +120,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-submit-button-title": "Submit"
   }
 }</script><script src="site_libs/kePrint-0.0.1/kePrint.js"></script><link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 </head>
 <body class="nav-sidebar floating slimcontent">
 
@@ -368,6 +370,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./alluvial_charts.html" class="sidebar-item-text sidebar-link">Alluvial charts</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./instance_chart.html" class="sidebar-item-text sidebar-link">Instance chart</a>
   </div>
 </li>
       </ul>
@@ -667,22 +674,15 @@ Graph info
 <span>                <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">&gt;</span> <span class="fl">2000</span> <span class="op">&amp;</span> </span>
 <span>                                <span class="va">mpaa</span> <span class="op">!=</span> <span class="st">""</span> <span class="op">&amp;</span> </span>
 <span>                                    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">budget</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">movies_box</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 24</span></span>
-<span><span class="co">#&gt;   title    year length budget rating votes    r1    r2    r3</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;   &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 100 Mi…  2002     98  1.1e6    5.6   181   4.5   4.5   4.5</span></span>
-<span><span class="co">#&gt; 2 13 Goi…  2004     98  3.7e7    6.4  7859   4.5   4.5   4.5</span></span>
-<span><span class="co">#&gt; 3 15 Min…  2001    120  4.2e7    6.1 10866   4.5   4.5   4.5</span></span>
-<span><span class="co">#&gt; 4 2 Fast…  2003    107  7.6e7    5.1  9556  14.5   4.5   4.5</span></span>
-<span><span class="co">#&gt; 5 2046     2004    129  1.2e7    7.6  2663   4.5   4.5   4.5</span></span>
-<span><span class="co">#&gt; 6 21 Gra…  2003    124  2  e7    8   21857   4.5   4.5   4.5</span></span>
-<span><span class="co">#&gt; # … with 15 more variables: r4 &lt;dbl&gt;, r5 &lt;dbl&gt;, r6 &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   r7 &lt;dbl&gt;, r8 &lt;dbl&gt;, r9 &lt;dbl&gt;, r10 &lt;dbl&gt;, mpaa &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   Action &lt;int&gt;, Animation &lt;int&gt;, Comedy &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   Drama &lt;int&gt;, Documentary &lt;int&gt;, Romance &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   Short &lt;int&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">movies_box</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["title"],"name":[1],"type":["chr"],"align":["left"]},{"label":["year"],"name":[2],"type":["int"],"align":["right"]},{"label":["length"],"name":[3],"type":["int"],"align":["right"]},{"label":["budget"],"name":[4],"type":["int"],"align":["right"]},{"label":["rating"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["votes"],"name":[6],"type":["int"],"align":["right"]},{"label":["r1"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["r2"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["r3"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["r4"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["r5"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["r6"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["r7"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["r8"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["r9"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["r10"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["mpaa"],"name":[17],"type":["chr"],"align":["left"]},{"label":["Action"],"name":[18],"type":["int"],"align":["right"]},{"label":["Animation"],"name":[19],"type":["int"],"align":["right"]},{"label":["Comedy"],"name":[20],"type":["int"],"align":["right"]},{"label":["Drama"],"name":[21],"type":["int"],"align":["right"]},{"label":["Documentary"],"name":[22],"type":["int"],"align":["right"]},{"label":["Romance"],"name":[23],"type":["int"],"align":["right"]},{"label":["Short"],"name":[24],"type":["int"],"align":["right"]}],"data":[{"1":"100 Mile Rule","2":"2002","3":"98","4":"1100000","5":"5.6","6":"181","7":"4.5","8":"4.5","9":"4.5","10":"4.5","11":"14.5","12":"24.5","13":"14.5","14":"14.5","15":"4.5","16":"14.5","17":"R","18":"0","19":"0","20":"1","21":"0","22":"0","23":"0","24":"0"},{"1":"13 Going On 30","2":"2004","3":"98","4":"37000000","5":"6.4","6":"7859","7":"4.5","8":"4.5","9":"4.5","10":"4.5","11":"4.5","12":"14.5","13":"24.5","14":"14.5","15":"4.5","16":"14.5","17":"PG-13","18":"0","19":"0","20":"1","21":"1","22":"0","23":"1","24":"0"},{"1":"15 Minutes","2":"2001","3":"120","4":"42000000","5":"6.1","6":"10866","7":"4.5","8":"4.5","9":"4.5","10":"4.5","11":"14.5","12":"24.5","13":"24.5","14":"14.5","15":"4.5","16":"4.5","17":"R","18":"0","19":"0","20":"0","21":"1","22":"0","23":"0","24":"0"},{"1":"2 Fast 2 Furious","2":"2003","3":"107","4":"76000000","5":"5.1","6":"9556","7":"14.5","8":"4.5","9":"4.5","10":"4.5","11":"14.5","12":"14.5","13":"14.5","14":"4.5","15":"4.5","16":"4.5","17":"PG-13","18":"1","19":"0","20":"0","21":"0","22":"0","23":"0","24":"0"},{"1":"2046","2":"2004","3":"129","4":"12000000","5":"7.6","6":"2663","7":"4.5","8":"4.5","9":"4.5","10":"4.5","11":"4.5","12":"4.5","13":"14.5","14":"24.5","15":"14.5","16":"24.5","17":"R","18":"0","19":"0","20":"0","21":"1","22":"0","23":"1","24":"0"},{"1":"21 Grams","2":"2003","3":"124","4":"20000000","5":"8.0","6":"21857","7":"4.5","8":"4.5","9":"4.5","10":"4.5","11":"4.5","12":"4.5","13":"14.5","14":"24.5","15":"24.5","16":"14.5","17":"R","18":"0","19":"0","20":"0","21":"1","22":"0","23":"0","24":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
 </div>
 </div>
 </div>

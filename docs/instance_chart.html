@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.1.251">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>ggplot2: field manual - Pie charts</title>
+<title>ggplot2: field manual - Instance chart</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -89,8 +89,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./treemaps.html" rel="next">
-<link href="./mosaic_plots.html" rel="prev">
+<link href="./relationships.html" rel="next">
+<link href="./alluvial_charts.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -126,7 +126,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Pie charts</h1>
+      <h1 class="quarto-secondary-nav-title">Instance chart</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -268,7 +268,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pie_charts.html" class="sidebar-item-text sidebar-link active">Pie charts</a>
+  <a href="./pie_charts.html" class="sidebar-item-text sidebar-link">Pie charts</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -373,7 +373,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./instance_chart.html" class="sidebar-item-text sidebar-link">Instance chart</a>
+  <a href="./instance_chart.html" class="sidebar-item-text sidebar-link active">Instance chart</a>
   </div>
 </li>
       </ul>
@@ -467,11 +467,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description">Description</a></li>
   <li><a href="#getting-set-up" id="toc-getting-set-up" class="nav-link" data-scroll-target="#getting-set-up">Getting set up</a></li>
   <li><a href="#the-grammar" id="toc-the-grammar" class="nav-link" data-scroll-target="#the-grammar">The grammar</a></li>
+  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info">More info</a></li>
   </ul></nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title d-none d-lg-block">Pie charts</h1>
+<h1 class="title d-none d-lg-block">Instance chart</h1>
 </div>
 
 
@@ -483,13 +484,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
   
 
-</header><div class="callout-tip callout callout-style-simple no-icon">
+</header><div class="callout-note callout callout-style-simple no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container">
-<p><strong><em>This graph is largely complete and just needs final proof reading.</em></strong></p>
+<p><strong><em>This graph should be readable but is currently undergoing final polishing.</em></strong></p>
 </div>
 </div>
 </div>
@@ -512,7 +513,7 @@ Graph info
 <div class="cell" data-layout-align="right">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-right">
-<figure class="figure"><p><img src="pie_charts_files/figure-html/full_code_display-1.png" style="width:60.0%;height:60.0%" class="figure-img"></p>
+<figure class="figure"><p><img src="instance_chart_files/figure-html/full_code_display-1.png" style="width:60.0%;height:60.0%" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -523,13 +524,20 @@ Graph info
 <div style="font-size: 1.05em; color: #fa7b3c;">
 <p><strong>✅ a categorical variable</strong></p>
 </div>
+<div style="font-size: 1.05em; color: #fa7b3c;">
+<p><strong>✅ a numeric (count) variable</strong></p>
+</div>
+<div style="font-size: 1.05em; color: #fa7b3c;">
+<p><strong>✅ a numeric (date) variable</strong></p>
+</div>
 </div>
 </div>
 </div>
 <section id="description" class="level2"><h2 class="anchored" data-anchor-id="description">Description</h2>
-<p><em>“In general, pie charts work well when the goal is to emphasize simple fractions, such as one-half, one-third, or one-quarter.”</em></p>
-<p><em>“They also work well when we have very small datasets.”</em> - <a href="https://clauswilke.com/dataviz/">Claus O. Wilke, Fundamentals of Data Visualization (2019)</a></p>
-<p>Pie-charts are ideal for comparing the proportions of categorical variable values, and we can build pie-charts using the <a href="https://rpkgs.datanovia.com/ggpubr/"><code>ggpubr</code> package.</a></p>
+<!-- Description of graph aesthetics, appropriate use, similar graphs, etc.  -->
+<p>An instance chart (or instance graph) displays frequencies (or ‘instances’) of different categorical values over time time.</p>
+<p>The time dimension is placed on the <code>x</code> and each separate categorical item is placed on the <code>y</code>-axis. The instances are typically represented using the vertical hashes from <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code> (i.e., shape <code>124</code> or the ‘pipe’ <code>"|"</code>).</p>
+<p>Saturation and color are also used to represent different categorical levels and counts.</p>
 </section><section id="getting-set-up" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="getting-set-up">Getting set up</h2>
 <div class="panel-tabset page-columns page-full">
 <ul class="nav nav-tabs" role="tablist">
@@ -546,10 +554,8 @@ Graph info
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ggpubr"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/ggpubr/">ggpubr</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2movies"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ggplot2movies</span><span class="op">)</span> </span>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"babynames"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/babynames">babynames</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -560,30 +566,44 @@ Graph info
 <p><strong>DATA:</strong></p>
 </div>
 
+<!-- 
+::: {.column-margin}
+![Artwork by @allison_horst](www/lter_penguins.png){fig-align="right" width="30%" height="30%"}
+![](www/538.png){fig-align="right" width="15%" height="15%"}
+![](www/imdb.png){fig-align="right" width="20%" height="20%"}
+:::
+-->
 <div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure"><p><img src="www/imdb.png" style="width:35.0%;height:35.0%" class="figure-img"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="www/ssa.png" style="width:60.0%;height:60.0%" class="figure-img"></p>
 </figure>
 </div>
 </div></div><div style="font-size: 0.85em;">
-<p>Remove the missing values and <code>"NC-17"</code> from <code>mpaa</code> and summarise the count and percent.</p>
+<p>Filter the <code><a href="https://rdrr.io/pkg/babynames/man/babynames.html">babynames::babynames</a></code> to only those names in <code>1887</code>, then group by <code>name</code> and <code>sex</code>, arrange descending by the <code>n</code>, and store only the top 6 names in <code>top_bby_nms_1887</code>.</p>
+<p>Use the names from <code>top_bby_nms_1887</code> to filter <code><a href="https://rdrr.io/pkg/babynames/man/babynames.html">babynames::babynames</a></code> for names <em>after</em> <code>1897</code> and store in <code>popular_bby_nms</code>.</p>
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">movie_pie</span> <span class="op">&lt;-</span> <span class="fu">ggplot2movies</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ggplot2movies/man/movies.html">movies</a></span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">mpaa</span> <span class="op">!=</span> <span class="st">""</span> <span class="op">&amp;</span> <span class="va">mpaa</span> <span class="op">!=</span> <span class="st">"NC-17"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">mpaa</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">summarise</span><span class="op">(</span>cnt <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
-<span>    perc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">cnt</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">cnt</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>    mpaa <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">mpaa</span>, </span>
-<span>          levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PG"</span>, <span class="st">"PG-13"</span>, <span class="st">"R"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">glimpse</span><span class="op">(</span><span class="va">movie_pie</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rows: 3</span></span>
-<span><span class="co">#&gt; Columns: 3</span></span>
-<span><span class="co">#&gt; $ mpaa &lt;fct&gt; PG, PG-13, R</span></span>
-<span><span class="co">#&gt; $ cnt  &lt;int&gt; 528, 1003, 3377</span></span>
-<span><span class="co">#&gt; $ perc &lt;dbl&gt; 0.108, 0.204, 0.688</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/babynames">babynames</a></span><span class="op">)</span></span>
+<span><span class="va">top_bby_nms_1887</span> <span class="op">&lt;-</span> <span class="fu">babynames</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/babynames/man/babynames.html">babynames</a></span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">1887</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">sex</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_max</a></span><span class="op">(</span>order_by <span class="op">=</span> <span class="va">sex</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">top_bby_nms_1887</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["year"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["chr"],"align":["left"]},{"label":["name"],"name":[3],"type":["chr"],"align":["left"]},{"label":["n"],"name":[4],"type":["int"],"align":["right"]},{"label":["prop"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"1887","2":"F","3":"Mary","4":"9888","5":"0.06362034"},{"1":"1887","2":"M","3":"John","4":"8110","5":"0.07419063"},{"1":"1887","2":"M","3":"William","4":"7470","5":"0.06833588"},{"1":"1887","2":"M","3":"James","4":"4768","5":"0.04361787"},{"1":"1887","2":"M","3":"George","4":"4284","5":"0.03919022"},{"1":"1887","2":"F","3":"Anna","4":"4227","5":"0.02719692"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">popular_bby_nms</span> <span class="op">&lt;-</span> <span class="fu">babynames</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/babynames/man/babynames.html">babynames</a></span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">top_bby_nms_1887</span><span class="op">[[</span><span class="st">'name'</span><span class="op">]</span><span class="op">]</span> <span class="op">&amp;</span> </span>
+<span>      <span class="va">year</span> <span class="op">&gt;=</span> <span class="fl">1897</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
@@ -604,42 +624,235 @@ Graph info
 <div style="font-size: 0.85em;">
 <p>Create labels with <code><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs()</a></code></p>
 <p>Initialize the graph with <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code> and provide <code>data</code></p>
-<p>Assign <code>"perc"</code> to <code>x</code></p>
-<p>Assign <code>labs</code> to <code>label</code></p>
-<p>Assign <code>"in"</code> to <code>lab.pos</code></p>
-<p>Assign <code>"white"</code> to <code>lab.font</code> and <code>color</code></p>
-<p>Assign <code>"mpaa"</code> to <code>fill</code></p>
-<p>Remove legend with <code>theme(legend.position = "none")</code></p>
+<p>Map <code>year</code> to <code>x</code>, <code>name</code> to <code>y</code>, and <code>color</code> to <code>name</code></p>
+<p>Add <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code>, map <code>n</code> to <code>alpha</code>, and set the <code>shape</code> to <code>124</code> and <code>size</code> to <code>5</code></p>
 </div>
 <div style="font-size: 0.75em;">
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">movie_pie</span><span class="op">$</span><span class="va">mpaa</span>, <span class="st">" ("</span>, </span>
-<span>               <span class="op">(</span><span class="fl">100</span><span class="op">*</span><span class="va">movie_pie</span><span class="op">$</span><span class="va">perc</span><span class="op">)</span>, <span class="st">"%)"</span><span class="op">)</span></span>
-<span><span class="va">labs_pie</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
-<span>  title <span class="op">=</span> <span class="st">"Percent MPAA ratings for IMDB movies"</span>,</span>
-<span>  x <span class="op">=</span> <span class="st">"Percent MPAA rating"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">ggp2_pie</span> <span class="op">&lt;-</span> <span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggpie.html">ggpie</a></span><span class="op">(</span><span class="va">movie_pie</span>, </span>
-<span>          x <span class="op">=</span> <span class="st">"perc"</span>, label <span class="op">=</span> <span class="va">labs</span>, </span>
-<span>          lab.pos <span class="op">=</span> <span class="st">"in"</span>, lab.font <span class="op">=</span> <span class="st">"#ffffff"</span>,</span>
-<span>          fill <span class="op">=</span> <span class="st">"mpaa"</span>, color <span class="op">=</span> <span class="st">"#ffffff"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span>  </span>
-<span>    </span>
-<span><span class="va">ggp2_pie</span> <span class="op">+</span> </span>
-<span>  <span class="va">labs_pie</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_inst_pop_nms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>  title <span class="op">=</span> <span class="st">"Popular names: then and now"</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="st">"Most popular names from 1887 appearing between 1897 - 2017"</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"Year"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"Name"</span><span class="op">)</span></span>
+<span><span class="va">ggp2_inst_pop_nms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">popular_bby_nms</span>, </span>
+<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, </span>
+<span>                  y <span class="op">=</span> <span class="va">name</span>, </span>
+<span>                  color <span class="op">=</span> <span class="va">name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="va">n</span><span class="op">)</span>,</span>
+<span>              shape <span class="op">=</span> <span class="fl">124</span>,</span>
+<span>              size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">ggp2_inst_pop_nms</span> <span class="op">+</span> </span>
+<span>  <span class="va">labs_inst_pop_nms</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
 </div>
 <div id="tabset-2-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div style="font-size: 1.15em; color: #1e83c8;">
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div style="font-size: 0.80em; color: #02577A;">
+<!-- More description of graph and code.  -->
+</div>
+</div></div><div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
 <div class="cell column-page-inset-right quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="pie_charts_files/figure-html/create_graph_pie-1.png" class="img-fluid"></p>
+<p><img src="instance_chart_files/figure-html/create_graph_inst-1.png" class="img-fluid"></p>
 </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="more-info" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="more-info">More info</h2>
+<div class="panel-tabset page-columns page-full">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Saturation</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Facets</a></li>
+</ul>
+<div class="tab-content page-columns page-full">
+<div id="tabset-3-1" class="tab-pane active page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div style="font-size: 0.80em; color: #02577A;">
+<p>Info</p>
+</div>
+</div></div><div style="font-size: 1.15em; color: #1e83c8;">
+<p><strong><code><a href="https://ggplot2.tidyverse.org/reference/cut_interval.html">ggplot2::cut_interval()</a></code>:</strong></p>
+</div>
+<div style="font-size: 0.85em;">
+
+</div>
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
+<details><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">top_nms_prop_1900</span> <span class="op">&lt;-</span> <span class="fu">babynames</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/babynames/man/babynames.html">babynames</a></span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">1900</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">sex</span>, <span class="va">name</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>max_prop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">prop</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_max</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">2</span>, order_by <span class="op">=</span> <span class="va">max_prop</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">top_nms_prop_1900</span></span>
+<span><span class="va">top_nms_prop_2000</span> <span class="op">&lt;-</span> <span class="fu">babynames</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/babynames/man/babynames.html">babynames</a></span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2000</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">sex</span>, <span class="va">name</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>max_prop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">prop</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_max</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">2</span>, order_by <span class="op">=</span> <span class="va">max_prop</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">top_nms_prop_2000</span></span>
+<span><span class="va">nms_1900</span> <span class="op">&lt;-</span> <span class="va">top_nms_prop_1900</span><span class="op">[[</span><span class="st">"name"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">nms_2000</span> <span class="op">&lt;-</span> <span class="va">top_nms_prop_2000</span><span class="op">[[</span><span class="st">"name"</span><span class="op">]</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">top_nms_1900_2000</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">nms_1900</span>, <span class="va">nms_2000</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">popular_bby_nms_prop</span> <span class="op">&lt;-</span> <span class="fu">babynames</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/babynames/man/babynames.html">babynames</a></span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">top_nms_1900_2000</span> <span class="op">&amp;</span></span>
+<span>                  <span class="va">year</span> <span class="op">&gt;=</span> <span class="fl">1900</span> <span class="op">&amp;</span></span>
+<span>                    <span class="va">year</span> <span class="op">&lt;=</span> <span class="fl">2000</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    <span class="co"># proportion range </span></span>
+<span>    prop_range <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/cut_interval.html">cut_interval</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">prop</span>, </span>
+<span>                                       length <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span>,</span>
+<span>    group <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span></span>
+<span>      <span class="va">name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">nms_1900</span> <span class="op">~</span> <span class="st">"1900 names"</span>,</span>
+<span>      <span class="va">name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">nms_2000</span> <span class="op">~</span> <span class="st">"2000 names"</span>,</span>
+<span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_character_</span><span class="op">)</span>,</span>
+<span>    group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">group</span>, </span>
+<span>      levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1900 names"</span>, </span>
+<span>                 <span class="st">"2000 names"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["sex"],"name":[1],"type":["chr"],"align":["left"]},{"label":["name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["max_prop"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"F","2":"Mary","3":"0.05257559"},{"1":"F","2":"Helen","3":"0.01996211"},{"1":"M","2":"John","3":"0.06062307"},{"1":"M","2":"William","3":"0.05291335"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["sex"],"name":[1],"type":["chr"],"align":["left"]},{"label":["name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["max_prop"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"F","2":"Emily","3":"0.01300980"},{"1":"F","2":"Hannah","3":"0.01156961"},{"1":"M","2":"Jacob","3":"0.01651392"},{"1":"M","2":"Michael","3":"0.01534691"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 0.85em;">
+<p>Graph details</p>
+</div>
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
+<details><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labs_inst_pop_nms_prop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>  title <span class="op">=</span> <span class="st">"100 years of popular names"</span>, </span>
+<span>  subtitle <span class="op">=</span> <span class="st">"Most popular names from 1900 and 2000"</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">"*based on proportion"</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"Year"</span>, y <span class="op">=</span> <span class="st">"Name"</span>, </span>
+<span>  color <span class="op">=</span> <span class="st">"Proportion ranges"</span>, alpha <span class="op">=</span> <span class="st">"Proportion"</span><span class="op">)</span></span>
+<span><span class="va">ggp2_inst_pop_nms_prop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">popular_bby_nms_prop</span>, </span>
+<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, </span>
+<span>                  y <span class="op">=</span> <span class="va">name</span>, </span>
+<span>              color <span class="op">=</span> <span class="va">prop_range</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="va">prop</span><span class="op">)</span>,</span>
+<span>                shape <span class="op">=</span> <span class="fl">124</span>,</span>
+<span>                size <span class="op">=</span> <span class="fl">2.5</span><span class="op">)</span> </span>
+<span><span class="va">ggp2_inst_pop_nms_prop</span> <span class="op">+</span> </span>
+<span>  <span class="va">labs_inst_pop_nms_prop</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="instance_chart_files/figure-html/more_info_color_inst-1.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane page-columns page-full" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div style="font-size: 0.80em; color: #02577A;">
+<p>Info</p>
+</div>
+</div></div><div style="font-size: 1.15em; color: #1e83c8;">
+<p><strong><code><a href="https://ggplot2.tidyverse.org/reference/cut_interval.html">ggplot2::cut_number()</a></code>:</strong></p>
+</div>
+<div style="font-size: 0.85em;">
+<p>We’ll create two</p>
+</div>
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
+<details><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">popular_bby_nms_fct</span> <span class="op">&lt;-</span> <span class="va">popular_bby_nms_prop</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    <span class="co"># year range </span></span>
+<span>    year_range <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/cut_interval.html">cut_number</a></span><span class="op">(</span><span class="va">year</span>, </span>
+<span>                                       n <span class="op">=</span> <span class="fl">3</span>, </span>
+<span>                                  labels <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>                          ordered_result <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  year_range <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span></span>
+<span>    <span class="va">year_range</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">~</span> <span class="st">"1900 - 1936"</span>,</span>
+<span>    <span class="va">year_range</span> <span class="op">==</span> <span class="fl">2</span> <span class="op">~</span> <span class="st">"1937 - 1970"</span>,</span>
+<span>    <span class="va">year_range</span> <span class="op">==</span> <span class="fl">3</span> <span class="op">~</span> <span class="st">"1971 - 2000"</span><span class="op">)</span>,</span>
+<span>  year_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">year_range</span>,</span>
+<span>    levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1900 - 1936"</span>,</span>
+<span>               <span class="st">"1937 - 1970"</span>,</span>
+<span>               <span class="st">"1971 - 2000"</span><span class="op">)</span>,</span>
+<span>    ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">glimpse</span><span class="op">(</span><span class="va">popular_bby_nms_fct</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 1,412</span></span>
+<span><span class="co">#&gt; Columns: 8</span></span>
+<span><span class="co">#&gt; $ year       &lt;dbl&gt; 1900, 1900, 1900, 1900, 1900, 1900, 190…</span></span>
+<span><span class="co">#&gt; $ sex        &lt;chr&gt; "F", "F", "F", "F", "F", "F", "M", "M",…</span></span>
+<span><span class="co">#&gt; $ name       &lt;chr&gt; "Mary", "Helen", "Emily", "Hannah", "Jo…</span></span>
+<span><span class="co">#&gt; $ n          &lt;int&gt; 16706, 6343, 626, 325, 46, 44, 9829, 85…</span></span>
+<span><span class="co">#&gt; $ prop       &lt;dbl&gt; 0.05257559, 0.01996211, 0.00197009, 0.0…</span></span>
+<span><span class="co">#&gt; $ prop_range &lt;fct&gt; "(0.05,0.075]", "[0,0.025]", "[0,0.025]…</span></span>
+<span><span class="co">#&gt; $ group      &lt;fct&gt; 1900 names, 1900 names, 2000 names, 200…</span></span>
+<span><span class="co">#&gt; $ year_range &lt;ord&gt; 1900 - 1936, 1900 - 1936, 1900 - 1936, …</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+
+</div>
+</div>
+</div>
+<div style="font-size: 0.75em;" class="page-columns page-full">
+<div class="page-columns page-full">
+<details><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># create labels from factor levels </span></span>
+<span><span class="va">st_lbls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">popular_bby_nms_fct</span><span class="op">$</span><span class="va">year_range</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">labs_inst_pop_nms_facet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>  title <span class="op">=</span> <span class="st">"Baby name popularity over time"</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"Time span: "</span>, <span class="va">st_lbls</span><span class="op">)</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"Year"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"Name"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ggp2_inst_pop_nms_facet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">popular_bby_nms_fct</span>,</span>
+<span>          mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, </span>
+<span>                        y <span class="op">=</span> <span class="va">name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="va">prop</span>, color <span class="op">=</span> <span class="va">name</span><span class="op">)</span>, </span>
+<span>                 shape <span class="op">=</span> <span class="st">"|"</span>, </span>
+<span>                 size <span class="op">=</span> <span class="fl">3</span>, </span>
+<span>        show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="va">year_range</span> <span class="op">~</span> <span class="va">group</span>, </span>
+<span>            scales <span class="op">=</span> <span class="st">"free_y"</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">ggp2_inst_pop_nms_facet</span> <span class="op">+</span> </span>
+<span>  <span class="va">labs_inst_pop_nms_facet</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell column-page-inset-right quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="instance_chart_files/figure-html/bby_nms_facet_inst-1.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 0.85em;">
+<div class="cell">
+
 </div>
 </div>
 </div>
@@ -858,13 +1071,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./mosaic_plots.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Mosaic plots</span>
+      <a href="./alluvial_charts.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Alluvial charts</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./treemaps.html" class="pagination-link">
-        <span class="nav-page-text">Treemaps</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./relationships.html" class="pagination-link">
+        <span class="nav-page-text">RELATIONSHIPS</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

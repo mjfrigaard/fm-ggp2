@@ -57,6 +57,7 @@ book:
         - slope_graphs.qmd
         - stream_plots.qmd
         - alluvial_charts.qmd
+        - instance_chart.qmd
     - part: relationships.qmd
       chapters:
         - scatter_plot.qmd
@@ -84,6 +85,7 @@ format:
     code-fold: true
     code-overflow: wrap
     code-link: true
+    df-print: paged
     highlight-style: arrow
     theme:
       light: materia

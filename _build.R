@@ -14,7 +14,7 @@ source("_common.R")
 # source new_graph and new_geom -------------
 source("R/new_graph.R")
 source("R/new_geom.R")
-# new_graph(name = "INSTANCE CHART")
+# new_graph(name = "DAGs")
 # new_geom(geom_name = "PRIMITIVES")
 
 # fonts --------------------

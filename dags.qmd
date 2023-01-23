@@ -1,4 +1,4 @@
-# Title {.unnumbered}
+# Directed Acyclic Graphs (DAGs) {.unnumbered}
 
 ```{r}
 #| label: setup
@@ -103,7 +103,7 @@ Install packages.
 
 ::: {style="font-size: 0.75em;"}
 ```{r}
-#| label: pkg_code_
+#| label: pkg_code_dags
 #| eval: true
 #| echo: true
 #| warning: false
@@ -137,7 +137,7 @@ library(ggplot2)
 
 ::: {style="font-size: 0.75em;"}
 ```{r}
-#| label: data_code_
+#| label: data_code_dags
 #| eval: true
 #| echo: true
 df <- tibble::tibble(X = sample(x = 1:100, 10, FALSE),
@@ -167,7 +167,7 @@ Initialize the graph with `ggplot()` and provide `data`
 
 ::: {style="font-size: 0.75em;"}
 ```{r}
-#| label: code_graph_
+#| label: code_graph_dags
 #| eval: false
 #| echo: true 
 #| warning: false
@@ -202,7 +202,7 @@ More description of graph and code.
 :::
 
 ```{r}
-#| label: create_graph_
+#| label: create_graph_dags
 #| eval: true
 #| echo: false
 #| warning: false
@@ -247,7 +247,7 @@ Info
 
 ::: {style="font-size: 0.75em;"}
 ```{r}
-#| label: more_info_1
+#| label: more_info_1_dags
 #| code-fold: true
 #| eval: true
 #| echo: true
@@ -273,7 +273,7 @@ Info
 
 ::: {style="font-size: 0.75em;"}
 ```{r}
-#| label: more_info_1
+#| label: more_info_2_dags
 #| code-fold: true
 #| eval: true
 #| echo: true
