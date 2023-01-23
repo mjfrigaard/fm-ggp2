@@ -283,7 +283,7 @@ ggp2_inst_pop_nms +
 
 :::: {.column-margin}
 ::: {style="font-size: 0.80em; color: #02577A;"}
-Info 
+`ggplot2::cut_interval()` 
 :::
 ::::
 
@@ -292,12 +292,12 @@ Info
 :::
 
 ::: {style="font-size: 0.85em;"}
-
+`ggplot2` has two great functions for splitting numerical variables into intervals or widths. We're going to create two datasets from `babynames::babynames` that capture the top names in `1900` and and the top names `2000`.
 :::
 
 ::: {style="font-size: 0.75em;"}
 ```{r}
-#| label: more_info_color_data_inst
+#| label: top_nms_prop_inst
 #| code-fold: true
 #| eval: true
 #| echo: true
@@ -321,6 +321,30 @@ top_nms_prop_2000 <- babynames::babynames |>
   dplyr::slice_max(n = 2, order_by = max_prop) |>
   dplyr::ungroup()
 top_nms_prop_2000
+```
+:::
+
+
+::: {style="font-size: 0.85em;"}
+These two tibbles tell us something about the top names over a century. The top names in 1900 have much higher proportions than the top names in 2000s.
+
+We'll get the names from both tibbles and filter `babynames::babynames` to only these eight names between the years 1900 and 2000. 
+
+We'll create a `prop_range` variable, which splits the `prop` variable into intervals based on the `length` argument.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: popular_bby_nms_prop
+#| code-fold: true
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| column: page-inset-right
+#| layout-nrow: 1
 nms_1900 <- top_nms_prop_1900[["name"]]
 nms_2000 <- top_nms_prop_2000[["name"]]
 
@@ -333,19 +357,14 @@ popular_bby_nms_prop <- babynames::babynames |>
   dplyr::mutate(
     # proportion range 
     prop_range = ggplot2::cut_interval(x = prop, 
-                                       length = 0.025),
-    group = case_when(
-      name %in% nms_1900 ~ "1900 names",
-      name %in% nms_2000 ~ "2000 names",
-      TRUE ~ NA_character_),
-    group = factor(group, 
-      levels = c("1900 names", 
-                 "2000 names")))
+                                       length = 0.025))
 ```
 :::
 
 ::: {style="font-size: 0.85em;"}
-Graph details
+Below we can see the proportion ranges have been built with the [interval notation](https://ggplot2.tidyverse.org/reference/cut_interval.html): `"(a,b]"` 
+
+We can also see the proportion of names changes considerably between the two groups of names. 
 :::
 
 ::: {style="font-size: 0.75em;"}
@@ -361,11 +380,13 @@ Graph details
 #| layout-nrow: 1
 #| column: page-inset-right
 labs_inst_pop_nms_prop <- labs(
-  title = "100 years of popular names", 
+  title = "100 years of popular names",
   subtitle = "Most popular names from 1900 and 2000",
   caption = "*based on proportion",
-  x = "Year", y = "Name", 
-  color = "Proportion ranges", alpha = "Proportion")
+  x = "Year",
+  y = "Name",
+  color = "Proportion ranges",
+  alpha = "Proportion")
 ggp2_inst_pop_nms_prop <- ggplot(data = popular_bby_nms_prop, 
     mapping = aes(x = year, 
                   y = name, 
@@ -383,7 +404,7 @@ ggp2_inst_pop_nms_prop +
 
 :::: {.column-margin}
 ::: {style="font-size: 0.80em; color: #02577A;"}
-Info 
+`ggplot2::cut_number()`
 :::
 ::::
 
@@ -392,7 +413,9 @@ Info
 :::
 
 ::: {style="font-size: 0.85em;"}
-We'll create two 
+To demonstrate facets, we'll create two other variables: `year_range` and `group`:   
+  - `year_range` uses `ggplot2::cut_number()` to create three groups based on the `year`, orders the results, and removes the labels. We manually assign the labels to this variable with `case_when()` and `factor()`    
+  - `group` is a factor variable with two levels: `1900 names` and `2000 names`   
 :::
 
 ::: {style="font-size: 0.75em;"}
@@ -422,9 +445,46 @@ popular_bby_nms_fct <- popular_bby_nms_prop |>
     levels = c("1900 - 1936",
                "1937 - 1970",
                "1971 - 2000"),
-    ordered = TRUE))
-glimpse(popular_bby_nms_fct)
+    ordered = TRUE),
+    group = case_when(
+      name %in% nms_1900 ~ "1900 names",
+      name %in% nms_2000 ~ "2000 names",
+      TRUE ~ NA_character_),
+    group = factor(group, 
+      levels = c("1900 names", 
+                 "2000 names")))
 ```
+:::
+
+
+::: {style="font-size: 0.85em;"}
+Below we can see the total counts of names in the cross-table of `year_range` and `group`:
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: xtable_popular_bby_nms_fct
+#| code-fold: true
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+popular_bby_nms_fct |> 
+  dplyr::count(year_range, group) |> 
+  tidyr::pivot_wider(names_from = group, 
+    values_from = n)
+```
+:::
+
+
+::: {style="font-size: 0.85em;"}
+In the graph, we'll create labels using the `levels` from the `year_range` variable. 
+
+We can also change the `shape` used in `geom_point()` to the pipe operator (`"|"`).
 :::
 
 ::: {style="font-size: 0.75em;"}
@@ -441,7 +501,9 @@ glimpse(popular_bby_nms_fct)
 #| column: page-inset-right
 
 # create labels from factor levels 
-st_lbls <- paste0(levels(popular_bby_nms_fct$year_range), collapse = ", ")
+st_lbls <- paste0(
+              levels(popular_bby_nms_fct$year_range),
+            collapse = ", ")
 
 labs_inst_pop_nms_facet <- labs(
   title = "Baby name popularity over time",
@@ -450,22 +512,32 @@ labs_inst_pop_nms_facet <- labs(
   y = "Name")
 
 ggp2_inst_pop_nms_facet <- ggplot(popular_bby_nms_fct,
-          mapping = aes(x = year, 
-                        y = name)) +
-      geom_point(aes(alpha = prop, color = name), 
-                 shape = "|", 
-                 size = 3, 
-        show.legend = FALSE) + 
-  facet_wrap(year_range ~ group, 
-            scales = "free_y", ncol = 2)
-ggp2_inst_pop_nms_facet + 
+  mapping = aes(x = year,
+                y = name)) +
+  geom_point(aes(alpha = prop, color = name),
+                 shape = "|",
+                 size = 3,
+                 show.legend = FALSE) +
+  facet_wrap(year_range ~ group,
+             scales = "free_y", 
+             ncol = 2)
+ggp2_inst_pop_nms_facet +
   labs_inst_pop_nms_facet
 ```
 :::
 
 ::: {style="font-size: 0.85em;"}
-```{r}
-
+```{r }
+#| label: bby_nms_facet_inst_notes
+#| code-fold: true
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 ```
 :::
 
