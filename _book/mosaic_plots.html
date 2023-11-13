@@ -550,20 +550,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div class="callout callout-style-simple callout-note no-icon callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-Graph info
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<div style="font-size: 1.25em; color: #007bff;">
-<p><strong>Should I use this graph?</strong></p>
+<div class="callout-body-container">
+<div style="font-size: 1.25em; font-weight: bold; color: #02577A;">
+<p>Graph info</p>
 </div>
 <p><br></p>
 <div class="cell" data-layout-align="right">
@@ -575,10 +569,10 @@ Graph info
 </div>
 </div>
 </div>
-<div style="font-size: 1.10em; color: #007bff;">
+<div style="font-size: 1.10em; color: #02577A;">
 <p><strong>This graph requires:</strong></p>
 </div>
-<div style="font-size: 1.05em; color: #fa7b3c;">
+<div style="font-size: 1.05em; color: #282b2d;">
 <p>✅ at least two categorical variables</p>
 </div>
 </div>
@@ -652,7 +646,7 @@ Graph info
 <section id="the-grammar" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="the-grammar">The grammar</h2>
 <div class="tabset-margin-container page-columns page-full"><div class="no-row-height column-margin column-container"><div class="tabset-margin-content tabset-2-3-tab-margin-content collapse">
-<div style="font-size: 0.95em; color: #9d40f5;">
+<div style="font-size: 0.95em; color: #5f2042;">
 <p>It’s a good idea to adjust the <code>fig-height</code> and <code>fig-width</code> of your graph</p>
 </div>
 </div></div></div><div class="panel-tabset page-columns page-full">
@@ -715,9 +709,8 @@ Graph info
 </div>
 
 <div style="font-size: 0.75em;" class="page-columns page-full">
-<div class="cell column-page-inset-right quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="cell page-columns page-full" data-layout-align="center">
+<div class="cell-output-display column-page-inset-right">
 <table class="lightable-paper table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
@@ -748,17 +741,14 @@ Graph info
 </tr>
 </tbody>
 </table>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
 
 
 </div>
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="cell-output-display column-page-inset-right">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="mosaic_plots_files/figure-html/create_table_mosaic-1.png" class="img-fluid figure-img"></p>
+<p><img src="mosaic_plots_files/figure-html/create_table_mosaic-1.png" style="width:100.0%;height:100.0%" class="figure-img"></p>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -887,7 +877,7 @@ Graph info
 <p><strong>FACETS:</strong></p>
 </div>
 <div style="font-size: 0.85em;">
-<p>Another option for including a conditioning variable is including facets. In the example below we use <code>recline_rude</code> in both <code>x</code> and <code>fill</code> (we don’t need to wrap <code>recline_rude</code> in <code>product()</code> because it’s the only variable).</p>
+<p>Another option for including a conditioning variable is including facets. In the example below we use <code>recline_rude</code> in both <code>x</code> and <code>fill</code> (remember to wrap <code>recline_rude</code> in <code>product()</code>).</p>
 <p>The <code>divider</code> argument let’s us control the spine partitions (vertically and horizontally). Below are the two vertical orientation options for the <code>divider</code> argument.</p>
 </div>
 <div style="font-size: 0.85em;" class="page-columns page-full">

@@ -34,9 +34,9 @@ status("complete")
 
 
 :::: {.callout-note collapse="false" icon=false}
-## Graph info
-::: {style="font-size: 1.25em; color: #007bff;"}
-**Should I use this graph?**
+
+::: {style="font-size: 1.25em; color: #02577A;"}
+Graph info
 :::
 
 <br>
@@ -71,11 +71,11 @@ ggp2_base +
      labs_2dhist 
 ```
 
-::: {style="font-size: 1.10em; color: #007bff;"}
+::: {style="font-size: 1.10em; color: #02577A;"}
 **This graph requires:**
 :::
 
-::: {style="font-size: 1.05em; color: #fa7b3c;"}
+::: {style="font-size: 1.05em; color: #282b2d;"}
 **`r emo::ji("check")` two numeric (continuous) variables**
 :::
 
@@ -360,7 +360,7 @@ ggp2_2dhist_bins12 +
     end = 0.3) +
   geom_point(
     fill = "#D4F0FC",
-    color = "#007bff",
+    color = "#02577A",
     shape = 21,
     size = 1.8,
     alpha = 0.60) +

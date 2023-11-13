@@ -36,9 +36,9 @@ status("complete")
 ```
 
 :::: {.callout-note collapse="false" icon=false}
-## Graph info
-::: {style="font-size: 1.25em; color: #007bff;"}
-**Should I use this graph?**
+
+::: {style="font-size: 1.25em; font-weight: bold; color: #02577A;"}
+Graph info
 :::
 
 <br>
@@ -74,11 +74,11 @@ ggp2_mosaic +
     labs_mosaic
 ```
 
-::: {style="font-size: 1.10em; color: #007bff;"}
+::: {style="font-size: 1.10em; color: #02577A;"}
 **This graph requires:**
 :::
 
-::: {style="font-size: 1.05em; color: #fa7b3c;"}
+::: {style="font-size: 1.05em; color: #282b2d;"}
 `r emo::ji("check")` at least two categorical variables      
 :::
 
@@ -250,7 +250,7 @@ We've re-written the labels for the mosaic plot (`ggp2_mosaic`) to illustrate wh
 :::
 
 ::: {.column-margin}
-::: {style="font-size: 0.95em; color: #9d40f5;"}
+::: {style="font-size: 0.95em; color: #5f2042;"}
 It's a good idea to adjust the `fig-height` and `fig-width` of your graph
 :::
 :::
@@ -265,7 +265,6 @@ It's a good idea to adjust the `fig-height` and `fig-width` of your graph
 #| out-height: '100%'
 #| out-width: '100%'
 #| fig-align: center
-#| layout-nrow: 1
 #| column: page-inset-right
 # graph
 labs_mosaic <- labs(
@@ -346,6 +345,7 @@ Once again we can see the counts for each category in the cross-tabulation:
 #| label: ggp2_mosaic_2var
 #| eval: true
 #| echo: true
+#| error: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
@@ -415,7 +415,7 @@ ggp2_mosaic_cond +
 
 ::: {style="font-size: 0.85em;"}
 
-Another option for including a conditioning variable is including facets. In the example below we use `recline_rude` in both `x` and `fill` (we don't need to wrap `recline_rude` in `product()` because it's the only variable).
+Another option for including a conditioning variable is including facets. In the example below we use `recline_rude` in both `x` and `fill` (remember to wrap `recline_rude` in `product()`).
 
 The `divider` argument let's us control the spine partitions (vertically and horizontally). Below are the two vertical orientation options for the `divider` argument. 
 :::
@@ -425,6 +425,7 @@ The `divider` argument let's us control the spine partitions (vertically and hor
 #| label: patchwork_mosaic_run_v
 #| eval: true
 #| echo: false
+#| error: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
@@ -438,7 +439,7 @@ labs_mosaic_facet <- labs(
         x = "...knowingly bring unruly children on a plane?",
         fill = "recline_rude responses") 
 ggp2_mosaic_vspine <- ggplot(data = fly_mosaic) +
-          ggmosaic::geom_mosaic(aes(x = recline_rude, 
+          ggmosaic::geom_mosaic(aes(x = product(recline_rude), 
                                  fill = recline_rude), 
                               divider = "vspine") +
                     facet_grid(. ~ unruly_child) + 
@@ -452,7 +453,7 @@ ggp2_mosaic_vspine <- ggplot(data = fly_mosaic) +
             labs(caption = "divider = 'vspine'") 
 
 ggp2_mosaic_vbar <- ggplot(data = fly_mosaic) +
-          ggmosaic::geom_mosaic(aes(x = recline_rude, 
+          ggmosaic::geom_mosaic(aes(x = product(recline_rude), 
                                  fill = recline_rude), 
                               divider = "vbar") +
                     facet_grid(. ~ unruly_child) +
@@ -481,6 +482,7 @@ The two horizontal orientation options make the axis text harder to read, so the
 #| label: patchwork_mosaic_run_h
 #| eval: true
 #| echo: false
+#| error: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
@@ -488,7 +490,7 @@ The two horizontal orientation options make the axis text harder to read, so the
 #| layout-nrow: 1
 #| column: page-inset-right
 ggp2_mosaic_hspine <- ggplot(data = fly_mosaic) +
-          ggmosaic::geom_mosaic(aes(x = recline_rude, 
+          ggmosaic::geom_mosaic(aes(x = product(recline_rude), 
                                  fill = recline_rude), 
                               divider = "hspine") +
                     facet_grid(. ~ unruly_child) + 
@@ -503,7 +505,7 @@ ggp2_mosaic_hspine <- ggplot(data = fly_mosaic) +
 
 
 ggp2_mosaic_hbar <- ggplot(data = fly_mosaic) +
-          ggmosaic::geom_mosaic(aes(x = recline_rude, 
+          ggmosaic::geom_mosaic(aes(x = product(recline_rude), 
                                  fill = recline_rude), 
                               divider = "hbar") +
                     facet_grid(. ~ unruly_child) + 

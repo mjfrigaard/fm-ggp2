@@ -34,9 +34,9 @@ status("complete")
 ```
 
 :::: {.callout-note collapse="false" icon=false}
-## Graph info
-::: {style="font-size: 1.25em; color: #007bff;"}
-**Should I use this graph?**
+
+::: {style="font-size: 1.25em; color: #02577A;"}
+Graph info
 :::
 
 <br>
@@ -65,11 +65,11 @@ ggp2_scatter +
   labs_scatter
 ```
 
-::: {style="font-size: 1.10em; color: #007bff;"}
+::: {style="font-size: 1.10em; color: #02577A;"}
 **This graph requires:**
 :::
 
-::: {style="font-size: 1.05em; color: #fa7b3c;"}
+::: {style="font-size: 1.05em; color: #282b2d;"}
 **`r emo::ji("check")` two numeric (continuous) variables**
 :::
 

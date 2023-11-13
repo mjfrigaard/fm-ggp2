@@ -34,9 +34,9 @@ status("polish")
 
 
 :::: {.callout-note collapse="false" icon=false}
-## Graph info
-::: {style="font-size: 1.25em; color: #007bff;"}
-**Should I use this graph?**
+
+::: {style="font-size: 1.25em; color: #02577A;"}
+Graph info
 :::
 
 <br>
@@ -68,15 +68,15 @@ ggp2_grp_boxplots +
   labs_grp_boxplots
 ```
 
-::: {style="font-size: 1.10em; color: #007bff;"}
+::: {style="font-size: 1.10em; color: #02577A;"}
 **This graph requires:**
 :::
 
-::: {style="font-size: 1.05em; color: #fa7b3c;"}
+::: {style="font-size: 1.05em; color: #282b2d;"}
 **`r emo::ji("check")` a categorical variable**      
 :::
 
-::: {style="font-size: 1.05em; color: #fa7b3c;"}
+::: {style="font-size: 1.05em; color: #282b2d;"}
 **`r emo::ji("check")` a numeric (continuous) variable**
 :::
 
@@ -125,7 +125,7 @@ library(ggplot2)
 :::
 
 ::: {.column-margin}
-![Artwork by @allison_horst](../www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+![Artwork by Allison Horst](../www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
 ::: {style="font-size: 0.85em;"}

@@ -366,18 +366,18 @@ ggp2_ribbon_base +
     geom_ribbon(mapping = aes(
         x = xvar, y = yvar,
         ymin = yvar - adj, ymax = yvar + adj), 
-        color = "#fa7b3c") +
+        color = "#282b2d") +
     geom_line(mapping = aes(x = xvar, y = yvar),
         color = "#ffffff") +
-    labs(subtitle = "geom_ribbon(color = '#fa7b3c'), geom_line(color = '#ffffff')")
+    labs(subtitle = "geom_ribbon(color = '#282b2d'), geom_line(color = '#ffffff')")
 ggp2_ribbon_base + 
     geom_ribbon(mapping = aes(
         x = xvar, y = yvar,
         ymin = yvar - adj, ymax = yvar + adj),
-        color = "#007bff") +
+        color = "#02577A") +
     geom_line(mapping = aes(x = xvar, y = yvar),
         color = "#89D6FB") + 
-    labs(subtitle = "geom_ribbon(color = '#007bff'), geom_line(color = '#89D6FB')")
+    labs(subtitle = "geom_ribbon(color = '#02577A'), geom_line(color = '#89D6FB')")
 ```
 :::
 
@@ -402,7 +402,7 @@ ggp2_ribbon_base +
                     ymax = yvar - 0.75),
         fill = "#0bd3d3") + 
     geom_line(mapping = aes(x = xvar, y = yvar),
-        color = "#9d40f5", linewidth = 1) + 
+        color = "#5f2042", linewidth = 1) + 
     labs(subtitle = "ymin = min(yvar) - 1 , ymax = yvar - 0.75")
 ggp2_ribbon_base + 
     geom_ribbon(mapping = aes(x = xvar,
@@ -411,7 +411,7 @@ ggp2_ribbon_base +
                     ymax = max(yvar) + 1), 
         fill = "#f890e7") + 
     geom_line(mapping = aes(x = xvar, y = yvar),
-        color = "#9d40f5", linewidth = 1) + 
+        color = "#5f2042", linewidth = 1) + 
     labs(subtitle = "ymin = yvar + 0.75 , ymax = max(yvar) + 1")
 ggp2_ribbon_base + 
     geom_ribbon(mapping = aes(x = xvar,
@@ -425,7 +425,7 @@ ggp2_ribbon_base +
                     ymax = max(yvar) + 1), 
         fill = "#f890e7") + 
     geom_line(mapping = aes(x = xvar, y = yvar),
-        color = "#9d40f5", linewidth = 1) + 
+        color = "#5f2042", linewidth = 1) + 
     labs(subtitle = "ymin = min(yvar) - 1 , ymax = yvar - 0.75\nymin = yvar + 0.75 / ymax = max(yvar) + 1")
 ```
 :::
@@ -453,7 +453,7 @@ adj <- sd(corr_data$xvar)
 # line only
 ggp2_ribbon_base + 
     geom_line(mapping = aes(x = xvar, y = yvar),
-        color = "#9d40f5") + 
+        color = "#5f2042") + 
     labs(subtitle = "geom_line()")
 ggp2_ribbon_base + 
     geom_ribbon(mapping = aes(
@@ -461,7 +461,7 @@ ggp2_ribbon_base +
         xmin = xvar - adj, xmax = xvar + adj),
         fill = "#89D6FB") +
     geom_line(mapping = aes(x = xvar, y = yvar),
-        color = "#9d40f5", orientation = "y") + 
+        color = "#5f2042", orientation = "y") + 
     labs(subtitle = "xmin, xmin & orientation = 'y'")
 ```
 :::

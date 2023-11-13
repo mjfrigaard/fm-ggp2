@@ -548,20 +548,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div class="callout callout-style-simple callout-note no-icon callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-Graph info
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<div style="font-size: 1.25em; color: #007bff;">
-<p><strong>Should I use this graph?</strong></p>
+<div class="callout-body-container">
+<div style="font-size: 1.25em; color: #02577A;">
+<p>Graph info</p>
 </div>
 <p><br></p>
 <div class="cell" data-layout-align="right">
@@ -573,16 +567,16 @@ Graph info
 </div>
 </div>
 </div>
-<div style="font-size: 1.10em; color: #007bff;">
+<div style="font-size: 1.10em; color: #02577A;">
 <p><strong>This graph requires:</strong></p>
 </div>
-<div style="font-size: 1.05em; color: #fa7b3c;">
+<div style="font-size: 1.05em; color: #282b2d;">
 <p><strong>✅ a categorical variable</strong></p>
 </div>
-<div style="font-size: 1.05em; color: #fa7b3c;">
+<div style="font-size: 1.05em; color: #282b2d;">
 <p><strong>✅ a numeric (continuous) variable</strong></p>
 </div>
-<div style="font-size: 1.05em; color: #fa7b3c;">
+<div style="font-size: 1.05em; color: #282b2d;">
 <p><strong>✅ a numeric (date) variable</strong></p>
 </div>
 </div>
@@ -760,7 +754,7 @@ Graph info
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"PG-13"</span> <span class="ot">=</span> <span class="st">"#0bd3d3"</span>, </span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"PG"</span> <span class="ot">=</span> <span class="st">"#f890e7"</span>, </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"R"</span> <span class="ot">=</span> <span class="st">"#fa7b3c"</span>, </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"R"</span> <span class="ot">=</span> <span class="st">"#282b2d"</span>, </span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"NC-17"</span> <span class="ot">=</span> <span class="st">"#772953"</span>))</span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>ggp2_stream_prp <span class="sc">+</span> </span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    labs_stream <span class="sc">+</span> </span>
@@ -824,12 +818,12 @@ Graph info
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_colour_manual</span>(</span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"PG-13"</span> <span class="ot">=</span> <span class="st">"#0bd3d3"</span>, </span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"PG"</span> <span class="ot">=</span> <span class="st">"#f890e7"</span>, </span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"R"</span> <span class="ot">=</span> <span class="st">"#fa7b3c"</span>, </span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"R"</span> <span class="ot">=</span> <span class="st">"#282b2d"</span>, </span>
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"NC-17"</span> <span class="ot">=</span> <span class="st">"#772953"</span>)) <span class="sc">+</span></span>
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(</span>
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"PG-13"</span> <span class="ot">=</span> <span class="st">"#0bd3d3"</span>, </span>
 <span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"PG"</span> <span class="ot">=</span> <span class="st">"#f890e7"</span>, </span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"R"</span> <span class="ot">=</span> <span class="st">"#fa7b3c"</span>, </span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"R"</span> <span class="ot">=</span> <span class="st">"#282b2d"</span>, </span>
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"NC-17"</span> <span class="ot">=</span> <span class="st">"#772953"</span>)) <span class="sc">+</span> </span>
 <span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>dollar) </span>
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    </span>

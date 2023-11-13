@@ -38,9 +38,9 @@ status("complete")
 ```
 
 :::: {.callout-note collapse="false" icon=false}
-## Graph info
-::: {style="font-size: 1.25em; color: #007bff;"}
-**Should I use this graph?**
+
+::: {style="font-size: 1.25em; color: #02577A;"}
+Graph info
 :::
 
 <br>
@@ -108,8 +108,8 @@ peng_1x1 <- raincloudplots::data_1x1(
 
 ggp2_raincloud <- raincloud_1x1(
     data_1x1 = peng_1x1,
-    colors = (c('#0bd3d3', '#fa7b3c')),
-    fills = (c('#0bd3d3', '#fa7b3c')),
+    colors = (c('#0bd3d3', '#282b2d')),
+    fills = (c('#0bd3d3', '#282b2d')),
     size = 0.8,
     alpha = 3/4,
     ort = 'h'
@@ -126,15 +126,15 @@ ggp2_raincloud_x +
          x = "Year", y = "Flipper length (mm)")
 ```
 
-::: {style="font-size: 1.10em; color: #007bff;"}
+::: {style="font-size: 1.10em; color: #02577A;"}
 **This graph requires:**
 :::
 
-::: {style="font-size: 1.05em; color: #fa7b3c;"}
+::: {style="font-size: 1.05em; color: #282b2d;"}
 **`r emo::ji("check")` a categorical variable**      
 :::
 
-::: {style="font-size: 1.05em; color: #fa7b3c;"}
+::: {style="font-size: 1.05em; color: #282b2d;"}
 **`r emo::ji("check")` a numeric (continuous) variable**
 :::
 
@@ -249,8 +249,8 @@ Use the `raincloudplots::raincloud_1x1()` to build the plot, assigning `peng_1x1
 #| out-width: '100%'
 ggp2_raincloud <- raincloudplots::raincloud_1x1(
     data_1x1 = peng_1x1,
-    colors = (c('#0bd3d3', '#fa7b3c')),
-    fills = (c('#0bd3d3', '#fa7b3c')),
+    colors = (c('#0bd3d3', '#282b2d')),
+    fills = (c('#0bd3d3', '#282b2d')),
     size = 0.8,
     alpha = 3/4,
     ort = 'h') 
@@ -288,8 +288,8 @@ ggp2_raincloud_x +
 #| column: page-inset-right
 ggp2_raincloud <- raincloudplots::raincloud_1x1(
     data_1x1 = peng_1x1,
-    colors = (c('#0bd3d3', '#fa7b3c')),
-    fills = (c('#0bd3d3', '#fa7b3c')),
+    colors = (c('#0bd3d3', '#282b2d')),
+    fills = (c('#0bd3d3', '#282b2d')),
     size = 0.8,
     alpha = 3/4,
     ort = 'h') 

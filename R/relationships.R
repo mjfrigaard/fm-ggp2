@@ -575,7 +575,7 @@ ggp2_2dbins15 +
         palette = "SunsetDark",
         rev = TRUE,
         begin = 0.7, end = 0.2) +
-    geom_point(color = "#007bff",
+    geom_point(color = "#02577A",
         fill = "#FFFFFF", shape = 21,
         size = 2.2, alpha = 0.75) +
     labs_2dhist

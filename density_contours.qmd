@@ -36,9 +36,9 @@ status("complete")
 
 
 :::: {.callout-note collapse="false" icon=false}
-## Graph info
-::: {style="font-size: 1.25em; color: #007bff;"}
-**Should I use this graph?**
+
+::: {style="font-size: 1.25em; color: #02577A;"}
+Graph info
 :::
 
 <br>
@@ -99,15 +99,15 @@ ggp2_dnsty_2d_fill +
   labs_dnsty_2d
 ```
 
-::: {style="font-size: 1.10em; color: #007bff;"}
+::: {style="font-size: 1.10em; color: #02577A;"}
 **This graph requires:**
 :::
 
-::: {style="font-size: 1.05em; color: #fa7b3c;"}
+::: {style="font-size: 1.05em; color: #282b2d;"}
 **`r emo::ji("check")` a categorical variable**      
 :::
 
-::: {style="font-size: 1.05em; color: #fa7b3c;"}
+::: {style="font-size: 1.05em; color: #282b2d;"}
 **`r emo::ji("check")` two numeric (continuous) variables**
 :::
 
@@ -448,7 +448,7 @@ ggp1 <- stat_sdens_2d +
 :::
 
 
-::: {style="font-size: 0.85em; color: #9d40f5;"}
+::: {style="font-size: 0.85em; color: #5f2042;"}
 ***Where did levels come from?***
 
 *You probably noticed the `stat_density_2d()` produced a legend with `level`, and a series of values for the color gradient. These numbers are difficult to interpret directly, but you can think of them as 'elevation changes' in point density. Read more [here on SO.](https://stackoverflow.com/questions/53172200/stat-density2d-what-does-the-legend-mean)*
