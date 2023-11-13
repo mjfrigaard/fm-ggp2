@@ -23,16 +23,16 @@ options(
 
 # import font ----
 extrafont::font_import(
-    paths = "assets/Ubuntu/",
+    paths = "_assets/Ubuntu/",
     prompt = FALSE)
 
 # add font ----
 sysfonts::font_add(
     family =  "Ubuntu", 
-    regular = "assets/Ubuntu/Ubuntu-Regular.ttf")
+    regular = "_assets/Ubuntu/Ubuntu-Regular.ttf")
 
 # add theme ----
-source("R/theme_ggp2g.R")
+source("_assets/R/theme_ggp2g.R")
 
 # Not in ----
 "%nin%" <- function(x, y) {

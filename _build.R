@@ -12,24 +12,24 @@ library(sysfonts)
 source("_common.R")
 
 # source new_graph and new_geom -------------
-source("R/new_graph.R")
-source("R/new_geom.R")
+source("_assets/R/new_graph.R")
+source("_assets/R/new_geom.R")
 # new_graph(name = "DAGs")
 # new_geom(geom_name = "PRIMITIVES")
 
 # fonts --------------------
 # import font
 extrafont::font_import(
-    paths = "assets/Ubuntu/",
+    paths = "_assets/Ubuntu/",
     prompt = FALSE)
 # add font
 sysfonts::font_add(
     family =  "Ubuntu", 
-    regular = "assets/Ubuntu/Ubuntu-Regular.ttf")
+    regular = "_assets/Ubuntu/Ubuntu-Regular.ttf")
 # use font
 showtext::showtext_auto()
 # add theme ------------------------------------
-source("R/theme_ggp2g.R")
+source("_assets/R/theme_ggp2g.R")
 # set theme ------------------------------------
 ggplot2::theme_set(theme_ggp2g(
     base_size = 14))
