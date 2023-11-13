@@ -1,3 +1,17 @@
+pak::pak("corybrunson/ggalluvial")
+pak::pak("davidsjoberg/ggbump")
+pak::pak("thomasp85/ggforce")
+pak::pak("haleyjeppson/ggmosaic")
+pak::pak("davidsjoberg/ggstream")
+pak::pak("wilkox/treemapify")
+pak::pak("liamgilbey/ggwaffle")
+pak::pak('wilkelab/cowplot')
+install.packages("colorspace", repos = "http://R-Forge.R-project.org")
+pak::pak('clauswilke/colorblindr')
+pak::pak('liamgilbey/ggwaffle')
+pak::pak('jorvlan/raincloudplots')
+pak::pak('hadley/emo')
+
 # pkgs ------------------------------------
 library(tidyverse)
 library(fs)
@@ -83,3 +97,5 @@ graph_files <- purrr::map_df(.x = qmds,
                   contains("file"))
 
 glimpse(graph_files)
+
+
