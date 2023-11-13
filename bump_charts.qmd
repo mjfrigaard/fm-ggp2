@@ -1,0 +1,249 @@
+# Bump charts {.unnumbered}
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+source("_common.R")
+# use font
+showtext::showtext_auto()
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 13))
+# pak::pak("davidsjoberg/ggbump")
+install.packages("fivethirtyeight")
+```
+
+```{r}
+#| label: status
+#| results: "asis"
+#| echo: false
+# status ----
+# polish, dev, draft, complete
+status("complete")
+```
+
+:::: {.callout-note collapse="false" icon=false}
+## Graph info
+::: {style="font-size: 1.25em; color: #007bff;"}
+**Should I use this graph?**
+:::
+
+<br>
+
+```{r}
+#| label: full_code_display
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+library(ggbump)
+library(fivethirtyeight) 
+library(ggplot2)
+fivethirtyeight::tv_hurricanes |> 
+  filter(date > as_date("2017-09-15")) |> 
+  pivot_longer(cols = -date, 
+    names_to = 'hurricane', 
+    values_to = 'value') |> 
+  group_by(date) |>
+  mutate(rank = rank(value, 
+    ties.method = "random")) |> 
+  ungroup() -> tidy_hurricanes
+labs_bump <- labs(title = "TV News Hurricane Mentions",   
+  subtitle = "Between Sep 15-25th, 2017", 
+  x = "Date", y = "Rank", 
+  color = "Hurricanes")
+ggp2_bump <- ggplot(tidy_hurricanes, 
+    aes(x = date, 
+      y = rank, 
+      color = hurricane)) +
+    ggbump::geom_bump(size = 2) + 
+    theme(legend.position = "bottom")
+
+ggp2_bump + 
+  labs_bump
+```
+
+::: {style="font-size: 1.10em; color: #007bff;"}
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a categorical variable**      
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a numeric (continuous) variable**
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a numeric (date) variable**
+:::
+
+::::
+
+## Description 
+
+Bump charts show how numerical (ranked) values change over time for different categories (or groups). Differences are represented with connecting lines (along the `y` axis) that cover the full timescale (along the `x` axis).
+
+We can build bump charts in `ggplot2` with the [`ggbump` package:](https://github.com/davidsjoberg/ggbump)  
+
+## Getting set up
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_bump
+#| code-fold: show
+#| eval: false
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+# pak::pak("davidsjoberg/ggbump")
+library(ggbump)
+install.packages("fivethirtyeight")
+library(fivethirtyeight) 
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {.column-margin}
+![](www/538.png){fig-align="right" width="45%" height="45%"}
+:::
+
+::: {style="font-size: 0.85em;"}
+We'll use the `fivethirtyeight::tv_hurricanes` data, but slightly restructured and filtered. 
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_code_bump
+#| code-fold: show
+#| eval: true
+#| echo: true
+fivethirtyeight::tv_hurricanes |> 
+  filter(date > as_date("2017-09-15")) |> 
+  pivot_longer(cols = -date, 
+    names_to = 'hurricane', 
+    values_to = 'value') |> 
+  group_by(date) |>
+  mutate(rank = rank(value, 
+    ties.method = "random")) |> 
+  ungroup() -> tidy_hurricanes
+glimpse(tidy_hurricanes)
+```
+:::
+::::
+
+## The grammar
+
+:::: {.panel-tabset}
+
+### Code
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**CODE:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()`
+
+Map date to the `x`, `rank` to the `y`, and `hurricane` to `color`
+
+Add `ggbump::geom_bump()` and set `size` to `2`
+
+Move legend to bottom with `theme(legend.position = "bottom")`
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: code_graph_bump
+#| code-fold: show
+#| eval: false
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_bump <- labs(title = "TV News Hurricane Mentions",   
+  subtitle = "Between Sep 15-25th, 2017", 
+  x = "Date", y = "Rank", 
+  color = "Hurricanes")
+ggp2_bump <- ggplot(tidy_hurricanes, 
+    aes(x = date, 
+      y = rank, 
+      color = hurricane)) +
+    ggbump::geom_bump(size = 2) + 
+    theme(legend.position = "bottom")
+
+ggp2_bump + 
+  labs_bump
+```
+:::
+
+### Graph
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**GRAPH:**
+:::
+
+```{r}
+#| label: create_graph_bump
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+labs_bump <- labs(title = "TV News Hurricane Mentions",   
+  subtitle = "Between Sep 15-25th, 2017", 
+  x = "Date", y = "Rank", 
+  color = "Hurricanes")
+ggp2_bump <- ggplot(tidy_hurricanes, 
+    aes(x = date, 
+      y = rank, 
+      color = hurricane)) +
+    ggbump::geom_bump(size = 2) + 
+    theme(legend.position = "bottom")
+
+ggp2_bump + 
+  labs_bump
+```
+
+::::

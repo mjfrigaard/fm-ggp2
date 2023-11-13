@@ -1,0 +1,253 @@
+---
+title: "`geom_step()`"
+format:
+  html:
+    toc: true
+    code-fold: show
+    df-print: paged
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+library(patchwork)
+library(faux)
+# options ----
+options(
+  repos = "https://cloud.r-project.org",
+  dplyr.print_min = 6, 
+  dplyr.print_max = 6, 
+  scipen = 9999)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+# import font
+extrafont::font_import(
+    paths = "../assets/Ubuntu/",
+    prompt = FALSE)
+# add font
+sysfonts::font_add(
+    family =  "Ubuntu", 
+    regular = "../assets/Ubuntu/Ubuntu-Regular.ttf")
+# use font
+showtext::showtext_auto()
+# add theme
+source("../R/theme_ggp2g.R")
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 16))
+# install data packages ----
+install.packages("palmerpenguins")
+```
+
+## ( *in development* )
+
+:::: {.callout-tip collapse="false" icon=false}
+## Lines in `ggplot2`
+
+::: {style="color: #043b67;"}
+#### Primary geoms for lines
+:::
+
+```{r}
+#| label: full_code_display
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '55%'
+#| out-width: '55%'
+#| fig-align: right
+library(palmerpenguins) 
+library(ggplot2)
+library(patchwork)
+economics <- ggplot2::economics
+seals <- ggplot2::seals
+ggp2_line_base <- ggplot(data = economics, 
+    aes(x = date, y = unemploy))
+# geom_path ----
+pth <- ggp2_line_base + 
+    geom_path() + 
+    theme_void() + 
+    labs(title = "geom_path()")
+# geom_line ----
+ln <- ggp2_line_base + 
+    geom_line() + 
+    theme_void() + 
+    labs(title = "geom_line()")
+# geom_step ----
+stp <- ggp2_line_base + 
+    geom_step() + 
+    theme_void() + 
+    labs(title = "geom_step()")
+# path, line, step ----
+pth + ln + stp + 
+    patchwork::plot_layout(ncol = 2)
+```
+
+
+  - `geom_path()`  
+
+  - `geom_line()`  
+
+  - `geom_step()` 
+  
+::::
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {.column-margin}
+::: {style="font-size: 0.75em;"}
+![](../www/ggplot2.png){fig-align="right" width="40%" height="40%"}
+:::
+:::
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_lines
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+#| out-height: '100%'
+#| out-width: '100%'
+#| column: page-inset-right
+install.packages("ggplot2")
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Load the `ggplot2::economics` data.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_lines
+#| eval: true
+#| echo: true
+#| column: page-inset-right
+#| out-height: '100%'
+#| out-width: '100%'
+economics <- ggplot2::economics
+dplyr::glimpse(economics)
+```
+:::
+::::
+
+## `geom_step()`
+
+:::: {.panel-tabset}
+
+### Basic Use
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**BASICS:**
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: basic_step
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| column: page-inset-right
+#| out-height: '100%'
+#| out-width: '100%'
+ggp2_step_base <- ggplot(data = economics)
+ggp2_step_base +
+    geom_step(mapping = aes(x = date, y = unemploy))
+```
+
+:::
+
+### Additional Aesthetics
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**AESTHETICS:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+The required aesthetics are: 
+
+Optional aesthetics include: 
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_step
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| column: page-inset-right
+#| out-height: '100%'
+#| out-width: '100%'
+```
+:::
+
+### Arguments
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**ARGUMENTS:**
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: args_1_step
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| column: page-inset-right
+#| out-height: '100%'
+#| out-width: '100%'
+```
+
+```{r}
+#| label: args_2_step
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| column: page-inset-right
+#| out-height: '100%'
+#| out-width: '100%'
+```
+:::
+
+::::
+
+

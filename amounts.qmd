@@ -1,0 +1,35 @@
+# AMOUNTS {.unnumbered}
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+source("_common.R")
+# use font
+showtext::showtext_auto()
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 15))
+```
+
+```{r}
+#| label: status
+#| results: "asis"
+#| echo: false
+# status ----
+# polish, dev, draf, complete
+status("complete")
+```
+
+**Amounts**: These graphs display counts or simple summary statistics of one or two columns in a dataset.      

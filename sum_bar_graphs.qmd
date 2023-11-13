@@ -1,0 +1,342 @@
+# Summary bar graphs {.unnumbered}
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+source("_common.R")
+# use font
+showtext::showtext_auto()
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 15))
+```
+
+:::: {.callout-note collapse="false" icon=false}
+## Graph info
+::: {style="font-size: 1.25em; color: #007bff;"}
+**Should I use this graph?**
+:::
+
+<br>
+
+```{r}
+#| label: full_code_display
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: right
+peng_sum_col <- palmerpenguins::penguins |> 
+    dplyr::select(body_mass_g, island) |> 
+    tidyr::drop_na() |> 
+    # divide the mass value by 1000
+    dplyr::mutate(
+        body_mass_kg = body_mass_g / 1000
+    )
+labs_sum_col <- labs(
+    title = "Total Penguin Mass",
+    subtitle = "How many kilograms of penguin per Island?",
+    x = "Island",
+    y = "Total Penguin Body Mass (kg)")
+ggp2_sum_col <- ggplot(data = peng_sum_col,
+    aes(x = island,
+        y = body_mass_kg)) +
+    geom_col(aes(fill = island), 
+        show.legend = FALSE)  
+ggp2_sum_col + 
+    labs_sum_col
+```
+
+::: {style="font-size: 1.10em; color: #007bff;"}
+**This graph requires:**
+:::
+
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a numeric (continuous) variable**
+
+**`r emo::ji("check")` a categorical variable** 
+:::
+
+::::
+
+## Description
+
+Summary bar graphs display the sum (or total) of a numerical variable across the levels of a second categorical variable. Color is used to make comparisons and distinguish between groups (or levels) of the categorical variable. 
+
+In `ggplot2`, we can create summary bar graphs with `geom_bar()`.
+
+## Getting set up
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_sum_col
+#| code-fold: show
+#| eval: false
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+install.packages("palmerpenguins")
+library(palmerpenguins) 
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {.column-margin}
+![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+:::
+
+::: {style="font-size: 0.85em;"}
+Remove the missing values from `body_mass_g` and `island` in the `palmerpenguins::penguins` data and convert body mass in grams to kilograms (`body_mass_kg`).
+
+*We'll also reduce the number of columns in the `penguins` data for clarity.*
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_code_sum_col
+#| code-fold: show
+#| eval: true
+#| echo: true
+peng_sum_col <- palmerpenguins::penguins |> 
+    dplyr::select(body_mass_g, island) |> 
+    tidyr::drop_na() |> 
+    # divide the mass value by 1000
+    dplyr::mutate(
+        body_mass_kg = body_mass_g / 1000
+    )
+dplyr::glimpse(peng_sum_col)
+```
+:::
+::::
+
+## The grammar
+
+:::: {.panel-tabset}
+
+### Code
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**CODE:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()`
+
+Initialize the graph with `ggplot()` and provide `data`
+
+Map `island` to `x` and `body_mass_kg` to `y`
+
+*Inside* the `aes()` of `geom_col()`, map `island` to `fill` 
+
+*Outside* the `aes()` of `geom_col()`, remove the legend with `show.legend = FALSE`
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: code_graph_sum_col
+#| code-fold: show
+#| eval: false
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_sum_col <- labs(
+    title = "Total Penguin Mass",
+    subtitle = "How many kilograms of penguin per Island?",
+    x = "Island",
+    y = "Total Penguin Body Mass (kg)")
+ggp2_sum_col <- ggplot(data = peng_sum_col,
+    aes(x = island,
+        y = body_mass_kg)) +
+    geom_col(aes(fill = island), 
+        show.legend = FALSE)  
+ggp2_sum_col + 
+    labs_sum_col
+```
+:::
+
+### Graph
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**GRAPH:**
+:::
+
+```{r}
+#| label: create_graph_sum_col
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+labs_sum_col <- labs(
+    title = "Total Penguin Mass",
+    subtitle = "How many kilograms of penguin per Island?",
+    x = "Island",
+    y = "Total Penguin Body Mass (kg)")
+ggp2_sum_col <- ggplot(data = peng_sum_col,
+    aes(x = island,
+        y = body_mass_kg)) +
+    geom_col(aes(fill = island), 
+        show.legend = FALSE)  
+ggp2_sum_col + 
+    labs_sum_col
+```
+
+::::
+
+## More Info
+
+Note that we didn't have to write any code to calculate the total `body_mass_g` (displayed on the `y` axis) by `island`.
+
+That's because `ggplot2` does this for us!
+
+:::: {.panel-tabset}
+### Summary
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**SUMMARY:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+If we pass a categorical variable to the `x` (like `island`) and a continuous variable to `y` (like `body_mass_kg`), `geom_col()` will calculate the `sum()` of `y` by levels of `x`
+:::
+
+::: {style="font-size: 0.85em;"}
+We can see the underlying summary of budget using `dplyr`’s `group_by()` and `summarise()` functions.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: create_summary_sum_col
+#| eval: false
+#| echo: true
+#| warning: false
+#| message: false
+palmerpenguins::penguins |> 
+    dplyr::select(body_mass_g, island) |> 
+    tidyr::drop_na() |> 
+    # divide the mass value by 1000
+    dplyr::mutate(
+        body_mass_kg = body_mass_g / 1000
+    ) |> 
+    dplyr::group_by(island) |>
+    dplyr::summarise(
+       `Total Penguin Body Mass (kg)` = sum(body_mass_kg)) |>
+    dplyr::ungroup() |> 
+    dplyr::select(`Island` = island, 
+        `Total Penguin Body Mass (kg)`)
+```
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: show_summary_sum_col
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| layout-nrow: 1
+#| column: page-inset-right
+palmerpenguins::penguins |> 
+    dplyr::select(body_mass_g, island) |> 
+    tidyr::drop_na() |> 
+    # divide the mass value by 1000
+    dplyr::mutate(
+        body_mass_kg = body_mass_g / 1000
+    ) |> 
+    dplyr::group_by(island) |>
+    dplyr::summarise(
+       `Total Penguin Body Mass (kg)` = sum(body_mass_kg)) |>
+    dplyr::ungroup() |> 
+    dplyr::select(`Island` = island, 
+        `Total Penguin Body Mass (kg)`) |> 
+    knitr::kable() |> 
+    kableExtra::kable_minimal()
+```
+:::
+
+### Identity vs. Count
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**STATS:**
+:::
+
+::: {style="font-size: 0.85em;"}
+The `geom_bar()` geom will also create grouped bar graphs, but we have to switch the `stat` argument to `"identity"`.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: show_stat_sum_col
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+ggplot(data = peng_sum_col,
+    aes(x = island,
+        y = body_mass_kg)) +
+    geom_col(aes(fill = island), 
+        show.legend = FALSE,
+        stat = "identity")  +
+    labs_sum_col
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**`geom_bar()` vs. `geom_col()`:**
+:::
+
+::: {style="font-size: 0.85em;"}
+`geom_bar()` will map a categorical variable to the `x` *or* `y` and display counts for the discrete levels (see [`stat_count()`](https://ggplot2.tidyverse.org/reference/geom_bar.html) for more info)
+
+
+`geom_col()` will map *both* `x` *and* `y` aesthetics, and is used when we want to display numerical (quantitative) values across the levels of a categorical variable. `geom_col()` assumes these values have been created in their own column (see  [`stat_identity()`](https://ggplot2.tidyverse.org/reference/stat_identity.html) for more info)
+:::
+
+::::

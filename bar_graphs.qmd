@@ -1,0 +1,319 @@
+# Bar graphs {.unnumbered}
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+source("_common.R")
+# use font
+showtext::showtext_auto()
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 15))
+```
+
+```{r}
+#| label: status
+#| results: "asis"
+#| echo: false
+# status ----
+# polish, dev, draft, complete
+status("complete")
+```
+
+
+:::: {.callout-note collapse="false" icon=false}
+## Graph info
+::: {style="font-size: 1.25em; color: #007bff;"}
+**Should I use this graph?**
+:::
+
+<br>
+
+```{r}
+#| label: full_code_display
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: right
+library(palmerpenguins) 
+library(ggplot2)
+penguins_bar <- palmerpenguins::penguins |> 
+    filter(!is.na(species))
+labs_bar <- labs(
+  title = "Adult foraging penguins",
+  subtitle = "Distribution of flipper length",
+  x = "Species", y = "Count", 
+  fill = "Species")
+ggp2_bar <- ggplot(data = penguins_bar,
+       aes(x = species)) +
+    geom_bar(aes(fill = species), 
+        show.legend = FALSE)
+ggp2_bar +
+  labs_bar
+```
+
+::: {style="font-size: 1.10em; color: #007bff;"}
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a categorical variable**      
+:::
+
+::::
+
+## Description
+
+A bar graph (or bar chart) is typically used to display counts for the discrete levels of a categorical variable, like political affiliation, hair color, or race/ethnicity (or species of penguin!). 
+
+Bar graphs can be arranged vertically or horizontally, but the length of the bar represents the ‘count’ for each category value. 
+
+In `ggplot2`, bar graphs can be built using `geom_bar()` (see also: [`geom_col()`](https://mjfrigaard.github.io/ggp2-gallery/geoms/geom_col.html)).
+
+## Getting set up 
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_bar
+#| code-fold: show
+#| eval: false
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+install.packages("palmerpenguins")
+library(palmerpenguins) 
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {.column-margin}
+![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+:::
+
+::: {style="font-size: 0.85em;"}
+Filter the missing values from `species` in the `palmerpenguins::penguins` data and store it in `penguins_bar`.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_code_bar
+#| code-fold: show
+#| eval: true
+#| echo: true
+penguins_bar <- palmerpenguins::penguins |> 
+    dplyr::filter(!is.na(species))
+glimpse(penguins_bar)
+```
+:::
+::::
+
+## The grammar
+
+:::: {.panel-tabset}
+
+### Code
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**CODE:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()` 
+
+Initialize the graph with `ggplot()` and provide `data`
+
+Map `species` to the `x` axis
+
+Map `species` to the `fill` aesthetic inside the `aes()` of `geom_bar()`
+
+Remove the legend with `show.legend = FALSE`
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: code_graph_bar
+#| code-fold: show
+#| eval: false
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_bar <- labs(
+  title = "Adult foraging penguins",
+  subtitle = "Distribution of flipper length",
+  x = "Species", y = "Count", 
+  fill = "Species")
+ggp2_bar <- ggplot(data = penguins_bar,
+       aes(x = species)) +
+    geom_bar(aes(fill = species), 
+        show.legend = FALSE)
+ggp2_bar +
+  labs_bar
+```
+:::
+
+### Graph
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**GRAPH:**
+:::
+
+```{r}
+#| label: create_graph_bar
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+labs_bar <- labs(
+  title = "Adult foraging penguins",
+  subtitle = "Distribution of flipper length",
+  x = "Species", y = "Count", 
+  fill = "Species")
+ggp2_bar <- ggplot(data = penguins_bar,
+       aes(x = species)) +
+    geom_bar(aes(fill = species), 
+        show.legend = FALSE)
+ggp2_bar +
+  labs_bar
+```
+
+::::
+
+## More info
+
+- The connection between statistical transformations and geoms is an important principle for building graphs (and mastering the grammar) with `ggplot2`
+    - Below we cover why `geom_bar(stat = "count")` produces the same result as `stat_count(geom = "bar")`
+
+::: {.column-margin}
+"*every geom has a default stat, and every stat a default geom.*" - [`ggplot2` book](https://ggplot2-book.org/layers.html#layers)
+:::
+
+
+- Bar graphs can also be created with `geom_col()`
+
+:::: {.panel-tabset}
+
+### stats and geoms
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**stat_count():**
+:::
+
+::: {style="font-size: 0.85em;"}
+The default `stat` argument in `geom_bar()` is set to `"count"`, which '*counts the number of cases at each `x` position*', so it's ideal for categorical variables (or factors). 
+
+The `stat_count()` function can also be used to create bar graphs using the `geom` argument.  
+
+The link between `geom_`**geom_name**`(stat = "`**stat_name**`")` and `stat_`**stat_name**`(geom = "`**geom_name**`")` is shown below:
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: stat_vs_geom_bar
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+ggp2_geom_bar <- ggplot(data = penguins_bar,
+       aes(x = species)) +
+    geom_bar(aes(fill = species), 
+        stat = "count") + 
+    labs(title = "geom_bar(stat = 'count')")
+ggp2_geom_bar
+
+
+ggp2_stat_count <- ggplot(data = penguins_bar,
+       aes(x = species)) +
+    stat_count(aes(fill = species), 
+        geom = "bar") + 
+    labs(title = "stat_count(geom = 'bar')")
+ggp2_stat_count
+```
+:::
+
+
+### `geom_col()`
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**geom_col():**
+:::
+
+::: {style="font-size: 0.85em;"}
+To create a bar graph with `geom_col()`, the `count` variable needs to be computed before being mapped into the graph `y` aesthetic. 
+:::
+
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: bar_with_geom_col
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+penguins_bar |> 
+    # create column of counts 
+    dplyr::count(species, name = "count") |> 
+    # map into x and y
+    ggplot(mapping = aes(x = species, y = count)) +
+    geom_col(aes(fill = species), 
+        show.legend = FALSE) + 
+    labs_bar +
+    labs(caption = "*geom_col()")
+    
+
+# compare to geom_bar()
+ggp2_bar +
+  labs_bar
+```
+:::
+
+::::

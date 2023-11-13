@@ -1,0 +1,20 @@
+{
+  "hash": "fa988d5e883c6819b6ddfe92c69a45eb",
+  "result": {
+    "markdown": "# Stacked densities {.unnumbered}\n\n\n\n\n\n::: {.callout-tip appearance='simple' icon=false}\n***This graph is largely complete and just needs final proof reading.*** \n:::\n\n\n\n:::: {.callout-note collapse=\"false\" icon=false}\n## Graph info\n::: {style=\"font-size: 1.25em; color: #007bff;\"}\n**Should I use this graph?**\n:::\n\n<br>\n\n\n::: {.cell layout-align=\"right\"}\n::: {.cell-output-display}\n![](stacked_filled_density_graphs_files/figure-html/full_code_display-1.png){fig-align='right' width=60% height=60%}\n:::\n:::\n\n\n::: {style=\"font-size: 1.10em; color: #007bff;\"}\n**This graph requires:**\n:::\n\n::: {style=\"font-size: 1.05em; color: #fa7b3c;\"}\n**✅ a categorical variable**      \n:::\n\n::::\n\n## Description \n\nDensity graphs are typically used to visualize the distribution of a single variable, but stacked density graphs are great for visualizing how proportions vary across numeric (continuous) variables.\n\n## Getting set up\n\n:::: {.panel-tabset}\n\n### Packages\n\n::: {style=\"font-size: 1.15em; color: #1e83c8;\"}\n**PACKAGES:**\n:::\n\n::: {style=\"font-size: 0.85em;\"}\nInstall packages.\n:::\n\n\n::: {style=\"font-size: 0.75em;\"}\n\n::: {.cell}\n\n```{.r .cell-code  code-fold=\"show\"}\ninstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins)\nlibrary(ggplot2)\n```\n:::\n\n:::\n\n### Data\n\n::: {style=\"font-size: 1.15em; color: #1e83c8;\"}\n**DATA:**\n:::\n\n::: {.column-margin}\n![Artwork by @allison_horst](../www/lter_penguins.png){fig-align=\"right\" width=\"100%\" height=\"100%\"}\n:::\n\n::: {style=\"font-size: 0.85em;\"}\nRemove missing `sex` from the `penguins` data\n:::\n\n::: {style=\"font-size: 0.75em;\"}\n\n::: {.cell}\n\n```{.r .cell-code  code-fold=\"show\"}\npeng_density <- dplyr::filter(palmerpenguins::penguins, !is.na(sex))\ndplyr::glimpse(peng_density)\n#> Rows: 333\n#> Columns: 8\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Torgersen, Torgersen, Torgersen,…\n#> $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, 36.7, 39.3, 38…\n#> $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, 19.3, 20.6, 17…\n#> $ flipper_length_mm <int> 181, 186, 195, 193, 190, 181, 19…\n#> $ body_mass_g       <int> 3750, 3800, 3250, 3450, 3650, 36…\n#> $ sex               <fct> male, female, female, female, ma…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…\n```\n:::\n\n:::\n::::\n\n## The grammar\n\n:::: {.panel-tabset}\n\n### Code\n\n::: {style=\"font-size: 1.15em; color: #1e83c8;\"}\n**CODE:**\n:::\n\n::: {style=\"font-size: 0.85em;\"}\n\nCreate labels with `labs()`\n\nInitialize the graph with `ggplot()` and provide `data`\n\nMap the `flipper_length_mm` to the `x` and add  `after_stat(count)` \n\nMap `sex` to `fill`  \n\n*Inside* the `geom_density()` function, set `position` to `\"fill\"`\n\n:::\n\n::: {style=\"font-size: 0.75em;\"}\n\n::: {.cell}\n\n```{.r .cell-code  code-fold=\"show\"}\nlabs_fill_density <- labs(\n  title = \"Adult foraging penguins\",\n  x = \"Flipper length (mm)\",\n  fill = \"Sex\")\nggp2_fill_density <- ggplot(data = peng_density, \n       aes(x = flipper_length_mm, \n           after_stat(count),\n          fill = sex)) +\n      geom_density(position = \"fill\") \nggp2_fill_density + \n  labs_fill_density\n```\n:::\n\n:::\n\n### Graph\n\n::: {style=\"font-size: 1.15em; color: #1e83c8;\"}\n**GRAPH:**\n:::\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](stacked_filled_density_graphs_files/figure-html/create_graph_fill_density-1.png){width=100% height=100%}\n:::\n:::\n\n\n::::\n",
+    "supporting": [
+      "stacked_filled_density_graphs_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<link href=\"site_libs/pagedtable-1.1/css/pagedtable.css\" rel=\"stylesheet\" />\n<script src=\"site_libs/pagedtable-1.1/js/pagedtable.js\"></script>\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

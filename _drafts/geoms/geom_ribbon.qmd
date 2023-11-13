@@ -1,0 +1,469 @@
+---
+title: "`geom_ribbon()`"
+format:
+  html:
+    toc: true
+    code-fold: show
+    df-print: paged
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# options ----
+options(
+  repos = "https://cloud.r-project.org",
+  pillar.print_max = 10, 
+  pillar.print_min = 10,
+  dplyr.print_min = 6, 
+  dplyr.print_max = 6, 
+  scipen = 9999)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+# import font
+extrafont::font_import(
+    paths = "../assets/Ubuntu/",
+    prompt = FALSE)
+# add font
+sysfonts::font_add(
+    family =  "Ubuntu", 
+    regular = "../assets/Ubuntu/Ubuntu-Regular.ttf")
+# use font
+showtext::showtext_auto()
+# add theme
+source("../R/theme_ggp2g.R")
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 16))
+# install data packages ----
+install.packages("palmerpenguins")
+```
+
+## ( *in development* )
+
+:::: {.callout-tip collapse="false" icon=false}
+## Lines in `ggplot2`
+
+::: {style="color: #043b67;"}
+#### Geoms for areas:
+:::
+  
+```{r}
+#| label: play_with_lines
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '55%'
+#| out-width: '55%'
+#| fig-align: right
+library(palmerpenguins) 
+library(ggplot2)
+library(patchwork)
+economics <- ggplot2::economics
+seals <- ggplot2::seals
+df <- data.frame(x = 1:5, y = c(5, 1, 4, 2, 7))
+# geom_ribbon ----
+ggp2_ribbon_base <- ggplot2::ggplot(data = df,
+    mapping = aes(x = x, y = y)) +
+    xlim(0.5, 5.5) +
+    ylim(0, 10)
+rbn <- ggp2_ribbon_base + 
+    geom_ribbon(aes(xmin = x, ymin = y,
+                xmax = x + 1, ymax = y + 1)) +
+    theme_void() + 
+    labs(title = "geom_ribbon()")
+# geom_polygon ----
+ggp2_line_base <- ggplot(data = economics, 
+    aes(x = date, y = unemploy))
+plygn <- ggp2_line_base + 
+    geom_polygon() + 
+    theme_void() + 
+    labs(title = "geom_polygon()")
+# geom_rect ----
+ggp2_rect_base <- ggplot2::ggplot(data = df,
+    mapping = aes(x = x, y = y)) +
+    xlim(0.5, 5.5) +
+    ylim(0, 10)
+rct <- ggp2_rect_base + 
+    geom_rect(aes(xmin = x, ymin = y,
+                xmax = x + 1, ymax = y + 1)) +
+    theme_void() + 
+    labs(title = "geom_rect()")
+plygn + rct + rbn + 
+    patchwork::plot_layout(ncol = 1)
+```
+
+  - **`geom_ribbon()`**
+  
+  - `geom_polygon()`
+
+::::
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {.column-margin}
+::: {style="font-size: 0.75em;"}
+![](../www/ggplot2.png){fig-align="right" width="33%" height="33%"}
+:::
+:::
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_lines
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+#| out-height: '100%'
+#| out-width: '100%'
+install.packages("ggplot2")
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Load the `ggplot2::economics` data.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_lines
+#| eval: true
+#| echo: true
+#| out-height: '100%'
+#| out-width: '100%'
+economics <- ggplot2::economics
+dplyr::glimpse(economics)
+```
+:::
+::::
+
+## `geom_ribbon()`
+
+:::: {.panel-tabset}
+
+### Basic Use
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**BASICS:**
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: basic_ribbon
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| column: page-inset-right
+#| out-height: '100%'
+#| out-width: '100%'
+ggp2_ribbon_base <- ggplot(data = economics,
+                        mapping = aes(x = date))
+ggp2_ribbon_base + 
+    geom_ribbon(mapping = 
+            aes(y = uempmed, 
+                ymin = uempmed + 0.5, 
+                ymax = uempmed - 0.5))
+```
+
+:::
+
+### Aesthetics
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**AESTHETICS:**
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: corr_data
+#| eval: true
+#| echo: true
+#| code-fold: true
+#| warning: false
+#| message: false
+#| column: page-inset-right
+#| out-height: '100%'
+#| out-width: '100%'
+# load correlated data
+corr_data <- tibble::tribble(
+               ~xvar,            ~yvar,
+    4.39945542597731, 8.72304029683653,
+    4.17063449620983, 7.90063554987357,
+    5.93523342401092, 11.4541978978465,
+     5.1469950216844,  10.497618946837,
+     6.5602921658934, 10.2514082668131,
+    3.60318467023933, 8.75455336713591,
+    4.44593466081161, 8.29243026086505,
+    5.91928050392941, 12.7755963254406,
+    5.37762836695204, 12.2029024379286,
+    5.67997074416441, 12.3725943179292,
+    5.08056199671095, 10.1234733135857,
+    7.13968234777943, 13.1122471221455,
+    5.47953584350558, 10.8483125442327,
+     5.1207247271694, 11.6978354394502,
+    5.16886610539834, 11.2012361563169,
+    2.44285898166558,  4.5859655824687,
+    5.23078516502559, 9.73404777362049,
+    3.96375780089961, 8.76414720443707,
+    5.84839340452937, 10.5978562919754,
+    3.41647188446529, 5.92403646423495,
+    5.09953017417824, 10.3752983817394,
+    5.57659911788499, 9.03573690321113,
+    5.11637581346714, 10.1137194319908,
+    3.85058930107654, 9.46184974952373,
+    4.43941450511781, 7.63624635401869,
+    4.75719629862186, 10.8272731721497,
+     4.5302676699022, 9.85046648295819,
+     6.6923491882959, 13.7537499935159,
+     4.8406593897924, 9.31946299458958,
+    4.96677080464114, 9.81206097632927)
+```
+:::
+
+::: {style="font-size: 0.85em;"}
+
+The required aesthetics are: 
+
+  - `x` or `y` positions  
+  
+  - `ymin` or `ymax`  
+  
+  - `xmin` or `xmax`  
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_ribbon
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| code-fold: show
+#| column: page-inset-right
+#| out-height: '100%'
+#| out-width: '100%'
+# map corr_data
+ggp2_ribbon_base <- ggplot(data = corr_data)
+# map x, y, ymin and ymax, and +/- adjustment
+ggp2_ribbon_base + 
+    geom_ribbon(mapping = aes(x = xvar,
+                    y = yvar,
+                    ymin = yvar - 0.667, 
+                    ymax = yvar + 0.667))
+```
+:::
+
+::: {style="font-size: 0.85em;"}
+Optional aesthetics include: 
+
+`alpha`
+
+`color`
+
+`fill`
+
+`group`
+
+`linetype`
+
+`linewidth`
+
+:::
+
+#### `alpha`
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_alpha_ribbon
+#| eval: true
+#| echo: true 
+#| code-fold: true
+#| warning: false
+#| message: false
+#| column: page-inset-right
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+# adjustment
+adj <- sd(corr_data$xvar)
+ggp2_ribbon_base + 
+    geom_ribbon(mapping = aes(
+        x = xvar, y = yvar,
+        ymin = yvar - adj, ymax = yvar + adj), 
+        alpha = 1/3) +
+    geom_line(mapping = aes(x = xvar, y = yvar),
+        color = "#ffffff") +
+    labs(subtitle = "alpha = 1/3")
+ggp2_ribbon_base + 
+    geom_ribbon(mapping = aes(
+        x = xvar, y = yvar,
+        ymin = yvar - adj, ymax = yvar + adj), 
+        alpha = 1/2) +
+    geom_line(mapping = aes(x = xvar, y = yvar),
+        color = "#ffffff") +
+    labs(subtitle = "alpha = 1/2")
+ggp2_ribbon_base + 
+    geom_ribbon(mapping = aes(
+        x = xvar, y = yvar,
+        ymin = yvar - adj, ymax = yvar + adj),
+        alpha = 3/4) +
+    geom_line(mapping = aes(x = xvar, y = yvar),
+        color = "#ffffff") + 
+    labs(subtitle = "alpha = 3/4")
+```
+:::
+
+#### `color`
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_color_ribbon
+#| eval: true
+#| echo: true 
+#| code-fold: true
+#| warning: false
+#| message: false
+#| column: page-inset-right
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+# adjustment
+adj <- sd(corr_data$xvar)
+ggp2_ribbon_base + 
+    geom_ribbon(mapping = aes(
+        x = xvar, y = yvar,
+        ymin = yvar - adj, ymax = yvar + adj), 
+        color = "#fa7b3c") +
+    geom_line(mapping = aes(x = xvar, y = yvar),
+        color = "#ffffff") +
+    labs(subtitle = "geom_ribbon(color = '#fa7b3c'), geom_line(color = '#ffffff')")
+ggp2_ribbon_base + 
+    geom_ribbon(mapping = aes(
+        x = xvar, y = yvar,
+        ymin = yvar - adj, ymax = yvar + adj),
+        color = "#007bff") +
+    geom_line(mapping = aes(x = xvar, y = yvar),
+        color = "#89D6FB") + 
+    labs(subtitle = "geom_ribbon(color = '#007bff'), geom_line(color = '#89D6FB')")
+```
+:::
+
+#### `fill`
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_fill_ribbon
+#| eval: true
+#| echo: true 
+#| code-fold: true
+#| warning: false
+#| message: false
+#| column: page-inset-right
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+ggp2_ribbon_base + 
+    geom_ribbon(mapping = aes(x = xvar,
+                    y = yvar,
+                    ymin = min(yvar) - 1, 
+                    ymax = yvar - 0.75),
+        fill = "#0bd3d3") + 
+    geom_line(mapping = aes(x = xvar, y = yvar),
+        color = "#9d40f5", linewidth = 1) + 
+    labs(subtitle = "ymin = min(yvar) - 1 , ymax = yvar - 0.75")
+ggp2_ribbon_base + 
+    geom_ribbon(mapping = aes(x = xvar,
+                    y = yvar,
+                    ymin = yvar + 0.75, 
+                    ymax = max(yvar) + 1), 
+        fill = "#f890e7") + 
+    geom_line(mapping = aes(x = xvar, y = yvar),
+        color = "#9d40f5", linewidth = 1) + 
+    labs(subtitle = "ymin = yvar + 0.75 , ymax = max(yvar) + 1")
+ggp2_ribbon_base + 
+    geom_ribbon(mapping = aes(x = xvar,
+                    y = yvar,
+                    ymin = min(yvar) - 1, 
+                    ymax = yvar - 0.75),
+        fill = "#0bd3d3") + 
+    geom_ribbon(mapping = aes(x = xvar,
+                    y = yvar,
+                    ymin = yvar + 0.75, 
+                    ymax = max(yvar) + 1), 
+        fill = "#f890e7") + 
+    geom_line(mapping = aes(x = xvar, y = yvar),
+        color = "#9d40f5", linewidth = 1) + 
+    labs(subtitle = "ymin = min(yvar) - 1 , ymax = yvar - 0.75\nymin = yvar + 0.75 / ymax = max(yvar) + 1")
+```
+:::
+
+### Additional Arguments
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**ARGUMENTS:**
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: args_1_ribbon
+#| eval: true
+#| echo: true 
+#| code-fold: true
+#| warning: false
+#| message: false
+#| column: page-inset-right
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+# adjustment
+adj <- sd(corr_data$xvar)
+# line only
+ggp2_ribbon_base + 
+    geom_line(mapping = aes(x = xvar, y = yvar),
+        color = "#9d40f5") + 
+    labs(subtitle = "geom_line()")
+ggp2_ribbon_base + 
+    geom_ribbon(mapping = aes(
+        x = xvar, y = yvar,
+        xmin = xvar - adj, xmax = xvar + adj),
+        fill = "#89D6FB") +
+    geom_line(mapping = aes(x = xvar, y = yvar),
+        color = "#9d40f5", orientation = "y") + 
+    labs(subtitle = "xmin, xmin & orientation = 'y'")
+```
+:::
+
+::::

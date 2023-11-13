@@ -1,0 +1,20 @@
+{
+  "hash": "f315b12aba8750610b3671105c9d1ba2",
+  "result": {
+    "markdown": "# Density plots {.unnumbered}\n\n\n\n\n\n\n::: {.callout-tip appearance='simple' icon=false}\n***This graph is largely complete and just needs final proof reading.*** \n:::\n\n\n\n:::: {.callout-note collapse=\"false\" icon=false}\n## Graph info\n::: {style=\"font-size: 1.25em; color: #007bff;\"}\n**Should I use this graph?**\n:::\n\n<br>\n\n\n::: {.cell layout-align=\"right\"}\n::: {.cell-output-display}\n![](density_plots_files/figure-html/full_code_display-1.png){fig-align='right' width=60% height=60%}\n:::\n:::\n\n\n::: {style=\"font-size: 1.10em; color: #007bff;\"}\n**This graph requires:**\n:::\n\n::: {style=\"font-size: 1.05em; color: #fa7b3c;\"}\n**✅ a numeric (continuous) variable**\n:::\n\n::::\n\n## Description\n\nDensity plots are similar to a histogram or frequency polygon, except the outline of the distribution has been ‘smoothed.’\n\nInstead of dividing the `x` axis into discrete ‘bins’ to create groupings for the variable's values, density plots transform the distribution according to a kernel density estimate.\n\n## Getting set up\n\n:::: {.panel-tabset}\n\n### Packages\n\n::: {style=\"font-size: 1.10em; color: #1e83c8;\"}\n**PACKAGES:**\n:::\n\n::: {style=\"font-size: 0.85em;\"}\nInstall packages.\n:::\n\n\n::: {style=\"font-size: 0.75em;\"}\n\n::: {.cell}\n\n```{.r .cell-code  code-fold=\"show\"}\ninstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n```\n:::\n\n:::\n\n### Data\n\n::: {style=\"font-size: 1.10em; color: #1e83c8;\"}\n**DATA:**\n:::\n\n::: {.column-margin}\n![Artwork by Allison Horst](www/lter_penguins.png){fig-align=\"right\" width=\"100%\" height=\"100%\"}\n:::\n\n::: {style=\"font-size: 0.85em;\"}\nThe `penguins` data.\n:::\n\n::: {style=\"font-size: 0.75em;\"}\n\n::: {.cell}\n\n```{.r .cell-code  code-fold=\"show\"}\npenguins <- palmerpenguins::penguins\nglimpse(penguins)\n#> Rows: 344\n#> Columns: 8\n#> $ species           <fct> Adelie, Adelie, Adelie, Adelie, …\n#> $ island            <fct> Torgersen, Torgersen, Torgersen,…\n#> $ bill_length_mm    <dbl> 39.1, 39.5, 40.3, NA, 36.7, 39.3…\n#> $ bill_depth_mm     <dbl> 18.7, 17.4, 18.0, NA, 19.3, 20.6…\n#> $ flipper_length_mm <int> 181, 186, 195, NA, 193, 190, 181…\n#> $ body_mass_g       <int> 3750, 3800, 3250, NA, 3450, 3650…\n#> $ sex               <fct> male, female, female, NA, female…\n#> $ year              <int> 2007, 2007, 2007, 2007, 2007, 20…\n```\n:::\n\n:::\n::::\n\n## The grammar\n\n:::: {.panel-tabset}\n\n### Code\n\n::: {style=\"font-size: 1.10em; color: #1e83c8;\"}\n**CODE:**\n:::\n\n::: {style=\"font-size: 0.85em;\"}\n\nCreate labels with `labs()`\n\nInitialize the graph with `ggplot()` and provide `data`\n\nMap `flipper_length_mm` to the `x` axis\n\nAdd the `geom_density()` layer\n\n:::\n\n::: {style=\"font-size: 0.75em;\"}\n\n::: {.cell}\n\n```{.r .cell-code  code-fold=\"show\"}\nlabs_density <- labs(\n  title = \"Adult foraging penguins\",\n  subtitle = \"Distribution of flipper length\",\n  x = \"Flipper length (millimeters)\")\nggp2_density <- ggplot(data = penguins, \n        aes(x = flipper_length_mm)) + \n      geom_density() \n\nggp2_density +\n  labs_density\n```\n:::\n\n:::\n\n### Graph\n\n::: {style=\"font-size: 1.10em; color: #1e83c8;\"}\n**GRAPH:**\n:::\n\n\n::: {.cell .column-page-inset-right layout-nrow=\"1\"}\n::: {.cell-output-display}\n![](density_plots_files/figure-html/create_graph_density-1.png){width=576}\n:::\n:::\n\n\n::: {style=\"font-size: 0.85em;\"}\nA downside of using density plots is the lack of interpretability of the `y` axis. \n:::\n\n::::\n",
+    "supporting": [
+      "density_plots_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<link href=\"site_libs/pagedtable-1.1/css/pagedtable.css\" rel=\"stylesheet\" />\n<script src=\"site_libs/pagedtable-1.1/js/pagedtable.js\"></script>\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

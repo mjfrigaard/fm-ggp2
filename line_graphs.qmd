@@ -1,0 +1,268 @@
+# Line graphs {.unnumbered}
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+source("_common.R")
+# use font
+showtext::showtext_auto()
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 14))
+```
+
+```{r}
+#| label: status
+#| results: "asis"
+#| echo: false
+# status ----
+# polish, dev, draft, complete
+status("complete")
+```
+
+:::: {.callout-note collapse="false" icon=false}
+## Graph info
+::: {style="font-size: 1.25em; color: #007bff;"}
+**Should I use this graph?**
+:::
+
+<br>
+
+```{r}
+#| label: full_code_display
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: right
+library(fivethirtyeight)
+library(ggplot2)
+library(paletteer)
+library(ggthemes)
+# remove extra dates
+US_births_2004_2014 <- filter(fivethirtyeight::US_births_2000_2014, year > 2003)
+avg_birth_ym <- US_births_2004_2014 |>
+    dplyr::bind_rows(fivethirtyeight::US_births_1994_2003) |> 
+    dplyr::mutate(
+        mon_chr = dplyr::if_else(
+            condition = month < 10,
+            true = paste0("0", month),
+            false = as.character(month)),
+        month = lubridate::month(date, label = TRUE),
+        yr_mnth = paste0(year, "-", mon_chr),
+        yr_mnth = lubridate::ym(yr_mnth),
+        yr_qtr = paste0(lubridate::year(date),
+                              "/0", 
+                              quarter(date)),
+        yr_qtr = factor(yr_qtr, ordered = TRUE)) |> 
+    dplyr::group_by(yr_mnth) |>
+    dplyr::summarise(
+        avg_births = mean(births, na.rm = TRUE)) |>
+    dplyr::ungroup() 
+labs_line <- labs(title = "Average US births", 
+                subtitle = "1994-2014",
+                y = "Average number of US births",
+                x = "Year/Month")
+ggp2_line <- ggplot(avg_birth_ym,
+    aes(y = avg_births, x = yr_mnth)) + 
+    geom_line()
+ggp2_line + 
+    labs_line
+```
+
+::: {style="font-size: 1.10em; color: #007bff;"}
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a numeric (continuous) variable**
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a numeric (date) variable**
+:::
+
+::::
+
+## Description 
+
+Line graphs display changes of a numeric quantitative variable (on the `y` axis) over time (on the `x` axis). 
+
+## Getting set up 
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_line_graph
+#| code-fold: show
+#| eval: false
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+install.packages("fivethirtyeight")
+library(fivethirtyeight)
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {.column-margin}
+![](www/538.png){fig-align="right" width="40%" height="40%"}
+:::
+
+
+
+::: {style="font-size: 0.85em;"}
+We'll be using the `US_births_1994_2003` and `US_births_2000_2014` datasets from the `fivethirtyeight` package. 
+
+  - Remove duplicate dates from `US_births_2000_2014`
+  
+  - Binding these together (they have identical columns)  
+
+  - Use `year` and `month`  to create `yr_mnth`  
+
+  - Use `year` and `quarter` to create `yr_qtr` 
+  
+  - Group by yr_month to create `avg_births`, then un-group
+  
+Save as `avg_birth_ym`
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_line
+#| code-fold: show
+#| eval: true
+#| echo: true
+US_births_2004_2014 <-
+    filter(fivethirtyeight::US_births_2000_2014, year > 2003)
+avg_birth_ym <- US_births_2004_2014 |>
+    dplyr::bind_rows(fivethirtyeight::US_births_1994_2003) |>
+    dplyr::mutate(
+        mon_chr = dplyr::if_else(
+            condition = month < 10,
+            true = paste0("0", month),
+            false = as.character(month)
+        ),
+        month = lubridate::month(date, label = TRUE),
+        yr_mnth = paste0(year, "-", mon_chr),
+        yr_mnth = lubridate::ym(yr_mnth),
+        yr_qtr = paste0(lubridate::year(date),
+            "/0",
+            lubridate::quarter(date)),
+        yr_qtr = factor(yr_qtr, ordered = TRUE)
+    ) |>
+    dplyr::group_by(yr_mnth) |>
+    dplyr::summarise(avg_births = mean(births, na.rm = TRUE)) |>
+    dplyr::ungroup() 
+dplyr::glimpse(avg_birth_ym)
+```
+:::
+
+::::
+
+## The grammar
+
+:::: {.panel-tabset}
+
+### Code
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**CODE:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()` 
+
+Initialize the graph with `ggplot()` and provide `data`
+
+Map `yr_mnth` to `x` and `avg_births` to `y`
+
+Add `geom_line()`
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: code_graph_line
+#| code-fold: show
+#| eval: false
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_line <- labs(title = "Average US births", 
+                subtitle = "1994-2014",
+                y = "Average number of US births",
+                x = "Year/Month")
+ggp2_line <- ggplot(data = avg_birth_ym,
+    mapping = aes(x = yr_mnth, y = avg_births)) + 
+    geom_line()
+ggp2_line + 
+    labs_line
+```
+:::
+
+### Graph
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**GRAPH:**
+:::
+
+```{r}
+#| label: create_graph_line
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+labs_line <- labs(title = "Average US births", 
+                subtitle = "1994-2014",
+                y = "Average number of US births",
+                x = "Year/Month")
+ggp2_line <- ggplot(data = avg_birth_ym,
+    mapping = aes(x = yr_mnth, y = avg_births)) + 
+    geom_line()
+ggp2_line + 
+    labs_line
+```
+
+::::
+

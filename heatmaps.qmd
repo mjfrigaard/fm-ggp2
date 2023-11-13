@@ -1,0 +1,305 @@
+# Heatmaps {.unnumbered}
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+source("_common.R")
+# use font
+showtext::showtext_auto()
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 15))
+```
+
+
+
+:::: {.callout-note collapse="false" icon=false}
+## Graph info
+::: {style="font-size: 1.25em; color: #007bff;"}
+**Should I use this graph?**
+:::
+
+<br>
+
+```{r}
+#| label: full_code_display
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: right
+library(fivethirtyeight) 
+library(ggplot2)
+heatmap_ross <- fivethirtyeight::bob_ross |>
+  pivot_longer(-c(episode, season,
+    episode_num, title),
+    names_to = "object",
+    values_to = "present") |>
+  mutate(present = as.logical(present),
+    object = str_replace_all(object, "_", " ")) |>
+  arrange(episode, object) |> 
+  filter(object %in% c("conifer", "trees", 
+    "tree", "snow", "palm trees", "grass", 
+    "flowers", "cactus", "bushes", "cirrus", 
+    "cumulus", "deciduous", "clouds", "fog")) |>
+  group_by(season, object) |>
+  summarise(occurrences = sum(present)) |>
+  ungroup()
+# glimpse(heatmap_ross)
+labs_heatmap_tile <- labs(
+  title = "Bob Ross' plants & clouds", 
+  x = "Episode", 
+  y = "Plant & Cloud Objects", 
+  fill = "Occurrences")
+ggp2_heatmap_tile <- ggplot(data = heatmap_ross, 
+       aes(x = season, 
+           y = object, 
+           fill = occurrences)) + 
+       geom_tile() + 
+    theme(legend.position = "bottom")
+ggp2_heatmap_tile +
+  labs_heatmap_tile
+```
+
+::: {style="font-size: 1.10em; color: #007bff;"}
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` two numeric (continuous) variables**
+
+**`r emo::ji("check")` a categorical variable** 
+:::
+
+::::
+
+## Description 
+
+Heatmaps display quantitative values across an intersection of two categorical (or discrete) variables.
+
+The intersecting cells contain variations of color saturation (i.e., the grade of purity or vividness) to represent the numerical values between groups.
+
+Heatmap legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability. 
+
+## Getting set up
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_heatmap
+#| code-fold: show
+#| eval: false
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+install.packages("fivethirtyeight")
+library(fivethirtyeight) 
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {.column-margin}
+![](../www/538.png){fig-align="right" width="45%" height="45%"}
+:::
+
+::: {style="font-size: 0.85em;"}
+For the heatmap, we’re going to re-structure and filter the `bob_ross` data from the `fivethirtyeight` package.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_code_heatmap
+#| code-fold: show
+#| eval: true
+#| echo: true
+heatmap_ross <- fivethirtyeight::bob_ross |>
+  pivot_longer(-c(episode, season,
+    episode_num, title),
+    names_to = "object",
+    values_to = "present") |>
+  mutate(present = as.logical(present),
+    object = str_replace_all(object, "_", " ")) |>
+  arrange(episode, object) |> 
+  filter(object %in% c("conifer", "trees", 
+    "tree", "snow", "palm trees", "grass", 
+    "flowers", "cactus", "bushes", "cirrus", 
+    "cumulus", "deciduous", "clouds", "fog")) |>
+  group_by(season, object) |>
+  summarise(occurrences = sum(present)) |>
+  ungroup()
+```
+:::
+::::
+
+## The grammar
+
+:::: {.panel-tabset}
+
+### Code
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**CODE:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()`
+
+Initialize the graph with `ggplot()` and provide `data`
+
+Assign `season` to `x`, `object` to `y`, and `occurrences` to `fill`
+
+Add the `geom_tile()`
+
+Move the legend to the bottom with `theme(legend.position = "bottom")`
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: code_graph_heatmap
+#| code-fold: show
+#| eval: false
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_heatmap_tile <- labs(
+  title = "Bob Ross' plants & clouds", 
+  x = "Episode", 
+  y = "Plant & Cloud Objects", 
+  fill = "Occurrences")
+ggp2_heatmap_tile <- ggplot(data = heatmap_ross, 
+       aes(x = season, 
+           y = object, 
+           fill = occurrences)) + 
+       geom_tile() + 
+    theme(legend.position = "bottom")
+ggp2_heatmap_tile + 
+  labs_heatmap_tile
+```
+:::
+
+### Graph
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**GRAPH:**
+:::
+
+```{r}
+#| label: create_graph_heatmap
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+labs_heatmap_tile <- labs(
+  title = "Bob Ross' plants & clouds", 
+  x = "Episode", 
+  y = "Plant & Cloud Objects", 
+  fill = "Occurrences")
+ggp2_heatmap_tile <- ggplot(data = heatmap_ross, 
+       aes(x = season, 
+           y = object, 
+           fill = occurrences)) + 
+       geom_tile() + 
+    theme(legend.position = "bottom")
+ggp2_heatmap_tile + 
+  labs_heatmap_tile
+```
+
+::::
+
+
+## More info
+
+In addition to `geom_tile()`, heatmaps can also be created with the `geom_raster()` function.
+
+:::: {.panel-tabset}
+
+### `geom_raster()`
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**`geom_raster()`:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()`
+
+Initialize the graph with `ggplot()` and provide `data`
+
+Assign `season` to `x`, `object` to `y`, and `occurrences` to fill
+
+Add the `geom_raster()`
+
+Move the legend to the bottom with `theme(legend.position = "bottom")`
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: code_graph_raster
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| layout-nrow: 1
+#| column: page-inset-right
+labs_heatmap_raster <- labs(
+  title = "Bob Ross' plants & clouds", 
+  x = "Episode", 
+  y = "Plant/Cloud Object", 
+  fill = "Occurrences")
+ggp2_heatmap_raster <- ggplot(data = heatmap_ross, 
+       aes(x = season, 
+           y = object, 
+           fill = occurrences)) + 
+       geom_raster() + 
+    theme(legend.position = "bottom")
+ggp2_heatmap_raster + 
+  labs_heatmap_raster
+```
+:::
+
+
+::::
+
+

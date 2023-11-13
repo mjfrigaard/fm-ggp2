@@ -1,0 +1,333 @@
+---
+title: "[topic]"
+format:
+  html:
+    toc: true
+    code-fold: show
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# options ----
+options(
+  repos = "https://cloud.r-project.org",
+  dplyr.print_min = 6, 
+  dplyr.print_max = 6, 
+  scipen = 9999)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+# import font
+extrafont::font_import(
+    paths = "../assets/Ubuntu/",
+    prompt = FALSE)
+# add font
+sysfonts::font_add(
+    family =  "Ubuntu", 
+    regular = "../assets/Ubuntu/Ubuntu-Regular.ttf")
+# use font
+showtext::showtext_auto()
+# add theme
+source("../R/theme_ggp2g.R")
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 16))
+# install data packages ----
+install.packages("palmerpenguins")
+```
+
+
+:::: {.callout-tip collapse="false" icon=false}
+## **[topic]**
+
+::: {style="font-size: 1.25em; color: #02577A;"}
+
+:::
+
+
+
+<br>
+
+```{r}
+#| label: full_code_display
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '40%'
+#| out-width: '40%'
+#| fig-align: right
+library(palmerpenguins) 
+library(ggplot2)
+library(patchwork)
+
+peng_lines <- palmerpenguins::penguins |> 
+                    tidyr::drop_na()
+```
+
+<br>
+
+::: {style="font-size: 1.25em; color: #02577A;"}
+**geoms:**
+:::
+
+`geom_()`
+
+::::
+
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {.column-margin}
+::: {style="font-size: 0.75em;"}
+![source: https://github.com/rstudio/hex-stickers](../www/ggplot2.png){fig-align="right" width="40%" height="40%"}
+:::
+:::
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_lines
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+install.packages("ggplot2")
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {style="font-size: 0.85em;"}
+<!--Load the `ggplot2::economics` data.-->
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_lines
+#| eval: true
+#| echo: true
+economics <- ggplot2::economics
+dplyr::glimpse(economics)
+```
+:::
+::::
+
+
+
+::::: {.callout-note collapse="false" icon=false}
+## `geom_()`
+
+:::: {.panel-tabset}
+
+### Basic use
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**BASICS:**
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: basic_
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+ggp2_basic_blank <- ggplot(data = economics) + 
+    geom_blank(mapping = aes(x = date, y = unemploy))
+ggp2_basic_blank
+```
+:::
+
+### Aesthetics
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**AESTHETICS:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+The required aesthetics are: 
+
+Optional aesthetics include: 
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes_
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+```
+:::
+
+### Additional Arguments
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**ARGUMENTS:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Below ...
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: args_1_
+#| code-fold: true
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+
+```
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: args_2_
+#| code-fold: true
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+
+```
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: args_3_
+#| code-fold: true
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 2
+
+```
+:::
+::::
+:::::
+
+<!--
+
+::::: {.callout-note collapse="false" icon=false}
+## `geom_()`
+
+:::: {.panel-tabset}
+
+### Basic use
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**BASICS:**
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: basic__
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+# ggp2_bar_base <- ggplot(data = peng_primitive)
+# ggp2_bar_x <- ggp2_bar_base + 
+#     geom_bar(mapping = aes(x = island))
+```
+
+:::
+
+### Arguments
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**ARGUMENTS:**
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: args_1__
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+
+```
+
+```{r}
+#| label: args_2__
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+
+```
+:::
+
+### Aesthetics
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**AESTHETICS:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+The required aesthetics are: 
+
+Optional aesthetics include: 
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: aes__
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+
+```
+:::
+
+::::
+:::::
+
+-->

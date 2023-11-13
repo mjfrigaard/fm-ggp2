@@ -1,0 +1,439 @@
+# Overlapping bar graphs {.unnumbered}
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+source("_common.R")
+# use font
+showtext::showtext_auto()
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 15))
+```
+
+
+
+:::: {.callout-note collapse="false" icon=false}
+## Graph info
+::: {style="font-size: 1.25em; color: #007bff;"}
+**Should I use this graph?**
+:::
+
+<br>
+
+```{r}
+#| label: full_code_display
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: right
+library(palmerpenguins) 
+library(ggplot2)
+penguins_ovrlp <- filter(penguins,
+                      !is.na(species) & 
+                            island == "Dream")
+labs_bar_ovrlp <- labs(
+  title = "Adult foraging penguins",
+  subtitle = "Penguins on Dream island",
+  x = "Flipper length (mm)",
+  y = "Count",
+  fill = "Species")
+ggp2_bar_ovrlp <- ggplot(data = penguins_ovrlp,
+          aes(x = flipper_length_mm, fill = species)) +
+                geom_bar() 
+ggp2_bar_ovrlp + 
+  labs_bar_ovrlp
+```
+
+::: {style="font-size: 1.10em; color: #007bff;"}
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a numeric (continuous) variable**
+
+**`r emo::ji("check")` a categorical variable** 
+:::
+
+::::
+
+## Desription 
+
+Overlapping bar graphs display counts for categorical levels, resulting in bars differentiated by color and ‘stacked’ on top of each other.
+
+In `ggplot2`, we can build overlapping bar graphs using the `fill` argument in `geom_bar()` or `geom_col()`
+
+## Getting set up
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_bar_ovrlp
+#| code-fold: show
+#| eval: false
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+install.packages("palmerpenguins")
+library(palmerpenguins)
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {.column-margin}
+![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+:::
+
+::: {style="font-size: 0.85em;"}
+Remove missing `species` from `penguins` and filter the data to only penguins on `"Dream"` island.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_code_bar_ovrlp
+#| code-fold: show
+#| eval: true
+#| echo: true
+penguins_ovrlp <- filter(penguins,
+                      !is.na(species) & 
+                            island == "Dream")
+glimpse(penguins_ovrlp)
+```
+:::
+::::
+
+## The grammar
+
+:::: {.panel-tabset}
+
+### Code
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**CODE:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()`
+
+Initialize the graph with `ggplot()` and provide `data`
+
+Map `flipper_length_mm` to the `x` and `species` to `fill`
+
+Add the `geom_bar()` layer
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: code_graph_bar_ovrlp
+#| code-fold: show
+#| eval: false
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_bar_ovrlp <- labs(
+  title = "Adult foraging penguins on Dream island",
+  x = "Flipper length (mm)",
+  y = "Count",
+  fill = "Species")
+ggp2_bar_ovrlp <- ggplot(data = penguins_ovrlp,
+          aes(x = flipper_length_mm, fill = species)) +
+                geom_bar() 
+ggp2_bar_ovrlp + 
+  labs_bar_ovrlp
+```
+:::
+
+### Graph
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**GRAPH:**
+:::
+
+```{r}
+#| label: create_graph_bar_ovrlp
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+labs_bar_ovrlp <- labs(
+  title = "Adult foraging penguins on Dream island",
+  x = "Flipper length (mm)",
+  y = "Count",
+  fill = "Species")
+ggp2_bar_ovrlp <- ggplot(data = penguins_ovrlp,
+          aes(x = flipper_length_mm, fill = species)) +
+                geom_bar() 
+ggp2_bar_ovrlp + 
+  labs_bar_ovrlp
+```
+
+::::
+
+## More info
+
+Overlapping bar graphs can also be built with `geom_col()`.
+
+`geom_bar()` has additional options for arranging overlapping bars. We can set the `position` argument to `"dodge"` or `"dodge2`, depending on how we'd like the data displayed. 
+
+
+:::: {.panel-tabset}
+
+### `geom_col()`
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**`geom_col()`:**
+:::
+
+::: {style="font-size: 0.85em;"}
+To build an overlapping bar graph with `geom_col()`, we need to create a column with the counts for `flipper_length_mm` and `species` in the dataset. 
+
+Create the `penguins_col` data:
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: penguins_col
+#| eval: true
+#| echo: true
+penguins_col <- penguins_ovrlp |>
+    count(species, flipper_length_mm, name = "Count")
+```
+:::
+
+
+::: {style="font-size: 0.85em;"}
+Map the counts to the `y` axis, `flipper_length_mm` to the `x` axis, and `species` to `fill`.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_code_bar_penguins_dodge
+#| eval: true
+#| echo: true
+#| layout-nrow: 1
+#| column: page-inset-right
+labs_col_ovrlp <- labs(
+  title = "Adult foraging penguins on Dream island",
+  subtitle = "built with 'geom_col()'",
+  x = "Flipper length (mm)",
+  y = "Count",
+  fill = "Species")
+ggp2_col_ovrlp <- ggplot(data = penguins_col, 
+    mapping = aes(y = Count, 
+        x = flipper_length_mm, 
+        fill = species)) + 
+    geom_col()
+ggp2_col_ovrlp + 
+    labs_col_ovrlp
+```
+:::
+
+::: {style="font-size: 0.85em;"}
+Compare the two graphs below:
+:::
+
+```{r}
+#| label: compare_bar_col
+#| eval: true
+#| echo: false
+#| layout-nrow: 1
+#| column: page-inset-right
+ggp2_bar_ovrlp + 
+  labs_bar_ovrlp
+ggp2_col_ovrlp + 
+    labs_col_ovrlp
+```
+
+
+### `dodge`
+
+::: {.column-margin}
+
+- *`position = "dodge"` preserves the vertical position of a geom while adjusting the horizontal position*
+
+- *requires the grouping variable to be be specified in the global or `⁠geom_`⁠ layer*
+
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**`dodge`:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Create the `penguins_dodge` data.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: penguins_dodge
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+penguins_dodge <- filter(penguins,
+                      !is.na(species) & 
+                        !is.na(sex) &
+                            island == "Dream")
+glimpse(penguins_dodge)
+```
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()`
+
+Initialize the graph with `ggplot()` and provide `data`
+
+Map `species` to the `x` and `island` to `group` and `fill` 
+
+Inside the `geom_bar()` function, set `position` to `"dodge"`
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: code_graph_dodge
+#| eval: true
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+labs_bar_dodge <- labs(
+  title = "Adult foraging penguins on Dream island",
+  subtitle = "position = 'dodge'",
+  x = "Sex",
+  y = "Count",
+  fill = "Species")
+ggp2_bar_dodge <- ggplot(data = penguins_dodge,
+                    aes(x = sex, 
+                        group = species, 
+                        fill = species)) +
+                    geom_bar(
+                        position = "dodge")
+ggp2_bar_dodge +
+  labs_bar_dodge
+```
+:::
+
+### `dodge2`
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**`dodge2`:**
+:::
+
+::: {.column-margin}
+
+- *works without a grouping variable in a layer*
+
+- *works with bars and rectangles*  
+
+- *useful for arranging graphs with variable widths.*
+
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()`
+
+Initialize the graph with `ggplot()` and provide `data`
+
+Map `species` to `x` and `island` to `fill`
+
+Inside `geom_bar()`, set `position` to `"dodge2"`
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: create_graph_dodge2
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+labs_bar_dodge2 <- labs(
+  title = "Adult foraging penguins on Dream island",
+  subtitle = "position = 'dodge2'",
+  x = "Sex",
+  y = "Count",
+  fill = "Species")
+ggp2_bar_dodge2 <- ggplot(data = penguins_dodge,
+                    aes(x = sex, 
+                        fill = species)) +
+                    geom_bar(
+                        position = "dodge2")
+ggp2_bar_dodge2 +
+  labs_bar_dodge2
+```
+:::
+
+::: {style="font-size: 0.85em;"}
+Compare the two graphs below:
+:::
+
+```{r}
+#| label: compare_bars
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+ggp2_bar_dodge +
+  labs_bar_dodge
+
+ggp2_bar_dodge2 +
+  labs_bar_dodge2
+```
+
+::::

@@ -1,0 +1,214 @@
+# Stacked densities {.unnumbered}
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+source("_common.R")
+# use font
+showtext::showtext_auto()
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 15))
+```
+
+```{r}
+#| label: status
+#| results: "asis"
+#| echo: false
+# status ----
+# polish, dev, draft, complete
+status("complete")
+```
+
+
+:::: {.callout-note collapse="false" icon=false}
+## Graph info
+::: {style="font-size: 1.25em; color: #007bff;"}
+**Should I use this graph?**
+:::
+
+<br>
+
+```{r}
+#| label: full_code_display
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: right
+library(palmerpenguins) 
+library(ggplot2)
+peng_density <- filter(palmerpenguins::penguins, !is.na(sex))
+labs_fill_density <- labs(
+  title = "Adult foraging penguins",
+  x = "Flipper length (mm)",
+  fill = "Sex")
+ggp2_fill_density <- ggplot(data = peng_density, 
+       aes(x = flipper_length_mm, 
+           after_stat(count),
+          fill = sex)) +
+      geom_density(position = "fill") 
+ggp2_fill_density + 
+  labs_fill_density
+```
+
+::: {style="font-size: 1.10em; color: #007bff;"}
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a categorical variable**      
+:::
+
+::::
+
+## Description 
+
+Density graphs are typically used to visualize the distribution of a single variable, but stacked density graphs are great for visualizing how proportions vary across numeric (continuous) variables.
+
+## Getting set up
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_fill_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+install.packages("palmerpenguins")
+library(palmerpenguins)
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {.column-margin}
+![Artwork by @allison_horst](../www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+:::
+
+::: {style="font-size: 0.85em;"}
+Remove missing `sex` from the `penguins` data
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_code_fill_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+peng_density <- dplyr::filter(palmerpenguins::penguins, !is.na(sex))
+dplyr::glimpse(peng_density)
+```
+:::
+::::
+
+## The grammar
+
+:::: {.panel-tabset}
+
+### Code
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**CODE:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()`
+
+Initialize the graph with `ggplot()` and provide `data`
+
+Map the `flipper_length_mm` to the `x` and add  `after_stat(count)` 
+
+Map `sex` to `fill`  
+
+*Inside* the `geom_density()` function, set `position` to `"fill"`
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: code_graph_fill_density
+#| code-fold: show
+#| eval: false
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_fill_density <- labs(
+  title = "Adult foraging penguins",
+  x = "Flipper length (mm)",
+  fill = "Sex")
+ggp2_fill_density <- ggplot(data = peng_density, 
+       aes(x = flipper_length_mm, 
+           after_stat(count),
+          fill = sex)) +
+      geom_density(position = "fill") 
+ggp2_fill_density + 
+  labs_fill_density
+```
+:::
+
+### Graph
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**GRAPH:**
+:::
+
+```{r}
+#| label: create_graph_fill_density
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_fill_density <- labs(
+  title = "Adult foraging penguins",
+  x = "Flipper length (mm)",
+  fill = "Sex")
+ggp2_fill_density <- ggplot(data = peng_density, 
+       aes(x = flipper_length_mm, 
+           after_stat(count),
+          fill = sex)) +
+      geom_density(position = "fill") 
+ggp2_fill_density + 
+  labs_fill_density
+```
+
+::::

@@ -1,0 +1,406 @@
+# Diverging bar graphs {.unnumbered}
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+source("_common.R")
+# use font
+showtext::showtext_auto()
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 14))
+```
+
+```{r}
+#| label: status
+#| results: "asis"
+#| echo: false
+# status ----
+# polish, dev, draft, complete
+status("complete")
+```
+
+
+:::: {.callout-note collapse="false" icon=false}
+## Graph info
+::: {style="font-size: 1.25em; color: #007bff;"}
+**Should I use this graph?**
+:::
+
+<br>
+
+```{r}
+#| label: full_code_display
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: right
+library(fivethirtyeight) 
+library(ggplot2)
+library(patchwork)
+
+fivethirtyeight::trump_approval_trend |> 
+  filter(subgroup == "All polls") |> 
+  mutate(
+    month = lubridate::month(modeldate,
+                label = TRUE, abbr = TRUE),
+    approve = approve_estimate*0.01,
+    disapprove = disapprove_estimate*0.01,
+    disapprove = disapprove * -1) |> 
+  pivot_longer(cols = c(approve, disapprove), 
+    names_to = "poll", values_to = "values") |> 
+  group_by(month, poll) |> 
+    summarise(
+      month_avg = mean(values, na.rm = TRUE)
+    ) |> 
+  ungroup() -> trump_approval_diverg
+
+labs_geom_bar_diverg <- labs(
+  title = "Trump Approval Ratings",
+  subtitle = "From 'How Popular is Donald Trump'",
+  x = "Month",
+  y = "Monthly average percent",
+  fill = "Estimate")
+ggp2_bars_diverg <- ggplot(
+  data = trump_approval_diverg, 
+    aes(x = month, y = month_avg)) +
+  geom_bar(aes(fill = poll),
+    stat = "identity", width = .5) + 
+  scale_y_continuous(limits = c(-1, 1), 
+    labels = scales::percent) 
+
+ggp2_bars_diverg + 
+  labs_geom_bar_diverg +
+  theme_ggp2g(
+    base_size = 9)
+```
+
+::: {style="font-size: 1.10em; color: #007bff;"}
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a categorical variable**      
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a numeric (continuous) variable**
+:::
+
+::::
+
+## Description
+
+If you have two proportions that contain positive and negative values, consider using diverging bars with `geom_bar()`. 
+
+Unlike a standard or stacked bar graphs, diverging bar graphs display positive and negative quantities on both sides of a reference or baseline value (zero in this example). Color, length and position are used to compare the quantities across categorical levels (and within variable values). 
+
+:::: {.panel-tabset}
+
+### Horizontal bars
+
+```{r}
+#| label: diverg
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '75%'
+#| out-width: '75%'
+#| fig-align: center
+labs_geom_bar_diverg <- labs(
+  x = "Month",
+  y = "Monthly Avg percent",
+  fill = "Estimate")
+ggp2_bars_diverg <- ggplot(
+  data = trump_approval_diverg, 
+    aes(x = month, y = month_avg)) +
+  geom_bar(aes(fill = poll),
+    stat = "identity", width = .5) + 
+  scale_y_continuous(limits = c(-1, 1), 
+    labels = scales::percent) + 
+    theme(legend.position = "bottom")
+ggp2_bars_diverg + 
+  labs_geom_bar_diverg + 
+    theme_ggp2g(base_size = 11)
+```
+
+::: {style="font-size: 0.85em;"}
+For example, we can use the length of the bar from the reference line to compare disapproval estimates across all months (i.e., comparing red bars to each other). 
+:::
+
+### Vertical bars
+
+```{r}
+#| label: diverg_vert
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '75%'
+#| out-width: '75%'
+#| fig-align: center
+labs_geom_bar_diverg_vert <- labs(
+  x = "Monthly Avg percent",
+  y = "Month",
+  fill = "Estimate")
+
+ggp2_bar_diverg_vert <- ggplot(
+  data = trump_approval_diverg,
+      aes(x = month_avg, y =  month)) +
+  geom_bar(
+      aes(fill = poll), 
+        stat = "identity", width = .5) + 
+  scale_x_continuous(limits = c(-1, 1), 
+        labels = scales::percent)
+ggp2_bar_diverg_vert + 
+  labs_geom_bar_diverg_vert + 
+    theme_ggp2g(base_size = 11)
+```
+
+::: {style="font-size: 0.85em;"}
+We can also compare approval vs. disapproval for each month (i.e., compare the blue vs. red bars to each other within each month).
+:::
+
+::::
+
+## Getting set up
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_diverging_bar
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+install.packages("fivethirtyeight")
+library(fivethirtyeight) 
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {.column-margin}
+![](www/538.png){fig-align="right" width="45%" height="45%"}
+:::
+
+::: {style="font-size: 0.85em;"}
+Create `trump_approval_diverg` from the `trump_approval_trend` dataset in the `fivethirtyeight` package.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_code_diverging_bar
+#| code-fold: show
+#| eval: true
+#| echo: true
+fivethirtyeight::trump_approval_trend |> 
+  dplyr::filter(subgroup == "All polls") |> 
+  dplyr::mutate(
+    month = lubridate::month(modeldate,
+                label = TRUE, abbr = TRUE),
+    approve = approve_estimate*0.01,
+    disapprove = disapprove_estimate*0.01,
+    disapprove = disapprove * -1) |> 
+  tidyr::pivot_longer(cols = c(approve, disapprove), 
+    names_to = "poll", values_to = "values") |> 
+  dplyr::group_by(month, poll) |> 
+    dplyr::summarise(
+      month_avg = mean(values, na.rm = TRUE)
+    ) |> 
+  dplyr::ungroup() -> trump_approval_diverg
+glimpse(trump_approval_diverg)
+```
+:::
+::::
+
+## The grammar
+
+:::: {.panel-tabset}
+
+### Code
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**CODE:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()`
+
+Initialize the graph with `ggplot()` and provide `data`
+
+Map the `month` to the `x` and `month_avg` to the `y`
+
+Inside` geom_bar()`
+
+  - map `poll` to `fill`
+  
+  - use `stat = "identity"` and `width = .5`
+  
+Add `scale_y_continuous()` to manually set the limits and format the axis with `scales::percent`
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: code_graph_diverging_bar
+#| code-fold: show
+#| eval: false
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_geom_bar_diverg <- labs(
+  title = "Trump Approval Ratings",
+  subtitle = "From 'How Popular is Donald Trump'",
+  x = "Month",
+  y = "Monthly average percent",
+  fill = "Estimate")
+ggp2_bars_diverg <- ggplot(
+  data = trump_approval_diverg, 
+    aes(x = month, y = month_avg)) +
+  geom_bar(aes(fill = poll),
+    stat = "identity", width = .5) + 
+  scale_y_continuous(limits = c(-1, 1), 
+    labels = scales::percent) 
+
+ggp2_bars_diverg + 
+  labs_geom_bar_diverg
+```
+:::
+
+### Graph
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**GRAPH:**
+:::
+
+```{r}
+#| label: create_graph_diverging_bar
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+labs_geom_bar_diverg <- labs(
+  title = "Trump Approval Ratings",
+  subtitle = "From 'How Popular is Donald Trump'",
+  x = "Month",
+  y = "Monthly average percent",
+  fill = "Estimate")
+ggp2_bars_diverg <- ggplot(
+  data = trump_approval_diverg, 
+    aes(x = month, y = month_avg)) +
+  geom_bar(aes(fill = poll),
+    stat = "identity", width = .5) + 
+  scale_y_continuous(limits = c(-1, 1), 
+    labels = scales::percent)
+
+ggp2_bars_diverg + 
+  labs_geom_bar_diverg
+```
+
+::::
+
+## More info
+
+For vertically arranged bars, we switch the `x` and `y` axis variables.
+
+:::: {.panel-tabset}
+
+### Vertically arranged bars
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**Vertical bars:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()`
+
+Map the `month_avg` to the `x` and `month` to the `y` 
+
+*Inside* `geom_bar()` 
+
+  - map `poll` to `fill`  
+
+  - use `stat = "identity"` and `width = .5`  
+  
+Add `scale_y_continuous()` to manually set the limits and format the axis with `scales::percent` 
+
+:::
+
+::: {style="font-size: 0.75em;"}
+
+```{r}
+#| label: create_graph_vert_diverg_bars
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+labs_geom_bar_diverg_vert <- labs(
+  title = "Trump Approval Ratings",
+  subtitle = "From 'How Popular is Donald Trump'",
+  x = "Monthly average percent",
+  y = "Month",
+  fill = "Estimate")
+ggp2_bar_diverg_vert <- ggplot(
+  data = trump_approval_diverg,
+      aes(x = month_avg, y =  month)) +
+  geom_bar(
+      aes(fill = poll), 
+        stat = "identity", width = .5) + 
+  scale_x_continuous(limits = c(-1, 1), 
+        labels = scales::percent)
+ggp2_bar_diverg_vert + 
+  labs_geom_bar_diverg_vert
+```
+
+:::
+
+
+::::

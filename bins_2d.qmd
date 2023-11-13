@@ -1,0 +1,371 @@
+# 2D histograms {.unnumbered}
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+source("_common.R")
+# use font
+showtext::showtext_auto()
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 15))
+```
+
+```{r}
+#| label: status
+#| results: "asis"
+#| echo: false
+# status ----
+# polish, dev, draft, complete
+status("complete")
+```
+
+
+:::: {.callout-note collapse="false" icon=false}
+## Graph info
+::: {style="font-size: 1.25em; color: #007bff;"}
+**Should I use this graph?**
+:::
+
+<br>
+
+```{r}
+#| label: full_code_display
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: right
+library(palmerpenguins) 
+library(ggplot2)
+penguins_2dhist <- palmerpenguins::penguins |> 
+    dplyr::select(flipper_length_mm, bill_length_mm, year) |> 
+    tidyr::drop_na()
+
+labs_2dhist <- labs(
+    title = "Adult Foraging Penguins", 
+    subtitle = "Near Palmer Station, Antarctica", 
+    x = "Bill length (mm)", 
+    y = "Flipper length (mm)")
+
+ggp2_base <- ggplot(data = penguins_2dhist, 
+    mapping = aes(x = bill_length_mm, 
+                  y = flipper_length_mm)) 
+
+ggp2_base + 
+     geom_bin2d(bins = 15) + 
+     labs_2dhist 
+```
+
+::: {style="font-size: 1.10em; color: #007bff;"}
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` two numeric (continuous) variables**
+:::
+
+::::
+
+## Description 
+
+Standard histograms separate a variable's values into discrete groups, or 'bins,' which are arranged in increasing order across the `x` axis. The `y` axis displays the frequency (or count) of values within each bin. 
+
+Vertical bars capture the variable's distribution using the height of the bar to represent the number of values per 'bin', and the number of bars corresponds with the bin value (or 'bin-width'). 
+
+When we extend this display to two numerical/quantitative variables, the bins are used to divide the total graph area into a grid, and color is used to display the variation in frequency (or count) of both variable values that fall within each intersecting square.
+
+
+## Getting set up
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_2d_hist
+#| code-fold: show
+#| eval: false
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+install.packages("palmerpenguins")
+library(palmerpenguins)
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {.column-margin}
+![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+:::
+
+::: {style="font-size: 0.85em;"}
+We'll take the `flipper_length_mm`, `bill_length_mm`, and `species` variables from `palmerpenguins::penguins` and drop the missing values. 
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_code_2d_hist
+#| code-fold: show
+#| eval: true
+#| echo: true
+penguins_2dhist <- palmerpenguins::penguins |> 
+    dplyr::select(flipper_length_mm, bill_length_mm, 
+                  sex, species, body_mass_g) |> 
+    tidyr::drop_na()
+glimpse(penguins_2dhist)
+```
+:::
+::::
+
+## The grammar
+
+:::: {.panel-tabset}
+
+### Code
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**CODE:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()`
+
+Initialize the graph with `ggplot()` and provide `data`
+
+Map `bill_length_mm` to the `x` and `flipper_length_mm` to the `y`
+
+Add the `geom_bin2d()` layer
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: code_graph_2d_hist
+#| code-fold: show
+#| eval: false
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_2dhist <- labs(
+    title = "Adult Foraging Penguins", 
+    subtitle = "Near Palmer Station, Antarctica", 
+    x = "Bill length (mm)", 
+    y = "Flipper length (mm)")
+
+ggp2_2dhist <- ggplot(data = penguins_2dhist, 
+    mapping = aes(x = bill_length_mm, 
+                  y = flipper_length_mm)) + 
+    geom_bin2d(bins = 15)
+            
+ggp2_2dhist + 
+    labs_2dhist
+```
+:::
+
+### Graph
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**GRAPH:**
+:::
+
+```{r}
+#| label: create_graph_2d_hist
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 1
+#| column: page-inset-right
+labs_2dhist <- labs(
+    title = "Adult Foraging Penguins", 
+    subtitle = "Near Palmer Station, Antarctica", 
+    x = "Bill length (mm)", 
+    y = "Flipper length (mm)")
+
+ggp2_2dhist <- ggplot(data = penguins_2dhist, 
+    mapping = aes(x = bill_length_mm, 
+                  y = flipper_length_mm)) + 
+    geom_bin2d(bins = 15)
+            
+ggp2_2dhist + 
+    labs_2dhist
+```
+
+::::
+
+## More info
+
+:::: {.panel-tabset}
+
+### Bins
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**BINS:**
+:::
+
+
+::: {style="font-size: 0.85em;"}
+The value for `bins` will be vary depending on the variable values--there is no correct number. If the number of `bins` is too low, the density may hide important nuances between the variables. If the number of `bins` is too high, the noise might drown out the signal.
+
+Below we change the `bins` to `9`, `12` and `18` to compare the display:
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: bins_2d_hist
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 2
+#| column: page-inset-right
+ggp2_base <- ggplot(data = penguins_2dhist, 
+    mapping = aes(x = bill_length_mm, 
+                  y = flipper_length_mm))
+
+ggp2_2dhist_bins18 <- ggp2_base + 
+                    geom_bin2d(bins = 18)
+
+ggp2_2dhist_bins12 <- ggp2_base + 
+                    geom_bin2d(bins = 12) 
+
+ggp2_2dhist_bins9 <- ggp2_base + 
+                    geom_bin2d(bins = 9)
+
+ggp2_2dhist_bins18 + 
+     labs_2dhist 
+
+ggp2_2dhist + 
+    labs_2dhist
+
+ggp2_2dhist_bins12 + 
+     labs_2dhist 
+
+ggp2_2dhist_bins9 + 
+  labs_2dhist
+```
+
+:::
+
+### Scale
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**SCALES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+`scale_fill_continuous_sequential()` comes with a variety of palettes to choose from (run `hcl_palettes(type = "sequential")` to view the full list).
+
+We can also reverse the order of the fill color scale with `rev` (`TRUE` or `FALSE`).
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: scales_2d_hist
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-ncol: 1
+#| column: page-inset-right
+ggp2_2dhist_bins12 + 
+    scale_fill_continuous_sequential(
+        palette = "Mako", 
+        rev = TRUE) +
+    labs_2dhist 
+
+ggp2_2dhist_bins12 + 
+    scale_fill_continuous_sequential(
+        palette = "Mako", 
+        rev = FALSE) +
+    labs_2dhist 
+```
+
+:::
+
+### Options
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**OPTIONS:**
+:::
+
+::: {.column-margin}
+If you set the point `shape` to `21`, you have control over *both* `color` and `fill`. 
+:::
+
+::: {style="font-size: 0.85em;"}
+
+In the previous example we showed how to `rev`erse the color scale for the `palette` in `scale_fill_continuous_sequential()`. Below we reverse the color scale, but also manually set which colors on the scale we want to `begin` with (i.e., smallest data value) and which color we want to `end` with (i.e., the largest data value). Possible values range from `0` - `1`.
+
+We also add a `geom_point()` layer. 
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pals_2d_hist
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+ggp2_2dhist_bins12 +
+  scale_fill_continuous_sequential(
+    palette = "SunsetDark",
+    rev = TRUE,
+    begin = 1.0,
+    end = 0.3) +
+  geom_point(
+    fill = "#D4F0FC",
+    color = "#007bff",
+    shape = 21,
+    size = 1.8,
+    alpha = 0.60) +
+  labs_2dhist 
+```
+:::
+
+::::

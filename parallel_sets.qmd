@@ -1,0 +1,350 @@
+# Parallel sets {.unnumbered}
+
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+source("_common.R")
+# use font
+showtext::showtext_auto()
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 12))
+# pak::pak("thomasp85/ggforce")
+library(ggforce)
+```
+
+
+```{r}
+#| label: status
+#| results: "asis"
+#| echo: false
+# status ----
+# polish, dev, draft, complete
+status("complete")
+```
+
+:::: {.callout-note collapse="false" icon=false}
+## Graph info
+::: {style="font-size: 1.25em; color: #007bff;"}
+**Should I use this graph?**
+:::
+
+<br>
+
+```{r}
+#| label: full_code_display
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: right
+library(palmerpenguins) 
+library(ggplot2)
+library(ggforce)
+peng_wide <- palmerpenguins::penguins |> 
+  drop_na() |> 
+  count(island, species, sex) |> 
+  rename(value = n)
+para_set_peng <- ggforce::gather_set_data(
+                            data = peng_wide, 
+                            x = 1:3)
+labs_psets <- labs(
+        title = "Categories of Palmer Penguins", 
+        y = "Count", fill = "Sex")
+
+ggp2_psets <- ggplot(data = para_set_peng, 
+    mapping = aes(x = x, 
+        id = id, 
+        split = y, 
+        value = value)) +
+  geom_parallel_sets(aes(fill = sex), 
+        alpha = 0.3, 
+        axis.width = 0.07) 
+
+ggp2_psets_axes <- ggp2_psets +
+  geom_parallel_sets_axes(
+        axis.width = 0.07) 
+
+ggp2_psets_labs <- ggp2_psets_axes +
+  geom_parallel_sets_labels(
+        size = 2.0, 
+        color = '#ffffff') +
+  scale_x_continuous(
+        breaks = c(1, 2, 3), 
+        labels = c("Island", "Species", "Sex")) +
+  theme(axis.title.x = element_blank())
+
+ggp2_psets_labs +
+    labs_psets
+```
+
+::: {style="font-size: 1.10em; color: #007bff;"}
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` three categorical variables**    
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a numeric variable of counts**
+:::
+
+::::
+
+## Description
+
+Parallel sets (also referred to as Sankey diagrams or Alluvial charts) show the counts of categorical variables connected via a two-sided parallel display (or 'sets'). Parallel sets can also be used to show different states of paired dependent relationships (such as input vs output), or time 1 vs time 2.
+
+The height of the connecting bands *between* the categories on the `x` axis represent the relative counts for each discrete level (displayed on the `y` axis). The levels *within* each variable are represented with color. 
+
+We can build parallel set diagrams with the [`ggforce` package](https://ggforce.data-imaginist.com/index.html).  
+
+Also check out [alluvial charts.](https://mjfrigaard.github.io/ggp2-gallery/rela/alluvial_charts.html)
+
+## Getting set up 
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_parallel_sets
+#| code-fold: show
+#| eval: false
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+# pak::pak("thomasp85/ggforce")
+install.packages("palmerpenguins")
+library(ggforce)
+library(palmerpenguins)
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {.column-margin}
+![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+:::
+
+::: {style="font-size: 0.85em;"}
+We're going to remove the missing values from `palmerpenguins::penguins`, count the categorical variables (`island`, `sex`, `species`), and rename the `n` column (produced by the `count()` function) to `value`.
+
+`ggforce` has a special [`gather_set_data()`](https://ggforce.data-imaginist.com/reference/gather_set_data.html) function that *changes tidy data into a tidy(er) format*
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_code_parallel_sets
+#| code-fold: show
+#| eval: true
+#| echo: true
+peng_wide <- palmerpenguins::penguins |> 
+  drop_na() |> 
+  count(island, species, sex) |> 
+  rename(value = n)
+para_set_peng <- ggforce::gather_set_data(
+                            data = peng_wide, 
+                            x = 1:3)
+dplyr::glimpse(para_set_peng)
+```
+:::
+::::
+
+## The grammar
+
+:::: {.panel-tabset}
+
+### Code
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**CODE:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()`
+
+Initialize the graph with `ggplot()` and provide `data`
+
+Map `x` to `x`, `id` to `id`, `y` to `split`, and `value` to `value`
+
+In the `geom_parallel_sets()` function, map `sex` to `fill` and manually set the `alpha` (opacity) and the `axis.width` 
+
+In the `geom_parallel_sets_axes()` function, set the `axis.width` to the same value as the `geom_parallel_sets()` above
+
+For labeling, adjust the `size` manually and set the `color` to something that stands out against the black vertical axes
+
+Manually label the `x` axis with `scale_x_continuous()`, setting the `breaks` and `labels` to the variable names in the `peng_wide` dataset
+
+Finally, remove the `x` title with `axis.title.x = element_blank()`
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: code_graph_parallel_sets
+#| code-fold: show
+#| eval: false
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_psets <- labs(
+        title = "Categories of Palmer Penguins", 
+        y = "Count", fill = "Sex")
+
+ggp2_psets <- ggplot(data = para_set_peng, 
+    mapping = aes(x = x, 
+        id = id, 
+        split = y, 
+        value = value)) +
+  geom_parallel_sets(aes(fill = sex), 
+        alpha = 0.3, 
+        axis.width = 0.07) 
+
+ggp2_psets_axes <- ggp2_psets +
+  geom_parallel_sets_axes(
+        axis.width = 0.07) 
+
+ggp2_psets_labs <- ggp2_psets_axes +
+  geom_parallel_sets_labels(
+        size = 2.0, 
+        color = '#ffffff') +
+  scale_x_continuous(
+        breaks = c(1, 2, 3), 
+        labels = c("Island", "Species", "Sex")) +
+  theme(axis.title.x = element_blank())
+
+ggp2_psets_labs +
+    labs_psets
+```
+:::
+
+### Graph
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**GRAPH:**
+:::
+
+```{r}
+#| label: create_graph_parallel_sets
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+labs_psets <- labs(
+        title = "Categories of Palmer Penguins", 
+        y = "Count", fill = "Sex")
+
+ggp2_psets <- ggplot(data = para_set_peng, 
+    mapping = aes(x = x, 
+        id = id, 
+        split = y, 
+        value = value)) +
+  geom_parallel_sets(aes(fill = sex), 
+        alpha = 0.3, 
+        axis.width = 0.07) 
+
+ggp2_psets_axes <- ggp2_psets +
+  geom_parallel_sets_axes(
+        axis.width = 0.07) 
+
+ggp2_psets_labs <- ggp2_psets_axes +
+  geom_parallel_sets_labels(
+        size = 2.0, 
+        color = '#ffffff') +
+  scale_x_continuous(
+        breaks = c(1, 2, 3), 
+        labels = c("Island", "Species", "Sex")) +
+  theme(axis.title.x = element_blank())
+
+ggp2_psets_labs +
+    labs_psets
+```
+
+::::
+
+## More info
+
+If the categories have long names, you can move the location of the labels *outside* the set. 
+
+
+:::: {.panel-tabset}
+### Labeling sets
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**LABELS:**
+:::
+
+::: {style="font-size: 0.85em;"}
+If the categories have long names, use the `angle`, `nudge_x`/`nudge_y` and `hjust`/`vjust` in `geom_parallel_sets_labels()` to adjust the size, location, and color of the labels. 
+
+Manually setting the `limits` of the `x` axis in `scale_x_continuous()` will also give more room for the labels. 
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: create_graph_parallel_sets_labs
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
+ggp2_psets_axes + 
+  geom_parallel_sets_labels(
+      size = 3.2, 
+      colour = '#000000',
+      angle = 0, 
+      nudge_x = 0.1, 
+      hjust = 0) + 
+  scale_x_continuous(
+        limits = c(0.9, 3.2),
+        breaks = c(1, 2, 3), 
+        labels = c("Island", "Species", "Sex")) + 
+  theme(axis.title.x = element_blank()) + 
+    labs_psets
+```
+:::
+
+::::

@@ -1,0 +1,377 @@
+# Slope graphs {.unnumbered}
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# fonts ----
+library(extrafont)
+library(sysfonts)
+source("_common.R")
+# use font
+showtext::showtext_auto()
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 13))
+```
+
+```{r}
+#| label: status
+#| results: "asis"
+#| echo: false
+# status ----
+# polish, dev, draft, complete
+status("complete")
+```
+
+
+
+:::: {.callout-note collapse="false" icon=false}
+## Graph info
+::: {style="font-size: 1.25em; color: #007bff;"}
+**Should I use this graph?**
+:::
+
+<br>
+
+```{r}
+#| label: full_code_display
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: right
+library(palmerpenguins) 
+library(ggplot2)
+peng_slope <- palmerpenguins::penguins |>
+    dplyr::filter(year < 2009) |>
+    dplyr::group_by(year, island) |>
+    dplyr::summarise(across(
+        .cols = contains("mm"), 
+        .fns = mean, 
+            na.rm = TRUE, 
+        .names = "avg_{.col}")) |>
+    dplyr::ungroup()
+labs_slope <- labs(
+        title = "Changes in Bill Depth of Palmer Penguins", 
+        subtitle = "Years 2007 & 2008",
+        x = "Year", y = "Bill Depth (mm)", 
+        color = "Island")
+
+ggp2_slope <- ggplot(data = peng_slope, 
+    mapping = aes(x = year,
+                  y = avg_bill_depth_mm, 
+              group = island)) +
+  geom_line(aes(color = island), alpha = 1, size = 2, 
+      show.legend = FALSE) +
+  geom_point(aes(color = island), alpha = 1, size = 4) + 
+  scale_x_continuous(breaks = c(2007, 2008), position = "top")
+
+ggp2_slope + 
+    labs_slope
+```
+
+
+::: {style="font-size: 1.10em; color: #007bff;"}
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a categorical variable**      
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a numeric (continuous) variable**
+:::
+
+::: {style="font-size: 1.05em; color: #fa7b3c;"}
+**`r emo::ji("check")` a numeric (date) variable**
+:::
+
+::::
+
+## Description
+
+Slope graphs show changes in a numeric value (displayed on the `y` axis) typically over two points in time (along the `x` axis). The values for each group or unit of measurement are connected by lines, and any differences between the two time points are represented by the slope of the lines (hence the name, 'slope chart').
+
+We can build slope graphs in `ggplot2` using the `geom_line()` and `geom_point()` functions.
+
+## Getting set up
+
+:::: {.panel-tabset}
+
+### Packages
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**PACKAGES:**
+:::
+
+::: {style="font-size: 0.85em;"}
+Install packages.
+:::
+
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: pkg_code_slope
+#| code-fold: show
+#| eval: false
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+install.packages("palmerpenguins")
+library(palmerpenguins)
+library(ggplot2)
+```
+:::
+
+### Data
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {.column-margin}
+![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+:::
+
+
+
+::: {style="font-size: 0.85em;"}
+We'll be using the penguins data for this graph, but slightly restructured. 
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_code_slope
+#| code-fold: show
+#| eval: true
+#| echo: true
+peng_slope <- palmerpenguins::penguins |>
+    dplyr::filter(year < 2009) |>
+    dplyr::group_by(year, island) |>
+    dplyr::summarise(across(
+        .cols = contains("mm"), 
+        .fns = mean, 
+            na.rm = TRUE, 
+        .names = "avg_{.col}")) |>
+    dplyr::ungroup()
+glimpse(peng_slope)
+```
+:::
+::::
+
+## The grammar 
+
+:::: {.panel-tabset}
+
+### Code
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**CODE:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()`
+
+Initialize the graph with `ggplot()` and provide `data`
+
+Map `year` to the `x`, `avg_bill_depth_mm` to `y`, and `island` to `group`
+
+Add a `geom_line()` layer, mapping `island` to `color`, and setting the `size` to `2`
+
+Add a `geom_point()` layer, mapping `color` to `island`, and setting `size` to `4`
+
+We'll adjust the `x` axis with `scale_x_continuous()`, manually setting the `breaks` and moving the `position` to the `"top"` of the graph
+
+
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: code_graph_slope
+#| code-fold: show
+#| eval: false
+#| echo: true 
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_slope <- labs(
+        title = "Changes in Bill Depth of Palmer Penguins", 
+        subtitle = "Years 2007 & 2008",
+        x = "Year", y = "Bill Depth (mm)", 
+        color = "Island")
+
+ggp2_slope <- ggplot(data = peng_slope, 
+    mapping = aes(x = year,
+                y = avg_bill_depth_mm, 
+                group = island)) +
+  geom_line(aes(color = island), 
+                size = 2, show.legend = FALSE) +
+  geom_point(aes(color = island), 
+                size = 4) + 
+  scale_x_continuous(
+                breaks = c(2007, 2008), 
+                position = "top")
+
+ggp2_slope + 
+    labs_slope
+```
+:::
+
+### Graph
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**GRAPH:**
+:::
+
+```{r}
+#| label: create_graph_slope
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_slope <- labs(
+        title = "Changes in Bill Depth of Palmer Penguins", 
+        subtitle = "Years 2007 & 2008",
+        x = "Year", y = "Bill Depth (mm)", 
+        color = "Island")
+
+ggp2_slope <- ggplot(data = peng_slope, 
+    mapping = aes(x = year,
+                y = avg_bill_depth_mm, 
+                group = island)) +
+  geom_line(aes(color = island), 
+                size = 2, show.legend = FALSE) +
+  geom_point(aes(color = island), 
+                size = 4) + 
+  scale_x_continuous(
+                breaks = c(2007, 2008), 
+                position = "top")
+
+ggp2_slope + 
+    labs_slope
+```
+
+::::
+
+## More info
+
+We can also use faceting with slope graphs to add a third categorical variable.
+
+:::: {.panel-tabset}
+
+### Data 
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**DATA:**
+:::
+
+::: {style="font-size: 0.85em;"}
+We'll be using the `penguins` dataset again, but group remove the missing values and group it by `year`, `island`, and `sex`. 
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: data_code_grp_slope
+#| eval: true
+#| echo: true
+peng_grp_slope <- palmerpenguins::penguins |>
+    dplyr::select(year, sex, island,
+                  contains("mm")) |> 
+    tidyr::drop_na() |> 
+    dplyr::filter(year != 2007) |>
+    dplyr::group_by(year, sex, island) |>
+    dplyr::summarise(across(
+        .cols = contains("mm"), 
+        .fns = mean, 
+            na.rm = TRUE, 
+        .names = "avg_{.col}")) |>
+    dplyr::ungroup()
+glimpse(peng_grp_slope)
+```
+
+:::
+
+### Graph
+
+::: {style="font-size: 1.15em; color: #1e83c8;"}
+**GRAPH:**
+:::
+
+::: {style="font-size: 0.85em;"}
+
+Create labels with `labs()` 
+
+Initialize the graph with `ggplot()` and provide `data`
+
+Map `year` to the `x`, `avg_bill_depth_mm` to `y`, and `island` to `group`
+
+Add a `geom_line()` layer, mapping `island` to `color`, and setting the `size` to `2`
+
+Add a `geom_point()` layer, mapping `color` to `island`, and setting `size` to `4`
+
+We'll adjust the `x` axis with `scale_x_continuous()`, manually setting the `breaks` and moving the `position` to the `"top"` of the graph
+
+We'll duplicate the the `y` axis with `sec.axis`, setting `dup_axis()` to the same `name` of the previous `y` label.
+
+Finally, we facet the graph by `sex`, adjust the `size` of the text, and move the legend to the `"bottom"` of the graph.
+:::
+
+::: {style="font-size: 0.75em;"}
+```{r}
+#| label: create_graph_grp_slope
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+labs_grp_slope <- labs(
+    title = "Changes in Bill Depth of Palmer Penguins",
+    subtitle = "Years 2008 & 2009",
+    x = "",
+    color = "Island")
+
+ggp2_grp_slope <- ggplot(data = peng_grp_slope,
+    mapping = aes(x = year,
+        y = avg_bill_depth_mm,
+        group = island)) +
+    geom_line(aes(color = island),
+        size = 2, show.legend = FALSE) +
+    geom_point(aes(color = island),
+        size = 4) +
+    scale_x_continuous(breaks = c(2008, 2009),
+        position = "top") +
+    scale_y_continuous(name = "Bill Depth (mm)",
+        sec.axis = dup_axis(name = "Bill Depth (mm)")) +
+    facet_wrap(. ~ sex,
+        ncol = 2) +
+    theme_minimal(base_size = 14) +
+    theme(
+        legend.position = "bottom",
+        axis.text.x = element_text(size = 9),
+        axis.text.y = element_text(size = 9),
+        strip.text = element_text(size = 10))
+
+ggp2_grp_slope +
+    labs_grp_slope
+```
+:::
+
+::::
