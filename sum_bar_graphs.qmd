@@ -80,11 +80,11 @@ Summary bar graphs display the sum (or total) of a numerical variable across the
 
 In `ggplot2`, we can create summary bar graphs with `geom_bar()`.
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
@@ -110,7 +110,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DATA:**
@@ -144,11 +144,11 @@ dplyr::glimpse(peng_sum_col)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
@@ -193,7 +193,7 @@ ggp2_sum_col +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **GRAPH:**

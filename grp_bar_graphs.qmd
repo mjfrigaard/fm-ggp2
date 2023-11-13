@@ -94,11 +94,11 @@ ggp2_grp_col +
 
 `geom_col()` allows us to display 'grouped' numerical values across levels (or groups) of a categorical variable. Grouped bar graphs assume the statistical measure (i.e., the value that the length of the bars will be derived from) is contained in a variable and mapped to the `x` or `y` aesthetic. 
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
@@ -124,7 +124,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DATA:**
@@ -157,11 +157,11 @@ glimpse(peng_grp_col)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
@@ -204,7 +204,7 @@ ggp2_grp_col +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **GRAPH:**

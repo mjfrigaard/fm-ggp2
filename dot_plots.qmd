@@ -78,11 +78,11 @@ ggp2_dotplot +
 
 Dot-plots are similar to histograms and frequency polygons, except instead of using bars or lines, they use dots to represent the frequency (or count) of values for a given variable.
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
@@ -108,7 +108,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DATA:**
@@ -134,11 +134,11 @@ glimpse(penguins)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
@@ -178,7 +178,7 @@ ggp2_dotplot +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **GRAPH:**

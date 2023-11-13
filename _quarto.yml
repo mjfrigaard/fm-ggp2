@@ -89,6 +89,7 @@ format:
     code-annotations: hover
     number-sections: true
     callout-appearance: simple
+    code-fold: show
     code-summary: 'show/hide'
     df-print: paged
     dpi: 320
@@ -97,6 +98,6 @@ format:
     fontsize: 1.085em
     linestretch: 1.25
 
-
-
+execute:
+  freeze: auto
 

@@ -80,11 +80,11 @@ ggp2_fill_density +
 
 Density graphs are typically used to visualize the distribution of a single variable, but stacked density graphs are great for visualizing how proportions vary across numeric (continuous) variables.
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -110,7 +110,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -136,11 +136,11 @@ dplyr::glimpse(peng_density)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -184,7 +184,7 @@ ggp2_fill_density +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

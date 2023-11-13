@@ -86,11 +86,11 @@ Bubble graphs display relationships between three numeric (continuous) variables
 
 The position on the `x` and `y` axis illustrates the relationship between the first two variables, and the `size` of the point (i.e., the bubble) conveys the numeric value of the third. 
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -116,7 +116,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -142,11 +142,11 @@ glimpse(penguins)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -198,7 +198,7 @@ ggp2_bubble +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

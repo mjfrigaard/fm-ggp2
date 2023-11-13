@@ -81,11 +81,11 @@ Scatter plots are used to display two continuous variables.
 
 If one of the continuous variables is assumed to affect the other (i.e., `outcome` vs. `predictor`), place the `outcome` on the `y` axis and the `predictor` on the `x` axis.
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -111,7 +111,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -137,11 +137,11 @@ glimpse(penguins)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -185,7 +185,7 @@ ggp2_scatter +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

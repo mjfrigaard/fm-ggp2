@@ -84,11 +84,11 @@ The violin plot is essentially a mirrored density plot, in which a smoothed dist
 ![source: Rorschach test, Wikipedia](https://upload.wikimedia.org/wikipedia/commons/7/70/Rorschach_blot_01.jpg){fig-align="right" width="100%" height="100%"}
 :::
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
@@ -114,7 +114,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DATA:**
@@ -140,11 +140,11 @@ glimpse(penguins)
 :::
 ::::
 
-## The grammar 
+## Grammar 
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
@@ -186,7 +186,7 @@ ggp2_violin +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **GRAPH:**

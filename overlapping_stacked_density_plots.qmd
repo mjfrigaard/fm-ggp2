@@ -105,11 +105,11 @@ Density plots are [*smoothed version(s) of  histogram(s)*](https://ggplot2.tidyv
 
 `geom_density()` creates a kernel density estimate. The default `position` argument is `"identity"`, which takes the data as is. However, we can change `position` to `"stack"` to display overlapping distributions.
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -135,7 +135,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -161,11 +161,11 @@ dplyr::glimpse(peng_density)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -208,7 +208,7 @@ ggp2_ovrlp_density +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

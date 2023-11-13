@@ -82,11 +82,11 @@ Density plots are similar to a histogram or frequency polygon, except the outlin
 
 Instead of dividing the `x` axis into discrete ‘bins’ to create groupings for the variable's values, density plots transform the distribution according to a kernel density estimate.
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
@@ -112,7 +112,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DATA:**
@@ -138,11 +138,11 @@ glimpse(penguins)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
@@ -181,7 +181,7 @@ ggp2_density +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **GRAPH:**

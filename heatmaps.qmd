@@ -95,11 +95,11 @@ The intersecting cells contain variations of color saturation (i.e., the grade o
 
 Heatmap legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability. 
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
@@ -125,7 +125,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DATA:**
@@ -164,11 +164,11 @@ heatmap_ross <- fivethirtyeight::bob_ross |>
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
@@ -214,7 +214,7 @@ ggp2_heatmap_tile +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **GRAPH:**

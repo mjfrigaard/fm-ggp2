@@ -86,11 +86,11 @@ ggp2_graph +
 
 Description of graph aesthetics, appropriate use, similar graphs, etc. 
 
-## Getting set up 
+## Set up 
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -115,7 +115,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -147,11 +147,11 @@ dplyr::glimpse(df)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -189,7 +189,7 @@ ggp2_graph +
 ```
 :::
 
-### Graph
+
 
 :::: {.column-margin}
 ::: {style="font-size: 0.80em; color: #02577A;"}

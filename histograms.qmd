@@ -1,4 +1,4 @@
-# Histograms {.unnumbered}
+# Histograms {#sec-histograms}
 
 
 ```{r}
@@ -24,19 +24,14 @@ ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polishing, restructuring, drafting, complete
-status("complete")
-```
-
 :::: {.callout-note collapse="false" icon=false}
 
 ::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #282b2d;"}
+**`r emo::ji("check")` a numeric (continuous) variable**
 :::
 
 <br>
@@ -64,14 +59,6 @@ ggp2_hist +
   labs_histogram
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
-:::
-
-::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
-:::
-
 ::::
 
 ## Description 
@@ -80,11 +67,7 @@ Histograms are a special kind of bar graph. The `x` axis is divided into ‘bins
 
 Unlike a typical bar graph, histograms can be used to visually asses the '[normality](https://en.wikipedia.org/wiki/Normal_distribution)' (i.e. *are the bars symmetrical, with a single peak in the middle of the `x` axis?* Or *do the bars form multiple peaks?*) or '[skewness](https://en.wikipedia.org/wiki/Skewness)' (i.e., *is there a long 'tail' of bars with decreasing length on either end of the `x` axis?*) of a variable's distribution.
 
-## Getting set up
-
-:::: {.panel-tabset}
-
-### Packages
+## Set up
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
@@ -110,7 +93,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DATA:**
@@ -134,13 +117,9 @@ penguins <- palmerpenguins::penguins
 glimpse(penguins)
 ```
 :::
-::::
 
-## The grammar 
 
-:::: {.panel-tabset}
-
-### Code
+## Grammar 
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
@@ -182,7 +161,6 @@ ggp2_hist +
 ```
 :::
 
-### Graph
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **GRAPH:**
@@ -213,5 +191,3 @@ ggp2_hist +
 ::: {style="font-size: 0.85em;"}
 The standard number of bins is `30`, but ['you should always override this value, exploring multiple widths to find the best to illustrate the stories in your data.'](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
 :::
-
-::::

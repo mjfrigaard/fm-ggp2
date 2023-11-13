@@ -1001,9 +1001,14 @@
     },
     "ggdist": {
       "Package": "ggdist",
-      "Version": "3.3.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
+      "Version": "3.3.0.9000",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "ggdist",
+      "RemoteUsername": "mjskay",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "f723bc033a19f7e09e1432ee77db595dd0cafabc",
       "Requirements": [
         "R",
         "cli",
@@ -1021,7 +1026,7 @@
         "vctrs",
         "withr"
       ],
-      "Hash": "d988f7c103c4354489f42e42e4889f9c"
+      "Hash": "00bd53a60a1a40615820a87f8feb4e3a"
     },
     "ggfittext": {
       "Package": "ggfittext",
@@ -1251,8 +1256,13 @@
     "ggstream": {
       "Package": "ggstream",
       "Version": "0.1.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "ggstream",
+      "RemoteUsername": "davidsjoberg",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "a64b8d0eff8927b4641c1f10307986154ba4dd25",
       "Requirements": [
         "R",
         "dplyr",
@@ -1263,7 +1273,7 @@
         "stats",
         "tidyr"
       ],
-      "Hash": "4512013654d28dbf39dc4a8f5b9bdde2"
+      "Hash": "045252f47bbd84e0d926f530bd6c9144"
     },
     "ggtext": {
       "Package": "ggtext",

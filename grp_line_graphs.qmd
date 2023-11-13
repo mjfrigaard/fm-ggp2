@@ -239,11 +239,11 @@ ggp2_basic + ggp2_grp + ggp2_pal + ggp2_facet +
 
 Grouped line graphs use color, line style, and faceting to show group changes over time for a continuous variable across categorical levels. 
 
-## Getting set up 
+## Set up 
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -269,7 +269,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -351,11 +351,11 @@ dplyr::glimpse(avg_birth_day_cat_yr)
 
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -397,7 +397,7 @@ ggp2_line +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

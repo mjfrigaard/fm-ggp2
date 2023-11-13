@@ -109,11 +109,11 @@ We can build alluvial charts in `ggplot2` with the [`ggalluvial` package:](https
 
 See also: [parallel sets](https://mjfrigaard.github.io/ggp2-gallery/rela/parallel_sets.html)
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -141,7 +141,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -171,11 +171,11 @@ dplyr::glimpse(peng_wide)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -228,7 +228,7 @@ ggp2_alluvial_w +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

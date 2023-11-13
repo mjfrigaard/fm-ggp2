@@ -98,11 +98,11 @@ ggp2_pie +
 
 Pie-charts are ideal for comparing the proportions of categorical variable values, and we can build pie-charts using the [`ggpubr` package.](https://rpkgs.datanovia.com/ggpubr/)
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -130,7 +130,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -163,11 +163,11 @@ glimpse(movie_pie)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -220,7 +220,7 @@ ggp2_pie +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

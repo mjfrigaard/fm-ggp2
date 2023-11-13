@@ -106,11 +106,11 @@ Slope graphs show changes in a numeric value (displayed on the `y` axis) typical
 
 We can build slope graphs in `ggplot2` using the `geom_line()` and `geom_point()` functions.
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -136,7 +136,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -172,11 +172,11 @@ glimpse(peng_slope)
 :::
 ::::
 
-## The grammar 
+## Grammar 
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -232,7 +232,7 @@ ggp2_slope +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**
@@ -276,7 +276,7 @@ We can also use faceting with slope graphs to add a third categorical variable.
 
 :::: {.panel-tabset}
 
-### Data 
+ 
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -308,7 +308,7 @@ glimpse(peng_grp_slope)
 
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

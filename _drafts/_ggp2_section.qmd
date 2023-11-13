@@ -59,18 +59,18 @@ source("R/theme_ggp2g.R")
 
 
 :::: {.callout-note collapse="false" icon=false}
-### Graph
+
 
 
 ## Description
 
 Description of the graph
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
@@ -93,7 +93,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DATA:**
@@ -120,11 +120,11 @@ df <- tibble::tibble(X = sample(x = 1:100, 10, FALSE),
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
@@ -158,7 +158,7 @@ ggp2_graph +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **GRAPH:**

@@ -110,11 +110,11 @@ Stream graphs display how a numerical variable (typically on the `y` axis) chang
 
 Categorical groups are differentiated by color layers, with the area of the layer representing the change in `y` value. In `ggplot2`, we can create stream graphs using [ggstream.](https://github.com/davidsjoberg/ggstream)
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -142,7 +142,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -183,11 +183,11 @@ dplyr::glimpse(movies_stream)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -244,7 +244,7 @@ ggp2_stream +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

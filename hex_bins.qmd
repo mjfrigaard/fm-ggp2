@@ -83,11 +83,11 @@ ggp2_hex_b15 +
 Hexagon bins (or hex-bins) are a very similar to 2-D histograms, but instead of dividing the graph area into a grid, it's divided into hexagons. The number of points inside each per hexagon determine it's color. 
 
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -113,7 +113,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -143,11 +143,11 @@ glimpse(penguins_hex)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -190,7 +190,7 @@ ggp2_hex +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

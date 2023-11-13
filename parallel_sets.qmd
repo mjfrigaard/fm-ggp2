@@ -117,11 +117,11 @@ We can build parallel set diagrams with the [`ggforce` package](https://ggforce.
 
 Also check out [alluvial charts.](https://mjfrigaard.github.io/ggp2-gallery/rela/alluvial_charts.html)
 
-## Getting set up 
+## Set up 
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -149,7 +149,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -183,11 +183,11 @@ dplyr::glimpse(para_set_peng)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -254,7 +254,7 @@ ggp2_psets_labs +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

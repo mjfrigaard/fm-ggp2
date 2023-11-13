@@ -101,11 +101,11 @@ Bump charts show how numerical (ranked) values change over time for different ca
 
 We can build bump charts in `ggplot2` with the [`ggbump` package:](https://github.com/davidsjoberg/ggbump)  
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -133,7 +133,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -167,11 +167,11 @@ glimpse(tidy_hurricanes)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -215,7 +215,7 @@ ggp2_bump +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

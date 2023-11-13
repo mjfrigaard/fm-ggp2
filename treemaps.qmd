@@ -124,11 +124,11 @@ Treemaps display proportionally divided rectangular hierarchies for levels of ca
 
 We'll build a treemap using the [`treemapify` package.](http://wilkox.org/treemapify/) Also check out [mosaic plots](https://mjfrigaard.github.io/ggp2-gallery/prp/mosaic_plot.html).
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -156,7 +156,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -187,11 +187,11 @@ glimpse(treemap_peng)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -250,7 +250,7 @@ ggp2_treemap +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

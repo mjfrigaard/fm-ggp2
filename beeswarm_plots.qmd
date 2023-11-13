@@ -100,11 +100,11 @@ The points are grouped by level, and the shape (or swarm) of the distribution is
 
 We can create beeswarm plot using `geom_jitter()` or the [`ggbeeswarm` package](https://github.com/eclarke/ggbeeswarm).
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -132,7 +132,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -162,11 +162,11 @@ glimpse(peng_beeswarm)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -214,7 +214,7 @@ ggp2_beeswarm +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

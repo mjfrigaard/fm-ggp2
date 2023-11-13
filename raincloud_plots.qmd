@@ -146,11 +146,11 @@ Raincloud plots are a combination of density graph, a box plot, and a beeswarm (
 
 We can use the [`raincloudplots` package](https://github.com/jorvlan/raincloudplots) to create raincloud plots, or they can be built using the [`ggdist` package](https://mjskay.github.io/ggdist/) and geoms from `ggplot2`.
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -179,7 +179,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -218,11 +218,11 @@ glimpse(peng_1x1)
 :::
 ::::
 
-## The grammar (`raincloudplots`)
+## Grammar (`raincloudplots`)
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -270,7 +270,7 @@ ggp2_raincloud_x +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**
@@ -314,7 +314,7 @@ ggp2_raincloud_x +
 
 :::: {.panel-tabset}
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**

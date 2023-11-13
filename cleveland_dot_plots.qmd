@@ -88,11 +88,11 @@ A Cleveland dot plot displays differences in a numerical variable for different 
 
 Typically, the graph contains two points representing the numerical value on the `y` axis, differentiated by color. A line connecting the two points represents the difference between the two categorical levels (the width of the line is the size of the difference).
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
@@ -118,7 +118,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DATA:**
@@ -150,11 +150,11 @@ glimpse(peng_clev_dots)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
@@ -202,7 +202,7 @@ ggp2_clev_dots +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **GRAPH:**

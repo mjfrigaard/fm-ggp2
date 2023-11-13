@@ -90,11 +90,11 @@ Overlapping dot plots display distributions of a continuous variable across the 
 
 To adjust the dot plot display to look similar to a histogram or frequency polygon, change the `method` and `binposition` arguments.
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -120,7 +120,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -146,11 +146,11 @@ dplyr::glimpse(peng_dotplot)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {.column-margin}
 - [`binwidth`](https://ggplot2.tidyverse.org/reference/geom_dotplot.html) = *When method is "histodot", this specifies bin width. Defaults to 1/30 of the range of the data*
@@ -203,7 +203,7 @@ ggp2_ovrlp_dotplot +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

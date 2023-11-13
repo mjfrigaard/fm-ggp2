@@ -90,11 +90,11 @@ Vertical bars capture the variable's distribution using the height of the bar to
 When we extend this display to two numerical/quantitative variables, the bins are used to divide the total graph area into a grid, and color is used to display the variation in frequency (or count) of both variable values that fall within each intersecting square.
 
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -120,7 +120,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -149,11 +149,11 @@ glimpse(penguins_2dhist)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -197,7 +197,7 @@ ggp2_2dhist +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

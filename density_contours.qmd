@@ -128,11 +128,11 @@ In [topographical maps](https://en.wikipedia.org/wiki/Topography), contour lines
 
 Specifically, the contour lines outline areas on the graph with differing point densities, and semi-transparent colors (gradient) can be added to further highlight the separate regions.
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -158,7 +158,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -188,11 +188,11 @@ glimpse(peng_dnsty_2d)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
@@ -258,7 +258,7 @@ ggp2_dnsty_2d +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**

@@ -91,11 +91,11 @@ Waffle chart legends should be positioned on top or bottom and justified horizon
 
 We’ll build a waffle chart using the [`ggwaffle` package.](https://liamgilbey.github.io/ggwaffle/)
 
-## Getting set up
+## Set up
 
 :::: {.panel-tabset}
 
-### Packages
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
@@ -123,7 +123,7 @@ library(ggplot2)
 ```
 :::
 
-### Data
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DATA:**
@@ -158,11 +158,11 @@ glimpse(waffle_peng)
 :::
 ::::
 
-## The grammar
+## Grammar
 
 :::: {.panel-tabset}
 
-### Code
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
@@ -211,7 +211,7 @@ ggp2_waffle +
 ```
 :::
 
-### Graph
+
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **GRAPH:**
