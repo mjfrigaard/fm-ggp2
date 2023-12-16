@@ -1,4 +1,4 @@
-# Bubble charts {.unnumbered}
+# Bubble charts {#sec-bubble-charts}
 
 ```{r}
 #| label: setup
@@ -34,10 +34,6 @@ status("complete")
 
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -88,20 +84,14 @@ The position on the `x` and `y` axis illustrates the relationship between the fi
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Install packages.
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_bubble
 #| code-fold: show
@@ -117,7 +107,6 @@ library(ggplot2)
 :::
 
 
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
 :::
@@ -126,11 +115,10 @@ library(ggplot2)
 ![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
-The `penguins` data  
-:::
 
-::: {style="font-size: 0.75em;"}
+The `penguins` data.
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_bubble
 #| code-fold: show
@@ -140,37 +128,28 @@ penguins <- palmerpenguins::penguins
 glimpse(penguins)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  - Create labels with `labs()`
+
+  - Map `bill_length_mm` to `x` axis
+
+  - Map `flipper_length_mm` to `y` axis 
+
+  - Map `body_mass_g` to `size`  
+
+  - Set `alpha` to `1/3`  
+
+  - Add `scale_size()`, set the `range` to `c(0.1, 10)` and `name` to `"Body Mass (g)"`
+
+  - Move the legend to the bottom of the graph with `theme(legend.position = "bottom")`
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Map `bill_length_mm` to `x` axis
-
-Map `flipper_length_mm` to `y` axis 
-
-Map `body_mass_g` to `size`  
-
-Set `alpha` to `1/3`  
-
-Add `scale_size()`, set the `range` to `c(0.1, 10)` and `name` to `"Body Mass (g)"`
-
-Move the legend to the bottom of the graph with `theme(legend.position = "bottom")`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_bubble
 #| code-fold: show
@@ -197,7 +176,6 @@ ggp2_bubble +
   labs_bubble
 ```
 :::
-
 
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
@@ -230,5 +208,3 @@ ggp2_bubble <- penguins |>
 ggp2_bubble + 
   labs_bubble
 ```
-
-::::

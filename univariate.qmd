@@ -34,16 +34,34 @@ status("complete")
 
 **Univariate graphs**: These graphs are useful if you have a single column you're trying to visualize. 
 
-- [Bar graphs](bar_graphs.qmd)
+- [Bar graphs](bar_graphs.qmd): 
 
-- [Histograms](histograms.qmd)
+<!--
+:::: {layout="[ 40, 60 ]"}
 
-- [Frequency polygons](frequency_polygons.qmd)
+::: {#first-column}
+```r
+# Some code
+```
 
-- [Dot-plots](dot_plots.qmd)
+Some text that should be laid out below the code
+:::
 
-- [Density plots](density_plots.qmd)
+::: {#second-column}
+![](elephant.png)
+:::
 
-- [Violin plots](violin_plots.qmd)
+::::
+-->
 
-- [Box-plots](box_plots.qmd)
+- [Histograms](histograms.qmd): 
+
+- [Frequency polygons](frequency_polygons.qmd): 
+
+- [Dot-plots](dot_plots.qmd): 
+
+- [Density plots](density_plots.qmd): 
+
+- [Violin plots](violin_plots.qmd): 
+
+- [Box-plots](box_plots.qmd): 

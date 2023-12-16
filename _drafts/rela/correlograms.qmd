@@ -55,7 +55,7 @@ install.packages("palmerpenguins")
 :::: {.callout-tip collapse="false" icon=false}
 
 ::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
+
 :::
 
 <br>
@@ -82,7 +82,7 @@ library(ggplot2)
 ::::
 
 
-:::: {.panel-tabset}
+
 
 
 
@@ -90,12 +90,12 @@ library(ggplot2)
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_
 #| eval: true
@@ -125,11 +125,11 @@ Install packages.
 
 
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 <!-- Description of data -->
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_
 #| eval: true
@@ -140,7 +140,7 @@ Install packages.
 :::
 ::::
 
-:::: {.panel-tabset}
+
 
 
 
@@ -148,14 +148,14 @@ Install packages.
 **CODE:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 Create labels with `labs()`
 
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_
 #| eval: false

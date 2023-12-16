@@ -1,4 +1,4 @@
-# Density contours {.unnumbered}
+# Density contours {#sec-density-contours}
 
 ```{r}
 #| label: setup
@@ -36,10 +36,6 @@ status("complete")
 
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -111,13 +107,6 @@ ggp2_dnsty_2d_fill +
 **`r emo::ji("check")` two numeric (continuous) variables**
 :::
 
-
-
-<!--
-This technique works well when the point density changes slowly
-across both the x and the y dimensions.
--->
-
 ::::
 
 ## Description
@@ -130,20 +119,14 @@ Specifically, the contour lines outline areas on the graph with differing point 
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Install packages.
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_geom_density_2d
 #| code-fold: show
@@ -168,11 +151,9 @@ library(ggplot2)
 ![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
 We'll use the `penguins` data from the `palmerpenguins` package, but remove the missing values from `bill_length_mm`, `flipper_length_mm`, and `species`.
-:::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_geom_density_2d
 #| code-fold: show
@@ -186,36 +167,26 @@ peng_dnsty_2d <- palmerpenguins::penguins |>
 glimpse(peng_dnsty_2d)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  - Create labels with `labs()`
+
+  - Initialize the graph with `ggplot()` and provide `data`
+
+  - Create two values for extending the range of the `x` and `y` axis (`x_min`/`x_max` and `y_min`/`y_max`) 
+
+  - Map `bill_length_mm` to `x` and `flipper_length_mm` to `y`
+
+  - Add the `expand_limits()` function, assigning our stored values to `x` and `y`
+
+  - Add the `geom_density_2d()` 
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Create two values for extending the range of the `x` and `y` axis (`x_min`/`x_max` and `y_min`/`y_max`) 
-
-Map `bill_length_mm` to `x` and `flipper_length_mm` to `y`
-
-Add the `expand_limits()` function, assigning our stored values to `x` and `y`
-
-Add the `geom_density_2d()` 
-
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_geom_density_2d
 #| eval: false
@@ -257,7 +228,6 @@ ggp2_dnsty_2d +
   labs_dnsty_2d
 ```
 :::
-
 
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
@@ -306,38 +276,24 @@ ggp2_dnsty_2d +
   labs_dnsty_2d
 ```
 
-::::
-
 ## More info
 
 We're going to break down how to create the density contour layer-by-layer using the `stat_density_2d()` function (which allows us to access some of the inner-workings of `geom_density_2d()`)
 
-:::: {.panel-tabset}
-
 ### Base
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**BASE:**
-:::
+  - Create a new set of labels
+
+  - Initialize the graph with `ggplot()` and provide `data`
+
+  - Build a base layer: 
+
+    - Map `bill_length_mm` to `x` and `flipper_length_mm` to `y`  
+
+    - Expand the `x` and `y` values with `expand_limits()` (using the values we created above)
 
 
 ::: {style="font-size: 0.85em;"}
-
-Create a new set of labels
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Build a base layer: 
-
-- Map `bill_length_mm` to `x` and `flipper_length_mm` to `y`  
-
-- Expand the `x` and `y` values with `expand_limits()` (using the values we created above)
-
-
-:::
-
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_base_layer
 #| eval: true
@@ -373,13 +329,6 @@ base_sdens_2d +
 
 ### Stat
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**STAT:**
-:::
-
-
-::: {style="font-size: 0.85em;"}
-
 Add the `stat_density_2d()` layer:
 
 - *Inside* `aes()`, use [`after_stat()`](https://ggplot2.tidyverse.org/reference/aes_eval.html) to map `level` to `fill` (from Help, "*Evaluation after stat transformation will have access to the variables calculated by the stat, not the original mapped values.*")
@@ -390,10 +339,8 @@ Add the `stat_density_2d()` layer:
 
 - adjust the `linewidth` to `0.35`
 
-:::
 
-
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_stat_layer
 #| eval: true
@@ -438,38 +385,25 @@ ggp1 <- stat_sdens_2d +
   )
 ```
 
-
 :::
 
 ### Fill
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**FILL:**
-:::
-
-
-::: {style="font-size: 0.85em; color: #5f2042;"}
 ***Where did levels come from?***
 
 *You probably noticed the `stat_density_2d()` produced a legend with `level`, and a series of values for the color gradient. These numbers are difficult to interpret directly, but you can think of them as 'elevation changes' in point density. Read more [here on SO.](https://stackoverflow.com/questions/53172200/stat-density2d-what-does-the-legend-mean)*
 
-:::
-
-
-::: {style="font-size: 0.85em;"}
-
 Now that we have a color gradient for our contour lines, we can adjust it's the range of colors using  `scale_fill_gradient()`
 
 - `low` is the color for the low values of `level`    
-- `high` is the color for the high values of `level`    
+
+- `high` is the color for the high values of `level`   
+
 - `guide` let's us control the `legend`    
 
 We'll set these to white (`"#ffffff"`) and dark gray (`"#404040"`)
 
-:::
-
-
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_fill_layer
 #| eval: false
@@ -514,26 +448,18 @@ fill_sdens_2d +
 
 ### Points
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**POINTS:**
-:::
+The dark areas in the contour lines are the areas with higher value density, but why don't we test that by adding some data points? 
+
+  - Add a `geom_point()` layer
+
+    - *Inside* `aes()`, map `species` to `color` (this will tell us if the three dark areas represent differences in the three species in the dataset)
+
+    - Set `size` to `2`  
+
+    - Change the `alpha` to `2/3`
 
 
 ::: {style="font-size: 0.85em;"}
-The dark areas in the contour lines are the areas with higher value density, but why don't we test that by adding some data points? 
-
-Add a `geom_point()` layer
-
-- *Inside* `aes()`, map `species` to `color` (this will tell us if the three dark areas represent differences in the three species in the dataset)
-
-- set `size` to `2`  
-
-- Change the `alpha` to `2/3`
-
-:::
-
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_points_layer
 #| eval: false
@@ -556,7 +482,7 @@ pnts_sdens_2d +
 ```
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_points_layer_pw
 #| eval: true
@@ -576,22 +502,11 @@ pnts_sdens_2d +
 ```
 :::
 
-::::
-
 ## Even more info
 
 In the previous plot, we used the `species` variable in the `geom_point()` layer to identify the points using color. In the section below, we'll show more methods of displaying groups with density contour lines. 
 
-:::: {.panel-tabset}
-
 ### Groups
-
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GROUPS:**
-:::
-
-
-::: {style="font-size: 0.85em;"}
 
 Re-create the labels 
 
@@ -611,9 +526,7 @@ Build the `geom_point()` layer:
   
   - set the `alpha` and remove the `legend` 
 
-:::
-
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_points
 #| eval: true
@@ -658,39 +571,31 @@ ggp2_dnsty_2d_pnts +
 
 ### Facets
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**FACETING:**
-:::
+  - Re-create the labels
+
+  - Initialize the graph with `ggplot()` and provide `data`
+
+  - Build the base/limits: 
+
+    - Map `bill_length_mm` to `x` and `flipper_length_mm` to `y`  
+  
+    - Expand the limits using our adjusted min/max `x` and `y` values 
+
+  - Build the `geom_density_2d_filled()` layer: 
+
+    - Add the `geom_density_2d_filled()`, setting `linewidth` to `0.30` and `contour_var` to `"ndensity"`
+  
+  - Add the `scale_discrete_manual()`:
+
+    - Set `aesthetics` to `"fill"`  
+  
+    - Provide a set of color `values` (this plot needed 10 values, and I grabbed them all from [color-hex](https://www.color-hex.com/).
+  
+  - Facet: 
+
+    - Add `facet_wrap()`, and place `species` in the [`vars()`](https://ggplot2.tidyverse.org/reference/vars.html)
 
 ::: {style="font-size: 0.85em;"}
-
-Re-create the labels
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Build the base/limits: 
-
-  - Map `bill_length_mm` to `x` and `flipper_length_mm` to `y`  
-  
-  - Expand the limits using our adjusted min/max `x` and `y` values 
-
-Build the `geom_density_2d_filled()` layer: 
-
-  - Add the `geom_density_2d_filled()`, setting `linewidth` to `0.30` and `contour_var` to `"ndensity"`
-  
-Add the `scale_discrete_manual()`:
-
-  - set `aesthetics` to `"fill"`  
-  
-  - Provide a set of color `values` (this plot needed 10 values, and I grabbed them all from [color-hex](https://www.color-hex.com/).
-  
-Facet: 
-
-  - Add `facet_wrap()`, and place `species` in the [`vars()`](https://ggplot2.tidyverse.org/reference/vars.html)
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_facets
 #| eval: false
@@ -795,34 +700,23 @@ ggp2_dnsty_2d_facet +
 
 ### Fill 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**Fill:**
-:::
-
-::: {style="font-size: 0.85em;"}
 In the previous section, we defined the color values used in `geom_density_2d_filled()` with `scale_discrete_manual()`. Below we give an example using the default colors: 
-:::
+
+  - Re-create the labels
+
+  - Initialize the graph with `ggplot()` and provide `data`
+
+  - Build the base/limits: 
+
+    - Map `bill_length_mm` to `x` and `flipper_length_mm` to `y`  
+  
+    - Expand the limits using our adjusted min/max `x` and `y` values
+
+  - Add the `geom_density_2d()` layer
+
+  - Add the `geom_density_2d_filled()`, setting `alpha` to `0.8`
 
 ::: {style="font-size: 0.85em;"}
-
-Re-create the labels
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Build the base/limits: 
-
-  - Map `bill_length_mm` to `x` and `flipper_length_mm` to `y`  
-  
-  - Expand the limits using our adjusted min/max `x` and `y` values 
-
-Add the `geom_density_2d()` layer
-
-Add the `geom_density_2d_filled()`, setting `alpha` to `0.8`
-
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_fill
 #| eval: false
@@ -909,21 +803,13 @@ ggp2_dnsty_2d_fill +
 
 ### Lines
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**LINES:**
-:::
-
-::: {style="font-size: 0.85em;"}
-
 We can also outline the contours by adding color to the lines using another `geom_density_2d()` layer: 
 
-  - set `linewidth` to `0.30`
+  - Set `linewidth` to `0.30`
   
-  - set `color` to `"#ffffff"`
+  - Set `color` to `"#ffffff"`
 
-:::
-
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_lines
 #| eval: false
@@ -972,6 +858,4 @@ ggp2_dnsty_2d_fill_lns +
 ```
 
 :::
-
-::::
 

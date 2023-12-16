@@ -1,4 +1,4 @@
-# Grouped line graphs {.unnumbered}
+# Grouped line graphs {#sec-grp-line-graphs}
 
 ```{r}
 #| label: setup
@@ -38,10 +38,6 @@ status("complete")
 
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -241,20 +237,14 @@ Grouped line graphs use color, line style, and faceting to show group changes ov
 
 ## Set up 
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Install packages.
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_line_graph
 #| code-fold: show
@@ -280,7 +270,6 @@ library(ggplot2)
 :::
 
 
-::: {style="font-size: 0.85em;"}
 We'll be using the `US_births_1994_2003` and `US_births_2000_2014` datasets from the `fivethirtyeight` package: 
 
   - Binding these together (they have identical columns)  
@@ -291,10 +280,9 @@ We'll be using the `US_births_1994_2003` and `US_births_2000_2014` datasets from
 
   - Use `year` and `quarter` to create `yr_qtr` 
 
-Save these changes to `usbirth_1994_2014`:
-:::
+  - Save these changes to `usbirth_1994_2014`
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_usbirth_1994_2014
 #| code-fold: show
@@ -325,17 +313,15 @@ dplyr::glimpse(usbirth_1994_2014)
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
 We'll use these data in the *More info* section for more line graphs, but for now:
 
-- Group `usbirth_1994_2014` on `year` and `day_category`   
+  - Group `usbirth_1994_2014` on `year` and `day_category`   
 
-- Calculate the average `births` as `avg_births`  
+  - Calculate the average `births` as `avg_births`  
 
-Store the data in `avg_birth_day_cat_yr`:
-:::
+  - Store the data in `avg_birth_day_cat_yr`.
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_avg_birth_day_cat_yr
 #| code-fold: show
@@ -349,29 +335,19 @@ dplyr::glimpse(avg_birth_day_cat_yr)
 ```
 :::
 
-::::
-
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  - Create labels with `labs()`   
+
+  - Map `yr_mnth` to the `x`, `avg_births` to the `y`, and `day_category` to `group`
+
+  - Add the `geom_line()` layer and map `day_category` to color (*inside* `aes()`)
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`   
-
-Map `yr_mnth` to the `x`, `avg_births` to the `y`, and `day_category` to `group`
-
-Add the `geom_line()` layer and map `day_category` to color (*inside* `aes()`)
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_line
 #| code-fold: show
@@ -428,30 +404,25 @@ ggp2_line +
     labs_line_graph
 ```
 
-::::
-
 
 ## More info
 
 Line graphs are great for displaying relationships across variables with multiple groups (or levels). We can also use facets for multiple comparisons (i.e., small multiples).
 
-:::: {.panel-tabset}
-
 ### Groups
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+In the previous graph, we can see the number of births begins to decline around `2007` or `2008`. 
+
+  - We'll create another summarized dataset from the `usbirth_2010_2014` data, but this time we restrict the observations to only births in between `2008` and `2009`
+  
+  - Group the data on `yr_qtr` and `day_of_week`
+  
+  - Then calculate the average number of `births` as `avg_births`
 
 ::: {style="font-size: 0.85em;"}
-In the previous graph, we can see the number of births begins to decline around `2007` or `2008`.  We'll create another summarized dataset from the `usbirth_2010_2014` data, but this time we restrict the observations to only births in between `2008` and `2009`, group on `yr_qtr` and `day_of_week`, and get the average number of `births` (as `avg_births`).
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: avg_births_dow_qtr
-#| code-fold: true
+#| code-fold: show
 #| eval: true
 #| echo: true 
 #| warning: false
@@ -467,21 +438,13 @@ dplyr::glimpse(avg_births_dow_qtr)
 ```
 :::
 
-
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GROUPS:**
-:::
-
-::: {style="font-size: 0.85em;"}
-
 Now when we create our line graph, we will have a categorical variable with seven levels (`day_of_week`):
 
-  + Create subtitle using `paste0()` to ensure it's accurate if/when the underlying data is updated.   
-  +  move the legend to the top of the graph using  `theme(legend.position = "top")` (to improve readability).   
+  + Create subtitle using `paste0()` to ensure it's accurate if/when the underlying data is updated.  
+  
+  +  Move the legend to the top of the graph using  `theme(legend.position = "top")` (to improve readability).   
 
-:::
-
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: labs_line_graph_grp
 #| eval: true
@@ -504,7 +467,7 @@ labs_line_graph_grp <- labs(title = "Average US births",
 ```
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: avg_births_dow_qtr_grp_line
 #| eval: true
@@ -530,21 +493,15 @@ ggp2_line_grp +
 
 ### Line Styles
 
-::: {style="font-size: 0.85em;"}
-We can make it easier to distinguish between lines in our graph by adjusting the line style (`linetype` and `linewidth`), or by changing overall opacity (`alpha`).
+  - We can make it easier to distinguish between lines in our graph by adjusting the line style (`linetype` and `linewidth`), or by changing overall opacity (`alpha`).
 
-We'll work through some examples below using another subset from `usbirth_1994_2014`.
-:::
+  - We'll work through some examples below using another subset from `usbirth_1994_2014`.
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
 :::
 
 ::: {style="font-size: 0.85em;"}
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: avg_births_dow_mnth
 #| eval: true
@@ -566,7 +523,7 @@ dplyr::glimpse(avg_births_dow_mnth)
 
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: labs_line_styles
 #| eval: true
@@ -592,17 +549,14 @@ labs_line_styles <- labs(
 ```
 :::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**`alpha` & `linewidth`:**
-:::
 
-::: {style="font-size: 0.85em;"}
+### `alpha` & `linewidth`
+
 Color palettes are a excellent too for highlighting or emphasizing certain lines over others.
  
-We'll start by creating a line graph layer for Monday (`"Mon"`), Thursday (`"Thurs"`), and Friday (`"Fri"`) adjusting the opacity with `alpha`.
-:::
+  - We'll start by creating a line graph layer for Monday (`"Mon"`), Thursday (`"Thurs"`), and Friday (`"Fri"`) adjusting the opacity with `alpha`.
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_line_mon_thur_fri
 #| eval: true
@@ -630,15 +584,12 @@ ggp2_line_mon_thur_fri +
 ```
 :::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**`linetype`:**
-:::
+
+### `linetype`
+
+Then we'll change the `linetype` of Saturday and Sunday to `"longdash'` (and make this *somewhat* transparent with a slightly higher `alpha`).
 
 ::: {style="font-size: 0.85em;"}
-Then we'll change the `linetype` of Saturday and Sunday to `"longdash'` (and make this *somewhat* transparent with a slightly higher `alpha`).
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: ggp2_line_sat_sun
 #| eval: true
@@ -666,19 +617,14 @@ ggp2_line_sat_sun +
 ```
 :::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**Color palettes:**
-:::
+### Color palettes
+
+  - Add `geom_line()` for Wednesday and Tuesday, but change the color palette with `paletteer` and `ggthemes`. 
+
+  - We also manually set the legend order by supplying the original factor levels to the `breaks` argument. 
 
 
 ::: {style="font-size: 0.85em;"}
-Add `geom_line()` for Wednesday and Tuesday, but change the color pallete with `paletteer` and `ggthemes`. 
-
-We also manually set the legend order by supplying the original factor levels to the `breaks` argument. 
-:::
-
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: ggp2_line_pal_d
 #| eval: true
@@ -718,25 +664,18 @@ ggp2_line_pal_d +
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+
 Changing the look of the lines is a great way to highlight or emphasize some lines over others.
-:::
 
 ### Labels
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**LABELS:**
-:::
-
-::: {style="font-size: 0.85em;"}
 In the previous graph, we can see the number of average births reaches it's peak in  `2008` or `2009`, so we'll use labels to display the max births and max average births. 
 
-To accomplish this, we're going to create two small tables of labels, `label_max_dow` and `label_max_avg_dow`, that we'll use to label the maximum values. 
+  - To accomplish this, we're going to create two small tables of labels, `label_max_dow` and `label_max_avg_dow`, that we'll use to label the maximum values. 
 
-They will each have 7 rows (one for each day of the week) and a label variable (`lbl`) which we can use with `geom_label()`.
-:::
+  - They will each have 7 rows (one for each day of the week) and a label variable (`lbl`) which we can use with `geom_label()`.
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: label_max_dow
 #| eval: false
@@ -765,7 +704,7 @@ dplyr::arrange(label_max_dow, desc(max_births)) |>
 ```
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: label_max_dow_show
 #| eval: true
@@ -790,7 +729,7 @@ dplyr::arrange(label_max_dow, desc(max_births)) |>
 ```
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: label_max_avg_dow
 #| eval: false
@@ -826,7 +765,7 @@ dplyr::arrange(label_max_avg_dow, desc(max_avg_births)) |>
 ```
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: label_max_avg_dow_show
 #| eval: true
@@ -858,13 +797,11 @@ dplyr::arrange(label_max_avg_dow, desc(max_avg_births)) |>
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
 Now that we have label tables for each metric, we can filter them to the days we want to label. 
 
-We'll use `filter()` to get the maximum values for `"Wed"` (in `label_max_wed_dow` and `label_max_avg_wed_dow`):
-:::
+  - We'll use `filter()` to get the maximum values for `"Wed"` (in `label_max_wed_dow` and `label_max_avg_wed_dow`)
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: label_wed_tues_dow
 #| eval: false
@@ -883,7 +820,7 @@ label_max_avg_wed_dow
 ```
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: label_wed_tues_dow_show
 #| eval: true
@@ -897,11 +834,10 @@ label_max_avg_wed_dow |> rmarkdown::paged_table()
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
-Add `geom_point()` and `geom_label()` for Wednesday. 
-:::
 
-::: {style="font-size: 0.75em;"}
+Add `geom_point()` and `geom_label()` for Wednesday. 
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_line_wed_births_lbl
 #| eval: true
@@ -968,11 +904,9 @@ ggp2_line_pal_d +
 :::
 
 
-::: {style="font-size: 0.85em;"}
 We'll use `filter()` to get the maximum values for `"Tues"` (in `label_max_tues_dow` and `label_max_avg_tues_dow`):
-:::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: label_max_tues_dow_label_max_avg_tues_dow
 #| eval: false
@@ -992,7 +926,7 @@ label_max_avg_tues_dow
 ```
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: label_max_tues_dow_label_max_avg_tues_dow_show
 #| eval: true
@@ -1012,11 +946,10 @@ label_max_avg_tues_dow |> rmarkdown::paged_table()
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
-Add `geom_point()` and `geom_label()` for Tuesday.  
-:::
 
-::: {style="font-size: 0.75em;"}
+Add `geom_point()` and `geom_label()` for Tuesday
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_line_min_births_lbl
 #| eval: true
@@ -1091,18 +1024,16 @@ ggp2_line_pal_d +
 
 ### Facets
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
-
-::: {style="font-size: 0.85em;"}
 Finally, we can use facets to view each of the line graphs seperately (or small multiples). 
 
-We'll create a dataset with the dates limited to births between `2008-07-01` and `2010-01-01`, and calculate the median births, grouped by `date`, `day_category`, and `day_of_week` and store it as `med_births_dcat_dow_mnth`.
-:::
+  - We'll create a dataset with the dates limited to births between `2008-07-01` and `2010-01-01`
+  
+  - Calculate the median births, grouped by `date`, `day_category`
+  
+  - And `day_of_week` and store it as `med_births_dcat_dow_mnth`
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: max_births_dcat_dow_mnth
 #| eval: true
@@ -1121,15 +1052,10 @@ dplyr::glimpse(med_births_dcat_dow_mnth)
 ```
 :::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**FACETS:**
-:::
+
+- Using `facet_wrap()` with a single categorical variable (`. ~ var`) will create a plot for each discrete level, while `facet_grid()` will create a level-by-level grid (specified as `var ~ var`).
 
 ::: {style="font-size: 0.85em;"}
-Using `facet_wrap()` with a single categorical variable (`. ~ var`) will create a plot for each discrete level, while `facet_grid()` will create a level-by-level grid (specified as `var ~ var`).
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: ggp2_line_facet_wrap
 #| eval: true
@@ -1177,11 +1103,10 @@ ggp2_line_facet_wrap +
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
-It's always a good idea to check the `x` and `y` axis text when using facets. I've adjusted the `x` and `y` axes above using `scale_y_continuous()` and `scale_x_date()` before adding `facet_wrap()`
-:::
 
-::: {style="font-size: 0.75em;"}
+  - It's always a good idea to check the `x` and `y` axis text when using facets. I've adjusted the `x` and `y` axes above using `scale_y_continuous()` and `scale_x_date()` before adding `facet_wrap()`
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_line_facet_grid
 #| eval: true
@@ -1229,11 +1154,7 @@ ggp2_line_facet_grid +
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
 The colors have been manually, using `scale_color_manual()` and passing seven color hex codes to the `values` argument. 
-:::
-
-::::
 
 
 

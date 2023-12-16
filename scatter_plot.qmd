@@ -1,4 +1,4 @@
-# Scatter plots {.unnumbered}
+# Scatter plots {#sec-scatter-plot}
 
 
 ```{r}
@@ -34,10 +34,6 @@ status("complete")
 ```
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -83,20 +79,16 @@ If one of the continuous variables is assumed to affect the other (i.e., `outcom
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_scatter
 #| code-fold: show
@@ -112,7 +104,6 @@ library(ggplot2)
 :::
 
 
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
 :::
@@ -121,11 +112,10 @@ library(ggplot2)
 ![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
-The `penguins` data
-:::
 
-::: {style="font-size: 0.75em;"}
+The `penguins` data.
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_scatter
 #| code-fold: show
@@ -135,33 +125,26 @@ penguins <- palmerpenguins::penguins
 glimpse(penguins)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+
+
+  - Create labels with `labs()`
+
+  - Initialize the graph with `ggplot()` and provide `data`
+
+  - Map `bill_length_mm` to the `x` axis
+
+  - Map `flipper_length_mm` to the `y` axis
+
+  - Add `geom_point()`  
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `bill_length_mm` to the `x` axis
-
-Map `flipper_length_mm` to the `y` axis
-
-Add `geom_point()`  
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_scatter
 #| code-fold: show
@@ -191,9 +174,8 @@ ggp2_scatter +
 **GRAPH:**
 :::
 
-::: {style="font-size: 0.85em; color;"}
+
 If multiple points occupy the same value position, use transparency (`alpha`) to improve visibility.
-:::
 
 ```{r}
 #| label: create_graph_scatter
@@ -217,5 +199,3 @@ ggp2_scatter <- penguins |>
 ggp2_scatter + 
   labs_scatter
 ```
-
-::::

@@ -153,7 +153,7 @@ dplyr::distinct(peng_bar, island)
 ::::
 
 
-:::: {.panel-tabset}
+
 
 
 
@@ -161,12 +161,12 @@ dplyr::distinct(peng_bar, island)
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_geom_bar
 #| eval: true
@@ -200,11 +200,11 @@ library(ggplot2)
 
 
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Remove the missing values from `island`, `species`, and `sex` from `palmerpenguins::penguins`
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_geom_bar
 #| eval: true
@@ -222,7 +222,7 @@ glimpse(peng_bar)
 ::::: {.callout-note collapse="false" icon=false}
 ## `geom_bar()`
 
-:::: {.panel-tabset}
+
 
 ### `ggplot_build()`
 
@@ -230,7 +230,7 @@ glimpse(peng_bar)
 **`ggplot_build()`:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: geom_layers_bar
 #| eval: true
@@ -260,13 +260,13 @@ names(bld_ggp2_bar_x)
 **`geom_bar()`: data**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 Extract the data from the `ggplot2` object.
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_bld_bar
 #| eval: true
@@ -285,11 +285,11 @@ select(bar_x_data, fill)
 **`geom_bar()`: plot**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Extract the `"plot"` from `bld_` object:
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: plot_bld_bar
 #| eval: true
@@ -309,7 +309,7 @@ bld_ggp2_bar_x[["plot"]]
 ::::: {.callout-caution collapse="true" icon=false}
 ## `geom_bar(fill)`
 
-:::: {.panel-tabset}
+
 
 ### `ggplot_build()`
 
@@ -317,13 +317,13 @@ bld_ggp2_bar_x[["plot"]]
 **`ggplot_build()`:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Build `geom_bar(fill)` layers: 
 
 `ggp2_bar_fill` and `ggp2_bar_fill2`
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: geom_layers_fill
 #| eval: true
@@ -339,11 +339,11 @@ ggp2_bar_fill2 <- ggp2_bar_base +
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Create `bld_bar_fill` and `bld_bar_fill2` objects
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: geom_build_fill
 #| eval: true
@@ -359,11 +359,11 @@ names(bld_bar_fill2)
 
 ### `"data"`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Extract `"data"` from `bld_` objects
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_bld_fill
 #| eval: true
@@ -376,11 +376,11 @@ dplyr::select(bar_fill_data, x, y, fill)
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Extract `"data"` from `bld_` objects
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_bld_fill2
 #| eval: true
@@ -397,11 +397,11 @@ dplyr::count(bar_fill2_data, x, y, fill) |>
 
 ### `"plot"`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Extract `"plot"` from `bld_` objects
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: plot_bld_fill
 #| eval: true
@@ -412,11 +412,11 @@ bld_bar_fill[["plot"]]
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Extract `"plot"` from `bld_` objects
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: plot_bld_fill2
 #| eval: true
@@ -433,19 +433,19 @@ bld_bar_fill2[["plot"]]
 ::::: {.callout-important collapse="true" icon=false}
 ## `geom_bar(position = "dodge")`
 
-:::: {.panel-tabset}
+
 ### `ggplot_build()`
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **`ggplot_build()`:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Build `geom_bar(position = "dodge")` layer:
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: geom_layers_dodge
 #| eval: true
@@ -459,11 +459,11 @@ ggp2_bar_dodge <- ggp2_bar_base +
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Create `bld_bar_dodge` object:
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggplot_build_dodge
 #| eval: true
@@ -481,13 +481,13 @@ names(bld_bar_dodge)
 **`geom_bar(position = "dodge")`: data:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 Extract the `"data"` from the `bld_bar_dodge` object.
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_bld_dodge
 #| eval: true
@@ -506,13 +506,13 @@ select(bar_dodge_data, x, y, fill)
 **`geom_bar(position = "dodge")`: plot:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 Extract the `"plot"` from the `bld_bar_dodge` object.
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: plot_bld_dodge
 #| eval: true
@@ -529,19 +529,19 @@ bld_bar_dodge[["plot"]]
 ::::: {.callout-important collapse="true" icon=false}
 ## `geom_bar(position = "dodge2")`
 
-:::: {.panel-tabset}
+
 ### `ggplot_build()`
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **`ggplot_build()`:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Build `geom_bar(position = "dodge2")` layer:
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: geom_layers_dodge2
 #| eval: true
@@ -555,11 +555,11 @@ ggp2_bar_dodge2 <- ggp2_bar_base +
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Create `bld_bar_dodge2` object:
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggplot_build_dodge2
 #| eval: true
@@ -577,13 +577,13 @@ names(bld_bar_dodge2)
 **`geom_bar(position = "dodge2")`: data:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 Extract the `"data"` from the `bld_bar_dodge2` object.
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_bld_dodge2
 #| eval: true
@@ -602,13 +602,13 @@ select(bar_dodge2_data, x, y, fill)
 **`geom_bar(position = "dodge2")`: plot:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 Extract the `"plot"` from the `bld_bar_dodge2` object.
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: plot_bld_dodge2
 #| eval: true

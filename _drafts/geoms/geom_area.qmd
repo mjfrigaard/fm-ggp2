@@ -153,7 +153,7 @@ dplyr::distinct(peng_bar, island)
 ::::
 
 
-:::: {.panel-tabset}
+
 
 
 
@@ -161,12 +161,12 @@ dplyr::distinct(peng_bar, island)
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_geom_area
 #| eval: true
@@ -194,11 +194,11 @@ Install packages.
 :::
 -->
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 <!-- Description of data -->
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_geom_area
 #| eval: true
@@ -213,7 +213,7 @@ Install packages.
 ::::: {.callout-note collapse="false" icon=false}
 ## `geom_area()`
 
-:::: {.panel-tabset}
+
 
 ### `ggplot_build()`
 
@@ -221,7 +221,7 @@ Install packages.
 **`ggplot_build()`:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: geom_layers_geom_area
 #| eval: true
@@ -251,13 +251,13 @@ Install packages.
 **`geom_area()`: data**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 Extract the data from the `ggplot2` object.
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_bld_geom_area
 #| eval: true
@@ -276,11 +276,11 @@ Extract the data from the `ggplot2` object.
 **`geom_area()`: plot**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Extract the `"plot"` from `bld_` object:
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: plot_bld_geom_area
 #| eval: true
@@ -300,7 +300,7 @@ Extract the `"plot"` from `bld_` object:
 ::::: {.callout-caution collapse="true" icon=false}
 ## `geom_(arg)`
 
-:::: {.panel-tabset}
+
 
 ### `ggplot_build()`
 
@@ -308,11 +308,11 @@ Extract the `"plot"` from `bld_` object:
 **`ggplot_build()`:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Build `geom_` layers
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: geom_layers_arg
 #| eval: true
@@ -328,11 +328,11 @@ Build `geom_` layers
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Create `bld_` objects
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: geom_build_arg
 #| eval: true
@@ -348,11 +348,11 @@ Create `bld_` objects
 
 ### `arg`: `"data"`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Extract `"data"` from `bld_` objects
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_bld_arg
 #| eval: true
@@ -365,11 +365,11 @@ Extract `"data"` from `bld_` objects
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Extract `"data"` from `bld_` objects
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_bld_arg2
 #| eval: true
@@ -386,11 +386,11 @@ Extract `"data"` from `bld_` objects
 
 ### `arg`: `"plot"`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Extract `"plot"` from `bld_` objects
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: plot_bld_arg
 #| eval: true
@@ -401,11 +401,11 @@ Extract `"plot"` from `bld_` objects
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Extract `"plot"` from `bld_` objects
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: plot_bld_arg2
 #| eval: true
@@ -423,7 +423,7 @@ Extract `"plot"` from `bld_` objects
 ::::: {.callout-important collapse="true" icon=false}
 ## `geom_(imp_arg)`
 
-:::: {.panel-tabset}
+
 
 ### `ggplot_build()`
 
@@ -431,11 +431,11 @@ Extract `"plot"` from `bld_` objects
 **`ggplot_build()`:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Build `geom_` layers
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: geom_layers_imp_arg_
 #| eval: true
@@ -451,11 +451,11 @@ Build `geom_` layers
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Create `bld_` objects
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: geom_build_imp_arg_
 #| eval: true
@@ -471,11 +471,11 @@ Create `bld_` objects
 
 ### `imp_arg`: `"data"`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Extract `"data"` from `bld_` objects
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_bld_imp_arg
 #| eval: true
@@ -488,11 +488,11 @@ Extract `"data"` from `bld_` objects
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Extract `"data"` from `bld_` objects
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_bld_imp_arg2
 #| eval: true
@@ -509,11 +509,11 @@ Extract `"data"` from `bld_` objects
 
 ### `imp_arg`: `"plot"`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Extract `"plot"` from `bld_` objects
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: plot_bld_imp_arg
 #| eval: true
@@ -524,11 +524,11 @@ Extract `"plot"` from `bld_` objects
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Extract `"plot"` from `bld_` objects
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: plot_bld_imp_arg2
 #| eval: true

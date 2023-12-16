@@ -89,12 +89,12 @@ peng_lines <- palmerpenguins::penguins |>
 ::::
 
 
-:::: {.panel-tabset}
+
 
 
 
 ::: {.column-margin}
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ![source: https://github.com/rstudio/hex-stickers](../www/ggplot2.png){fig-align="right" width="40%" height="40%"}
 :::
 :::
@@ -103,11 +103,11 @@ peng_lines <- palmerpenguins::penguins |>
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_lines
 #| eval: true
@@ -126,11 +126,11 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 <!--Load the `ggplot2::economics` data.-->
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_lines
 #| eval: true
@@ -146,7 +146,7 @@ dplyr::glimpse(economics)
 ::::: {.callout-note collapse="false" icon=false}
 ## `geom_()`
 
-:::: {.panel-tabset}
+
 
 ### Basic use
 
@@ -154,7 +154,7 @@ dplyr::glimpse(economics)
 **BASICS:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: basic_
 #| eval: true
@@ -173,7 +173,7 @@ ggp2_basic_blank
 **AESTHETICS:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 The required aesthetics are: 
 
@@ -181,7 +181,7 @@ Optional aesthetics include:
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_
 #| eval: true
@@ -198,11 +198,11 @@ Optional aesthetics include:
 **ARGUMENTS:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Below ...
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: args_1_
 #| code-fold: true
@@ -217,7 +217,7 @@ Below ...
 ```
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: args_2_
 #| code-fold: true
@@ -232,7 +232,7 @@ Below ...
 ```
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: args_3_
 #| code-fold: true
@@ -254,7 +254,7 @@ Below ...
 ::::: {.callout-note collapse="false" icon=false}
 ## `geom_()`
 
-:::: {.panel-tabset}
+
 
 ### Basic use
 
@@ -262,7 +262,7 @@ Below ...
 **BASICS:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: basic__
 #| eval: true
@@ -282,7 +282,7 @@ Below ...
 **ARGUMENTS:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: args_1__
 #| eval: true
@@ -308,7 +308,7 @@ Below ...
 **AESTHETICS:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 The required aesthetics are: 
 
@@ -316,7 +316,7 @@ Optional aesthetics include:
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes__
 #| eval: true

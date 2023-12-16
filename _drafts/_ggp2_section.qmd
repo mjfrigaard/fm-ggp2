@@ -68,7 +68,7 @@ Description of the graph
 
 ## Set up
 
-:::: {.panel-tabset}
+
 
 
 
@@ -76,12 +76,12 @@ Description of the graph
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_example
 #| eval: false
@@ -105,11 +105,11 @@ library(ggplot2)
 ![](../www/imdb.png){fig-align="right" width="20%" height="20%"}
 -->
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Description of data
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_example
 #| eval: true
@@ -122,7 +122,7 @@ df <- tibble::tibble(X = sample(x = 1:100, 10, FALSE),
 
 ## Grammar
 
-:::: {.panel-tabset}
+
 
 
 
@@ -130,14 +130,14 @@ df <- tibble::tibble(X = sample(x = 1:100, 10, FALSE),
 **CODE:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 Code for creating graph
 
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_example
 #| eval: false

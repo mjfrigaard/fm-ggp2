@@ -1,4 +1,4 @@
-# Stream plots {.unnumbered}
+# Stream plots {#sec-stream-plots}
 
 ```{r}
 #| label: setup
@@ -34,10 +34,6 @@ status("complete")
 ```
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -112,20 +108,14 @@ Categorical groups are differentiated by color layers, with the area of the laye
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Install packages.
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_stream
 #| code-fold: show
@@ -152,14 +142,11 @@ library(ggplot2)
 ![](www/imdb.png){fig-align="right" width="40%" height="40%"}
 :::
 
-
-::: {style="font-size: 0.85em;"}
 We're going to use only the `mpaa`, `year`, and `budget` columns from `ggplot2movies::movies`, then drop all missing values (we have to remove special missing characters from `mpaa`). 
 
 We'll then convert `mpaa` to an ordered factor, then group by `year` and `mpaa` to calculate the average budget and filter to only those movies after `1984`. 
-:::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_stream
 #| code-fold: show
@@ -181,38 +168,28 @@ movies_stream <- ggplot2movies::movies |>
 dplyr::glimpse(movies_stream)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  - Create labels with `labs()`
+
+    - Use `paste0()` in the `subtitle` to automatically update the `year` when the `movies_stream` changes   
+
+  - Initialize the graph with `ggplot()` and provide `data`
+
+  - Map `year` to the `x`, `avg_budget` to `y`, and `mpaa` to `fill`
+
+  - Add the `geom_stream()` layer 
+
+  - Adjust the `y` axis with `scale_y_continuous()` and `scales::dollar`
+
+  - Finally, move the legend with  `theme(legend.position = "bottom")` 
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-  - use `paste0()` in the `subtitle` to automatically update the `year` when the `movies_stream` changes   
-  
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `year` to the `x`, `avg_budget` to `y`, and `mpaa` to `fill`
-
-Add the `geom_stream()` layer 
-
-Adjust the `y` axis with `scale_y_continuous()` and `scales::dollar`
-
-Finally, move the legend with  `theme(legend.position = "bottom")` 
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_stream
 #| code-fold: show
@@ -280,37 +257,25 @@ ggp2_stream +
     theme(legend.position = "bottom")
 ```
 
-::::
-
 ## More info
 
 The [`ggstream` package](https://github.com/davidsjoberg/ggstream) has multiple arguments for adjusting the shape and look of the categorical levels (and text labels).
 
-:::: {.panel-tabset}
-
 ### Type
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**TYPE:**
-:::
+  - Map `mpaa` to `fill` (wrapped in `forcats::fct_rev()`)
+
+  - We can adjust the look of the graph by setting the `type` argument in `geom_stream()`
+
+    - `type`: change type from `"mirror"` (the default) to `"proportional"`
+
+  - Adjust colors: 
+
+    - `scale_fill_manual()`: Add colors as a named vector to `values`
+
+  - Finally, add the `fill` to the labels and move the legend with  `theme(legend.position = "bottom")` 
 
 ::: {style="font-size: 0.85em;"}
-
-Map `mpaa` to `fill` (wrapped in `forcats::fct_rev()`)
-
-We can adjust the look of the graph by setting the `type` argument in `geom_stream()`
-
-  - `type`: change type from `"mirror"` (the default) to `"proportional"`
-
-Adjust colors: 
-
-  - `scale_fill_manual()`: Add colors as a named vector to `values`
-
-Finally, add the `fill` to the labels and move the legend with  `theme(legend.position = "bottom")` 
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_type
 #| eval: true
@@ -341,35 +306,31 @@ ggp2_stream_prp +
 
 ### Sorting
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**SORTING:**
-:::
-
-::: {style="font-size: 0.85em;"}
-
 To change how the categorical areas are sorted, adjust the sorting argument to either `"none"`, `"onset"`, or `"inside_out"`  
 
-  - `sorting`: set the `sorting` method to `"inside_out"` in *both* `ggstream::geom_stream()` and `ggstream::geom_stream_label()`      
+  - `sorting`: set the `sorting` method to `"inside_out"` in *both* `ggstream::geom_stream()` and `ggstream::geom_stream_label()` 
+  
   - `type`: change the type to `"ridge"` in *both* `ggstream::geom_stream()` and `ggstream::geom_stream_label()`    
 
 We can also add text labels using `ggstream::geom_stream_label()`:
 
-  - Map `mpaa` (wrapped in `forcats::fct_rev()`) to `label` globally   
+  - Map `mpaa` (wrapped in `forcats::fct_rev()`) to `label` globally  
+  
   - Inside `ggstream::geom_stream_label()`:  
-    - set color to white (`"#ffffff"`) and the `size` to `2.7`  
+  
+    - set color to white (`"#ffffff"`) and the `size` to `2.7` 
+    
     - Remove the legend with `show.legend = FALSE`  
 
 Colors:
 
   - Use `scale_colour_manual()` and `scale_fill_manual()` to manually set the values using a named vector 
 
-Change the `y` axis to US dollars using `scale_y_continuous()` and `scales::dollar`
+    - Change the `y` axis to US dollars using `scale_y_continuous()` and `scales::dollar`
 
-Finally, add the `fill` to the labels and move the legend with  `theme(legend.position = "bottom")` 
+  - Finally, add the `fill` to the labels and move the legend with  `theme(legend.position = "bottom")` 
 
-:::
-
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_sorting
 #| eval: true
@@ -412,6 +373,4 @@ ggp2_stream_srt +
     theme(legend.position = "bottom")
 ```
 :::
-
-::::
 

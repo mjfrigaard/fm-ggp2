@@ -1,4 +1,4 @@
-# Raincloud plots {.unnumbered}
+# Raincloud plots {#sec-raincloud-plots}
 
 ```{r}
 #| label: setup
@@ -38,10 +38,6 @@ status("complete")
 ```
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -148,20 +144,17 @@ We can use the [`raincloudplots` package](https://github.com/jorvlan/raincloudpl
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_raincloud
 #| code-fold: show
@@ -190,15 +183,13 @@ library(ggplot2)
 :::
 
 
-::: {style="font-size: 0.85em;"}
 Remove the missing values from `year` and `flipper_length_mm` the `penguins` data. The `raincloudplots` package has a `data_1x1()` function we can use to build the dataset for a 1x1 repeated measure graph (`peng_1x1`).
 
 This function takes two array arguments (`array_1` and `array_2`), which we create with the flipper length (`flipper_length_mm`) for two levels of `year` in the `peng_raincloud` data. 
 
 The `jit_distance` and `jit_seed` refer to the points in the plot.
-:::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_raincloud
 #| code-fold: show
@@ -216,28 +207,22 @@ peng_1x1 <- raincloudplots::data_1x1(
 glimpse(peng_1x1)
 ```
 :::
-::::
 
 ## Grammar (`raincloudplots`)
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
-::: {style="font-size: 0.85em;"}
-
 Create labels with `labs()`
 
 Use the `raincloudplots::raincloud_1x1()` to build the plot, assigning `peng_1x1` to `data_1x1`  
-  - assign `colors` and `fills`  
-  - set the size (of the points) and alpha (for opacity)
-:::
 
-::: {style="font-size: 0.75em;"}
+  - assign `colors` and `fills` 
+  
+  - set the size (of the points) and alpha (for opacity)
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_raincloud
 #| code-fold: show
@@ -308,13 +293,7 @@ ggp2_raincloud_x +
         y = "Flipper length (mm)")
 ```
 
-::::
-
 ## More info
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -324,11 +303,10 @@ ggp2_raincloud_x +
 ![Artwork by allison_horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
-We'll use the `peng_raincloud` data (with the missing values removed from `species` and `body_mass_g`).
-:::
 
-::: {style="font-size: 0.75em;"}
+We'll use the `peng_raincloud` data (with the missing values removed from `species` and `body_mass_g`).
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_ggdist
 #| eval: true
@@ -343,21 +321,13 @@ glimpse(peng_raincloud)
 
 ### Box-plot
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**`ggplot2::geom_boxplot()`**
-:::
+  -   Create labels with `labs()`
+
+  -   Initialize the graph with `ggplot()` and provide `data`
+
+  -   For the first layer, we create a box plot with `geom_boxplot()`, but include notches and remove the outliers. 
 
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-For the first layer, we create a box plot with `geom_boxplot()`, but include notches and remove the outliers. 
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: create_graph_raincloud2_box
 #| eval: true
@@ -387,16 +357,9 @@ ggp2_box +
 
 ### Density
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**`ggdist::stat_halfeye()`**
-:::
+We then add a horizontal density curve with `ggdist::stat_halfeye()`, mapping `species` to `fill`, and adjusting the size and shape of the density curve and shifting it slightly above the box plot.
 
 ::: {style="font-size: 0.85em;"}
-
-We then add a horizontal density curve with `ggdist::stat_halfeye()`, mapping `species` to `fill`, and adjusting the size and shape of the density curve and shifting it slightly above the box plot.
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: create_graph_raincloud2_halfeye
 #| eval: true
@@ -425,21 +388,13 @@ ggp2_stat_halfeye +
 
 ### Points
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**`ggplot2::geom_point()`**
-:::
-
-
-::: {style="font-size: 0.85em;"}
 The final layer is a `geom_point()`, mapping `fill` to `species` and setting `position` to `position_jitter()`. Additional adjustments to the points include:
 
 - Using `shape = 21`, we can `color` the outside of the point (white makes it appear to glow). 
 
 - Manually set the `height`, which refers to the vertical area for the points 
 
-:::
-
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_raincloud2_jitter
 #| eval: true
@@ -465,28 +420,18 @@ ggp2_jitter +
 ```
 :::
 
-::::
-
 ## More examples & resources
-
-:::: {.panel-tabset}
 
 ### Point shape
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**Point shape**
-:::
-
-::: {style="font-size: 0.85em;"}
 Cédric Scherer covered raincloud plots in [this great write-up](https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/) for [#TidyTuesday](https://github.com/rfordatascience/tidytuesday).
 
 Cédric also covers some alternative methods for plotting the points (I particularly like using bands instead of points when displaying the rainclouds vertically).
 
 We can switch to this layout by applying `ggplot2::coord_flip()` to the `ggp2_stat_halfeye` layer, then adding `geom_point()` with `shape` set to `95`
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_raincloud2_point_lines
 #| eval: true
@@ -511,16 +456,11 @@ ggplot2::geom_point(
 
 ### #TidyTuesday example
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**Polished Graph**
-:::
-
-::: {style="font-size: 0.85em;"}
 The code to re-create the #TidyTuesday graph is contained in this [gist.](https://gist.github.com/z3tt/8b2a06d05e8fae308abbf027ce357f01) 
 
 ![](www/rainclouds_gist.png){fig-align="center" width="100%" height="100%"}
 
-:::
+
 
 ### More resources
 
@@ -528,12 +468,10 @@ The code to re-create the #TidyTuesday graph is contained in this [gist.](https:
 **MORE RESOURCES**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 1. Raincloud plots: a multi-platform tool for robust data visualization. [1](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6480976/)
 
 2. Shape and point sizes in R. [2](https://r-graphics.org/recipe-scatter-shapes)
 
 3. RainCloudPlots package on GitHub. [3](https://github.com/RainCloudPlots/RainCloudPlots)
 :::
-
-::::

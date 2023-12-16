@@ -1,4 +1,4 @@
-# Alluvial charts {.unnumbered}
+# Alluvial charts {#sec-alluvial-charts}
 
 ```{r}
 #| label: setup
@@ -36,10 +36,6 @@ status("complete")
 
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -107,24 +103,18 @@ An alluvial graph displays the changes in composition or flow over time or acros
 
 We can build alluvial charts in `ggplot2` with the [`ggalluvial` package:](https://corybrunson.github.io/ggalluvial/). 
 
-See also: [parallel sets](https://mjfrigaard.github.io/ggp2-gallery/rela/parallel_sets.html)
+See also: [parallel sets](parallel_sets.qmd)
 
 ## Set up
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Install packages.
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_alluvial
 #| code-fold: show
@@ -141,8 +131,6 @@ library(ggplot2)
 ```
 :::
 
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
 :::
@@ -151,11 +139,10 @@ library(ggplot2)
 ![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
-Below we create a wide example of the `penguins` data (as `peng_wide`)
-:::
 
-::: {style="font-size: 0.75em;"}
+Below we create a wide example of the `penguins` data (as `peng_wide`).
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_alluvial
 #| code-fold: show
@@ -169,31 +156,24 @@ peng_wide <- penguins |>
 dplyr::glimpse(peng_wide)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+
+
+  - Create labels with `labs()` (with `ggtitle()`, `ylab()`, and `labs()`)
+
+  - Add `scale_x_discrete()` with the `limits` set to `"Year"`, `"Island"` and `"Species"`, and `expand` to `0.1` and `0.07`
+
+  - Add `geom_alluvium()` with `fill` set to the `sex` variable and `geom_stratum()`
+
+  - Add `geom_text()`, with `stat` set to `stratum` and label set to `after_stat(stratum)` (*inside* `aes()`) 
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()` (with `ggtitle()`, `ylab()`, and `labs()`)
-
-Add `scale_x_discrete()` with the `limits` set to `"Year"`, `"Island"` and `"Species"`, and `expand` to `0.1` and `0.07`
-
-Add `geom_alluvium()` with `fill` set to the `sex` variable and `geom_stratum()`
-
-Add `geom_text()`, with `stat` set to `stratum` and label set to `after_stat(stratum)` (*inside* `aes()`) 
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_alluvial
 #| code-fold: show
@@ -228,15 +208,11 @@ ggp2_alluvial_w +
 ```
 :::
 
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**
 :::
 
-::: {style="font-size: 0.85em;"}
 The `ggalluvial` functions can handle wide or long data. 
-:::
 
 ```{r}
 #| label: create_graph_alluvial
@@ -272,25 +248,15 @@ ggp2_alluvial_w +
   labs_alluvial_fill
 ```
 
-::::
-
 ## More info
 
 The `ggalluvial` package can also help reshape data with the `to_lodes_form()` function.
 
-:::: {.panel-tabset}
-
 ### `to_lodes_form()` 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**to_lodes_form():**
-:::
+Below we create `peng_lodes` from the `penguins` dataset using the `to_lodes_form()` from the `ggalluvial` package.
 
 ::: {style="font-size: 0.85em;"}
-Below we create `peng_lodes` from the `penguins` dataset using the `to_lodes_form()` from the `ggalluvial` package.
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_alluvial_lf
 #| eval: true
@@ -307,21 +273,17 @@ glimpse(peng_lodes)
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
-
 Create labels with `labs()`
 
-Map `Measure` to `x`, `Frequency` to `y`, `stratum` to `stratum`, `alluvium` to `alluvium`, and `label` to `stratum`.
+  - Map `Measure` to `x`, `Frequency` to `y`, `stratum` to `stratum`, `alluvium` to `alluvium`, and `label` to `stratum`.
 
-Add the `geom_alluvium()` and map `Sex` to `fill`  
+  - Add the `geom_alluvium()` and map `Sex` to `fill`  
 
-Add the `geom_stratum()` and set the `width` to `0.45`  
+  - Add the `geom_stratum()` and set the `width` to `0.45`  
 
-Add `geom_text()` and set `stat` to `"stratum"`
+  - Add `geom_text()` and set `stat` to `"stratum"`
 
-:::
-
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_alluvial_lf
 #| code-fold: true
@@ -355,17 +317,11 @@ ggp2_alluvial_lf +
 
 ### `geom_flow()` 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**geom_flow():**
-:::
-
-::: {style="font-size: 0.85em;"}
 If you'd like to arrange the date or time variable across the `x`, you can use the `ggalluvial::geom_flow()` with `ggalluvial::geom_stratum()`. 
 
-First create `peng_alluvial`, a subset of `palmerpenguins::penguins_raw` with all variables turned to factors. 
-:::
+  - First create `peng_alluvial`, a subset of `palmerpenguins::penguins_raw` with all variables turned to factors. 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: peng_alluvial
 #| eval: true
@@ -385,21 +341,17 @@ dplyr::glimpse(peng_alluvial)
 ```
 :::
 
+  - Create labels with `labs()`
+
+  - Initiate graph with `data`
+
+  - Map the `year` to the `x`, `island` to `stratum`, `individual_id` to `alluvium`, `island` to `fill`, and `island` to `label`.
+
+  - Add `scale_fill_brewer()`, and set the `type` to `"qual"` and choose a `palette`
+
+  - Add the `geom_flow()`, with `stat` set to `"alluvium"`, `lode.guidance` set to `"frontback"`, and `color` to `"#A9A9A9"`
+
 ::: {style="font-size: 0.85em;"}
-Create labels with `labs()`
-
-Initiate graph with `data`
-
-Map the `year` to the `x`, `island` to `stratum`, `individual_id` to `alluvium`, `island` to `fill`, and `island` to `label`.
-
-Add `scale_fill_brewer()`, and set the `type` to `"qual"` and choose a `palette`
-
-Add the `geom_flow()`, with `stat` set to `"alluvium"`, `lode.guidance` set to `"frontback"`, and `color` to `"#A9A9A9"`
-
-Add `ggalluvial::geom_stratum()`
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: ggp2_alluvial_flow
 #| code-fold: true
@@ -425,7 +377,21 @@ ggp2_alluvial_flow <- ggplot(data = peng_alluvial,
     color = "#A9A9A9")
 
 ggp2_alluvial_flow
+```
 
+  - Add `ggalluvial::geom_stratum()`
+
+```{r}
+#| label: ggp2_alluvial_geom_stratum
+#| code-fold: true
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| out-height: '100%'
+#| out-width: '100%'
+#| layout-nrow: 1
+#| column: page-inset-right
 # add geom_stratum()
 ggp2_alluvial_stratum <- ggp2_alluvial_flow +
   geom_stratum() 
@@ -435,15 +401,9 @@ ggp2_alluvial_stratum
 
 ### `legend.position`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**legend.position:**
-:::
+Move legend to bottom with `theme(legend.position = "bottom")`
 
 ::: {style="font-size: 0.85em;"}
-Move legend to bottom with `theme(legend.position = "bottom")`
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: ggp2_alluvial_legend_position
 #| code-fold: true
@@ -460,5 +420,3 @@ ggp2_alluvial_stratum +
   theme(legend.position = "bottom")
 ```
 :::
-
-::::

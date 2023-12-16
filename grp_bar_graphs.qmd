@@ -1,4 +1,4 @@
-# Grouped bar graphs {.unnumbered}
+# Grouped bar graphs {#sec-grp-bar-graphs}
 
 
 ```{r}
@@ -35,10 +35,6 @@ status("complete")
 
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -96,20 +92,14 @@ ggp2_grp_col +
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Install packages.
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_grp_col
 #| code-fold: show
@@ -134,11 +124,9 @@ library(ggplot2)
 ![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
 Remove the missing values and reduce the `palmerpenguins::penguins` dataset to only `body_mass_g` and `island`, then group the data by `island` and calculate the mean `body_mass_g` (as `avg_body_mass_g`). 
-:::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_grp_col
 #| code-fold: show
@@ -155,31 +143,23 @@ peng_grp_col <- palmerpenguins::penguins |>
 glimpse(peng_grp_col)
 ```
 :::
-::::
+
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  -   Create labels with `labs()`
+
+  -   Initialize the graph with `ggplot()` and provide `data`
+
+  -   Map `island` to the `x` and `avg_body_mass_g` to the `y`
+
+  -   Map `island` to `fill` *inside* the `aes()` of `geom_col()` 
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `island` to the `x` and `avg_body_mass_g` to the `y`
-
-Map `island` to `fill` *inside* the `aes()` of `geom_col()` 
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_grp_col
 #| code-fold: show
@@ -203,8 +183,6 @@ ggp2_grp_col +
     labs_grp_col
 ```
 :::
-
-
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **GRAPH:**
@@ -233,5 +211,3 @@ ggp2_grp_col <- ggplot(data = peng_grp_col,
 ggp2_grp_col + 
     labs_grp_col
 ```
-
-::::

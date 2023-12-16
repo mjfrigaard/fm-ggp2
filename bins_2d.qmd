@@ -1,4 +1,4 @@
-# 2D histograms {.unnumbered}
+# 2D histograms {#sec-bins-2d}
 
 ```{r}
 #| label: setup
@@ -34,10 +34,6 @@ status("complete")
 
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -92,20 +88,14 @@ When we extend this display to two numerical/quantitative variables, the bins ar
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Install packages.
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_2d_hist
 #| code-fold: show
@@ -130,11 +120,9 @@ library(ggplot2)
 ![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
 We'll take the `flipper_length_mm`, `bill_length_mm`, and `species` variables from `palmerpenguins::penguins` and drop the missing values. 
-:::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_2d_hist
 #| code-fold: show
@@ -147,31 +135,22 @@ penguins_2dhist <- palmerpenguins::penguins |>
 glimpse(penguins_2dhist)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  - Create labels with `labs()`
+
+  - Initialize the graph with `ggplot()` and provide `data`
+
+  - Map `bill_length_mm` to the `x` and `flipper_length_mm` to the `y`
+
+  - Add the `geom_bin2d()` layer
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `bill_length_mm` to the `x` and `flipper_length_mm` to the `y`
-
-Add the `geom_bin2d()` layer
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_2d_hist
 #| code-fold: show
@@ -228,26 +207,19 @@ ggp2_2dhist +
     labs_2dhist
 ```
 
-::::
-
 ## More info
-
-:::: {.panel-tabset}
 
 ### Bins
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**BINS:**
-:::
+The value for `bins` will be vary depending on the variable values--there is no correct number:
 
+  - If the number of `bins` is too low, the density may hide important nuances between the variables. 
+  
+  - If the number of `bins` is too high, the noise might drown out the signal.
+
+  - Below we change the `bins` to `9`, `12` and `18` to compare the display:
 
 ::: {style="font-size: 0.85em;"}
-The value for `bins` will be vary depending on the variable values--there is no correct number. If the number of `bins` is too low, the density may hide important nuances between the variables. If the number of `bins` is too high, the noise might drown out the signal.
-
-Below we change the `bins` to `9`, `12` and `18` to compare the display:
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: bins_2d_hist
 #| eval: true
@@ -288,17 +260,11 @@ ggp2_2dhist_bins9 +
 
 ### Scale
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**SCALES:**
-:::
-
-::: {style="font-size: 0.85em;"}
 `scale_fill_continuous_sequential()` comes with a variety of palettes to choose from (run `hcl_palettes(type = "sequential")` to view the full list).
 
 We can also reverse the order of the fill color scale with `rev` (`TRUE` or `FALSE`).
-:::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: scales_2d_hist
 #| eval: true
@@ -326,22 +292,17 @@ ggp2_2dhist_bins12 +
 
 ### Options
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**OPTIONS:**
-:::
-
 ::: {.column-margin}
 If you set the point `shape` to `21`, you have control over *both* `color` and `fill`. 
 :::
 
+In the previous example we showed how to `rev`erse the color scale for the `palette` in `scale_fill_continuous_sequential()`. 
+
+  - Below we reverse the color scale, but also manually set which colors on the scale we want to `begin` with (i.e., smallest data value) and which color we want to `end` with (i.e., the largest data value). Possible values range from `0` - `1`.
+
+  - We also add a `geom_point()` layer. 
+
 ::: {style="font-size: 0.85em;"}
-
-In the previous example we showed how to `rev`erse the color scale for the `palette` in `scale_fill_continuous_sequential()`. Below we reverse the color scale, but also manually set which colors on the scale we want to `begin` with (i.e., smallest data value) and which color we want to `end` with (i.e., the largest data value). Possible values range from `0` - `1`.
-
-We also add a `geom_point()` layer. 
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pals_2d_hist
 #| eval: true
@@ -367,5 +328,3 @@ ggp2_2dhist_bins12 +
   labs_2dhist 
 ```
 :::
-
-::::

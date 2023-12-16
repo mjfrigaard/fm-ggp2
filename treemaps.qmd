@@ -1,4 +1,4 @@
-# Treemaps {.unnumbered}
+# Treemaps {#sec-treemaps}
 
 ```{r}
 #| label: setup
@@ -35,10 +35,6 @@ status("complete")
 ```
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -126,20 +122,13 @@ We'll build a treemap using the [`treemapify` package.](http://wilkox.org/treema
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Install packages.
-:::
 
-
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_treemap
 #| code-fold: show
@@ -166,11 +155,10 @@ library(ggplot2)
 ![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
-Filter the missing values from `sex`, group the data by `species`, `island`, and `sex`, then count the `species` and `island` (then `ungroup()`).
-:::
 
-::: {style="font-size: 0.75em;"}
+Filter the missing values from `sex`, group the data by `species`, `island`, and `sex`, then count the `species` and `island` (then `ungroup()`).
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_treemap
 #| code-fold: show
@@ -185,40 +173,38 @@ treemap_peng <- penguins |>
 glimpse(treemap_peng)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
 
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+
+  -   Create labels with `labs()`
+
+  -   Initialize the graph with `ggplot()` and provide `data`
+
+  -   Map the `n` to `area`, `sex` to `fill` and `label`, `species` to `subgroup`, and `island` to `subgroup2`
+
+  -   Add `geom_treemap()`
+
+  -   Add `geom_treemap_text()`   
+
+      - `place`: this controls where the boxes start  
+      
+      - `color`: text color    
+      
+      - `min.size`: the minimum font size (when re-sizing)    
+      
+      - `alpha`: opacity      
+      
+      - `fontface`: `itlalic`/`bond`    
+      
+      - `family`: `"sans"`/`"sansserif"`/`"mono"`  
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-- Map the `n` to `area`, `sex` to `fill` and `label`, `species` to `subgroup`, and `island` to `subgroup2`
-
-- Add `geom_treemap()`
-
-- Add `geom_treemap_text()`   
-
-  - `place`: this controls where the boxes start      
-  - `color`: text color    
-  - `min.size`: the minimum font size (when re-sizing)    
-  - `alpha`: opacity      
-  - `fontface`: `itlalic`/`bond`    
-  - `family`: `"sans"`/`"sansserif"`/`"mono"`  
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_treemap
 #| code-fold: show
@@ -256,7 +242,7 @@ ggp2_treemap +
 **GRAPH:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_treemap
 #| eval: true
@@ -289,22 +275,11 @@ ggp2_treemap +
 ```
 :::
 
-::::
-
-
 ## More info
 
 `treemapify` has multiple options for building treemaps. We cover a few of these below, but you should check out the [package vignette](https://cran.r-project.org/web/packages/treemapify/vignettes/introduction-to-treemapify.html). 
 
-
-:::: {.panel-tabset}
 ### Subgroup 
-
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**SUBGROUP:**
-:::
-
-::: {style="font-size: 0.85em;"}
 
 `ggplot2` build layers in the order they're written, so it's [advised](https://cran.r-project.org/web/packages/treemapify/vignettes/introduction-to-treemapify.html) to build the subgroups in order from "*from deepest to shallowest*", with `subgroups2` first (ending on `subgroup`)
 
@@ -314,19 +289,22 @@ ggp2_treemap +
 
 - Add `geom_treemap_subgroup2_text()`
 
-  - `place`: this controls where the boxes start      
+  - `place`: this controls where the boxes start    
+  
   - `color`: text color    
-  - `min.size`: the minimum font size (when re-sizing)    
+  
+  - `min.size`: the minimum font size (when re-sizing)   
+  
   - `alpha`: opacity      
+  
   - `fontface`: `itlalic`/`bond`    
+  
   - `family`: `"sans"`/`"sansserif"`/`"mono"`  
 
 
 See full list of arguments [here](http://wilkox.org/treemapify/).
 
-:::
-
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_treemap_sgb
 #| eval: true
@@ -354,28 +332,25 @@ ggp2_tm_subgroup +
 
 ### Subgroup 2
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**SUBGROUP 2:**
-:::
+  - Add `geom_treemap_subgroup_border()`
+  
+    - Set the `size` and `color`    
+
+  - Add `geom_treemap_subgroup_text()`
+
+    - `place`: this controls where the boxes start  
+    
+    - `color`: text color    
+    
+    - `min.size`: the minimum font size (when re-sizing)   
+    
+    - `alpha`: opacity      
+    
+    - `fontface`: `itlalic`/`bond`    
+    
+    - `family`: `"sans"`/`"sansserif"`/`"mono"` 
 
 ::: {style="font-size: 0.85em;"}
-
-Add `geom_treemap_subgroup_border()`
-
-  - Set the `size` and `color`    
-
-Add `geom_treemap_subgroup_text()`
-
-  - `place`: this controls where the boxes start      
-  - `color`: text color    
-  - `min.size`: the minimum font size (when re-sizing)    
-  - `alpha`: opacity      
-  - `fontface`: `itlalic`/`bond`    
-  - `family`: `"sans"`/`"sansserif"`/`"mono"` 
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_tmap_sgb_2
 #| eval: true
@@ -404,4 +379,3 @@ ggp2_tm_subgroup2 +
 ```
 :::
 
-::::

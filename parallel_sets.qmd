@@ -1,4 +1,4 @@
-# Parallel sets {.unnumbered}
+# Parallel sets {#sec-parallel-sets}
 
 
 ```{r}
@@ -37,10 +37,6 @@ status("complete")
 ```
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -115,24 +111,18 @@ The height of the connecting bands *between* the categories on the `x` axis repr
 
 We can build parallel set diagrams with the [`ggforce` package](https://ggforce.data-imaginist.com/index.html).  
 
-Also check out [alluvial charts.](https://mjfrigaard.github.io/ggp2-gallery/rela/alluvial_charts.html)
+Also check out [alluvial charts.](alluvial_charts.qmd)
 
 ## Set up 
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Install packages.
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_parallel_sets
 #| code-fold: show
@@ -150,7 +140,6 @@ library(ggplot2)
 :::
 
 
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
 :::
@@ -159,13 +148,12 @@ library(ggplot2)
 ![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
+
 We're going to remove the missing values from `palmerpenguins::penguins`, count the categorical variables (`island`, `sex`, `species`), and rename the `n` column (produced by the `count()` function) to `value`.
 
-`ggforce` has a special [`gather_set_data()`](https://ggforce.data-imaginist.com/reference/gather_set_data.html) function that *changes tidy data into a tidy(er) format*
-:::
+  - `ggforce` has a special [`gather_set_data()`](https://ggforce.data-imaginist.com/reference/gather_set_data.html) function that *changes tidy data into a tidy(er) format*
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_parallel_sets
 #| code-fold: show
@@ -181,39 +169,30 @@ para_set_peng <- ggforce::gather_set_data(
 dplyr::glimpse(para_set_peng)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  - Create labels with `labs()`
+
+  - Initialize the graph with `ggplot()` and provide `data`
+
+  - Map `x` to `x`, `id` to `id`, `y` to `split`, and `value` to `value`
+
+  - In the `geom_parallel_sets()` function, map `sex` to `fill` and manually set the `alpha` (opacity) and the `axis.width` 
+
+  - In the `geom_parallel_sets_axes()` function, set the `axis.width` to the same value as the `geom_parallel_sets()` above
+
+  - For labeling, adjust the `size` manually and set the `color` to something that stands out against the black vertical axes
+
+  - Manually label the `x` axis with `scale_x_continuous()`, setting the `breaks` and `labels` to the variable names in the `peng_wide` dataset
+
+  - Finally, remove the `x` title with `axis.title.x = element_blank()`
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `x` to `x`, `id` to `id`, `y` to `split`, and `value` to `value`
-
-In the `geom_parallel_sets()` function, map `sex` to `fill` and manually set the `alpha` (opacity) and the `axis.width` 
-
-In the `geom_parallel_sets_axes()` function, set the `axis.width` to the same value as the `geom_parallel_sets()` above
-
-For labeling, adjust the `size` manually and set the `color` to something that stands out against the black vertical axes
-
-Manually label the `x` axis with `scale_x_continuous()`, setting the `breaks` and `labels` to the variable names in the `peng_wide` dataset
-
-Finally, remove the `x` title with `axis.title.x = element_blank()`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_parallel_sets
 #| code-fold: show
@@ -300,27 +279,17 @@ ggp2_psets_labs +
     labs_psets
 ```
 
-::::
-
 ## More info
 
 If the categories have long names, you can move the location of the labels *outside* the set. 
 
-
-:::: {.panel-tabset}
 ### Labeling sets
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**LABELS:**
-:::
-
-::: {style="font-size: 0.85em;"}
 If the categories have long names, use the `angle`, `nudge_x`/`nudge_y` and `hjust`/`vjust` in `geom_parallel_sets_labels()` to adjust the size, location, and color of the labels. 
 
-Manually setting the `limits` of the `x` axis in `scale_x_continuous()` will also give more room for the labels. 
-:::
+  - Manually setting the `limits` of the `x` axis in `scale_x_continuous()` will also give more room for the labels. 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_parallel_sets_labs
 #| eval: true
@@ -346,5 +315,3 @@ ggp2_psets_axes +
     labs_psets
 ```
 :::
-
-::::

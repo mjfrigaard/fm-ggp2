@@ -1,4 +1,4 @@
-# Heatmaps {.unnumbered}
+# Heatmaps {#sec-heatmaps}
 
 ```{r}
 #| label: setup
@@ -26,10 +26,6 @@ ggplot2::theme_set(theme_ggp2g(
 
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -97,20 +93,14 @@ Heatmap legends should be positioned on top or bottom and justified horizontally
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+
 Install packages.
-:::
 
-
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_heatmap
 #| code-fold: show
@@ -132,14 +122,13 @@ library(ggplot2)
 :::
 
 ::: {.column-margin}
-![](../www/538.png){fig-align="right" width="45%" height="45%"}
+![](www/538.png){fig-align="right" width="45%" height="45%"}
 :::
+
+
+For the heatmap, we're going to re-structure and filter the `bob_ross` data from the `fivethirtyeight` package.
 
 ::: {style="font-size: 0.85em;"}
-For the heatmap, we’re going to re-structure and filter the `bob_ross` data from the `fivethirtyeight` package.
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_heatmap
 #| code-fold: show
@@ -162,33 +151,24 @@ heatmap_ross <- fivethirtyeight::bob_ross |>
   ungroup()
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  -  Create labels with `labs()`
+
+  -  Initialize the graph with `ggplot()` and provide `data`
+
+  -  Assign `season` to `x`, `object` to `y`, and `occurrences` to `fill`
+
+  -  Add the `geom_tile()`
+
+  -  Move the legend to the bottom with `theme(legend.position = "bottom")`
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Assign `season` to `x`, `object` to `y`, and `occurrences` to `fill`
-
-Add the `geom_tile()`
-
-Move the legend to the bottom with `theme(legend.position = "bottom")`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_heatmap
 #| code-fold: show
@@ -245,36 +225,26 @@ ggp2_heatmap_tile +
   labs_heatmap_tile
 ```
 
-::::
-
 
 ## More info
 
 In addition to `geom_tile()`, heatmaps can also be created with the `geom_raster()` function.
 
-:::: {.panel-tabset}
-
 ### `geom_raster()`
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**`geom_raster()`:**
-:::
+<br>
+
+  -  Create labels with `labs()`
+
+  -  Initialize the graph with `ggplot()` and provide `data`
+
+  -  Assign `season` to `x`, `object` to `y`, and `occurrences` to fill
+
+  -  Add the `geom_raster()`
+
+  -  Move the legend to the bottom with `theme(legend.position = "bottom")`
 
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Assign `season` to `x`, `object` to `y`, and `occurrences` to fill
-
-Add the `geom_raster()`
-
-Move the legend to the bottom with `theme(legend.position = "bottom")`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_raster
 #| eval: true
@@ -298,8 +268,5 @@ ggp2_heatmap_raster +
   labs_heatmap_raster
 ```
 :::
-
-
-::::
 
 

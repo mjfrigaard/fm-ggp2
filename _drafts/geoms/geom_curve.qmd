@@ -150,7 +150,7 @@ crv + abln + sgmnt + hln + vln + spk +
 
 ## `geom_curve()`
 
-:::: {.panel-tabset}
+
 
 ### Basic Use
 
@@ -158,7 +158,7 @@ crv + abln + sgmnt + hln + vln + spk +
 **BASICS:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: basic_curve
 #| eval: true
@@ -180,7 +180,7 @@ ggp2_curve_base +
 **AESTHETICS:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 The required aesthetics are: 
 
@@ -188,7 +188,7 @@ Optional aesthetics include:
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_curve
 #| eval: true
@@ -205,7 +205,7 @@ Optional aesthetics include:
 **ARGUMENTS:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: args_1_curve
 #| eval: true

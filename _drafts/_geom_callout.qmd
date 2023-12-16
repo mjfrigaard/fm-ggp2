@@ -55,7 +55,7 @@ install.packages("palmerpenguins")
 ::::: {.callout-note collapse="false" icon=false}
 ## `geom_()`
 
-:::: {.panel-tabset}
+
 
 ### Basic Use
 
@@ -63,7 +63,7 @@ install.packages("palmerpenguins")
 **BASICS:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: basic__
 #| eval: true
@@ -83,7 +83,7 @@ install.packages("palmerpenguins")
 **AESTHETICS:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 The required aesthetics are: 
 
@@ -91,7 +91,7 @@ Optional aesthetics include:
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes__
 #| eval: true
@@ -108,7 +108,7 @@ Optional aesthetics include:
 **ARGUMENTS:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: args_1__
 #| eval: true

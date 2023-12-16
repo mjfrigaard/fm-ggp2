@@ -1,4 +1,4 @@
-# Slope graphs {.unnumbered}
+# Slope graphs {#sec-slope-graphs}
 
 ```{r}
 #| label: setup
@@ -32,13 +32,7 @@ ggplot2::theme_set(theme_ggp2g(
 status("complete")
 ```
 
-
-
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -108,20 +102,16 @@ We can build slope graphs in `ggplot2` using the `geom_line()` and `geom_point()
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_slope
 #| code-fold: show
@@ -147,12 +137,9 @@ library(ggplot2)
 :::
 
 
+We'll be using the penguins data for this graph, but slightly restructured. 
 
 ::: {style="font-size: 0.85em;"}
-We'll be using the penguins data for this graph, but slightly restructured. 
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_slope
 #| code-fold: show
@@ -170,36 +157,27 @@ peng_slope <- palmerpenguins::penguins |>
 glimpse(peng_slope)
 ```
 :::
-::::
+
 
 ## Grammar 
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  - Create labels with `labs()`
+
+  - Initialize the graph with `ggplot()` and provide `data`
+
+  - Map `year` to the `x`, `avg_bill_depth_mm` to `y`, and `island` to `group`
+
+  - Add a `geom_line()` layer, mapping `island` to `color`, and setting the `size` to `2`
+
+  - Add a `geom_point()` layer, mapping `color` to `island`, and setting `size` to `4`
+
+  - We'll adjust the `x` axis with `scale_x_continuous()`, manually setting the `breaks` and moving the `position` to the `"top"` of the graph
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `year` to the `x`, `avg_bill_depth_mm` to `y`, and `island` to `group`
-
-Add a `geom_line()` layer, mapping `island` to `color`, and setting the `size` to `2`
-
-Add a `geom_point()` layer, mapping `color` to `island`, and setting `size` to `4`
-
-We'll adjust the `x` axis with `scale_x_continuous()`, manually setting the `breaks` and moving the `position` to the `"top"` of the graph
-
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_slope
 #| code-fold: show
@@ -249,7 +227,7 @@ ggp2_slope +
 labs_slope <- labs(
         title = "Changes in Bill Depth of Palmer Penguins", 
         subtitle = "Years 2007 & 2008",
-        x = "Year", y = "Bill Depth (mm)", 
+        x = "Year", y = "Average Bill Depth (mm)", 
         color = "Island")
 
 ggp2_slope <- ggplot(data = peng_slope, 
@@ -268,25 +246,17 @@ ggp2_slope +
     labs_slope
 ```
 
-::::
-
 ## More info
 
 We can also use faceting with slope graphs to add a third categorical variable.
-
-:::: {.panel-tabset}
-
- 
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
 :::
 
-::: {style="font-size: 0.85em;"}
 We'll be using the `penguins` dataset again, but group remove the missing values and group it by `year`, `island`, and `sex`. 
-:::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_grp_slope
 #| eval: true
@@ -314,26 +284,23 @@ glimpse(peng_grp_slope)
 **GRAPH:**
 :::
 
+  - Create labels with `labs()` 
+
+  - Initialize the graph with `ggplot()` and provide `data`
+
+  - Map `year` to the `x`, `avg_bill_depth_mm` to `y`, and `island` to `group`
+
+  - Add a `geom_line()` layer, mapping `island` to `color`, and setting the `size` to `2`
+
+  - Add a `geom_point()` layer, mapping `color` to `island`, and setting `size` to `4`
+
+  - We'll adjust the `x` axis with `scale_x_continuous()`, manually setting the `breaks` and moving the `position` to the `"top"` of the graph
+
+  - We'll duplicate the the `y` axis with `sec.axis`, setting `dup_axis()` to the same `name` of the previous `y` label.
+
+  - Finally, we facet the graph by `sex`, adjust the `size` of the text, and move the legend to the `"bottom"` of the graph.
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()` 
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `year` to the `x`, `avg_bill_depth_mm` to `y`, and `island` to `group`
-
-Add a `geom_line()` layer, mapping `island` to `color`, and setting the `size` to `2`
-
-Add a `geom_point()` layer, mapping `color` to `island`, and setting `size` to `4`
-
-We'll adjust the `x` axis with `scale_x_continuous()`, manually setting the `breaks` and moving the `position` to the `"top"` of the graph
-
-We'll duplicate the the `y` axis with `sec.axis`, setting `dup_axis()` to the same `name` of the previous `y` label.
-
-Finally, we facet the graph by `sex`, adjust the `size` of the text, and move the legend to the `"bottom"` of the graph.
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: create_graph_grp_slope
 #| eval: true
@@ -358,8 +325,8 @@ ggp2_grp_slope <- ggplot(data = peng_grp_slope,
         size = 4) +
     scale_x_continuous(breaks = c(2008, 2009),
         position = "top") +
-    scale_y_continuous(name = "Bill Depth (mm)",
-        sec.axis = dup_axis(name = "Bill Depth (mm)")) +
+    scale_y_continuous(name = "Average Bill Depth (mm)",
+        sec.axis = dup_axis(name = "Average Bill Depth (mm)")) +
     facet_wrap(. ~ sex,
         ncol = 2) +
     theme_minimal(base_size = 14) +
@@ -373,5 +340,3 @@ ggp2_grp_slope +
     labs_grp_slope
 ```
 :::
-
-::::

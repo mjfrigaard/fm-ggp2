@@ -1,4 +1,4 @@
-# Grouped scatter plots {.unnumbered}
+# Grouped scatter plots {#sec-grouped-scatter-plots}
 
 ```{r}
 #| label: setup
@@ -33,10 +33,6 @@ status("complete")
 ```
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -78,7 +74,6 @@ ggp2_grp_scatter +
 **`r emo::ji("check")` a categorical variable**      
 :::
 
-
 ::::
 
 ## Description 
@@ -89,20 +84,14 @@ The `x` and `y` position displays the relationship between the two continuous va
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Install packages.
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_grp_scatter
 #| code-fold: show
@@ -118,7 +107,6 @@ library(ggplot2)
 :::
 
 
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
 :::
@@ -127,11 +115,10 @@ library(ggplot2)
 ![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
-The `penguins` data
-:::
 
-::: {style="font-size: 0.75em;"}
+The `penguins` data.
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_grp_scatter
 #| code-fold: show
@@ -141,33 +128,25 @@ penguins <- palmerpenguins::penguins
 glimpse(penguins)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
 
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  - Create labels with `labs()`
+
+  - Initialize the graph with `ggplot()` and provide `data`
+
+  - Map `bill_length_mm` to the `x` axis 
+
+  - Map `flipper_length_mm` to the `y` axis  
+
+  - Map `species` to `color` inside the `geom_point()`
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `bill_length_mm` to the `x` axis 
-
-Map `flipper_length_mm` to the `y` axis  
-
-Map `species` to `color` inside the `geom_point()`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_grp_scatter
 #| code-fold: show
@@ -200,9 +179,7 @@ ggp2_grp_scatter +
 **GRAPH:**
 :::
 
-::: {style="font-size: 0.85em;"}
-Adjust over-plotting with transparency (`alpha`)
-:::
+Adjust over-plotting with transparency (`alpha`).
 
 ```{r}
 #| label: create_graph_grp_scatter
@@ -228,5 +205,3 @@ ggp2_grp_scatter <- penguins |>
 ggp2_grp_scatter + 
   labs_grp_scatter
 ```
-
-::::

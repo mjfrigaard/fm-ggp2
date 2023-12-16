@@ -1,4 +1,4 @@
-# Hexagon bins {.unnumbered}
+# Hexagon bins {#sec-hex-bins}
 
 ```{r}
 #| label: setup
@@ -33,10 +33,6 @@ status("complete")
 ```
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -85,20 +81,14 @@ Hexagon bins (or hex-bins) are a very similar to 2-D histograms, but instead of 
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Install packages.
-:::
 
-
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_hex
 #| code-fold: show
@@ -114,7 +104,6 @@ library(ggplot2)
 :::
 
 
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
 :::
@@ -124,11 +113,10 @@ library(ggplot2)
 :::
 
 
-::: {style="font-size: 0.85em;"}
-We'll take the `flipper_length_mm`, `bill_length_mm`, `bill_depth_mm`, `species`, `sex`, and `island` variables from `palmerpenguins::penguins` and drop the missing values. 
-:::
 
-::: {style="font-size: 0.75em;"}
+We'll take the `flipper_length_mm`, `bill_length_mm`, `bill_depth_mm`, `species`, `sex`, and `island` variables from `palmerpenguins::penguins` and drop the missing values.
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_hex
 #| code-fold: show
@@ -141,31 +129,22 @@ penguins_hex <- palmerpenguins::penguins |>
 glimpse(penguins_hex)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  - Create labels with `labs()`
+
+  - Initialize the graph with `ggplot()` and provide `data`
+
+  - Map `bill_length_mm` to the `x` and `flipper_length_mm` to the `y`
+
+  - Add the `geom_hex()` layer
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `bill_length_mm` to the `x` and `flipper_length_mm` to the `y`
-
-Add the `geom_hex()` layer
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_hex
 #| code-fold: show
@@ -190,12 +169,11 @@ ggp2_hex +
 ```
 :::
 
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**
 :::
 
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_hex
 #| eval: true
@@ -219,26 +197,17 @@ ggp2_hex <- ggplot(data = penguins_hex,
 ggp2_hex +
     labs_hex
 ```
-
-::::
+:::
 
 ## More info
 
-:::: {.panel-tabset}
-
 ### Bins
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**BINS:**
-:::
-
-::: {style="font-size: 0.85em;"}
 Below we change the `bins` to `20` and `15` and save these layers as `ggp2_hex_b20` and `ggp2_hex_b15`.
 
 *Decreasing* the number of `bins` *increases* the size of the hexagons (and makes them larger). 
-:::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: bins_hex
 #| eval: true
@@ -267,17 +236,11 @@ ggp2_hex_b15 +
 
 ### Scale
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**SCALES:**
-:::
+  - We can adjust the color scale using  `scale_color_discrete_sequential()` and setting `aesthetics` to `"fill"`. 
+
+  - If the hexagons overlap, we can use the `alpha` to make them slightly transparent. 
 
 ::: {style="font-size: 0.85em;"}
-We can adjust the color scale using  `scale_color_discrete_sequential()` and setting `aesthetics` to `"fill"`. 
-
-If the hexagons overlap, we can use the `alpha` to make them slightly transparent. 
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: scales_2d_hex
 #| eval: true
@@ -306,28 +269,17 @@ ggplot(data = penguins_hex,
         palette = "Viridis") +
     labs_hex2
 ```
+:::
 
-::: {style="font-size: 0.85em;"}
 Get a full list of available color palette's using `hcl_palettes(type = ` `"sequential")`
-:::
-
-:::
 
 ### Options
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**OPTIONS:**
-:::
+  - `binwidth` allows us to manually adjust the size of the hexagons.
+
+  - `linewidth` is also helpful when using `alpha` for overlapping values. 
 
 ::: {style="font-size: 0.85em;"}
-
-`binwidth` allows us to manually adjust the size of the hexagons.
-
-`linewidth` is also helpful when using `alpha` for overlapping values. 
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: pals_2d_hex
 #| eval: true
@@ -360,8 +312,5 @@ ggplot(data = penguins_hex,
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
-Bins can be set with `bins` (a single number) or `binwidth` (a numeric vector of `c(x, y)`)
-:::
 
-::::
+Bins can be set with `bins` (a single number) or `binwidth` (a numeric vector of `c(x, y)`)

@@ -1,4 +1,4 @@
-# Overlapping bar graphs {.unnumbered}
+# Overlapping bar graphs {#sec-overlapping-bar-graphs}
 
 ```{r}
 #| label: setup
@@ -23,13 +23,7 @@ ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
 ```
 
-
-
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -80,20 +74,16 @@ In `ggplot2`, we can build overlapping bar graphs using the `fill` argument in `
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_bar_ovrlp
 #| code-fold: show
@@ -108,8 +98,6 @@ library(ggplot2)
 ```
 :::
 
-
-
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DATA:**
 :::
@@ -118,11 +106,11 @@ library(ggplot2)
 ![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Remove missing `species` from `penguins` and filter the data to only penguins on `"Dream"` island.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_bar_ovrlp
 #| code-fold: show
@@ -134,31 +122,23 @@ penguins_ovrlp <- filter(penguins,
 glimpse(penguins_ovrlp)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
 
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  -  Create labels with `labs()`
+
+  -  Initialize the graph with `ggplot()` and provide `data`
+
+  -  Map `flipper_length_mm` to the `x` and `species` to `fill`
+
+  -  Add the `geom_bar()` layer
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `flipper_length_mm` to the `x` and `species` to `fill`
-
-Add the `geom_bar()` layer
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_bar_ovrlp
 #| code-fold: show
@@ -180,8 +160,6 @@ ggp2_bar_ovrlp +
   labs_bar_ovrlp
 ```
 :::
-
-
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **GRAPH:**
@@ -209,30 +187,21 @@ ggp2_bar_ovrlp +
   labs_bar_ovrlp
 ```
 
-::::
-
 ## More info
 
-Overlapping bar graphs can also be built with `geom_col()`.
+  -  Overlapping bar graphs can also be built with `geom_col()`.
 
-`geom_bar()` has additional options for arranging overlapping bars. We can set the `position` argument to `"dodge"` or `"dodge2`, depending on how we'd like the data displayed. 
-
-
-:::: {.panel-tabset}
+  -  `geom_bar()` has additional options for arranging overlapping bars. We can set the `position` argument to `"dodge"` or `"dodge2"`, depending on how we'd like the data displayed. 
 
 ### `geom_col()`
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**`geom_col()`:**
-:::
+<br>
 
-::: {style="font-size: 0.85em;"}
 To build an overlapping bar graph with `geom_col()`, we need to create a column with the counts for `flipper_length_mm` and `species` in the dataset. 
 
-Create the `penguins_col` data:
-:::
+  -  Create the `penguins_col` data:
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: penguins_col
 #| eval: true
@@ -243,11 +212,9 @@ penguins_col <- penguins_ovrlp |>
 :::
 
 
-::: {style="font-size: 0.85em;"}
-Map the counts to the `y` axis, `flipper_length_mm` to the `x` axis, and `species` to `fill`.
-:::
+  -  Map the counts to the `y` axis, `flipper_length_mm` to the `x` axis, and `species` to `fill`
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_bar_penguins_dodge
 #| eval: true
@@ -270,9 +237,8 @@ ggp2_col_ovrlp +
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+
 Compare the two graphs below:
-:::
 
 ```{r}
 #| label: compare_bar_col
@@ -286,26 +252,23 @@ ggp2_col_ovrlp +
     labs_col_ovrlp
 ```
 
-
 ### `dodge`
+
+<br>
 
 ::: {.column-margin}
 
 - *`position = "dodge"` preserves the vertical position of a geom while adjusting the horizontal position*
 
-- *requires the grouping variable to be be specified in the global or `⁠geom_`⁠ layer*
+- *`"dodge"` requires the grouping variable to be be specified in the global or `⁠geom_`⁠ layer*
 
 :::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**`dodge`:**
-:::
-
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Create the `penguins_dodge` data.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: penguins_dodge
 #| eval: true
@@ -320,19 +283,15 @@ glimpse(penguins_dodge)
 ```
 :::
 
+  -  Create labels with `labs()`
+
+  -  Initialize the graph with `ggplot()` and provide `data`
+
+  -  Map `species` to the `x` and `island` to `group` and `fill` 
+
+  -  Inside the `geom_bar()` function, set `position` to `"dodge"`
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `species` to the `x` and `island` to `group` and `fill` 
-
-Inside the `geom_bar()` function, set `position` to `"dodge"`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_dodge
 #| eval: true
@@ -362,33 +321,27 @@ ggp2_bar_dodge +
 
 ### `dodge2`
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**`dodge2`:**
-:::
+<br>
+
+  -  Create labels with `labs()`
+
+  -  Initialize the graph with `ggplot()` and provide `data`
+
+  -  Map `species` to `x` and `island` to `fill`
+
+  -  Inside `geom_bar()`, set `position` to `"dodge2"`
 
 ::: {.column-margin}
 
-- *works without a grouping variable in a layer*
+- *`"dodge2"` works without a grouping variable in a layer*
 
-- *works with bars and rectangles*  
+- *`"dodge2"` works with bars and rectangles*  
 
-- *useful for arranging graphs with variable widths.*
+- *`"dodge2"` is useful for arranging graphs with variable widths.*
 
 :::
 
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `species` to `x` and `island` to `fill`
-
-Inside `geom_bar()`, set `position` to `"dodge2"`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: create_graph_dodge2
 #| eval: true
@@ -415,9 +368,7 @@ ggp2_bar_dodge2 +
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
 Compare the two graphs below:
-:::
 
 ```{r}
 #| label: compare_bars
@@ -435,5 +386,3 @@ ggp2_bar_dodge +
 ggp2_bar_dodge2 +
   labs_bar_dodge2
 ```
-
-::::

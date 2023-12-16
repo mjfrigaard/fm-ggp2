@@ -1,4 +1,4 @@
-# Grouped violin plots {.unnumbered}
+# Grouped violin plots {#sec-grouped-violin-plots}
 
 ```{r}
 #| label: setup
@@ -33,10 +33,6 @@ status("complete")
 ```
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -87,20 +83,16 @@ A ‘violin plot’ is a variation of a density or ridgeline plot,  where the di
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_grp_violin
 #| code-fold: show
@@ -125,11 +117,11 @@ library(ggplot2)
 ![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Remove missing `island` from `penguins`
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_grp_violin
 #| code-fold: show
@@ -139,31 +131,23 @@ peng_violin <- filter(penguins, !is.na(island))
 glimpse(peng_violin)
 ```
 :::
-::::
-
-:::: {.panel-tabset}
-
 
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  -   Create labels with `labs()`
+
+  -   Initialize the graph with `ggplot()` and provide `data`
+
+  -   Map `island` to the `x`, `bill_length_mm` to the `y`, and  `island` to `fill` 
+
+  -   Set `alpha` to `2/3`
+
+  -   Remove the legend with `show.legend = FALSE`
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `island` to the `x`, `bill_length_mm` to the `y`, and  `island` to `fill` 
-
-Set `alpha` to `2/3`
-
-Remove the legend with `show.legend = FALSE`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_grp_violin
 #| code-fold: show
@@ -195,11 +179,10 @@ ggp2_grp_violin +
 **GRAPH:**
 :::
 
-::: {style="font-size: 0.85em;"}
-Violin plots can allow us to compare the 'center' and 'spread' of continuous variables across categorical groups.
-:::
 
-::: {style="font-size: 0.75em;"}
+Violin plots can allow us to compare the 'center' and 'spread' of continuous variables across categorical groups.
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_grp_violin
 #| eval: true
@@ -226,11 +209,7 @@ ggp2_grp_violin +
 ```
 :::
 
-::::
-
 ## More info
-
-:::: {.panel-tabset}
 
 ### Quartiles
 
@@ -238,15 +217,10 @@ ggp2_grp_violin +
 Change the shape of the line with [`linetype` and `linewidth`](https://ggplot2.tidyverse.org/reference/geom_violin.html#aesthetics).
 :::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**draw_quantiles:**
-:::
+
+We can include lines for the 25th, 50th, and 75th quartiles using the `draw_quantiles` argument. 
 
 ::: {style="font-size: 0.85em;"}
-We can include lines for the 25th, 50th, and 75th quartiles using the `draw_quantiles` argument. 
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: grp_violin_draw_quantiles
 #| eval: true
@@ -271,15 +245,10 @@ ggplot(data = peng_violin,
 
 ### Kernel
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**kernel:**
-:::
+
+The [`kernel` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments) let's us change the "*kernel density estimate*" used to create the violin shape. The possible [kernel density estimates](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/density.html) are `"gaussian"`, `"epanechnikov"`, `"rectangular"`, `"triangular"`, `"biweight"`, `"cosine"`, and `"optcosine"` 
 
 ::: {style="font-size: 0.85em;"}
-The [`kernel` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments) let's us change the "*kernel density estimate*" used to create the violin shape. The possible [kernel density estimates](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/density.html) are `"gaussian"`, `"epanechnikov"`, `"rectangular"`, `"triangular"`, `"biweight"`, `"cosine"`, and `"optcosine"` 
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: grp_violin_kernel
 #| eval: true
@@ -303,15 +272,10 @@ ggplot(data = peng_violin,
 
 ### Bandwidth
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**bw:**
-:::
+
+We can directly adjust the shape of the violin with the [`bw` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments), which is the *standard deviation of the smoothing kernel.* The [`trim` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments) *trim(s) the tails of the violins to the range of the data.*
 
 ::: {style="font-size: 0.85em;"}
-We can directly adjust the shape of the violin with the [`bw` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments), which is the *standard deviation of the smoothing kernel.* The [`trim` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments) *trim(s) the tails of the violins to the range of the data.*
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: grp_violin_bw
 #| eval: true
@@ -348,5 +312,3 @@ grp_violin_bw4p5 +
     labs(caption = "bw = 4.5")
 ```
 :::
-
-::::

@@ -1,8 +1,10 @@
 {
-  "hash": "32c0d34d3816301b814ae6e98c88ec64",
+  "hash": "cd9d3707c81e4178c717b06e3c65570a",
   "result": {
-    "markdown": "# UNIVARIATE {.unnumbered}\n\n\n\n\n\n::: {.callout-tip appearance='simple' icon=false}\n***This graph is largely complete and just needs final proof reading.*** \n:::\n\n\n**Univariate graphs**: These graphs are useful if you have a single column you're trying to visualize. \n\n- [Bar graphs](bar_graphs.qmd)\n\n- [Histograms](histograms.qmd)\n\n- [Frequency polygons](frequency_polygons.qmd)\n\n- [Dot-plots](dot_plots.qmd)\n\n- [Density plots](density_plots.qmd)\n\n- [Violin plots](violin_plots.qmd)\n\n- [Box-plots](box_plots.qmd)",
-    "supporting": [],
+    "markdown": "# UNIVARIATE {.unnumbered}\n\n\n\n\n\n::: {.callout-tip appearance='simple' icon=false}\n***This graph is largely complete and just needs final proof reading.*** \n:::\n\n\n**Univariate graphs**: These graphs are useful if you have a single column you're trying to visualize. \n\n- [Bar graphs](bar_graphs.qmd): \n\n<!--\n:::: {layout=\"[ 40, 60 ]\"}\n\n::: {#first-column}\n```r\n# Some code\n```\n\nSome text that should be laid out below the code\n:::\n\n::: {#second-column}\n![](elephant.png)\n:::\n\n::::\n-->\n\n- [Histograms](histograms.qmd): \n\n- [Frequency polygons](frequency_polygons.qmd): \n\n- [Dot-plots](dot_plots.qmd): \n\n- [Density plots](density_plots.qmd): \n\n- [Violin plots](violin_plots.qmd): \n\n- [Box-plots](box_plots.qmd): ",
+    "supporting": [
+      "univariate_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

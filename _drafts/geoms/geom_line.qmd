@@ -106,12 +106,12 @@ pth + ln + stp +
   
 ::::
 
-:::: {.panel-tabset}
+
 
 
 
 ::: {.column-margin}
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ![](../www/ggplot2.png){fig-align="right" width="40%" height="40%"}
 :::
 :::
@@ -120,11 +120,11 @@ pth + ln + stp +
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_lines
 #| eval: true
@@ -143,11 +143,11 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Load the `ggplot2::economics` data.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_lines
 #| eval: true
@@ -160,12 +160,12 @@ dplyr::glimpse(economics)
 
 ## `geom_line()`
 
-:::: {.panel-tabset}
+
 
 ### Basic Use
 
 ::: {.column-margin}
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 [`geom_line()`](https://ggplot2.tidyverse.org/reference/geom_path.html) *connects them in order of the variable on the x axis*
 :::
 :::
@@ -174,7 +174,7 @@ dplyr::glimpse(economics)
 **BASICS:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: basic_line
 #| eval: true
@@ -198,11 +198,11 @@ ggp2_line_base +
 **AESTHETICS:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 The required aesthetics are: `x` and `y` positions 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_line
 #| eval: true
@@ -220,7 +220,7 @@ ggp2_line_base +
 **OPTIONAL AESTHETICS:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Optional aesthetics include: 
 
   - `group`  
@@ -237,11 +237,11 @@ Optional aesthetics include:
 
 #### `group`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 To explore `group`, we'll load some data on *Building Permit Data for United States* from [Texas A & M's Real Estate Research Center](https://www.recenter.tamu.edu/data/building-permits#!/state/United_States). 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_line_group_data
 #| eval: true
@@ -255,11 +255,11 @@ dplyr::glimpse(permits_raw)
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 First we'll create the `yr_shift` and `yr_mnth` variables, and limit the data to `2010` - `2020`.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_line_group_yr_shift
 #| eval: true
@@ -284,13 +284,13 @@ utils::head(permits, 10)
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 `yr_shift` leaves `01/2010` as `2010.000`, but  `02/2010` becomes `2010.083`, and `03/2010` shifts a little bit more to `2010.167`, and so on.
 
 If we try to view the change in `f1units` using `geom_line()` with `yr_shift` and `yr_mnth`, we see the following:
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_line_group_yr_shift_mnth_f1units
 #| eval: true
@@ -312,11 +312,11 @@ ggplot(data = permits,
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 We can see the lines aren't acting like we expected, but if we map the `area` variable to `group`...
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_path_group_yr_shift_f1units
 #| eval: true
@@ -336,17 +336,17 @@ ggplot(data = permits,
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 We can see the lines are now separated by `area`.
 :::
 
 #### `color`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 The `color` aesthetic can be set or mapped, and is useful for differentiating categorical levels.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: permits_long
 #| eval: false
@@ -361,7 +361,7 @@ permits_long <- tidyr::pivot_longer(data = permits,
 ```
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_line_color
 #| eval: true
@@ -389,11 +389,11 @@ ggp2_line_base +
 
 #### `linewidth`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 The `linewidth` determines the size of the line. 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_line_linewidth
 #| eval: true
@@ -415,11 +415,11 @@ ggp2_line_base_long +
 
 #### `alpha`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 The alpha sets the opacity of the line (and is useful for overlapping lines).
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_path_alpha
 #| eval: true
@@ -442,11 +442,11 @@ ggp2_line_base_long +
 
 #### `linetype`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 The `linetype` can be mapped or set with values from [ggplot2-specs](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html#lines)
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_line_linetype
 #| eval: true
@@ -475,17 +475,17 @@ ggp2_line_base_long +
 **ARGUMENTS:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 We've defined two functions for displaying the arguments in `geom_path()`: `path_linetype()` displays the different `linetype` options, and `path_lines()` displays the options for `lineend` and `linejoin`.
 :::
 
 #### `linetype`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 We've defined `line_linetype()`, a function that lets us quickly specify the `linetype` aesthetic for `geom_line()`:
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: line_linetype
 #| eval: true
@@ -514,11 +514,11 @@ line_linetype <- function(type = "solid") {
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 The white line displays the `linetype` against a black backdrop to enhance visibility. See the `lineend` argument in the section below: 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_linetype_use
 #| eval: true
@@ -541,7 +541,7 @@ line_linetype(type = "solid")
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Below the define `line_lines()`, which builds line graphs with  `geom_line()`'s `lineend` and `linejoin` arguments set to `"round"`, `"butt"`, or `"square"` and `"bevel"`, `"round"`, and `"mitre"`. 
 
 The `linewidth` (`lw`) and `linemitre` (`lnmtr`) can be adjusted to exaggerate their effects.
@@ -549,7 +549,7 @@ The `linewidth` (`lw`) and `linemitre` (`lnmtr`) can be adjusted to exaggerate t
 We've added white lines/points to illustrate the data points.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: line_lines
 #| code-fold: true
@@ -589,13 +589,13 @@ line_lines <- function(lw = 5, lend = 'r', ljoin = 'r', lnmtr = NULL) {
 
 #### Lineend: `round`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 A "round" line ending extends the line width slightly and produces curved caps at the start and end of the line (with the intersecting values at the center).
 
 *The white line/points are the data points*
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: args_line_lend_round
 #| code-fold: true
@@ -614,13 +614,13 @@ line_lines(lw = 15, lend = "r", ljoin = "b") # round/bevel
 
 #### Linejoin: `round`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 A "round" line join produces a curve at the intersection of points on the line.
 
 *The white line/points are the data points*
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: args_line_ljoin_round
 #| code-fold: true
@@ -639,13 +639,13 @@ line_lines(lw = 15, lend = "s", ljoin = "r") # square/round
 
 #### Lineend: `butt`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 A "butt" line end produces an abrupt ending at the start and end of the data points along the line.
 
 *The white line/points are the data points*
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: args_line_lend_butt
 #| code-fold: true
@@ -664,13 +664,13 @@ line_lines(lw = 15, lend = "b", ljoin = "b") # butt/bevel
 
 #### Linejoin: `mitre`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 A "mitre" line join extends the area of the line width between intersecting points, giving each connecting point a straight edge. 
 
 *The white line/points are the data points*
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: args_line_ljoin_mitre
 #| code-fold: true
@@ -689,13 +689,13 @@ line_lines(lw = 15, lend = "r", ljoin = "m") # round/mitre
 
 #### Lineend: `square`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 A "square" line ending extends the line width slightly and produces a square cap at the start and end of the line (with the intersecting values at the center).
 
 *The white line/points are the data points*
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: args_line_lend_square
 #| code-fold: true
@@ -714,13 +714,13 @@ line_lines(lw = 15, lend = "s", ljoin = "b") # square/bevel
 
 #### Linejoin: `bevel`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 A "bevel" line join 'shaves' the line width at the intersection of data points and curves the line with by producing two additional angles (with the intersecting values at the center of the two angles).
 
 *The white line/points are the data points*
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: args_line_ljoin_bevel
 #| code-fold: true
@@ -742,11 +742,11 @@ line_lines(lw = 15, lend = "r", ljoin = "b") # round/bevel
 
 #### `geom_line()` vs. `geom_step()`
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 [`geom_step()` *is useful when you want to highlight exactly when the `y` value changes*](https://ggplot2.tidyverse.org/reference/geom_path.html)
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: example_line_vs_step
 #| eval: true

@@ -1,4 +1,4 @@
-# Waffle charts {.unnumbered}
+# Waffle charts {#sec-waffle-charts}
 
 ```{r}
 #| label: setup
@@ -34,10 +34,6 @@ status("complete")
 
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -93,20 +89,14 @@ We’ll build a waffle chart using the [`ggwaffle` package.](https://liamgilbey.
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Install packages.
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_waffle
 #| code-fold: show
@@ -134,14 +124,11 @@ library(ggplot2)
 ![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-
-::: {style="font-size: 0.85em;"}
 Waffle charts require a special data transformation with `ggwaffle::waffle_iron()`
 
 Set the group argument in `ggwaffle::aes_d()` as the categorical variable you want to see the relative counts for:
-:::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_waffle
 #| code-fold: show
@@ -156,37 +143,33 @@ waffle_peng <- ggwaffle::waffle_iron(penguins,
 glimpse(waffle_peng)
 ```
 :::
-::::
+
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
-Create labels with `labs()`
+  -   Create labels with `labs()`
 
-Initialize the graph with `ggplot()` and provide `data`
+  -   Initialize the graph with `ggplot()` and provide `data`
 
-Map the `x` and `y` to the `x` and `y` axes
+  -   Map the `x` and `y` to the `x` and `y` axes
 
-Map `group` to `fill`
+  -   Map `group` to `fill`
 
-Add `ggwaffle::geom_waffle()`
+  -   Add `ggwaffle::geom_waffle()`
 
-Add `ggwaffle::theme_waffle()`
+  -   Add `ggwaffle::theme_waffle()`
 
-Move the legend to the top with `theme(legend.position = "top")`
+  -   Move the legend to the top with `theme(legend.position = "top")`
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_waffle
 #| code-fold: show
@@ -240,6 +223,4 @@ ggp2_waffle +
   ggwaffle::theme_waffle() +
   theme(legend.position = "top")
 ```
-
-::::
 

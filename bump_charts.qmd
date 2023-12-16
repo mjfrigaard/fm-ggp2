@@ -1,4 +1,4 @@
-# Bump charts {.unnumbered}
+# Bump charts {#sec-bump-charts}
 
 ```{r}
 #| label: setup
@@ -36,10 +36,6 @@ status("complete")
 
 :::: {.callout-note collapse="false" icon=false}
 
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
-
 <br>
 
 ```{r}
@@ -50,6 +46,7 @@ Graph info
 #| message: false
 #| out-height: '60%'
 #| out-width: '60%'
+#| fig-align: right
 library(ggbump)
 library(fivethirtyeight) 
 library(ggplot2)
@@ -103,20 +100,17 @@ We can build bump charts in `ggplot2` with the [`ggbump` package:](https://githu
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_bump
 #| code-fold: show
@@ -143,11 +137,11 @@ library(ggplot2)
 ![](www/538.png){fig-align="right" width="45%" height="45%"}
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 We'll use the `fivethirtyeight::tv_hurricanes` data, but slightly restructured and filtered. 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_bump
 #| code-fold: show
@@ -165,31 +159,22 @@ fivethirtyeight::tv_hurricanes |>
 glimpse(tidy_hurricanes)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  - Create labels with `labs()`
+
+  - Map date to the `x`, `rank` to the `y`, and `hurricane` to `color`
+
+  - Add `ggbump::geom_bump()` and set `size` to `2`
+
+  - Move legend to bottom with `theme(legend.position = "bottom")`
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Map date to the `x`, `rank` to the `y`, and `hurricane` to `color`
-
-Add `ggbump::geom_bump()` and set `size` to `2`
-
-Move legend to bottom with `theme(legend.position = "bottom")`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_bump
 #| code-fold: show
@@ -245,5 +230,3 @@ ggp2_bump <- ggplot(tidy_hurricanes,
 ggp2_bump + 
   labs_bump
 ```
-
-::::

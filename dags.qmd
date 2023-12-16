@@ -88,7 +88,7 @@ Description of graph aesthetics, appropriate use, similar graphs, etc.
 
 ## Set up 
 
-:::: {.panel-tabset}
+
 
 
 
@@ -96,12 +96,12 @@ Description of graph aesthetics, appropriate use, similar graphs, etc.
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_dags
 #| eval: true
@@ -131,11 +131,11 @@ library(ggplot2)
 
 
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 <!-- Description of data -->
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_dags
 #| eval: true
@@ -149,7 +149,7 @@ dplyr::glimpse(df)
 
 ## Grammar
 
-:::: {.panel-tabset}
+
 
 
 
@@ -157,7 +157,7 @@ dplyr::glimpse(df)
 **CODE:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 Create labels with `labs()`
 
@@ -165,7 +165,7 @@ Initialize the graph with `ggplot()` and provide `data`
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_dags
 #| eval: false
@@ -227,7 +227,7 @@ ggp2_graph +
 
 ## More info
 
-:::: {.panel-tabset}
+
 
 ### Info
 
@@ -241,11 +241,11 @@ Info
 **INFO:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: more_info_1_dags
 #| code-fold: true
@@ -267,11 +267,11 @@ Info
 **MORE:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: more_info_2_dags
 #| code-fold: true

@@ -1,4 +1,4 @@
-# Cleveland dot plot {.unnumbered}
+# Cleveland dot plot {#sec-cleveland-dot-plots}
 
 ```{r}
 #| label: setup
@@ -23,13 +23,7 @@ ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
 ```
 
-
-
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -90,20 +84,13 @@ Typically, the graph contains two points representing the numerical value on the
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Install packages.
-:::
 
-
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_clev_dots
 #| code-fold: show
@@ -128,11 +115,10 @@ library(ggplot2)
 ![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
-Remove missing values from `sex` and `flipper_length_mm` and group on `sex` and `island` to the calculate the median flipper length (`med_flip_length_mm`).
-:::
 
-::: {style="font-size: 0.75em;"}
+Remove missing values from `sex` and `flipper_length_mm` and group on `sex` and `island` to the calculate the median flipper length (`med_flip_length_mm`).
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_clev_dots
 #| code-fold: show
@@ -152,29 +138,21 @@ glimpse(peng_clev_dots)
 
 ## Grammar
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  -   Create labels with `labs()`
+
+  -   Initialize the graph with `ggplot()` and provide `data`
+
+  -   Map the `med_flip_length_mm` to the `x` axis, and `island` to the `y` axis, but wrap `island` in `forcats::fct_rev()`.
+
+  -   Add `geom_line()`, and map `island` to the `group` aesthetic. Set the `linewidth` to `0.75`
+
+  -   Add `geom_point()` and map `sex` to `color` aesthetic. Set the `size` to `2.25`
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map the `med_flip_length_mm` to the `x` axis, and `island` to the `y` axis, but wrap `island` in `forcats::fct_rev()`.
-
-Add `geom_line()`, and map `island` to the `group` aesthetic. Set the `linewidth` to `0.75`
-
-Add `geom_point()` and map `sex` to `color` aesthetic. Set the `size` to `2.25`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_clev_dots
 #| code-fold: show
@@ -242,23 +220,19 @@ ggp2_clev_dots +
 
 Cleveland dot plots are also helpful when comparing multiple differences on a common scale.
 
-:::: {.panel-tabset}
-
 ### Common scale
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **SCALE:**
 :::
 
+  -   Remove missing values from `sex`, `bill_length_mm` and `bill_depth_mm`, and group on `sex` and `island` to the calculate the median bill length and median bill depth. These variables need to have 'showtime-ready' names because they'll be used in our facets. 
+
+  -   After un-grouping the data, pivot the new columns into a long (tidy) format with `median_measure` containing the name of the variable, and `median_value` containing the numbers. 
+
+  -   Finally, convert `median_measure` into a factor. 
+
 ::: {style="font-size: 0.85em;"}
-Remove missing values from `sex`, `bill_length_mm` and `bill_depth_mm`, and group on `sex` and `island` to the calculate the median bill length and median bill depth. These variables need to have 'showtime-ready' names because they'll be used in our facets. 
-After un-grouping the data, pivot the new columns into a long (tidy) format with `median_measure` containing the name of the variable, and `median_value` containing the numbers. 
-
-Finally, convert `median_measure` into a factor. 
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_clev_dots2
 #| eval: true
@@ -286,25 +260,21 @@ glimpse(peng_clev_dots2)
 **`scales`:**
 :::
 
+  -   Re-create labels
+
+  -   Initialize the graph with `ggplot()` and provide `data`
+
+  -   Map the `median_value` to the `x` axis, and `island` to the `y` axis, but wrap `island` in `forcats::fct_rev()`.
+
+  -   Add `geom_line()`, and map `island` to the `group` aesthetic. Set the `linewidth` to `0.75`
+
+  -   Add `geom_point()` and map `sex` to `color` aesthetic. Set the `size` to `2.25`
+
+  -   Add `facet_wrap()` and facet by `median_measure`, setting `shrink` to `TRUE` and `scales` to `"free_x"`
+
+  -   Move the legend with `theme(legend.position = "top")`
+
 ::: {style="font-size: 0.85em;"}
-
-Re-create labels
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map the `median_value` to the `x` axis, and `island` to the `y` axis, but wrap `island` in `forcats::fct_rev()`.
-
-Add `geom_line()`, and map `island` to the `group` aesthetic. Set the `linewidth` to `0.75`
-
-Add `geom_point()` and map `sex` to `color` aesthetic. Set the `size` to `2.25`
-
-Add `facet_wrap()` and facet by `median_measure`, setting `shrink` to `TRUE` and `scales` to `"free_x"`
-
-Move the legend with `theme(legend.position = "top")`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: graph_run_clev_dots_nrow_2
 #| eval: true
@@ -336,12 +306,12 @@ ggp2_clev_dots2 +
 ```
 :::
 
-::: {style="font-size: 0.85em; color: #E74A2F;"}
+::: {style="font-size: 1.00em; color: #E74A2F;"}
 **CAUTION when using `scales = "free_x"`:**
 The graph below shows that the median bill length and depth is larger for male penguins on all three islands, but the magnitude of the differences should be interpreted with caution because the length of the lines can't be directly compared! 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: graph_run_clev_dots2_free_x
 #| eval: true
@@ -373,5 +343,3 @@ ggp2_clev_dots2_free_x +
     labs_clev_dots2
 ```
 :::
-
-::::

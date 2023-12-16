@@ -1,4 +1,4 @@
-# Overlapping histograms {.unnumbered}
+# Overlapping histograms {#sec-overlapping-histograms}
 
 ```{r}
 #| label: setup
@@ -32,13 +32,7 @@ ggplot2::theme_set(theme_ggp2g(
 status("complete")
 ```
 
-
-
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -86,20 +80,15 @@ Overlapping histograms allow us to compare distributions across the groups of a 
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+
 Install packages.
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_ovrlp_hist
 #| code-fold: show
@@ -124,11 +113,10 @@ library(ggplot2)
 ![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
-The `penguins` data
-:::
 
-::: {style="font-size: 0.75em;"}
+The `penguins` data.
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_ovrlp_hist
 #| code-fold: show
@@ -142,28 +130,20 @@ glimpse(penguins)
 
 ## Grammar
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+
+  -   Create labels with `labs()`
+
+  -   Initialize the graph with `ggplot()` and provide `data`
+
+  -   Map `flipper_length_mm` to the `x` axis and `species` to `fill` 
+
+  -   Set `alpha` to `2/3` inside `geom_histogram()`
+
 ::: {style="font-size: 0.85em;"}
-
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `flipper_length_mm` to the `x` axis and `species` to `fill` 
-
-Set `alpha` to `2/3` inside `geom_histogram()`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_ovrlp_hist
 #| code-fold: show
@@ -196,11 +176,9 @@ Experiment with different `binwidth`s when comparing distributions across groups
 **GRAPH:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Histograms work by dividing the variable provided to `x` [*into bins and counting the number of observations in each bin.*](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
-:::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 ```{r}
 #| label: create_graph_ovrlp_hist
 #| eval: true
@@ -223,5 +201,3 @@ ggp2_ovrlp_hist +
   labs_ovrlp_hist
 ```
 :::
-
-::::

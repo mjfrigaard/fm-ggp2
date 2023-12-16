@@ -106,12 +106,12 @@ pth + ln + stp +
   
 ::::
 
-:::: {.panel-tabset}
+
 
 
 
 ::: {.column-margin}
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ![](../www/ggplot2.png){fig-align="right" width="40%" height="40%"}
 :::
 :::
@@ -120,11 +120,11 @@ pth + ln + stp +
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_lines
 #| eval: true
@@ -146,11 +146,11 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Load the `ggplot2::economics` data.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_lines
 #| eval: true
@@ -166,7 +166,7 @@ dplyr::glimpse(economics)
 
 ## `geom_step()`
 
-:::: {.panel-tabset}
+
 
 ### Basic Use
 
@@ -174,7 +174,7 @@ dplyr::glimpse(economics)
 **BASICS:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: basic_step
 #| eval: true
@@ -197,7 +197,7 @@ ggp2_step_base +
 **AESTHETICS:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 The required aesthetics are: 
 
@@ -205,7 +205,7 @@ Optional aesthetics include:
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_step
 #| eval: true
@@ -224,7 +224,7 @@ Optional aesthetics include:
 **ARGUMENTS:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: args_1_step
 #| eval: true

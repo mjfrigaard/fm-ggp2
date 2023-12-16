@@ -1,4 +1,4 @@
-# Overlapping density plot {.unnumbered}
+# Overlapping density plot {#sec-overlapping-stacked-density-plots}
 
 ```{r}
 #| label: setup
@@ -35,10 +35,6 @@ status("complete")
 
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -107,20 +103,16 @@ Density plots are [*smoothed version(s) of  histogram(s)*](https://ggplot2.tidyv
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_ovrlp_density
 #| code-fold: show
@@ -145,11 +137,11 @@ library(ggplot2)
 ![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Remove missing `sex` from the `penguins` data
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_ovrlp_density
 #| code-fold: show
@@ -159,33 +151,26 @@ peng_density <- dplyr::filter(penguins, !is.na(sex))
 dplyr::glimpse(peng_density)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+
+
+  -   Create labels with `labs()`
+
+  -   Initialize the graph with `ggplot()` and provide `data`
+
+  -   Map the `flipper_length_mm` to the `x` and `sex` to `fill` 
+
+  -   Add the `geom_density()`  
+
+  -   Set the `alpha` to `1/3` (to handle the overlapping areas)
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map the `flipper_length_mm` to the `x` and `sex` to `fill` 
-
-Add the `geom_density()`  
-
-Set the `alpha` to `1/3` (to handle the overlapping areas)
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_ovrlp_density
 #| code-fold: show
@@ -219,9 +204,7 @@ ggp2_ovrlp_density +
 :::
 
 
-::: {style="font-size: 0.85em;"}
-Make density area slightly transparent to handle over-plotting
-:::
+Make density area slightly transparent to handle over-plotting.
 
 ```{r}
 #| label: create_graph_ovrlp_density
@@ -245,25 +228,15 @@ ggp2_ovrlp_density +
   labs_ovrlp_density
 ```
 
-::::
-
 ## More info
 
 `ggplot2` has multiple options for overlapping density plots, so which one to use will depend on how you'd like to display the relative distributions in your data. We'll cover three options below:
 
-:::: {.panel-tabset}
-
 ### `"stack"`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**STACK:**
-:::
+If we change the `position` to `"stack"` we can see the smoothed estimates are 'stacked' on top each other (and the `y` axis shifts slightly).
 
 ::: {style="font-size: 0.85em;"}
-If we change the `position` to `"stack"` we can see the smoothed estimates are 'stacked' on top each other (and the `y` axis shifts slightly).
-:::
-
-::: {style="font-size: 0.75em;"}
 
 ```{r}
 #| label: code_graph_stack_density
@@ -288,21 +261,16 @@ ggp2_stack_density +
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Setting `position` to `'stack'` [loses marginal densities](https://ggplot2.tidyverse.org/reference/geom_density.html#ref-examples)
 :::
 
 ### `after_stat(count)`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**AFTER STAT:** 
-:::
+
+If we include `after_stat(count)` as one of our mapped aesthetics, the mapping is postponed until after statistical transformation, and uses the [*`density * n` instead of the default density*](https://ggplot2.tidyverse.org/reference/geom_density.html#computed-variables).
 
 ::: {style="font-size: 0.85em;"}
-If we include `after_stat(count)` as one of our mapped aesthetics, the mapping is postponed until after statistical transformation, and uses the [*`density * n` instead of the default density*](https://ggplot2.tidyverse.org/reference/geom_density.html#computed-variables).
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_after_stat_density
 #| eval: true
@@ -328,22 +296,15 @@ ggp2_after_stat_density +
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+
 Adding [`after_stat(count)`](https://ggplot2.tidyverse.org/reference/geom_density.html#computed-variables) *'preserves marginal densities.'*, which result in more a interpretable `y` axis (depending on the audience)
-:::
 
 ### `"fill"`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**FILL:** 
-:::
+
+Using `after_stat(count)` with `position = "fill"` creates in a conditional density estimate. 
 
 ::: {style="font-size: 0.85em;"}
-Using `after_stat(count)` with `position = "fill"` creates in a conditional density estimate. 
-:::
-
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_fill_density
 #| eval: true
@@ -369,8 +330,6 @@ ggp2_fill_density +
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
-This results in a `y` axis ranging from 0-1, and the area filled with the relative proportional values.
-:::
 
-::::
+This results in a `y` axis ranging from 0-1, and the area filled with the relative proportional values.
+

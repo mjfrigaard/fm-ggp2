@@ -1,4 +1,4 @@
-# Box plots {.unnumbered}
+# Box plots {#sec-box-plots}
 
 ```{r}
 #| label: setup
@@ -35,7 +35,7 @@ status("complete")
 :::: {.callout-note collapse="false" icon=false}
 
 ::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
+
 :::
 
 <br>
@@ -81,20 +81,16 @@ Box plots (sometimes called box-and-whisker plots) use position, lines (vertical
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_boxplot
 #| code-fold: show
@@ -110,7 +106,6 @@ library(ggplot2)
 :::
 
 
-
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DATA:**
 :::
@@ -119,11 +114,11 @@ library(ggplot2)
 ![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 We'll be using the `penguins` data from `palmerpenguins`.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_box
 #| code-fold: show
@@ -133,19 +128,15 @@ penguins <- palmerpenguins::penguins
 glimpse(penguins)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
 
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 Create labels with `labs()`
 
@@ -159,7 +150,7 @@ Add the `geom_boxplot()` layer
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_box
 #| code-fold: show
@@ -208,21 +199,19 @@ ggp2_boxplot +
   labs_boxplot
 ```
 
-::::
+
 
 ### More Info
 
-Below we provide more information on interpreting Box plots. 
-
-:::: {.panel-tabset}
+Below is more information on interpreting Box plots. 
 
 ### `movies` data 
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 We'll use the `ggplot2movies::movies` data to create a box plot for movie `length`
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: more_box_pkgs
 #| eval: false
@@ -235,11 +224,11 @@ library(ggplot2)
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Filter `ggplot2movies::movies` to only include films after the made after `2000`, and remove missing values from `mpaa` and `budget`
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: more_box_data
 #| eval: true
@@ -256,13 +245,13 @@ head(movies_box)
 
 
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 Below we create a box plot of the `length` variable using the methods described above: 
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: more_create_graph_box
 #| eval: true
@@ -286,11 +275,11 @@ ggp2_boxplot +
 
 ### Interpret
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 The table below shows the 25th percentile, the median, the 75th percentile, the IQR, and a histogram of the `length` variable from the `movies_box` dataset.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: box_table_stats
 #| eval: true
@@ -307,12 +296,12 @@ kableExtra::kable_paper(
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 The figure below displays how each element in the box plot represents each of the statistics using lines and points.
 :::
 
 :::: {.column-margin}
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 In `ggplot2`, values that fall more than 1.5 times the IQR are displayed as individual points (aka outliers). The lines extending from the bottom and top of the main box represent the last non-outlier value in the distribution.
 :::
 ::::
@@ -322,11 +311,9 @@ In `ggplot2`, values that fall more than 1.5 times the IQR are displayed as indi
 
 ### Compare
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Compare the `geom_point()`, `geom_freqpoly()`, `geom_histogram()`, and `geom_density()` graphs of `length` from `movie_box` below to the `geom_boxplot()`:
 :::
 
 ![](www/boxplot-comparisons.png){fig-align="center" width="85%" height="85%"}
 
-
-::::

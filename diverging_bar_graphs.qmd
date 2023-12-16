@@ -1,4 +1,4 @@
-# Diverging bar graphs {.unnumbered}
+# Diverging bar graphs {#sec-diverging-bar-graphs}
 
 ```{r}
 #| label: setup
@@ -34,10 +34,6 @@ status("complete")
 
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -110,8 +106,6 @@ If you have two proportions that contain positive and negative values, consider 
 
 Unlike a standard or stacked bar graphs, diverging bar graphs display positive and negative quantities on both sides of a reference or baseline value (zero in this example). Color, length and position are used to compare the quantities across categorical levels (and within variable values). 
 
-:::: {.panel-tabset}
-
 ### Horizontal bars
 
 ```{r}
@@ -140,9 +134,7 @@ ggp2_bars_diverg +
     theme_ggp2g(base_size = 11)
 ```
 
-::: {style="font-size: 0.85em;"}
 For example, we can use the length of the bar from the reference line to compare disapproval estimates across all months (i.e., comparing red bars to each other). 
-:::
 
 ### Vertical bars
 
@@ -173,28 +165,20 @@ ggp2_bar_diverg_vert +
     theme_ggp2g(base_size = 11)
 ```
 
-::: {style="font-size: 0.85em;"}
 We can also compare approval vs. disapproval for each month (i.e., compare the blue vs. red bars to each other within each month).
-:::
-
-::::
 
 ## Set up
-
-:::: {.panel-tabset}
-
 
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+
 Install packages.
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_diverging_bar
 #| code-fold: show
@@ -219,11 +203,10 @@ library(ggplot2)
 ![](www/538.png){fig-align="right" width="45%" height="45%"}
 :::
 
-::: {style="font-size: 0.85em;"}
-Create `trump_approval_diverg` from the `trump_approval_trend` dataset in the `fivethirtyeight` package.
-:::
 
-::: {style="font-size: 0.75em;"}
+Create `trump_approval_diverg` from the `trump_approval_trend` dataset in the `fivethirtyeight` package.
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_diverging_bar
 #| code-fold: show
@@ -247,37 +230,29 @@ fivethirtyeight::trump_approval_trend |>
 glimpse(trump_approval_diverg)
 ```
 :::
-::::
+
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  - Create labels with `labs()`
+
+  - Initialize the graph with `ggplot()` and provide `data`
+
+  - Map the `month` to the `x` and `month_avg` to the `y`
+
+  - Inside` geom_bar()`
+  
+    - map `poll` to `fill`
+  
+    - use `stat = "identity"` and `width = .5`
+  
+  - Add `scale_y_continuous()` to manually set the limits and format the axis with `scales::percent`
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map the `month` to the `x` and `month_avg` to the `y`
-
-Inside` geom_bar()`
-
-  - map `poll` to `fill`
-  
-  - use `stat = "identity"` and `width = .5`
-  
-Add `scale_y_continuous()` to manually set the limits and format the axis with `scales::percent`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_diverging_bar
 #| code-fold: show
@@ -340,37 +315,27 @@ ggp2_bars_diverg +
   labs_geom_bar_diverg
 ```
 
-::::
-
 ## More info
 
 For vertically arranged bars, we switch the `x` and `y` axis variables.
 
-:::: {.panel-tabset}
-
 ### Vertically arranged bars
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**Vertical bars:**
-:::
+<br>
+
+  - Create labels with `labs()`
+
+  - Map the `month_avg` to the `x` and `month` to the `y` 
+
+  - *Inside* `geom_bar()` 
+
+    - map `poll` to `fill`  
+
+    - use `stat = "identity"` and `width = .5`  
+  
+  - Add `scale_y_continuous()` to manually set the limits and format the axis with `scales::percent` 
 
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Map the `month_avg` to the `x` and `month` to the `y` 
-
-*Inside* `geom_bar()` 
-
-  - map `poll` to `fill`  
-
-  - use `stat = "identity"` and `width = .5`  
-  
-Add `scale_y_continuous()` to manually set the limits and format the axis with `scales::percent` 
-
-:::
-
-::: {style="font-size: 0.75em;"}
 
 ```{r}
 #| label: create_graph_vert_diverg_bars
@@ -401,6 +366,3 @@ ggp2_bar_diverg_vert +
 ```
 
 :::
-
-
-::::

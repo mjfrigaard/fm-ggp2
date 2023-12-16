@@ -113,12 +113,12 @@ plygn + rct + rbn +
 
 ::::
 
-:::: {.panel-tabset}
+
 
 
 
 ::: {.column-margin}
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ![](../www/ggplot2.png){fig-align="right" width="33%" height="33%"}
 :::
 :::
@@ -127,11 +127,11 @@ plygn + rct + rbn +
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_lines
 #| eval: true
@@ -152,11 +152,11 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Load the `ggplot2::economics` data.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_lines
 #| eval: true
@@ -171,7 +171,7 @@ dplyr::glimpse(economics)
 
 ## `geom_ribbon()`
 
-:::: {.panel-tabset}
+
 
 ### Basic Use
 
@@ -179,7 +179,7 @@ dplyr::glimpse(economics)
 **BASICS:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: basic_ribbon
 #| eval: true
@@ -206,7 +206,7 @@ ggp2_ribbon_base +
 **AESTHETICS:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: corr_data
 #| eval: true
@@ -253,7 +253,7 @@ corr_data <- tibble::tribble(
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 The required aesthetics are: 
 
@@ -264,7 +264,7 @@ The required aesthetics are:
   - `xmin` or `xmax`  
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_ribbon
 #| eval: true
@@ -286,7 +286,7 @@ ggp2_ribbon_base +
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Optional aesthetics include: 
 
 `alpha`
@@ -305,7 +305,7 @@ Optional aesthetics include:
 
 #### `alpha`
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_alpha_ribbon
 #| eval: true
@@ -348,7 +348,7 @@ ggp2_ribbon_base +
 
 #### `color`
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_color_ribbon
 #| eval: true
@@ -383,7 +383,7 @@ ggp2_ribbon_base +
 
 #### `fill`
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: aes_fill_ribbon
 #| eval: true
@@ -436,7 +436,7 @@ ggp2_ribbon_base +
 **ARGUMENTS:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: args_1_ribbon
 #| eval: true

@@ -1,4 +1,4 @@
-# Grouped box plots {.unnumbered}
+# Grouped box plots {#sec-grouped-box-plots}
 
 ```{r}
 #| label: setup
@@ -34,10 +34,6 @@ status("polish")
 
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -90,20 +86,13 @@ The five statistical measures are 1) the first quartile, 2) the second quartile,
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Install packages.
-:::
 
-
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_grp_boxplots
 #| code-fold: show
@@ -125,14 +114,13 @@ library(ggplot2)
 :::
 
 ::: {.column-margin}
-![Artwork by Allison Horst](../www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
+
+
+Remove the missing `island` values from the `penguins` data.
 
 ::: {style="font-size: 0.85em;"}
-Remove the missing `island` values from the `penguins` data.
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: data_code_grp_boxplots
 #| code-fold: show
@@ -142,35 +130,26 @@ peng_box <- filter(penguins, !is.na(island))
 glimpse(peng_box)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  -   Create labels with `labs()`
+
+  -   Initialize the graph with `ggplot()` and provide `data`
+
+  -   Map `island` to the `x` axis and to `fill`
+
+  -   Map `bill_length_mm` to the `y` axis
+
+  -   Add `geom_boxplot()` and set the `alpha` to `2/3`
+
+  -   Remove the legend with `show.legend = FALSE`
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `island` to the `x` axis and to `fill`
-
-Map `bill_length_mm` to the `y` axis
-
-Add `geom_boxplot()` and set the `alpha` to `2/3`
-
-Remove the legend with `show.legend = FALSE`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_grp_boxplots
 #| code-fold: show
@@ -202,11 +181,10 @@ ggp2_grp_boxplots +
 **GRAPH:**
 :::
 
-::: {style="font-size: 0.85em;"}
-When a categorical variable is supplied, the plot will contain a box for each level or group.
-:::
 
-::: {style="font-size: 0.75em;"}
+When a categorical variable is supplied, the plot will contain a box for each level or group.
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_grp_boxplots
 #| eval: true
@@ -233,24 +211,14 @@ ggp2_grp_boxplots +
 ```
 :::
 
-::::
-
 ## More info 
-
-:::: {.panel-tabset}
 
 ### Notches 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**NOTCHES:**
-:::
+Add notches to the box plot using the `notch = TRUE` and `notchwidth` arguments. 
+
 
 ::: {style="font-size: 0.85em;"}
-Add notches to the box plot using the `notch = TRUE` and `notchwidth` arguments. 
-:::
-
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: notches_boxplots
 #| eval: true
@@ -277,15 +245,9 @@ ggp2_grp_box_notch +
 
 ### Outliers 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**OUTLIERS:**
-:::
+Box plots display outliers using points, and we can change the color these using the `outlier.colour` argument. Inside the `geom_boxplot()`, we map `island` to `color` and set `outlier.colour` to `NULL`:
 
 ::: {style="font-size: 0.85em;"}
-Box plots display outliers using points, and we can change the color these using the `outlier.colour` argument. Inside the `geom_boxplot()`, we map `island` to `color` and set `outlier.colour` to `NULL`:
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: outliers_boxplots
 #| eval: true
@@ -312,4 +274,3 @@ ggp2_grp_box_outliers +
 ```
 :::
 
-::::

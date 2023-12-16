@@ -1,4 +1,4 @@
-# Line graphs {.unnumbered}
+# Line graphs {#sec-line-graphs}
 
 ```{r}
 #| label: setup
@@ -33,10 +33,6 @@ status("complete")
 ```
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -104,20 +100,15 @@ Line graphs display changes of a numeric quantitative variable (on the `y` axis)
 
 ## Set up 
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+
 Install packages.
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_line_graph
 #| code-fold: show
@@ -143,8 +134,6 @@ library(ggplot2)
 :::
 
 
-
-::: {style="font-size: 0.85em;"}
 We'll be using the `US_births_1994_2003` and `US_births_2000_2014` datasets from the `fivethirtyeight` package. 
 
   - Remove duplicate dates from `US_births_2000_2014`
@@ -157,10 +146,9 @@ We'll be using the `US_births_1994_2003` and `US_births_2000_2014` datasets from
   
   - Group by yr_month to create `avg_births`, then un-group
   
-Save as `avg_birth_ym`
-:::
+  - Save as `avg_birth_ym`
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_line
 #| code-fold: show
@@ -191,31 +179,22 @@ dplyr::glimpse(avg_birth_ym)
 ```
 :::
 
-::::
-
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+
+  - Create labels with `labs()` 
+
+  - Initialize the graph with `ggplot()` and provide `data`
+
+  - Map `yr_mnth` to `x` and `avg_births` to `y`
+
+  - Add `geom_line()`
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()` 
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `yr_mnth` to `x` and `avg_births` to `y`
-
-Add `geom_line()`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_line
 #| code-fold: show
@@ -263,6 +242,4 @@ ggp2_line <- ggplot(data = avg_birth_ym,
 ggp2_line + 
     labs_line
 ```
-
-::::
 

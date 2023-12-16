@@ -1,4 +1,4 @@
-# Beeswarm plots {.unnumbered}
+# Beeswarm plots {#sec-beeswa}
 
 ```{r}
 #| label: setup
@@ -35,7 +35,7 @@ status("complete")
 :::: {.callout-note collapse="false" icon=false}
 
 ::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
+
 :::
 
 <br>
@@ -102,20 +102,15 @@ We can create beeswarm plot using `geom_jitter()` or the [`ggbeeswarm` package](
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+
 Install packages.
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_beeswarm
 #| code-fold: show
@@ -142,11 +137,10 @@ library(ggplot2)
 ![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
-Create `peng_beeswarm` by grouping `penguins` by `species`, then calculating the `bill_ratio` (`bill_length_mm / bill_depth_mm`), and then removing any missing values from `bill_ratio`
-:::
 
-::: {style="font-size: 0.75em;"}
+Create `peng_beeswarm` by grouping `penguins` by `species`, then calculating the `bill_ratio` (`bill_length_mm / bill_depth_mm`), and then removing any missing values from `bill_ratio`
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_beeswarm
 #| code-fold: show
@@ -160,35 +154,26 @@ peng_beeswarm <- palmerpenguins::penguins |>
 glimpse(peng_beeswarm)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  -   Create labels with `labs()`
+
+  -   Initialize the graph with `ggplot()` and provide `data`
+
+  -   Map `species` to the `x` axis and `color`
+
+  -   Map `bill_ratio` to the `y` axis
+
+  -   Add the `ggbeeswarm::geom_beeswarm()` layer (with `alpha`)
+
+  -   Remove the legend with `show.legend = FALSE`
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `species` to the `x` axis and `color`
-
-Map `bill_ratio` to the `y` axis
-
-Add the `ggbeeswarm::geom_beeswarm()` layer (with `alpha`)
-
-Remove the legend with `show.legend = FALSE`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_beeswarm
 #| code-fold: show
@@ -220,11 +205,9 @@ ggp2_beeswarm +
 **GRAPH:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Adjust the size/shape of the swarm using `method =` or the  `geom_quasirandom()` function
-:::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_beeswarm
 #| eval: true
@@ -251,31 +234,24 @@ ggp2_beeswarm +
 ```
 :::
 
-::::
 
 ## More info
 
-Below we cover some additional arguments and methods for beeswarm plots. 
-
-:::: {.panel-tabset}
+Below is some additional arguments and methods for beeswarm plots.
 
 ### `method`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**METHOD:**
-:::
+<br>
 
-::: {style="font-size: 0.85em;"}
 Use method to adjust the shape of the beeswarm (`swarm`, `compactswarm`, `hex`, `square`, `center`, or `centre`)
-:::
 
 :::: {.column-margin}
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Set the point `shape` to `21` to control the `fill` and `color` 
 :::
 ::::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_beeswarm_method
 #| eval: true
@@ -306,15 +282,11 @@ ggp2_compact_swarm +
 
 ### `side`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**SIDE:**
-:::
+<br>
+
+For a beeswarm that falls across the vertical axis, use the `side` argument. 
 
 ::: {style="font-size: 0.85em;"}
-For a beeswarm that falls across the vertical axis, use the `side` argument. 
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: create_graph_beeswarm_side
 #| eval: true
@@ -345,15 +317,11 @@ ggp2_rside_swarm +
 
 ### `cex`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CEX:**
-:::
+<br>
+
+The `cex` argument controls the "*scaling for adjusting point spacing*"
 
 ::: {style="font-size: 0.85em;"}
-The `cex` argument controls the "*scaling for adjusting point spacing*"
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: create_graph_beeswarm_cex
 #| eval: true
@@ -385,15 +353,11 @@ ggp2_beeswarm_cex +
 
 ### `geom_jitter()`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**JITTER:**
-:::
+<br>
+
+We can also create a beeswarm using the `geom_jitter()` and setting the `height` and `width`.
 
 ::: {style="font-size: 0.85em;"}
-We can also create a beeswarm using the `geom_jitter()` and setting the `height` and `width`.
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: create_graph_beeswarm_jitter
 #| eval: true
@@ -422,5 +386,3 @@ ggp2_jitter_swarm +
     labs_beeswarm
 ```
 :::
-
-::::

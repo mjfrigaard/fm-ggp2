@@ -78,12 +78,12 @@ In `ggplot2`, bar graphs can be built using `geom_bar()` (see also: [`geom_col()
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_bar
 #| code-fold: show
@@ -106,11 +106,11 @@ library(ggplot2)
 ![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Filter the missing values from `species` in the `palmerpenguins::penguins` data and store it in `penguins_bar`.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_bar
 #| code-fold: show
@@ -128,7 +128,7 @@ glimpse(penguins_bar)
 **CODE:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 Create labels with `labs()` 
 
@@ -141,7 +141,7 @@ Map `species` to the `fill` aesthetic inside the `aes()` of `geom_bar()`
 Remove the legend with `show.legend = FALSE`
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_bar
 #| code-fold: show
@@ -214,7 +214,7 @@ ggp2_bar +
 **stat_count():**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 The default `stat` argument in `geom_bar()` is set to `"count"`, which '*counts the number of cases at each `x` position*', so it's ideal for categorical variables (or factors). 
 
 The `stat_count()` function can also be used to create bar graphs using the `geom` argument.  
@@ -222,7 +222,7 @@ The `stat_count()` function can also be used to create bar graphs using the `geo
 The link between `geom_`**geom_name**`(stat = "`**stat_name**`")` and `stat_`**stat_name**`(geom = "`**geom_name**`")` is shown below:
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: stat_vs_geom_bar
 #| eval: true
@@ -257,12 +257,12 @@ ggp2_stat_count
 **geom_col():**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 To create a bar graph with `geom_col()`, the `count` variable needs to be computed before being mapped into the graph `y` aesthetic. 
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: bar_with_geom_col
 #| eval: true

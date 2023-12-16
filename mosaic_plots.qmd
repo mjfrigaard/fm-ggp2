@@ -1,4 +1,4 @@
-# Mosaic plots {.unnumbered}
+# Mosaic plots {#sec-mosaic-plots}
 
 ```{r}
 #| label: setup
@@ -36,10 +36,6 @@ status("complete")
 ```
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; font-weight: bold; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -94,20 +90,16 @@ We can build mosaic plots using the [`ggmosaic` package.](https://haleyjeppson.g
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_mosaic
 #| code-fold: show
@@ -134,11 +126,11 @@ library(ggplot2)
 ![](www/538.png){fig-align="right" width="45%" height="45%"}
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 For this graph, we'll be using the `fivethirtyeight::flying` dataset, after removing the missing values from `baby`, `recline_rude`,  and `unruly_child`. 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_mosaic
 #| code-fold: show
@@ -150,35 +142,27 @@ fly_mosaic <- fivethirtyeight::flying |>
 glimpse(fly_mosaic)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  -   Create labels with `labs()`
+
+  -   Initialize the graph with `ggplot()` and provide `data`
+
+  -   Map the `product()` of `unruly_child` and `baby` to the `x` axis
+
+  -   Map `baby` to `fill`
+
+  -   Add `theme_mosaic()`
+
+  -   Move the legend to the bottom with `theme(legend.position = "bottom")`
+
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map the `product()` of `unruly_child` and `baby` to the `x` axis
-
-Map `baby` to `fill`
-
-Add `theme_mosaic()`
-
-Move the legend to the bottom with `theme(legend.position = "bottom")`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_mosaic
 #| code-fold: show
@@ -211,7 +195,7 @@ ggp2_mosaic +
 **GRAPH:**
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: run_graph_mosaic
 #| eval: true
@@ -241,13 +225,7 @@ ggp2_mosaic +
 
 ### Details
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DETAILS:**
-:::
-
-::: {style="font-size: 0.85em;"}
 We've re-written the labels for the mosaic plot (`ggp2_mosaic`) to illustrate what's happening in the `aes()` of `geom_mosaic()`.
-:::
 
 ::: {.column-margin}
 ::: {style="font-size: 0.95em; color: #5f2042;"}
@@ -255,7 +233,7 @@ It's a good idea to adjust the `fig-height` and `fig-width` of your graph
 :::
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_table_mosaic
 #| eval: true
@@ -289,39 +267,40 @@ fly_mosaic_counts <- fly_mosaic |>
     dplyr::mutate(
         Very = as.character(Very),
         Very = tidyr::replace_na(Very, ""))
+```
+:::
 
+
+The table below displays the counts for each combined response. As we can see, the counts are represented by height and width in the graph.
+
+```{r}
+#| eval: true
+#| echo: false
 kableExtra::kable_paper(
   kable_input = knitr::kable(fly_mosaic_counts), 
   font_size = 14)
 ```
-:::
 
-::: {style="font-size: 0.85em;"}
-The table above displays the counts for each combined response. As we can see, the counts are represented by height and width in the graph.
-:::
-
-::::
 
 ## More info
 
 I recommend reading the [`ggmosaic` vignette](https://haleyjeppson.github.io/ggmosaic/articles/ggmosaic.html), particularly the sections on ordering and conditioning. 
 
-:::: {.panel-tabset}
-
 ### Two variables
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: fly_mosaic_2var_counts
+#| label: fly_mosaic_2var_counts_table
 #| eval: true
 #| echo: false
 #| warning: false
 #| message: false
-#| column: margin
 # table
 fly_mosaic_2var_counts <- fly_mosaic |> 
     dplyr::count(unruly_child, recline_rude) |> 
-    tidyr::pivot_wider(names_from = recline_rude, values_from = n) |> 
+    tidyr::pivot_wider(
+      names_from = recline_rude, 
+      values_from = n) |> 
     dplyr::arrange(desc(unruly_child))
 
 kableExtra::kable_paper(
@@ -330,17 +309,12 @@ kableExtra::kable_paper(
 ```
 :::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**TWO VARIABLES:**
-:::
 
-::: {style="font-size: 0.85em;"}
 Below is another example of a two-variable mosaic plot, mapping the `product()` variables as `unruly_child` and `recline_rude`, and the `fill` variable as `recline_rude`.
 
 Once again we can see the counts for each category in the cross-tabulation:
-:::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_mosaic_2var
 #| eval: true
@@ -372,11 +346,10 @@ ggp2_mosaic_2var +
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
-For conditional variables, we map the `product()` variable as `unruly_child` and the `fill` variable as `baby`, but include a `conds` variable (as `product(recline_rude)`).
-:::
 
-::: {style="font-size: 0.75em;"}
+For conditional variables, we map the `product()` variable as `unruly_child` and the `fill` variable as `baby`, but include a `conds` variable (as `product(recline_rude)`).
+
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_mosaic_cond
 #| eval: true
@@ -409,18 +382,11 @@ ggp2_mosaic_cond +
 
 ### Facets
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**FACETS:**
-:::
-
-::: {style="font-size: 0.85em;"}
-
 Another option for including a conditioning variable is including facets. In the example below we use `recline_rude` in both `x` and `fill` (remember to wrap `recline_rude` in `product()`).
 
 The `divider` argument let's us control the spine partitions (vertically and horizontally). Below are the two vertical orientation options for the `divider` argument. 
-:::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 ```{r}
 #| label: patchwork_mosaic_run_v
 #| eval: true
@@ -473,11 +439,10 @@ ggp2_mosaic_vspine +
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
-The two horizontal orientation options make the axis text harder to read, so these need to be manipulated manually. 
-:::
 
-::: {style="font-size: 0.85em;"}
+The two horizontal orientation options make the axis text harder to read, so these need to be manipulated manually. 
+
+::: {style="font-size: 0.95rem;"}
 ```{r}
 #| label: patchwork_mosaic_run_h
 #| eval: true
@@ -525,6 +490,6 @@ ggp2_mosaic_hspine +
 ```
 :::
 
-::::
+
 
 

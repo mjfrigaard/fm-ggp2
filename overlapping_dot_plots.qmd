@@ -1,4 +1,4 @@
-# Overlapping dot plots {.unnumbered}
+# Overlapping dot plots {#sec-overlapping-dot-plots}
 
 ```{r}
 #| label: setup
@@ -32,13 +32,7 @@ ggplot2::theme_set(theme_ggp2g(
 status("complete")
 ```
 
-
-
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -92,20 +86,17 @@ To adjust the dot plot display to look similar to a histogram or frequency polyg
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_ovrlp_dot_plots
 #| code-fold: show
@@ -120,8 +111,6 @@ library(ggplot2)
 ```
 :::
 
-
-
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
 :::
@@ -130,11 +119,11 @@ library(ggplot2)
 ![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Remove missing `sex` from `penguins`
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_ovrlp_dot_plots
 #| code-fold: show
@@ -144,13 +133,8 @@ peng_dotplot <- dplyr::filter(penguins, !is.na(sex))
 dplyr::glimpse(peng_dotplot)
 ```
 :::
-::::
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {.column-margin}
 - [`binwidth`](https://ggplot2.tidyverse.org/reference/geom_dotplot.html) = *When method is "histodot", this specifies bin width. Defaults to 1/30 of the range of the data*
@@ -162,21 +146,17 @@ dplyr::glimpse(peng_dotplot)
 **CODE:**
 :::
 
+  -   Create labels with `labs()`
+
+  -   Initialize the graph with `ggplot()` and provide `data`
+
+  -   Map `flipper_length_mm` to `x`
+
+  -   Map `species` to `fill` (*inside* `factor()`)
+
+  -   Inside `geom_dotplot`, set `method` to `"histodot"`, `binwidth` to `1.35`, and `binpositions` to `"all"`
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `flipper_length_mm` to `x`
-
-Map `species` to `fill` (*inside* `factor()`)
-
-Inside `geom_dotplot`, set `method` to `"histodot"`, `binwidth` to `1.35`, and `binpositions` to `"all"`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_ovrlp_dot_plots
 #| code-fold: show
@@ -235,4 +215,3 @@ ggp2_ovrlp_dotplot +
   labs_ovrlp_dotplot
 ```
 
-::::

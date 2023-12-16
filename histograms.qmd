@@ -27,7 +27,7 @@ ggplot2::theme_set(theme_ggp2g(
 :::: {.callout-note collapse="false" icon=false}
 
 ::: {style="font-size: 1.25em; color: #02577A;"}
-**This graph requires:**
+**Histograms require:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -73,12 +73,12 @@ Unlike a typical bar graph, histograms can be used to visually asses the '[norma
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_histogram
 #| code-fold: show
@@ -103,11 +103,11 @@ library(ggplot2)
 ![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 The `penguins` data.
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_histogram
 #| code-fold: show
@@ -125,7 +125,7 @@ glimpse(penguins)
 **CODE:**
 :::
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 
 Create labels with `labs()`
 
@@ -139,7 +139,7 @@ Adjust the `bins` accordingly
 
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_histogram
 #| code-fold: show
@@ -188,6 +188,6 @@ ggp2_hist +
 ```
 
 
-::: {style="font-size: 0.85em;"}
+::: {style="font-size: 0.95rem;"}
 The standard number of bins is `30`, but ['you should always override this value, exploring multiple widths to find the best to illustrate the stories in your data.'](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
 :::

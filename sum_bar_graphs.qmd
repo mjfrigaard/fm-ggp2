@@ -1,4 +1,4 @@
-# Summary bar graphs {.unnumbered}
+# Summary bar graphs {#sec-sum-bar-graphs}
 
 ```{r}
 #| label: setup
@@ -24,10 +24,6 @@ ggplot2::theme_set(theme_ggp2g(
 ```
 
 :::: {.callout-note collapse="false" icon=false}
-
-::: {style="font-size: 1.25em; color: #02577A;"}
-Graph info
-:::
 
 <br>
 
@@ -82,20 +78,14 @@ In `ggplot2`, we can create summary bar graphs with `geom_bar()`.
 
 ## Set up
 
-:::: {.panel-tabset}
-
-
-
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.85em;"}
 Install packages.
-:::
 
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_sum_col
 #| code-fold: show
@@ -120,13 +110,12 @@ library(ggplot2)
 ![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.85em;"}
+
 Remove the missing values from `body_mass_g` and `island` in the `palmerpenguins::penguins` data and convert body mass in grams to kilograms (`body_mass_kg`).
 
 *We'll also reduce the number of columns in the `penguins` data for clarity.*
-:::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_sum_col
 #| code-fold: show
@@ -142,33 +131,25 @@ peng_sum_col <- palmerpenguins::penguins |>
 dplyr::glimpse(peng_sum_col)
 ```
 :::
-::::
+
 
 ## Grammar
-
-:::: {.panel-tabset}
-
-
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
 :::
 
+  -   Create labels with `labs()`
+
+  -   Initialize the graph with `ggplot()` and provide `data`
+
+  -   Map `island` to `x` and `body_mass_kg` to `y`
+
+  -   *Inside* the `aes()` of `geom_col()`, map `island` to `fill` 
+
+  -   *Outside* the `aes()` of `geom_col()`, remove the legend with `show.legend = FALSE`
+
 ::: {style="font-size: 0.85em;"}
-
-Create labels with `labs()`
-
-Initialize the graph with `ggplot()` and provide `data`
-
-Map `island` to `x` and `body_mass_kg` to `y`
-
-*Inside* the `aes()` of `geom_col()`, map `island` to `fill` 
-
-*Outside* the `aes()` of `geom_col()`, remove the legend with `show.legend = FALSE`
-
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: code_graph_sum_col
 #| code-fold: show
@@ -223,7 +204,6 @@ ggp2_sum_col +
     labs_sum_col
 ```
 
-::::
 
 ## More Info
 
@@ -231,23 +211,11 @@ Note that we didn't have to write any code to calculate the total `body_mass_g` 
 
 That's because `ggplot2` does this for us!
 
-:::: {.panel-tabset}
-### Summary
+  -   If we pass a categorical variable to the `x` (like `island`) and a continuous variable to `y` (like `body_mass_kg`), `geom_col()` will calculate the `sum()` of `y` by levels of `x`
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**SUMMARY:**
-:::
+  -   We can see the underlying summary of budget using `dplyr`’s `group_by()` and `summarise()` functions.
 
 ::: {style="font-size: 0.85em;"}
-
-If we pass a categorical variable to the `x` (like `island`) and a continuous variable to `y` (like `body_mass_kg`), `geom_col()` will calculate the `sum()` of `y` by levels of `x`
-:::
-
-::: {style="font-size: 0.85em;"}
-We can see the underlying summary of budget using `dplyr`’s `group_by()` and `summarise()` functions.
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: create_summary_sum_col
 #| eval: false
@@ -270,7 +238,7 @@ palmerpenguins::penguins |>
 ```
 :::
 
-::: {style="font-size: 0.75em;"}
+::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: show_summary_sum_col
 #| eval: true
@@ -297,17 +265,13 @@ palmerpenguins::penguins |>
 ```
 :::
 
-### Identity vs. Count
+## Identity vs. Count
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**STATS:**
-:::
+<br>
+
+  -   The `geom_bar()` geom will also create grouped bar graphs, but we have to switch the `stat` argument to `"identity"`.
 
 ::: {style="font-size: 0.85em;"}
-The `geom_bar()` geom will also create grouped bar graphs, but we have to switch the `stat` argument to `"identity"`.
-:::
-
-::: {style="font-size: 0.75em;"}
 ```{r}
 #| label: show_stat_sum_col
 #| eval: true
@@ -328,15 +292,12 @@ ggplot(data = peng_sum_col,
 ```
 :::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**`geom_bar()` vs. `geom_col()`:**
-:::
 
-::: {style="font-size: 0.85em;"}
-`geom_bar()` will map a categorical variable to the `x` *or* `y` and display counts for the discrete levels (see [`stat_count()`](https://ggplot2.tidyverse.org/reference/geom_bar.html) for more info)
+### `geom_bar()` vs. `geom_col()`
+
+<br>
+
+  -   `geom_bar()` will map a categorical variable to the `x` *or* `y` and display counts for the discrete levels (see [`stat_count()`](https://ggplot2.tidyverse.org/reference/geom_bar.html) for more info)
 
 
-`geom_col()` will map *both* `x` *and* `y` aesthetics, and is used when we want to display numerical (quantitative) values across the levels of a categorical variable. `geom_col()` assumes these values have been created in their own column (see  [`stat_identity()`](https://ggplot2.tidyverse.org/reference/stat_identity.html) for more info)
-:::
-
-::::
+  -   `geom_col()` will map *both* `x` *and* `y` aesthetics, and is used when we want to display numerical (quantitative) values across the levels of a categorical variable. `geom_col()` assumes these values have been created in their own column (see  [`stat_identity()`](https://ggplot2.tidyverse.org/reference/stat_identity.html) for more info)
