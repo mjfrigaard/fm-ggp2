@@ -29,6 +29,16 @@ ggplot2::theme_set(theme_ggp2g(
 
 <br>
 
+::: {style="font-size: 1.10em; color: #02577A;"}
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #282b2d;"}
+**`r emo::ji("check")` two numeric (continuous) variables**
+
+**`r emo::ji("check")` a categorical variable** 
+:::
+
 ```{r}
 #| label: full_code_display
 #| eval: true
@@ -71,23 +81,11 @@ ggp2_heatmap_tile +
   labs_heatmap_tile
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
-:::
-
-::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` two numeric (continuous) variables**
-
-**`r emo::ji("check")` a categorical variable** 
-:::
-
 ::::
 
 ## Description 
 
-Heatmaps display quantitative values across an intersection of two categorical (or discrete) variables.
-
-The intersecting cells contain variations of color saturation (i.e., the grade of purity or vividness) to represent the numerical values between groups.
+Heatmaps are color graphs that show data as a matrix with categories on the x and y axes. Each cell's color corresponds to its value. They are useful for showing magnitude in two dimensions and often include a color scale. The intersecting cells contain variations of color saturation (i.e., the grade of purity or vividness) to represent the numerical values between groups.
 
 Heatmap legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability. 
 

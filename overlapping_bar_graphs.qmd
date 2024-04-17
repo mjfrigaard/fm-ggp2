@@ -27,6 +27,16 @@ ggplot2::theme_set(theme_ggp2g(
 
 <br>
 
+::: {style="font-size: 1.10em; color: #02577A;"}
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #282b2d;"}
+**`r emo::ji("check")` a numeric (continuous) variable**
+
+**`r emo::ji("check")` a categorical variable** 
+:::
+
 ```{r}
 #| label: full_code_display
 #| eval: true
@@ -54,21 +64,11 @@ ggp2_bar_ovrlp +
   labs_bar_ovrlp
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
-:::
-
-::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
-
-**`r emo::ji("check")` a categorical variable** 
-:::
-
 ::::
 
 ## Desription 
 
-Overlapping bar graphs display counts for categorical levels, resulting in bars differentiated by color and ‘stacked’ on top of each other.
+Overlapping bar graphs display multiple variables on the same graph. Bars overlap instead of being placed side by side. Bars are often made partially transparent to aid visibility. A legend is essential to distinguish between data.
 
 In `ggplot2`, we can build overlapping bar graphs using the `fill` argument in `geom_bar()` or `geom_col()`
 

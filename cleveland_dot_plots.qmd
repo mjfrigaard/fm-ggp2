@@ -1,4 +1,4 @@
-# Cleveland dot plot {#sec-cleveland-dot-plots}
+# Cleveland dot plots {#sec-cleveland-dot-plots}
 
 ```{r}
 #| label: setup
@@ -26,6 +26,18 @@ ggplot2::theme_set(theme_ggp2g(
 :::: {.callout-note collapse="false" icon=false}
 
 <br>
+
+::: {style="font-size: 1.10em; color: #02577A;"}
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #282b2d;"}
+
+**`r emo::ji("check")` a numeric (continuous) variable**
+
+**`r emo::ji("check")` at least one categorical variable (with two levels)**  
+
+:::
 
 ```{r}
 #| label: full_code_display
@@ -62,23 +74,11 @@ ggp2_clev_dots +
     labs_clev_dots
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
-:::
-
-::: {style="font-size: 1.05em; color: #282b2d;"}
-
-**`r emo::ji("check")` a numeric (continuous) variable**
-
-**`r emo::ji("check")` at least one categorical variable (with two levels)**  
-
-:::
-
 ::::
 
 ## Description 
 
-A Cleveland dot plot displays differences in a numerical variable for different levels of a categorical variable.
+Cleveland dot plots compare numbers with dots on a line and are more efficient than bar graphs. The graph lists the categories on the side and shows the data with dots along a line.
 
 Typically, the graph contains two points representing the numerical value on the `y` axis, differentiated by color. A line connecting the two points represents the difference between the two categorical levels (the width of the line is the size of the difference).
 

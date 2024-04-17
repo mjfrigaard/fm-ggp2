@@ -35,8 +35,12 @@ status("complete")
 
 :::: {.callout-note collapse="false" icon=false}
 
-::: {style="font-size: 1.25em; color: #02577A;"}
+::: {style="font-size: 1.10em; color: #02577A;"}
+**This graph requires:**
+:::
 
+::: {style="font-size: 1.05em; color: #282b2d;"}
+**`r emo::ji("check")` a numeric (continuous) variable**
 :::
 
 <br>
@@ -64,19 +68,11 @@ ggp2_dotplot +
   labs_dotplot
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
-:::
-
-::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
-:::
-
 ::::
 
 ## Description 
 
-Dot-plots are similar to histograms and frequency polygons, except instead of using bars or lines, they use dots to represent the frequency (or count) of values for a given variable.
+A dot plot displays each data point as a dot on a single axis, making it useful for identifying patterns, gaps, and outliers in small to moderate datasets. Each dot represents an observation in the data, stacked over categories or spread along a number line.
 
 ## Set up
 

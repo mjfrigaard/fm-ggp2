@@ -27,7 +27,7 @@ ggplot2::theme_set(theme_ggp2g(
 :::: {.callout-note collapse="false" icon=false}
 
 ::: {style="font-size: 1.25em; color: #02577A;"}
-Bar graphs require:
+**This graph requires:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -66,9 +66,7 @@ ggp2_bar +
 
 ## Description
 
-A bar graph (or bar chart) is typically used to display counts for the discrete levels of a categorical variable, like political affiliation, hair color, or race/ethnicity (or species of penguin!). 
-
-Bar graphs can be arranged vertically or horizontally, but the length of the bar represents the ‘count’ for each category value. 
+A bar graph compares data in different categories using rectangular bars that vary in length or height. They can be vertical or horizontal, with the vertical axis showing the quantities being measured and the horizontal axis listing the categories. Bar graphs often include a legend explaining the colors or patterns used when comparing multiple variables.
 
 In `ggplot2`, bar graphs can be built using `geom_bar()` (see also: [`geom_col()`](https://mjfrigaard.github.io/ggp2-gallery/geoms/geom_col.html)).
 

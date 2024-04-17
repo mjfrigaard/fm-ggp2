@@ -1,6 +1,5 @@
 # Introduction {.unnumbered}
 
-
 ```{r}
 #| label: setup
 #| message: false
@@ -34,59 +33,212 @@ co_box(
   fold = FALSE
 )
 library(dplyr)
-library()
 ```
 
-## Graph Categories 
+## `ggplot2` syntax
+
+> “*making infinite use of finite means*” - Wilhelm von Humboldt
+
+Grammar is often defined as the system of rules for any given language and includes word meanings, internal structures, and word arrangement. Syntax is the form, structure and order for constructing statements. `ggplot2`'s syntax is built on the grammar & syntax of R. In R, objects are like nouns, and functions are like verbs (i.e., functions 'do things' to objects).
+
+### Layers
+
+The `ggplot2` syntax is comprised of layers:
+
+1. Data: The **data layer** consists of a rectangular object (like a spreadsheet) with columns and rows
+
+```{r}
+#| message: false
+#| warning: false
+ggplot(data = penguins)
+```
+
+2. Mapping: The **mapping layer** assigns columns (variables) from the data to a visual property (i.e. graph ’**`aes`**’ thetic)
+
+```{r}
+#| message: false
+#| warning: false
+#| dpi: 320
+#| fig-asp: 0.618
+ggplot(data = penguins,
+  mapping = 
+    aes(x = flipper_length_mm, 
+      y = bill_length_mm))
+```
+
+3. Statistics & Geometric objects: `geom_*()` functions include statistical transformations, shapes, and position adjustments for how to ‘draw’ the data on the graph
+
+```{r}
+#| message: false
+#| warning: false
+#| dpi: 320
+#| fig-asp: 0.618
+ggplot(data = penguins,
+  mapping = aes(
+    x = flipper_length_mm, 
+    y = bill_length_mm)) +
+  geom_point()
+```
+
+We can have multiple layers (data, mappings, geoms) in a single graph
+
+```{r}
+#| message: false
+#| warning: false
+#| dpi: 320
+#| fig-asp: 0.618
+ggplot(data = penguins,
+ # layer 1
+  mapping = aes(
+    x = flipper_length_mm, 
+    y = bill_length_mm)) +
+  geom_point() + 
+# layer 2
+  geom_smooth(
+    mapping = aes(
+      x = flipper_length_mm,
+      y = bill_length_mm,
+      color = species))
+```
+
+4. Position adjustments: With a finite number of objects & functions, we can combine `ggplot2`’s grammar and syntax to create an infinite number of graphs!
+
+```{r}
+#| message: false
+#| warning: false
+#| dpi: 320
+#| fig-asp: 0.618
+ggplot(data = penguins,
+ # layer 1
+  mapping = aes(
+    x = flipper_length_mm, 
+    y = bill_length_mm)) +
+  geom_point(
+    size = 0.7, 
+    alpha = 2/3) + 
+# layer 2
+  geom_smooth(
+    mapping = aes(
+      x = flipper_length_mm,
+      y = bill_length_mm,
+      color = species)) + 
+  facet_wrap(. ~ island, nrow = 2) + 
+  theme(legend.position = "top") + 
+  labs(
+    x = 'Flipper length (mm)',
+    y = 'Bill length (mm)', 
+    title = 'Penguins', 
+    subtitle = 'Bills vs. Flippers'
+    )
+```
+
+### Templates
+
+**Basic Template**: Data, aesthetic mappings, geom
+
+```r
+ggplot(data = <DATA>) +
+  geom_*(mapping = aes(<AESTHETIC MAPPINGS>))
+```
+
+**Template + 1 Layer**: more geoms and more aesthetic mappings
+
+```r
+ggplot(data = <DATA>) +
+    geom_*(mapping = aes(<AESTHETIC MAPPINGS>)) +
+    geom_*(mapping = aes(<AESTHETIC MAPPINGS>))
+```
+
+Templates = infinitely extensible!
+
+Facets: 
+
+```r
+ggplot(data = <DATA>) +
+    geom_*(mapping = aes(<AESTHETIC MAPPINGS>)) +
+    geom_*(mapping = aes(<AESTHETIC MAPPINGS>)) +
+    facet_*
+```
+
+Themes: 
+
+```r
+ggplot(data = <DATA>) +
+    geom_*(mapping = aes(<AESTHETIC MAPPINGS>)) +
+    geom_*(mapping = aes(<AESTHETIC MAPPINGS>)) +
+    facet_* +
+    theme_*
+```
+
+Don’t forget labels!
+
+```r
+ggplot(data = <DATA>) +
+    geom_*(mapping = aes(<AESTHETIC MAPPINGS>)) +
+    geom_*(mapping = aes(<AESTHETIC MAPPINGS>)) +
+    facet_* +
+    theme_* +
+    labs()
+```
+
+## Graph Categories
 
 Graphs have been categorized into the following types (you can see them in the floating table of contents to your left).
 
-- **Univariate**: if you have a single column you're trying to visualize 
+-   **Univariate**: if you have a single column you're trying to visualize
 
-- **Amounts**: counts or simple summary statistics of one or two columns in a dataset     
+-   **Amounts**: counts or simple summary statistics of one or two columns in a dataset
 
-- **Proportions**: ratio displays of part-to-whole    
+-   **Proportions**: ratio displays of part-to-whole
 
-- **Distributions**: displaying the shape of a variable's values (normalcy, skewness, kurtosis, etc.)    
+-   **Distributions**: displaying the shape of a variable's values (normalcy, skewness, kurtosis, etc.)
 
-- **Dates & Times**: changes in quantitative or categorical variables over a dimension of time (date-time, date, year, month, quarter, etc.).
+-   **Dates & Times**: changes in quantitative or categorical variables over a dimension of time (date-time, date, year, month, quarter, etc.).
 
-- **Relationships**: how does the change of values in variable `x` affect the values in variable `y` (and possibly `z`)?   
+-   **Relationships**: how does the change of values in variable `x` affect the values in variable `y` (and possibly `z`)?
 
 Some graphs can justifiably belong to more than one category, and wherever this is the case, I've tried to include links to other applications in the notes.
 
 ## Style & structure
 
-Each graph has, at minimum, the following sections: 
+Each graph has, at minimum, the following sections:
 
-1. ****  
-   - *Should I use this graph?*  
-   - *This graph requires:*  
-2. **Description**     
-3. **Set up**
-   - *Packages and Data*   
-     - Code for installing development version of packages (if necessary) for graphs *and* data   
-     - Any steps used to create (i.e., manipulate and prepare) the data for the graph    
-2. **The grammar**    
-   - *Code to build the labels and graph layers*      
-     - Graph labels have the `labs_` prefix     
-     - Graph layers have a `ggp2_` prefix   
-3. **More info**  
-   - *Additional methods, arguments, or applications*      
-     - Color palettes  
-     - Complimentary packages  
+1.  
 
+    ------------------------------------------------------------------------
 
-I've attempted to balance brevity and clarity, but with the assumption that its best to err on the latter. I've also followed the general principle that if a graph can be *easily* built using one of `ggplot2` 's `geom_*` functions, that method is shown first. 
+    -   *Should I use this graph?*\
+    -   *This graph requires:*\
 
-I've attempted to write code for each graph so that is can be read and understood *without* having to execute it.[^rule-of-least-power]
+2.  **Description**\
 
-[^rule-of-least-power]: This field manual follows a [Rule of Least Power Principle](https://www.w3.org/2001/tag/doc/leastPower.html), in the sense that "*a language with a straightforward syntax may be easier to analyze than an otherwise equivalent one with more complex structure.*"
-  
-  
-## The Data 
+3.  **Set up**
 
-The data packages used are available to preview below. 
+    -   *Packages and Data*
+        -   Code for installing development version of packages (if necessary) for graphs *and* data\
+        -   Any steps used to create (i.e., manipulate and prepare) the data for the graph\
+
+4.  **The grammar**
+
+    -   *Code to build the labels and graph layers*
+        -   Graph labels have the `labs_` prefix\
+        -   Graph layers have a `ggp2_` prefix\
+
+5.  **More info**
+
+    -   *Additional methods, arguments, or applications*
+        -   Color palettes\
+        -   Complimentary packages
+
+I've attempted to balance brevity and clarity, but with the assumption that its best to err on the latter. I've also followed the general principle that if a graph can be *easily* built using one of `ggplot2` 's `geom_*` functions, that method is shown first.
+
+I've attempted to write code for each graph so that is can be read and understood *without* having to execute it.[^intro-1]
+
+[^intro-1]: This field manual follows a [Rule of Least Power Principle](https://www.w3.org/2001/tag/doc/leastPower.html), in the sense that "*a language with a straightforward syntax may be easier to analyze than an otherwise equivalent one with more complex structure.*"
+
+## The Data
+
+The data packages used are available to preview below.
 
 ```{r}
 #| eval: false
@@ -99,21 +251,19 @@ data_pkgs <- c("palmerpenguins",
 install.packages(data_pkgs)
 ```
 
-
 ### `palmerpenguins::penguins`
 
-The majority of the graphs in the manual are built using the `palmerpenguins::penguins` data. 
+The majority of the graphs in the manual are built using the `palmerpenguins::penguins` data.
 
-:::: {.column-margin}
-
+::: column-margin
 ::: {style="font-size: 0.95em; color: #282b2d;"}
 ***...so...many...PENGUINS!***
 :::
 
 ![Artwork by allison_horst](www/lter_penguins.png){fig-align="center" width="50%" height="50%"}
-::::
+:::
 
-:::: {.callout-note collapse="true" icon=false}
+::: {.callout-note collapse="true" icon="false"}
 ## Expand to view the data in `palmerpenguins::penguins`
 
 ::: {style="font-size: 0.85em;"}
@@ -124,20 +274,19 @@ The majority of the graphs in the manual are built using the `palmerpenguins::pe
 rmarkdown::paged_table(palmerpenguins::penguins)
 ```
 :::
+:::
 
-::::
-
-Source: [https://github.com/allisonhorst/palmerpenguins/](https://github.com/allisonhorst/palmerpenguins/)
+Source: <https://github.com/allisonhorst/palmerpenguins/>
 
 ### `fivethirtyeight`
 
-Use the table below to view the datasets in this package. 
+Use the table below to view the datasets in this package.
 
-::: {.column-margin}
+::: column-margin
 ![](www/538.png){fig-align="center" width="30%" height="30%"}
 :::
 
-:::: {.callout-note collapse="true" icon=false}
+::: {.callout-note collapse="true" icon="false"}
 ## Expand to view the data in the `fivethirtyeight` package
 
 ::: {style="font-size: 0.85em;"}
@@ -156,17 +305,17 @@ rmarkdown::paged_table(fivethirtyeight::datasets_master |>
     select(`Data Frame Name`, `Article Title`))
 ```
 :::
-::::
+:::
 
-Source: [https://github.com/fivethirtyeight/data](https://github.com/fivethirtyeight/data)
+Source: <https://github.com/fivethirtyeight/data>
 
 ### `ggplot2movies::movies`
 
-::: {.column-margin}
+::: column-margin
 ![](www/imdb.png){fig-align="center" width="30%" height="30%"}
 :::
 
-:::: {.callout-note collapse="true" icon=false}
+::: {.callout-note collapse="true" icon="false"}
 ## Expand to view *a sample* of the data in `ggplot2movies::movies`
 
 ::: {style="font-size: 0.85em;"}
@@ -179,18 +328,17 @@ rmarkdown::paged_table(x =
       n = 1000, replace = FALSE))
 ```
 :::
+:::
 
-::::
-
-Source: [https://www.imdb.com/](https://www.imdb.com/)
+Source: <https://www.imdb.com/>
 
 ### `babynames::babynames`
 
-::: {.column-margin}
+::: column-margin
 ![](www/ssa.png){fig-align="center" width="40%" height="40%"}
 :::
 
-:::: {.callout-note collapse="true" icon=false}
+::: {.callout-note collapse="true" icon="false"}
 ## Expand to view *a sample* of the data in `babynames::babynames`
 
 ::: {style="font-size: 0.85em;"}
@@ -203,22 +351,20 @@ rmarkdown::paged_table(x =
       n = 1000, replace = FALSE))
 ```
 :::
-::::
+:::
 
-Source: [http://www.ssa.gov/oact/babynames/limits.html](http://www.ssa.gov/oact/babynames/limits.html)
+Source: <http://www.ssa.gov/oact/babynames/limits.html>
 
-***Why not manually create the graph datasets with `data.frame()` or `tibble()`/`tribble()`?*** 
+***Why not manually create the graph datasets with `data.frame()` or `tibble()`/`tribble()`?***
 
 In my opinion, using manually generated data is great for reproducible examples, but they rarely look like data 'caught in the wild.' The data packages above are also well maintained and can be used to provide a variety of examples.
 
-## Assumptions 
+## Assumptions
 
-The code and examples assume the reader has already answered the question, “*what kind of data do I have?*” 
+The code and examples assume the reader has already answered the question, “*what kind of data do I have?*”
 
 If not, I highly recommend the [`skimr`](https://docs.ropensci.org/skimr/) and [`inspectdf`](https://alastairrushworth.github.io/inspectdf/) packages for getting to know your data better.
-
 
 ## Theme
 
 The theme used in the graphs is custom and uses combined elements from `ggplot2::theme_minimal()` and `ggplot2::theme_void()`. View it [here](https://github.com/mjfrigaard/fm-ggp2/blob/main/R/theme_ggp2g.R).
-

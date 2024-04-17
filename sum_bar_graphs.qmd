@@ -27,6 +27,17 @@ ggplot2::theme_set(theme_ggp2g(
 
 <br>
 
+::: {style="font-size: 1.10em; color: #02577A;"}
+**This graph requires:**
+:::
+
+
+::: {style="font-size: 1.05em; color: #282b2d;"}
+**`r emo::ji("check")` a numeric (continuous) variable**
+
+**`r emo::ji("check")` a categorical variable** 
+:::
+
 ```{r}
 #| label: full_code_display
 #| eval: true
@@ -57,22 +68,11 @@ ggp2_sum_col +
     labs_sum_col
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
-:::
-
-
-::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
-
-**`r emo::ji("check")` a categorical variable** 
-:::
-
 ::::
 
 ## Description
 
-Summary bar graphs display the sum (or total) of a numerical variable across the levels of a second categorical variable. Color is used to make comparisons and distinguish between groups (or levels) of the categorical variable. 
+Bar graphs can summarize data by showing a statistic for each category. The x-axis lists the categories, and the y-axis shows the values. They can include error bars to show variation or confidence intervals.
 
 In `ggplot2`, we can create summary bar graphs with `geom_bar()`.
 

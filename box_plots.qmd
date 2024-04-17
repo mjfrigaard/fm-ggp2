@@ -34,8 +34,12 @@ status("complete")
 
 :::: {.callout-note collapse="false" icon=false}
 
-::: {style="font-size: 1.25em; color: #02577A;"}
+::: {style="font-size: 1.10em; color: #02577A;"}
+**This graph requires:**
+:::
 
+::: {style="font-size: 1.05em; color: #282b2d;"}
+**`r emo::ji("check")` a numeric (continuous) variable**
 :::
 
 <br>
@@ -65,19 +69,11 @@ ggp2_boxplot +
   labs_boxplot
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
-:::
-
-::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
-:::
-
 ::::
 
 ## Description
 
-Box plots (sometimes called box-and-whisker plots) use position, lines (vertical and horizontal), and points to convey a collection of summary statistics in a single graph.
+Box plots use five values to summarize data: minimum, first quartile, median, third quartile, and maximum. The plot looks like a box with a line in the middle. Whiskers go from the box to the minimum and maximum values. Unusual points are shown as dots outside the whiskers. Box plots help identify unusual points and compare different groups of data.
 
 ## Set up
 

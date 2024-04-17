@@ -36,6 +36,18 @@ status("complete")
 
 :::: {.callout-note collapse="false" icon=false}
 
+::: {style="font-size: 1.10em; color: #02577A;"}
+**This graph requires:**
+:::
+
+::: {style="font-size: 1.05em; color: #282b2d;"}
+**`r emo::ji("check")` a categorical variable**      
+:::
+
+::: {style="font-size: 1.05em; color: #282b2d;"}
+**`r emo::ji("check")` a numeric (continuous) variable**
+:::
+
 <br>
 
 ```{r}
@@ -72,23 +84,13 @@ ggp2_grp_col +
     labs_grp_col
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
-:::
-
-::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a categorical variable**      
-:::
-
-::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
-:::
-
 ::::
 
 ## Description 
 
-`geom_col()` allows us to display 'grouped' numerical values across levels (or groups) of a categorical variable. Grouped bar graphs assume the statistical measure (i.e., the value that the length of the bars will be derived from) is contained in a variable and mapped to the `x` or `y` aesthetic. 
+Grouped bar graphs compare multiple values across categories. Each category has a cluster of bars. X-axis labels show categories and y-axis values. Colors or patterns differentiate subsets, and a legend is shown on the side or top of the graph.
+
+`geom_col()` allows us to display 'grouped' numerical values across levels (or groups) of a categorical variable. 
 
 ## Set up
 
@@ -150,6 +152,8 @@ glimpse(peng_grp_col)
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CODE:**
 :::
+
+Grouped bar graphs assume the statistical measure (i.e., the value that the length of the bars will be derived from) is contained in a variable and mapped to the `x` or `y` aesthetic. 
 
   -   Create labels with `labs()`
 

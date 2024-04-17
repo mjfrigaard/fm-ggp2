@@ -34,8 +34,12 @@ status("complete")
 
 :::: {.callout-note collapse="false" icon=false}
 
-::: {style="font-size: 1.25em; color: #02577A;"}
+::: {style="font-size: 1.10em; color: #02577A;"}
+**This graph requires:**
+:::
 
+::: {style="font-size: 1.05em; color: #282b2d;"}
+**`r emo::ji("check")` a numeric (continuous) variable**
 :::
 
 <br>
@@ -64,23 +68,16 @@ ggp2_violin +
   labs_violin
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
-:::
-
-::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
-:::
-
 ::::
 
 ## Description
 
-Violin plots will display the distribution of a single numeric (continuous) variable. If you're trying to view the shape of a continuous distribution across the groups or levels of a categorical variable, check out [grouped violin plots.](https://mjfrigaard.github.io/ggp2-gallery/dist/grouped_violin_plots.html) 
+Violin plots show data distribution and probability density. They are like box plots but have a rotated kernel density plot on each side. We can use them to compare data distribution across categories.
+
+::: {.column-margin}
 
 The violin plot is essentially a mirrored density plot, in which a smoothed distribution is plotted symmetrically across the `x` or `y` axis, creating a Rorschach-like inkblot area for the distribution:
 
-::: {.column-margin}
 ![source: Rorschach test, Wikipedia](https://upload.wikimedia.org/wikipedia/commons/7/70/Rorschach_blot_01.jpg){fig-align="right" width="100%" height="100%"}
 :::
 

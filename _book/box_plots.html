@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.5.28">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>ggplot2: field manual - 7&nbsp; Box plots</title>
+<title>ggplot2: field manual – 7&nbsp; Box plots</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,12 +96,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
-
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
@@ -110,12 +116,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./univariate.html">UNIVARIATE</a></li><li class="breadcrumb-item"><a href="./box_plots.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Box plots</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./univariate.html">UNIVARIATE</a></li><li class="breadcrumb-item"><a href="./box_plots.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Box plots</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -125,7 +131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">ggplot2: field manual</a> 
@@ -252,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./cleveland_dot_plots.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Cleveland dot plot</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Cleveland dot plots</span></span></a>
   </div>
 </li>
       </ul>
@@ -495,7 +501,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="3">
@@ -517,7 +523,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./univariate.html">UNIVARIATE</a></li><li class="breadcrumb-item"><a href="./box_plots.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Box plots</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span id="sec-box-plots" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Box plots</span></span></h1>
 </div>
@@ -532,7 +538,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <div class="callout callout-style-simple callout-tip no-icon">
 <div class="callout-body d-flex">
@@ -550,31 +558,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container">
-<div style="font-size: 1.25em; color: #02577A;">
-
-</div>
-<p><br></p>
-<div class="cell" data-layout-align="right">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure">
-<p><img src="box_plots_files/figure-html/full_code_display-1.png" style="width:60.0%;height:60.0%" class="figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
 <div style="font-size: 1.10em; color: #02577A;">
 <p><strong>This graph requires:</strong></p>
 </div>
 <div style="font-size: 1.05em; color: #282b2d;">
 <p><strong>✅ a numeric (continuous) variable</strong></p>
 </div>
+<p><br></p>
+<div class="cell" data-layout-align="right">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-right">
+<figure class="figure">
+<p><img src="box_plots_files/figure-html/full_code_display-1.png" class="quarto-figure quarto-figure-right figure-img" style="width:60.0%;height:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <section id="description" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="description"><span class="header-section-number">7.1</span> Description</h2>
-<p>Box plots (sometimes called box-and-whisker plots) use position, lines (vertical and horizontal), and points to convey a collection of summary statistics in a single graph.</p>
+<p>Box plots use five values to summarize data: minimum, first quartile, median, third quartile, and maximum. The plot looks like a box with a line in the middle. Whiskers go from the box to the minimum and maximum values. Unusual points are shown as dots outside the whiskers. Box plots help identify unusual points and compare different groups of data.</p>
 </section>
 <section id="set-up" class="level2 page-columns page-full" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="set-up"><span class="header-section-number">7.2</span> Set up</h2>
@@ -586,8 +591,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div style="font-size: 0.85em;">
 <div class="cell">
-<details open="">
-<summary>Code</summary>
+<details open="" class="code-fold">
+<summary>show/hide</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"palmerpenguins"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins) </span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -602,7 +607,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-figure quarto-figure-right">
 <figure class="figure">
 <p><img src="www/lter_penguins.png" style="width:100.0%;height:100.0%" class="figure-img"></p>
-<figcaption class="figure-caption">Artwork by Allison Horst</figcaption>
+<figcaption>Artwork by Allison Horst</figcaption>
 </figure>
 </div>
 </div></div><div style="font-size: 0.95rem;">
@@ -610,8 +615,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div style="font-size: 0.85em;">
 <div class="cell">
-<details open="">
-<summary>Code</summary>
+<details open="" class="code-fold">
+<summary>show/hide</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> palmerpenguins<span class="sc">::</span>penguins </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 344</span></span>
@@ -644,8 +649,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div style="font-size: 0.85em;">
 <div class="cell">
-<details open="">
-<summary>Code</summary>
+<details open="" class="code-fold">
+<summary>show/hide</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>labs_boxplot <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Adult foraging penguins"</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Distribution of flipper length"</span>,</span>
@@ -663,9 +668,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div class="cell column-page-inset-right quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="box_plots_files/figure-html/create_graph_box-1.png" class="img-fluid" width="576"></p>
 </div>
 </div>
@@ -681,8 +689,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div style="font-size: 0.85em;">
 <div class="cell">
-<details open="">
-<summary>Code</summary>
+<details open="" class="code-fold">
+<summary>show/hide</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggplot2movies"</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2movies) </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -694,8 +702,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div style="font-size: 0.85em;">
 <div class="cell">
-<details open="">
-<summary>Code</summary>
+<details open="" class="code-fold">
+<summary>show/hide</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>movies_box <span class="ot">&lt;-</span> ggplot2movies<span class="sc">::</span>movies <span class="sc">|&gt;</span> </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                dplyr<span class="sc">::</span><span class="fu">filter</span>(year <span class="sc">&gt;</span> <span class="dv">2000</span> <span class="sc">&amp;</span> </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                                mpaa <span class="sc">!=</span> <span class="st">""</span> <span class="sc">&amp;</span> </span>
@@ -703,7 +711,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(movies_box)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
 {"columns":[{"label":["title"],"name":[1],"type":["chr"],"align":["left"]},{"label":["year"],"name":[2],"type":["int"],"align":["right"]},{"label":["length"],"name":[3],"type":["int"],"align":["right"]},{"label":["budget"],"name":[4],"type":["int"],"align":["right"]},{"label":["rating"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["votes"],"name":[6],"type":["int"],"align":["right"]},{"label":["r1"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["r2"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["r3"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["r4"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["r5"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["r6"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["r7"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["r8"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["r9"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["r10"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["mpaa"],"name":[17],"type":["chr"],"align":["left"]},{"label":["Action"],"name":[18],"type":["int"],"align":["right"]},{"label":["Animation"],"name":[19],"type":["int"],"align":["right"]},{"label":["Comedy"],"name":[20],"type":["int"],"align":["right"]},{"label":["Drama"],"name":[21],"type":["int"],"align":["right"]},{"label":["Documentary"],"name":[22],"type":["int"],"align":["right"]},{"label":["Romance"],"name":[23],"type":["int"],"align":["right"]},{"label":["Short"],"name":[24],"type":["int"],"align":["right"]}],"data":[{"1":"100 Mile Rule","2":"2002","3":"98","4":"1100000","5":"5.6","6":"181","7":"4.5","8":"4.5","9":"4.5","10":"4.5","11":"14.5","12":"24.5","13":"14.5","14":"14.5","15":"4.5","16":"14.5","17":"R","18":"0","19":"0","20":"1","21":"0","22":"0","23":"0","24":"0"},{"1":"13 Going On 30","2":"2004","3":"98","4":"37000000","5":"6.4","6":"7859","7":"4.5","8":"4.5","9":"4.5","10":"4.5","11":"4.5","12":"14.5","13":"24.5","14":"14.5","15":"4.5","16":"14.5","17":"PG-13","18":"0","19":"0","20":"1","21":"1","22":"0","23":"1","24":"0"},{"1":"15 Minutes","2":"2001","3":"120","4":"42000000","5":"6.1","6":"10866","7":"4.5","8":"4.5","9":"4.5","10":"4.5","11":"14.5","12":"24.5","13":"24.5","14":"14.5","15":"4.5","16":"4.5","17":"R","18":"0","19":"0","20":"0","21":"1","22":"0","23":"0","24":"0"},{"1":"2 Fast 2 Furious","2":"2003","3":"107","4":"76000000","5":"5.1","6":"9556","7":"14.5","8":"4.5","9":"4.5","10":"4.5","11":"14.5","12":"14.5","13":"14.5","14":"4.5","15":"4.5","16":"4.5","17":"PG-13","18":"1","19":"0","20":"0","21":"0","22":"0","23":"0","24":"0"},{"1":"2046","2":"2004","3":"129","4":"12000000","5":"7.6","6":"2663","7":"4.5","8":"4.5","9":"4.5","10":"4.5","11":"4.5","12":"4.5","13":"14.5","14":"24.5","15":"14.5","16":"24.5","17":"R","18":"0","19":"0","20":"0","21":"1","22":"0","23":"1","24":"0"},{"1":"21 Grams","2":"2003","3":"124","4":"20000000","5":"8.0","6":"21857","7":"4.5","8":"4.5","9":"4.5","10":"4.5","11":"4.5","12":"4.5","13":"14.5","14":"24.5","15":"24.5","16":"14.5","17":"R","18":"0","19":"0","20":"0","21":"1","22":"0","23":"0","24":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -716,9 +723,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Below we create a box plot of the <code>length</code> variable using the methods described above:</p>
 </div>
 <div style="font-size: 0.85em;" class="page-columns page-full">
-<div class="page-columns page-full">
-<details open="">
-<summary>Code</summary>
+<details open="" class="code-fold">
+<summary>show/hide</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>labs_boxplot <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"IMDB Movie information and user ratings"</span>,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Movie length (min)"</span>, <span class="at">x =</span> <span class="st">""</span>)</span>
@@ -730,11 +736,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>ggp2_boxplot <span class="sc">+</span> </span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  labs_boxplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="box_plots_files/figure-html/more_create_graph_box-1.png" class="img-fluid" width="576"></p>
-</div>
 </div>
 </div>
 </div>
@@ -748,6 +753,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 0.85em;">
 <div class="cell">
 <div class="cell-output-display">
+<div>
 <table class="lightable-paper table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
@@ -773,6 +779,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</div>
 <div style="font-size: 0.95rem;">
 <p>The figure below displays how each element in the box plot represents each of the statistics using lines and points.</p>
 </div>
@@ -783,7 +790,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div></div><div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="www/boxplot-diagram.png" style="width:80.0%;height:80.0%" class="figure-img"></p>
+<p><img src="www/boxplot-diagram.png" class="quarto-figure quarto-figure-center figure-img" style="width:80.0%;height:80.0%"></p>
 </figure>
 </div>
 </section>
@@ -794,7 +801,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="www/boxplot-comparisons.png" style="width:85.0%;height:85.0%" class="figure-img"></p>
+<p><img src="www/boxplot-comparisons.png" class="quarto-figure quarto-figure-center figure-img" style="width:85.0%;height:85.0%"></p>
 </figure>
 </div>
 
@@ -838,18 +845,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -881,11 +877,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -895,8 +930,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -908,7 +952,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -952,6 +1119,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -977,8 +1145,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-      // Handle positioning of the toggle
-      window.addEventListener(
+        // Handle positioning of the toggle
+    window.addEventListener(
       "resize",
       throttle(() => {
         elRect = undefined;
@@ -986,23 +1154,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
           selectCodeLines(selectedAnnoteEl);
         }
       }, 10)
-      );
-      function throttle(fn, ms) {
-      let throttle = false;
-      let timer;
-        return (...args) => {
-          if(!throttle) { // first call gets through
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
               fn.apply(this, args);
-              throttle = true;
-          } else { // all the others get throttled
-              if(timer) clearTimeout(timer); // cancel #2
-              timer = setTimeout(() => {
-                fn.apply(this, args);
-                timer = throttle = false;
-              }, ms);
-          }
-        };
-      }
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
       for (let i=0; i<annoteTargets.length; i++) {
         const annoteTarget = annoteTargets[i];
@@ -1047,7 +1215,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
               options: {
                 flipVariations: false, // true by default
                 allowedAutoPlacements: ['right'],
-                fallbackPlacements: ['right', 'top', 'top-start', 'top-end'],
+                fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
               },
             },
             {
@@ -1103,12 +1271,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./violin_plots.html" class="pagination-link">
+      <a href="./violin_plots.html" class="pagination-link" aria-label="Violin plots">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Violin plots</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./amounts.html" class="pagination-link">
+      <a href="./amounts.html" class="pagination-link" aria-label="AMOUNTS">
         <span class="nav-page-text">AMOUNTS</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
@@ -1116,13 +1284,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">ggplot2: field manual was written by Martin Frigaard.</div>   
+    <div class="nav-footer-left">
+<p>ggplot2: field manual was written by Martin Frigaard.</p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>
-    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
   </div>
 </footer>
+
 
 
 

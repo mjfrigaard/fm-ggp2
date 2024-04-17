@@ -37,6 +37,15 @@ status("complete")
 
 <br>
 
+::: {style="font-size: 1.10em; color: #02577A;"}
+**This graph requires:**
+:::
+
+
+::: {style="font-size: 1.05em; color: #282b2d;"}
+**`r emo::ji("check")` a categorical variable** 
+:::
+
 ```{r}
 #| label: full_code_display
 #| eval: true
@@ -68,22 +77,11 @@ ggp2_waffle +
   theme(legend.position = "top")
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
-:::
-
-
-::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a categorical variable** 
-:::
-
 ::::
 
 ## Description 
 
-Waffle charts use color to display the levels that make up the values in a categorical variable. The counts for each level are divided into separate colors into a square or grid display.
-
-Waffle chart legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability. 
+Waffle charts use small squares or icons to show how a whole thing is divided into parts, grouped into categories that fill a grid. They're useful for visualizing percentages or proportions from a total and can include a legend or labels to explain each category. Waffle chart legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability. 
 
 We’ll build a waffle chart using the [`ggwaffle` package.](https://liamgilbey.github.io/ggwaffle/)
 

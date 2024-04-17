@@ -78,9 +78,9 @@ ggp2_density +
 
 ## Description
 
-Density plots are similar to a histogram or frequency polygon, except the outline of the distribution has been ‘smoothed.’
+A density plot displays data distribution using a smooth curve instead of bars. It helps compare multiple sets of data and the area under the curve represents the total probability. Instead of dividing the `x` axis into discrete ‘bins’ to create groupings for the variable's values, density plots transform the distribution according to a kernel density estimate. Legends are used to explain each curve, and different colors are used to differentiate them.
 
-Instead of dividing the `x` axis into discrete ‘bins’ to create groupings for the variable's values, density plots transform the distribution according to a kernel density estimate.
+
 
 ## Set up
 

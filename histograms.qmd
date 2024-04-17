@@ -63,7 +63,7 @@ ggp2_hist +
 
 ## Description 
 
-Histograms are a special kind of bar graph. The `x` axis is divided into ‘bins’ that cover the range of a variable's values, and the height of the bars is the frequency (or count) of the value occurrence (displayed on the `y` axis).
+A histogram is a graph that displays numerical data spread over a time frame or interval. Each bar shows the frequency of data points within a specific range. Unlike bar graphs, histograms do not have gaps between the bars, indicating that data covers a continuous interval. The x-axis displays the variable range, while the y-axis represents observation frequency.
 
 Unlike a typical bar graph, histograms can be used to visually asses the '[normality](https://en.wikipedia.org/wiki/Normal_distribution)' (i.e. *are the bars symmetrical, with a single peak in the middle of the `x` axis?* Or *do the bars form multiple peaks?*) or '[skewness](https://en.wikipedia.org/wiki/Skewness)' (i.e., *is there a long 'tail' of bars with decreasing length on either end of the `x` axis?*) of a variable's distribution.
 
