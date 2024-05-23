@@ -43,17 +43,23 @@ Grammar is often defined as the system of rules for any given language and inclu
 
 ### Layers
 
-The `ggplot2` syntax is comprised of layers:
+The `ggplot2` syntax is comprised of layers, which we can use as templates.
 
-1. Data: The **data layer** consists of a rectangular object (like a spreadsheet) with columns and rows
+#### Data
+
+The data layer consists of a rectangular object (like a spreadsheet) with columns and rows:
 
 ```{r}
 #| message: false
 #| warning: false
+# drop missing values
+penguins <- tidyr::drop_na(penguins)
 ggplot(data = penguins)
 ```
 
-2. Mapping: The **mapping layer** assigns columns (variables) from the data to a visual property (i.e. graph ’**`aes`**’ thetic)
+#### Mapping
+
+The mapping layer assigns columns (variables) from the data to a visual property (i.e. graph ’**`aes`**’ thetic)
 
 ```{r}
 #| message: false
@@ -63,10 +69,19 @@ ggplot(data = penguins)
 ggplot(data = penguins,
   mapping = 
     aes(x = flipper_length_mm, 
-      y = bill_length_mm))
+        y = bill_length_mm))
 ```
 
-3. Statistics & Geometric objects: `geom_*()` functions include statistical transformations, shapes, and position adjustments for how to ‘draw’ the data on the graph
+**Basic Template**: Data, aesthetic mappings, geom
+
+```r
+ggplot(data = <DATA>) +
+  geom_*(mapping = aes(<AESTHETIC MAPPINGS>))
+```
+
+#### Statistics & geometric objects
+
+`geom_*()` functions include statistical transformations, shapes, and position adjustments for how to ‘draw’ the data on the graph
 
 ```{r}
 #| message: false
@@ -77,31 +92,12 @@ ggplot(data = penguins,
   mapping = aes(
     x = flipper_length_mm, 
     y = bill_length_mm)) +
-  geom_point()
+  geom_point(
+    aes(shape = species,
+      color = sex))
 ```
 
-We can have multiple layers (data, mappings, geoms) in a single graph
-
-```{r}
-#| message: false
-#| warning: false
-#| dpi: 320
-#| fig-asp: 0.618
-ggplot(data = penguins,
- # layer 1
-  mapping = aes(
-    x = flipper_length_mm, 
-    y = bill_length_mm)) +
-  geom_point() + 
-# layer 2
-  geom_smooth(
-    mapping = aes(
-      x = flipper_length_mm,
-      y = bill_length_mm,
-      color = species))
-```
-
-4. Position adjustments: With a finite number of objects & functions, we can combine `ggplot2`’s grammar and syntax to create an infinite number of graphs!
+We can have multiple layers (data, mappings, geoms) in a single graph.
 
 ```{r}
 #| message: false
@@ -114,72 +110,73 @@ ggplot(data = penguins,
     x = flipper_length_mm, 
     y = bill_length_mm)) +
   geom_point(
-    size = 0.7, 
-    alpha = 2/3) + 
+    aes(shape = species,
+        color = sex)) +
 # layer 2
   geom_smooth(
     mapping = aes(
       x = flipper_length_mm,
-      y = bill_length_mm,
-      color = species)) + 
-  facet_wrap(. ~ island, nrow = 2) + 
-  theme(legend.position = "top") + 
-  labs(
-    x = 'Flipper length (mm)',
-    y = 'Bill length (mm)', 
-    title = 'Penguins', 
-    subtitle = 'Bills vs. Flippers'
-    )
+      y = bill_length_mm), 
+        se = FALSE)
 ```
 
-### Templates
+-   **Template + 1 Layer**: more geoms and more aesthetic mappings
 
-**Basic Template**: Data, aesthetic mappings, geom
-
-```r
-ggplot(data = <DATA>) +
-  geom_*(mapping = aes(<AESTHETIC MAPPINGS>))
-```
-
-**Template + 1 Layer**: more geoms and more aesthetic mappings
-
-```r
+``` r
 ggplot(data = <DATA>) +
     geom_*(mapping = aes(<AESTHETIC MAPPINGS>)) +
     geom_*(mapping = aes(<AESTHETIC MAPPINGS>))
 ```
 
-Templates = infinitely extensible!
+#### Position, labels & themes
 
-Facets: 
+With a finite number of objects & functions, we can combine `ggplot2`’s grammar and syntax to create an infinite number of graphs!
 
-```r
-ggplot(data = <DATA>) +
-    geom_*(mapping = aes(<AESTHETIC MAPPINGS>)) +
-    geom_*(mapping = aes(<AESTHETIC MAPPINGS>)) +
-    facet_*
+```{r}
+#| message: false
+#| warning: false
+#| dpi: 320
+#| fig-asp: 0.618
+ggplot(data = penguins,
+ # layer 1
+  mapping = aes(
+    x = flipper_length_mm, 
+    y = bill_length_mm)) +
+  geom_point(
+    aes(shape = species,
+        color = sex)) +
+# layer 2
+  geom_smooth(
+    mapping = aes(
+      x = flipper_length_mm,
+      y = bill_length_mm), 
+        se = FALSE) +
+# layer 3
+  facet_wrap(. ~ island, ncol = 2) + 
+  # labels
+  labs(
+    x = 'Flipper length (mm)',
+    y = 'Bill length (mm)', 
+    title = 'Penguins', 
+    subtitle = 'Bills vs. Flippers'
+    ) + 
+  # themes
+  theme(legend.position = "top") 
 ```
 
-Themes: 
+**Template + 2 Layers + Facets + Theme + Labels**
+
+Layers = infinitely extensible! 
 
 ```r
 ggplot(data = <DATA>) +
     geom_*(mapping = aes(<AESTHETIC MAPPINGS>)) +
     geom_*(mapping = aes(<AESTHETIC MAPPINGS>)) +
     facet_* +
-    theme_*
-```
-
-Don’t forget labels!
-
-```r
-ggplot(data = <DATA>) +
-    geom_*(mapping = aes(<AESTHETIC MAPPINGS>)) +
-    geom_*(mapping = aes(<AESTHETIC MAPPINGS>)) +
-    facet_* +
-    theme_* +
+    theme() +
     labs()
 ```
+
 
 ## Graph Categories
 
@@ -199,18 +196,28 @@ Graphs have been categorized into the following types (you can see them in the f
 
 Some graphs can justifiably belong to more than one category, and wherever this is the case, I've tried to include links to other applications in the notes.
 
+## Assumptions
+
+I've made an effort to write the graph code so it can be read and understood *without* having to execute it.[^intro-1] However, the examples assume the reader has already answered the question, “*what kind of data do I have?*”[^skimr-inspectdf]
+
+[^skimr-inspectdf]: If not, I highly recommend the [`skimr`](https://docs.ropensci.org/skimr/) and [`inspectdf`](https://alastairrushworth.github.io/inspectdf/) packages for getting to know your data better.
+
+## Theme
+
+The theme used in the graphs is custom and uses combined elements from `ggplot2::theme_minimal()` and `ggplot2::theme_void()`. View it [here](https://github.com/mjfrigaard/fm-ggp2/blob/main/R/theme_ggp2g.R).
+
 ## Style & structure
 
-Each graph has, at minimum, the following sections:
+Each graph has the following sections:
 
-1.  
-
-    ------------------------------------------------------------------------
+1. **Prerequisites**
 
     -   *Should I use this graph?*\
     -   *This graph requires:*\
 
-2.  **Description**\
+2.  **Description**
+
+A brief summary of the graph's background, purpose, and aesthetics.
 
 3.  **Set up**
 
@@ -232,139 +239,5 @@ Each graph has, at minimum, the following sections:
 
 I've attempted to balance brevity and clarity, but with the assumption that its best to err on the latter. I've also followed the general principle that if a graph can be *easily* built using one of `ggplot2` 's `geom_*` functions, that method is shown first.
 
-I've attempted to write code for each graph so that is can be read and understood *without* having to execute it.[^intro-1]
-
 [^intro-1]: This field manual follows a [Rule of Least Power Principle](https://www.w3.org/2001/tag/doc/leastPower.html), in the sense that "*a language with a straightforward syntax may be easier to analyze than an otherwise equivalent one with more complex structure.*"
 
-## The Data
-
-The data packages used are available to preview below.
-
-```{r}
-#| eval: false
-#| echo: true
-#| code-fold: show
-data_pkgs <- c("palmerpenguins", 
-               "fivethirtyeight", 
-               "ggplot2movies", 
-               "babynames")
-install.packages(data_pkgs)
-```
-
-### `palmerpenguins::penguins`
-
-The majority of the graphs in the manual are built using the `palmerpenguins::penguins` data.
-
-::: column-margin
-::: {style="font-size: 0.95em; color: #282b2d;"}
-***...so...many...PENGUINS!***
-:::
-
-![Artwork by allison_horst](www/lter_penguins.png){fig-align="center" width="50%" height="50%"}
-:::
-
-::: {.callout-note collapse="true" icon="false"}
-## Expand to view the data in `palmerpenguins::penguins`
-
-::: {style="font-size: 0.85em;"}
-```{r}
-#| label: paged_penguins
-#| eval: true
-#| echo: false
-rmarkdown::paged_table(palmerpenguins::penguins)
-```
-:::
-:::
-
-Source: <https://github.com/allisonhorst/palmerpenguins/>
-
-### `fivethirtyeight`
-
-Use the table below to view the datasets in this package.
-
-::: column-margin
-![](www/538.png){fig-align="center" width="30%" height="30%"}
-:::
-
-::: {.callout-note collapse="true" icon="false"}
-## Expand to view the data in the `fivethirtyeight` package
-
-::: {style="font-size: 0.85em;"}
-*To view a table of available datasets in the `fivethirtyeight` package, view the `Data Frame Name` and `Article Title` columns in the `datasets_master` table*
-:::
-
-::: {style="font-size: 0.80em;"}
-```{r}
-#| label: fivethirtyeight_pkg
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-library(fivethirtyeight)
-rmarkdown::paged_table(fivethirtyeight::datasets_master |> 
-    select(`Data Frame Name`, `Article Title`))
-```
-:::
-:::
-
-Source: <https://github.com/fivethirtyeight/data>
-
-### `ggplot2movies::movies`
-
-::: column-margin
-![](www/imdb.png){fig-align="center" width="30%" height="30%"}
-:::
-
-::: {.callout-note collapse="true" icon="false"}
-## Expand to view *a sample* of the data in `ggplot2movies::movies`
-
-::: {style="font-size: 0.85em;"}
-```{r}
-#| label: paged_ggplot2movies
-#| eval: true
-#| echo: false
-rmarkdown::paged_table(x = 
-    dplyr::slice_sample(ggplot2movies::movies, 
-      n = 1000, replace = FALSE))
-```
-:::
-:::
-
-Source: <https://www.imdb.com/>
-
-### `babynames::babynames`
-
-::: column-margin
-![](www/ssa.png){fig-align="center" width="40%" height="40%"}
-:::
-
-::: {.callout-note collapse="true" icon="false"}
-## Expand to view *a sample* of the data in `babynames::babynames`
-
-::: {style="font-size: 0.85em;"}
-```{r}
-#| label: paged_babynames
-#| eval: true
-#| echo: false
-rmarkdown::paged_table(x = 
-    dplyr::slice_sample(babynames::babynames, 
-      n = 1000, replace = FALSE))
-```
-:::
-:::
-
-Source: <http://www.ssa.gov/oact/babynames/limits.html>
-
-***Why not manually create the graph datasets with `data.frame()` or `tibble()`/`tribble()`?***
-
-In my opinion, using manually generated data is great for reproducible examples, but they rarely look like data 'caught in the wild.' The data packages above are also well maintained and can be used to provide a variety of examples.
-
-## Assumptions
-
-The code and examples assume the reader has already answered the question, “*what kind of data do I have?*”
-
-If not, I highly recommend the [`skimr`](https://docs.ropensci.org/skimr/) and [`inspectdf`](https://alastairrushworth.github.io/inspectdf/) packages for getting to know your data better.
-
-## Theme
-
-The theme used in the graphs is custom and uses combined elements from `ggplot2::theme_minimal()` and `ggplot2::theme_void()`. View it [here](https://github.com/mjfrigaard/fm-ggp2/blob/main/R/theme_ggp2g.R).

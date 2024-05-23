@@ -64,7 +64,7 @@
     "href": "intro.html#ggplot2-syntax",
     "title": "Introduction",
     "section": "",
-    "text": "“making infinite use of finite means” - Wilhelm von Humboldt\n\n\n\nLayers\nThe ggplot2 syntax is comprised of layers:\n\nData: The data layer consists of a rectangular object (like a spreadsheet) with columns and rows\n\n\n\nshow/hide\nggplot(data = penguins)\n\n\n\n\n\n\n\n\n\n\nMapping: The mapping layer assigns columns (variables) from the data to a visual property (i.e. graph ’aes’ thetic)\n\n\n\nshow/hide\nggplot(data = penguins,\n  mapping = \n    aes(x = flipper_length_mm, \n      y = bill_length_mm))\n\n\n\n\n\n\n\n\n\n\nStatistics & Geometric objects: geom_*() functions include statistical transformations, shapes, and position adjustments for how to ‘draw’ the data on the graph\n\n\n\nshow/hide\nggplot(data = penguins,\n  mapping = aes(\n    x = flipper_length_mm, \n    y = bill_length_mm)) +\n  geom_point()\n\n\n\n\n\n\n\n\n\nWe can have multiple layers (data, mappings, geoms) in a single graph\n\n\nshow/hide\nggplot(data = penguins,\n # layer 1\n  mapping = aes(\n    x = flipper_length_mm, \n    y = bill_length_mm)) +\n  geom_point() + \n# layer 2\n  geom_smooth(\n    mapping = aes(\n      x = flipper_length_mm,\n      y = bill_length_mm,\n      color = species))\n\n\n\n\n\n\n\n\n\n\nPosition adjustments: With a finite number of objects & functions, we can combine ggplot2’s grammar and syntax to create an infinite number of graphs!\n\n\n\nshow/hide\nggplot(data = penguins,\n # layer 1\n  mapping = aes(\n    x = flipper_length_mm, \n    y = bill_length_mm)) +\n  geom_point(\n    size = 0.7, \n    alpha = 2/3) + \n# layer 2\n  geom_smooth(\n    mapping = aes(\n      x = flipper_length_mm,\n      y = bill_length_mm,\n      color = species)) + \n  facet_wrap(. ~ island, nrow = 2) + \n  theme(legend.position = \"top\") + \n  labs(\n    x = 'Flipper length (mm)',\n    y = 'Bill length (mm)', \n    title = 'Penguins', \n    subtitle = 'Bills vs. Flippers'\n    )\n\n\n\n\n\n\n\n\n\n\n\nTemplates\nBasic Template: Data, aesthetic mappings, geom\nggplot(data = &lt;DATA&gt;) +\n  geom_*(mapping = aes(&lt;AESTHETIC MAPPINGS&gt;))\nTemplate + 1 Layer: more geoms and more aesthetic mappings\nggplot(data = &lt;DATA&gt;) +\n    geom_*(mapping = aes(&lt;AESTHETIC MAPPINGS&gt;)) +\n    geom_*(mapping = aes(&lt;AESTHETIC MAPPINGS&gt;))\nTemplates = infinitely extensible!\nFacets:\nggplot(data = &lt;DATA&gt;) +\n    geom_*(mapping = aes(&lt;AESTHETIC MAPPINGS&gt;)) +\n    geom_*(mapping = aes(&lt;AESTHETIC MAPPINGS&gt;)) +\n    facet_*\nThemes:\nggplot(data = &lt;DATA&gt;) +\n    geom_*(mapping = aes(&lt;AESTHETIC MAPPINGS&gt;)) +\n    geom_*(mapping = aes(&lt;AESTHETIC MAPPINGS&gt;)) +\n    facet_* +\n    theme_*\nDon’t forget labels!\nggplot(data = &lt;DATA&gt;) +\n    geom_*(mapping = aes(&lt;AESTHETIC MAPPINGS&gt;)) +\n    geom_*(mapping = aes(&lt;AESTHETIC MAPPINGS&gt;)) +\n    facet_* +\n    theme_* +\n    labs()",
+    "text": "“making infinite use of finite means” - Wilhelm von Humboldt\n\n\n\nLayers\nThe ggplot2 syntax is comprised of layers, which we can use as templates.\n\nData\nThe data layer consists of a rectangular object (like a spreadsheet) with columns and rows:\n\n\nshow/hide\n# drop missing values\npenguins &lt;- tidyr::drop_na(penguins)\nggplot(data = penguins)\n\n\n\n\n\n\n\n\n\n\n\nMapping\nThe mapping layer assigns columns (variables) from the data to a visual property (i.e. graph ’aes’ thetic)\n\n\nshow/hide\nggplot(data = penguins,\n  mapping = \n    aes(x = flipper_length_mm, \n        y = bill_length_mm))\n\n\n\n\n\n\n\n\n\nBasic Template: Data, aesthetic mappings, geom\nggplot(data = &lt;DATA&gt;) +\n  geom_*(mapping = aes(&lt;AESTHETIC MAPPINGS&gt;))\n\n\nStatistics & geometric objects\ngeom_*() functions include statistical transformations, shapes, and position adjustments for how to ‘draw’ the data on the graph\n\n\nshow/hide\nggplot(data = penguins,\n  mapping = aes(\n    x = flipper_length_mm, \n    y = bill_length_mm)) +\n  geom_point(\n    aes(shape = species,\n      color = sex))\n\n\n\n\n\n\n\n\n\nWe can have multiple layers (data, mappings, geoms) in a single graph.\n\n\nshow/hide\nggplot(data = penguins,\n # layer 1\n  mapping = aes(\n    x = flipper_length_mm, \n    y = bill_length_mm)) +\n  geom_point(\n    aes(shape = species,\n        color = sex)) +\n# layer 2\n  geom_smooth(\n    mapping = aes(\n      x = flipper_length_mm,\n      y = bill_length_mm), \n        se = FALSE)\n\n\n\n\n\n\n\n\n\n\nTemplate + 1 Layer: more geoms and more aesthetic mappings\n\nggplot(data = &lt;DATA&gt;) +\n    geom_*(mapping = aes(&lt;AESTHETIC MAPPINGS&gt;)) +\n    geom_*(mapping = aes(&lt;AESTHETIC MAPPINGS&gt;))\n\n\nPosition, labels & themes\nWith a finite number of objects & functions, we can combine ggplot2’s grammar and syntax to create an infinite number of graphs!\n\n\nshow/hide\nggplot(data = penguins,\n # layer 1\n  mapping = aes(\n    x = flipper_length_mm, \n    y = bill_length_mm)) +\n  geom_point(\n    aes(shape = species,\n        color = sex)) +\n# layer 2\n  geom_smooth(\n    mapping = aes(\n      x = flipper_length_mm,\n      y = bill_length_mm), \n        se = FALSE) +\n# layer 3\n  facet_wrap(. ~ island, ncol = 2) + \n  # labels\n  labs(\n    x = 'Flipper length (mm)',\n    y = 'Bill length (mm)', \n    title = 'Penguins', \n    subtitle = 'Bills vs. Flippers'\n    ) + \n  # themes\n  theme(legend.position = \"top\") \n\n\n\n\n\n\n\n\n\nTemplate + 2 Layers + Facets + Theme + Labels\nLayers = infinitely extensible!\nggplot(data = &lt;DATA&gt;) +\n    geom_*(mapping = aes(&lt;AESTHETIC MAPPINGS&gt;)) +\n    geom_*(mapping = aes(&lt;AESTHETIC MAPPINGS&gt;)) +\n    facet_* +\n    theme() +\n    labs()",
     "crumbs": [
       "Introduction"
     ]
@@ -80,31 +80,11 @@
     ]
   },
   {
-    "objectID": "intro.html#style-structure",
-    "href": "intro.html#style-structure",
-    "title": "Introduction",
-    "section": "Style & structure",
-    "text": "Style & structure\nEach graph has, at minimum, the following sections:\n\n\n\nShould I use this graph?\n\nThis graph requires:\n\n\nDescription\n\nSet up\n\nPackages and Data\n\nCode for installing development version of packages (if necessary) for graphs and data\n\nAny steps used to create (i.e., manipulate and prepare) the data for the graph\n\n\n\nThe grammar\n\nCode to build the labels and graph layers\n\nGraph labels have the labs_ prefix\n\nGraph layers have a ggp2_ prefix\n\n\n\nMore info\n\nAdditional methods, arguments, or applications\n\nColor palettes\n\nComplimentary packages\n\n\n\nI’ve attempted to balance brevity and clarity, but with the assumption that its best to err on the latter. I’ve also followed the general principle that if a graph can be easily built using one of ggplot2 ’s geom_* functions, that method is shown first.\nI’ve attempted to write code for each graph so that is can be read and understood without having to execute it.1",
-    "crumbs": [
-      "Introduction"
-    ]
-  },
-  {
-    "objectID": "intro.html#the-data",
-    "href": "intro.html#the-data",
-    "title": "Introduction",
-    "section": "The Data",
-    "text": "The Data\nThe data packages used are available to preview below.\n\n\nshow/hide\ndata_pkgs &lt;- c(\"palmerpenguins\", \n               \"fivethirtyeight\", \n               \"ggplot2movies\", \n               \"babynames\")\ninstall.packages(data_pkgs)\n\n\n\npalmerpenguins::penguins\nThe majority of the graphs in the manual are built using the palmerpenguins::penguins data.\n\n\n\n…so…many…PENGUINS!\n\n\n\n\nArtwork by allison_horst\n\n\n\n\n\n\n\n\nExpand to view the data in palmerpenguins::penguins\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\nSource: https://github.com/allisonhorst/palmerpenguins/\n\n\nfivethirtyeight\nUse the table below to view the datasets in this package.\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpand to view the data in the fivethirtyeight package\n\n\n\n\n\n\nTo view a table of available datasets in the fivethirtyeight package, view the Data Frame Name and Article Title columns in the datasets_master table\n\n\n\n\n\n  \n\n\n\n\n\n\n\nSource: https://github.com/fivethirtyeight/data\n\n\nggplot2movies::movies\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpand to view a sample of the data in ggplot2movies::movies\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\nSource: https://www.imdb.com/\n\n\nbabynames::babynames\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpand to view a sample of the data in babynames::babynames\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\nSource: http://www.ssa.gov/oact/babynames/limits.html\nWhy not manually create the graph datasets with data.frame() or tibble()/tribble()?\nIn my opinion, using manually generated data is great for reproducible examples, but they rarely look like data ‘caught in the wild.’ The data packages above are also well maintained and can be used to provide a variety of examples.",
-    "crumbs": [
-      "Introduction"
-    ]
-  },
-  {
     "objectID": "intro.html#assumptions",
     "href": "intro.html#assumptions",
     "title": "Introduction",
     "section": "Assumptions",
-    "text": "Assumptions\nThe code and examples assume the reader has already answered the question, “what kind of data do I have?”\nIf not, I highly recommend the skimr and inspectdf packages for getting to know your data better.",
+    "text": "Assumptions\nI’ve made an effort to write the graph code so it can be read and understood without having to execute it.1 However, the examples assume the reader has already answered the question, “what kind of data do I have?”2",
     "crumbs": [
       "Introduction"
     ]
@@ -120,11 +100,21 @@
     ]
   },
   {
+    "objectID": "intro.html#style-structure",
+    "href": "intro.html#style-structure",
+    "title": "Introduction",
+    "section": "Style & structure",
+    "text": "Style & structure\nEach graph has the following sections:\n\nPrerequisites\n\nShould I use this graph?\n\nThis graph requires:\n\n\nDescription\n\nA brief summary of the graph’s background, purpose, and aesthetics.\n\nSet up\n\nPackages and Data\n\nCode for installing development version of packages (if necessary) for graphs and data\n\nAny steps used to create (i.e., manipulate and prepare) the data for the graph\n\n\n\nThe grammar\n\nCode to build the labels and graph layers\n\nGraph labels have the labs_ prefix\n\nGraph layers have a ggp2_ prefix\n\n\n\nMore info\n\nAdditional methods, arguments, or applications\n\nColor palettes\n\nComplimentary packages\n\n\n\nI’ve attempted to balance brevity and clarity, but with the assumption that its best to err on the latter. I’ve also followed the general principle that if a graph can be easily built using one of ggplot2 ’s geom_* functions, that method is shown first.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
     "objectID": "intro.html#footnotes",
     "href": "intro.html#footnotes",
     "title": "Introduction",
     "section": "",
-    "text": "This field manual follows a Rule of Least Power Principle, in the sense that “a language with a straightforward syntax may be easier to analyze than an otherwise equivalent one with more complex structure.”↩︎",
+    "text": "This field manual follows a Rule of Least Power Principle, in the sense that “a language with a straightforward syntax may be easier to analyze than an otherwise equivalent one with more complex structure.”↩︎\nIf not, I highly recommend the skimr and inspectdf packages for getting to know your data better.↩︎",
     "crumbs": [
       "Introduction"
     ]
@@ -1813,14 +1803,25 @@
     ]
   },
   {
-    "objectID": "xtnsns_tbl.html",
-    "href": "xtnsns_tbl.html",
-    "title": "ggplot2 extensions",
+    "objectID": "data.html",
+    "href": "data.html",
+    "title": "Appendix A — Data",
     "section": "",
-    "text": "Below are the graphs requiring additional packages/extensions:\n\n\n\n\nGraph\nPackage\nCode\n\n\n\n\nWaffle charts\nggwaffle\nremotes::install_github(\"liamgilbey/ggwaffle\")\nlibrary(ggwaffle)\n\n\nPie charts\nggpubr\nremotes::install_github(\"kassambara/ggpubr\")\nlibrary(ggpubr)\n\n\nMosaic Plots\nggmosaic\nremotes::install_github(\"haleyjeppson/ggmosaic\")\nlibrary(ggmosaic)\n\n\nTreemaps\ntreemapify\nremotes::install_github(\"wilkox/treemapify\")\nlibrary(treemapify)\n\n\nBeeswarm Plots\nggbeeswarm\nremotes::install_github(\"eclarke/ggbeeswarm\")\nlibrary(ggbeeswarm)\n\n\nRidgeline Plots\nggridges\nremotes::install_github(\"wilkelab/ggridges\")\nlibrary(ggridges)\n\n\nRaincloud plots\nraincloudplots & ggdist\nremotes::install_github('jorvlan/raincloudplots')\nremotes::install_github('mjskay/ggdist')\nlibrary(raincloudplots)\nlibrary(ggdist)\n\n\nAlluvial charts\nggalluvial\nremotes::install_github(\"corybrunson/ggalluvial\")\nlibrary(ggalluvial)\n\n\nParallel Sets\nggforce\nremotes::install_github(\"thomasp85/ggforce\")\nlibrary(ggforce)\n\n\nBump charts\nggbump\nremotes::install_github(\"davidsjoberg/ggbump\")\nlibrary(ggbump)\n\n\nStream Plots\nggstream\nremotes::install_github(\"davidsjoberg/ggstream\")\nlibrary(ggstream)",
+    "text": "Caution\n\n\n\n\n\n\nThis section is still being developed. The contents are subject to change.\n\n\n\n\nThe data packages used are available to preview below.\n\n\nshow/hide\ndata_pkgs &lt;- c(\"palmerpenguins\", \n               \"fivethirtyeight\", \n               \"ggplot2movies\", \n               \"babynames\")\ninstall.packages(data_pkgs)\n\n\n\nA.0.1 palmerpenguins::penguins\nThe majority of the graphs in the manual are built using the palmerpenguins::penguins data.\n\n\n\n…so…many…PENGUINS!\n\n\n\n\nArtwork by allison_horst\n\n\n\n\n\n\n\n\nExpand to view the data in palmerpenguins::penguins\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\nSource: https://github.com/allisonhorst/palmerpenguins/\n\n\nA.0.2 fivethirtyeight\nUse the table below to view the datasets in this package.\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpand to view the data in the fivethirtyeight package\n\n\n\n\n\n\nTo view a table of available datasets in the fivethirtyeight package, view the Data Frame Name and Article Title columns in the datasets_master table\n\n\n\n\n\n  \n\n\n\n\n\n\n\nSource: https://github.com/fivethirtyeight/data\n\n\nA.0.3 ggplot2movies::movies\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpand to view a sample of the data in ggplot2movies::movies\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\nSource: https://www.imdb.com/\n\n\nA.0.4 babynames::babynames\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpand to view a sample of the data in babynames::babynames\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\nSource: http://www.ssa.gov/oact/babynames/limits.html\nWhy not manually create the graph datasets with data.frame() or tibble()/tribble()?\nIn my opinion, using manually generated data is great for reproducible examples, but they rarely look like data ‘caught in the wild.’ The data packages above are also well maintained and can be used to provide a variety of examples.",
     "crumbs": [
       "Appendices",
-      "`ggplot2` extensions"
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Data</span>"
+    ]
+  },
+  {
+    "objectID": "extensions.html",
+    "href": "extensions.html",
+    "title": "Appendix B — ggplot2 extensions",
+    "section": "",
+    "text": "Caution\n\n\n\n\n\n\nThis section is still being developed. The contents are subject to change.\n\n\n\n\nBelow are the graphs requiring additional packages/extensions:\n\n\n\n\nGraph\nPackage\nCode\n\n\n\n\nWaffle charts\nggwaffle\nremotes::install_github(\"liamgilbey/ggwaffle\")\n\n\nPie charts\nggpubr\nremotes::install_github(\"kassambara/ggpubr\")\n\n\nMosaic Plots\nggmosaic\nremotes::install_github(\"haleyjeppson/ggmosaic\")\n\n\nTreemaps\ntreemapify\nremotes::install_github(\"wilkox/treemapify\")\n\n\nBeeswarm Plots\nggbeeswarm\nremotes::install_github(\"eclarke/ggbeeswarm\")\n\n\nRidgeline Plots\nggridges\nremotes::install_github(\"wilkelab/ggridges\")\n\n\nRaincloud plots\nraincloudplots & ggdist\nremotes::install_github('jorvlan/raincloudplots')\nremotes::install_github('mjskay/ggdist')\n\n\nAlluvial charts\nggalluvial\nremotes::install_github(\"corybrunson/ggalluvial\")\n\n\nParallel Sets\nggforce\nremotes::install_github(\"thomasp85/ggforce\")\n\n\nBump charts\nggbump\nremotes::install_github(\"davidsjoberg/ggbump\")\n\n\nStream Plots\nggstream\nremotes::install_github(\"davidsjoberg/ggstream\")",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>`ggplot2` extensions</span>"
     ]
   },
   {

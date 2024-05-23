@@ -1,0 +1,157 @@
+# Data {#sec-data}
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(colorblindr)
+library(downlit)
+# _common.R ----
+source("_common.R")
+# use font
+showtext::showtext_auto()
+# set theme
+ggplot2::theme_set(theme_ggp2g(
+    base_size = 15))
+```
+
+```{r}
+#| label: co_box_dev
+#| echo: false
+#| results: asis
+#| eval: true
+co_box(
+  color = "o", look = "minimal",
+  header = "Caution",
+  contents = "This section is still being developed. The contents are subject to change.",
+  fold = FALSE
+)
+library(dplyr)
+```
+
+The data packages used are available to preview below.
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-fold: show
+data_pkgs <- c("palmerpenguins", 
+               "fivethirtyeight", 
+               "ggplot2movies", 
+               "babynames")
+install.packages(data_pkgs)
+```
+
+### `palmerpenguins::penguins`
+
+The majority of the graphs in the manual are built using the `palmerpenguins::penguins` data.
+
+::: column-margin
+::: {style="font-size: 0.95em; color: #282b2d;"}
+***...so...many...PENGUINS!***
+:::
+
+![Artwork by allison_horst](www/lter_penguins.png){fig-align="center" width="50%" height="50%"}
+:::
+
+::: {.callout-note collapse="true" icon="false"}
+## Expand to view the data in `palmerpenguins::penguins`
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: paged_penguins
+#| eval: true
+#| echo: false
+rmarkdown::paged_table(palmerpenguins::penguins)
+```
+:::
+:::
+
+Source: <https://github.com/allisonhorst/palmerpenguins/>
+
+### `fivethirtyeight`
+
+Use the table below to view the datasets in this package.
+
+::: column-margin
+![](www/538.png){fig-align="center" width="30%" height="30%"}
+:::
+
+::: {.callout-note collapse="true" icon="false"}
+## Expand to view the data in the `fivethirtyeight` package
+
+::: {style="font-size: 0.85em;"}
+*To view a table of available datasets in the `fivethirtyeight` package, view the `Data Frame Name` and `Article Title` columns in the `datasets_master` table*
+:::
+
+::: {style="font-size: 0.80em;"}
+```{r}
+#| label: fivethirtyeight_pkg
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+library(fivethirtyeight)
+rmarkdown::paged_table(fivethirtyeight::datasets_master |> 
+    select(`Data Frame Name`, `Article Title`))
+```
+:::
+:::
+
+Source: <https://github.com/fivethirtyeight/data>
+
+### `ggplot2movies::movies`
+
+::: column-margin
+![](www/imdb.png){fig-align="center" width="30%" height="30%"}
+:::
+
+::: {.callout-note collapse="true" icon="false"}
+## Expand to view *a sample* of the data in `ggplot2movies::movies`
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: paged_ggplot2movies
+#| eval: true
+#| echo: false
+rmarkdown::paged_table(x = 
+    dplyr::slice_sample(ggplot2movies::movies, 
+      n = 1000, replace = FALSE))
+```
+:::
+:::
+
+Source: <https://www.imdb.com/>
+
+### `babynames::babynames`
+
+::: column-margin
+![](www/ssa.png){fig-align="center" width="40%" height="40%"}
+:::
+
+::: {.callout-note collapse="true" icon="false"}
+## Expand to view *a sample* of the data in `babynames::babynames`
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: paged_babynames
+#| eval: true
+#| echo: false
+rmarkdown::paged_table(x = 
+    dplyr::slice_sample(babynames::babynames, 
+      n = 1000, replace = FALSE))
+```
+:::
+:::
+
+Source: <http://www.ssa.gov/oact/babynames/limits.html>
+
+***Why not manually create the graph datasets with `data.frame()` or `tibble()`/`tribble()`?***
+
+In my opinion, using manually generated data is great for reproducible examples, but they rarely look like data 'caught in the wild.' The data packages above are also well maintained and can be used to provide a variety of examples.
