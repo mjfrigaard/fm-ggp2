@@ -398,7 +398,7 @@
     "href": "grp_bar_graphs.html#set-up",
     "title": "8  Grouped bar graphs",
     "section": "8.2 Set up",
-    "text": "8.2 Set up\n\nPACKAGES:\n\nInstall packages.\n\n\n\nshow/hide\ninstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n\n\n\n\nDATA:\n\n\n\n\n\n\nArtwork by Allison Horst\n\n\nRemove the missing values and reduce the palmerpenguins::penguins dataset to only body_mass_g and island, then group the data by island and calculate the mean body_mass_g (as avg_body_mass_g).\n\n\n\nshow/hide\npeng_grp_col &lt;- palmerpenguins::penguins |&gt;\n    dplyr::select(body_mass_g, island) |&gt; \n    tidyr::drop_na() |&gt; \n    dplyr::group_by(island) |&gt;\n    dplyr::summarise(\n        avg_body_mass_g = mean(body_mass_g)\n        ) |&gt;\n    dplyr::ungroup()\nglimpse(peng_grp_col)\n#&gt; Rows: 3\n#&gt; Columns: 2\n#&gt; $ island          &lt;fct&gt; Biscoe, Dream, Torgersen\n#&gt; $ avg_body_mass_g &lt;dbl&gt; 4716.018, 3712.903, 3706…",
+    "text": "8.2 Set up\n\nPACKAGES:\n\nInstall packages.\n\n\n\nshow/hide\ninstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n\n\n\n\nDATA:\n\n\n\n\n\n\nArtwork by Allison Horst\n\n\nRemove the missing values and reduce the palmerpenguins::penguins dataset to only body_mass_g and island, then group the data by island and calculate the sum of body_mass_g (as sum_body_mass_g).\n\n\n\nshow/hide\npeng_grp_col &lt;- palmerpenguins::penguins |&gt;\n    dplyr::select(body_mass_g, island) |&gt; \n    tidyr::drop_na() |&gt; \n    dplyr::group_by(island) |&gt;\n    dplyr::summarise(\n        sum_body_mass_g = sum(body_mass_g)\n        ) |&gt;\n    dplyr::ungroup()\nglimpse(peng_grp_col)\n#&gt; Rows: 3\n#&gt; Columns: 2\n#&gt; $ island          &lt;fct&gt; Biscoe, Dream, Torgersen\n#&gt; $ sum_body_mass_g &lt;int&gt; 787575, 460400, 189025",
     "crumbs": [
       "AMOUNTS",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>Grouped bar graphs</span>"
@@ -409,7 +409,18 @@
     "href": "grp_bar_graphs.html#grammar",
     "title": "8  Grouped bar graphs",
     "section": "8.3 Grammar",
-    "text": "8.3 Grammar\n\nCODE:\n\nGrouped bar graphs assume the statistical measure (i.e., the value that the length of the bars will be derived from) is contained in a variable and mapped to the x or y aesthetic.\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap island to the x and avg_body_mass_g to the y\nMap island to fill inside the aes() of geom_col()\n\n\n\n\nshow/hide\nlabs_grp_col &lt;- labs(\n    title = \"Average Penguin Mass\",\n    subtitle = \"What's the average mass of penguins per Island?\",\n    x = \"Island\",\n    y = \"Average penguin body mass (g)\")\nggp2_grp_col &lt;- ggplot(data = peng_grp_col,\n              aes(x = island, \n                  y = avg_body_mass_g)) + \n        geom_col(aes(fill = island),\n            show.legend = FALSE)\nggp2_grp_col + \n    labs_grp_col\n\n\n\n\nGRAPH:",
+    "text": "8.3 Grammar\n\nCODE:\n\nGrouped bar graphs assume the statistical measure (i.e., the value that the length of the bars will be derived from) is contained in a variable and mapped to the x or y aesthetic.\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap island to the x and sum_body_mass_g to the y\nMap island to fill inside the aes() of geom_col()\n\n\n\n\nshow/hide\nlabs_grp_col &lt;- labs(\n    title = \"Total Penguin Mass\",\n    subtitle = \"What's the total mass of penguins per Island?\",\n    x = \"Island\",\n    y = \"Total penguin body mass (g)\")\nggp2_grp_col &lt;- ggplot(data = peng_grp_col,\n              aes(x = island, \n                  y = sum_body_mass_g)) + \n        geom_col(aes(fill = island),\n            show.legend = FALSE)\nggp2_grp_col + \n    labs_grp_col\n\n\n\n\nGRAPH:",
+    "crumbs": [
+      "AMOUNTS",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Grouped bar graphs</span>"
+    ]
+  },
+  {
+    "objectID": "grp_bar_graphs.html#more-info",
+    "href": "grp_bar_graphs.html#more-info",
+    "title": "8  Grouped bar graphs",
+    "section": "8.4 More Info",
+    "text": "8.4 More Info\nWe didn’t have to calculate sum_body_mass_g (displayed on the y axis) by island because ggplot2 does this for us!\nIf we pass a categorical variable to the x (like island) and a continuous variable to y (like body_mass_kg), geom_col() will calculate the sum() of y by levels of x:\n\n\n\nshow/hide\n  penguins |&gt; \n  dplyr::select(body_mass_g, island) |&gt; \n  tidyr::drop_na() |&gt;\n  ggplot(aes(x = island, y = body_mass_g)) + \n        geom_col(aes(fill = island),\n            show.legend = FALSE) + \n  labs_grp_col\n\n\n\n\n\n\n\n\n\n\nWe can see the underlying totaling of body_mass_g using dplyr’s group_by() and summarise() functions.\n\n\n\nshow/hide\npalmerpenguins::penguins |&gt; \n    dplyr::select(body_mass_g, island) |&gt; \n    tidyr::drop_na() |&gt; \n    dplyr::group_by(island) |&gt;\n    dplyr::summarise(\n        `Total Penguin Body Mass (kg)` = sum(body_mass_g)\n        ) |&gt;\n    dplyr::ungroup() |&gt; \n    dplyr::select(`Island` = island, \n        `Total Penguin Body Mass (kg)`)\n\n\n\n\n\n\n\n\n\n\n\n\n\nIsland\nTotal Penguin Body Mass (kg)\n\n\n\n\nBiscoe\n787.575\n\n\nDream\n460.400\n\n\nTorgersen\n189.025",
     "crumbs": [
       "AMOUNTS",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>Grouped bar graphs</span>"
@@ -431,7 +442,7 @@
     "href": "sum_bar_graphs.html#set-up",
     "title": "9  Summary bar graphs",
     "section": "9.2 Set up",
-    "text": "9.2 Set up\n\nPACKAGES:\n\nInstall packages.\n\n\n\nshow/hide\ninstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n\n\n\n\nDATA:\n\n\n\n\n\n\nArtwork by Allison Horst\n\n\nRemove the missing values from body_mass_g and island in the palmerpenguins::penguins data and convert body mass in grams to kilograms (body_mass_kg).\nWe’ll also reduce the number of columns in the penguins data for clarity.\n\n\n\nshow/hide\npeng_sum_col &lt;- palmerpenguins::penguins |&gt; \n    dplyr::select(body_mass_g, island) |&gt; \n    tidyr::drop_na() |&gt; \n    # divide the mass value by 1000\n    dplyr::mutate(\n        body_mass_kg = body_mass_g / 1000\n    )\ndplyr::glimpse(peng_sum_col)\n#&gt; Rows: 342\n#&gt; Columns: 3\n#&gt; $ body_mass_g  &lt;int&gt; 3750, 3800, 3250, 3450, 365…\n#&gt; $ island       &lt;fct&gt; Torgersen, Torgersen, Torge…\n#&gt; $ body_mass_kg &lt;dbl&gt; 3.750, 3.800, 3.250, 3.450,…",
+    "text": "9.2 Set up\n\nPACKAGES:\n\nInstall packages.\n\n\n\nshow/hide\ninstall.packages(\"palmerpenguins\")\nlibrary(palmerpenguins) \nlibrary(ggplot2)\n\n\n\n\nDATA:\n\n\n\n\n\n\nArtwork by Allison Horst\n\n\nRemove the missing values from body_mass_g and island in the palmerpenguins::penguins data and convert body mass in grams to kilograms (body_mass_kg).\nWe’ll also reduce the number of columns in the penguins data for clarity.\n\n\n\nshow/hide\npeng_sum_col &lt;- palmerpenguins::penguins |&gt; \n    dplyr::select(body_mass_g, island) |&gt; \n    tidyr::drop_na() |&gt; \n    # divide the mass value by 1000\n    dplyr::mutate(\n        body_mass_kg = body_mass_g / 1000\n    ) |&gt; \n    dplyr::group_by(island) |&gt; \n    dplyr::summarise(\n      avg_bmi_kg = mean(body_mass_kg)\n    ) |&gt; \n    dplyr::ungroup()\ndplyr::glimpse(peng_sum_col)\n#&gt; Rows: 3\n#&gt; Columns: 2\n#&gt; $ island     &lt;fct&gt; Biscoe, Dream, Torgersen\n#&gt; $ avg_bmi_kg &lt;dbl&gt; 4.716018, 3.712903, 3.706373",
     "crumbs": [
       "AMOUNTS",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>Summary bar graphs</span>"
@@ -442,7 +453,7 @@
     "href": "sum_bar_graphs.html#grammar",
     "title": "9  Summary bar graphs",
     "section": "9.3 Grammar",
-    "text": "9.3 Grammar\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap island to x and body_mass_kg to y\nInside the aes() of geom_col(), map island to fill\nOutside the aes() of geom_col(), remove the legend with show.legend = FALSE\n\n\n\n\nshow/hide\nlabs_sum_col &lt;- labs(\n    title = \"Total Penguin Mass\",\n    subtitle = \"How many kilograms of penguin per Island?\",\n    x = \"Island\",\n    y = \"Total Penguin Body Mass (kg)\")\nggp2_sum_col &lt;- ggplot(data = peng_sum_col,\n    aes(x = island,\n        y = body_mass_kg)) +\n    geom_col(aes(fill = island), \n        show.legend = FALSE)  \nggp2_sum_col + \n    labs_sum_col\n\n\n\n\nGRAPH:",
+    "text": "9.3 Grammar\n\nCODE:\n\n\nCreate labels with labs()\nInitialize the graph with ggplot() and provide data\nMap island to x and avg_bmi_kg to y\nInside the aes() of geom_col(), map island to fill\nOutside the aes() of geom_col(), remove the legend with show.legend = FALSE\n\n\n\n\nshow/hide\nlabs_sum_col &lt;- labs(\n    title = \"Average Penguin Body Mass\",\n    subtitle = \"What is the average penguin BMI per Island?\",\n    x = \"Island\",\n    y = \"Average Penguin Body Mass (kg)\")\nggp2_sum_col &lt;- ggplot(data = peng_sum_col,\n    aes(x = island,\n        y = avg_bmi_kg)) +\n    geom_col(aes(fill = island), \n        show.legend = FALSE)  \nggp2_sum_col + \n    labs_sum_col\n\n\n\n\nGRAPH:",
     "crumbs": [
       "AMOUNTS",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>Summary bar graphs</span>"
@@ -453,18 +464,7 @@
     "href": "sum_bar_graphs.html#more-info",
     "title": "9  Summary bar graphs",
     "section": "9.4 More Info",
-    "text": "9.4 More Info\nNote that we didn’t have to write any code to calculate the total body_mass_g (displayed on the y axis) by island.\nThat’s because ggplot2 does this for us!\n\nIf we pass a categorical variable to the x (like island) and a continuous variable to y (like body_mass_kg), geom_col() will calculate the sum() of y by levels of x\nWe can see the underlying summary of budget using dplyr’s group_by() and summarise() functions.\n\n\n\n\nshow/hide\npalmerpenguins::penguins |&gt; \n    dplyr::select(body_mass_g, island) |&gt; \n    tidyr::drop_na() |&gt; \n    # divide the mass value by 1000\n    dplyr::mutate(\n        body_mass_kg = body_mass_g / 1000\n    ) |&gt; \n    dplyr::group_by(island) |&gt;\n    dplyr::summarise(\n       `Total Penguin Body Mass (kg)` = sum(body_mass_kg)) |&gt;\n    dplyr::ungroup() |&gt; \n    dplyr::select(`Island` = island, \n        `Total Penguin Body Mass (kg)`)\n\n\n\n\n\n\n\n\n\n\n\n\n\nIsland\nTotal Penguin Body Mass (kg)\n\n\n\n\nBiscoe\n787.575\n\n\nDream\n460.400\n\n\nTorgersen\n189.025",
-    "crumbs": [
-      "AMOUNTS",
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Summary bar graphs</span>"
-    ]
-  },
-  {
-    "objectID": "sum_bar_graphs.html#identity-vs.-count",
-    "href": "sum_bar_graphs.html#identity-vs.-count",
-    "title": "9  Summary bar graphs",
-    "section": "9.5 Identity vs. Count",
-    "text": "9.5 Identity vs. Count\n\n\nThe geom_bar() geom will also create grouped bar graphs, but we have to switch the stat argument to \"identity\".\n\n\n\nshow/hide\nggplot(data = peng_sum_col,\n    aes(x = island,\n        y = body_mass_kg)) +\n    geom_col(aes(fill = island), \n        show.legend = FALSE,\n        stat = \"identity\")  +\n    labs_sum_col\n\n\n\n\n\n\n\n\n\n\n9.5.1 geom_bar() vs. geom_col()\n\n\ngeom_bar() will map a categorical variable to the x or y and display counts for the discrete levels (see stat_count() for more info)\ngeom_col() will map both x and y aesthetics, and is used when we want to display numerical (quantitative) values across the levels of a categorical variable. geom_col() assumes these values have been created in their own column (see stat_identity() for more info)",
+    "text": "9.4 More Info\nBelow is more information on geom_bar() vs. geom_col().\n\n9.4.1 Identity vs. Count\n\nThe geom_bar() geom will also create grouped bar graphs, but we have to switch the stat argument to \"identity\".\n\n\n\nshow/hide\nggplot(data = peng_sum_col,\n    aes(x = island,\n        y = avg_bmi_kg)) +\n    geom_col(aes(fill = island), \n        show.legend = FALSE,\n        stat = \"identity\")  +\n    labs_sum_col\n\n\n\n\n\n\n\n\n\n\n\n9.4.2 geom_bar() vs. geom_col()\n\n\ngeom_bar() will map a categorical variable to the x or y and display counts for the discrete levels (see stat_count() for more info)\ngeom_col() will map both x and y aesthetics, and is used when we want to display numerical (quantitative) values across the levels of a categorical variable. geom_col() assumes these values have been created in their own column (see stat_identity() for more info)",
     "crumbs": [
       "AMOUNTS",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>Summary bar graphs</span>"

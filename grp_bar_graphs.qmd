@@ -66,18 +66,18 @@ peng_grp_col <- palmerpenguins::penguins |>
     tidyr::drop_na() |> 
     dplyr::group_by(island) |>
     dplyr::summarise(
-        avg_body_mass_g = mean(body_mass_g)
+        sum_body_mass_g = sum(body_mass_g)
         ) |>
     dplyr::ungroup()
 # glimpse(peng_grp_col)
 labs_grp_col <- labs(
-    title = "Average Penguin Mass",
-    subtitle = "What's the average mass of penguins per Island?",
+    title = "Total Penguin Mass",
+    subtitle = "What's the total mass of penguins per Island?",
     x = "Island",
-    y = "Average penguin body mass (g)")
+    y = "Total penguin body mass (g)")
 ggp2_grp_col <- ggplot(data = peng_grp_col,
               aes(x = island, 
-                  y = avg_body_mass_g)) + 
+                  y = sum_body_mass_g)) + 
         geom_col(aes(fill = island),
             show.legend = FALSE)
 ggp2_grp_col + 
@@ -99,7 +99,6 @@ Grouped bar graphs compare multiple values across categories. Each category has 
 :::
 
 Install packages.
-
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -126,7 +125,7 @@ library(ggplot2)
 ![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-Remove the missing values and reduce the `palmerpenguins::penguins` dataset to only `body_mass_g` and `island`, then group the data by `island` and calculate the mean `body_mass_g` (as `avg_body_mass_g`). 
+Remove the missing values and reduce the `palmerpenguins::penguins` dataset to only `body_mass_g` and `island`, then group the data by `island` and calculate the sum of `body_mass_g` (as `sum_body_mass_g`). 
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -139,7 +138,7 @@ peng_grp_col <- palmerpenguins::penguins |>
     tidyr::drop_na() |> 
     dplyr::group_by(island) |>
     dplyr::summarise(
-        avg_body_mass_g = mean(body_mass_g)
+        sum_body_mass_g = sum(body_mass_g)
         ) |>
     dplyr::ungroup()
 glimpse(peng_grp_col)
@@ -159,7 +158,7 @@ Grouped bar graphs assume the statistical measure (i.e., the value that the leng
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Map `island` to the `x` and `avg_body_mass_g` to the `y`
+  -   Map `island` to the `x` and `sum_body_mass_g` to the `y`
 
   -   Map `island` to `fill` *inside* the `aes()` of `geom_col()` 
 
@@ -174,13 +173,13 @@ Grouped bar graphs assume the statistical measure (i.e., the value that the leng
 #| out-height: '100%'
 #| out-width: '100%'
 labs_grp_col <- labs(
-    title = "Average Penguin Mass",
-    subtitle = "What's the average mass of penguins per Island?",
+    title = "Total Penguin Mass",
+    subtitle = "What's the total mass of penguins per Island?",
     x = "Island",
-    y = "Average penguin body mass (g)")
+    y = "Total penguin body mass (g)")
 ggp2_grp_col <- ggplot(data = peng_grp_col,
               aes(x = island, 
-                  y = avg_body_mass_g)) + 
+                  y = sum_body_mass_g)) + 
         geom_col(aes(fill = island),
             show.legend = FALSE)
 ggp2_grp_col + 
@@ -203,15 +202,89 @@ ggp2_grp_col +
 #| layout-nrow: 1
 #| column: page-inset-right
 labs_grp_col <- labs(
-    title = "Average Penguin Mass",
-    subtitle = "What's the average mass of penguins per Island?",
+    title = "Total Penguin Mass",
+    subtitle = "What's the total mass of penguins per Island?",
     x = "Island",
-    y = "Average penguin body mass (g)")
+    y = "Total penguin body mass (g)")
 ggp2_grp_col <- ggplot(data = peng_grp_col,
               aes(x = island, 
-                  y = avg_body_mass_g)) + 
+                  y = sum_body_mass_g)) + 
         geom_col(aes(fill = island),
             show.legend = FALSE)
 ggp2_grp_col + 
     labs_grp_col
 ```
+
+
+## More Info
+
+We didn't have to calculate `sum_body_mass_g` (displayed on the `y` axis) by `island` because `ggplot2` does this for us!
+
+If we pass a categorical variable to the `x` (like `island`) and a continuous variable to `y` (like `body_mass_kg`), `geom_col()` will calculate the `sum()` of `y` by levels of `x`:
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: create_summary_sum_col_graph
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+  penguins |> 
+  dplyr::select(body_mass_g, island) |> 
+  tidyr::drop_na() |>
+  ggplot(aes(x = island, y = body_mass_g)) + 
+        geom_col(aes(fill = island),
+            show.legend = FALSE) + 
+  labs_grp_col
+```
+:::
+
+
+We can see the underlying totaling of `body_mass_g` using `dplyr`’s `group_by()` and `summarise()` functions.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: create_summary_sum_col
+#| eval: false
+#| echo: true
+#| warning: false
+#| message: false
+palmerpenguins::penguins |> 
+    dplyr::select(body_mass_g, island) |> 
+    tidyr::drop_na() |> 
+    dplyr::group_by(island) |>
+    dplyr::summarise(
+        `Total Penguin Body Mass (kg)` = sum(body_mass_g)
+        ) |>
+    dplyr::ungroup() |> 
+    dplyr::select(`Island` = island, 
+        `Total Penguin Body Mass (kg)`)
+```
+:::
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: show_summary_sum_col
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| layout-nrow: 1
+#| column: page-inset-right
+palmerpenguins::penguins |> 
+    dplyr::select(body_mass_g, island) |> 
+    tidyr::drop_na() |> 
+    # divide the mass value by 1000
+    dplyr::mutate(
+        body_mass_kg = body_mass_g / 1000
+    ) |> 
+    dplyr::group_by(island) |>
+    dplyr::summarise(
+       `Total Penguin Body Mass (kg)` = sum(body_mass_kg)) |>
+    dplyr::ungroup() |> 
+    dplyr::select(`Island` = island, 
+        `Total Penguin Body Mass (kg)`) |> 
+    knitr::kable() |> 
+    kableExtra::kable_minimal()
+```
+:::
