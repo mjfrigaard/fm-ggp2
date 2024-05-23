@@ -134,6 +134,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="./">ggplot2: field manual</a> 
         <div class="sidebar-tools-main">
+    <a href="https://github.com/mjfrigaard/fm-ggp2" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -497,7 +498,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./extensions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title"><code>ggplot2</code> extensions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Extensions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./theme.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Theme</span></span></a>
   </div>
 </li>
       </ul>
@@ -514,20 +521,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#ggplot2-syntax" id="toc-ggplot2-syntax" class="nav-link active" data-scroll-target="#ggplot2-syntax"><code>ggplot2</code> syntax</a>
   <ul>
-  <li><a href="#layers" id="toc-layers" class="nav-link" data-scroll-target="#layers">Layers</a>
-  <ul>
-  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
-  <li><a href="#mapping" id="toc-mapping" class="nav-link" data-scroll-target="#mapping">Mapping</a></li>
-  <li><a href="#statistics-geometric-objects" id="toc-statistics-geometric-objects" class="nav-link" data-scroll-target="#statistics-geometric-objects">Statistics &amp; geometric objects</a></li>
-  <li><a href="#position-labels-themes" id="toc-position-labels-themes" class="nav-link" data-scroll-target="#position-labels-themes">Position, labels &amp; themes</a></li>
-  </ul></li>
+  <li><a href="#the-data-layer" id="toc-the-data-layer" class="nav-link" data-scroll-target="#the-data-layer">The Data Layer</a></li>
+  <li><a href="#the-mapping-layer" id="toc-the-mapping-layer" class="nav-link" data-scroll-target="#the-mapping-layer">The Mapping Layer</a></li>
+  <li><a href="#the-statsgeoms-layer" id="toc-the-statsgeoms-layer" class="nav-link" data-scroll-target="#the-statsgeoms-layer">The Stats/Geoms Layer</a></li>
+  <li><a href="#position-labels-themes" id="toc-position-labels-themes" class="nav-link" data-scroll-target="#position-labels-themes">Position, Labels &amp; Themes</a></li>
   </ul></li>
   <li><a href="#graph-categories" id="toc-graph-categories" class="nav-link" data-scroll-target="#graph-categories">Graph Categories</a></li>
   <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions">Assumptions</a></li>
-  <li><a href="#theme" id="toc-theme" class="nav-link" data-scroll-target="#theme">Theme</a></li>
   <li><a href="#style-structure" id="toc-style-structure" class="nav-link" data-scroll-target="#style-structure">Style &amp; structure</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/intro.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -575,11 +578,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>“<em>making infinite use of finite means</em>” - Wilhelm von Humboldt</p>
 </blockquote>
 <p>Grammar is often defined as the system of rules for any given language and includes word meanings, internal structures, and word arrangement. Syntax is the form, structure and order for constructing statements. <code>ggplot2</code>‘s syntax is built on the grammar &amp; syntax of R. In R, objects are like nouns, and functions are like verbs (i.e., functions ’do things’ to objects).</p>
-<section id="layers" class="level3">
-<h3 class="anchored" data-anchor-id="layers">Layers</h3>
-<p>The <code>ggplot2</code> syntax is comprised of layers, which we can use as templates.</p>
-<section id="data" class="level4">
-<h4 class="anchored" data-anchor-id="data">Data</h4>
+<p>The <code>ggplot2</code> syntax is comprised of layers, which we can use as templates to build increasing customize and complex graphs.</p>
+<section id="the-data-layer" class="level3">
+<h3 class="anchored" data-anchor-id="the-data-layer">The Data Layer</h3>
 <p>The data layer consists of a rectangular object (like a spreadsheet) with columns and rows:</p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -597,8 +598,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="mapping" class="level4">
-<h4 class="anchored" data-anchor-id="mapping">Mapping</h4>
+<section id="the-mapping-layer" class="level3">
+<h3 class="anchored" data-anchor-id="the-mapping-layer">The Mapping Layer</h3>
 <p>The mapping layer assigns columns (variables) from the data to a visual property (i.e.&nbsp;graph ’<strong><code>aes</code></strong>’ thetic)</p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -622,8 +623,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="sc">&lt;</span>DATA<span class="sc">&gt;</span>) <span class="sc">+</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  geom_<span class="sc">*</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="sc">&lt;</span>AESTHETIC MAPPINGS<span class="sc">&gt;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="statistics-geometric-objects" class="level4">
-<h4 class="anchored" data-anchor-id="statistics-geometric-objects">Statistics &amp; geometric objects</h4>
+<section id="the-statsgeoms-layer" class="level3">
+<h3 class="anchored" data-anchor-id="the-statsgeoms-layer">The Stats/Geoms Layer</h3>
 <p><code>geom_*()</code> functions include statistical transformations, shapes, and position adjustments for how to ‘draw’ the data on the graph</p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -684,8 +685,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    geom_<span class="sc">*</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="sc">&lt;</span>AESTHETIC MAPPINGS<span class="sc">&gt;</span>)) <span class="sc">+</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    geom_<span class="sc">*</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="sc">&lt;</span>AESTHETIC MAPPINGS<span class="sc">&gt;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="position-labels-themes" class="level4">
-<h4 class="anchored" data-anchor-id="position-labels-themes">Position, labels &amp; themes</h4>
+<section id="position-labels-themes" class="level3">
+<h3 class="anchored" data-anchor-id="position-labels-themes">Position, Labels &amp; Themes</h3>
 <p>With a finite number of objects &amp; functions, we can combine <code>ggplot2</code>’s grammar and syntax to create an infinite number of graphs!</p>
 <div class="cell">
 <details open="" class="code-fold">
@@ -737,7 +738,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-</section>
 <section id="graph-categories" class="level2">
 <h2 class="anchored" data-anchor-id="graph-categories">Graph Categories</h2>
 <p>Graphs have been categorized into the following types (you can see them in the floating table of contents to your left).</p>
@@ -755,10 +755,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="assumptions">Assumptions</h2>
 <p>I’ve made an effort to write the graph code so it can be read and understood <em>without</em> having to execute it.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> However, the examples assume the reader has already answered the question, “<em>what kind of data do I have?</em>”<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 </section>
-<section id="theme" class="level2">
-<h2 class="anchored" data-anchor-id="theme">Theme</h2>
-<p>The theme used in the graphs is custom and uses combined elements from <code>ggplot2::theme_minimal()</code> and <code>ggplot2::theme_void()</code>. View it <a href="https://github.com/mjfrigaard/fm-ggp2/blob/main/R/theme_ggp2g.R">here</a>.</p>
-</section>
 <section id="style-structure" class="level2">
 <h2 class="anchored" data-anchor-id="style-structure">Style &amp; structure</h2>
 <p>Each graph has the following sections:</p>
@@ -770,37 +766,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><em>This graph requires:</em><br>
 </li>
 </ul></li>
-<li><p><strong>Description</strong></p></li>
-</ol>
-<p>A brief summary of the graph’s background, purpose, and aesthetics.</p>
-<ol start="3" type="1">
+<li><p><strong>Description</strong></p>
+<ul>
+<li><em>A brief summary of the graph’s background, purpose, and aesthetics.</em></li>
+</ul></li>
 <li><p><strong>Set up</strong></p>
 <ul>
-<li><em>Packages and Data</em>
+<li>Packages
 <ul>
-<li>Code for installing development version of packages (if necessary) for graphs <em>and</em> data<br>
-</li>
-<li>Any steps used to create (i.e., manipulate and prepare) the data for the graph<br>
-</li>
+<li><em>Code for installing development version of packages (if necessary) for graphs <strong>and</strong> data.</em></li>
+</ul></li>
+<li>Data
+<ul>
+<li><em>Any steps used to create (i.e., manipulate and prepare) the data for the graph.</em></li>
 </ul></li>
 </ul></li>
 <li><p><strong>The grammar</strong></p>
 <ul>
-<li><em>Code to build the labels and graph layers</em>
+<li>Graph Code
 <ul>
-<li>Graph labels have the <code>labs_</code> prefix<br>
-</li>
-<li>Graph layers have a <code>ggp2_</code> prefix<br>
-</li>
+<li><em>Graph labels have the <code>labs_</code> prefix</em></li>
+<li><em>Graph layers have a <code>ggp2_</code> prefix</em></li>
 </ul></li>
 </ul></li>
 <li><p><strong>More info</strong></p>
 <ul>
-<li><em>Additional methods, arguments, or applications</em>
+<li>Additional methods, arguments, or applications
 <ul>
-<li>Color palettes<br>
+<li><em>Color palettes</em><br>
 </li>
-<li>Complimentary packages</li>
+<li><em>Complimentary packages</em></li>
 </ul></li>
 </ul></li>
 </ol>
@@ -909,7 +904,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/mjfrigaard\.github\.io\/fm-ggp2\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
@@ -1296,7 +1291,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/intro.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

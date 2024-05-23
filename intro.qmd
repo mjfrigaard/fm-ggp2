@@ -41,11 +41,9 @@ library(dplyr)
 
 Grammar is often defined as the system of rules for any given language and includes word meanings, internal structures, and word arrangement. Syntax is the form, structure and order for constructing statements. `ggplot2`'s syntax is built on the grammar & syntax of R. In R, objects are like nouns, and functions are like verbs (i.e., functions 'do things' to objects).
 
-### Layers
+The `ggplot2` syntax is comprised of layers, which we can use as templates to build increasing customize and complex graphs.
 
-The `ggplot2` syntax is comprised of layers, which we can use as templates.
-
-#### Data
+### The Data Layer
 
 The data layer consists of a rectangular object (like a spreadsheet) with columns and rows:
 
@@ -57,9 +55,9 @@ penguins <- tidyr::drop_na(penguins)
 ggplot(data = penguins)
 ```
 
-#### Mapping
+### The Mapping Layer
 
-The mapping layer assigns columns (variables) from the data to a visual property (i.e. graph ’**`aes`**’ thetic)
+The mapping layer assigns columns (variables) from the data to a visual property (i.e. graph ’**`aes`**’ thetic)
 
 ```{r}
 #| message: false
@@ -81,7 +79,7 @@ ggplot(data = <DATA>) +
   geom_*(mapping = aes(<AESTHETIC MAPPINGS>))
 ```
 
-#### Statistics & geometric objects
+### The Stats/Geoms Layer
 
 `geom_*()` functions include statistical transformations, shapes, and position adjustments for how to ‘draw’ the data on the graph
 
@@ -136,7 +134,7 @@ ggplot(data = <DATA>) +
     geom_*(mapping = aes(<AESTHETIC MAPPINGS>))
 ```
 
-#### Position, labels & themes
+### Position, Labels & Themes
 
 With a finite number of objects & functions, we can combine `ggplot2`’s grammar and syntax to create an infinite number of graphs!
 
@@ -213,10 +211,6 @@ I've made an effort to write the graph code so it can be read and understood *wi
 
 [^skimr-inspectdf]: If not, I highly recommend the [`skimr`](https://docs.ropensci.org/skimr/) and [`inspectdf`](https://alastairrushworth.github.io/inspectdf/) packages for getting to know your data better.
 
-## Theme
-
-The theme used in the graphs is custom and uses combined elements from `ggplot2::theme_minimal()` and `ggplot2::theme_void()`. View it [here](https://github.com/mjfrigaard/fm-ggp2/blob/main/R/theme_ggp2g.R).
-
 ## Style & structure
 
 Each graph has the following sections:
@@ -228,25 +222,26 @@ Each graph has the following sections:
 
 2.  **Description**
 
-A brief summary of the graph's background, purpose, and aesthetics.
+    -   *A brief summary of the graph's background, purpose, and aesthetics.*
 
 3.  **Set up**
 
-    -   *Packages and Data*
-        -   Code for installing development version of packages (if necessary) for graphs *and* data\
-        -   Any steps used to create (i.e., manipulate and prepare) the data for the graph\
+    -   Packages
+        -   *Code for installing development version of packages (if necessary) for graphs **and** data.*
+    -   Data
+        -   *Any steps used to create (i.e., manipulate and prepare) the data for the graph.*
 
 4.  **The grammar**
 
-    -   *Code to build the labels and graph layers*
-        -   Graph labels have the `labs_` prefix\
-        -   Graph layers have a `ggp2_` prefix\
+    -   Graph Code  
+        -   *Graph labels have the `labs_` prefix*
+        -   *Graph layers have a `ggp2_` prefix*
 
 5.  **More info**
 
-    -   *Additional methods, arguments, or applications*
-        -   Color palettes\
-        -   Complimentary packages
+    -   Additional methods, arguments, or applications
+        -   *Color palettes*\
+        -   *Complimentary packages*
 
 I've attempted to balance brevity and clarity, but with the assumption that its best to err on the latter. I've also followed the general principle that if a graph can be *easily* built using one of `ggplot2` 's `geom_*` functions, that method is shown first.
 

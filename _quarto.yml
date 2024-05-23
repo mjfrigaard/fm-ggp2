@@ -5,6 +5,10 @@ book:
   title: "ggplot2: field manual"
   author: "Martin Frigaard"
   reader-mode: true
+  site-url: https://mjfrigaard.github.io/fm-ggp2/
+  repo-url: https://github.com/mjfrigaard/fm-ggp2
+  repo-branch: main
+  repo-actions: [edit, issue]
   page-footer:
     left: |
       ggplot2: field manual was written by Martin Frigaard.
@@ -73,12 +77,11 @@ book:
   appendices:
         - data.qmd
         - extensions.qmd
-
-bibliography: references.bib
+        - theme.qmd
 
 format:
   html:
-    theme: [cosmo, custom.scss]
+    theme: [flatly, custom.scss]
     highlight-style: arrow
     toc: true
     toc-depth: 5
