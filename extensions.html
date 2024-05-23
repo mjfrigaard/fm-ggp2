@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>ggplot2: field manual – ggplot2 extensions</title>
+<title>ggplot2: field manual – Appendix B — ggplot2 extensions</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,7 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./hex_bins.html" rel="prev">
+<link href="./data.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -67,6 +67,8 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 </head>
@@ -80,7 +82,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./xtnsns_tbl.html">Appendices</a></li><li class="breadcrumb-item"><a href="./xtnsns_tbl.html"><code>ggplot2</code> extensions</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data.html">Appendices</a></li><li class="breadcrumb-item"><a href="./extensions.html"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title"><code>ggplot2</code> extensions</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -453,8 +455,14 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./xtnsns_tbl.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><code>ggplot2</code> extensions</span></a>
+  <a href="./data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./extensions.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title"><code>ggplot2</code> extensions</span></span></a>
   </div>
 </li>
       </ul>
@@ -470,9 +478,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./xtnsns_tbl.html">Appendices</a></li><li class="breadcrumb-item"><a href="./xtnsns_tbl.html"><code>ggplot2</code> extensions</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data.html">Appendices</a></li><li class="breadcrumb-item"><a href="./extensions.html"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title"><code>ggplot2</code> extensions</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><code>ggplot2</code> extensions</h1>
+<h1 class="title"><span id="sec-extensions" class="quarto-section-identifier">Appendix B — <code>ggplot2</code> extensions</span></h1>
 </div>
 
 
@@ -489,6 +497,24 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<div class="callout callout-style-simple callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span style="font-weight: bold; font-size: 1.10em;">Caution</span>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div style="font-size: 1.05em; color: #282b2d;">
+<p>This section is still being developed. The contents are subject to change.</p>
+</div>
+</div>
+</div>
+</div>
 <p>Below are the graphs requiring additional packages/extensions:</p>
 <div style="font-size: 0.95rem;">
 <table class="table">
@@ -503,70 +529,58 @@ ul.task-list li input[type="checkbox"] {
 <tr class="odd">
 <td>Waffle charts</td>
 <td><a href="https://liamgilbey.github.io/ggwaffle/"><code>ggwaffle</code></a></td>
-<td><pre><code>remotes::install_github("liamgilbey/ggwaffle")
-library(ggwaffle)</code></pre></td>
+<td><pre><code>remotes::install_github("liamgilbey/ggwaffle")</code></pre></td>
 </tr>
 <tr class="even">
 <td>Pie charts</td>
 <td><a href="https://rpkgs.datanovia.com/ggpubr/"><code>ggpubr</code></a></td>
-<td><pre><code>remotes::install_github("kassambara/ggpubr")
-library(ggpubr)</code></pre></td>
+<td><pre><code>remotes::install_github("kassambara/ggpubr")</code></pre></td>
 </tr>
 <tr class="odd">
 <td>Mosaic Plots</td>
 <td><a href="https://haleyjeppson.github.io/ggmosaic/"><code>ggmosaic</code></a></td>
-<td><pre><code>remotes::install_github("haleyjeppson/ggmosaic")
-library(ggmosaic)</code></pre></td>
+<td><pre><code>remotes::install_github("haleyjeppson/ggmosaic")</code></pre></td>
 </tr>
 <tr class="even">
 <td>Treemaps</td>
 <td><a href="https://wilkox.org/treemapify/"><code>treemapify</code></a></td>
-<td><pre><code>remotes::install_github("wilkox/treemapify")
-library(treemapify)</code></pre></td>
+<td><pre><code>remotes::install_github("wilkox/treemapify")</code></pre></td>
 </tr>
 <tr class="odd">
 <td>Beeswarm Plots</td>
 <td><a href="https://github.com/eclarke/ggbeeswarm"><code>ggbeeswarm</code></a></td>
-<td><pre><code>remotes::install_github("eclarke/ggbeeswarm")
-library(ggbeeswarm)</code></pre></td>
+<td><pre><code>remotes::install_github("eclarke/ggbeeswarm")</code></pre></td>
 </tr>
 <tr class="even">
 <td>Ridgeline Plots</td>
 <td><a href="https://wilkelab.org/ggridges/"><code>ggridges</code></a></td>
-<td><pre><code>remotes::install_github("wilkelab/ggridges")
-library(ggridges)</code></pre></td>
+<td><pre><code>remotes::install_github("wilkelab/ggridges")</code></pre></td>
 </tr>
 <tr class="odd">
 <td>Raincloud plots</td>
 <td><a href="https://github.com/jorvlan/raincloudplots"><code>raincloudplots</code></a> &amp; <a href="https://mjskay.github.io/ggdist/reference/"><code>ggdist</code></a></td>
 <td><pre><code>remotes::install_github('jorvlan/raincloudplots')
-remotes::install_github('mjskay/ggdist')
-library(raincloudplots)
-library(ggdist)</code></pre></td>
+remotes::install_github('mjskay/ggdist')</code></pre></td>
 </tr>
 <tr class="even">
 <td>Alluvial charts</td>
 <td><a href="https://corybrunson.github.io/ggalluvial/"><code>ggalluvial</code></a></td>
-<td><pre><code>remotes::install_github("corybrunson/ggalluvial")
-library(ggalluvial)</code></pre></td>
+<td><pre><code>remotes::install_github("corybrunson/ggalluvial")</code></pre></td>
 </tr>
 <tr class="odd">
 <td>Parallel Sets</td>
 <td><a href="https://ggforce.data-imaginist.com/"><code>ggforce</code></a></td>
-<td><pre><code>remotes::install_github("thomasp85/ggforce")
-library(ggforce)</code></pre></td>
+<td><pre><code>remotes::install_github("thomasp85/ggforce")</code></pre></td>
 </tr>
 <tr class="even">
 <td>Bump charts</td>
 <td><a href="https://github.com/davidsjoberg/ggbump"><code>ggbump</code></a></td>
-<td><pre><code>remotes::install_github("davidsjoberg/ggbump")
-library(ggbump)</code></pre></td>
+<td><pre><code>remotes::install_github("davidsjoberg/ggbump")</code></pre></td>
 </tr>
 <tr class="odd">
 <td>Stream Plots</td>
 <td><a href="https://github.com/davidsjoberg/ggstream"><code>ggstream</code></a></td>
-<td><pre><code>remotes::install_github("davidsjoberg/ggstream")
-library(ggstream)</code></pre></td>
+<td><pre><code>remotes::install_github("davidsjoberg/ggstream")</code></pre></td>
 </tr>
 </tbody>
 </table>
@@ -1036,8 +1050,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./hex_bins.html" class="pagination-link" aria-label="Hexagon bins">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Hexagon bins</span></span>
+      <a href="./data.html" class="pagination-link" aria-label="Data">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Data</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
