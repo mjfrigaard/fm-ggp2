@@ -274,13 +274,10 @@ palmerpenguins::penguins |>
 palmerpenguins::penguins |> 
     dplyr::select(body_mass_g, island) |> 
     tidyr::drop_na() |> 
-    # divide the mass value by 1000
-    dplyr::mutate(
-        body_mass_kg = body_mass_g / 1000
-    ) |> 
     dplyr::group_by(island) |>
     dplyr::summarise(
-       `Total Penguin Body Mass (kg)` = sum(body_mass_kg)) |>
+        `Total Penguin Body Mass (kg)` = sum(body_mass_g)
+        ) |>
     dplyr::ungroup() |> 
     dplyr::select(`Island` = island, 
         `Total Penguin Body Mass (kg)`) |> 
