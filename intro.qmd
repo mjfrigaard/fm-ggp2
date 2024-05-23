@@ -68,8 +68,10 @@ The mapping layer assigns columns (variables) from the data to a visual property
 #| fig-asp: 0.618
 ggplot(data = penguins,
   mapping = 
-    aes(x = flipper_length_mm, 
-        y = bill_length_mm))
+    aes(
+      x = flipper_length_mm, y = bill_length_mm
+      )
+  )
 ```
 
 **Basic Template**: Data, aesthetic mappings, geom
@@ -90,11 +92,14 @@ ggplot(data = <DATA>) +
 #| fig-asp: 0.618
 ggplot(data = penguins,
   mapping = aes(
-    x = flipper_length_mm, 
-    y = bill_length_mm)) +
+    x = flipper_length_mm, y = bill_length_mm
+    )
+  ) +
   geom_point(
-    aes(shape = species,
-      color = sex))
+    aes(
+      shape = species, color = sex
+      )
+    )
 ```
 
 We can have multiple layers (data, mappings, geoms) in a single graph.
@@ -107,17 +112,20 @@ We can have multiple layers (data, mappings, geoms) in a single graph.
 ggplot(data = penguins,
  # layer 1
   mapping = aes(
-    x = flipper_length_mm, 
-    y = bill_length_mm)) +
+    x = flipper_length_mm, y = bill_length_mm
+    )
+  ) +
   geom_point(
-    aes(shape = species,
-        color = sex)) +
+    aes(
+      shape = species, color = sex
+      )
+    ) +
 # layer 2
   geom_smooth(
     mapping = aes(
-      x = flipper_length_mm,
-      y = bill_length_mm), 
-        se = FALSE)
+      x = flipper_length_mm, y = bill_length_mm), 
+        se = FALSE
+    )
 ```
 
 -   **Template + 1 Layer**: more geoms and more aesthetic mappings
@@ -140,25 +148,28 @@ With a finite number of objects & functions, we can combine `ggplot2`’s gramma
 ggplot(data = penguins,
  # layer 1
   mapping = aes(
-    x = flipper_length_mm, 
-    y = bill_length_mm)) +
+    x = flipper_length_mm, y = bill_length_mm
+    )
+  ) +
   geom_point(
-    aes(shape = species,
-        color = sex)) +
+    aes(
+      shape = species, color = sex
+      )
+    ) +
 # layer 2
   geom_smooth(
     mapping = aes(
-      x = flipper_length_mm,
-      y = bill_length_mm), 
-        se = FALSE) +
+      x = flipper_length_mm, y = bill_length_mm), 
+        se = FALSE
+    ) +
 # layer 3
-  facet_wrap(. ~ island, ncol = 2) + 
+  facet_wrap(
+    . ~ island, ncol = 2
+    ) + 
   # labels
   labs(
-    x = 'Flipper length (mm)',
-    y = 'Bill length (mm)', 
-    title = 'Penguins', 
-    subtitle = 'Bills vs. Flippers'
+    x = 'Flipper length (mm)', y = 'Bill length (mm)', 
+    title = 'Penguins',  subtitle = 'Bills vs. Flippers'
     ) + 
   # themes
   theme(legend.position = "top") 
