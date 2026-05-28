@@ -6,12 +6,10 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
+library(palmerpenguins)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # _common.R ----
 source("_common.R")
 # use font
@@ -32,7 +30,6 @@ co_box(
   contents = "This section is still being developed. The contents are subject to change.",
   fold = FALSE
 )
-library(dplyr)
 ```
 
 ## `ggplot2` syntax

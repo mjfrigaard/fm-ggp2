@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -64,15 +61,15 @@ ggp2_grp_violin +
 ```
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a categorical variable**      
+**✅ a categorical variable**      
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
+**✅ a numeric (continuous) variable**
 :::
 
 ::::
@@ -114,7 +111,7 @@ library(ggplot2)
 :::
 
 ::: {.column-margin}
-![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
 ::: {style="font-size: 0.95rem;"}
@@ -132,6 +129,7 @@ glimpse(peng_violin)
 ```
 :::
 
+## Grammar
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **CODE:**

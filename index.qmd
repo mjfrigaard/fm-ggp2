@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # _common.R ----
 source("_common.R")
 # use font
@@ -27,8 +24,8 @@ I created this book as a sort of online 'quick reference' to help me answer ques
 
   - "*What graph should I use?*"  
   
-  - "*What kind of graph is that?*
-  
+  - "*What kind of graph is that?*"
+
   - "*Can (or should) I build that graph?*"
 
 [^tidytuesday-twitter-callout]: *Most of these questions come from [#TidyTuesday](https://twitter.com/search?lang=en&q=%23tidytuesday)*
@@ -70,7 +67,7 @@ I created this book as a sort of online 'quick reference' to help me answer ques
 
 ## Who this book was written for
 
-I created this resource with the following [learner personas](http://teachtogether.tech/en/index.html#s:process-personas) in mind: 
+I created this resource with the following [learner personas](https://teachtogether.tech/en/index.html#s:process-personas) in mind:
 
 1. **Garth** is a data analyst putting together a slide deck for an upcoming meeting. He had a few statistics courses with R in college, and has picked up additional experience and skills from the different positions he's held and various online tutorials. He's currently building the graphs in his slides with `ggplot2`, but had grown tired of them and would like to customize his presentation to make it more engaging. 
 

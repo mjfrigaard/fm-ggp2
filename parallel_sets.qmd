@@ -7,12 +7,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -80,9 +77,8 @@ ggp2_psets_labs <- ggp2_psets_axes +
   geom_parallel_sets_labels(
         size = 2.0, 
         color = '#ffffff') +
-  scale_x_continuous(
-        breaks = c(1, 2, 3), 
-        labels = c("Island", "Species", "Sex")) +
+  scale_x_discrete(
+        labels = c(island = "Island", species = "Species", sex = "Sex")) +
   theme(axis.title.x = element_blank())
 
 ggp2_psets_labs +
@@ -90,15 +86,15 @@ ggp2_psets_labs +
 ```
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` three categorical variables**    
+**✅ three categorical variables**    
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric variable of counts**
+**✅ a numeric variable of counts**
 :::
 
 ::::
@@ -145,7 +141,7 @@ library(ggplot2)
 :::
 
 ::: {.column-margin}
-![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
 
@@ -223,9 +219,8 @@ ggp2_psets_labs <- ggp2_psets_axes +
   geom_parallel_sets_labels(
         size = 2.0, 
         color = '#ffffff') +
-  scale_x_continuous(
-        breaks = c(1, 2, 3), 
-        labels = c("Island", "Species", "Sex")) +
+  scale_x_discrete(
+        labels = c(island = "Island", species = "Species", sex = "Sex")) +
   theme(axis.title.x = element_blank())
 
 ggp2_psets_labs +
@@ -270,9 +265,8 @@ ggp2_psets_labs <- ggp2_psets_axes +
   geom_parallel_sets_labels(
         size = 2.0, 
         color = '#ffffff') +
-  scale_x_continuous(
-        breaks = c(1, 2, 3), 
-        labels = c("Island", "Species", "Sex")) +
+  scale_x_discrete(
+        labels = c(island = "Island", species = "Species", sex = "Sex")) +
   theme(axis.title.x = element_blank())
 
 ggp2_psets_labs +
@@ -307,10 +301,9 @@ ggp2_psets_axes +
       angle = 0, 
       nudge_x = 0.1, 
       hjust = 0) + 
-  scale_x_continuous(
-        limits = c(0.9, 3.2),
-        breaks = c(1, 2, 3), 
-        labels = c("Island", "Species", "Sex")) + 
+  scale_x_discrete(
+        labels = c(island = "Island", species = "Species", sex = "Sex"),
+        expand = expansion(add = c(0.1, 0.4))) +
   theme(axis.title.x = element_blank()) + 
     labs_psets
 ```

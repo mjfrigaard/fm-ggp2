@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -66,9 +63,9 @@ ggp2_slope <- ggplot(data = peng_slope,
     mapping = aes(x = year,
                   y = avg_bill_depth_mm, 
               group = island)) +
-  geom_line(aes(color = island), alpha = 1, size = 2, 
+  geom_line(aes(color = island), alpha = 1, linewidth = 2,
       show.legend = FALSE) +
-  geom_point(aes(color = island), alpha = 1, size = 4) + 
+  geom_point(aes(color = island), alpha = 1, size = 4) +
   scale_x_continuous(breaks = c(2007, 2008), position = "top")
 
 ggp2_slope + 
@@ -77,19 +74,19 @@ ggp2_slope +
 
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a categorical variable**      
+**✅ a categorical variable**      
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
+**✅ a numeric (continuous) variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (date) variable**
+**✅ a numeric (date) variable**
 :::
 
 ::::
@@ -133,7 +130,7 @@ library(ggplot2)
 :::
 
 ::: {.column-margin}
-![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
 
@@ -197,15 +194,15 @@ ggp2_slope <- ggplot(data = peng_slope,
     mapping = aes(x = year,
                 y = avg_bill_depth_mm, 
                 group = island)) +
-  geom_line(aes(color = island), 
-                size = 2, show.legend = FALSE) +
-  geom_point(aes(color = island), 
-                size = 4) + 
+  geom_line(aes(color = island),
+                linewidth = 2, show.legend = FALSE) +
+  geom_point(aes(color = island),
+                size = 4) +
   scale_x_continuous(
-                breaks = c(2007, 2008), 
+                breaks = c(2007, 2008),
                 position = "top")
 
-ggp2_slope + 
+ggp2_slope +
     labs_slope
 ```
 :::
@@ -225,19 +222,19 @@ ggp2_slope +
 #| out-height: '100%'
 #| out-width: '100%'
 labs_slope <- labs(
-        title = "Changes in Bill Depth of Palmer Penguins", 
+        title = "Changes in Bill Depth of Palmer Penguins",
         subtitle = "Years 2007 & 2008",
-        x = "Year", y = "Average Bill Depth (mm)", 
+        x = "Year", y = "Average Bill Depth (mm)",
         color = "Island")
 
-ggp2_slope <- ggplot(data = peng_slope, 
+ggp2_slope <- ggplot(data = peng_slope,
     mapping = aes(x = year,
-                y = avg_bill_depth_mm, 
+                y = avg_bill_depth_mm,
                 group = island)) +
-  geom_line(aes(color = island), 
-                size = 2, show.legend = FALSE) +
-  geom_point(aes(color = island), 
-                size = 4) + 
+  geom_line(aes(color = island),
+                linewidth = 2, show.legend = FALSE) +
+  geom_point(aes(color = island),
+                size = 4) +
   scale_x_continuous(
                 breaks = c(2007, 2008), 
                 position = "top")
@@ -320,7 +317,7 @@ ggp2_grp_slope <- ggplot(data = peng_grp_slope,
         y = avg_bill_depth_mm,
         group = island)) +
     geom_line(aes(color = island),
-        size = 2, show.legend = FALSE) +
+        linewidth = 2, show.legend = FALSE) +
     geom_point(aes(color = island),
         size = 4) +
     scale_x_continuous(breaks = c(2008, 2009),

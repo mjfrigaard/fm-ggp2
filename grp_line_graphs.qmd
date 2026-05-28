@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 library(patchwork)
 # fonts ----
 library(extrafont)
@@ -180,7 +177,7 @@ ggp2_line_grp_facet <- ggplot(data = med_births_dcat_dow_mnth,
         labels = c('4000', '8000', '12000', '16000')
     ) +
     scale_x_date(date_breaks = "1 year",
-        date_labels = c("2008", "2009", "2010")) +
+        date_labels = "%Y") +
     facet_grid(day_of_week ~ day_category,
         shrink = TRUE)
 
@@ -214,19 +211,19 @@ ggp2_basic + ggp2_grp + ggp2_pal + ggp2_facet +
 ```
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
+**✅ a numeric (continuous) variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (date) variable**
+**✅ a numeric (date) variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` at least one categorical variable**      
+**✅ at least one categorical variable**      
 :::
 
 ::::
@@ -1094,7 +1091,7 @@ ggp2_line_facet_wrap <- ggplot(data = med_births_dcat_dow_mnth,
         labels = c('4000', '8000', '12000', '16000')
     ) +
     scale_x_date(date_breaks = "1 year",
-        date_labels = c("2008", "2009", "2010")) +
+        date_labels = "%Y") +
     facet_wrap(day_of_week ~ ., shrink = TRUE)
 
 ggp2_line_facet_wrap +
@@ -1145,7 +1142,7 @@ ggp2_line_facet_grid <- ggplot(data = med_births_dcat_dow_mnth,
         labels = c('4000', '8000', '12000', '16000')
     ) +
     scale_x_date(date_breaks = "1 year",
-        date_labels = c("2008", "2009", "2010")) +
+        date_labels = "%Y") +
     facet_grid(day_of_week ~ day_category,
         shrink = TRUE)
 

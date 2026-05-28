@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -28,7 +25,7 @@ ggplot2::theme_set(theme_ggp2g(
 #| results: "asis"
 #| echo: false
 # status ----
-# polish, dev, draf, complete
+# polish, dev, draft, complete
 status("complete")
 ```
 

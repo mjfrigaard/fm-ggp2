@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -21,7 +18,6 @@ showtext::showtext_auto()
 # set theme
 ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
-remotes::install_github("davidsjoberg/ggstream")
 ```
 
 ```{r}
@@ -65,8 +61,8 @@ movies_stream <- ggplot2movies::movies |>
 labs_stream <- labs(
     title = "20 years of movie budgets", 
     subtitle = 
-        paste0("movies between", 
-            min(movies_stream$year), 
+        paste0("movies between ",
+            min(movies_stream$year),
             " and ", 
             max(movies_stream$year)),
     x = "Year", 
@@ -83,19 +79,19 @@ ggp2_stream +
 ```
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a categorical variable**   
+**✅ a categorical variable**   
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable** 
+**✅ a numeric (continuous) variable** 
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (date) variable**  
+**✅ a numeric (date) variable**  
 :::
 
 ::::
@@ -202,8 +198,8 @@ dplyr::glimpse(movies_stream)
 labs_stream <- labs(
     title = "20 years of movie budgets", 
     subtitle = 
-        paste0("movies between", 
-            min(movies_stream$year), 
+        paste0("movies between ",
+            min(movies_stream$year),
             " and ", 
             max(movies_stream$year)),
     x = "Year", 
@@ -240,8 +236,8 @@ ggp2_stream +
 labs_stream <- labs(
     title = "20 years of movie budgets", 
     subtitle = 
-        paste0("movies between", 
-            min(movies_stream$year), 
+        paste0("movies between ",
+            min(movies_stream$year),
             " and ", 
             max(movies_stream$year)),
     x = "Year", 

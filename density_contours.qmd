@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -21,7 +18,6 @@ showtext::showtext_auto()
 # set theme
 ggplot2::theme_set(theme_ggp2g(
     base_size = 13))
-install.packages("fivethirtyeight")
 ```
 
 ```{r}
@@ -96,15 +92,15 @@ ggp2_dnsty_2d_fill +
 ```
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a categorical variable**      
+**✅ a categorical variable**      
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` two numeric (continuous) variables**
+**✅ two numeric (continuous) variables**
 :::
 
 ::::
@@ -148,7 +144,7 @@ library(ggplot2)
 :::
 
 ::: {.column-margin}
-![Artwork by allison horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
 We'll use the `penguins` data from the `palmerpenguins` package, but remove the missing values from `bill_length_mm`, `flipper_length_mm`, and `species`.

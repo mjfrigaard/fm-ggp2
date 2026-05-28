@@ -7,12 +7,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -37,15 +34,15 @@ status("complete")
 :::: {.callout-note collapse="false" icon=false}
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a categorical variable**      
+**✅ a categorical variable**      
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
+**✅ a numeric (continuous) variable**
 :::
 
 <br>
@@ -216,7 +213,7 @@ ggp2_grp_col +
 ```
 
 
-## More Info
+## More info
 
 We didn't have to calculate `sum_body_mass_g` (displayed on the `y` axis) by `island` because `ggplot2` does this for us!
 

@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -28,13 +25,13 @@ ggplot2::theme_set(theme_ggp2g(
 <br>
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
+**✅ a numeric (continuous) variable**
 
-**`r emo::ji("check")` a categorical variable** 
+**✅ a categorical variable** 
 :::
 
 ```{r}
@@ -66,7 +63,7 @@ ggp2_bar_ovrlp +
 
 ::::
 
-## Desription 
+## Description
 
 Overlapping bar graphs display multiple variables on the same graph. Bars overlap instead of being placed side by side. Bars are often made partially transparent to aid visibility. A legend is essential to distinguish between data.
 

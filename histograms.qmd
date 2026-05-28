@@ -7,12 +7,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -27,11 +24,11 @@ ggplot2::theme_set(theme_ggp2g(
 :::: {.callout-note collapse="false" icon=false}
 
 ::: {style="font-size: 1.25em; color: #02577A;"}
-**Histograms require:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
+**✅ a numeric (continuous) variable**
 :::
 
 <br>
@@ -65,7 +62,9 @@ ggp2_hist +
 
 A histogram is a graph that displays numerical data spread over a time frame or interval. Each bar shows the frequency of data points within a specific range. Unlike bar graphs, histograms do not have gaps between the bars, indicating that data covers a continuous interval. The x-axis displays the variable range, while the y-axis represents observation frequency.
 
-Unlike a typical bar graph, histograms can be used to visually asses the '[normality](https://en.wikipedia.org/wiki/Normal_distribution)' (i.e. *are the bars symmetrical, with a single peak in the middle of the `x` axis?* Or *do the bars form multiple peaks?*) or '[skewness](https://en.wikipedia.org/wiki/Skewness)' (i.e., *is there a long 'tail' of bars with decreasing length on either end of the `x` axis?*) of a variable's distribution.
+Unlike a typical bar graph, histograms can be used to visually assess the '[normality](https://en.wikipedia.org/wiki/Normal_distribution)' (i.e. *are the bars symmetrical, with a single peak in the middle of the `x` axis?* Or *do the bars form multiple peaks?*) or '[skewness](https://en.wikipedia.org/wiki/Skewness)' (i.e., *is there a long 'tail' of bars with decreasing length on either end of the `x` axis?*) of a variable's distribution.
+
+In `ggplot2`, histograms can be built using [`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html).
 
 ## Set up
 
@@ -73,9 +72,7 @@ Unlike a typical bar graph, histograms can be used to visually asses the '[norma
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.95rem;"}
 Install packages.
-:::
 
 
 ::: {style="font-size: 0.85em;"}
@@ -90,6 +87,7 @@ Install packages.
 install.packages("palmerpenguins")
 library(palmerpenguins) 
 library(ggplot2)
+library(dplyr) # for data manipulation
 ```
 :::
 
@@ -103,9 +101,8 @@ library(ggplot2)
 ![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.95rem;"}
+
 The `penguins` data.
-:::
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -125,19 +122,17 @@ glimpse(penguins)
 **CODE:**
 :::
 
-::: {style="font-size: 0.95rem;"}
 
-Create labels with `labs()`
 
-Initialize the graph with `ggplot()` and provide `data`
+1. Create labels with `labs()`
 
-Assign `flipper_length_mm` to the `x`
+2. Initialize the graph with `ggplot()` and provide `data`
 
-Add the `geom_histogram()`
+3. Assign `flipper_length_mm` to the `x`
 
-Adjust the `bins` accordingly 
+4. Add the `geom_histogram()`
 
-:::
+5. Adjust the `bins` accordingly 
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -188,6 +183,29 @@ ggp2_hist +
 ```
 
 
-::: {style="font-size: 0.95rem;"}
+
 The standard number of bins is `30`, but ['you should always override this value, exploring multiple widths to find the best to illustrate the stories in your data.'](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
-:::
+
+
+```{r}
+#| label: bins_histogram
+#| eval: true
+#| code-fold: show
+#| warning: false
+#| message: false
+#| layout-nrow: 1
+#| column: page-inset-right
+ggp2_hist_bins45 <- ggplot(data = penguins,
+     aes(x = flipper_length_mm)) + 
+     geom_histogram(bins = 45) 
+
+ggp2_hist_bins45 + 
+  labs_histogram
+
+ggp2_hist_bins15 <- ggplot(data = penguins,
+     aes(x = flipper_length_mm)) + 
+     geom_histogram(bins = 15) 
+
+ggp2_hist_bins15 + 
+  labs_histogram
+```

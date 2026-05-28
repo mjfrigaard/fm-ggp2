@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -28,14 +25,14 @@ ggplot2::theme_set(theme_ggp2g(
 <br>
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
 
-**`r emo::ji("check")` a numeric (continuous) variable**
+**✅ a numeric (continuous) variable**
 
-**`r emo::ji("check")` at least one categorical variable (with two levels)**  
+**✅ at least one categorical variable (with two levels)**  
 
 :::
 
@@ -134,7 +131,6 @@ peng_clev_dots <- palmerpenguins::penguins |>
 glimpse(peng_clev_dots)
 ```
 :::
-::::
 
 ## Grammar
 
@@ -210,11 +206,9 @@ ggp2_clev_dots <- ggplot(data = peng_clev_dots,
                 geom_point(aes(color = sex), 
                     size = 2.25) 
 
-ggp2_clev_dots + 
+ggp2_clev_dots +
     labs_clev_dots
 ```
-
-::::
 
 ## More info
 

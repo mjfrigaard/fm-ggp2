@@ -7,12 +7,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -28,11 +25,11 @@ ggplot2::theme_set(theme_ggp2g(
 :::: {.callout-note collapse="false" icon=false}
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**Frequency polygons require:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
+**✅ a numeric (continuous) variable**
 :::
 
 <br>
@@ -64,7 +61,7 @@ ggp2_freqpoly +
 
 ## Description 
 
-A frequency polygon is a plot that displays data distributions using points connected by straight lines. It's similar to a histogram but is more commonly used to compare data across multiple sets. A legend is often included to differentiate between various data sets. Frequency polygons are used to [symmetry](https://en.wikipedia.org/wiki/Normal_distribution) and [skewness.](https://en.wikipedia.org/wiki/Skewness).
+A frequency polygon is a plot that displays data distributions using points connected by straight lines. It's similar to a histogram but is more commonly used to compare data across multiple sets. A legend is often included to differentiate between various data sets. Frequency polygons are used to assess [symmetry](https://en.wikipedia.org/wiki/Normal_distribution) and [skewness](https://en.wikipedia.org/wiki/Skewness).
 
 ## Set up
 
@@ -72,9 +69,7 @@ A frequency polygon is a plot that displays data distributions using points conn
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.95rem;"}
 Install packages.
-:::
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -88,6 +83,7 @@ Install packages.
 install.packages("palmerpenguins")
 library(palmerpenguins) 
 library(ggplot2)
+library(dplyr) # for data manipulation
 ```
 :::
 
@@ -101,9 +97,7 @@ library(ggplot2)
 ![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.95rem;"}
-The `penguins` data
-:::
+The `penguins` data.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -123,17 +117,15 @@ glimpse(penguins)
 **CODE:**
 :::
 
-::: {style="font-size: 0.95rem;"}
 
-Create labels with `labs()`
+1. Create labels with `labs()`
 
-Initialize the graph with `ggplot()` and provide `data`
+2. Initialize the graph with `ggplot()` and provide `data`
 
-Map `flipper_length_mm` to the `x` axis
+3. Map `flipper_length_mm` to the `x` axis
 
-Add the `geom_freqpoly()` layer
+4. Add the `geom_freqpoly()` layer
 
-:::
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -180,7 +172,31 @@ ggp2_freqpoly +
   labs_freqpoly
 ```
 
-::: {style="font-size: 0.95rem;"}
-Experiment to see how many `bins` fit your variable’s distribution
-:::
+
+Experiment to see how many `bins` fit your variable’s distribution.
+
+```{r}
+#| label: bins_freq_poly
+#| eval: true
+#| code-fold: show
+#| warning: false
+#| message: false
+#| layout-nrow: 1
+#| column: page-inset-right
+
+
+ggp2_freqpoly_bins45 <- ggplot(data = penguins,
+     aes(x = flipper_length_mm)) + 
+     geom_freqpoly(bins = 45) 
+
+ggp2_freqpoly_bins45 + 
+  labs_freqpoly
+
+ggp2_freqpoly_bins15 <- ggplot(data = penguins,
+     aes(x = flipper_length_mm)) + 
+     geom_freqpoly(bins = 15) 
+
+ggp2_freqpoly_bins15 + 
+  labs_freqpoly
+```
 

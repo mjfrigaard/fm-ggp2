@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -38,12 +35,12 @@ status("complete")
 <br>
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a categorical variable** 
+**✅ a categorical variable** 
 :::
 
 ```{r}
@@ -98,15 +95,17 @@ Install packages.
 ```{r}
 #| label: pkg_code_waffle
 #| code-fold: show
-#| eval: true
+#| eval: false
 #| echo: true
 #| warning: false
 #| message: false
 #| results: hide
-library(pak)
+# ggwaffle is GitHub-only
+install.packages("pak")
+pak::pak("liamgilbey/ggwaffle")
 library(ggwaffle)
 install.packages("palmerpenguins")
-library(palmerpenguins) 
+library(palmerpenguins)
 library(ggplot2)
 ```
 :::

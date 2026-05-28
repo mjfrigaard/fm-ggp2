@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 library(patchwork)
 # fonts ----
 library(extrafont)
@@ -71,11 +68,11 @@ ggp2_mosaic +
 ```
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-`r emo::ji("check")` at least two categorical variables      
+✅ at least two categorical variables      
 :::
 
 ::::

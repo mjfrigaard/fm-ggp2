@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -28,14 +25,14 @@ ggplot2::theme_set(theme_ggp2g(
 <br>
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
+**✅ a numeric (continuous) variable**
 
-**`r emo::ji("check")` a categorical variable** 
+**✅ a categorical variable** 
 :::
 
 ```{r}
@@ -215,7 +212,7 @@ ggp2_sum_col +
 ```
 
 
-## More Info
+## More info
 
 Below is more information on `geom_bar()` vs. `geom_col()`.
 
@@ -237,9 +234,9 @@ Below is more information on `geom_bar()` vs. `geom_col()`.
 ggplot(data = peng_sum_col,
     aes(x = island,
         y = avg_bmi_kg)) +
-    geom_col(aes(fill = island), 
+    geom_bar(aes(fill = island),
         show.legend = FALSE,
-        stat = "identity")  +
+        stat = "identity") +
     labs_sum_col
 ```
 :::

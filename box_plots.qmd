@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -35,11 +32,11 @@ status("complete")
 :::: {.callout-note collapse="false" icon=false}
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
+**✅ a numeric (continuous) variable**
 :::
 
 <br>
@@ -53,9 +50,9 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(ggplot2movies)
+library(palmerpenguins)
 library(ggplot2)
-penguins <- palmerpenguins::penguins 
+penguins <- palmerpenguins::penguins
 labs_boxplot <- labs(
   title = "Adult foraging penguins",
   subtitle = "Distribution of flipper length",
@@ -197,9 +194,9 @@ ggp2_boxplot +
 
 
 
-### More Info
+## More info
 
-Below is more information on interpreting Box plots. 
+Below is more information on interpreting Box plots.
 
 ### `movies` data 
 
@@ -221,7 +218,7 @@ library(ggplot2)
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Filter `ggplot2movies::movies` to only include films after the made after `2000`, and remove missing values from `mpaa` and `budget`
+Filter `ggplot2movies::movies` to only include films made after `2000`, and remove missing values from `mpaa` and `budget`
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -283,8 +280,8 @@ The table below shows the 25th percentile, the median, the 75th percentile, the 
 lgnth_skim <- skimr::skim(movies_box$length)
 LengthBoxStats <- select(lgnth_skim,
      `25th` = numeric.p25, Median = numeric.p50,
-     `75th` = numeric.p75, Histogram = numeric.hist) %>%
-     mutate(IQR = IQR(movies_box$length, na.rm = TRUE)) %>%
+     `75th` = numeric.p75, Histogram = numeric.hist) |>
+     mutate(IQR = IQR(movies_box$length, na.rm = TRUE)) |>
      select(`25th`, Median, `75th`, IQR, Histogram)
 kableExtra::kable_paper(
   kable_input = knitr::kable(LengthBoxStats), 

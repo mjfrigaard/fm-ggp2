@@ -7,12 +7,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -36,8 +33,12 @@ status("complete")
 
 :::: {.callout-note collapse="false" icon=false}
 
-::: {style="font-size: 1.25em; color: #02577A;"}
+::: {style="font-size: 1.10em; color: #02577A;"}
+**Requirements:**
+:::
 
+::: {style="font-size: 1.05em; color: #282b2d;"}
+**✅ a numeric (continuous) variable**
 :::
 
 <br>
@@ -51,28 +52,20 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
+library(palmerpenguins)
 library(ggplot2)
 penguins <- palmerpenguins::penguins
 labs_density <- labs(
   title = "Adult foraging penguins",
   subtitle = "Distribution of flipper length",
   x = "Flipper length (millimeters)")
-ggp2_density <- ggplot(data = penguins, 
-        aes(x = flipper_length_mm)) + 
-      geom_density() 
+ggp2_density <- ggplot(data = penguins,
+        aes(x = flipper_length_mm)) +
+      geom_density()
 
 ggp2_density +
   labs_density
 ```
-
-::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
-:::
-
-::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
-:::
 
 ::::
 

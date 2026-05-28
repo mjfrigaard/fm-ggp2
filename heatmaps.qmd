@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -30,13 +27,13 @@ ggplot2::theme_set(theme_ggp2g(
 <br>
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` two numeric (continuous) variables**
+**✅ two numeric (continuous) variables**
 
-**`r emo::ji("check")` a categorical variable** 
+**✅ a categorical variable** 
 :::
 
 ```{r}

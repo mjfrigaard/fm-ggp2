@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -27,11 +24,11 @@ ggplot2::theme_set(theme_ggp2g(
 :::: {.callout-note collapse="false" icon=false}
 
 ::: {style="font-size: 1.25em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a categorical variable**      
+**✅ a categorical variable**      
 :::
 
 <br>
@@ -68,7 +65,7 @@ ggp2_bar +
 
 A bar graph compares data in different categories using rectangular bars that vary in length or height. They can be vertical or horizontal, with the vertical axis showing the quantities being measured and the horizontal axis listing the categories. Bar graphs often include a legend explaining the colors or patterns used when comparing multiple variables.
 
-In `ggplot2`, bar graphs can be built using `geom_bar()` (see also: [`geom_col()`](https://mjfrigaard.github.io/ggp2-gallery/geoms/geom_col.html)).
+In `ggplot2`, bar graphs can be built using [`geom_bar()`](https://ggplot2.tidyverse.org/reference/geom_bar.html).
 
 ## Set up 
 
@@ -76,9 +73,8 @@ In `ggplot2`, bar graphs can be built using `geom_bar()` (see also: [`geom_col()
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+
 Install packages.
-:::
 
 
 ::: {style="font-size: 0.85em;"}
@@ -93,6 +89,7 @@ Install packages.
 install.packages("palmerpenguins")
 library(palmerpenguins) 
 library(ggplot2)
+library(dplyr) # for data manipulation 
 ```
 :::
 
@@ -104,9 +101,8 @@ library(ggplot2)
 ![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
 :::
 
-::: {style="font-size: 0.95rem;"}
+
 Filter the missing values from `species` in the `palmerpenguins::penguins` data and store it in `penguins_bar`.
-:::
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -126,18 +122,15 @@ glimpse(penguins_bar)
 **CODE:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+1. Create labels with `labs()` 
 
-Create labels with `labs()` 
+2. Initialize the graph with `ggplot()` and provide `data`
 
-Initialize the graph with `ggplot()` and provide `data`
+3. Map `species` to the `x` axis
 
-Map `species` to the `x` axis
+4. Map `species` to the `fill` aesthetic inside the `aes()` of `geom_bar()`
 
-Map `species` to the `fill` aesthetic inside the `aes()` of `geom_bar()`
-
-Remove the legend with `show.legend = FALSE`
-:::
+5. Remove the legend with `show.legend = FALSE`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -196,29 +189,27 @@ ggp2_bar +
 
 ## More info
 
-- The connection between statistical transformations and geoms is an important principle for building graphs (and mastering the grammar) with `ggplot2`
-    - Below we cover why `geom_bar(stat = "count")` produces the same result as `stat_count(geom = "bar")`
+The connection between statistical transformations and geoms is an important principle for building graphs (and mastering the grammar) with `ggplot2`. Below we cover why `geom_bar(stat = "count")` produces the same result as `stat_count(geom = "bar")`.[^geom-bar]
 
 ::: {.column-margin}
 "*every geom has a default stat, and every stat a default geom.*" - [`ggplot2` book](https://ggplot2-book.org/layers.html#layers)
 :::
 
 
-- Bar graphs can also be created with `geom_col()`
+[^geom-bar]: Bar graphs can also be created with [`geom_col()`](https://ggplot2.tidyverse.org/reference/geom_bar.html#ref-examples)
 
-### stats and geoms
+### Stats and geoms
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **stat_count():**
 :::
 
-::: {style="font-size: 0.95rem;"}
+
 The default `stat` argument in `geom_bar()` is set to `"count"`, which '*counts the number of cases at each `x` position*', so it's ideal for categorical variables (or factors). 
 
 The `stat_count()` function can also be used to create bar graphs using the `geom` argument.  
 
 The link between `geom_`**geom_name**`(stat = "`**stat_name**`")` and `stat_`**stat_name**`(geom = "`**geom_name**`")` is shown below:
-:::
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -255,9 +246,7 @@ ggp2_stat_count
 **geom_col():**
 :::
 
-::: {style="font-size: 0.95rem;"}
 To create a bar graph with `geom_col()`, the `count` variable needs to be computed before being mapped into the graph `y` aesthetic. 
-:::
 
 
 ::: {style="font-size: 0.85em;"}

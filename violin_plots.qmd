@@ -6,12 +6,9 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(lubridate)
 library(scales)
 library(knitr)
 library(kableExtra)
-library(colorblindr)
-library(downlit)
 # fonts ----
 library(extrafont)
 library(sysfonts)
@@ -35,11 +32,11 @@ status("complete")
 :::: {.callout-note collapse="false" icon=false}
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
-**This graph requires:**
+**Requirements:**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**`r emo::ji("check")` a numeric (continuous) variable**
+**✅ a numeric (continuous) variable**
 :::
 
 <br>
@@ -147,7 +144,7 @@ Initialize the graph with `ggplot()` and provide `data`
 
   - Place an empty string (`""`) in the `x` argument
 
-Map and empty string (`""`) to the `x` and `flipper_length_mm` to the `y`
+Map an empty string (`""`) to the `x` and `flipper_length_mm` to the `y`
 
 Add `geom_violin()`
 
