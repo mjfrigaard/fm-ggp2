@@ -49,10 +49,10 @@ theme_ggp2g <- function(base_size = 11, base_family = "Ubuntu",
                             debug = FALSE),
     ## AXES --------------------------------------------------------------
     axis.text =          element_text(
-                            family = base_family, size = rel(0.85)),
+                            family = base_family, size = rel(0.75)),
     axis.title.x =       element_text(vjust = -4.75),
     axis.title.y =       element_text(vjust = 4.25, angle = 90),
-    axis.title =         element_text(size = rel(1.0)),
+    axis.title =         element_text(size = rel(0.9)),
     ### AXIS TICKS ----
     ## remove all axis ticks
     ## https://ggplot2-book.org/polishing.html#theme-axis
@@ -89,7 +89,7 @@ theme_ggp2g <- function(base_size = 11, base_family = "Ubuntu",
     plot.title.position = "panel",
     ## slightly larger text
     plot.title =         element_text(
-                           size = rel(1.1),
+                           size = rel(1.0),
                            hjust = 0, vjust = 2,
                            margin = margin(b = half_line)
                          ),
