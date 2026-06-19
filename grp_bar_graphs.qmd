@@ -119,7 +119,7 @@ library(ggplot2)
 :::
 
 ::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
 :::
 
 Remove the missing values and reduce the `palmerpenguins::penguins` dataset to only `body_mass_g` and `island`, then group the data by `island` and calculate the sum of `body_mass_g` (as `sum_body_mass_g`). 

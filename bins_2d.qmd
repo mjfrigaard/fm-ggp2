@@ -115,7 +115,7 @@ library(ggplot2)
 :::
 
 ::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="100%" height="100%"}
+![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
 :::
 
 We'll take the `flipper_length_mm`, `bill_length_mm`, and `species` variables from `palmerpenguins::penguins` and drop the missing values. 
