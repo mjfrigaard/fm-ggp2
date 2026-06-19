@@ -239,7 +239,6 @@ ggp2_dnsty_2d +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 # x limits
 x_min <- min(peng_dnsty_2d$bill_length_mm) - 5
 x_max <- max(peng_dnsty_2d$bill_length_mm) + 5
@@ -299,7 +298,6 @@ We're going to break down how to create the density contour layer-by-layer using
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_sdens_2d <- labs(
   title = "Bill Length vs. Flipper Length",
   x = "Bill Length (mm)",
@@ -346,7 +344,6 @@ Add the `stat_density_2d()` layer:
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 stat_sdens_2d <- base_sdens_2d +
   stat_density_2d(
     aes(fill = after_stat(level)),
@@ -367,7 +364,6 @@ stat_sdens_2d +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp1 <- stat_sdens_2d +
   labs(
     x = "Bill Length (mm)",
@@ -409,7 +405,6 @@ We'll set these to white (`"#ffffff"`) and dark gray (`"#404040"`)
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 fill_sdens_2d <- stat_sdens_2d +
   scale_fill_gradient(
     low = "#ffffff",
@@ -429,7 +424,6 @@ fill_sdens_2d +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 fill_sdens_2d <- stat_sdens_2d +
   scale_fill_gradient(
     low = "#ffffff",
@@ -465,7 +459,6 @@ The dark areas in the contour lines are the areas with higher value density, but
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 # geom_point()
 pnts_sdens_2d <- fill_sdens_2d +
   geom_point(aes(color = species),
@@ -488,7 +481,6 @@ pnts_sdens_2d +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 pnts_sdens_2d <- fill_sdens_2d +
   geom_point(aes(color = species),
     size = 2,
@@ -532,7 +524,6 @@ Build the `geom_point()` layer:
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_dnsty_2d_grp <- labs(
   title = "Bill Length vs. Flipper Length",
   x = "Bill Length (mm)",
@@ -601,7 +592,6 @@ ggp2_dnsty_2d_pnts +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_dnsty_2d_facet <- labs(
   title = "Bill Length vs. Flipper Length",
   subtitle = "By Species",
@@ -645,7 +635,6 @@ ggp2_dnsty_2d_facet +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_dnsty_2d_facet <- labs(
   title = "Bill Length vs. Flipper Length",
   subtitle = "By Species",
@@ -722,7 +711,6 @@ In the previous section, we defined the color values used in `geom_density_2d_fi
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_dnsty_2d <- labs(
   title = "Bill Length vs. Flipper Length",
   x = "Bill Length (mm)",
@@ -759,7 +747,6 @@ ggp2_dnsty_2d_fill +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_dnsty_2d <- labs(
   title = "Bill Length vs. Flipper Length",
   x = "Bill Length (mm)",
@@ -815,7 +802,6 @@ We can also outline the contours by adding color to the lines using another `geo
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_dnsty_2d_fill_lns <- ggp2_dnsty_2d_fill +
   geom_density_2d(
     linewidth = 0.30,
@@ -834,7 +820,6 @@ ggp2_dnsty_2d_fill_lns +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_dnsty_2d_fill_lns <- ggp2_dnsty_2d_fill +
   geom_density_2d(
     linewidth = 0.30,

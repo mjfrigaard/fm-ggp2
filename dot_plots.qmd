@@ -172,7 +172,6 @@ ggp2_dotplot +
 #| warning: false
 #| message: false
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_dotplot <- labs(
   title = "Adult foraging penguins",
   subtitle = "Distribution of flipper length",

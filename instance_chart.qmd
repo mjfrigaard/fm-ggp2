@@ -220,7 +220,6 @@ ggp2_inst_pop_nms +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_inst_pop_nms <- labs(
   title = "Popular names: then and now",
   subtitle = "Most popular names from 1887 appearing between 1897 - 2017",
@@ -254,7 +253,6 @@ ggp2_inst_pop_nms +
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-#| column: page-inset-right
 #| layout-nrow: 1
 top_nms_prop_1900 <- babynames::babynames |>
   dplyr::filter(year == 1900) |>
@@ -289,7 +287,6 @@ These two tibbles tell us something about the top names over a century. The top 
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-#| column: page-inset-right
 #| layout-nrow: 1
 nms_1900 <- top_nms_prop_1900[["name"]]
 nms_2000 <- top_nms_prop_2000[["name"]]
@@ -323,7 +320,6 @@ Below we can see the proportion ranges have been built with the [interval notati
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_inst_pop_nms_prop <- labs(
   title = "100 years of popular names",
   subtitle = "Most popular names from 1900 and 2000",
@@ -364,7 +360,6 @@ To demonstrate facets, we'll create two other variables: `year_range` and `group
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 popular_bby_nms_fct <- popular_bby_nms_prop |>
   dplyr::mutate(
     # year range 
@@ -404,7 +399,6 @@ Below we can see the total counts of names in the cross-table of `year_range` an
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 popular_bby_nms_fct |> 
   dplyr::count(year_range, group) |> 
   tidyr::pivot_wider(names_from = group, 
@@ -427,7 +421,6 @@ In the graph, we'll create labels using the `levels` from the `year_range` varia
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 
 # create labels from factor levels 
 st_lbls <- paste0(
@@ -466,6 +459,5 @@ ggp2_inst_pop_nms_facet +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ```
 :::

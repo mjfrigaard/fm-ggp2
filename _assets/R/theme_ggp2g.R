@@ -49,10 +49,10 @@ theme_ggp2g <- function(base_size = 11, base_family = "Ubuntu",
                             debug = FALSE),
     ## AXES --------------------------------------------------------------
     axis.text =          element_text(
-                            family = base_family, size = rel(0.65)),
+                            family = base_family, size = rel(0.85)),
     axis.title.x =       element_text(vjust = -4.75),
     axis.title.y =       element_text(vjust = 4.25, angle = 90),
-    axis.title =         element_text(size = rel(0.8)),
+    axis.title =         element_text(size = rel(1.0)),
     ### AXIS TICKS ----
     ## remove all axis ticks
     ## https://ggplot2-book.org/polishing.html#theme-axis
@@ -66,9 +66,9 @@ theme_ggp2g <- function(base_size = 11, base_family = "Ubuntu",
     ## STRIP ----
     ## 
     strip.clip =         "inherit",
-    strip.text.x =         element_text(size = rel(0.7)),
+    strip.text.x =         element_text(size = rel(0.9)),
     # strip.text.x affects both facet_wrap() or facet_grid()
-    strip.text.y =         element_text(size = rel(0.7)),
+    strip.text.y =         element_text(size = rel(0.9)),
     # strip.text.y only affects facet_grid()
     strip.switch.pad.grid = unit(half_line / 2, "pt"),
     strip.switch.pad.wrap = unit(half_line / 2, "pt"),
@@ -94,15 +94,15 @@ theme_ggp2g <- function(base_size = 11, base_family = "Ubuntu",
                            margin = margin(b = half_line)
                          ),
     ### subtitle -----
-    # slightly smaller text, italic 
+    # slightly smaller text, italic
     plot.subtitle =      element_text(
-                           size = rel(0.9),
+                           size = rel(0.95),
                            hjust = 0, vjust = 2,
                            margin = margin(b = half_line)
                          ),
     ### caption -----
     plot.caption =       element_text(
-                           size = rel(0.8),
+                           size = rel(0.85),
                            hjust = 1, vjust = 1,
                            margin = margin(b = half_line)
                          ),
@@ -128,9 +128,9 @@ theme_ggp2g <- function(base_size = 11, base_family = "Ubuntu",
     # legend.position =    c(1, 0.5), # c(horizontal, vertical)
     # legend.justification = c(-0.015, 0.0), # c(horizontal, vertical)
     legend.text =        element_text(
-                            size = rel(0.60)),
+                            size = rel(0.85)),
     legend.title =       element_text(
-                            size = rel(0.70), 
+                            size = rel(0.95),
                             hjust = 0),
     # legend.margin =      unit(c(1.5, 1.5, 1.5, 1.5), "mm"),
     legend.margin =      margin(t = 2.5, r = 2.5, b = 2.5, l = 2.5),

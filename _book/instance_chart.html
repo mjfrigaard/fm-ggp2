@@ -669,7 +669,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="grammar" class="level2 page-columns page-full" data-number="34.3">
+<section id="grammar" class="level2" data-number="34.3">
 <h2 data-number="34.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">34.3</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -704,7 +704,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="instance_chart_files/figure-html/create_graph_inst-1.png" class="img-fluid"></p>
@@ -712,12 +712,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2 page-columns page-full" data-number="34.4">
+<section id="more-info" class="level2" data-number="34.4">
 <h2 data-number="34.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">34.4</span> More info</h2>
-<section id="saturation-with-cut_interval" class="level3 page-columns page-full" data-number="34.4.1">
+<section id="saturation-with-cut_interval" class="level3" data-number="34.4.1">
 <h3 data-number="34.4.1" class="anchored" data-anchor-id="saturation-with-cut_interval"><span class="header-section-number">34.4.1</span> Saturation with <code>cut_interval()</code></h3>
 <p><code>ggplot2</code> has two great functions for splitting numerical variables into intervals or widths. We’re going to create two datasets from <code>babynames::babynames</code> that capture the top names in <code>1900</code> and and the top names <code>2000</code>.</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>top_nms_prop_1900 <span class="ot">&lt;-</span> babynames<span class="sc">::</span>babynames <span class="sc">|&gt;</span></span>
@@ -735,7 +735,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>()</span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>top_nms_prop_2000</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div data-pagedtable="false">
@@ -759,7 +759,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>We’ll get the names from both tibbles and filter <code>babynames::babynames</code> to only these eight names between the years 1900 and 2000.</p></li>
 <li><p>We’ll create a <code>prop_range</code> variable, which splits the <code>prop</code> variable into intervals based on the <code>length</code> argument.</p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>nms_1900 <span class="ot">&lt;-</span> top_nms_prop_1900[[<span class="st">"name"</span>]]</span>
@@ -776,7 +776,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">prop_range =</span> ggplot2<span class="sc">::</span><span class="fu">cut_interval</span>(<span class="at">x =</span> prop, </span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">length =</span> <span class="fl">0.025</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 
 </div>
 </div>
@@ -784,7 +784,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>We can also see the proportion of names changes considerably between the two groups of names.</li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>labs_inst_pop_nms_prop <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -805,7 +805,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>ggp2_inst_pop_nms_prop <span class="sc">+</span> </span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  labs_inst_pop_nms_prop </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="instance_chart_files/figure-html/more_info_color_inst-1.png" class="img-fluid"></p>
@@ -814,14 +814,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="facets-with-cut_number" class="level3 page-columns page-full" data-number="34.4.2">
+<section id="facets-with-cut_number" class="level3" data-number="34.4.2">
 <h3 data-number="34.4.2" class="anchored" data-anchor-id="facets-with-cut_number"><span class="header-section-number">34.4.2</span> Facets with <code>cut_number()</code></h3>
 <p>To demonstrate facets, we’ll create two other variables: <code>year_range</code> and <code>group</code>:</p>
 <ul>
 <li><p><code>year_range</code> uses <code>ggplot2::cut_number()</code> to create three groups based on the <code>year</code>, orders the results, and removes the labels. We manually assign the labels to this variable with <code>case_when()</code> and <code>factor()</code></p></li>
 <li><p><code>group</code> is a factor variable with two levels: <code>1900 names</code> and <code>2000 names</code></p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>popular_bby_nms_fct <span class="ot">&lt;-</span> popular_bby_nms_prop <span class="sc">|&gt;</span></span>
@@ -848,12 +848,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"1900 names"</span>, </span>
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"2000 names"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 
 </div>
 </div>
 <p>Below we can see the total counts of names in the cross-table of <code>year_range</code> and <code>group</code></p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>popular_bby_nms_fct <span class="sc">|&gt;</span> </span>
@@ -861,7 +861,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">names_from =</span> group, </span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> n)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div data-pagedtable="false">
@@ -877,7 +877,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>We can also change the <code>shape</code> used in <code>geom_point()</code> to the pipe operator (<code>"|"</code>)</li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create labels from factor levels </span></span>
@@ -904,7 +904,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>ggp2_inst_pop_nms_facet <span class="sc">+</span></span>
 <span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  labs_inst_pop_nms_facet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="instance_chart_files/figure-html/bby_nms_facet_inst-1.png" class="img-fluid"></p>
@@ -912,8 +912,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div style="font-size: 0.95rem;" class="page-columns page-full">
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div style="font-size: 0.95rem;">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 
 </div>
 </div>

@@ -232,7 +232,6 @@ ggp2_stream +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_stream <- labs(
     title = "20 years of movie budgets", 
     subtitle = 
@@ -281,7 +280,6 @@ The [`ggstream` package](https://github.com/davidsjoberg/ggstream) has multiple 
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_stream_prp <- ggplot(data = movies_stream, 
     mapping = aes(x = year, 
                   y = avg_budget, 
@@ -336,7 +334,6 @@ Colors:
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_stream_srt <- ggplot(data = movies_stream, 
     mapping = aes(x = year, 
                   y = avg_budget, 

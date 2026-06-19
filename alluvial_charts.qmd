@@ -220,7 +220,6 @@ The `ggalluvial` functions can handle wide or long data.
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_alluvial <- ggtitle(label = "Palmer Penguins", 
     subtitle = "Stratified by year, island and species")
 labs_alluvial_y <- ylab("Frequency") 
@@ -291,7 +290,6 @@ Create labels with `labs()`
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_alluvial <- ggtitle(label = "Palmer Penguins", 
     subtitle = "Stratified by year, island and species")
 
@@ -359,7 +357,6 @@ dplyr::glimpse(peng_alluvial)
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 # labels
 labs_alluvial <- labs(
   title = "Penguin measurements across three years")
@@ -388,7 +385,6 @@ ggp2_alluvial_flow
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 # add geom_stratum()
 ggp2_alluvial_stratum <- ggp2_alluvial_flow +
   geom_stratum() 
@@ -411,7 +407,6 @@ Move legend to bottom with `theme(legend.position = "bottom")`
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_alluvial_stratum + 
   labs_alluvial + 
   theme(legend.position = "bottom")

@@ -171,7 +171,6 @@ ggp2_bar +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_bar <- labs(
   title = "Adult foraging penguins",
   subtitle = "Distribution of flipper length",
@@ -221,7 +220,6 @@ The link between `geom_`**geom_name**`(stat = "`**stat_name**`")` and `stat_`**s
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_geom_bar <- ggplot(data = penguins_bar,
        aes(x = species)) +
     geom_bar(aes(fill = species), 
@@ -259,7 +257,6 @@ To create a bar graph with `geom_col()`, the `count` variable needs to be comput
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 penguins_bar |> 
     # create column of counts 
     dplyr::count(species, name = "count") |> 

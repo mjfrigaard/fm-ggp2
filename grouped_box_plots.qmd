@@ -191,7 +191,6 @@ When a categorical variable is supplied, the plot will contain a box for each le
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_grp_boxplots <- labs(
   title = "Adult foraging penguins", 
   subtitle = "Palmer Archipelago, Antarctica",
@@ -225,7 +224,6 @@ Add notches to the box plot using the `notch = TRUE` and `notchwidth` arguments.
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_grp_box_notch <- ggplot(data = peng_box,
        aes(x = island, 
            y = bill_length_mm, 
@@ -254,7 +252,6 @@ Box plots display outliers using points, and we can change the color these using
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_grp_box_outliers <- ggplot(data = peng_box,
        aes(x = island, 
            y = bill_length_mm,

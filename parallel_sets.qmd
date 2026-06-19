@@ -243,7 +243,6 @@ ggp2_psets_labs +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_psets <- labs(
         title = "Categories of Palmer Penguins", 
         y = "Count", fill = "Sex")
@@ -293,7 +292,6 @@ If the categories have long names, use the `angle`, `nudge_x`/`nudge_y` and `hju
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_psets_axes + 
   geom_parallel_sets_labels(
       size = 3.2, 

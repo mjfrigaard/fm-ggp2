@@ -645,7 +645,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="grammar" class="level2 page-columns page-full" data-number="41.3">
+<section id="grammar" class="level2" data-number="41.3">
 <h2 data-number="41.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">41.3</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -679,7 +679,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-ncol="1">
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="bins_2d_files/figure-html/create_graph_2d_hist-1.png" class="img-fluid"></p>
@@ -689,7 +689,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="more-info" class="level2 page-columns page-full" data-number="41.4">
 <h2 data-number="41.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">41.4</span> More info</h2>
-<section id="bins" class="level3 page-columns page-full" data-number="41.4.1">
+<section id="bins" class="level3" data-number="41.4.1">
 <h3 data-number="41.4.1" class="anchored" data-anchor-id="bins"><span class="header-section-number">41.4.1</span> Bins</h3>
 <p>The value for <code>bins</code> will be vary depending on the variable values–there is no correct number:</p>
 <ul>
@@ -697,7 +697,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>If the number of <code>bins</code> is too high, the noise might drown out the signal.</p></li>
 <li><p>Below we change the <code>bins</code> to <code>9</code>, <code>12</code> and <code>18</code> to compare the display:</p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ggp2_base <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> penguins_2dhist, </span>
@@ -725,7 +725,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>ggp2_2dhist_bins9 <span class="sc">+</span> </span>
 <span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  labs_2dhist</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="2">
+<div class="cell quarto-layout-panel" data-layout-nrow="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><img src="bins_2d_files/figure-html/bins_2d_hist-1.png" class="img-fluid"></p>
@@ -745,11 +745,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="scale" class="level3 page-columns page-full" data-number="41.4.2">
+<section id="scale" class="level3" data-number="41.4.2">
 <h3 data-number="41.4.2" class="anchored" data-anchor-id="scale"><span class="header-section-number">41.4.2</span> Scale</h3>
 <p><code>scale_fill_continuous_sequential()</code> comes with a variety of palettes to choose from (run <code>hcl_palettes(type = "sequential")</code> to view the full list).</p>
 <p>We can also reverse the order of the fill color scale with <code>rev</code> (<code>TRUE</code> or <code>FALSE</code>).</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ggp2_2dhist_bins12 <span class="sc">+</span> </span>
@@ -764,7 +764,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">rev =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    labs_2dhist </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-ncol="1">
+<div class="cell quarto-layout-panel" data-layout-ncol="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="bins_2d_files/figure-html/scales_2d_hist-1.png" class="img-fluid"></p>
@@ -788,7 +788,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Below we reverse the color scale, but also manually set which colors on the scale we want to <code>begin</code> with (i.e., smallest data value) and which color we want to <code>end</code> with (i.e., the largest data value). Possible values range from <code>0</code> - <code>1</code>.</p></li>
 <li><p>We also add a <code>geom_point()</code> layer.</p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ggp2_2dhist_bins12 <span class="sc">+</span></span>
@@ -805,7 +805,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.60</span>) <span class="sc">+</span></span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  labs_2dhist </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="bins_2d_files/figure-html/pals_2d_hist-1.png" class="img-fluid"></p>

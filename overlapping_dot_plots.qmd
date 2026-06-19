@@ -195,7 +195,6 @@ ggp2_ovrlp_dotplot +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_ovrlp_dotplot <- labs(
   title = "Adult foraging penguins",
   x = "Flipper length (millimeters)",

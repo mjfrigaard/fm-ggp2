@@ -265,7 +265,6 @@ ggp2_raincloud_x +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_raincloud <- raincloudplots::raincloud_1x1(
     data_1x1 = peng_1x1,
     colors = (c('#0bd3d3', '#282b2d')),
@@ -332,7 +331,6 @@ glimpse(peng_raincloud)
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_raincloud_2 <- ggplot2::labs(
     title = "Flipper length of Palmer penguins",
          x = "Flipper length (mm)",
@@ -364,7 +362,6 @@ We then add a horizontal density curve with `ggdist::stat_halfeye()`, mapping `s
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_stat_halfeye <- ggp2_box +
   ggdist::stat_halfeye(aes(fill = species),
     adjust = 0.6, # shape = adjust * density estimator
@@ -399,7 +396,6 @@ The final layer is a `geom_point()`, mapping `fill` to `species` and setting `po
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_jitter <- ggp2_stat_halfeye + 
     geom_point(aes(fill = species),
         position = position_jitter(
@@ -436,7 +432,6 @@ We can switch to this layout by applying `ggplot2::coord_flip()` to the `ggp2_st
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_stat_halfeye + 
     ggplot2::coord_flip() + 
 ggplot2::geom_point(

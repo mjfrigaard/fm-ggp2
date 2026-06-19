@@ -293,7 +293,6 @@ ggp2_bars_diverg +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_geom_bar_diverg <- labs(
   title = "Trump Approval Ratings",
   subtitle = "From 'How Popular is Donald Trump'",
@@ -343,7 +342,6 @@ For vertically arranged bars, we switch the `x` and `y` axis variables.
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_geom_bar_diverg_vert <- labs(
   title = "Trump Approval Ratings",
   subtitle = "From 'How Popular is Donald Trump'",

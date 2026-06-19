@@ -667,7 +667,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="grammar" class="level2 page-columns page-full" data-number="32.3">
+<section id="grammar" class="level2" data-number="32.3">
 <h2 data-number="32.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">32.3</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -712,7 +712,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="stream_plots_files/figure-html/create_graph_stream-1.png" class="img-fluid"></p>
@@ -720,10 +720,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2 page-columns page-full" data-number="32.4">
+<section id="more-info" class="level2" data-number="32.4">
 <h2 data-number="32.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">32.4</span> More info</h2>
 <p>The <a href="https://github.com/davidsjoberg/ggstream"><code>ggstream</code> package</a> has multiple arguments for adjusting the shape and look of the categorical levels (and text labels).</p>
-<section id="type" class="level3 page-columns page-full" data-number="32.4.1">
+<section id="type" class="level3" data-number="32.4.1">
 <h3 data-number="32.4.1" class="anchored" data-anchor-id="type"><span class="header-section-number">32.4.1</span> Type</h3>
 <ul>
 <li><p>Map <code>mpaa</code> to <code>fill</code> (wrapped in <code>forcats::fct_rev()</code>)</p></li>
@@ -737,7 +737,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 <li><p>Finally, add the <code>fill</code> to the labels and move the legend with <code>theme(legend.position = "bottom")</code></p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ggp2_stream_prp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> movies_stream, </span>
@@ -756,7 +756,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"mpaa"</span>) <span class="sc">+</span> </span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="stream_plots_files/figure-html/code_graph_type-1.png" class="img-fluid"></p>
@@ -765,7 +765,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="sorting" class="level3 page-columns page-full" data-number="32.4.2">
+<section id="sorting" class="level3" data-number="32.4.2">
 <h3 data-number="32.4.2" class="anchored" data-anchor-id="sorting"><span class="header-section-number">32.4.2</span> Sorting</h3>
 <p>To change how the categorical areas are sorted, adjust the sorting argument to either <code>"none"</code>, <code>"onset"</code>, or <code>"inside_out"</code></p>
 <ul>
@@ -789,7 +789,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 <li><p>Finally, add the <code>fill</code> to the labels and move the legend with <code>theme(legend.position = "bottom")</code></p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ggp2_stream_srt <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> movies_stream, </span>
@@ -823,7 +823,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"mpaa"</span>) <span class="sc">+</span> </span>
 <span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="stream_plots_files/figure-html/create_graph_sorting-1.png" class="img-fluid"></p>

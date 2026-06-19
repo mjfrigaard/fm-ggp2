@@ -646,7 +646,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="grammar" class="level2 page-columns page-full" data-number="38.3">
+<section id="grammar" class="level2" data-number="38.3">
 <h2 data-number="38.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">38.3</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -693,7 +693,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="grouped_bubble_charts_files/figure-html/create_graph_grp_bubble-1.png" class="img-fluid"></p>
@@ -701,13 +701,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2 page-columns page-full" data-number="38.4">
+<section id="more-info" class="level2" data-number="38.4">
 <h2 data-number="38.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">38.4</span> More info</h2>
 <p>We can change the <code>shape</code> of the points for more control of the <code>color</code> and <code>fill</code>.</p>
-<section id="shape" class="level3 page-columns page-full" data-number="38.4.1">
+<section id="shape" class="level3" data-number="38.4.1">
 <h3 data-number="38.4.1" class="anchored" data-anchor-id="shape"><span class="header-section-number">38.4.1</span> Shape</h3>
 <p>Inside <code>geom_point()</code>, we can set <code>shape</code> to <code>21</code>, and <code>color</code> to <code>"#000000"</code> to outline the points in black</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble_s21 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
@@ -721,7 +721,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble_s21 <span class="sc">+</span> </span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  labs_grp_bubble</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="grouped_bubble_charts_files/figure-html/shape_21-1.png" class="img-fluid"></p>
@@ -730,10 +730,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="color" class="level3 page-columns page-full" data-number="38.4.2">
+<section id="color" class="level3" data-number="38.4.2">
 <h3 data-number="38.4.2" class="anchored" data-anchor-id="color"><span class="header-section-number">38.4.2</span> Color</h3>
 <p>Inside the <code>aes()</code> of <code>geom_point()</code>, we can set <code>shape</code> to <code>21</code>, and map <code>color</code> to <code>"species"</code> to outline the points in the same colors as <code>fill</code></p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble_s21_color <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
@@ -749,7 +749,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble_s21_color <span class="sc">+</span> </span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  labs_grp_bubble</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="grouped_bubble_charts_files/figure-html/shape_21_color_aes-1.png" class="img-fluid"></p>

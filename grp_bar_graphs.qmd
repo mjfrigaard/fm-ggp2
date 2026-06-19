@@ -197,7 +197,6 @@ ggp2_grp_col +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_grp_col <- labs(
     title = "Total Penguin Mass",
     subtitle = "What's the total mass of penguins per Island?",
@@ -267,7 +266,6 @@ palmerpenguins::penguins |>
 #| warning: false
 #| message: false
 #| layout-nrow: 1
-#| column: page-inset-right
 palmerpenguins::penguins |> 
     dplyr::select(body_mass_g, island) |> 
     tidyr::drop_na() |> 

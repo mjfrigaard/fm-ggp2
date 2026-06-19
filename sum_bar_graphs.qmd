@@ -196,7 +196,6 @@ ggp2_sum_col +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_sum_col <- labs(
     title = "Average Penguin Body Mass",
     subtitle = "What is the average penguin BMI per Island?",
@@ -230,7 +229,6 @@ Below is more information on `geom_bar()` vs. `geom_col()`.
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggplot(data = peng_sum_col,
     aes(x = island,
         y = avg_bmi_kg)) +

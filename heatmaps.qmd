@@ -204,7 +204,6 @@ ggp2_heatmap_tile +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_heatmap_tile <- labs(
   title = "Bob Ross' plants & clouds", 
   x = "Episode", 
@@ -247,7 +246,6 @@ In addition to `geom_tile()`, heatmaps can also be created with the `geom_raster
 #| warning: false
 #| message: false
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_heatmap_raster <- labs(
   title = "Bob Ross' plants & clouds", 
   x = "Episode", 

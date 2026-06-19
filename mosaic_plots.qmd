@@ -202,7 +202,6 @@ ggp2_mosaic +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_mosaic <- labs(
       title = "In general...", 
       subtitle = "...is it rude to...",
@@ -240,7 +239,6 @@ It's a good idea to adjust the `fig-height` and `fig-width` of your graph
 #| out-height: '100%'
 #| out-width: '100%'
 #| fig-align: center
-#| column: page-inset-right
 # graph
 labs_mosaic <- labs(
       title = "In general...is it rude to...", 
@@ -322,7 +320,6 @@ Once again we can see the counts for each category in the cross-tabulation:
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 # build 2-variable mosiac plot
 labs_mosaic_2var <- labs(
   title = "In general...is it rude to...", 
@@ -356,7 +353,6 @@ For conditional variables, we map the `product()` variable as `unruly_child` and
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 # build conditional mosiac plot
 labs_mosaic_cond <- labs(
   title = "In general...is it rude to...", 
@@ -394,7 +390,6 @@ The `divider` argument let's us control the spine partitions (vertically and hor
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_mosaic_facet <- labs(
         title = "In general...is it rude to...",
         caption = "divider = 'vspine'",
@@ -450,7 +445,6 @@ The two horizontal orientation options make the axis text harder to read, so the
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_mosaic_hspine <- ggplot(data = fly_mosaic) +
           ggmosaic::geom_mosaic(aes(x = product(recline_rude), 
                                  fill = recline_rude), 

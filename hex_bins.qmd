@@ -181,7 +181,6 @@ ggp2_hex +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_hex <- labs(
     title = "Adult Foraging Penguins",
     subtitle = "Near Palmer Station, Antarctica",
@@ -215,7 +214,6 @@ Below we change the `bins` to `20` and `15` and save these layers as `ggp2_hex_b
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_hex_b20 <- ggplot(data = penguins_hex,
     aes(x = bill_length_mm, y = flipper_length_mm)) +
     geom_hex(bins = 20)
@@ -248,7 +246,6 @@ ggp2_hex_b15 +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_hex2 <- labs(
     title = "Adult Foraging Penguins", 
     subtitle = "Near Palmer Station, Antarctica", 
@@ -287,7 +284,6 @@ Get a full list of available color palette's using `hcl_palettes(type = ` `"sequ
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_hex3 <- labs(
     title = "Adult Foraging Penguins", 
     subtitle = "Near Palmer Station, Antarctica", 

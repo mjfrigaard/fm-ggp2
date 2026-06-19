@@ -651,7 +651,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="grammar" class="level2 page-columns page-full" data-number="33.3">
+<section id="grammar" class="level2" data-number="33.3">
 <h2 data-number="33.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">33.3</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -695,7 +695,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>GRAPH:</strong></p>
 </div>
 <p>The <code>ggalluvial</code> functions can handle wide or long data.</p>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="alluvial_charts_files/figure-html/create_graph_alluvial-1.png" class="img-fluid"></p>
@@ -703,10 +703,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2 page-columns page-full" data-number="33.4">
+<section id="more-info" class="level2" data-number="33.4">
 <h2 data-number="33.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">33.4</span> More info</h2>
 <p>The <code>ggalluvial</code> package can also help reshape data with the <code>to_lodes_form()</code> function.</p>
-<section id="to_lodes_form" class="level3 page-columns page-full" data-number="33.4.1">
+<section id="to_lodes_form" class="level3" data-number="33.4.1">
 <h3 data-number="33.4.1" class="anchored" data-anchor-id="to_lodes_form"><span class="header-section-number">33.4.1</span> <code>to_lodes_form()</code></h3>
 <p>Below we create <code>peng_lodes</code> from the <code>penguins</code> dataset using the <code>to_lodes_form()</code> from the <code>ggalluvial</code> package.</p>
 <div style="font-size: 0.85em;">
@@ -739,7 +739,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Add the <code>geom_stratum()</code> and set the <code>width</code> to <code>0.45</code></p></li>
 <li><p>Add <code>geom_text()</code> and set <code>stat</code> to <code>"stratum"</code></p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>labs_alluvial <span class="ot">&lt;-</span> <span class="fu">ggtitle</span>(<span class="at">label =</span> <span class="st">"Palmer Penguins"</span>, </span>
@@ -760,7 +760,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    labs_alluvial <span class="sc">+</span></span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_ggp2g</span>(<span class="at">base_size =</span> <span class="dv">13</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="alluvial_charts_files/figure-html/create_graph_alluvial_lf-1.png" class="img-fluid"></p>
@@ -769,7 +769,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="geom_flow" class="level3 page-columns page-full" data-number="33.4.2">
+<section id="geom_flow" class="level3" data-number="33.4.2">
 <h3 data-number="33.4.2" class="anchored" data-anchor-id="geom_flow"><span class="header-section-number">33.4.2</span> <code>geom_flow()</code></h3>
 <p>If you’d like to arrange the date or time variable across the <code>x</code>, you can use the <code>ggalluvial::geom_flow()</code> with <code>ggalluvial::geom_stratum()</code>.</p>
 <ul>
@@ -802,7 +802,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Add <code>scale_fill_brewer()</code>, and set the <code>type</code> to <code>"qual"</code> and choose a <code>palette</code></p></li>
 <li><p>Add the <code>geom_flow()</code>, with <code>stat</code> set to <code>"alluvium"</code>, <code>lode.guidance</code> set to <code>"frontback"</code>, and <code>color</code> to <code>"#A9A9A9"</code></p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># labels</span></span>
@@ -820,7 +820,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>ggp2_alluvial_flow</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="alluvial_charts_files/figure-html/ggp2_alluvial_flow-1.png" class="img-fluid"></p>
@@ -837,7 +837,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_stratum</span>() </span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>ggp2_alluvial_stratum</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="alluvial_charts_files/figure-html/ggp2_alluvial_geom_stratum-1.png" class="img-fluid"></p>
@@ -846,17 +846,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="legend.position" class="level3 page-columns page-full" data-number="33.4.3">
+<section id="legend.position" class="level3" data-number="33.4.3">
 <h3 data-number="33.4.3" class="anchored" data-anchor-id="legend.position"><span class="header-section-number">33.4.3</span> <code>legend.position</code></h3>
 <p>Move legend to bottom with <code>theme(legend.position = "bottom")</code></p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ggp2_alluvial_stratum <span class="sc">+</span> </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  labs_alluvial <span class="sc">+</span> </span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="alluvial_charts_files/figure-html/ggp2_alluvial_legend_position-1.png" class="img-fluid"></p>

@@ -213,7 +213,6 @@ Adjust the size/shape of the swarm using `method =` or the  `geom_quasirandom()`
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_beeswarm <- labs(
     title = "Adult Foraging Penguins",
     subtitle = "Bill Length (mm) / Bill Depth (mm) = Bill Ratio",
@@ -257,7 +256,6 @@ Set the point `shape` to `21` to control the `fill` and `color`
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_compact_swarm <- ggplot(data = peng_beeswarm,
     mapping = aes(x = species,
                   y = bill_ratio,
@@ -292,7 +290,6 @@ For a beeswarm that falls across the vertical axis, use the `side` argument.
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_rside_swarm <- ggplot(data = peng_beeswarm,
     mapping = aes(x = species,
                   y = bill_ratio,
@@ -327,7 +324,6 @@ The `cex` argument controls the "*scaling for adjusting point spacing*"
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_beeswarm_cex <- ggplot(data = peng_beeswarm,
     mapping = aes(x = species,
                   y = bill_ratio,
@@ -363,7 +359,6 @@ We can also create a beeswarm using the `geom_jitter()` and setting the `height`
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_jitter_swarm <- ggplot(data = peng_beeswarm,
     mapping = aes(x = species,
         y = bill_ratio,

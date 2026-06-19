@@ -664,7 +664,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="grammar-raincloudplots" class="level2 page-columns page-full" data-number="27.3">
+<section id="grammar-raincloudplots" class="level2" data-number="27.3">
 <h2 data-number="27.3" class="anchored" data-anchor-id="grammar-raincloudplots"><span class="header-section-number">27.3</span> Grammar (<code>raincloudplots</code>)</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -705,7 +705,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="raincloud_plots_files/figure-html/create_graph_raincloud-1.png" class="img-fluid"></p>
@@ -749,14 +749,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 </div>
-<section id="box-plot" class="level3 page-columns page-full" data-number="27.4.1">
+<section id="box-plot" class="level3" data-number="27.4.1">
 <h3 data-number="27.4.1" class="anchored" data-anchor-id="box-plot"><span class="header-section-number">27.4.1</span> Box-plot</h3>
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
 <li><p>For the first layer, we create a box plot with <code>geom_boxplot()</code>, but include notches and remove the outliers.</p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>labs_raincloud_2 <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span><span class="fu">labs</span>(</span>
@@ -774,7 +774,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>ggp2_box <span class="sc">+</span> </span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    labs_raincloud_2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="raincloud_plots_files/figure-html/create_graph_raincloud2_box-1.png" class="img-fluid"></p>
@@ -783,10 +783,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="density" class="level3 page-columns page-full" data-number="27.4.2">
+<section id="density" class="level3" data-number="27.4.2">
 <h3 data-number="27.4.2" class="anchored" data-anchor-id="density"><span class="header-section-number">27.4.2</span> Density</h3>
 <p>We then add a horizontal density curve with <code>ggdist::stat_halfeye()</code>, mapping <code>species</code> to <code>fill</code>, and adjusting the size and shape of the density curve and shifting it slightly above the box plot.</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ggp2_stat_halfeye <span class="ot">&lt;-</span> ggp2_box <span class="sc">+</span></span>
@@ -802,7 +802,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>ggp2_stat_halfeye <span class="sc">+</span> </span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    labs_raincloud_2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="raincloud_plots_files/figure-html/create_graph_raincloud2_halfeye-1.png" class="img-fluid"></p>
@@ -811,14 +811,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="points" class="level3 page-columns page-full" data-number="27.4.3">
+<section id="points" class="level3" data-number="27.4.3">
 <h3 data-number="27.4.3" class="anchored" data-anchor-id="points"><span class="header-section-number">27.4.3</span> Points</h3>
 <p>The final layer is a <code>geom_point()</code>, mapping <code>fill</code> to <code>species</code> and setting <code>position</code> to <code>position_jitter()</code>. Additional adjustments to the points include:</p>
 <ul>
 <li><p>Using <code>shape = 21</code>, we can <code>color</code> the outside of the point (white makes it appear to glow).</p></li>
 <li><p>Manually set the <code>height</code>, which refers to the vertical area for the points</p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ggp2_jitter <span class="ot">&lt;-</span> ggp2_stat_halfeye <span class="sc">+</span> </span>
@@ -834,7 +834,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ggp2_jitter <span class="sc">+</span> </span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    labs_raincloud_2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="raincloud_plots_files/figure-html/create_graph_raincloud2_jitter-1.png" class="img-fluid"></p>
@@ -844,14 +844,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="more-examples-resources" class="level2 page-columns page-full" data-number="27.5">
+<section id="more-examples-resources" class="level2" data-number="27.5">
 <h2 data-number="27.5" class="anchored" data-anchor-id="more-examples-resources"><span class="header-section-number">27.5</span> More examples &amp; resources</h2>
-<section id="point-shape" class="level3 page-columns page-full" data-number="27.5.1">
+<section id="point-shape" class="level3" data-number="27.5.1">
 <h3 data-number="27.5.1" class="anchored" data-anchor-id="point-shape"><span class="header-section-number">27.5.1</span> Point shape</h3>
 <p>Cédric Scherer covered raincloud plots in <a href="https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/">this great write-up</a> for <a href="https://github.com/rfordatascience/tidytuesday">#TidyTuesday</a>.</p>
 <p>Cédric also covers some alternative methods for plotting the points (I particularly like using bands instead of points when displaying the rainclouds vertically).</p>
 <p>We can switch to this layout by applying <code>ggplot2::coord_flip()</code> to the <code>ggp2_stat_halfeye</code> layer, then adding <code>geom_point()</code> with <code>shape</code> set to <code>95</code></p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ggp2_stat_halfeye <span class="sc">+</span> </span>
@@ -863,7 +863,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> </span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    labs_raincloud_2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="raincloud_plots_files/figure-html/create_graph_raincloud2_point_lines-1.png" class="img-fluid"></p>

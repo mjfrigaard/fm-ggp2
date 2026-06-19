@@ -160,7 +160,6 @@ ggp2_freqpoly +
 #| warning: false
 #| message: false
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_freqpoly <- labs(
   title = "Adult foraging penguins",
   subtitle = "Distribution of flipper length",
@@ -182,7 +181,6 @@ Experiment to see how many `bins` fit your variable’s distribution.
 #| warning: false
 #| message: false
 #| layout-nrow: 1
-#| column: page-inset-right
 
 
 ggp2_freqpoly_bins45 <- ggplot(data = penguins,

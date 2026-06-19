@@ -174,7 +174,6 @@ Initialize the graph with `ggplot()` and provide `data`
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-#| column: page-inset-right
 #| layout-nrow: 1
 labs_graph <- ggplot2::labs(title = "Title", 
                             subtitle = "subtitle", 
@@ -209,7 +208,6 @@ More description of graph and code.
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-#| column: page-inset-right
 #| layout-nrow: 1
 labs_graph <- ggplot2::labs(title = "Title", 
                             subtitle = "subtitle", 
@@ -255,7 +253,6 @@ Info
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-#| column: page-inset-right
 #| layout-nrow: 1
 ```
 
@@ -281,7 +278,6 @@ Info
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-#| column: page-inset-right
 #| layout-nrow: 1
 ```
 :::

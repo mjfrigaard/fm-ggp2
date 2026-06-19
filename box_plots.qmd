@@ -178,7 +178,6 @@ ggp2_boxplot +
 #| warning: false
 #| message: false
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_boxplot <- labs(
   title = "Adult foraging penguins",
   subtitle = "Distribution of flipper length",
@@ -252,7 +251,6 @@ Below we create a box plot of the `length` variable using the methods described 
 #| warning: false
 #| message: false
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_boxplot <- labs(
   title = "IMDB Movie information and user ratings",
   y = "Movie length (min)", x = "")

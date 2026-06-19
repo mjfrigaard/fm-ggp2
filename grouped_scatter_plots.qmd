@@ -187,7 +187,6 @@ Adjust over-plotting with transparency (`alpha`).
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_grp_scatter <- labs(
   title = "Bill Length vs. Flipper Length",
   x = "Bill Length (mm)", 

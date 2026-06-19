@@ -189,7 +189,6 @@ ggp2_2dhist +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-ncol: 1
-#| column: page-inset-right
 labs_2dhist <- labs(
     title = "Adult Foraging Penguins", 
     subtitle = "Near Palmer Station, Antarctica", 
@@ -227,7 +226,6 @@ The value for `bins` will be vary depending on the variable values--there is no 
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 2
-#| column: page-inset-right
 ggp2_base <- ggplot(data = penguins_2dhist, 
     mapping = aes(x = bill_length_mm, 
                   y = flipper_length_mm))
@@ -272,7 +270,6 @@ We can also reverse the order of the fill color scale with `rev` (`TRUE` or `FAL
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-ncol: 1
-#| column: page-inset-right
 ggp2_2dhist_bins12 + 
     scale_fill_continuous_sequential(
         palette = "Mako", 
@@ -310,7 +307,6 @@ In the previous example we showed how to `rev`erse the color scale for the `pale
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_2dhist_bins12 +
   scale_fill_continuous_sequential(
     palette = "SunsetDark",

@@ -168,7 +168,6 @@ ggp2_hist +
 #| warning: false
 #| message: false
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_histogram <- labs(
   title = "Adult foraging penguins",
   subtitle = "Distribution of flipper length",
@@ -194,7 +193,6 @@ The standard number of bins is `30`, but ['you should always override this value
 #| warning: false
 #| message: false
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_hist_bins45 <- ggplot(data = penguins,
      aes(x = flipper_length_mm)) + 
      geom_histogram(bins = 45) 

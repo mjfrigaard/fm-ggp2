@@ -249,7 +249,6 @@ ggp2_treemap +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 labs_treemap <- labs(
   title = "Adult foraging penguins",
     fill = "Sex")
@@ -311,7 +310,6 @@ See full list of arguments [here](http://wilkox.org/treemapify/).
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_tm_subgroup <- ggp2_treemap +
     treemapify::geom_treemap_subgroup2_border(
            color = "#02577A",
@@ -357,7 +355,6 @@ ggp2_tm_subgroup +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-#| column: page-inset-right
 ggp2_tm_subgroup2 <- ggp2_tm_subgroup + 
        treemapify::geom_treemap_subgroup_border(
            color = "#ffffff", 

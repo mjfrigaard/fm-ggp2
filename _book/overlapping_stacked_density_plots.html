@@ -687,7 +687,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="no-row-height column-margin column-container"><div class="">
 <p><em>A downside of density plots is the lack of interpretability of the <code>y</code> axis</em></p>
 </div></div><p>Make density area slightly transparent to handle over-plotting.</p>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="overlapping_stacked_density_plots_files/figure-html/create_graph_ovrlp_density-1.png" class="img-fluid"></p>
@@ -695,13 +695,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2 page-columns page-full" data-number="23.4">
+<section id="more-info" class="level2" data-number="23.4">
 <h2 data-number="23.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">23.4</span> More info</h2>
 <p><code>ggplot2</code> has multiple options for overlapping density plots, so which one to use will depend on how you’d like to display the relative distributions in your data. We’ll cover three options below:</p>
-<section id="stack" class="level3 page-columns page-full" data-number="23.4.1">
+<section id="stack" class="level3" data-number="23.4.1">
 <h3 data-number="23.4.1" class="anchored" data-anchor-id="stack"><span class="header-section-number">23.4.1</span> <code>"stack"</code></h3>
 <p>If we change the <code>position</code> to <code>"stack"</code> we can see the smoothed estimates are ‘stacked’ on top each other (and the <code>y</code> axis shifts slightly).</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>labs_stack_density <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -716,7 +716,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>ggp2_stack_density <span class="sc">+</span></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    labs_stack_density</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="overlapping_stacked_density_plots_files/figure-html/code_graph_stack_density-1.png" class="img-fluid"></p>
@@ -728,10 +728,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Setting <code>position</code> to <code>'stack'</code> <a href="https://ggplot2.tidyverse.org/reference/geom_density.html#ref-examples">loses marginal densities</a></p>
 </div>
 </section>
-<section id="after_statcount" class="level3 page-columns page-full" data-number="23.4.2">
+<section id="after_statcount" class="level3" data-number="23.4.2">
 <h3 data-number="23.4.2" class="anchored" data-anchor-id="after_statcount"><span class="header-section-number">23.4.2</span> <code>after_stat(count)</code></h3>
 <p>If we include <code>after_stat(count)</code> as one of our mapped aesthetics, the mapping is postponed until after statistical transformation, and uses the <a href="https://ggplot2.tidyverse.org/reference/geom_density.html#computed-variables"><em><code>density * n</code> instead of the default density</em></a>.</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>labs_after_stat_density <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -747,7 +747,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>ggp2_after_stat_density <span class="sc">+</span> </span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  labs_after_stat_density</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="overlapping_stacked_density_plots_files/figure-html/code_graph_after_stat_density-1.png" class="img-fluid"></p>
@@ -757,10 +757,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Adding <a href="https://ggplot2.tidyverse.org/reference/geom_density.html#computed-variables"><code>after_stat(count)</code></a> <em>‘preserves marginal densities.’</em>, which result in more a interpretable <code>y</code> axis (depending on the audience)</p>
 </section>
-<section id="fill" class="level3 page-columns page-full" data-number="23.4.3">
+<section id="fill" class="level3" data-number="23.4.3">
 <h3 data-number="23.4.3" class="anchored" data-anchor-id="fill"><span class="header-section-number">23.4.3</span> <code>"fill"</code></h3>
 <p>Using <code>after_stat(count)</code> with <code>position = "fill"</code> creates in a conditional density estimate.</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>labs_fill_density <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -776,7 +776,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>ggp2_fill_density <span class="sc">+</span> </span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  labs_fill_density</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="overlapping_stacked_density_plots_files/figure-html/code_graph_fill_density-1.png" class="img-fluid"></p>

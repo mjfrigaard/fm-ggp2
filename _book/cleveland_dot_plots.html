@@ -644,7 +644,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="grammar" class="level2 page-columns page-full" data-number="13.3">
+<section id="grammar" class="level2" data-number="13.3">
 <h2 data-number="13.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">13.3</span> Grammar</h2>
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -683,7 +683,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="cleveland_dot_plots_files/figure-html/create_graph_clev_dots-1.png" class="img-fluid" width="576"></p>
@@ -691,7 +691,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2 page-columns page-full" data-number="13.4">
+<section id="more-info" class="level2" data-number="13.4">
 <h2 data-number="13.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">13.4</span> More info</h2>
 <p>Cleveland dot plots are also helpful when comparing multiple differences on a common scale.</p>
 <section id="common-scale" class="level3" data-number="13.4.1">
@@ -741,7 +741,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="scales" class="level3 page-columns page-full" data-number="13.4.2">
+<section id="scales" class="level3" data-number="13.4.2">
 <h3 data-number="13.4.2" class="anchored" data-anchor-id="scales"><span class="header-section-number">13.4.2</span> Scales</h3>
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong><code>scales</code>:</strong></p>
@@ -755,7 +755,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Add <code>facet_wrap()</code> and facet by <code>median_measure</code>, setting <code>shrink</code> to <code>TRUE</code> and <code>scales</code> to <code>"free_x"</code></p></li>
 <li><p>Move the legend with <code>theme(legend.position = "top")</code></p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>labs_clev_dots2 <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -779,7 +779,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>ggp2_clev_dots2 <span class="sc">+</span></span>
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    labs_clev_dots2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="cleveland_dot_plots_files/figure-html/graph_run_clev_dots_nrow_2-1.png" class="img-fluid"></p>
@@ -790,7 +790,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 1.00em; color: #E74A2F;">
 <p><strong>CAUTION when using <code>scales = "free_x"</code>:</strong> The graph below shows that the median bill length and depth is larger for male penguins on all three islands, but the magnitude of the differences should be interpreted with caution because the length of the lines can’t be directly compared!</p>
 </div>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>labs_clev_dots2 <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -815,7 +815,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>ggp2_clev_dots2_free_x <span class="sc">+</span></span>
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    labs_clev_dots2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="cleveland_dot_plots_files/figure-html/graph_run_clev_dots2_free_x-1.png" class="img-fluid"></p>

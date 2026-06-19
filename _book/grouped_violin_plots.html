@@ -650,7 +650,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="grammar" class="level2 page-columns page-full" data-number="26.3">
+<section id="grammar" class="level2" data-number="26.3">
 <h2 data-number="26.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">26.3</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -686,7 +686,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>GRAPH:</strong></p>
 </div>
 <p>Violin plots can allow us to compare the ‘center’ and ‘spread’ of continuous variables across categorical groups.</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>labs_grp_violin <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -703,7 +703,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>ggp2_grp_violin <span class="sc">+</span> </span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  labs_grp_violin</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="grouped_violin_plots_files/figure-html/create_graph_grp_violin-1.png" class="img-fluid"></p>
@@ -720,7 +720,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="no-row-height column-margin column-container"><div class="">
 <p>Change the shape of the line with <a href="https://ggplot2.tidyverse.org/reference/geom_violin.html#aesthetics"><code>linetype</code> and <code>linewidth</code></a>.</p>
 </div></div><p>We can include lines for the 25th, 50th, and 75th quartiles using the <code>draw_quantiles</code> argument.</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> peng_violin,</span>
@@ -733,7 +733,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">linewidth =</span> <span class="fl">0.5</span>, </span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">show.legend =</span> <span class="cn">FALSE</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="grouped_violin_plots_files/figure-html/grp_violin_draw_quantiles-1.png" class="img-fluid"></p>
@@ -742,10 +742,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="kernel" class="level3 page-columns page-full" data-number="26.4.2">
+<section id="kernel" class="level3" data-number="26.4.2">
 <h3 data-number="26.4.2" class="anchored" data-anchor-id="kernel"><span class="header-section-number">26.4.2</span> Kernel</h3>
 <p>The <a href="https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments"><code>kernel</code> argument</a> let’s us change the “<em>kernel density estimate</em>” used to create the violin shape. The possible <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/density.html">kernel density estimates</a> are <code>"gaussian"</code>, <code>"epanechnikov"</code>, <code>"rectangular"</code>, <code>"triangular"</code>, <code>"biweight"</code>, <code>"cosine"</code>, and <code>"optcosine"</code></p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> peng_violin,</span>
@@ -757,7 +757,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">kernel =</span> <span class="st">"rectangular"</span>,</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">show.legend =</span> <span class="cn">FALSE</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="grouped_violin_plots_files/figure-html/grp_violin_kernel-1.png" class="img-fluid"></p>
@@ -766,10 +766,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="bandwidth" class="level3 page-columns page-full" data-number="26.4.3">
+<section id="bandwidth" class="level3" data-number="26.4.3">
 <h3 data-number="26.4.3" class="anchored" data-anchor-id="bandwidth"><span class="header-section-number">26.4.3</span> Bandwidth</h3>
 <p>We can directly adjust the shape of the violin with the <a href="https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments"><code>bw</code> argument</a>, which is the <em>standard deviation of the smoothing kernel.</em> The <a href="https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments"><code>trim</code> argument</a> <em>trim(s) the tails of the violins to the range of the data.</em></p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bw of 0.5</span></span>
@@ -797,7 +797,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    labs_grp_violin <span class="sc">+</span> </span>
 <span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"bw = 4.5"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><img src="grouped_violin_plots_files/figure-html/grp_violin_bw-1.png" class="img-fluid"></p>
