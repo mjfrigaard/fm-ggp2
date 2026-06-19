@@ -660,7 +660,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="grammar" class="level2 page-columns page-full" data-number="40.3">
+<section id="grammar" class="level2" data-number="40.3">
 <h2 data-number="40.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">40.3</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -713,7 +713,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="density_contours_files/figure-html/create_graph_geom_density_2d-1.png" class="img-fluid"></p>
@@ -721,10 +721,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2 page-columns page-full" data-number="40.4">
+<section id="more-info" class="level2" data-number="40.4">
 <h2 data-number="40.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">40.4</span> More info</h2>
 <p>We’re going to break down how to create the density contour layer-by-layer using the <code>stat_density_2d()</code> function (which allows us to access some of the inner-workings of <code>geom_density_2d()</code>)</p>
-<section id="base" class="level3 page-columns page-full" data-number="40.4.1">
+<section id="base" class="level3" data-number="40.4.1">
 <h3 data-number="40.4.1" class="anchored" data-anchor-id="base"><span class="header-section-number">40.4.1</span> Base</h3>
 <ul>
 <li><p>Create a new set of labels</p></li>
@@ -735,7 +735,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Expand the <code>x</code> and <code>y</code> values with <code>expand_limits()</code> (using the values we created above)</p></li>
 </ul></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>labs_sdens_2d <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -759,7 +759,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>base_sdens_2d <span class="sc">+</span></span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  labs_sdens_2d</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="density_contours_files/figure-html/code_graph_base_layer-1.png" class="img-fluid"></p>
@@ -768,7 +768,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="stat" class="level3 page-columns page-full" data-number="40.4.2">
+<section id="stat" class="level3" data-number="40.4.2">
 <h3 data-number="40.4.2" class="anchored" data-anchor-id="stat"><span class="header-section-number">40.4.2</span> Stat</h3>
 <p>Add the <code>stat_density_2d()</code> layer:</p>
 <ul>
@@ -777,7 +777,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Change the <code>color</code> to black (<code>#000000</code>)</p></li>
 <li><p>adjust the <code>linewidth</code> to <code>0.35</code></p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>stat_sdens_2d <span class="ot">&lt;-</span> base_sdens_2d <span class="sc">+</span></span>
@@ -790,19 +790,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>stat_sdens_2d <span class="sc">+</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  labs_sdens_2d</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="density_contours_files/figure-html/code_graph_stat_layer-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 
 </div>
 </div>
 </section>
-<section id="fill" class="level3 page-columns page-full" data-number="40.4.3">
+<section id="fill" class="level3" data-number="40.4.3">
 <h3 data-number="40.4.3" class="anchored" data-anchor-id="fill"><span class="header-section-number">40.4.3</span> Fill</h3>
 <p><strong><em>Where did levels come from?</em></strong></p>
 <p><em>You probably noticed the <code>stat_density_2d()</code> produced a legend with <code>level</code>, and a series of values for the color gradient. These numbers are difficult to interpret directly, but you can think of them as ‘elevation changes’ in point density. Read more <a href="https://stackoverflow.com/questions/53172200/stat-density2d-what-does-the-legend-mean">here on SO.</a></em></p>
@@ -813,7 +813,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><code>guide</code> let’s us control the <code>legend</code></p></li>
 </ul>
 <p>We’ll set these to white (<code>"#ffffff"</code>) and dark gray (<code>"#404040"</code>)</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fill_sdens_2d <span class="ot">&lt;-</span> stat_sdens_2d <span class="sc">+</span></span>
@@ -825,10 +825,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>fill_sdens_2d <span class="sc">+</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  labs_sdens_2d</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 
 </div>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="density_contours_files/figure-html/code_graph_fill_layer_pw-1.png" class="img-fluid"></p>
@@ -837,7 +837,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="points" class="level3 page-columns page-full" data-number="40.4.4">
+<section id="points" class="level3" data-number="40.4.4">
 <h3 data-number="40.4.4" class="anchored" data-anchor-id="points"><span class="header-section-number">40.4.4</span> Points</h3>
 <p>The dark areas in the contour lines are the areas with higher value density, but why don’t we test that by adding some data points?</p>
 <ul>
@@ -848,7 +848,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Change the <code>alpha</code> to <code>2/3</code></p></li>
 </ul></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># geom_point()</span></span>
@@ -861,12 +861,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>pnts_sdens_2d <span class="sc">+</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  labs_sdens_2d</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 
 </div>
 </div>
-<div style="font-size: 0.85em;" class="page-columns page-full">
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div style="font-size: 0.85em;">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="density_contours_files/figure-html/code_graph_points_layer_pw-1.png" class="img-fluid"></p>
@@ -876,10 +876,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="even-more-info" class="level2 page-columns page-full" data-number="40.5">
+<section id="even-more-info" class="level2" data-number="40.5">
 <h2 data-number="40.5" class="anchored" data-anchor-id="even-more-info"><span class="header-section-number">40.5</span> Even more info</h2>
 <p>In the previous plot, we used the <code>species</code> variable in the <code>geom_point()</code> layer to identify the points using color. In the section below, we’ll show more methods of displaying groups with density contour lines.</p>
-<section id="groups" class="level3 page-columns page-full" data-number="40.5.1">
+<section id="groups" class="level3" data-number="40.5.1">
 <h3 data-number="40.5.1" class="anchored" data-anchor-id="groups"><span class="header-section-number">40.5.1</span> Groups</h3>
 <p>Re-create the labels</p>
 <p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p>
@@ -894,7 +894,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Map <code>species</code> to <code>color</code></p></li>
 <li><p>set the <code>alpha</code> and remove the <code>legend</code></p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>labs_dnsty_2d_grp <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -927,7 +927,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>ggp2_dnsty_2d_pnts <span class="sc">+</span></span>
 <span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  labs_dnsty_2d_grp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="density_contours_files/figure-html/code_graph_points-1.png" class="img-fluid"></p>
@@ -936,7 +936,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="facets" class="level3 page-columns page-full" data-number="40.5.2">
+<section id="facets" class="level3" data-number="40.5.2">
 <h3 data-number="40.5.2" class="anchored" data-anchor-id="facets"><span class="header-section-number">40.5.2</span> Facets</h3>
 <ul>
 <li><p>Re-create the labels</p></li>
@@ -960,7 +960,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Add <code>facet_wrap()</code>, and place <code>species</code> in the <a href="https://ggplot2.tidyverse.org/reference/vars.html"><code>vars()</code></a></li>
 </ul></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>labs_dnsty_2d_facet <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -996,10 +996,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>ggp2_dnsty_2d_facet <span class="sc">+</span></span>
 <span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  labs_dnsty_2d_facet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 
 </div>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="density_contours_files/figure-html/code_graph_facets_run-1.png" class="img-fluid"></p>
@@ -1008,7 +1008,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="fill-1" class="level3 page-columns page-full" data-number="40.5.3">
+<section id="fill-1" class="level3" data-number="40.5.3">
 <h3 data-number="40.5.3" class="anchored" data-anchor-id="fill-1"><span class="header-section-number">40.5.3</span> Fill</h3>
 <p>In the previous section, we defined the color values used in <code>geom_density_2d_filled()</code> with <code>scale_discrete_manual()</code>. Below we give an example using the default colors:</p>
 <ul>
@@ -1022,7 +1022,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Add the <code>geom_density_2d()</code> layer</p></li>
 <li><p>Add the <code>geom_density_2d_filled()</code>, setting <code>alpha</code> to <code>0.8</code></p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>labs_dnsty_2d <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -1051,10 +1051,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>ggp2_dnsty_2d_fill <span class="sc">+</span></span>
 <span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  labs_dnsty_2d</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 
 </div>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="density_contours_files/figure-html/code_graph_fill_run-1.png" class="img-fluid"></p>
@@ -1063,14 +1063,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="lines" class="level3 page-columns page-full" data-number="40.5.4">
+<section id="lines" class="level3" data-number="40.5.4">
 <h3 data-number="40.5.4" class="anchored" data-anchor-id="lines"><span class="header-section-number">40.5.4</span> Lines</h3>
 <p>We can also outline the contours by adding color to the lines using another <code>geom_density_2d()</code> layer:</p>
 <ul>
 <li><p>Set <code>linewidth</code> to <code>0.30</code></p></li>
 <li><p>Set <code>color</code> to <code>"#ffffff"</code></p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ggp2_dnsty_2d_fill_lns <span class="ot">&lt;-</span> ggp2_dnsty_2d_fill <span class="sc">+</span></span>
@@ -1081,10 +1081,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>ggp2_dnsty_2d_fill_lns <span class="sc">+</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  labs_dnsty_2d</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 
 </div>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="density_contours_files/figure-html/code_graph_lines_run-1.png" class="img-fluid"></p>

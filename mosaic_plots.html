@@ -688,8 +688,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div style="font-size: 0.85em;" class="page-columns page-full">
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div style="font-size: 0.85em;">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="mosaic_plots_files/figure-html/run_graph_mosaic-1.png" class="img-fluid"></p>
@@ -705,12 +705,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 0.95em; color: #5f2042;">
 <p>It’s a good idea to adjust the <code>fig-height</code> and <code>fig-width</code> of your graph</p>
 </div>
-</div></div><div style="font-size: 0.85em;" class="page-columns page-full">
-<div class="cell page-columns page-full" data-layout-align="center">
-<div class="cell-output-display page-columns page-full">
-<div class="quarto-figure quarto-figure-center page-columns page-full">
-<figure class="figure page-columns page-full">
-<p class="page-columns page-full"><img src="mosaic_plots_files/figure-html/create_table_mosaic-1.png" class="quarto-figure quarto-figure-center figure-img column-page-inset-right" style="width:100.0%;height:100.0%"></p>
+</div></div><div style="font-size: 0.85em;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="mosaic_plots_files/figure-html/create_table_mosaic-1.png" class="quarto-figure quarto-figure-center figure-img" style="width:100.0%;height:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -753,10 +753,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="more-info" class="level2 page-columns page-full" data-number="16.4">
+<section id="more-info" class="level2" data-number="16.4">
 <h2 data-number="16.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">16.4</span> More info</h2>
 <p>I recommend reading the <a href="https://haleyjeppson.github.io/ggmosaic/articles/ggmosaic.html"><code>ggmosaic</code> vignette</a>, particularly the sections on ordering and conditioning.</p>
-<section id="two-variables" class="level3 page-columns page-full" data-number="16.4.1">
+<section id="two-variables" class="level3" data-number="16.4.1">
 <h3 data-number="16.4.1" class="anchored" data-anchor-id="two-variables"><span class="header-section-number">16.4.1</span> Two variables</h3>
 <div style="font-size: 0.85em;">
 <div class="cell">
@@ -796,7 +796,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Below is another example of a two-variable mosaic plot, mapping the <code>product()</code> variables as <code>unruly_child</code> and <code>recline_rude</code>, and the <code>fill</code> variable as <code>recline_rude</code>.</p>
 <p>Once again we can see the counts for each category in the cross-tabulation:</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># build 2-variable mosiac plot</span></span>
@@ -817,7 +817,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>ggp2_mosaic_2var <span class="sc">+</span> </span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    labs_mosaic_2var</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="mosaic_plots_files/figure-html/ggp2_mosaic_2var-1.png" class="img-fluid"></p>
@@ -826,7 +826,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>For conditional variables, we map the <code>product()</code> variable as <code>unruly_child</code> and the <code>fill</code> variable as <code>baby</code>, but include a <code>conds</code> variable (as <code>product(recline_rude)</code>).</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># build conditional mosiac plot</span></span>
@@ -847,7 +847,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>ggp2_mosaic_cond <span class="sc">+</span> </span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    labs_mosaic_cond</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="mosaic_plots_files/figure-html/ggp2_mosaic_cond-1.png" class="img-fluid"></p>
@@ -856,12 +856,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="facets" class="level3 page-columns page-full" data-number="16.4.2">
+<section id="facets" class="level3" data-number="16.4.2">
 <h3 data-number="16.4.2" class="anchored" data-anchor-id="facets"><span class="header-section-number">16.4.2</span> Facets</h3>
 <p>Another option for including a conditioning variable is including facets. In the example below we use <code>recline_rude</code> in both <code>x</code> and <code>fill</code> (remember to wrap <code>recline_rude</code> in <code>product()</code>).</p>
 <p>The <code>divider</code> argument let’s us control the spine partitions (vertically and horizontally). Below are the two vertical orientation options for the <code>divider</code> argument.</p>
-<div style="font-size: 0.95rem;" class="page-columns page-full">
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div style="font-size: 0.95rem;">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="mosaic_plots_files/figure-html/patchwork_mosaic_run_v-1.png" class="img-fluid"></p>
@@ -870,8 +870,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The two horizontal orientation options make the axis text harder to read, so these need to be manipulated manually.</p>
-<div style="font-size: 0.95rem;" class="page-columns page-full">
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div style="font-size: 0.95rem;">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="mosaic_plots_files/figure-html/patchwork_mosaic_run_h-1.png" class="img-fluid"></p>

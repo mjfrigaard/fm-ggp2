@@ -649,7 +649,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="grammar" class="level2 page-columns page-full" data-number="18.3">
+<section id="grammar" class="level2" data-number="18.3">
 <h2 data-number="18.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">18.3</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -698,7 +698,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>labs_treemap <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -721,7 +721,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>ggp2_treemap <span class="sc">+</span> </span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  labs_treemap</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="treemaps_files/figure-html/create_graph_treemap-1.png" class="img-fluid"></p>
@@ -730,10 +730,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2 page-columns page-full" data-number="18.4">
+<section id="more-info" class="level2" data-number="18.4">
 <h2 data-number="18.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">18.4</span> More info</h2>
 <p><code>treemapify</code> has multiple options for building treemaps. We cover a few of these below, but you should check out the <a href="https://cran.r-project.org/web/packages/treemapify/vignettes/introduction-to-treemapify.html">package vignette</a>.</p>
-<section id="subgroup" class="level3 page-columns page-full" data-number="18.4.1">
+<section id="subgroup" class="level3" data-number="18.4.1">
 <h3 data-number="18.4.1" class="anchored" data-anchor-id="subgroup"><span class="header-section-number">18.4.1</span> Subgroup</h3>
 <p><code>ggplot2</code> build layers in the order they’re written, so it’s <a href="https://cran.r-project.org/web/packages/treemapify/vignettes/introduction-to-treemapify.html">advised</a> to build the subgroups in order from “<em>from deepest to shallowest</em>”, with <code>subgroups2</code> first (ending on <code>subgroup</code>)</p>
 <ul>
@@ -752,7 +752,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 </ul>
 <p>See full list of arguments <a href="http://wilkox.org/treemapify/">here</a>.</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ggp2_tm_subgroup <span class="ot">&lt;-</span> ggp2_treemap <span class="sc">+</span></span>
@@ -768,7 +768,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>ggp2_tm_subgroup <span class="sc">+</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  labs_treemap</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="treemaps_files/figure-html/code_graph_treemap_sgb-1.png" class="img-fluid"></p>
@@ -777,7 +777,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="subgroup-2" class="level3 page-columns page-full" data-number="18.4.2">
+<section id="subgroup-2" class="level3" data-number="18.4.2">
 <h3 data-number="18.4.2" class="anchored" data-anchor-id="subgroup-2"><span class="header-section-number">18.4.2</span> Subgroup 2</h3>
 <ul>
 <li><p>Add <code>geom_treemap_subgroup_border()</code></p>
@@ -794,7 +794,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><code>family</code>: <code>"sans"</code>/<code>"sansserif"</code>/<code>"mono"</code></p></li>
 </ul></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ggp2_tm_subgroup2 <span class="ot">&lt;-</span> ggp2_tm_subgroup <span class="sc">+</span> </span>
@@ -813,7 +813,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>ggp2_tm_subgroup2 <span class="sc">+</span> </span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  labs_treemap</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="treemaps_files/figure-html/code_graph_tmap_sgb_2-1.png" class="img-fluid"></p>

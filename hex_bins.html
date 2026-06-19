@@ -644,7 +644,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="grammar" class="level2 page-columns page-full" data-number="42.3">
+<section id="grammar" class="level2" data-number="42.3">
 <h2 data-number="42.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">42.3</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -677,8 +677,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div style="font-size: 0.85em;" class="page-columns page-full">
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div style="font-size: 0.85em;">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="hex_bins_files/figure-html/create_graph_hex-1.png" class="img-fluid"></p>
@@ -687,13 +687,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2 page-columns page-full" data-number="42.4">
+<section id="more-info" class="level2" data-number="42.4">
 <h2 data-number="42.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">42.4</span> More info</h2>
-<section id="bins" class="level3 page-columns page-full" data-number="42.4.1">
+<section id="bins" class="level3" data-number="42.4.1">
 <h3 data-number="42.4.1" class="anchored" data-anchor-id="bins"><span class="header-section-number">42.4.1</span> Bins</h3>
 <p>Below we change the <code>bins</code> to <code>20</code> and <code>15</code> and save these layers as <code>ggp2_hex_b20</code> and <code>ggp2_hex_b15</code>.</p>
 <p><em>Decreasing</em> the number of <code>bins</code> <em>increases</em> the size of the hexagons (and makes them larger).</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ggp2_hex_b20 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> penguins_hex,</span>
@@ -709,7 +709,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>ggp2_hex_b15 <span class="sc">+</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    labs_hex</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><img src="hex_bins_files/figure-html/bins_hex-1.png" class="img-fluid"></p>
@@ -721,13 +721,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="scale" class="level3 page-columns page-full" data-number="42.4.2">
+<section id="scale" class="level3" data-number="42.4.2">
 <h3 data-number="42.4.2" class="anchored" data-anchor-id="scale"><span class="header-section-number">42.4.2</span> Scale</h3>
 <ul>
 <li><p>We can adjust the color scale using <code>scale_color_discrete_sequential()</code> and setting <code>aesthetics</code> to <code>"fill"</code>.</p></li>
 <li><p>If the hexagons overlap, we can use the <code>alpha</code> to make them slightly transparent.</p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>labs_hex2 <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -748,7 +748,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">palette =</span> <span class="st">"Viridis"</span>) <span class="sc">+</span></span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    labs_hex2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="hex_bins_files/figure-html/scales_2d_hex-1.png" class="img-fluid"></p>
@@ -758,13 +758,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Get a full list of available color palette’s using <code>hcl_palettes(type =</code> <code>"sequential")</code></p>
 </section>
-<section id="options" class="level3 page-columns page-full" data-number="42.4.3">
+<section id="options" class="level3" data-number="42.4.3">
 <h3 data-number="42.4.3" class="anchored" data-anchor-id="options"><span class="header-section-number">42.4.3</span> Options</h3>
 <ul>
 <li><p><code>binwidth</code> allows us to manually adjust the size of the hexagons.</p></li>
 <li><p><code>linewidth</code> is also helpful when using <code>alpha</code> for overlapping values.</p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>labs_hex3 <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -787,7 +787,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">palette =</span> <span class="st">"Dark Mint"</span>) <span class="sc">+</span></span>
 <span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    labs_hex3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="hex_bins_files/figure-html/pals_2d_hex-1.png" class="img-fluid"></p>

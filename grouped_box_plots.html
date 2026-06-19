@@ -646,7 +646,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="grammar" class="level2 page-columns page-full" data-number="25.3">
+<section id="grammar" class="level2" data-number="25.3">
 <h2 data-number="25.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">25.3</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -683,8 +683,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>GRAPH:</strong></p>
 </div>
 <p>When a categorical variable is supplied, the plot will contain a box for each level or group.</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div style="font-size: 0.85em;">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="grouped_box_plots_files/figure-html/create_graph_grp_boxplots-1.png" class="img-fluid"></p>
@@ -693,12 +693,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2 page-columns page-full" data-number="25.4">
+<section id="more-info" class="level2" data-number="25.4">
 <h2 data-number="25.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">25.4</span> More info</h2>
-<section id="notches" class="level3 page-columns page-full" data-number="25.4.1">
+<section id="notches" class="level3" data-number="25.4.1">
 <h3 data-number="25.4.1" class="anchored" data-anchor-id="notches"><span class="header-section-number">25.4.1</span> Notches</h3>
 <p>Add notches to the box plot using the <code>notch = TRUE</code> and <code>notchwidth</code> arguments.</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ggp2_grp_box_notch <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> peng_box,</span>
@@ -713,7 +713,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>ggp2_grp_box_notch <span class="sc">+</span> </span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    labs_grp_boxplots</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="grouped_box_plots_files/figure-html/notches_boxplots-1.png" class="img-fluid"></p>
@@ -722,10 +722,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="outliers" class="level3 page-columns page-full" data-number="25.4.2">
+<section id="outliers" class="level3" data-number="25.4.2">
 <h3 data-number="25.4.2" class="anchored" data-anchor-id="outliers"><span class="header-section-number">25.4.2</span> Outliers</h3>
 <p>Box plots display outliers using points, and we can change the color these using the <code>outlier.colour</code> argument. Inside the <code>geom_boxplot()</code>, we map <code>island</code> to <code>color</code> and set <code>outlier.colour</code> to <code>NULL</code>:</p>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ggp2_grp_box_outliers <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> peng_box,</span>
@@ -742,7 +742,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>ggp2_grp_box_outliers <span class="sc">+</span> </span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    labs_grp_boxplots</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="grouped_box_plots_files/figure-html/outliers_boxplots-1.png" class="img-fluid"></p>

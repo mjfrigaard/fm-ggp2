@@ -641,7 +641,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="grammar" class="level2 page-columns page-full" data-number="10.3">
+<section id="grammar" class="level2" data-number="10.3">
 <h2 data-number="10.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">10.3</span> Grammar</h2>
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
@@ -672,7 +672,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="overlapping_bar_graphs_files/figure-html/create_graph_bar_ovrlp-1.png" class="img-fluid"></p>
@@ -686,7 +686,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Overlapping bar graphs can also be built with <code>geom_col()</code>.</p></li>
 <li><p><code>geom_bar()</code> has additional options for arranging overlapping bars. We can set the <code>position</code> argument to <code>"dodge"</code> or <code>"dodge2"</code>, depending on how we’d like the data displayed.</p></li>
 </ul>
-<section id="geom_col" class="level3 page-columns page-full" data-number="10.4.1">
+<section id="geom_col" class="level3" data-number="10.4.1">
 <h3 data-number="10.4.1" class="anchored" data-anchor-id="geom_col"><span class="header-section-number">10.4.1</span> <code>geom_col()</code></h3>
 <p><br></p>
 <p>To build an overlapping bar graph with <code>geom_col()</code>, we need to create a column with the counts for <code>flipper_length_mm</code> and <code>species</code> in the dataset.</p>
@@ -705,7 +705,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Map the counts to the <code>y</code> axis, <code>flipper_length_mm</code> to the <code>x</code> axis, and <code>species</code> to <code>fill</code></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>labs_col_ovrlp <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -722,7 +722,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>ggp2_col_ovrlp <span class="sc">+</span> </span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    labs_col_ovrlp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="overlapping_bar_graphs_files/figure-html/data_code_bar_penguins_dodge-1.png" class="img-fluid" width="576"></p>
@@ -731,7 +731,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Compare the two graphs below:</p>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><img src="overlapping_bar_graphs_files/figure-html/compare_bar_col-1.png" class="img-fluid" width="576"></p>
@@ -782,7 +782,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Map <code>species</code> to the <code>x</code> and <code>island</code> to <code>group</code> and <code>fill</code></p></li>
 <li><p>Inside the <code>geom_bar()</code> function, set <code>position</code> to <code>"dodge"</code></p></li>
 </ul>
-<div style="font-size: 0.85em;" class="page-columns page-full">
+<div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>labs_bar_dodge <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -800,7 +800,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>ggp2_bar_dodge <span class="sc">+</span></span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  labs_bar_dodge</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="overlapping_bar_graphs_files/figure-html/code_graph_dodge-1.png" class="img-fluid"></p>
@@ -825,7 +825,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><em><code>"dodge2"</code> works with bars and rectangles</em></p></li>
 <li><p><em><code>"dodge2"</code> is useful for arranging graphs with variable widths.</em></p></li>
 </ul>
-</div></div><div style="font-size: 0.85em;" class="page-columns page-full">
+</div></div><div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>labs_bar_dodge2 <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
@@ -842,7 +842,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>ggp2_bar_dodge2 <span class="sc">+</span></span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  labs_bar_dodge2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
 <p><img src="overlapping_bar_graphs_files/figure-html/create_graph_dodge2-1.png" class="img-fluid"></p>
@@ -851,7 +851,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Compare the two graphs below:</p>
-<div class="cell column-page-inset-right quarto-layout-panel" data-layout-nrow="1">
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><img src="overlapping_bar_graphs_files/figure-html/compare_bars-1.png" class="img-fluid"></p>
