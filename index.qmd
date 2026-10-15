@@ -43,7 +43,7 @@ I also wanted the examples to be fun to read, so every dataset is a late 90s thr
 %%| fig-cap: 'How each chapter builds its example'
 %%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'monospace', 'fontSize': '14px', 'darkMode': false}}}%%
 
-flowchart LR
+flowchart TB
     dist(["<strong>Distribution</strong><br>normal, Poisson,<br>gamma, ..."]) -->|"i. set.seed()"| sim["<strong>Simulate</strong><br>base R or <code>faux</code>"]
     sim --> dset[("<strong>90s dataset</strong><br>AOL sessions, Pogs,<br>Happy Meals, ...")]
     dset -->|"ii. Distribution section"| connect["<strong>Connect</strong><br>count it, draw it,<br>name it"]
