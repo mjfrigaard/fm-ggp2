@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_lisafrank(
     base_size = 14))
 ```
 
@@ -35,6 +35,8 @@ status("complete")
 
 ```{r}
 #| label: full_code_display
+#| fig-asp: 1
+#| dev.args: !expr list(bg = "#FF6EC7")
 #| eval: true
 #| echo: false
 #| warning: false
@@ -42,29 +44,37 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(ggplot2movies)
 library(ggplot2)
 library(ggpubr)
-movie_pie <- ggplot2movies::movies |>
-  filter(mpaa != "" & mpaa != "NC-17") |> 
-  group_by(mpaa) |> 
-  summarise(cnt = n()) |> 
+library(dplyr)
+set.seed(1993)
+trapper_keepers <- tibble(
+  keeper_id = 1:200,
+  design = sample(c("Rainbow leopards", "Unicorns", "Dolphins", "Pandas"),
+    size = 200, replace = TRUE, prob = c(1/2, 1/4, 1/8, 1/8)))
+keeper_pie <- trapper_keepers |>
+  count(design, name = "cnt") |>
   mutate(
-    perc = round(cnt / sum(cnt), 3),
-    mpaa = factor(mpaa, 
-          levels = c("PG", "PG-13", "R")))
-labs <- paste0(movie_pie$mpaa, " (", 
-               (100*movie_pie$perc), "%)")
+    perc = cnt / sum(cnt),
+    design = factor(design,
+      levels = c("Rainbow leopards", "Unicorns", "Dolphins", "Pandas"))) |>
+  arrange(design)
+pie_labels <- paste0(round(100 * keeper_pie$perc), "%")
+pie_theme <- fmggp2::theme_lisafrank(base_size = 14) +
+  theme(axis.text = element_blank(), axis.title = element_blank(),
+        axis.ticks = element_blank(), panel.grid.major = element_blank(),
+        legend.position = "bottom")
 labs_pie <- labs(
-  title = "Percent MPAA ratings for IMDB movies",
-  x = "Percent MPAA rating")
-ggp2_pie <- ggpubr::ggpie(movie_pie, 
-          x = "perc", label = labs, 
-          lab.pos = "in", lab.font = "white",
-          fill = "mpaa", color = "white") + 
-    theme(legend.position = "none")  
-    
-ggp2_pie + 
+  title = "Trapper Keepers (simulated)",
+  subtitle = "Lisa Frank designs sold",
+  fill = NULL)
+ggp2_pie <- ggpubr::ggpie(keeper_pie,
+          x = "perc", label = pie_labels,
+          lab.pos = "in", lab.font = "#3D0066",
+          fill = "design", color = "white") +
+    pie_theme
+
+ggp2_pie +
   labs_pie
 ```
 
@@ -73,12 +83,12 @@ ggp2_pie +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 ::::
 
-## Description 
+## Description
 
 *“In general, pie charts work well when the goal is to emphasize simple fractions, such as one-half, one-third, or one-quarter.”*
 
@@ -106,9 +116,8 @@ Install packages.
 #| results: hide
 install.packages("ggpubr")
 library(ggpubr)
-install.packages("ggplot2movies")
-library(ggplot2movies) 
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -116,11 +125,7 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![](www/imdb.png){fig-align="right" width="35%" height="35%"}
-:::
-
-Remove the missing values and `"NC-17"` from `mpaa` and summarise the count and percent.
+Every 90s school year started with a new Trapper Keeper, and the Lisa Frank designs (rainbow leopards, unicorns, dolphins, and pandas in neon colors) were the ones everyone wanted. We'll simulate the designs of 200 Trapper Keepers sold at a school supply store with `sample()`. The probabilities are simple fractions on purpose: one half, one quarter, one eighth, and one eighth. Then we count each design (`cnt`) and convert the counts to proportions (`perc`). Setting the seed with `set.seed()` means you'll get the same 200 Trapper Keepers every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -128,17 +133,120 @@ Remove the missing values and `"NC-17"` from `mpaa` and summarise the count and 
 #| code-fold: show
 #| eval: true
 #| echo: true
-movie_pie <- ggplot2movies::movies |>
-  filter(mpaa != "" & mpaa != "NC-17") |> 
-  group_by(mpaa) |> 
-  summarise(cnt = n()) |> 
+set.seed(1993)
+trapper_keepers <- tibble(
+  keeper_id = 1:200,
+  design = sample(c("Rainbow leopards", "Unicorns", "Dolphins", "Pandas"),
+    size = 200, replace = TRUE, prob = c(1/2, 1/4, 1/8, 1/8)))
+keeper_pie <- trapper_keepers |>
+  count(design, name = "cnt") |>
   mutate(
-    perc = round(cnt / sum(cnt), 3),
-    mpaa = factor(mpaa, 
-          levels = c("PG", "PG-13", "R")))
-glimpse(movie_pie)
+    perc = cnt / sum(cnt),
+    design = factor(design,
+      levels = c("Rainbow leopards", "Unicorns", "Dolphins", "Pandas"))) |>
+  arrange(design)
+glimpse(keeper_pie)
 ```
 :::
+
+## Distribution
+
+A pie chart is a whole cut into slices, so it only makes sense when the slices add up to one thing (here, 200 Trapper Keepers). Pie charts are easiest to read when the slices are simple fractions, and because we chose those fractions in `sample()`, we know what each slice should look like. Below we'll move from the Trapper Keepers, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first ten Trapper Keepers.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_pie
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(trapper_keepers$design, 10)
+```
+:::
+
+Counting all 200 and comparing each count to the count we'd expect (200 times each fraction) shows how close the simulation lands.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_pie
+#| code-fold: show
+#| eval: true
+#| echo: true
+keeper_pie |>
+  mutate(expected = 200 * c(1/2, 1/4, 1/8, 1/8))
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+A bar model lays the 200 Trapper Keepers out in a line. Rainbow leopards fill about half the bar, unicorns about a quarter, and dolphins and pandas split the last quarter.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_bar_model_pie
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| fig-asp: 0.45
+ggplot(data = keeper_pie, aes(x = cnt, y = "200 Trapper Keepers",
+    fill = design)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  geom_text(aes(label = cnt), color = "#3D0066",
+    position = position_stack(vjust = 0.5, reverse = TRUE)) +
+  labs(x = "Trapper Keepers", y = NULL, fill = "Design")
+```
+:::
+
+A pie chart bends the same bar into a circle. Below, the pie on the left uses the exact fractions from `sample()`, and the pie on the right uses our simulated counts. The leopard slice covers about half the circle in both, and the unicorn slice covers about a quarter.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_pie
+#| fig-asp: 1
+#| dev.args: !expr list(bg = "#FF6EC7")
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| layout-ncol: 2
+expected_pie <- keeper_pie |>
+  mutate(perc = c(1/2, 1/4, 1/8, 1/8))
+ggpubr::ggpie(expected_pie, x = "perc",
+    label = paste0(round(100 * expected_pie$perc, 1), "%"),
+    lab.pos = "in", lab.font = "#3D0066",
+    fill = "design", color = "white") +
+  labs(title = "Expected", fill = NULL) +
+  pie_theme
+
+ggpubr::ggpie(keeper_pie, x = "perc",
+    label = paste0(round(100 * keeper_pie$perc, 1), "%"),
+    lab.pos = "in", lab.font = "#3D0066",
+    fill = "design", color = "white") +
+  labs(title = "Simulated", fill = NULL) +
+  pie_theme
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each Trapper Keeper is one draw from four designs, so the four counts follow a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
+
+$$
+(N_{\text{leopards}}, N_{\text{unicorns}}, N_{\text{dolphins}}, N_{\text{pandas}}) \sim \text{Multinomial}\left(200, \; \left(\tfrac{1}{2}, \tfrac{1}{4}, \tfrac{1}{8}, \tfrac{1}{8}\right)\right)
+$$
+
+A slice's angle is its share of the 360 degrees in the circle: $\tfrac{1}{2}$ is 180 degrees, $\tfrac{1}{4}$ is 90 degrees, and each $\tfrac{1}{8}$ is 45 degrees. Simple fractions like these line up with the "clock positions" our eyes already know (half past, quarter past), which is why pie charts work best with them.
+
+Each simulated share wobbles around its fraction by about $\sqrt{p(1 - p) / 200}$: about 3.5 percentage points for the leopard slice and 2.3 points for the dolphin and panda slices. That's why our slices are close to the expected ones but not exact. Try changing `size = 200` to `size = 20` in `sample()` and the slices drift much further from the simple fractions.
+
 
 ## Grammar
 
@@ -146,45 +254,53 @@ glimpse(movie_pie)
 **CODE:**
 :::
 
+  -   Create the slice labels (`pie_labels`) with `paste0()`
+
+  -   `ggpie()` applies its own theme, so create `pie_theme` to add the book theme back (and remove the axis text, ticks, and grid lines)
+
   -   Create labels with `labs()`
 
-  -   Initialize the graph with `ggplot()` and provide `data`
+  -   Assign the data to `ggpubr::ggpie()`
 
   -   Assign `"perc"` to `x`
 
-  -   Assign `labs` to `label`
+  -   Assign `pie_labels` to `label`
 
   -   Assign `"in"` to `lab.pos`
 
-  -   Assign `"white"` to `lab.font` and `color`
+  -   Assign a dark color to `lab.font` and `"white"` to `color`
 
-  -   Assign `"mpaa"` to `fill`
+  -   Assign `"design"` to `fill`
 
-  -   Remove legend with `theme(legend.position = "none")`
+  -   Add `pie_theme` (which also moves the legend to the bottom)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_pie
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-labs <- paste0(movie_pie$mpaa, " (", 
-               (100*movie_pie$perc), "%)")
+pie_labels <- paste0(round(100 * keeper_pie$perc), "%")
+pie_theme <- fmggp2::theme_lisafrank(base_size = 14) +
+  theme(axis.text = element_blank(), axis.title = element_blank(),
+        axis.ticks = element_blank(), panel.grid.major = element_blank(),
+        legend.position = "bottom")
 labs_pie <- labs(
-  title = "Percent MPAA ratings for IMDB movies",
-  x = "Percent MPAA rating")
+  title = "Trapper Keepers (simulated)",
+  subtitle = "Lisa Frank designs sold",
+  fill = NULL)
 
-ggp2_pie <- ggpubr::ggpie(movie_pie, 
-          x = "perc", label = labs, 
-          lab.pos = "in", lab.font = "#ffffff",
-          fill = "mpaa", color = "#ffffff") + 
-    theme(legend.position = "none")  
-    
-ggp2_pie + 
+ggp2_pie <- ggpubr::ggpie(keeper_pie,
+          x = "perc", label = pie_labels,
+          lab.pos = "in", lab.font = "#3D0066",
+          fill = "design", color = "white") +
+    pie_theme
+
+ggp2_pie +
   labs_pie
 ```
 :::
@@ -197,6 +313,8 @@ ggp2_pie +
 
 ```{r}
 #| label: create_graph_pie
+#| fig-asp: 1
+#| dev.args: !expr list(bg = "#FF6EC7")
 #| eval: true
 #| echo: false
 #| warning: false
@@ -204,18 +322,22 @@ ggp2_pie +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-labs <- paste0(movie_pie$mpaa, " (", 
-               (100*movie_pie$perc), "%)")
+pie_labels <- paste0(round(100 * keeper_pie$perc), "%")
+pie_theme <- fmggp2::theme_lisafrank(base_size = 14) +
+  theme(axis.text = element_blank(), axis.title = element_blank(),
+        axis.ticks = element_blank(), panel.grid.major = element_blank(),
+        legend.position = "bottom")
 labs_pie <- labs(
-  title = "Percent MPAA ratings for IMDB movies",
-  x = "Percent MPAA rating")
+  title = "Trapper Keepers (simulated)",
+  subtitle = "Lisa Frank designs sold",
+  fill = NULL)
 
-ggp2_pie <- ggpubr::ggpie(movie_pie, 
-          x = "perc", label = labs, 
-          lab.pos = "in", lab.font = "#ffffff",
-          fill = "mpaa", color = "#ffffff") + 
-    theme(legend.position = "none")  
-    
-ggp2_pie + 
+ggp2_pie <- ggpubr::ggpie(keeper_pie,
+          x = "perc", label = pie_labels,
+          lab.pos = "in", lab.font = "#3D0066",
+          fill = "design", color = "white") +
+    pie_theme
+
+ggp2_pie +
   labs_pie
 ```

@@ -13,13 +13,12 @@ library(patchwork)
 # fonts ----
 library(extrafont)
 library(sysfonts)
-library(fivethirtyeight) 
 library(ggmosaic)
 source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_titanic(
     base_size = 14))
 ```
 
@@ -45,25 +44,39 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(fivethirtyeight) 
 library(ggmosaic)
-library(ggplot2) 
-fly_mosaic <- fivethirtyeight::flying |> 
-                dplyr::select(baby, unruly_child, recline_rude) |> 
-                tidyr::drop_na()
+library(ggplot2)
+library(dplyr)
+set.seed(1997)
+titanic_fans <- tibble(
+  fan_id = 1:500,
+  age_group = sample(c("Teen", "Adult"), 500, replace = TRUE,
+    prob = c(0.4, 0.6))) |>
+  mutate(
+    viewings = if_else(age_group == "Teen",
+      sample(c("Once", "Twice", "3+ times"), n(), replace = TRUE,
+        prob = c(0.35, 0.35, 0.30)),
+      sample(c("Once", "Twice", "3+ times"), n(), replace = TRUE,
+        prob = c(0.70, 0.22, 0.08))),
+    soundtrack = if_else(
+      runif(n()) < c(Once = 0.25, Twice = 0.50, `3+ times` = 0.80)[viewings],
+      "Yes", "No"),
+    age_group = factor(age_group, levels = c("Teen", "Adult")),
+    viewings = factor(viewings, levels = c("Once", "Twice", "3+ times")),
+    soundtrack = factor(soundtrack, levels = c("No", "Yes")))
 labs_mosaic <- labs(
-      title = "In general...", 
-      subtitle = "...is it rude to...",
-      x = "... bring a baby on a plane?",
-      y = "...knowingly bring unruly children on a plane?",
-      fill = "Response") 
-ggp2_mosaic <- ggplot(data = fly_mosaic) +
-   ggmosaic::geom_mosaic(mapping = 
-          aes(x = product(unruly_child, baby), 
-              fill = baby)) + 
-    ggmosaic::theme_mosaic(base_size = 10) + 
-    theme(legend.position = "bottom")
-ggp2_mosaic + 
+      title = "Titanic (simulated)",
+      subtitle = "500 moviegoers in 1998",
+      fill = "Age group")
+ggp2_mosaic <- ggplot(data = titanic_fans) +
+   ggmosaic::geom_mosaic(mapping =
+          aes(x = product(viewings, age_group),
+              fill = age_group)) +
+    scale_x_productlist("Age group") +
+    scale_y_productlist("Times seen in theaters") +
+    theme(legend.position = "bottom",
+          panel.grid.major = element_blank())
+ggp2_mosaic +
     labs_mosaic
 ```
 
@@ -72,16 +85,16 @@ ggp2_mosaic +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-✅ at least two categorical variables      
+✅ at least two categorical variables
 :::
 
 ::::
 
-## Description 
+## Description
 
 A mosaic plot is similar to a stacked bar graph, but instead of only relying on height and color to display the relative amount for each value, mosaic plots also use width.
 
-Mosaic plot legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability. 
+Mosaic plot legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability.
 
 We can build mosaic plots using the [`ggmosaic` package.](https://haleyjeppson.github.io/ggmosaic/)
 
@@ -105,11 +118,10 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("fivethirtyeight")
-library(fivethirtyeight) 
 # pak::pak("haleyjeppson/ggmosaic")
 library(ggmosaic)
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -119,12 +131,8 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![](www/538.png){fig-align="right" width="45%" height="45%"}
-:::
-
 ::: {style="font-size: 0.95rem;"}
-For this graph, we'll be using the `fivethirtyeight::flying` dataset, after removing the missing values from `baby`, `recline_rude`,  and `unruly_child`. 
+*Titanic* (1997) stayed in theaters for months, and plenty of fans (especially teenagers) went back to see it again and again. We'll simulate 500 moviegoers in three linked steps. First, `sample()` decides each fan's `age_group`. Next, each age group gets its own chances of seeing the movie once, twice, or three or more times (`viewings`). Finally, the more times a fan saw the movie, the more likely they were to buy the soundtrack (`soundtrack`), so `runif()` draws a number between 0 and 1 and compares it to the chance for that fan's number of viewings. Setting the seed with `set.seed()` means you'll get the same 500 fans every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -133,12 +141,114 @@ For this graph, we'll be using the `fivethirtyeight::flying` dataset, after remo
 #| code-fold: show
 #| eval: true
 #| echo: true
-fly_mosaic <- fivethirtyeight::flying |> 
-                dplyr::select(baby, unruly_child, recline_rude) |> 
-                tidyr::drop_na()
-glimpse(fly_mosaic)
+set.seed(1997)
+titanic_fans <- tibble(
+  fan_id = 1:500,
+  age_group = sample(c("Teen", "Adult"), 500, replace = TRUE,
+    prob = c(0.4, 0.6))) |>
+  mutate(
+    viewings = if_else(age_group == "Teen",
+      sample(c("Once", "Twice", "3+ times"), n(), replace = TRUE,
+        prob = c(0.35, 0.35, 0.30)),
+      sample(c("Once", "Twice", "3+ times"), n(), replace = TRUE,
+        prob = c(0.70, 0.22, 0.08))),
+    soundtrack = if_else(
+      runif(n()) < c(Once = 0.25, Twice = 0.50, `3+ times` = 0.80)[viewings],
+      "Yes", "No"),
+    age_group = factor(age_group, levels = c("Teen", "Adult")),
+    viewings = factor(viewings, levels = c("Once", "Twice", "3+ times")),
+    soundtrack = factor(soundtrack, levels = c("No", "Yes")))
+glimpse(titanic_fans)
 ```
 :::
+
+## Distribution
+
+A mosaic plot draws a two way table as a set of rectangles, and each rectangle's width and height are probabilities. Because we built the dependence between age and viewings into the simulation, we know what those widths and heights should be. Below we'll move from the fans, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first eight fans.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_mosaic
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(titanic_fans, 8)
+```
+:::
+
+All five teens in this group saw the movie more than once, while two of the three adults saw it only once. The table below counts every combination of age group and viewings, then converts the counts to proportions within each age group.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_mosaic
+#| code-fold: show
+#| eval: true
+#| echo: true
+titanic_fans |>
+  count(age_group, viewings) |>
+  group_by(age_group) |>
+  mutate(share = round(n / sum(n), 2)) |>
+  ungroup()
+```
+:::
+
+Teens split almost evenly across one, two, and three or more viewings, while about two thirds of adults saw the movie once.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The mosaic plot below draws the table above. The width of each column is the share of fans in that age group (adults take up more width because there are more of them), and the height of each tile is the share of that age group with each number of viewings.
+
+The second mosaic shuffles `viewings` with `sample()`, which keeps the same counts but breaks the link between age and viewings. Without the link, the tiles line up into straight rows: every age group has the same mix of viewings.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_mosaic
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| layout-ncol: 2
+ggplot(data = titanic_fans) +
+  ggmosaic::geom_mosaic(aes(x = product(viewings, age_group),
+                            fill = viewings)) +
+  scale_x_productlist("Age group") +
+  scale_y_productlist("Viewings") +
+  labs(title = "Simulated", fill = "Viewings") +
+  theme(legend.position = "bottom", panel.grid.major = element_blank())
+
+titanic_fans |>
+  mutate(viewings = sample(viewings)) |>
+  ggplot() +
+  ggmosaic::geom_mosaic(aes(x = product(viewings, age_group),
+                            fill = viewings)) +
+  scale_x_productlist("Age group") +
+  scale_y_productlist("Viewings") +
+  labs(title = "Shuffled", fill = "Viewings") +
+  theme(legend.position = "bottom", panel.grid.major = element_blank())
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each tile's area is a [joint probability](https://en.wikipedia.org/wiki/Joint_probability_distribution), which we can split into a width times a height:
+
+$$
+P(\text{age}, \text{viewings}) = \underbrace{P(\text{age})}_{\text{width}} \times \underbrace{P(\text{viewings} \mid \text{age})}_{\text{height}}
+$$
+
+The simulation sets the widths with $P(\text{Teen}) = 0.4$ and $P(\text{Adult}) = 0.6$, and the heights with a different [conditional distribution](https://en.wikipedia.org/wiki/Conditional_probability_distribution) for each age group: $(0.35, 0.35, 0.30)$ for teens and $(0.70, 0.22, 0.08)$ for adults.
+
+When two variables are [independent](https://en.wikipedia.org/wiki/Independence_(probability_theory)), $P(\text{viewings} \mid \text{age}) = P(\text{viewings})$, so every column has the same heights. That's what the shuffled mosaic shows. The more the tiles in one column are out of line with the tiles in the next, the stronger the relationship. Try giving adults the same viewing probabilities as teens and the first mosaic will look like the second.
+
 
 ## Grammar
 
@@ -150,13 +260,13 @@ glimpse(fly_mosaic)
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Map the `product()` of `unruly_child` and `baby` to the `x` axis
+  -   Map the `product()` of `viewings` and `age_group` to the `x` axis
 
-  -   Map `baby` to `fill`
+  -   Map `age_group` to `fill`
 
-  -   Add `theme_mosaic()`
+  -   `geom_mosaic()` names the axes after the variables, so set the axis titles with `scale_x_productlist()` and `scale_y_productlist()`
 
-  -   Move the legend to the bottom with `theme(legend.position = "bottom")`
+  -   Remove the grid lines and move the legend to the bottom with `theme(legend.position = "bottom", panel.grid.major = element_blank())`
 
 
 ::: {style="font-size: 0.85em;"}
@@ -164,24 +274,24 @@ glimpse(fly_mosaic)
 #| label: code_graph_mosaic
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_mosaic <- labs(
-      title = "In general...", 
-      subtitle = "...is it rude to...",
-      x = "... bring a baby on a plane?",
-      y = "...knowingly bring unruly children on a plane?",
-      fill = "Response") 
-ggp2_mosaic <- ggplot(data = fly_mosaic) +
-   ggmosaic::geom_mosaic(mapping = 
-          aes(x = product(unruly_child, baby), 
-              fill = baby)) + 
-    ggmosaic::theme_mosaic(base_size = 10) + 
-    theme(legend.position = "bottom")
-ggp2_mosaic + 
+      title = "Titanic (simulated)",
+      subtitle = "500 moviegoers in 1998",
+      fill = "Age group")
+ggp2_mosaic <- ggplot(data = titanic_fans) +
+   ggmosaic::geom_mosaic(mapping =
+          aes(x = product(viewings, age_group),
+              fill = age_group)) +
+    scale_x_productlist("Age group") +
+    scale_y_productlist("Times seen in theaters") +
+    theme(legend.position = "bottom",
+          panel.grid.major = element_blank())
+ggp2_mosaic +
     labs_mosaic
 ```
 :::
@@ -196,25 +306,25 @@ ggp2_mosaic +
 ```{r}
 #| label: run_graph_mosaic
 #| eval: true
-#| echo: false 
+#| echo: false
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_mosaic <- labs(
-      title = "In general...", 
-      subtitle = "...is it rude to...",
-      x = "... bring a baby on a plane?",
-      y = "...knowingly bring unruly children on a plane?",
-      fill = "Response") 
-ggp2_mosaic <- ggplot(data = fly_mosaic) +
-   ggmosaic::geom_mosaic(mapping = 
-          aes(x = product(unruly_child, baby), 
-              fill = baby)) + 
-    ggmosaic::theme_mosaic(base_size = 10) + 
-    theme(legend.position = "bottom")
-ggp2_mosaic + 
+      title = "Titanic (simulated)",
+      subtitle = "500 moviegoers in 1998",
+      fill = "Age group")
+ggp2_mosaic <- ggplot(data = titanic_fans) +
+   ggmosaic::geom_mosaic(mapping =
+          aes(x = product(viewings, age_group),
+              fill = age_group)) +
+    scale_x_productlist("Age group") +
+    scale_y_productlist("Times seen in theaters") +
+    theme(legend.position = "bottom",
+          panel.grid.major = element_blank())
+ggp2_mosaic +
     labs_mosaic
 ```
 :::
@@ -241,27 +351,24 @@ It's a good idea to adjust the `fig-height` and `fig-width` of your graph
 #| fig-align: center
 # graph
 labs_mosaic <- labs(
-      title = "In general...is it rude to...", 
-      subtitle = "f(unruly_child | baby) f(baby)",
-      x = "... bring a baby on a plane?",
-      y = "...knowingly bring unruly children on a plane?",
-      fill = "Response") 
-ggp2_mosaic <- ggplot(data = fly_mosaic) +
-   ggmosaic::geom_mosaic(mapping = 
-          aes(x = product(unruly_child, baby), 
-              fill = baby)) + 
-    ggmosaic::theme_mosaic(base_size = 10) + 
-    theme(legend.position = "bottom")
-ggp2_mosaic + 
+      title = "Titanic (simulated)",
+      subtitle = "f(viewings | age_group) f(age_group)",
+      fill = "Age group")
+ggp2_mosaic <- ggplot(data = titanic_fans) +
+   ggmosaic::geom_mosaic(mapping =
+          aes(x = product(viewings, age_group),
+              fill = age_group)) +
+    scale_x_productlist("Age group") +
+    scale_y_productlist("Times seen in theaters") +
+    theme(legend.position = "bottom",
+          panel.grid.major = element_blank())
+ggp2_mosaic +
     labs_mosaic
 # table
-fly_mosaic_counts <- fly_mosaic |>
-    dplyr::count(unruly_child, baby) |> 
-    tidyr::pivot_wider(names_from = baby, values_from = n) |> 
-    dplyr::arrange(desc(unruly_child)) |> 
-    dplyr::mutate(
-        Very = as.character(Very),
-        Very = tidyr::replace_na(Very, ""))
+titanic_counts <- titanic_fans |>
+    dplyr::count(viewings, age_group) |>
+    tidyr::pivot_wider(names_from = age_group, values_from = n) |>
+    dplyr::arrange(desc(viewings))
 ```
 :::
 
@@ -272,40 +379,40 @@ The table below displays the counts for each combined response. As we can see, t
 #| eval: true
 #| echo: false
 kableExtra::kable_paper(
-  kable_input = knitr::kable(fly_mosaic_counts), 
+  kable_input = knitr::kable(titanic_counts),
   font_size = 14)
 ```
 
 
 ## More info
 
-I recommend reading the [`ggmosaic` vignette](https://haleyjeppson.github.io/ggmosaic/articles/ggmosaic.html), particularly the sections on ordering and conditioning. 
+I recommend reading the [`ggmosaic` vignette](https://haleyjeppson.github.io/ggmosaic/articles/ggmosaic.html), particularly the sections on ordering and conditioning.
 
 ### Two variables
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: fly_mosaic_2var_counts_table
+#| label: titanic_2var_counts_table
 #| eval: true
 #| echo: false
 #| warning: false
 #| message: false
 # table
-fly_mosaic_2var_counts <- fly_mosaic |> 
-    dplyr::count(unruly_child, recline_rude) |> 
+titanic_2var_counts <- titanic_fans |>
+    dplyr::count(viewings, soundtrack) |>
     tidyr::pivot_wider(
-      names_from = recline_rude, 
-      values_from = n) |> 
-    dplyr::arrange(desc(unruly_child))
+      names_from = soundtrack,
+      values_from = n) |>
+    dplyr::arrange(desc(viewings))
 
 kableExtra::kable_paper(
-  kable_input = knitr::kable(fly_mosaic_2var_counts), 
+  kable_input = knitr::kable(titanic_2var_counts),
   font_size = 12)
 ```
 :::
 
 
-Below is another example of a two-variable mosaic plot, mapping the `product()` variables as `unruly_child` and `recline_rude`, and the `fill` variable as `recline_rude`.
+Below is another example of a two-variable mosaic plot, mapping the `product()` variables as `viewings` and `soundtrack`, and the `fill` variable as `soundtrack`.
 
 Once again we can see the counts for each category in the cross-tabulation:
 
@@ -322,26 +429,26 @@ Once again we can see the counts for each category in the cross-tabulation:
 #| layout-nrow: 1
 # build 2-variable mosiac plot
 labs_mosaic_2var <- labs(
-  title = "In general...is it rude to...", 
+  title = "Titanic (simulated)",
   subtitle = "2-Variable plot",
-  x = "... recline your seat on a plane?",
-  y = "...knowingly bring unruly children on a plane?",
-  fill = "recline_rude responses")
+  fill = "soundtrack")
 
-ggp2_mosaic_2var <- ggplot(data = fly_mosaic) +
+ggp2_mosaic_2var <- ggplot(data = titanic_fans) +
   geom_mosaic(aes(
-    x = product(unruly_child, recline_rude),
-    fill = recline_rude)) +
-  ggmosaic::theme_mosaic(base_size = 10) + 
-  theme(legend.position = "bottom")
-  
-ggp2_mosaic_2var + 
+    x = product(viewings, soundtrack),
+    fill = soundtrack)) +
+  scale_x_productlist("Bought the soundtrack?") +
+  scale_y_productlist("Times seen in theaters") +
+  theme(legend.position = "bottom",
+        panel.grid.major = element_blank())
+
+ggp2_mosaic_2var +
     labs_mosaic_2var
 ```
 :::
 
 
-For conditional variables, we map the `product()` variable as `unruly_child` and the `fill` variable as `baby`, but include a `conds` variable (as `product(recline_rude)`).
+For conditional variables, we map the `product()` variable as `viewings` and the `fill` variable as `viewings`, but include a `conds` variable (as `product(soundtrack)`).
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -355,29 +462,29 @@ For conditional variables, we map the `product()` variable as `unruly_child` and
 #| layout-nrow: 1
 # build conditional mosiac plot
 labs_mosaic_cond <- labs(
-  title = "In general...is it rude to...", 
+  title = "Titanic (simulated)",
   subtitle = "Conditional plot",
-  x = "...recline your seat on a plane?",
-  y = "...knowingly bring unruly children on a plane?",
-  fill = "unruly_child responses")
-ggp2_mosaic_cond <- ggplot(data = fly_mosaic) +
+  fill = "viewings")
+ggp2_mosaic_cond <- ggplot(data = titanic_fans) +
   geom_mosaic(aes(
-    x = product(unruly_child), # product variable
-    fill = unruly_child,
-    conds = product(recline_rude))) + # conditional variable
-  ggmosaic::theme_mosaic(base_size = 10) + 
-  theme(legend.position = "bottom")
+    x = product(viewings), # product variable
+    fill = viewings,
+    conds = product(soundtrack))) + # conditional variable
+  scale_x_productlist("Bought the soundtrack?") +
+  scale_y_productlist("Times seen in theaters") +
+  theme(legend.position = "bottom",
+        panel.grid.major = element_blank())
 
-ggp2_mosaic_cond + 
+ggp2_mosaic_cond +
     labs_mosaic_cond
 ```
 :::
 
 ### Facets
 
-Another option for including a conditioning variable is including facets. In the example below we use `recline_rude` in both `x` and `fill` (remember to wrap `recline_rude` in `product()`).
+Another option for including a conditioning variable is including facets. In the example below we use `soundtrack` in both `x` and `fill` (remember to wrap `soundtrack` in `product()`).
 
-The `divider` argument let's us control the spine partitions (vertically and horizontally). Below are the two vertical orientation options for the `divider` argument. 
+The `divider` argument let's us control the spine partitions (vertically and horizontally). Below are the two vertical orientation options for the `divider` argument.
 
 ::: {style="font-size: 0.95rem;"}
 ```{r}
@@ -391,48 +498,46 @@ The `divider` argument let's us control the spine partitions (vertically and hor
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_mosaic_facet <- labs(
-        title = "In general...is it rude to...",
+        title = "Titanic (simulated)",
         caption = "divider = 'vspine'",
-        y = "...recline your seat on a plane?",
-        x = "...knowingly bring unruly children on a plane?",
-        fill = "recline_rude responses") 
-ggp2_mosaic_vspine <- ggplot(data = fly_mosaic) +
-          ggmosaic::geom_mosaic(aes(x = product(recline_rude), 
-                                 fill = recline_rude), 
+        fill = "soundtrack")
+ggp2_mosaic_vspine <- ggplot(data = titanic_fans) +
+          ggmosaic::geom_mosaic(aes(x = product(soundtrack),
+                                 fill = soundtrack),
                               divider = "vspine") +
-                    facet_grid(. ~ unruly_child) + 
-            ggmosaic::theme_mosaic(base_size = 8) + 
+                    facet_grid(. ~ viewings) +
+            scale_x_productlist("Times seen in theaters") +
+            scale_y_productlist("Bought the soundtrack?") +
             theme(
                 axis.text.x = element_blank(),
                 axis.ticks.x = element_blank(),
-                panel.grid.minor.x = element_blank(),
                 panel.grid.major = element_blank()) +
             labs_mosaic_facet +
-            labs(caption = "divider = 'vspine'") 
+            labs(caption = "divider = 'vspine'")
 
-ggp2_mosaic_vbar <- ggplot(data = fly_mosaic) +
-          ggmosaic::geom_mosaic(aes(x = product(recline_rude), 
-                                 fill = recline_rude), 
+ggp2_mosaic_vbar <- ggplot(data = titanic_fans) +
+          ggmosaic::geom_mosaic(aes(x = product(soundtrack),
+                                 fill = soundtrack),
                               divider = "vbar") +
-                    facet_grid(. ~ unruly_child) +
-            ggmosaic::theme_mosaic(base_size = 8) + 
+                    facet_grid(. ~ viewings) +
+            scale_x_productlist("Times seen in theaters") +
+            scale_y_productlist("Bought the soundtrack?") +
             theme(
                 axis.text.x = element_blank(),
                 axis.ticks.x = element_blank(),
-                panel.grid.minor.x = element_blank(),
                 panel.grid.major = element_blank()) +
             labs_mosaic_facet +
-            labs(caption = "divider = 'vbar'") 
+            labs(caption = "divider = 'vbar'")
 
-ggp2_mosaic_vspine + 
-    ggp2_mosaic_vbar + 
+ggp2_mosaic_vspine +
+    ggp2_mosaic_vbar +
   patchwork::plot_layout(
     nrow = 2, guides = 'collect')
 ```
 :::
 
 
-The two horizontal orientation options make the axis text harder to read, so these need to be manipulated manually. 
+The two horizontal orientation options make the axis text harder to read, so these need to be manipulated manually.
 
 ::: {style="font-size: 0.95rem;"}
 ```{r}
@@ -445,42 +550,34 @@ The two horizontal orientation options make the axis text harder to read, so the
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-ggp2_mosaic_hspine <- ggplot(data = fly_mosaic) +
-          ggmosaic::geom_mosaic(aes(x = product(recline_rude), 
-                                 fill = recline_rude), 
+ggp2_mosaic_hspine <- ggplot(data = titanic_fans) +
+          ggmosaic::geom_mosaic(aes(x = product(soundtrack),
+                                 fill = soundtrack),
                               divider = "hspine") +
-                    facet_grid(. ~ unruly_child) + 
-            ggmosaic::theme_mosaic(base_size = 8) + 
+                    facet_grid(. ~ viewings) +
             theme(
                 axis.text.x = element_blank(),
                 axis.ticks.x = element_blank(),
-                panel.grid.minor.x = element_blank(),
                 panel.grid.major = element_blank()) +
             labs_mosaic_facet +
-            labs(caption = "divider = 'hspine'") 
+            labs(caption = "divider = 'hspine'")
 
 
-ggp2_mosaic_hbar <- ggplot(data = fly_mosaic) +
-          ggmosaic::geom_mosaic(aes(x = product(recline_rude), 
-                                 fill = recline_rude), 
+ggp2_mosaic_hbar <- ggplot(data = titanic_fans) +
+          ggmosaic::geom_mosaic(aes(x = product(soundtrack),
+                                 fill = soundtrack),
                               divider = "hbar") +
-                    facet_grid(. ~ unruly_child) + 
-            ggmosaic::theme_mosaic(base_size = 8) + 
+                    facet_grid(. ~ viewings) +
             theme(
                 axis.text.x = element_blank(),
                 axis.ticks.x = element_blank(),
-                panel.grid.minor.x = element_blank(),
                 panel.grid.major = element_blank()) +
             labs_mosaic_facet +
-            labs(caption = "divider = 'hbar'") 
+            labs(caption = "divider = 'hbar'")
 
-ggp2_mosaic_hspine + 
-    ggp2_mosaic_hbar + 
+ggp2_mosaic_hspine +
+    ggp2_mosaic_hbar +
   patchwork::plot_layout(
     nrow = 2, guides = 'collect')
 ```
 :::
-
-
-
-

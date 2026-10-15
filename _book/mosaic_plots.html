@@ -110,6 +110,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -526,14 +555,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">16.1</span> Description</a></li>
   <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up"><span class="header-section-number">16.2</span> Set up</a></li>
-  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">16.3</span> Grammar</a>
+  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">16.3</span> Distribution</a></li>
+  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">16.4</span> Grammar</a>
   <ul>
-  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details"><span class="header-section-number">16.3.1</span> Details</a></li>
+  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details"><span class="header-section-number">16.4.1</span> Details</a></li>
   </ul></li>
-  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">16.4</span> More info</a>
+  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">16.5</span> More info</a>
   <ul>
-  <li><a href="#two-variables" id="toc-two-variables" class="nav-link" data-scroll-target="#two-variables"><span class="header-section-number">16.4.1</span> Two variables</a></li>
-  <li><a href="#facets" id="toc-facets" class="nav-link" data-scroll-target="#facets"><span class="header-section-number">16.4.2</span> Facets</a></li>
+  <li><a href="#two-variables" id="toc-two-variables" class="nav-link" data-scroll-target="#two-variables"><span class="header-section-number">16.5.1</span> Two variables</a></li>
+  <li><a href="#facets" id="toc-facets" class="nav-link" data-scroll-target="#facets"><span class="header-section-number">16.5.2</span> Facets</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/mosaic_plots.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -601,7 +631,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Mosaic plot legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability.</p>
 <p>We can build mosaic plots using the <a href="https://haleyjeppson.github.io/ggmosaic/"><code>ggmosaic</code> package.</a></p>
 </section>
-<section id="set-up" class="level2 page-columns page-full" data-number="16.2">
+<section id="set-up" class="level2" data-number="16.2">
 <h2 data-number="16.2" class="anchored" data-anchor-id="set-up"><span class="header-section-number">16.2</span> Set up</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>PACKAGES:</strong></p>
@@ -613,75 +643,172 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"fivethirtyeight"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fivethirtyeight) </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># pak::pak("haleyjeppson/ggmosaic")</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggmosaic)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pak::pak("haleyjeppson/ggmosaic")</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggmosaic)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># for tibble() and data manipulation</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure">
-<p><img src="www/538.png" class="quarto-figure quarto-figure-right figure-img" style="width:45.0%;height:45.0%"></p>
-</figure>
-</div>
-</div></div><div style="font-size: 0.95rem;">
-<p>For this graph, we’ll be using the <code>fivethirtyeight::flying</code> dataset, after removing the missing values from <code>baby</code>, <code>recline_rude</code>, and <code>unruly_child</code>.</p>
+<div style="font-size: 0.95rem;">
+<p><em>Titanic</em> (1997) stayed in theaters for months, and plenty of fans (especially teenagers) went back to see it again and again. We’ll simulate 500 moviegoers in three linked steps. First, <code>sample()</code> decides each fan’s <code>age_group</code>. Next, each age group gets its own chances of seeing the movie once, twice, or three or more times (<code>viewings</code>). Finally, the more times a fan saw the movie, the more likely they were to buy the soundtrack (<code>soundtrack</code>), so <code>runif()</code> draws a number between 0 and 1 and compares it to the chance for that fan’s number of viewings. Setting the seed with <code>set.seed()</code> means you’ll get the same 500 fans every time you run the code below.</p>
 </div>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fly_mosaic <span class="ot">&lt;-</span> fivethirtyeight<span class="sc">::</span>flying <span class="sc">|&gt;</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                dplyr<span class="sc">::</span><span class="fu">select</span>(baby, unruly_child, recline_rude) <span class="sc">|&gt;</span> </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                tidyr<span class="sc">::</span><span class="fu">drop_na</span>()</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(fly_mosaic)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 849</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ baby         &lt;ord&gt; No, Somewhat, Somewhat, Som…</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ unruly_child &lt;ord&gt; No, Very, Very, Very, Very,…</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ recline_rude &lt;ord&gt; Somewhat, No, No, No, No, S…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1997</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>titanic_fans <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fan_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">500</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">age_group =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Teen"</span>, <span class="st">"Adult"</span>), <span class="dv">500</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.4</span>, <span class="fl">0.6</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">viewings =</span> <span class="fu">if_else</span>(age_group <span class="sc">==</span> <span class="st">"Teen"</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Once"</span>, <span class="st">"Twice"</span>, <span class="st">"3+ times"</span>), <span class="fu">n</span>(), <span class="at">replace =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.35</span>, <span class="fl">0.35</span>, <span class="fl">0.30</span>)),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Once"</span>, <span class="st">"Twice"</span>, <span class="st">"3+ times"</span>), <span class="fu">n</span>(), <span class="at">replace =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.70</span>, <span class="fl">0.22</span>, <span class="fl">0.08</span>))),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">soundtrack =</span> <span class="fu">if_else</span>(</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">runif</span>(<span class="fu">n</span>()) <span class="sc">&lt;</span> <span class="fu">c</span>(<span class="at">Once =</span> <span class="fl">0.25</span>, <span class="at">Twice =</span> <span class="fl">0.50</span>, <span class="st">`</span><span class="at">3+ times</span><span class="st">`</span> <span class="ot">=</span> <span class="fl">0.80</span>)[viewings],</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Yes"</span>, <span class="st">"No"</span>),</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">age_group =</span> <span class="fu">factor</span>(age_group, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Teen"</span>, <span class="st">"Adult"</span>)),</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">viewings =</span> <span class="fu">factor</span>(viewings, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Once"</span>, <span class="st">"Twice"</span>, <span class="st">"3+ times"</span>)),</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">soundtrack =</span> <span class="fu">factor</span>(soundtrack, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>)))</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(titanic_fans)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 500</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ fan_id     &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10…</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ age_group  &lt;fct&gt; Adult, Teen, Teen, Teen, Adul…</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ viewings   &lt;fct&gt; Twice, 3+ times, 3+ times, Tw…</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ soundtrack &lt;fct&gt; Yes, No, Yes, Yes, No, Yes, N…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
-<section id="grammar" class="level2 page-columns page-full" data-number="16.3">
-<h2 data-number="16.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">16.3</span> Grammar</h2>
+<section id="distribution" class="level2" data-number="16.3">
+<h2 data-number="16.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">16.3</span> Distribution</h2>
+<p>A mosaic plot draws a two way table as a set of rectangles, and each rectangle’s width and height are probabilities. Because we built the dependence between age and viewings into the simulation, we know what those widths and heights should be. Below we’ll move from the fans, to a picture, to the formula.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>COUNT IT:</strong></p>
+</div>
+<p>Start with the first eight fans.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(titanic_fans, <span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["fan_id"],"name":[1],"type":["int"],"align":["right"]},{"label":["age_group"],"name":[2],"type":["fct"],"align":["left"]},{"label":["viewings"],"name":[3],"type":["fct"],"align":["left"]},{"label":["soundtrack"],"name":[4],"type":["fct"],"align":["left"]}],"data":[{"1":"1","2":"Adult","3":"Twice","4":"Yes"},{"1":"2","2":"Teen","3":"3+ times","4":"No"},{"1":"3","2":"Teen","3":"3+ times","4":"Yes"},{"1":"4","2":"Teen","3":"Twice","4":"Yes"},{"1":"5","2":"Adult","3":"Once","4":"No"},{"1":"6","2":"Teen","3":"3+ times","4":"Yes"},{"1":"7","2":"Adult","3":"Once","4":"No"},{"1":"8","2":"Teen","3":"Twice","4":"No"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>All five teens in this group saw the movie more than once, while two of the three adults saw it only once. The table below counts every combination of age group and viewings, then converts the counts to proportions within each age group.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>titanic_fans <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(age_group, viewings) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(age_group) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">share =</span> <span class="fu">round</span>(n <span class="sc">/</span> <span class="fu">sum</span>(n), <span class="dv">2</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["age_group"],"name":[1],"type":["fct"],"align":["left"]},{"label":["viewings"],"name":[2],"type":["fct"],"align":["left"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]},{"label":["share"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Teen","2":"Once","3":"62","4":"0.34"},{"1":"Teen","2":"Twice","3":"60","4":"0.33"},{"1":"Teen","2":"3+ times","3":"62","4":"0.34"},{"1":"Adult","2":"Once","3":"205","4":"0.65"},{"1":"Adult","2":"Twice","3":"85","4":"0.27"},{"1":"Adult","2":"3+ times","3":"26","4":"0.08"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>Teens split almost evenly across one, two, and three or more viewings, while about two thirds of adults saw the movie once.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>DRAW IT:</strong></p>
+</div>
+<p>The mosaic plot below draws the table above. The width of each column is the share of fans in that age group (adults take up more width because there are more of them), and the height of each tile is the share of that age group with each number of viewings.</p>
+<p>The second mosaic shuffles <code>viewings</code> with <code>sample()</code>, which keeps the same counts but breaks the link between age and viewings. Without the link, the tiles line up into straight rows: every age group has the same mix of viewings.</p>
+<div style="font-size: 0.85em;">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> titanic_fans) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  ggmosaic<span class="sc">::</span><span class="fu">geom_mosaic</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">product</span>(viewings, age_group),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">fill =</span> viewings)) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_productlist</span>(<span class="st">"Age group"</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_productlist</span>(<span class="st">"Viewings"</span>) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Simulated"</span>, <span class="at">fill =</span> <span class="st">"Viewings"</span>) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>, <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>titanic_fans <span class="sc">|&gt;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">viewings =</span> <span class="fu">sample</span>(viewings)) <span class="sc">|&gt;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  ggmosaic<span class="sc">::</span><span class="fu">geom_mosaic</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">product</span>(viewings, age_group),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                            <span class="at">fill =</span> viewings)) <span class="sc">+</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_productlist</span>(<span class="st">"Age group"</span>) <span class="sc">+</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_productlist</span>(<span class="st">"Viewings"</span>) <span class="sc">+</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Shuffled"</span>, <span class="at">fill =</span> <span class="st">"Viewings"</span>) <span class="sc">+</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>, <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="mosaic_plots_files/figure-html/draw_mosaic-1.png" class="img-fluid" width="576"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="mosaic_plots_files/figure-html/draw_mosaic-2.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>NAME IT:</strong></p>
+</div>
+<p>Each tile’s area is a <a href="https://en.wikipedia.org/wiki/Joint_probability_distribution">joint probability</a>, which we can split into a width times a height:</p>
+<p><span class="math display">\[
+P(\text{age}, \text{viewings}) = \underbrace{P(\text{age})}_{\text{width}} \times \underbrace{P(\text{viewings} \mid \text{age})}_{\text{height}}
+\]</span></p>
+<p>The simulation sets the widths with <span class="math inline">\(P(\text{Teen}) = 0.4\)</span> and <span class="math inline">\(P(\text{Adult}) = 0.6\)</span>, and the heights with a different <a href="https://en.wikipedia.org/wiki/Conditional_probability_distribution">conditional distribution</a> for each age group: <span class="math inline">\((0.35, 0.35, 0.30)\)</span> for teens and <span class="math inline">\((0.70, 0.22, 0.08)\)</span> for adults.</p>
+<p>When two variables are <a href="https://en.wikipedia.org/wiki/Independence_(probability_theory)">independent</a>, <span class="math inline">\(P(\text{viewings} \mid \text{age}) = P(\text{viewings})\)</span>, so every column has the same heights. That’s what the shuffled mosaic shows. The more the tiles in one column are out of line with the tiles in the next, the stronger the relationship. Try giving adults the same viewing probabilities as teens and the first mosaic will look like the second.</p>
+</section>
+<section id="grammar" class="level2 page-columns page-full" data-number="16.4">
+<h2 data-number="16.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">16.4</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
 </div>
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map the <code>product()</code> of <code>unruly_child</code> and <code>baby</code> to the <code>x</code> axis</p></li>
-<li><p>Map <code>baby</code> to <code>fill</code></p></li>
-<li><p>Add <code>theme_mosaic()</code></p></li>
-<li><p>Move the legend to the bottom with <code>theme(legend.position = "bottom")</code></p></li>
+<li><p>Map the <code>product()</code> of <code>viewings</code> and <code>age_group</code> to the <code>x</code> axis</p></li>
+<li><p>Map <code>age_group</code> to <code>fill</code></p></li>
+<li><p><code>geom_mosaic()</code> names the axes after the variables, so set the axis titles with <code>scale_x_productlist()</code> and <code>scale_y_productlist()</code></p></li>
+<li><p>Remove the grid lines and move the legend to the bottom with <code>theme(legend.position = "bottom", panel.grid.major = element_blank())</code></p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>labs_mosaic <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"In general..."</span>, </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">subtitle =</span> <span class="st">"...is it rude to..."</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"... bring a baby on a plane?"</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"...knowingly bring unruly children on a plane?"</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> <span class="st">"Response"</span>) </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ggp2_mosaic <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> fly_mosaic) <span class="sc">+</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>   ggmosaic<span class="sc">::</span><span class="fu">geom_mosaic</span>(<span class="at">mapping =</span> </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>          <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">product</span>(unruly_child, baby), </span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> baby)) <span class="sc">+</span> </span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    ggmosaic<span class="sc">::</span><span class="fu">theme_mosaic</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span> </span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>ggp2_mosaic <span class="sc">+</span> </span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    labs_mosaic</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>labs_mosaic <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"Titanic (simulated)"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">subtitle =</span> <span class="st">"500 moviegoers in 1998"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> <span class="st">"Age group"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>ggp2_mosaic <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> titanic_fans) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>   ggmosaic<span class="sc">::</span><span class="fu">geom_mosaic</span>(<span class="at">mapping =</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>          <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">product</span>(viewings, age_group),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> age_group)) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_productlist</span>(<span class="st">"Age group"</span>) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_productlist</span>(<span class="st">"Times seen in theaters"</span>) <span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>ggp2_mosaic <span class="sc">+</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    labs_mosaic</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
@@ -697,8 +824,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<section id="details" class="level3 page-columns page-full" data-number="16.3.1">
-<h3 data-number="16.3.1" class="anchored" data-anchor-id="details"><span class="header-section-number">16.3.1</span> Details</h3>
+<section id="details" class="level3 page-columns page-full" data-number="16.4.1">
+<h3 data-number="16.4.1" class="anchored" data-anchor-id="details"><span class="header-section-number">16.4.1</span> Details</h3>
 <p>We’ve re-written the labels for the mosaic plot (<code>ggp2_mosaic</code>) to illustrate what’s happening in the <code>aes()</code> of <code>geom_mosaic()</code>.</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
@@ -722,30 +849,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <table class="lightable-paper caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">unruly_child</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">No</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Somewhat</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Very</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">viewings</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Teen</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Adult</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Very</td>
-<td style="text-align: right;">152</td>
-<td style="text-align: right;">125</td>
-<td style="text-align: left;">74</td>
+<td style="text-align: left;">3+ times</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">26</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Somewhat</td>
-<td style="text-align: right;">296</td>
-<td style="text-align: right;">54</td>
-<td style="text-align: left;">1</td>
+<td style="text-align: left;">Twice</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">85</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">No</td>
-<td style="text-align: right;">144</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">Once</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">205</td>
 </tr>
 </tbody>
 </table>
@@ -753,69 +876,65 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="more-info" class="level2" data-number="16.4">
-<h2 data-number="16.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">16.4</span> More info</h2>
+<section id="more-info" class="level2" data-number="16.5">
+<h2 data-number="16.5" class="anchored" data-anchor-id="more-info"><span class="header-section-number">16.5</span> More info</h2>
 <p>I recommend reading the <a href="https://haleyjeppson.github.io/ggmosaic/articles/ggmosaic.html"><code>ggmosaic</code> vignette</a>, particularly the sections on ordering and conditioning.</p>
-<section id="two-variables" class="level3" data-number="16.4.1">
-<h3 data-number="16.4.1" class="anchored" data-anchor-id="two-variables"><span class="header-section-number">16.4.1</span> Two variables</h3>
+<section id="two-variables" class="level3" data-number="16.5.1">
+<h3 data-number="16.5.1" class="anchored" data-anchor-id="two-variables"><span class="header-section-number">16.5.1</span> Two variables</h3>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <div class="cell-output-display">
 <table class="lightable-paper caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">unruly_child</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">viewings</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">No</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Somewhat</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Very</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Yes</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Very</td>
-<td style="text-align: right;">193</td>
-<td style="text-align: right;">119</td>
-<td style="text-align: right;">39</td>
+<td style="text-align: left;">3+ times</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">73</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Somewhat</td>
-<td style="text-align: right;">204</td>
-<td style="text-align: right;">123</td>
-<td style="text-align: right;">24</td>
+<td style="text-align: left;">Twice</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">70</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">No</td>
-<td style="text-align: right;">102</td>
-<td style="text-align: right;">38</td>
-<td style="text-align: right;">7</td>
+<td style="text-align: left;">Once</td>
+<td style="text-align: right;">202</td>
+<td style="text-align: right;">65</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
-<p>Below is another example of a two-variable mosaic plot, mapping the <code>product()</code> variables as <code>unruly_child</code> and <code>recline_rude</code>, and the <code>fill</code> variable as <code>recline_rude</code>.</p>
+<p>Below is another example of a two-variable mosaic plot, mapping the <code>product()</code> variables as <code>viewings</code> and <code>soundtrack</code>, and the <code>fill</code> variable as <code>soundtrack</code>.</p>
 <p>Once again we can see the counts for each category in the cross-tabulation:</p>
 <div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># build 2-variable mosiac plot</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>labs_mosaic_2var <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"In general...is it rude to..."</span>, </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"2-Variable plot"</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"... recline your seat on a plane?"</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"...knowingly bring unruly children on a plane?"</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"recline_rude responses"</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>ggp2_mosaic_2var <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> fly_mosaic) <span class="sc">+</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mosaic</span>(<span class="fu">aes</span>(</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">product</span>(unruly_child, recline_rude),</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> recline_rude)) <span class="sc">+</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  ggmosaic<span class="sc">::</span><span class="fu">theme_mosaic</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span> </span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>ggp2_mosaic_2var <span class="sc">+</span> </span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    labs_mosaic_2var</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># build 2-variable mosiac plot</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>labs_mosaic_2var <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Titanic (simulated)"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"2-Variable plot"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"soundtrack"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ggp2_mosaic_2var <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> titanic_fans) <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mosaic</span>(<span class="fu">aes</span>(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">product</span>(viewings, soundtrack),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> soundtrack)) <span class="sc">+</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_productlist</span>(<span class="st">"Bought the soundtrack?"</span>) <span class="sc">+</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_productlist</span>(<span class="st">"Times seen in theaters"</span>) <span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>ggp2_mosaic_2var <span class="sc">+</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    labs_mosaic_2var</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
@@ -825,27 +944,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>For conditional variables, we map the <code>product()</code> variable as <code>unruly_child</code> and the <code>fill</code> variable as <code>baby</code>, but include a <code>conds</code> variable (as <code>product(recline_rude)</code>).</p>
+<p>For conditional variables, we map the <code>product()</code> variable as <code>viewings</code> and the <code>fill</code> variable as <code>viewings</code>, but include a <code>conds</code> variable (as <code>product(soundtrack)</code>).</p>
 <div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># build conditional mosiac plot</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>labs_mosaic_cond <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"In general...is it rude to..."</span>, </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Conditional plot"</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"...recline your seat on a plane?"</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"...knowingly bring unruly children on a plane?"</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"unruly_child responses"</span>)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>ggp2_mosaic_cond <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> fly_mosaic) <span class="sc">+</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mosaic</span>(<span class="fu">aes</span>(</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">product</span>(unruly_child), <span class="co"># product variable</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> unruly_child,</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">conds =</span> <span class="fu">product</span>(recline_rude))) <span class="sc">+</span> <span class="co"># conditional variable</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  ggmosaic<span class="sc">::</span><span class="fu">theme_mosaic</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span> </span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>ggp2_mosaic_cond <span class="sc">+</span> </span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    labs_mosaic_cond</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># build conditional mosiac plot</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>labs_mosaic_cond <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Titanic (simulated)"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Conditional plot"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"viewings"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>ggp2_mosaic_cond <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> titanic_fans) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mosaic</span>(<span class="fu">aes</span>(</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">product</span>(viewings), <span class="co"># product variable</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> viewings,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">conds =</span> <span class="fu">product</span>(soundtrack))) <span class="sc">+</span> <span class="co"># conditional variable</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_productlist</span>(<span class="st">"Bought the soundtrack?"</span>) <span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_productlist</span>(<span class="st">"Times seen in theaters"</span>) <span class="sc">+</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>ggp2_mosaic_cond <span class="sc">+</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    labs_mosaic_cond</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
@@ -856,9 +975,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="facets" class="level3" data-number="16.4.2">
-<h3 data-number="16.4.2" class="anchored" data-anchor-id="facets"><span class="header-section-number">16.4.2</span> Facets</h3>
-<p>Another option for including a conditioning variable is including facets. In the example below we use <code>recline_rude</code> in both <code>x</code> and <code>fill</code> (remember to wrap <code>recline_rude</code> in <code>product()</code>).</p>
+<section id="facets" class="level3" data-number="16.5.2">
+<h3 data-number="16.5.2" class="anchored" data-anchor-id="facets"><span class="header-section-number">16.5.2</span> Facets</h3>
+<p>Another option for including a conditioning variable is including facets. In the example below we use <code>soundtrack</code> in both <code>x</code> and <code>fill</code> (remember to wrap <code>soundtrack</code> in <code>product()</code>).</p>
 <p>The <code>divider</code> argument let’s us control the spine partitions (vertically and horizontally). Below are the two vertical orientation options for the <code>divider</code> argument.</p>
 <div style="font-size: 0.95rem;">
 <div class="cell quarto-layout-panel" data-layout-nrow="1">

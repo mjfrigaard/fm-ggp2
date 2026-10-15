@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_netscape(
     base_size = 15))
 ```
 
@@ -43,17 +43,27 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
-peng_density <- filter(palmerpenguins::penguins, !is.na(sex))
+library(dplyr)
+set.seed(1996)
+modem_sessions <- tibble(
+  session_id = 1:600,
+  modem = sample(c("14.4k", "28.8k", "56k"), 600, replace = TRUE,
+    prob = c(0.25, 0.45, 0.30)),
+  speed_kbps = round(case_when(
+    modem == "14.4k" ~ rnorm(600, mean = 13, sd = 1.2),
+    modem == "28.8k" ~ rnorm(600, mean = 26, sd = 2.5),
+    TRUE ~ rnorm(600, mean = 44, sd = 5)), 1)) |>
+  mutate(modem = factor(modem, levels = c("14.4k", "28.8k", "56k")))
 labs_fill_density <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (mm)",
-  fill = "Sex")
-ggp2_fill_density <- ggplot(data = peng_density, 
-       aes(x = flipper_length_mm, 
+  title = "Dial up connections (simulated)",
+  subtitle = "Share of sessions from each modem at every speed",
+  x = "Connection speed (kbps)",
+  fill = "Modem")
+ggp2_fill_density <- ggplot(data = modem_sessions, 
+       aes(x = speed_kbps, 
            after_stat(count),
-          fill = sex)) +
+          fill = modem)) +
       geom_density(position = "fill") 
 ggp2_fill_density + 
   labs_fill_density
@@ -91,9 +101,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins)
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -103,12 +112,7 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
-
-Remove missing `sex` from the `penguins` data.
+In 1996, most people opened Netscape Navigator over a dial up modem, and the modem you owned set how fast the web loaded. We'll simulate 600 browsing sessions in two steps. First, `sample()` decides which modem each session used (14.4k, 28.8k, or 56k). Then `rnorm()` draws the connection speed from that modem's own normal distribution: no modem ever connects at its full rated speed, and phone line noise spreads the speeds out. Setting the seed with `set.seed()` means you'll get the same 600 sessions every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -116,10 +120,113 @@ Remove missing `sex` from the `penguins` data.
 #| code-fold: show
 #| eval: true
 #| echo: true
-peng_density <- dplyr::filter(palmerpenguins::penguins, !is.na(sex))
-dplyr::glimpse(peng_density)
+set.seed(1996)
+modem_sessions <- tibble(
+  session_id = 1:600,
+  modem = sample(c("14.4k", "28.8k", "56k"), 600, replace = TRUE,
+    prob = c(0.25, 0.45, 0.30)),
+  speed_kbps = round(case_when(
+    modem == "14.4k" ~ rnorm(600, mean = 13, sd = 1.2),
+    modem == "28.8k" ~ rnorm(600, mean = 26, sd = 2.5),
+    TRUE ~ rnorm(600, mean = 44, sd = 5)), 1)) |>
+  mutate(modem = factor(modem, levels = c("14.4k", "28.8k", "56k")))
+dplyr::glimpse(modem_sessions)
 ```
 :::
+
+## Distribution
+
+A filled density graph answers a different question than a regular density plot. Instead of asking "how common is each speed?", it asks "at this speed, which modem is a session most likely using?" The answer depends on two things: how common each modem is, and how its speeds are spread out. Below we'll move from the sessions, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first six sessions.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_fill_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(modem_sessions, 6)
+```
+:::
+
+The 28.8k sessions connect in the mid to high 20s, and the 56k sessions connect around 40 to 45. Counting all 600 sessions shows how common each modem is overall.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_fill_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+modem_sessions |> 
+  count(modem) |> 
+  mutate(share = n / sum(n))
+```
+:::
+
+Now zoom in on the sessions that connected between 30 and 36 kbps. This is the overlap zone: a fast 28.8k connection and a slow 56k connection both land here. The two modems split these sessions roughly in half.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_window_fill_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+modem_sessions |> 
+  filter(speed_kbps >= 30, speed_kbps < 36) |> 
+  count(modem) |> 
+  mutate(share = n / sum(n))
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+Below are two views of the same 600 sessions. The first stacks the count densities, so the height of each color is the number of sessions at that speed. The second uses `position = "fill"`, which stretches every vertical slice to 100% and turns the counts into shares. The dashed line at 33 kbps sits in the overlap zone, where the filled graph splits between 28.8k and 56k.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_fill_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| layout-ncol: 2
+ggplot(modem_sessions, aes(x = speed_kbps, after_stat(count), fill = modem)) + 
+  geom_density(position = "stack") + 
+  geom_vline(xintercept = 33, linetype = "dashed") + 
+  labs(title = "Stacked counts", x = "Speed (kbps)", y = "Sessions", 
+    fill = "Modem")
+
+ggplot(modem_sessions, aes(x = speed_kbps, after_stat(count), fill = modem)) + 
+  geom_density(position = "fill") + 
+  geom_vline(xintercept = 33, linetype = "dashed") + 
+  labs(title = "Filled shares", x = "Speed (kbps)", y = "Share", 
+    fill = "Modem")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+The speeds come from a [mixture](https://en.wikipedia.org/wiki/Mixture_distribution) of three normal distributions, one per modem $k$, each with its own share of the sessions ($\pi_k$):
+
+$$
+f(x) = \sum_{k} \pi_k \, \text{Normal}(x; \, \mu_k, \sigma_k)
+$$
+
+with $\pi = (0.25, 0.45, 0.30)$, $\mu = (13, 26, 44)$, and $\sigma = (1.2, 2.5, 5)$. The filled density shows each modem's slice of that sum, which is [Bayes' theorem](https://en.wikipedia.org/wiki/Bayes%27_theorem) drawn as a picture:
+
+$$
+P(\text{modem } k \mid x) = \frac{\pi_k \, \text{Normal}(x; \, \mu_k, \sigma_k)}{f(x)}
+$$
+
+At 33 kbps, the 14.4k curve is essentially zero, so the share splits between the other two: $0.45 \times \text{Normal}(33; 26, 2.5)$ for 28.8k and $0.30 \times \text{Normal}(33; 44, 5)$ for 56k. That works out to about 40% for 28.8k and 60% for 56k, close to what we counted between 30 and 36 kbps. Try raising the 56k share in `sample()` and the 56k band at 33 kbps grows, even though no modem got faster.
 
 
 ## Grammar
@@ -134,9 +241,9 @@ dplyr::glimpse(peng_density)
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Map the `flipper_length_mm` to the `x` and add  `after_stat(count)` 
+  -   Map the `speed_kbps` to the `x` and add  `after_stat(count)` 
 
-  -   Map `sex` to `fill`  
+  -   Map `modem` to `fill`  
 
   -   *Inside* the `geom_density()` function, set `position` to `"fill"`
 
@@ -153,13 +260,14 @@ dplyr::glimpse(peng_density)
 #| out-height: '100%'
 #| out-width: '100%'
 labs_fill_density <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (mm)",
-  fill = "Sex")
-ggp2_fill_density <- ggplot(data = peng_density, 
-       aes(x = flipper_length_mm, 
+  title = "Dial up connections (simulated)",
+  subtitle = "Share of sessions from each modem at every speed",
+  x = "Connection speed (kbps)",
+  fill = "Modem")
+ggp2_fill_density <- ggplot(data = modem_sessions, 
+       aes(x = speed_kbps, 
            after_stat(count),
-          fill = sex)) +
+          fill = modem)) +
       geom_density(position = "fill") 
 ggp2_fill_density + 
   labs_fill_density
@@ -181,13 +289,14 @@ ggp2_fill_density +
 #| out-height: '100%'
 #| out-width: '100%'
 labs_fill_density <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (mm)",
-  fill = "Sex")
-ggp2_fill_density <- ggplot(data = peng_density, 
-       aes(x = flipper_length_mm, 
+  title = "Dial up connections (simulated)",
+  subtitle = "Share of sessions from each modem at every speed",
+  x = "Connection speed (kbps)",
+  fill = "Modem")
+ggp2_fill_density <- ggplot(data = modem_sessions, 
+       aes(x = speed_kbps, 
            after_stat(count),
-          fill = sex)) +
+          fill = modem)) +
       geom_density(position = "fill") 
 ggp2_fill_density + 
   labs_fill_density

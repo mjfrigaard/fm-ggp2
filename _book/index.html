@@ -586,15 +586,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 flowchart LR
     dist(["&lt;strong&gt;Distribution&lt;/strong&gt;&lt;br&gt;normal, Poisson,&lt;br&gt;gamma, ..."]) --&gt;|"i. set.seed()"| sim["&lt;strong&gt;Simulate&lt;/strong&gt;&lt;br&gt;base R or &lt;code&gt;faux&lt;/code&gt;"]
-    sim --&gt; data[("&lt;strong&gt;90s dataset&lt;/strong&gt;&lt;br&gt;AOL sessions, Pogs,&lt;br&gt;Happy Meals, ...")]
-    data --&gt;|"ii. Distribution section"| link["&lt;strong&gt;Connect&lt;/strong&gt;&lt;br&gt;count it, draw it,&lt;br&gt;name it"]
-    link --&gt;|"iii. Grammar section"| graph[["&lt;strong&gt;ggplot2 graph&lt;/strong&gt;&lt;br&gt;&lt;code&gt;fmggp2::theme_*()&lt;/code&gt;"]]
+    sim --&gt; dset[("&lt;strong&gt;90s dataset&lt;/strong&gt;&lt;br&gt;AOL sessions, Pogs,&lt;br&gt;Happy Meals, ...")]
+    dset --&gt;|"ii. Distribution section"| connect["&lt;strong&gt;Connect&lt;/strong&gt;&lt;br&gt;count it, draw it,&lt;br&gt;name it"]
+    connect --&gt;|"iii. Grammar section"| gg[["&lt;strong&gt;ggplot2 graph&lt;/strong&gt;&lt;br&gt;&lt;code&gt;fmggp2::theme_*()&lt;/code&gt;"]]
 
     style dist fill:#4CBB9D,color:#FFFFFF,rx:5,ry:5
     style sim fill:#FFFFFF,color:#000000,stroke:#333
-    style data fill:#C0C0C0,color:#000000,stroke:#333
-    style link fill:#FFFFFF,color:#000000,stroke:#333
-    style graph fill:#000080,color:#FFFFFF,rx:5,ry:5
+    style dset fill:#C0C0C0,color:#000000,stroke:#333
+    style connect fill:#FFFFFF,color:#000000,stroke:#333
+    style gg fill:#000080,color:#FFFFFF,rx:5,ry:5
 </pre>
 </div>
 <p></p><figcaption> How each chapter builds its example</figcaption> </figure><p></p>

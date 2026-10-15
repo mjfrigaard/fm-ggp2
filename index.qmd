@@ -45,15 +45,15 @@ I also wanted the examples to be fun to read, so every dataset is a late 90s thr
 
 flowchart LR
     dist(["<strong>Distribution</strong><br>normal, Poisson,<br>gamma, ..."]) -->|"i. set.seed()"| sim["<strong>Simulate</strong><br>base R or <code>faux</code>"]
-    sim --> data[("<strong>90s dataset</strong><br>AOL sessions, Pogs,<br>Happy Meals, ...")]
-    data -->|"ii. Distribution section"| link["<strong>Connect</strong><br>count it, draw it,<br>name it"]
-    link -->|"iii. Grammar section"| graph[["<strong>ggplot2 graph</strong><br><code>fmggp2::theme_*()</code>"]]
+    sim --> dset[("<strong>90s dataset</strong><br>AOL sessions, Pogs,<br>Happy Meals, ...")]
+    dset -->|"ii. Distribution section"| connect["<strong>Connect</strong><br>count it, draw it,<br>name it"]
+    connect -->|"iii. Grammar section"| gg[["<strong>ggplot2 graph</strong><br><code>fmggp2::theme_*()</code>"]]
 
     style dist fill:#4CBB9D,color:#FFFFFF,rx:5,ry:5
     style sim fill:#FFFFFF,color:#000000,stroke:#333
-    style data fill:#C0C0C0,color:#000000,stroke:#333
-    style link fill:#FFFFFF,color:#000000,stroke:#333
-    style graph fill:#000080,color:#FFFFFF,rx:5,ry:5
+    style dset fill:#C0C0C0,color:#000000,stroke:#333
+    style connect fill:#FFFFFF,color:#000000,stroke:#333
+    style gg fill:#000080,color:#FFFFFF,rx:5,ry:5
 ```
 
 I'm converting the book one part at a time, starting with the Univariate and Amounts graphs. Chapters that haven't been converted yet still use the original datasets and theme.
