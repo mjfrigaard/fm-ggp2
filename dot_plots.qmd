@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_blockbuster(
     base_size = 15))
 ```
 
@@ -52,16 +52,20 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
-penguins <- palmerpenguins::penguins
+library(dplyr)
+set.seed(1993)
+blockbuster_rentals <- tibble(
+  household_id = 1:60,
+  rentals = rpois(n = 60, lambda = 3)
+)
 labs_dotplot <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
-  x = "Flipper length (millimeters)")
-ggp2_dotplot <- ggplot(data = penguins,
-      aes(x = flipper_length_mm)) + 
-    geom_dotplot(dotsize = 0.5) 
+  title = "Blockbuster Video (simulated)",
+  subtitle = "Rentals per household in one week",
+  x = "Number of rentals")
+ggp2_dotplot <- ggplot(data = blockbuster_rentals,
+      aes(x = rentals)) + 
+    geom_dotplot(binwidth = 1, dotsize = 0.3) 
 ggp2_dotplot + 
   labs_dotplot
 ```
@@ -93,10 +97,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins) 
 library(ggplot2)
-library(dplyr) # for data manipulation
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -106,12 +108,7 @@ library(dplyr) # for data manipulation
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
-
-The `penguins` data
+In the late 90s, most Friday nights started at Blockbuster Video. We'll simulate how many movies 60 households rented in one week with `rpois()`, which generates whole number counts (0, 1, 2, and so on). Setting the seed with `set.seed()` means you'll get the same 60 households every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -119,10 +116,103 @@ The `penguins` data
 #| code-fold: show
 #| eval: true
 #| echo: true
-penguins <- palmerpenguins::penguins
-glimpse(penguins)
+set.seed(1993)
+blockbuster_rentals <- tibble(
+  household_id = 1:60,
+  rentals = rpois(n = 60, lambda = 3)
+)
+glimpse(blockbuster_rentals)
 ```
 :::
+
+## Distribution
+
+Rentals are counts: a household rents 0, 1, 2, or more movies, but never 2.5. Dot plots are a good fit for counts like these because each dot is one household, so the graph is just the data stacked into piles. Because we picked the rental rate in `rpois()`, we know what the piles should look like before we draw them. Below we'll move from the counts, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first ten households.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_dotplot
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(blockbuster_rentals$rentals, 10)
+```
+:::
+
+Most of these households rented two or three movies, two rented none, and one rented five. If we count all 60 households, we can compare each pile to the number of households we'd expect (we'll see where `dpois()` comes from below).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_table_dotplot
+#| code-fold: show
+#| eval: true
+#| echo: true
+blockbuster_rentals |> 
+  count(rentals) |> 
+  mutate(expected = round(60 * dpois(rentals, lambda = 3), 1))
+```
+:::
+
+The observed piles stay close to the expected ones. Counts like these have one more property worth checking: the mean and the variance should be about the same.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_dotplot
+#| code-fold: show
+#| eval: true
+#| echo: true
+blockbuster_rentals |> 
+  summarise(mean = mean(rentals), variance = var(rentals))
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The dot plot below stacks one dot per household above its number of rentals. The tallest piles sit at two and three rentals, and the piles get shorter on both sides. The dashed line marks the rental rate we used in `rpois()` (3 per week). The right side trails out further than the left because a household can't rent fewer than zero movies.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_dotplot
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(data = blockbuster_rentals, 
+    aes(x = rentals)) + 
+  geom_dotplot(binwidth = 1, dotsize = 0.3) + 
+  geom_vline(xintercept = 3, linetype = "dashed", color = "white") + 
+  scale_x_continuous(breaks = 0:8) + 
+  labs(x = "Number of rentals")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+The `rpois()` call that created the data is a single statement: 
+
+$$
+X \sim \text{Poisson}(\lambda = 3)
+$$
+
+The [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) describes counts of events in a fixed window of time (here, rentals in one week). It has a single parameter, the rate ($\lambda$), which is both the mean and the variance. That's why our simulated mean (`r round(mean(blockbuster_rentals$rentals), 2)`) and variance (`r round(var(blockbuster_rentals$rentals), 2)`) are so close. 
+
+The chance of a household renting exactly $k$ movies is:
+
+$$
+P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}
+$$
+
+This is what `dpois()` calculates. For $k = 3$, $P(X = 3) = 3^3 e^{-3} / 3! \approx 0.224$, so we'd expect about $60 \times 0.224 \approx 13$ of our 60 households to rent three movies. We got `r sum(blockbuster_rentals$rentals == 3)`. Try a larger `lambda` in `rpois()` and the piles move right and spread out, because the mean and the variance grow together.
+
 
 ## Grammar
 
@@ -134,11 +224,11 @@ glimpse(penguins)
 
 2. Initialize the graph with `ggplot()` and provide `data`
 
-3. Map `flipper_length_mm` to the `x` axis
+3. Map `rentals` to the `x` axis
 
 4. Add the `geom_dotplot()` layer
 
-5. Adjust the `dotsize`
+5. Set the `binwidth` to `1` (one pile per count) and adjust the `dotsize`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -149,12 +239,12 @@ glimpse(penguins)
 #| warning: false
 #| message: false
 labs_dotplot <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
-  x = "Flipper length (millimeters)")
-ggp2_dotplot <- ggplot(data = penguins,
-      aes(x = flipper_length_mm)) + 
-    geom_dotplot(dotsize = 0.5) 
+  title = "Blockbuster Video (simulated)",
+  subtitle = "Rentals per household in one week",
+  x = "Number of rentals")
+ggp2_dotplot <- ggplot(data = blockbuster_rentals,
+      aes(x = rentals)) + 
+    geom_dotplot(binwidth = 1, dotsize = 0.3) 
 ggp2_dotplot + 
   labs_dotplot
 ```
@@ -173,12 +263,12 @@ ggp2_dotplot +
 #| message: false
 #| layout-nrow: 1
 labs_dotplot <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
-  x = "Flipper length (millimeters)")
-ggp2_dotplot <- ggplot(data = penguins,
-      aes(x = flipper_length_mm)) + 
-    geom_dotplot(dotsize = 0.5) 
+  title = "Blockbuster Video (simulated)",
+  subtitle = "Rentals per household in one week",
+  x = "Number of rentals")
+ggp2_dotplot <- ggplot(data = blockbuster_rentals,
+      aes(x = rentals)) + 
+    geom_dotplot(binwidth = 1, dotsize = 0.3) 
 ggp2_dotplot + 
   labs_dotplot
 ```

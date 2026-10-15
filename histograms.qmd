@@ -17,7 +17,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_win98(
     base_size = 15))
 ```
 
@@ -42,15 +42,19 @@ ggplot2::theme_set(theme_ggp2g(
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
-penguins <- palmerpenguins::penguins
+library(dplyr)
+set.seed(1014)
+aol_sessions <- tibble(
+  session_id = 1:300,
+  minutes = round(rnorm(n = 300, mean = 45, sd = 12))
+)
 labs_histogram <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
-  x = "Flipper length (mm)")
-ggp2_hist <- ggplot(data = penguins,
-     aes(x = flipper_length_mm)) + 
+  title = "AOL dial up sessions (simulated)",
+  subtitle = "Distribution of session length",
+  x = "Session length (minutes)")
+ggp2_hist <- ggplot(data = aol_sessions,
+     aes(x = minutes)) + 
      geom_histogram() 
 ggp2_hist + 
   labs_histogram
@@ -84,10 +88,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins) 
 library(ggplot2)
-library(dplyr) # for data manipulation
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -97,12 +99,7 @@ library(dplyr) # for data manipulation
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
-
-The `penguins` data.
+We'll simulate 300 AOL dial up sessions with `rnorm()`, rounding each session length to the nearest minute. Setting the seed with `set.seed()` means you'll get the same 300 values every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -110,10 +107,108 @@ The `penguins` data.
 #| code-fold: show
 #| eval: true
 #| echo: true
-penguins <- palmerpenguins::penguins
-glimpse(penguins)
+set.seed(1014)
+aol_sessions <- tibble(
+  session_id = 1:300,
+  minutes = round(rnorm(n = 300, mean = 45, sd = 12))
+)
+glimpse(aol_sessions)
 ```
 :::
+
+## Distribution
+
+You don't have to be a statistician to read a histogram, but it helps to know what shape you should expect. Because we generated `minutes` ourselves, we already know the answer: every value came from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) with a mean of 45 minutes and a standard deviation of 12 minutes. Below we'll move from the numbers, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first ten sessions.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: concrete_values_histogram
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(aol_sessions$minutes, 10)
+```
+:::
+
+Most of these values land within 12 minutes of 45, and a few (like 16 and 23) sit further out. If we sort all 300 sessions into three ranges (below one standard deviation, within one standard deviation, and above one standard deviation), the middle range holds most of the sessions.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: concrete_counts_histogram
+#| code-fold: show
+#| eval: true
+#| echo: true
+aol_ranges <- aol_sessions |>
+  mutate(range = cut(minutes,
+    breaks = c(-Inf, 33, 57, Inf),
+    labels = c("under 33", "33 to 56", "57 and over"),
+    right = FALSE)) |>
+  count(range)
+aol_ranges
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+A bar model shows these counts as parts of one whole. The full bar is all 300 sessions, and the middle part takes up roughly two thirds of it.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: pictorial_bar_model_histogram
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| fig-asp: 0.45
+ggplot(data = aol_ranges,
+    aes(x = n, y = "300 sessions", fill = range)) +
+  geom_col(position = position_stack(reverse = TRUE),
+    color = "white") +
+  geom_text(aes(label = n), color = "white",
+    position = position_stack(vjust = 0.5, reverse = TRUE)) +
+  labs(x = "Number of sessions", y = NULL,
+    fill = "Session length (minutes)")
+```
+:::
+
+A histogram is the same idea, cut into 30 thinner pieces and stood upright. The dashed lines below mark 33 and 57 minutes, the edges of the middle part of the bar model.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: pictorial_histogram
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+ggplot(data = aol_sessions,
+    aes(x = minutes)) +
+  geom_histogram() +
+  geom_vline(xintercept = c(33, 57), linetype = "dashed") +
+  labs(x = "Session length (minutes)")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+The `rnorm()` call that created the data is a single statement:
+
+$$
+X \sim \text{Normal}(\mu = 45, \sigma = 12)
+$$
+
+The mean ($\mu$) sets where the tallest bars sit on the `x` axis, and the standard deviation ($\sigma$) sets how far the bars spread out from it. For a normal distribution, roughly 68% of values fall within one $\sigma$ of $\mu$ and 95% fall within two. Our simulated sessions come close: `r round(mean(aol_sessions$minutes >= 33 & aol_sessions$minutes < 57) * 100)`% are within one $\sigma$ and `r round(mean(aol_sessions$minutes >= 21 & aol_sessions$minutes < 69) * 100)`% are within two.
+
+The small gap between the rule and our sample is just sampling variation. Change the number in `set.seed()` and the bars shift, but the bell shape stays centered near 45 minutes.
 
 
 ## Grammar 
@@ -128,7 +223,7 @@ glimpse(penguins)
 
 2. Initialize the graph with `ggplot()` and provide `data`
 
-3. Assign `flipper_length_mm` to the `x`
+3. Assign `minutes` to the `x`
 
 4. Add the `geom_histogram()`
 
@@ -143,12 +238,12 @@ glimpse(penguins)
 #| warning: false
 #| message: false
 labs_histogram <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
-  x = "Flipper length (millimeters)")
+  title = "AOL dial up sessions (simulated)",
+  subtitle = "Distribution of session length",
+  x = "Session length (minutes)")
 
-ggp2_hist <- ggplot(data = penguins,
-     aes(x = flipper_length_mm)) + 
+ggp2_hist <- ggplot(data = aol_sessions,
+     aes(x = minutes)) + 
      geom_histogram() 
 
 ggp2_hist + 
@@ -169,12 +264,12 @@ ggp2_hist +
 #| message: false
 #| layout-nrow: 1
 labs_histogram <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
-  x = "Flipper length (millimeters)")
+  title = "AOL dial up sessions (simulated)",
+  subtitle = "Distribution of session length",
+  x = "Session length (minutes)")
 
-ggp2_hist <- ggplot(data = penguins,
-     aes(x = flipper_length_mm)) + 
+ggp2_hist <- ggplot(data = aol_sessions,
+     aes(x = minutes)) + 
      geom_histogram() 
 
 ggp2_hist + 
@@ -193,15 +288,15 @@ The standard number of bins is `30`, but ['you should always override this value
 #| warning: false
 #| message: false
 #| layout-nrow: 1
-ggp2_hist_bins45 <- ggplot(data = penguins,
-     aes(x = flipper_length_mm)) + 
+ggp2_hist_bins45 <- ggplot(data = aol_sessions,
+     aes(x = minutes)) + 
      geom_histogram(bins = 45) 
 
 ggp2_hist_bins45 + 
   labs_histogram
 
-ggp2_hist_bins15 <- ggplot(data = penguins,
-     aes(x = flipper_length_mm)) + 
+ggp2_hist_bins15 <- ggplot(data = aol_sessions,
+     aes(x = minutes)) + 
      geom_histogram(bins = 15) 
 
 ggp2_hist_bins15 + 

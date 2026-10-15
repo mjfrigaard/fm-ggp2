@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_beanie(
     base_size = 15))
 ```
 
@@ -50,16 +50,21 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr)
+set.seed(1996)
+beanie_prices <- tibble(
+  listing_id = 1:300,
+  price = round(rlnorm(n = 300, meanlog = log(15), sdlog = 0.8), 2)
+)
 labs_violin <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
+  title = "Beanie Babies resale prices (simulated)",
+  subtitle = "300 listings from 1998",
   x = "",
-  y = "Flipper length (millimeters)")
-ggp2_violin <- ggplot(data = penguins,
+  y = "Price (USD)")
+ggp2_violin <- ggplot(data = beanie_prices,
        aes(x = '', 
-           y = flipper_length_mm)) +
+           y = price)) +
        geom_violin() 
 ggp2_violin + 
   labs_violin
@@ -98,9 +103,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins)
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -110,12 +114,8 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
 ::: {style="font-size: 0.95rem;"}
-The `penguins` data.
+In 1998, Beanie Babies were selling for wildly different prices: most went for a few dollars over retail, but a rare few sold for hundreds. We'll simulate 300 resale listings with `rlnorm()`, rounding each price to the nearest cent. Setting the seed with `set.seed()` means you'll get the same 300 prices every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -124,10 +124,114 @@ The `penguins` data.
 #| code-fold: show
 #| eval: true
 #| echo: true
-penguins <- palmerpenguins::penguins
-glimpse(penguins)
+set.seed(1996)
+beanie_prices <- tibble(
+  listing_id = 1:300,
+  price = round(rlnorm(n = 300, meanlog = log(15), sdlog = 0.8), 2)
+)
+glimpse(beanie_prices)
 ```
 :::
+
+## Distribution
+
+Prices are a classic example of data that can't go below zero but can stretch a long way above it. That gives the violin a wide base and a long, thin neck. The trick to understanding this shape is the logarithm: on a log scale, these prices turn into the familiar bell curve from @sec-histograms. Below we'll move from the prices, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first ten listings.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_violin
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(beanie_prices$price, 10)
+```
+:::
+
+Most of these sell for under \$30, but one listing is over \$100. A few expensive listings like this pull the mean well above the median. Taking the log of each price shrinks the gap.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_violin
+#| code-fold: show
+#| eval: true
+#| echo: true
+beanie_prices |> 
+  summarise(
+    mean = mean(price), 
+    median = median(price),
+    mean_log = mean(log(price)),
+    median_log = median(log(price)))
+```
+:::
+
+On the dollar scale, the mean is about \$`r round(mean(beanie_prices$price) - median(beanie_prices$price))` higher than the median. On the log scale, the mean and median are almost identical, which is what we'd expect from a symmetric distribution.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+A bar model splits the listings at \$15 (we'll see why in a moment). The two parts are close to equal, so \$15 sits near the middle of the prices.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_bar_model_violin
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| fig-asp: 0.45
+beanie_prices |> 
+  mutate(range = factor(if_else(price < 15, "under $15", "$15 or more"),
+    levels = c("under $15", "$15 or more"))) |> 
+  count(range) |> 
+  ggplot(aes(x = n, y = "300 listings", fill = range)) + 
+  geom_col(position = position_stack(reverse = TRUE)) + 
+  geom_text(aes(label = n), color = "white", 
+    position = position_stack(vjust = 0.5, reverse = TRUE)) + 
+  labs(x = "Number of listings", y = NULL, fill = "Price")
+```
+:::
+
+Below are two violins of the same 300 prices. The first uses dollars, so most of the area is squashed near the bottom and the neck stretches up past \$100. The second puts the `y` axis on a log scale with `scale_y_log10()`, which turns the same prices into a symmetric shape centered near \$15.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_violin
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| layout-ncol: 2
+ggplot(data = beanie_prices, aes(x = "", y = price)) + 
+  geom_violin() + 
+  geom_hline(yintercept = 15, linetype = "dashed") + 
+  labs(title = "Dollar scale", x = NULL, y = "Price (USD)")
+
+ggplot(data = beanie_prices, aes(x = "", y = price)) + 
+  geom_violin() + 
+  geom_hline(yintercept = 15, linetype = "dashed") + 
+  scale_y_log10() + 
+  labs(title = "Log scale", x = NULL, y = "Price (USD, log scale)")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+The `rlnorm()` call that created the data draws from a [log normal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution). A price is log normal when its logarithm is normal:
+
+$$
+\log(X) \sim \text{Normal}(\mu = \log(15), \sigma = 0.8)
+$$
+
+The two parameters describe the log scale, not the dollar scale. Back on the dollar scale, the median is $e^{\mu} = 15$ dollars, which is why the bar model split the listings at \$15. The mean is larger, $e^{\mu + \sigma^2 / 2} = 15 \times e^{0.32} \approx 20.66$ dollars, because the long right tail pulls it up. The bigger $\sigma$ gets, the longer the violin's neck and the further the mean drifts from the median.
+
+Our simulated listings come close: the median is \$`r round(median(beanie_prices$price), 2)` and the mean is \$`r round(mean(beanie_prices$price), 2)`.
 
 
 ## Grammar 
@@ -144,7 +248,7 @@ Initialize the graph with `ggplot()` and provide `data`
 
   - Place an empty string (`""`) in the `x` argument
 
-Map an empty string (`""`) to the `x` and `flipper_length_mm` to the `y`
+Map an empty string (`""`) to the `x` and `price` to the `y`
 
 Add `geom_violin()`
 
@@ -159,13 +263,13 @@ Add `geom_violin()`
 #| warning: false
 #| message: false
 labs_violin <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
+  title = "Beanie Babies resale prices (simulated)",
+  subtitle = "300 listings from 1998",
   x = "",
-  y = "Flipper length (millimeters)")
-ggp2_violin <- ggplot(data = penguins,
+  y = "Price (USD)")
+ggp2_violin <- ggplot(data = beanie_prices,
        aes(x = '', 
-           y = flipper_length_mm)) +
+           y = price)) +
        geom_violin() 
 ggp2_violin + 
   labs_violin
@@ -188,13 +292,13 @@ ggp2_violin +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_violin <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
+  title = "Beanie Babies resale prices (simulated)",
+  subtitle = "300 listings from 1998",
   x = "",
-  y = "Flipper length (millimeters)")
-ggp2_violin <- ggplot(data = penguins,
+  y = "Price (USD)")
+ggp2_violin <- ggplot(data = beanie_prices,
        aes(x = '', 
-           y = flipper_length_mm)) +
+           y = price)) +
        geom_violin() 
 ggp2_violin + 
   labs_violin

@@ -1,0 +1,28 @@
+# Publishes the book to the gh-pages branch on every push to main.
+# R is not installed here: execute: freeze: auto means chapters are rendered
+# locally and their results committed in _freeze/, which this job reuses.
+on:
+  push:
+    branches: main
+  workflow_dispatch:
+
+name: Quarto Publish
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Render and publish to GitHub Pages
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

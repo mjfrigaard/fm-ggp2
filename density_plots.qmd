@@ -17,7 +17,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_spice(
     base_size = 15))
 ```
 
@@ -52,15 +52,23 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins)
 library(ggplot2)
-penguins <- palmerpenguins::penguins
+library(dplyr)
+set.seed(1998)
+spice_fans <- tibble(
+  fan_id = 1:400,
+  group = sample(c("kid", "parent"), size = 400, replace = TRUE,
+    prob = c(0.65, 0.35)),
+  age = round(if_else(group == "kid", 
+    rnorm(400, mean = 11, sd = 2.5), 
+    rnorm(400, mean = 37, sd = 6)))
+)
 labs_density <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
-  x = "Flipper length (millimeters)")
-ggp2_density <- ggplot(data = penguins,
-        aes(x = flipper_length_mm)) +
+  title = "Spice World tour (simulated)",
+  subtitle = "Ages of 400 fans at a 1998 concert",
+  x = "Age (years)")
+ggp2_density <- ggplot(data = spice_fans,
+        aes(x = age)) +
       geom_density()
 
 ggp2_density +
@@ -95,9 +103,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -107,12 +114,8 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
 ::: {style="font-size: 0.95rem;"}
-The `penguins` data.
+The 1998 Spice World tour drew two very different crowds: kids who loved the Spice Girls, and the parents who drove them to the show. We'll simulate the ages of 400 fans in two steps. First, `sample()` decides whether each fan is a kid or a parent. Then `rnorm()` draws an age from that group's own normal distribution. Setting the seed with `set.seed()` means you'll get the same 400 fans every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -121,10 +124,116 @@ The `penguins` data.
 #| code-fold: show
 #| eval: true
 #| echo: true
-penguins <- palmerpenguins::penguins
-glimpse(penguins)
+set.seed(1998)
+spice_fans <- tibble(
+  fan_id = 1:400,
+  group = sample(c("kid", "parent"), size = 400, replace = TRUE,
+    prob = c(0.65, 0.35)),
+  age = round(if_else(group == "kid", 
+    rnorm(400, mean = 11, sd = 2.5), 
+    rnorm(400, mean = 37, sd = 6)))
+)
+glimpse(spice_fans)
 ```
 :::
+
+## Distribution
+
+Every distribution we've seen so far has a single peak. Real data doesn't always cooperate, and the concert crowd is a good example: it has two peaks, one for kids and one for parents. Density plots are good at showing this kind of shape, but summary statistics can hide it completely. Below we'll move from the ages, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first ten fans.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(spice_fans, 10)
+```
+:::
+
+The ages fall into two clumps: kids between 7 and 15, and parents between 34 and 40. Nobody in this first ten is in their twenties. Now look at what the mean and median say about all 400 fans.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+spice_fans |> 
+  summarise(
+    mean = mean(age), 
+    median = median(age), 
+    fans_age_18_to_25 = sum(age >= 18 & age <= 25))
+```
+:::
+
+The mean age is about 20, but only `r sum(spice_fans$age >= 18 & spice_fans$age <= 25)` of the 400 fans are between 18 and 25. The mean describes almost nobody in the crowd.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+A bar model shows the crowd as two parts of one whole. Kids make up about two thirds of the bar.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_bar_model_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| fig-asp: 0.45
+spice_fans |> 
+  count(group) |> 
+  ggplot(aes(x = n, y = "400 fans", fill = group)) + 
+  geom_col(position = position_stack(reverse = TRUE)) + 
+  geom_text(aes(label = n), color = "white", 
+    position = position_stack(vjust = 0.5, reverse = TRUE)) + 
+  labs(x = "Number of fans", y = NULL, fill = "Group")
+```
+:::
+
+The density plot below draws each group's ages as its own curve. The kid curve is tall and narrow (most kids are close to 11), and the parent curve is short and wide (parents' ages vary more). The dashed line marks the mean age, which falls in the valley between the two peaks.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+ggplot(data = spice_fans, 
+    aes(x = age)) + 
+  geom_density(aes(y = after_stat(count), fill = group), 
+    alpha = 0.6, color = NA) + 
+  geom_density(aes(y = after_stat(count)), fill = NA) + 
+  geom_vline(xintercept = mean(spice_fans$age), linetype = "dashed") + 
+  labs(x = "Age (years)", y = "Fans per year of age", fill = "Group")
+```
+:::
+
+The solid line is what `geom_density()` draws for all 400 fans together. It finds the same two peaks, but it uses one amount of smoothing (the bandwidth) for the whole crowd, so the narrow kid peak comes out lower and wider than the kid curve. You can adjust the smoothing with the `adjust` argument (e.g., `geom_density(adjust = 0.5)`).
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Our two step simulation creates a [mixture distribution](https://en.wikipedia.org/wiki/Mixture_distribution). Each fan's age comes from one of two normal distributions, chosen with probabilities 0.65 and 0.35:
+
+$$
+f(x) = 0.65 \cdot \text{Normal}(x;\, 11, 2.5) + 0.35 \cdot \text{Normal}(x;\, 37, 6)
+$$
+
+The weights (0.65 and 0.35) set how much area each peak gets, the means (11 and 37) set where the peaks sit, and the standard deviations (2.5 and 6) set how wide they are. The mean of the mixture is the weighted average of the two means: $0.65 \times 11 + 0.35 \times 37 = 20.1$ years. That's why the mean lands in the valley. 
+
+Try moving the two means closer together in `rnorm()`. Once the peaks overlap enough, the valley disappears and the curve looks like it has a single peak, even though the data still comes from two groups.
+
 
 ## Grammar
 
@@ -138,7 +247,7 @@ Create labels with `labs()`
 
 Initialize the graph with `ggplot()` and provide `data`
 
-Map `flipper_length_mm` to the `x` axis
+Map `age` to the `x` axis
 
 Add the `geom_density()` layer
 
@@ -153,12 +262,12 @@ Add the `geom_density()` layer
 #| warning: false
 #| message: false
 labs_density <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
-  x = "Flipper length (millimeters)")
-ggp2_density <- ggplot(data = penguins, 
-        aes(x = flipper_length_mm)) + 
-      geom_density() 
+  title = "Spice World tour (simulated)",
+  subtitle = "Ages of 400 fans at a 1998 concert",
+  x = "Age (years)")
+ggp2_density <- ggplot(data = spice_fans,
+        aes(x = age)) +
+      geom_density()
 
 ggp2_density +
   labs_density
@@ -179,12 +288,12 @@ ggp2_density +
 #| message: false
 #| layout-nrow: 1
 labs_density <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
-  x = "Flipper length (millimeters)")
-ggp2_density <- ggplot(data = penguins, 
-        aes(x = flipper_length_mm)) + 
-      geom_density() 
+  title = "Spice World tour (simulated)",
+  subtitle = "Ages of 400 fans at a 1998 concert",
+  x = "Age (years)")
+ggp2_density <- ggplot(data = spice_fans,
+        aes(x = age)) +
+      geom_density()
 
 ggp2_density +
   labs_density

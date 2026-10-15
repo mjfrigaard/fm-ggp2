@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_n64(
     base_size = 15))
 ```
 
@@ -50,17 +50,21 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins)
 library(ggplot2)
-penguins <- palmerpenguins::penguins
+library(dplyr)
+set.seed(64)
+mario_kart_laps <- tibble(
+  lap_id = 1:200,
+  seconds = round(45 + 2 * rt(n = 200, df = 3), 2)
+)
 labs_boxplot <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
+  title = "Mario Kart 64 (simulated)",
+  subtitle = "200 lap times on Luigi Raceway",
   x = NULL,
-  y = "Flipper length (millimeters)")
-ggp2_boxplot <- ggplot(data = penguins,
-           aes(x = "", 
-               y = flipper_length_mm)) +
+  y = "Lap time (seconds)")
+ggp2_boxplot <- ggplot(data = mario_kart_laps,
+           aes(x = NULL, 
+               y = seconds)) +
         geom_boxplot() 
 ggp2_boxplot + 
   labs_boxplot
@@ -92,9 +96,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -103,12 +106,8 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
 ::: {style="font-size: 0.95rem;"}
-We'll be using the `penguins` data from `palmerpenguins`.
+Most Mario Kart 64 laps on Luigi Raceway take about the same time, but every so often a player nails a mushroom boost (a very fast lap) or gets hit by a blue shell (a very slow one). We'll simulate 200 lap times with `rt()`, which draws from a distribution with more extreme values than the normal. Setting the seed with `set.seed()` means you'll get the same 200 laps every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -117,10 +116,131 @@ We'll be using the `penguins` data from `palmerpenguins`.
 #| code-fold: show
 #| eval: true
 #| echo: true
-penguins <- palmerpenguins::penguins 
-glimpse(penguins)
+set.seed(64)
+mario_kart_laps <- tibble(
+  lap_id = 1:200,
+  seconds = round(45 + 2 * rt(n = 200, df = 3), 2)
+)
+glimpse(mario_kart_laps)
 ```
 :::
+
+## Distribution
+
+A box plot doesn't draw every value. It draws five summary numbers and then flags the values that are unusually far from the middle. That makes it a good tool for data with extreme values, as long as you know how those five numbers and the outlier rule work. Below we'll move from the lap times, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first ten laps.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_box
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(mario_kart_laps$seconds, 10)
+```
+:::
+
+Most of these laps take between 42 and 49 seconds, but one (38.71) is much faster than the rest. The numbers behind a box plot are the quartiles: the 25th percentile (Q1), the median, and the 75th percentile (Q3). The distance between Q1 and Q3 is the interquartile range (IQR). Any value more than 1.5 IQRs past Q1 or Q3 (the "fences") is drawn as an outlier.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_box
+#| code-fold: show
+#| eval: true
+#| echo: true
+lap_stats <- mario_kart_laps |> 
+  summarise(
+    q1 = quantile(seconds, 0.25),
+    median = median(seconds),
+    q3 = quantile(seconds, 0.75),
+    iqr = IQR(seconds),
+    lower_fence = q1 - 1.5 * iqr,
+    upper_fence = q3 + 1.5 * iqr,
+    outliers = sum(seconds < lower_fence | seconds > upper_fence))
+lap_stats
+```
+:::
+
+Half of all laps fall inside a window only `r round(lap_stats$iqr, 1)` seconds wide, yet `r lap_stats$outliers` laps land outside the fences. The lap at 38.71 seconds from the first ten is one of them: it's just below the lower fence.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The box plot below labels each of those numbers. The box runs from Q1 to Q3, the line inside it is the median, the whiskers stop at the last lap inside the fences, and every lap past a fence is drawn as a point.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_box
+#| code-fold: show
+#| eval: true
+#| echo: true
+box_labels <- tibble(
+  y = c(lap_stats$q1, lap_stats$median, lap_stats$q3,
+        lap_stats$lower_fence, lap_stats$upper_fence),
+  label = c("Q1", "Median", "Q3", "Lower fence", "Upper fence"),
+  vjust = c(0.5, 0.5, 0.5, -0.5, -0.5))
+
+ggplot(data = mario_kart_laps, aes(x = "", y = seconds)) + 
+  geom_boxplot(width = 0.4) + 
+  geom_hline(yintercept = c(lap_stats$lower_fence, lap_stats$upper_fence), 
+    linetype = "dashed", color = "#E4000F") + 
+  geom_text(data = box_labels, 
+    aes(x = 1.25, y = y, vjust = vjust,
+        label = paste0(label, " (", round(y, 1), ")")), 
+    hjust = 0, size = 3.5) + 
+  labs(x = NULL, y = "Lap time (seconds)")
+```
+:::
+
+A box plot hides the shape between the five numbers. The plots below show the same 200 laps four other ways, and every one of them shows a single peak near 45 seconds with a few laps scattered far out on both sides.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_compare_box
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| layout-ncol: 2
+ggplot(mario_kart_laps, aes(x = seconds, y = "")) + 
+  geom_jitter(height = 0.2) + 
+  labs(title = "geom_jitter()", y = NULL)
+
+ggplot(mario_kart_laps, aes(x = seconds)) + 
+  geom_histogram(bins = 30) + 
+  labs(title = "geom_histogram()")
+
+ggplot(mario_kart_laps, aes(x = seconds)) + 
+  geom_freqpoly(bins = 30) + 
+  labs(title = "geom_freqpoly()")
+
+ggplot(mario_kart_laps, aes(x = seconds)) + 
+  geom_density() + 
+  labs(title = "geom_density()")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+The `rt()` call draws from [Student's t distribution](https://en.wikipedia.org/wiki/Student%27s_t-distribution), which is then shifted and stretched into lap times:
+
+$$
+X = 45 + 2T, \quad T \sim t(\nu = 3)
+$$
+
+The 45 sets the center (the median lap) and the 2 sets the spread. The degrees of freedom ($\nu$) control the tails: a small $\nu$ like 3 gives "heavy" tails with more extreme values than a normal distribution, and as $\nu$ grows the t distribution turns into the normal. 
+
+The outlier rule shows the difference. For a normal distribution, only about 0.7% of values land past the fences, so we'd expect about 1 outlier in 200 laps. For a t distribution with 3 degrees of freedom, about 5.5% land past the fences, or about 11 laps in 200. We got `r lap_stats$outliers`. Try `df = 30` in `rt()` and most of the outlier points disappear.
+
 
 ## Grammar
 
@@ -137,7 +257,7 @@ Initialize the graph with `ggplot()` and provide `data`
 
   - Assign a blank character string (`""`) to the `x` axis in `labs()`
 
-Map `flipper_length_mm` to the `y` axis and an empty string (`""`) to the `x` axis
+Map `seconds` to the `y` axis and an empty string (`""`) to the `x` axis
 
 Add the `geom_boxplot()` layer
 
@@ -152,13 +272,13 @@ Add the `geom_boxplot()` layer
 #| warning: false
 #| message: false
 labs_boxplot <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
+  title = "Mario Kart 64 (simulated)",
+  subtitle = "200 lap times on Luigi Raceway",
   x = "",
-  y = "Flipper length (millimeters)")
-ggp2_boxplot <- ggplot(data = penguins,
+  y = "Lap time (seconds)")
+ggp2_boxplot <- ggplot(data = mario_kart_laps,
            aes(x = "", 
-               y = flipper_length_mm)) +
+               y = seconds)) +
         geom_boxplot() 
 ggp2_boxplot + 
   labs_boxplot
@@ -179,132 +299,14 @@ ggp2_boxplot +
 #| message: false
 #| layout-nrow: 1
 labs_boxplot <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
+  title = "Mario Kart 64 (simulated)",
+  subtitle = "200 lap times on Luigi Raceway",
   x = "",
-  y = "Flipper length (millimeters)")
-ggp2_boxplot <- ggplot(data = penguins,
+  y = "Lap time (seconds)")
+ggp2_boxplot <- ggplot(data = mario_kart_laps,
            aes(x = "", 
-               y = flipper_length_mm)) +
+               y = seconds)) +
         geom_boxplot() 
 ggp2_boxplot + 
   labs_boxplot
 ```
-
-
-
-## More info
-
-Below is more information on interpreting Box plots.
-
-### `movies` data 
-
-::: {style="font-size: 0.95rem;"}
-We'll use the `ggplot2movies::movies` data to create a box plot for movie `length`
-:::
-
-::: {style="font-size: 0.85em;"}
-```{r}
-#| label: more_box_pkgs
-#| eval: false
-#| echo: true
-#| warning: false
-#| message: false
-install.packages("ggplot2movies")
-library(ggplot2movies) 
-library(ggplot2)
-```
-:::
-
-::: {style="font-size: 0.95rem;"}
-Filter `ggplot2movies::movies` to only include films made after `2000`, and remove missing values from `mpaa` and `budget`
-:::
-
-::: {style="font-size: 0.85em;"}
-```{r}
-#| label: more_box_data
-#| eval: true
-#| echo: true
-#| warning: false
-#| message: false
-movies_box <- ggplot2movies::movies |> 
-                dplyr::filter(year > 2000 & 
-                                mpaa != "" & 
-                                    !is.na(budget))
-head(movies_box)
-```
-:::
-
-
-
-::: {style="font-size: 0.95rem;"}
-
-Below we create a box plot of the `length` variable using the methods described above: 
-
-:::
-
-::: {style="font-size: 0.85em;"}
-```{r}
-#| label: more_create_graph_box
-#| eval: true
-#| echo: true
-#| warning: false
-#| message: false
-#| layout-nrow: 1
-labs_boxplot <- labs(
-  title = "IMDB Movie information and user ratings",
-  y = "Movie length (min)", x = "")
-ggp2_boxplot <- ggplot(data = movies_box, 
-           aes(x = " ", 
-               y = length)) +
-        geom_boxplot() 
-
-ggp2_boxplot + 
-  labs_boxplot
-```
-:::
-
-### Interpret
-
-::: {style="font-size: 0.95rem;"}
-The table below shows the 25th percentile, the median, the 75th percentile, the IQR, and a histogram of the `length` variable from the `movies_box` dataset.
-:::
-
-::: {style="font-size: 0.85em;"}
-```{r}
-#| label: box_table_stats
-#| eval: true
-#| echo: false 
-lgnth_skim <- skimr::skim(movies_box$length)
-LengthBoxStats <- select(lgnth_skim,
-     `25th` = numeric.p25, Median = numeric.p50,
-     `75th` = numeric.p75, Histogram = numeric.hist) |>
-     mutate(IQR = IQR(movies_box$length, na.rm = TRUE)) |>
-     select(`25th`, Median, `75th`, IQR, Histogram)
-kableExtra::kable_paper(
-  kable_input = knitr::kable(LengthBoxStats), 
-  font_size = 14)
-```
-:::
-
-::: {style="font-size: 0.95rem;"}
-The figure below displays how each element in the box plot represents each of the statistics using lines and points.
-:::
-
-:::: {.column-margin}
-::: {style="font-size: 0.95rem;"}
-In `ggplot2`, values that fall more than 1.5 times the IQR are displayed as individual points (aka outliers). The lines extending from the bottom and top of the main box represent the last non-outlier value in the distribution.
-:::
-::::
-
-![](www/boxplot-diagram.png){fig-align="center" width="80%" height="80%"}
-
-
-### Compare
-
-::: {style="font-size: 0.95rem;"}
-Compare the `geom_point()`, `geom_freqpoly()`, `geom_histogram()`, and `geom_density()` graphs of `length` from `movie_box` below to the `geom_boxplot()`:
-:::
-
-![](www/boxplot-comparisons.png){fig-align="center" width="85%" height="85%"}
-

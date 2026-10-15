@@ -21,123 +21,25 @@ options(
   scipen = 9999
 )
 
-# import font ----
-extrafont::font_import(
-    paths = "_assets/Ubuntu/",
-    prompt = FALSE)
-
 # add font ----
 sysfonts::font_add(
-    family =  "Ubuntu", 
-    regular = "_assets/Ubuntu/Ubuntu-Regular.ttf")
+    family =  "Ubuntu",
+    regular = file.path(fmggp2::font_path(), "Ubuntu", "Ubuntu-Regular.ttf"))
 
 # add theme ----
-source("_assets/R/theme_ggp2g.R")
+# the original book theme now lives in fmggp2 as theme_fmggp2()
+theme_ggp2g <- fmggp2::theme_fmggp2
+# attached for chapters not yet converted to simulated data
+library(palmerpenguins)
+library(fs)
+library(janitor)
 
-# Not in ----
-"%nin%" <- function(x, y) {
-  return( !(x %in% y) )
-}
-
-
-status <- function(type) {
-  status <- switch(type,
-    polish = "should be readable but is currently undergoing final polishing",
-    dev = "is still in development and may be confusing or incomplete",
-    draft = "is currently a dumping ground for ideas, and we don't recommend reading it",
-    complete = "is largely complete and just needs final proof reading",
-    stop("Invalid `type`", call. = FALSE)
-  )
-
-  class <- switch(type,
-    polish = "note",
-    dev = "warning",
-    draft = "caution",
-    complete = "tip"
-  )
-
-  cat(paste0(
-    "\n",
-    "::: {.callout-", class, " appearance='simple'", " icon=false}", "\n",
-    "***This graph ", status, ".*** ", "\n",
-    ":::", "\n"
-  ))
-}
-
+# book helpers ----
+library(fmggp2) # %nin%, status(), co_box(), and the 90s themes
 
 options(width = 50L,
   pillar.width = 50L)
 
-co_box <- function(color, header, contents = "Your text", size = "1.05", hsize = "1.10", fold = FALSE, look = "default") {
-  
-  if (look == "simple") {
-    look <- "simple"
-  } else if (look == "minimal") {
-    look <- "minimal"
-  } else {
-    look <- "default"
-  }
-  
-  fold <- tolower(as.character(fold))
-  size <- as.character(size)
-  
-  class <- switch(color,
-    b = "note",
-    g = "tip",
-    r = "important",
-    o = "warning",
-    y = "caution",
-    stop("Invalid `type`", call. = FALSE)
-  )
-  switch(color,
-    b = cat(paste0(
-      "\n\n",
-      ":::: {.callout-", class, " collapse='", fold, "'", " appearance='", look, "'}", "\n\n",
-      "## [", header, "]{style='font-weight: bold; font-size: ", hsize, "em;'}\n\n",
-      "::: {style='font-size: ", size, "em; color: #282b2d;'}\n\n",
-      "\n", glue::glue_collapse(contents), "\n\n",
-      "::: \n\n",
-      "::::", "\n"
-    )),
-    g = cat(paste0(
-      "\n\n",
-      ":::: {.callout-", class, " collapse='", fold, "'", " appearance='", look, "'}", "\n\n",
-      "## [", header, "]{style='font-weight: bold; font-size: ", hsize, "em;'}\n\n",
-      "::: {style='font-size: ", size, "em; color: #282b2d;'}\n\n",
-      "\n", glue::glue_collapse(contents), "\n\n",
-      "::: \n\n",
-      "::::", "\n"
-    )),
-    y = cat(paste0(
-      "\n\n",
-      ":::: {.callout-", class, " collapse='", fold, "'", " appearance='", look, "'}", "\n\n",
-      "## [", header, "]{style='font-weight: bold; font-size: ", hsize, "em;'}\n\n",
-      "::: {style='font-size: ", size, "em; color: #282b2d;'}\n\n",
-      "\n", glue::glue_collapse(contents), "\n\n",
-      "::: \n\n",
-      "::::", "\n"
-    )),
-    o = cat(paste0(
-      "\n\n",
-      ":::: {.callout-", class, " collapse='", fold, "'", " appearance='", look, "'}", "\n\n",
-      "## [", header, "]{style='font-weight: bold; font-size: ", hsize, "em;'}\n\n",
-      "::: {style='font-size: ", size, "em; color: #282b2d;'}\n\n",
-      "\n", glue::glue_collapse(contents), "\n\n",
-      "::: \n\n",
-      "::::", "\n"
-    )),
-    r = cat(paste0(
-      "\n\n",
-      ":::: {.callout-", class, " collapse='", fold, "'", " appearance='", look, "'}", "\n\n",
-      "## [", header, "]{style='font-weight: bold; font-size: ", hsize, "em;'}\n\n",
-      "::: {style='font-size: ", size, "em; color: #282b2d;'}\n\n",
-      "\n", glue::glue_collapse(contents), "\n\n",
-      "::: \n\n",
-      "::::", "\n"
-    )),
-    stop("Invalid `type`", call. = FALSE)
-  )
-}
 
 git_margin_box <- function(contents = "standard", fig_pw = '70%', branch = 'main', repo = 'shinyap') {
   switch(contents,

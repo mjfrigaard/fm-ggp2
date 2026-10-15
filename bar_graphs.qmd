@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_gameboy(
     base_size = 15))
 ```
 
@@ -28,7 +28,7 @@ ggplot2::theme_set(theme_ggp2g(
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 <br>
@@ -42,18 +42,22 @@ ggplot2::theme_set(theme_ggp2g(
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
-penguins_bar <- palmerpenguins::penguins |> 
-    filter(!is.na(species))
+library(dplyr)
+set.seed(1998)
+pokemon_starters <- tibble(
+  player_id = 1:300,
+  starter = sample(c("Bulbasaur", "Charmander", "Squirtle"),
+    size = 300, replace = TRUE, prob = c(0.30, 0.42, 0.28))
+)
 labs_bar <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
-  x = "Species", y = "Count", 
-  fill = "Species")
-ggp2_bar <- ggplot(data = penguins_bar,
-       aes(x = species)) +
-    geom_bar(aes(fill = species), 
+  title = "Pokemon Red and Blue (simulated)",
+  subtitle = "Starter chosen by 300 players",
+  x = "Starter", y = "Count",
+  fill = "Starter")
+ggp2_bar <- ggplot(data = pokemon_starters,
+       aes(x = starter)) +
+    geom_bar(aes(fill = starter),
         show.legend = FALSE)
 ggp2_bar +
   labs_bar
@@ -67,7 +71,7 @@ A bar graph compares data in different categories using rectangular bars that va
 
 In `ggplot2`, bar graphs can be built using [`geom_bar()`](https://ggplot2.tidyverse.org/reference/geom_bar.html).
 
-## Set up 
+## Set up
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **PACKAGES:**
@@ -86,10 +90,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins) 
 library(ggplot2)
-library(dplyr) # for data manipulation 
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -97,12 +99,7 @@ library(dplyr) # for data manipulation
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
-
-Filter the missing values from `species` in the `palmerpenguins::penguins` data and store it in `penguins_bar`.
+In 1998, every *Pokémon Red and Blue* player started the game by choosing one of three starters: Bulbasaur, Charmander, or Squirtle. We'll simulate the choices of 300 players with `sample()`, giving each starter its own probability of being picked. Setting the seed with `set.seed()` means you'll get the same 300 choices every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -110,11 +107,106 @@ Filter the missing values from `species` in the `palmerpenguins::penguins` data 
 #| code-fold: show
 #| eval: true
 #| echo: true
-penguins_bar <- palmerpenguins::penguins |> 
-    dplyr::filter(!is.na(species))
-glimpse(penguins_bar)
+set.seed(1998)
+pokemon_starters <- tibble(
+  player_id = 1:300,
+  starter = sample(c("Bulbasaur", "Charmander", "Squirtle"),
+    size = 300, replace = TRUE, prob = c(0.30, 0.42, 0.28))
+)
+glimpse(pokemon_starters)
 ```
 :::
+
+## Distribution
+
+The histograms and frequency polygons in the following chapters count numbers that fall into bins. A bar graph is simpler: it counts how many times each category shows up. Because we chose the probabilities in `sample()`, we know what those counts should be before we draw anything. Below we'll move from the choices, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first ten players.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: concrete_values_bar
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(pokemon_starters$starter, 10)
+```
+:::
+
+Six of these ten players chose Charmander. Ten choices is too few to trust, so we count all 300 and compare each count to the count we'd expect: the number of players (300) times the probability we gave each starter.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: concrete_counts_bar
+#| code-fold: show
+#| eval: true
+#| echo: true
+starter_counts <- pokemon_starters |>
+  count(starter) |>
+  mutate(expected = 300 * c(0.30, 0.42, 0.28))
+starter_counts
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+A bar model shows the three counts as parts of one whole. The full bar is all 300 players, and Charmander takes up the biggest part.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: pictorial_bar_model_bar
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| fig-asp: 0.45
+ggplot(data = starter_counts,
+    aes(x = n, y = "300 players", fill = starter)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  geom_text(aes(label = n), color = c("#9BBC0F", "#9BBC0F", "#0F380F"),
+    position = position_stack(vjust = 0.5, reverse = TRUE)) +
+  labs(x = "Number of players", y = NULL, fill = "Starter")
+```
+:::
+
+A bar graph takes the same three parts, stands each one upright, and puts them side by side. The dashed lines below mark the expected counts. Each bar lands near its line, but none of them match it exactly.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: pictorial_bar
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+ggplot(data = pokemon_starters,
+    aes(x = starter)) +
+  geom_bar(aes(fill = starter), show.legend = FALSE) +
+  geom_errorbar(data = starter_counts,
+    aes(y = expected, ymin = expected, ymax = expected),
+    linetype = "dashed", width = 0.9) +
+  labs(x = "Starter", y = "Count")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each player's choice is like rolling an uneven three sided die. Counting the results of 300 rolls gives a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
+
+$$
+(N_{\text{Bulbasaur}}, N_{\text{Charmander}}, N_{\text{Squirtle}}) \sim \text{Multinomial}(n = 300, \; p = (0.30, 0.42, 0.28))
+$$
+
+The expected height of each bar is $n \times p$: $300 \times 0.30 = 90$ for Bulbasaur, $300 \times 0.42 = 126$ for Charmander, and $300 \times 0.28 = 84$ for Squirtle. The three probabilities add to 1, so the three bars always add to 300. If one bar comes out taller than expected, another has to come out shorter.
+
+Our simulated players show exactly that trade off: Bulbasaur came in `r 90 - sum(pokemon_starters$starter == "Bulbasaur")` below its expected count, and Squirtle came in `r sum(pokemon_starters$starter == "Squirtle") - 84` above. Change the number in `set.seed()` and the bars move around their dashed lines, but they always add to 300.
 
 ## Grammar
 
@@ -122,13 +214,13 @@ glimpse(penguins_bar)
 **CODE:**
 :::
 
-1. Create labels with `labs()` 
+1. Create labels with `labs()`
 
 2. Initialize the graph with `ggplot()` and provide `data`
 
-3. Map `species` to the `x` axis
+3. Map `starter` to the `x` axis
 
-4. Map `species` to the `fill` aesthetic inside the `aes()` of `geom_bar()`
+4. Map `starter` to the `fill` aesthetic inside the `aes()` of `geom_bar()`
 
 5. Remove the legend with `show.legend = FALSE`
 
@@ -137,19 +229,19 @@ glimpse(penguins_bar)
 #| label: code_graph_bar
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_bar <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
-  x = "Species", y = "Count", 
-  fill = "Species")
-ggp2_bar <- ggplot(data = penguins_bar,
-       aes(x = species)) +
-    geom_bar(aes(fill = species), 
+  title = "Pokemon Red and Blue (simulated)",
+  subtitle = "Starter chosen by 300 players",
+  x = "Starter", y = "Count",
+  fill = "Starter")
+ggp2_bar <- ggplot(data = pokemon_starters,
+       aes(x = starter)) +
+    geom_bar(aes(fill = starter),
         show.legend = FALSE)
 ggp2_bar +
   labs_bar
@@ -172,13 +264,13 @@ ggp2_bar +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_bar <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
-  x = "Species", y = "Count", 
-  fill = "Species")
-ggp2_bar <- ggplot(data = penguins_bar,
-       aes(x = species)) +
-    geom_bar(aes(fill = species), 
+  title = "Pokemon Red and Blue (simulated)",
+  subtitle = "Starter chosen by 300 players",
+  x = "Starter", y = "Count",
+  fill = "Starter")
+ggp2_bar <- ggplot(data = pokemon_starters,
+       aes(x = starter)) +
+    geom_bar(aes(fill = starter),
         show.legend = FALSE)
 ggp2_bar +
   labs_bar
@@ -204,9 +296,9 @@ The connection between statistical transformations and geoms is an important pri
 :::
 
 
-The default `stat` argument in `geom_bar()` is set to `"count"`, which '*counts the number of cases at each `x` position*', so it's ideal for categorical variables (or factors). 
+The default `stat` argument in `geom_bar()` is set to `"count"`, which '*counts the number of cases at each `x` position*', so it's ideal for categorical variables (or factors).
 
-The `stat_count()` function can also be used to create bar graphs using the `geom` argument.  
+The `stat_count()` function can also be used to create bar graphs using the `geom` argument.
 
 The link between `geom_`**geom_name**`(stat = "`**stat_name**`")` and `stat_`**stat_name**`(geom = "`**geom_name**`")` is shown below:
 
@@ -220,18 +312,18 @@ The link between `geom_`**geom_name**`(stat = "`**stat_name**`")` and `stat_`**s
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-ggp2_geom_bar <- ggplot(data = penguins_bar,
-       aes(x = species)) +
-    geom_bar(aes(fill = species), 
-        stat = "count") + 
+ggp2_geom_bar <- ggplot(data = pokemon_starters,
+       aes(x = starter)) +
+    geom_bar(aes(fill = starter),
+        stat = "count") +
     labs(title = "geom_bar(stat = 'count')")
 ggp2_geom_bar
 
 
-ggp2_stat_count <- ggplot(data = penguins_bar,
-       aes(x = species)) +
-    stat_count(aes(fill = species), 
-        geom = "bar") + 
+ggp2_stat_count <- ggplot(data = pokemon_starters,
+       aes(x = starter)) +
+    stat_count(aes(fill = starter),
+        geom = "bar") +
     labs(title = "stat_count(geom = 'bar')")
 ggp2_stat_count
 ```
@@ -244,7 +336,7 @@ ggp2_stat_count
 **geom_col():**
 :::
 
-To create a bar graph with `geom_col()`, the `count` variable needs to be computed before being mapped into the graph `y` aesthetic. 
+To create a bar graph with `geom_col()`, the `count` variable needs to be computed before being mapped into the graph `y` aesthetic.
 
 
 ::: {style="font-size: 0.85em;"}
@@ -257,20 +349,19 @@ To create a bar graph with `geom_col()`, the `count` variable needs to be comput
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-penguins_bar |> 
-    # create column of counts 
-    dplyr::count(species, name = "count") |> 
+pokemon_starters |>
+    # create column of counts
+    dplyr::count(starter, name = "count") |>
     # map into x and y
-    ggplot(mapping = aes(x = species, y = count)) +
-    geom_col(aes(fill = species), 
-        show.legend = FALSE) + 
+    ggplot(mapping = aes(x = starter, y = count)) +
+    geom_col(aes(fill = starter),
+        show.legend = FALSE) +
     labs_bar +
     labs(caption = "*geom_col()")
-    
+
 
 # compare to geom_bar()
 ggp2_bar +
   labs_bar
 ```
 :::
-

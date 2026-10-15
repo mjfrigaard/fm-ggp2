@@ -17,7 +17,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_napster(
     base_size = 15))
 ```
 
@@ -43,23 +43,27 @@ ggplot2::theme_set(theme_ggp2g(
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
-penguins <- palmerpenguins::penguins
+library(dplyr)
+set.seed(1999)
+napster_downloads <- tibble(
+  download_id = 1:300,
+  minutes = round(rgamma(n = 300, shape = 4, rate = 0.5), 1)
+)
 labs_freqpoly <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
-  x = "Flipper length (millimeters)")
-ggp2_freqpoly <- ggplot(data = penguins,
-      aes(x = flipper_length_mm)) + 
+  title = "Napster MP3 downloads (simulated)",
+  subtitle = "Download time over a 56k modem",
+  x = "Download time (minutes)")
+ggp2_freqpoly <- ggplot(data = napster_downloads,
+      aes(x = minutes)) +
     geom_freqpoly()
-ggp2_freqpoly + 
+ggp2_freqpoly +
   labs_freqpoly
 ```
 
 ::::
 
-## Description 
+## Description
 
 A frequency polygon is a plot that displays data distributions using points connected by straight lines. It's similar to a histogram but is more commonly used to compare data across multiple sets. A legend is often included to differentiate between various data sets. Frequency polygons are used to assess [symmetry](https://en.wikipedia.org/wiki/Normal_distribution) and [skewness](https://en.wikipedia.org/wiki/Skewness).
 
@@ -80,10 +84,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins) 
 library(ggplot2)
-library(dplyr) # for data manipulation
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -93,11 +95,7 @@ library(dplyr) # for data manipulation
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
-The `penguins` data.
+We'll simulate 300 MP3 downloads from [Napster](https://en.wikipedia.org/wiki/Napster) over a 56k dial up modem with `rgamma()`, rounding each download time to a tenth of a minute. Setting the seed with `set.seed()` means you'll get the same 300 downloads every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -105,10 +103,126 @@ The `penguins` data.
 #| code-fold: false
 #| eval: true
 #| echo: true
-penguins <- palmerpenguins::penguins
-glimpse(penguins)
+set.seed(1999)
+napster_downloads <- tibble(
+  download_id = 1:300,
+  minutes = round(rgamma(n = 300, shape = 4, rate = 0.5), 1)
+)
+glimpse(napster_downloads)
 ```
 :::
+
+## Distribution
+
+If you downloaded music in 1999, you already know the shape of this distribution. Most songs finished in a few minutes, but every so often a download crawled along for 15 or 20. Those slow downloads stretch the right side of the distribution into a long tail, which makes it [right skewed](https://en.wikipedia.org/wiki/Skewness). Below we'll move from the numbers, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first ten downloads.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: concrete_values_freq_poly
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(napster_downloads$minutes, 10)
+```
+:::
+
+Most of these finish in under 12 minutes, but one (14.5) takes much longer. Slow downloads like this pull the mean up, while the median (the middle download) barely moves. Comparing the two is a quick way to check for skew.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: concrete_summary_freq_poly
+#| code-fold: show
+#| eval: true
+#| echo: true
+napster_downloads |>
+  summarise(
+    mean = mean(minutes),
+    median = median(minutes))
+```
+:::
+
+The mean is larger than the median, so more than half of the downloads finish faster than the mean. We can count them by splitting the downloads at 8 minutes.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: concrete_counts_freq_poly
+#| code-fold: show
+#| eval: true
+#| echo: true
+napster_split <- napster_downloads |>
+  mutate(speed = if_else(minutes < 8,
+    "under 8 minutes", "8 minutes or more"),
+    speed = factor(speed,
+      levels = c("under 8 minutes", "8 minutes or more"))) |>
+  count(speed)
+napster_split
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+A bar model shows the split as two parts of one whole. If the distribution were symmetric, the two parts would be about the same size. Here the fast downloads take up the bigger part of the bar.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: pictorial_bar_model_freq_poly
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| fig-asp: 0.45
+ggplot(data = napster_split,
+    aes(x = n, y = "300 downloads", fill = speed)) +
+  geom_col(position = position_stack(reverse = TRUE),
+    color = "white") +
+  geom_text(aes(label = n), color = "black",
+    position = position_stack(vjust = 0.5, reverse = TRUE)) +
+  labs(x = "Number of downloads", y = NULL,
+    fill = "Download time")
+```
+:::
+
+The frequency polygon below shows the same imbalance as a line. The dashed line marks the median and the solid line marks the mean. The tallest points sit at or left of the median, and the long tail trails off to the right, past the mean.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: pictorial_freq_poly
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+ggplot(data = napster_downloads,
+    aes(x = minutes)) +
+  geom_freqpoly() +
+  geom_vline(xintercept = median(napster_downloads$minutes),
+    linetype = "dashed", color = "white") +
+  geom_vline(xintercept = mean(napster_downloads$minutes),
+    color = "white") +
+  labs(x = "Download time (minutes)")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+The `rgamma()` call that created the data is a single statement:
+
+$$
+X \sim \text{Gamma}(k = 4, \lambda = 0.5)
+$$
+
+The [gamma distribution](https://en.wikipedia.org/wiki/Gamma_distribution) has two parameters. The shape ($k$) controls how lopsided the polygon is, and the rate ($\lambda$) controls how far it stretches along the `x` axis. From these two numbers we can calculate the mean ($k / \lambda = 8$ minutes), the peak ($(k - 1) / \lambda = 6$ minutes), and the standard deviation ($\sqrt{k} / \lambda = 4$ minutes). The peak comes before the mean, which is what right skew looks like in a formula.
+
+Our simulated downloads come close: the mean is `r round(mean(napster_downloads$minutes), 1)` minutes and the standard deviation is `r round(sd(napster_downloads$minutes), 1)` minutes. Try raising `shape` in `rgamma()` and the polygon becomes more symmetric. A gamma distribution with a large shape looks a lot like the normal distribution from @sec-histograms.
 
 
 ## Grammar
@@ -122,7 +236,7 @@ glimpse(penguins)
 
 2. Initialize the graph with `ggplot()` and provide `data`
 
-3. Map `flipper_length_mm` to the `x` axis
+3. Map `minutes` to the `x` axis
 
 4. Add the `geom_freqpoly()` layer
 
@@ -132,17 +246,17 @@ glimpse(penguins)
 #| label: code_graph_freq_poly
 #| code-fold: false
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 labs_freqpoly <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
-  x = "Flipper length (millimeters)")
-ggp2_freqpoly <- ggplot(data = penguins,
-      aes(x = flipper_length_mm)) + 
+  title = "Napster MP3 downloads (simulated)",
+  subtitle = "Download time over a 56k modem",
+  x = "Download time (minutes)")
+ggp2_freqpoly <- ggplot(data = napster_downloads,
+      aes(x = minutes)) +
     geom_freqpoly()
-ggp2_freqpoly + 
+ggp2_freqpoly +
   labs_freqpoly
 ```
 :::
@@ -161,13 +275,13 @@ ggp2_freqpoly +
 #| message: false
 #| layout-nrow: 1
 labs_freqpoly <- labs(
-  title = "Adult foraging penguins",
-  subtitle = "Distribution of flipper length",
-  x = "Flipper length (millimeters)")
-ggp2_freqpoly <- ggplot(data = penguins,
-      aes(x = flipper_length_mm)) + 
+  title = "Napster MP3 downloads (simulated)",
+  subtitle = "Download time over a 56k modem",
+  x = "Download time (minutes)")
+ggp2_freqpoly <- ggplot(data = napster_downloads,
+      aes(x = minutes)) +
     geom_freqpoly()
-ggp2_freqpoly + 
+ggp2_freqpoly +
   labs_freqpoly
 ```
 
@@ -183,18 +297,17 @@ Experiment to see how many `bins` fit your variable’s distribution.
 #| layout-nrow: 1
 
 
-ggp2_freqpoly_bins45 <- ggplot(data = penguins,
-     aes(x = flipper_length_mm)) + 
-     geom_freqpoly(bins = 45) 
+ggp2_freqpoly_bins45 <- ggplot(data = napster_downloads,
+     aes(x = minutes)) +
+     geom_freqpoly(bins = 45)
 
-ggp2_freqpoly_bins45 + 
+ggp2_freqpoly_bins45 +
   labs_freqpoly
 
-ggp2_freqpoly_bins15 <- ggplot(data = penguins,
-     aes(x = flipper_length_mm)) + 
-     geom_freqpoly(bins = 15) 
+ggp2_freqpoly_bins15 <- ggplot(data = napster_downloads,
+     aes(x = minutes)) +
+     geom_freqpoly(bins = 15)
 
-ggp2_freqpoly_bins15 + 
+ggp2_freqpoly_bins15 +
   labs_freqpoly
 ```
-
