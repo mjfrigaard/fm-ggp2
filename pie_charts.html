@@ -113,10 +113,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar floating slimcontent quarto-light">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -529,12 +558,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">17.1</span> Description</a></li>
   <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up"><span class="header-section-number">17.2</span> Set up</a></li>
-  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">17.3</span> Grammar</a></li>
+  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">17.3</span> Distribution</a></li>
+  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">17.4</span> Grammar</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/pie_charts.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./proportions.html">PROPORTIONS</a></li><li class="breadcrumb-item"><a href="./pie_charts.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Pie charts</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -596,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>“They also work well when we have very small datasets.”</em> - <a href="https://clauswilke.com/dataviz/">Claus O. Wilke, Fundamentals of Data Visualization (2019)</a></p>
 <p>Pie-charts are ideal for comparing the proportions of categorical variable values, and we can build pie-charts using the <a href="https://rpkgs.datanovia.com/ggpubr/"><code>ggpubr</code> package.</a></p>
 </section>
-<section id="set-up" class="level2 page-columns page-full" data-number="17.2">
+<section id="set-up" class="level2" data-number="17.2">
 <h2 data-number="17.2" class="anchored" data-anchor-id="set-up"><span class="header-section-number">17.2</span> Set up</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>PACKAGES:</strong></p>
@@ -608,78 +638,182 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggpubr"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggplot2movies"</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2movies) </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># for tibble() and data manipulation</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure">
-<p><img src="www/imdb.png" class="quarto-figure quarto-figure-right figure-img" style="width:35.0%;height:35.0%"></p>
-</figure>
-</div>
-</div></div><p>Remove the missing values and <code>"NC-17"</code> from <code>mpaa</code> and summarise the count and percent.</p>
+<p>Every 90s school year started with a new Trapper Keeper, and the Lisa Frank designs (rainbow leopards, unicorns, dolphins, and pandas in neon colors) were the ones everyone wanted. We’ll simulate the designs of 200 Trapper Keepers sold at a school supply store with <code>sample()</code>. The probabilities are simple fractions on purpose: one half, one quarter, one eighth, and one eighth. Then we count each design (<code>cnt</code>) and convert the counts to proportions (<code>perc</code>). Setting the seed with <code>set.seed()</code> means you’ll get the same 200 Trapper Keepers every time you run the code below.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>movie_pie <span class="ot">&lt;-</span> ggplot2movies<span class="sc">::</span>movies <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mpaa <span class="sc">!=</span> <span class="st">""</span> <span class="sc">&amp;</span> mpaa <span class="sc">!=</span> <span class="st">"NC-17"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(mpaa) <span class="sc">|&gt;</span> </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">cnt =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">perc =</span> <span class="fu">round</span>(cnt <span class="sc">/</span> <span class="fu">sum</span>(cnt), <span class="dv">3</span>),</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mpaa =</span> <span class="fu">factor</span>(mpaa, </span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"PG"</span>, <span class="st">"PG-13"</span>, <span class="st">"R"</span>)))</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(movie_pie)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 3</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ mpaa &lt;fct&gt; PG, PG-13, R</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ cnt  &lt;int&gt; 528, 1003, 3377</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ perc &lt;dbl&gt; 0.108, 0.204, 0.688</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1993</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>trapper_keepers <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">keeper_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">design =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Rainbow leopards"</span>, <span class="st">"Unicorns"</span>, <span class="st">"Dolphins"</span>, <span class="st">"Pandas"</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">200</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>)))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>keeper_pie <span class="ot">&lt;-</span> trapper_keepers <span class="sc">|&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(design, <span class="at">name =</span> <span class="st">"cnt"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">perc =</span> cnt <span class="sc">/</span> <span class="fu">sum</span>(cnt),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">design =</span> <span class="fu">factor</span>(design,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Rainbow leopards"</span>, <span class="st">"Unicorns"</span>, <span class="st">"Dolphins"</span>, <span class="st">"Pandas"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(design)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(keeper_pie)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 4</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ design &lt;fct&gt; Rainbow leopards, Unicorns, Dolph…</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ cnt    &lt;int&gt; 98, 49, 23, 30</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ perc   &lt;dbl&gt; 0.490, 0.245, 0.115, 0.150</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
-<section id="grammar" class="level2" data-number="17.3">
-<h2 data-number="17.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">17.3</span> Grammar</h2>
+<section id="distribution" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">17.3</span> Distribution</h2>
+<p>A pie chart is a whole cut into slices, so it only makes sense when the slices add up to one thing (here, 200 Trapper Keepers). Pie charts are easiest to read when the slices are simple fractions, and because we chose those fractions in <code>sample()</code>, we know what each slice should look like. Below we’ll move from the Trapper Keepers, to a picture, to the formula.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>COUNT IT:</strong></p>
+</div>
+<p>Start with the first ten Trapper Keepers.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trapper_keepers<span class="sc">$</span>design, <span class="dv">10</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "Rainbow leopards" "Rainbow leopards"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [3] "Rainbow leopards" "Unicorns"        </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] "Unicorns"         "Unicorns"        </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] "Rainbow leopards" "Rainbow leopards"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] "Pandas"           "Rainbow leopards"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</div>
+<p>Counting all 200 and comparing each count to the count we’d expect (200 times each fraction) shows how close the simulation lands.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>keeper_pie <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">expected =</span> <span class="dv">200</span> <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["design"],"name":[1],"type":["fct"],"align":["left"]},{"label":["cnt"],"name":[2],"type":["int"],"align":["right"]},{"label":["perc"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["expected"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Rainbow leopards","2":"98","3":"0.490","4":"100"},{"1":"Unicorns","2":"49","3":"0.245","4":"50"},{"1":"Dolphins","2":"23","3":"0.115","4":"25"},{"1":"Pandas","2":"30","3":"0.150","4":"25"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>DRAW IT:</strong></p>
+</div>
+<p>A bar model lays the 200 Trapper Keepers out in a line. Rainbow leopards fill about half the bar, unicorns about a quarter, and dolphins and pandas split the last quarter.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> keeper_pie, <span class="fu">aes</span>(<span class="at">x =</span> cnt, <span class="at">y =</span> <span class="st">"200 Trapper Keepers"</span>,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> design)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">reverse =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> cnt), <span class="at">color =</span> <span class="st">"#3D0066"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">reverse =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Trapper Keepers"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="st">"Design"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="pie_charts_files/figure-html/draw_bar_model_pie-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>A pie chart bends the same bar into a circle. Below, the pie on the left uses the exact fractions from <code>sample()</code>, and the pie on the right uses our simulated counts. The leopard slice covers about half the circle in both, and the unicorn slice covers about a quarter.</p>
+<div style="font-size: 0.85em;">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>expected_pie <span class="ot">&lt;-</span> keeper_pie <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">perc =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ggpubr<span class="sc">::</span><span class="fu">ggpie</span>(expected_pie, <span class="at">x =</span> <span class="st">"perc"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> expected_pie<span class="sc">$</span>perc, <span class="dv">1</span>), <span class="st">"%"</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">lab.pos =</span> <span class="st">"in"</span>, <span class="at">lab.font =</span> <span class="st">"#3D0066"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"design"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Expected"</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  pie_theme</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>ggpubr<span class="sc">::</span><span class="fu">ggpie</span>(keeper_pie, <span class="at">x =</span> <span class="st">"perc"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> keeper_pie<span class="sc">$</span>perc, <span class="dv">1</span>), <span class="st">"%"</span>),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">lab.pos =</span> <span class="st">"in"</span>, <span class="at">lab.font =</span> <span class="st">"#3D0066"</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"design"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Simulated"</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  pie_theme</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="pie_charts_files/figure-html/draw_pie-1.png" class="img-fluid" width="576"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="pie_charts_files/figure-html/draw_pie-2.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>NAME IT:</strong></p>
+</div>
+<p>Each Trapper Keeper is one draw from four designs, so the four counts follow a <a href="https://en.wikipedia.org/wiki/Multinomial_distribution">multinomial distribution</a>:</p>
+<p><span class="math display">\[
+(N_{\text{leopards}}, N_{\text{unicorns}}, N_{\text{dolphins}}, N_{\text{pandas}}) \sim \text{Multinomial}\left(200, \; \left(\tfrac{1}{2}, \tfrac{1}{4}, \tfrac{1}{8}, \tfrac{1}{8}\right)\right)
+\]</span></p>
+<p>A slice’s angle is its share of the 360 degrees in the circle: <span class="math inline">\(\tfrac{1}{2}\)</span> is 180 degrees, <span class="math inline">\(\tfrac{1}{4}\)</span> is 90 degrees, and each <span class="math inline">\(\tfrac{1}{8}\)</span> is 45 degrees. Simple fractions like these line up with the “clock positions” our eyes already know (half past, quarter past), which is why pie charts work best with them.</p>
+<p>Each simulated share wobbles around its fraction by about <span class="math inline">\(\sqrt{p(1 - p) / 200}\)</span>: about 3.5 percentage points for the leopard slice and 2.3 points for the dolphin and panda slices. That’s why our slices are close to the expected ones but not exact. Try changing <code>size = 200</code> to <code>size = 20</code> in <code>sample()</code> and the slices drift much further from the simple fractions.</p>
+</section>
+<section id="grammar" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">17.4</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
 </div>
 <ul>
+<li><p>Create the slice labels (<code>pie_labels</code>) with <code>paste0()</code></p></li>
+<li><p><code>ggpie()</code> applies its own theme, so create <code>pie_theme</code> to add the book theme back (and remove the axis text, ticks, and grid lines)</p></li>
 <li><p>Create labels with <code>labs()</code></p></li>
-<li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
+<li><p>Assign the data to <code>ggpubr::ggpie()</code></p></li>
 <li><p>Assign <code>"perc"</code> to <code>x</code></p></li>
-<li><p>Assign <code>labs</code> to <code>label</code></p></li>
+<li><p>Assign <code>pie_labels</code> to <code>label</code></p></li>
 <li><p>Assign <code>"in"</code> to <code>lab.pos</code></p></li>
-<li><p>Assign <code>"white"</code> to <code>lab.font</code> and <code>color</code></p></li>
-<li><p>Assign <code>"mpaa"</code> to <code>fill</code></p></li>
-<li><p>Remove legend with <code>theme(legend.position = "none")</code></p></li>
+<li><p>Assign a dark color to <code>lab.font</code> and <code>"white"</code> to <code>color</code></p></li>
+<li><p>Assign <code>"design"</code> to <code>fill</code></p></li>
+<li><p>Add <code>pie_theme</code> (which also moves the legend to the bottom)</p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>labs <span class="ot">&lt;-</span> <span class="fu">paste0</span>(movie_pie<span class="sc">$</span>mpaa, <span class="st">" ("</span>, </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>               (<span class="dv">100</span><span class="sc">*</span>movie_pie<span class="sc">$</span>perc), <span class="st">"%)"</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>labs_pie <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Percent MPAA ratings for IMDB movies"</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Percent MPAA rating"</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ggp2_pie <span class="ot">&lt;-</span> ggpubr<span class="sc">::</span><span class="fu">ggpie</span>(movie_pie, </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">x =</span> <span class="st">"perc"</span>, <span class="at">label =</span> labs, </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">lab.pos =</span> <span class="st">"in"</span>, <span class="at">lab.font =</span> <span class="st">"#ffffff"</span>,</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> <span class="st">"mpaa"</span>, <span class="at">color =</span> <span class="st">"#ffffff"</span>) <span class="sc">+</span> </span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)  </span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>ggp2_pie <span class="sc">+</span> </span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  labs_pie</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pie_labels <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> keeper_pie<span class="sc">$</span>perc), <span class="st">"%"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pie_theme <span class="ot">&lt;-</span> fmggp2<span class="sc">::</span><span class="fu">theme_lisafrank</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_blank</span>(), <span class="at">axis.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(), <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>labs_pie <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Trapper Keepers (simulated)"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Lisa Frank designs sold"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="cn">NULL</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ggp2_pie <span class="ot">&lt;-</span> ggpubr<span class="sc">::</span><span class="fu">ggpie</span>(keeper_pie,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">x =</span> <span class="st">"perc"</span>, <span class="at">label =</span> pie_labels,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">lab.pos =</span> <span class="st">"in"</span>, <span class="at">lab.font =</span> <span class="st">"#3D0066"</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> <span class="st">"design"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    pie_theme</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>ggp2_pie <span class="sc">+</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  labs_pie</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>

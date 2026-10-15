@@ -113,10 +113,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar floating slimcontent quarto-light">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -529,17 +558,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">18.1</span> Description</a></li>
   <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up"><span class="header-section-number">18.2</span> Set up</a></li>
-  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">18.3</span> Grammar</a></li>
-  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">18.4</span> More info</a>
+  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">18.3</span> Distribution</a></li>
+  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">18.4</span> Grammar</a></li>
+  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">18.5</span> More info</a>
   <ul>
-  <li><a href="#subgroup" id="toc-subgroup" class="nav-link" data-scroll-target="#subgroup"><span class="header-section-number">18.4.1</span> Subgroup</a></li>
-  <li><a href="#subgroup-2" id="toc-subgroup-2" class="nav-link" data-scroll-target="#subgroup-2"><span class="header-section-number">18.4.2</span> Subgroup 2</a></li>
+  <li><a href="#subgroup" id="toc-subgroup" class="nav-link" data-scroll-target="#subgroup"><span class="header-section-number">18.5.1</span> Subgroup</a></li>
+  <li><a href="#subgroup-2" id="toc-subgroup-2" class="nav-link" data-scroll-target="#subgroup-2"><span class="header-section-number">18.5.2</span> Subgroup 2</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/treemaps.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./proportions.html">PROPORTIONS</a></li><li class="breadcrumb-item"><a href="./treemaps.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Treemaps</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -601,9 +631,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="description" class="level2" data-number="18.1">
 <h2 data-number="18.1" class="anchored" data-anchor-id="description"><span class="header-section-number">18.1</span> Description</h2>
 <p>Treemaps display proportionally divided rectangular hierarchies for levels of categorical variables. The layout consists of ‘squarified’ tiles, which display the relative contribution of each categorical value to the overall graph space.</p>
-<p>We’ll build a treemap using the <a href="http://wilkox.org/treemapify/"><code>treemapify</code> package.</a> Also check out <a href="https://mjfrigaard.github.io/ggp2-gallery/prp/mosaic_plot.html">mosaic plots</a>.</p>
+<p>We’ll build a treemap using the <a href="http://wilkox.org/treemapify/"><code>treemapify</code> package.</a> Also check out the <a href="./mosaic_plots.html">mosaic plots</a> chapter.</p>
 </section>
-<section id="set-up" class="level2 page-columns page-full" data-number="18.2">
+<section id="set-up" class="level2" data-number="18.2">
 <h2 data-number="18.2" class="anchored" data-anchor-id="set-up"><span class="header-section-number">18.2</span> Set up</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>PACKAGES:</strong></p>
@@ -614,55 +644,154 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pak::pak("wilkox/treemapify")</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("palmerpenguins")</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(treemapify) </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(treemapify)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># for tibble() and data manipulation</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr) <span class="co"># for expand_grid()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure">
-<p><img src="www/lter_penguins.png" class="img-fluid figure-img" style="width:65.0%"></p>
-<figcaption>Artwork by Allison Horst</figcaption>
-</figure>
-</div>
-</div></div><p>Filter the missing values from <code>sex</code>, group the data by <code>species</code>, <code>island</code>, and <code>sex</code>, then count the <code>species</code> and <code>island</code> (then <code>ungroup()</code>).</p>
+<p>The 1998 holiday season at Toys”R”Us belonged to Furby, but Beanie Babies, Tamagotchis, and the Game Boy Color kept the aisles busy all year. We’ll simulate one store’s unit sales for six toys in three departments. Each toy gets a <code>yearly_rate</code> (the units we’d expect to sell in a year) and a <code>holiday_share</code> (the part of those sales that land in November and December). <code>tidyr::expand_grid()</code> creates a row for each toy in each <code>season</code>, <code>lambda</code> splits the yearly rate between the two seasons, and <code>rpois()</code> draws the units sold. Setting the seed with <code>set.seed()</code> means you’ll get the same sales every time you run the code below.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>treemap_peng <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(species, island, sex) <span class="sc">|&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    tidyr<span class="sc">::</span><span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(species, island, sex) <span class="sc">|&gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">count</span>(species, island, sex) <span class="sc">|&gt;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(treemap_peng)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 10</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ species &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, …</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ island  &lt;fct&gt; Biscoe, Biscoe, Dream, Dream, To…</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ sex     &lt;fct&gt; female, male, female, male, fema…</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ n       &lt;int&gt; 22, 22, 27, 28, 24, 23, 34, 34, …</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1999</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>toy_sales <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">department =</span> <span class="fu">c</span>(<span class="st">"Electronic pets"</span>, <span class="st">"Electronic pets"</span>, <span class="st">"Plush"</span>, <span class="st">"Plush"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Video games"</span>, <span class="st">"Video games"</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">toy =</span> <span class="fu">c</span>(<span class="st">"Furby"</span>, <span class="st">"Tamagotchi"</span>, <span class="st">"Beanie Babies"</span>, <span class="st">"Tickle Me Elmo"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Game Boy Color"</span>, <span class="st">"Nintendo 64"</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">yearly_rate =</span> <span class="fu">c</span>(<span class="dv">1800</span>, <span class="dv">900</span>, <span class="dv">2400</span>, <span class="dv">700</span>, <span class="dv">1200</span>, <span class="dv">1000</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">holiday_share =</span> <span class="fu">c</span>(<span class="fl">0.80</span>, <span class="fl">0.40</span>, <span class="fl">0.35</span>, <span class="fl">0.60</span>, <span class="fl">0.55</span>, <span class="fl">0.50</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">expand_grid</span>(<span class="at">season =</span> <span class="fu">c</span>(<span class="st">"Holiday"</span>, <span class="st">"Rest of year"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lambda =</span> yearly_rate <span class="sc">*</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>           <span class="fu">if_else</span>(season <span class="sc">==</span> <span class="st">"Holiday"</span>, holiday_share, <span class="dv">1</span> <span class="sc">-</span> holiday_share),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">units =</span> <span class="fu">rpois</span>(<span class="fu">n</span>(), <span class="at">lambda =</span> lambda)) <span class="sc">|&gt;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(department, toy, season, lambda, units)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(toy_sales)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 12</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 5</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ department &lt;chr&gt; "Electronic pets", "Electroni…</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ toy        &lt;chr&gt; "Furby", "Furby", "Tamagotchi…</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ season     &lt;chr&gt; "Holiday", "Rest of year", "H…</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ lambda     &lt;dbl&gt; 1440, 360, 360, 540, 840, 156…</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ units      &lt;int&gt; 1467, 359, 382, 574, 843, 158…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
-<section id="grammar" class="level2" data-number="18.3">
-<h2 data-number="18.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">18.3</span> Grammar</h2>
+<section id="distribution" class="level2" data-number="18.3">
+<h2 data-number="18.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">18.3</span> Distribution</h2>
+<p>A treemap nests counts inside counts: seasons inside toys, and toys inside departments. Every tile’s area is a share of the store’s total sales, so the question behind the graph is “how much of the whole does each piece take up?” Below we’ll move from the sales, to a picture, to the formula.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>COUNT IT:</strong></p>
+</div>
+<p>Start with the rows for Furby and Beanie Babies.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>toy_sales <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(toy <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Furby"</span>, <span class="st">"Beanie Babies"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["department"],"name":[1],"type":["chr"],"align":["left"]},{"label":["toy"],"name":[2],"type":["chr"],"align":["left"]},{"label":["season"],"name":[3],"type":["chr"],"align":["left"]},{"label":["lambda"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["units"],"name":[5],"type":["int"],"align":["right"]}],"data":[{"1":"Electronic pets","2":"Furby","3":"Holiday","4":"1440","5":"1467"},{"1":"Electronic pets","2":"Furby","3":"Rest of year","4":"360","5":"359"},{"1":"Plush","2":"Beanie Babies","3":"Holiday","4":"840","5":"843"},{"1":"Plush","2":"Beanie Babies","3":"Rest of year","4":"1560","5":"1580"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>Each simulated count (<code>units</code>) lands within a few percent of the rate we gave <code>rpois()</code> (<code>lambda</code>). Furby sold most of its units during the holidays, while Beanie Babies sold most of theirs during the rest of the year. Adding up the counts inside each department gives the department totals, and dividing by the store total turns them into the shares the treemap draws.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>toy_sales <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(department) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">units =</span> <span class="fu">sum</span>(units), <span class="at">expected =</span> <span class="fu">sum</span>(lambda)) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">share =</span> <span class="fu">round</span>(units <span class="sc">/</span> <span class="fu">sum</span>(units), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["department"],"name":[1],"type":["chr"],"align":["left"]},{"label":["units"],"name":[2],"type":["int"],"align":["right"]},{"label":["expected"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["share"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Electronic pets","2":"2782","3":"2700","4":"0.344"},{"1":"Plush","2":"3101","3":"3100","4":"0.383"},{"1":"Video games","2":"2211","3":"2200","4":"0.273"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>DRAW IT:</strong></p>
+</div>
+<p>A bar model shows the hierarchy one level at a time. Each department is a bar, each toy is a part of its department’s bar, and each part is split by season.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(toy_sales, <span class="fu">aes</span>(<span class="at">x =</span> units, <span class="at">y =</span> toy, <span class="at">fill =</span> season)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(department <span class="sc">~</span> ., <span class="at">scales =</span> <span class="st">"free_y"</span>, <span class="at">space =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Units sold"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="st">"Season"</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="treemaps_files/figure-html/draw_bar_model_treemap-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>A treemap takes the same parts and packs them into one rectangle. Below, the yellow borders outline the departments, the blue borders outline the toys, and the colors split each toy by season. The Furby tile is almost all holiday sales, and the Beanie Babies tile is mostly the rest of the year.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(toy_sales, <span class="fu">aes</span>(<span class="at">area =</span> units, <span class="at">fill =</span> season,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">subgroup =</span> department, <span class="at">subgroup2 =</span> toy)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  treemapify<span class="sc">::</span><span class="fu">geom_treemap</span>() <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  treemapify<span class="sc">::</span><span class="fu">geom_treemap_subgroup2_border</span>(<span class="at">color =</span> <span class="st">"#0057B8"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  treemapify<span class="sc">::</span><span class="fu">geom_treemap_subgroup2_text</span>(<span class="at">color =</span> <span class="st">"#FFFFFF"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">place =</span> <span class="st">"center"</span>, <span class="at">min.size =</span> <span class="dv">0</span>, <span class="at">family =</span> <span class="st">"sans"</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  treemapify<span class="sc">::</span><span class="fu">geom_treemap_subgroup_border</span>(<span class="at">color =</span> <span class="st">"#FFD200"</span>, <span class="at">size =</span> <span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Season"</span>) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="treemaps_files/figure-html/draw_treemap-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>NAME IT:</strong></p>
+</div>
+<p>Each toy and season count comes from a <a href="https://en.wikipedia.org/wiki/Poisson_distribution">Poisson distribution</a>:</p>
+<p><span class="math display">\[
+N_{\text{toy, season}} \sim \text{Poisson}(\lambda_{\text{toy, season}})
+\]</span></p>
+<p>Poisson counts have a useful property for treemaps: the sum of independent Poisson counts is also Poisson, with a rate equal to the sum of the rates. So each department total is <span class="math inline">\(\text{Poisson}(\sum \lambda)\)</span>: 2,700 for electronic pets, 3,100 for plush, and 2,200 for video games.</p>
+<p>The standard deviation of a Poisson count is <span class="math inline">\(\sqrt{\lambda}\)</span>, so its relative wobble is <span class="math inline">\(\sqrt{\lambda} / \lambda = 1 / \sqrt{\lambda}\)</span>. For the Furby holiday tile (<span class="math inline">\(\lambda = 1{,}440\)</span>) that’s under 3%, which is why the treemap’s tiles barely change shape from one simulation to the next. Try dividing every <code>yearly_rate</code> by 100 and the small tiles start to jump around.</p>
+</section>
+<section id="grammar" class="level2" data-number="18.4">
+<h2 data-number="18.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">18.4</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
 </div>
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map the <code>n</code> to <code>area</code>, <code>sex</code> to <code>fill</code> and <code>label</code>, <code>species</code> to <code>subgroup</code>, and <code>island</code> to <code>subgroup2</code></p></li>
+<li><p>Map the <code>units</code> to <code>area</code>, <code>season</code> to <code>fill</code> and <code>label</code>, <code>department</code> to <code>subgroup</code>, and <code>toy</code> to <code>subgroup2</code></p></li>
 <li><p>Add <code>geom_treemap()</code></p></li>
 <li><p>Add <code>geom_treemap_text()</code></p>
 <ul>
@@ -678,25 +807,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>labs_treemap <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Adult foraging penguins"</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Sex"</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>ggp2_treemap <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(treemap_peng, </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">area =</span> n, </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> sex, </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> sex,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">subgroup =</span> species,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">subgroup2 =</span> island)) <span class="sc">+</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>       treemapify<span class="sc">::</span><span class="fu">geom_treemap</span>() <span class="sc">+</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>       treemapify<span class="sc">::</span><span class="fu">geom_treemap_text</span>(</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">place =</span> <span class="st">"bottomright"</span>,</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#d0d0d0"</span>,</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">min.size =</span> <span class="dv">0</span>,</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.90</span>,</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>           <span class="at">fontface =</span> <span class="st">"italic"</span>,</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">family =</span> <span class="st">"sans"</span>) </span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>ggp2_treemap <span class="sc">+</span> </span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  labs_treemap</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>labs_treemap <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Toys</span><span class="sc">\"</span><span class="st">R</span><span class="sc">\"</span><span class="st">Us 1998 (simulated)"</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Season"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>ggp2_treemap <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(toy_sales,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">area =</span> units,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> season,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> season,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">subgroup =</span> department,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">subgroup2 =</span> toy)) <span class="sc">+</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>       treemapify<span class="sc">::</span><span class="fu">geom_treemap</span>() <span class="sc">+</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>       treemapify<span class="sc">::</span><span class="fu">geom_treemap_text</span>(</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">place =</span> <span class="st">"bottomright"</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#FFFFFF"</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">min.size =</span> <span class="dv">0</span>,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.90</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>           <span class="at">fontface =</span> <span class="st">"italic"</span>,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">family =</span> <span class="st">"sans"</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>ggp2_treemap <span class="sc">+</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  labs_treemap</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
@@ -706,25 +835,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>labs_treemap <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Adult foraging penguins"</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Sex"</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>ggp2_treemap <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(treemap_peng, </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">area =</span> n, </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> sex, </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> sex,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">subgroup =</span> species,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">subgroup2 =</span> island)) <span class="sc">+</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>       treemapify<span class="sc">::</span><span class="fu">geom_treemap</span>() <span class="sc">+</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>       treemapify<span class="sc">::</span><span class="fu">geom_treemap_text</span>(</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">place =</span> <span class="st">"bottomright"</span>,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#d0d0d0"</span>,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">min.size =</span> <span class="dv">0</span>,</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.90</span>,</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>           <span class="at">fontface =</span> <span class="st">"italic"</span>,</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">family =</span> <span class="st">"sans"</span>) </span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>ggp2_treemap <span class="sc">+</span> </span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  labs_treemap</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>labs_treemap <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Toys</span><span class="sc">\"</span><span class="st">R</span><span class="sc">\"</span><span class="st">Us 1998 (simulated)"</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Season"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>ggp2_treemap <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(toy_sales,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">area =</span> units,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> season,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> season,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">subgroup =</span> department,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">subgroup2 =</span> toy)) <span class="sc">+</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>       treemapify<span class="sc">::</span><span class="fu">geom_treemap</span>() <span class="sc">+</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>       treemapify<span class="sc">::</span><span class="fu">geom_treemap_text</span>(</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">place =</span> <span class="st">"bottomright"</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#FFFFFF"</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">min.size =</span> <span class="dv">0</span>,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.90</span>,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>           <span class="at">fontface =</span> <span class="st">"italic"</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">family =</span> <span class="st">"sans"</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>ggp2_treemap <span class="sc">+</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  labs_treemap</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
@@ -735,11 +864,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2" data-number="18.4">
-<h2 data-number="18.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">18.4</span> More info</h2>
+<section id="more-info" class="level2" data-number="18.5">
+<h2 data-number="18.5" class="anchored" data-anchor-id="more-info"><span class="header-section-number">18.5</span> More info</h2>
 <p><code>treemapify</code> has multiple options for building treemaps. We cover a few of these below, but you should check out the <a href="https://cran.r-project.org/web/packages/treemapify/vignettes/introduction-to-treemapify.html">package vignette</a>.</p>
-<section id="subgroup" class="level3" data-number="18.4.1">
-<h3 data-number="18.4.1" class="anchored" data-anchor-id="subgroup"><span class="header-section-number">18.4.1</span> Subgroup</h3>
+<section id="subgroup" class="level3" data-number="18.5.1">
+<h3 data-number="18.5.1" class="anchored" data-anchor-id="subgroup"><span class="header-section-number">18.5.1</span> Subgroup</h3>
 <p><code>ggplot2</code> build layers in the order they’re written, so it’s <a href="https://cran.r-project.org/web/packages/treemapify/vignettes/introduction-to-treemapify.html">advised</a> to build the subgroups in order from “<em>from deepest to shallowest</em>”, with <code>subgroups2</code> first (ending on <code>subgroup</code>)</p>
 <ul>
 <li><p>Add <code>geom_treemap_subgroup2_border()</code></p>
@@ -760,18 +889,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ggp2_tm_subgroup <span class="ot">&lt;-</span> ggp2_treemap <span class="sc">+</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    treemapify<span class="sc">::</span><span class="fu">geom_treemap_subgroup2_border</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#02577A"</span>,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">4.0</span>) <span class="sc">+</span> </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>       treemapify<span class="sc">::</span><span class="fu">geom_treemap_subgroup2_text</span>(</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">place =</span> <span class="st">"center"</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.65</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#02577A"</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">min.size =</span> <span class="dv">0</span>,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">family =</span> <span class="st">"sans"</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>ggp2_tm_subgroup <span class="sc">+</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  labs_treemap</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ggp2_tm_subgroup <span class="ot">&lt;-</span> ggp2_treemap <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    treemapify<span class="sc">::</span><span class="fu">geom_treemap_subgroup2_border</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#0057B8"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">4.0</span>) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>       treemapify<span class="sc">::</span><span class="fu">geom_treemap_subgroup2_text</span>(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">place =</span> <span class="st">"center"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.75</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#FFFFFF"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">min.size =</span> <span class="dv">0</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">family =</span> <span class="st">"sans"</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>ggp2_tm_subgroup <span class="sc">+</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  labs_treemap</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
@@ -782,8 +911,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="subgroup-2" class="level3" data-number="18.4.2">
-<h3 data-number="18.4.2" class="anchored" data-anchor-id="subgroup-2"><span class="header-section-number">18.4.2</span> Subgroup 2</h3>
+<section id="subgroup-2" class="level3" data-number="18.5.2">
+<h3 data-number="18.5.2" class="anchored" data-anchor-id="subgroup-2"><span class="header-section-number">18.5.2</span> Subgroup 2</h3>
 <ul>
 <li><p>Add <code>geom_treemap_subgroup_border()</code></p>
 <ul>
@@ -802,21 +931,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ggp2_tm_subgroup2 <span class="ot">&lt;-</span> ggp2_tm_subgroup <span class="sc">+</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>       treemapify<span class="sc">::</span><span class="fu">geom_treemap_subgroup_border</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#ffffff"</span>, </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span> </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>       treemapify<span class="sc">::</span><span class="fu">geom_treemap_subgroup_text</span>(</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">place =</span> <span class="st">"topleft"</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.65</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">grow =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#ffffff"</span>,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">min.size =</span> <span class="dv">0</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">family =</span> <span class="st">"mono"</span>,</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">fontface =</span> <span class="st">"bold"</span>)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>ggp2_tm_subgroup2 <span class="sc">+</span> </span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  labs_treemap</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ggp2_tm_subgroup2 <span class="ot">&lt;-</span> ggp2_tm_subgroup <span class="sc">+</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>       treemapify<span class="sc">::</span><span class="fu">geom_treemap_subgroup_border</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#FFD200"</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>       treemapify<span class="sc">::</span><span class="fu">geom_treemap_subgroup_text</span>(</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">place =</span> <span class="st">"topleft"</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">alpha =</span> <span class="fl">0.65</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">grow =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#FFFFFF"</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">min.size =</span> <span class="dv">0</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">family =</span> <span class="st">"mono"</span>,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">fontface =</span> <span class="st">"bold"</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>ggp2_tm_subgroup2 <span class="sc">+</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  labs_treemap</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
