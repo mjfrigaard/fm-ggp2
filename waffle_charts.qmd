@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_pogs(
     base_size = 15))
 ```
 
@@ -45,6 +45,7 @@ status("complete")
 
 ```{r}
 #| label: full_code_display
+#| fig-asp: 1
 #| eval: true
 #| echo: false
 #| warning: false
@@ -53,25 +54,30 @@ status("complete")
 #| out-width: '60%'
 #| fig-align: right
 library(ggwaffle)
-library(palmerpenguins) 
 library(ggplot2)
-penguins <- palmerpenguins::penguins
-penguins <- dplyr::mutate(penguins, 
-              species = as.character(species))
-waffle_peng <- ggwaffle::waffle_iron(penguins,
-                      aes_d(group = species))
+library(dplyr)
+set.seed(1993)
+pog_collection <- tibble(
+  pog_id = 1:100,
+  type = sample(c("Milk caps", "Printed pogs", "Holographic", "Slammers"),
+    size = 100, replace = TRUE, prob = c(0.45, 0.30, 0.15, 0.10)))
+waffle_pogs <- ggwaffle::waffle_iron(pog_collection,
+                      aes_d(group = type), rows = 10)
 labs_waffle <- labs(
-  title = "Palmer penguin species",
-  x = "", y = "", fill = "Species")
-ggp2_waffle <- ggplot(data = waffle_peng, 
+  title = "A Pogs collection (simulated)",
+  subtitle = "100 pieces, one square each",
+  x = "", y = "", fill = NULL)
+ggp2_waffle <- ggplot(data = waffle_pogs, 
        aes(x = x, 
            y = y, 
            fill = group)) + 
-  ggwaffle::geom_waffle() 
+  ggwaffle::geom_waffle() +
+  coord_equal()
 ggp2_waffle + 
   labs_waffle +
-  ggwaffle::theme_waffle() + 
-  theme(legend.position = "top")
+  theme(axis.text = element_blank(),
+        panel.grid = element_blank(),
+        legend.position = "top")
 ```
 
 ::::
@@ -104,9 +110,8 @@ Install packages.
 install.packages("pak")
 pak::pak("liamgilbey/ggwaffle")
 library(ggwaffle)
-install.packages("palmerpenguins")
-library(palmerpenguins)
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -117,13 +122,9 @@ library(ggplot2)
 :::
 
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
+In the mid 90s, kids traded and battled with Pogs: cardboard milk caps, printed and holographic pogs, and heavy plastic "slammers" used to flip them. We'll simulate a collection of 100 pieces with `sample()`, giving each type its own chance of turning up.
 
-Waffle charts require a special data transformation with `ggwaffle::waffle_iron()`
-
-Set the group argument in `ggwaffle::aes_d()` as the categorical variable you want to see the relative counts for:
+Waffle charts require a special data transformation with `ggwaffle::waffle_iron()`. Set the `group` argument in `ggwaffle::aes_d()` to the categorical variable you want to see the relative counts for, and set `rows = 10` so 100 pieces fill a 10 by 10 grid. Setting the seed with `set.seed()` means you'll get the same collection every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -131,15 +132,105 @@ Set the group argument in `ggwaffle::aes_d()` as the categorical variable you wa
 #| code-fold: show
 #| eval: true
 #| echo: true
-penguins <- palmerpenguins::penguins
-penguins <- dplyr::mutate(penguins, 
-              species = as.character(species))
-waffle_peng <- ggwaffle::waffle_iron(penguins,
-                      aes_d(group = species))
+set.seed(1993)
+pog_collection <- tibble(
+  pog_id = 1:100,
+  type = sample(c("Milk caps", "Printed pogs", "Holographic", "Slammers"),
+    size = 100, replace = TRUE, prob = c(0.45, 0.30, 0.15, 0.10)))
+waffle_pogs <- ggwaffle::waffle_iron(pog_collection,
+                      aes_d(group = type), rows = 10)
 
-glimpse(waffle_peng)
+glimpse(waffle_pogs)
 ```
 :::
+
+## Distribution
+
+A waffle chart is built for one special total: 100. When there are 100 squares, every square is one percent, so you can read a percentage just by counting squares. Below we'll move from the collection, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first ten pieces in the collection.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_waffle
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(pog_collection$type, 10)
+```
+:::
+
+Six of these ten are milk caps, three are printed pogs, and one is holographic. Counting all 100 pieces gives us counts that are also percentages. The `expected` column is what we'd get if the collection matched the probabilities in `sample()` exactly.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_waffle
+#| code-fold: show
+#| eval: true
+#| echo: true
+pog_collection |> 
+  count(type) |> 
+  mutate(expected = c(15, 45, 30, 10)) 
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+A bar model shows the collection as one bar of 100 pieces split into four parts.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_bar_model_waffle
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| fig-asp: 0.45
+pog_collection |> 
+  count(type) |> 
+  ggplot(aes(x = n, y = "100 pieces", fill = type)) + 
+  geom_col() + 
+  geom_text(aes(label = n), color = c("white", "white", "white", "black"), 
+    position = position_stack(vjust = 0.5)) + 
+  labs(x = "Number of pieces", y = NULL, fill = "Type")
+```
+:::
+
+A waffle chart is the same bar folded into rows of 10. Each column of the waffle below is ten pieces, so the milk caps fill a little more than four columns and the slammers fill a little more than one.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_waffle
+#| fig-asp: 1
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(data = waffle_pogs, aes(x = x, y = y, fill = group)) + 
+  ggwaffle::geom_waffle() + 
+  coord_equal() + 
+  labs(x = NULL, y = NULL, fill = NULL) + 
+  theme(axis.text = element_blank(),
+        panel.grid = element_blank(),
+        legend.position = "top")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Every piece in the collection is an independent draw from four types, so the four counts follow a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
+
+$$
+(N_{\text{milk}}, N_{\text{printed}}, N_{\text{holo}}, N_{\text{slam}}) \sim \text{Multinomial}(n = 100, \; p = (0.45, 0.30, 0.15, 0.10))
+$$
+
+With $n = 100$, the expected count for each type is its probability times 100, which is the same number as its percentage. The counts wobble around those expectations by about $\sqrt{100\,p\,(1 - p)}$ pieces: about 5 for milk caps and 3 for slammers. Our collection has `r sum(pog_collection$type == "Slammers")` slammers instead of the expected 10, a difference of a little more than one standard deviation. Change the number in `set.seed()` and the squares trade places, but they always add to 100.
 
 
 ## Grammar
@@ -160,9 +251,9 @@ glimpse(waffle_peng)
 
   -   Add `ggwaffle::geom_waffle()`
 
-  -   Add `ggwaffle::theme_waffle()`
+  -   Keep the squares square with `coord_equal()`
 
-  -   Move the legend to the top with `theme(legend.position = "top")`
+  -   Remove the axis text and grid lines, and move the legend to the top with `theme()`
 
 :::
 
@@ -177,17 +268,20 @@ glimpse(waffle_peng)
 #| out-height: '100%'
 #| out-width: '100%'
 labs_waffle <- labs(
-  title = "Palmer penguin species",
-  x = "", y = "", fill = "Species")
-ggp2_waffle <- ggplot(data = waffle_peng, 
+  title = "A Pogs collection (simulated)",
+  subtitle = "100 pieces, one square each",
+  x = "", y = "", fill = NULL)
+ggp2_waffle <- ggplot(data = waffle_pogs, 
        aes(x = x, 
            y = y, 
            fill = group)) + 
   ggwaffle::geom_waffle() +
-  theme(legend.position = "top")
+  coord_equal()
 ggp2_waffle + 
   labs_waffle +
-  ggwaffle::theme_waffle()
+  theme(axis.text = element_blank(),
+        panel.grid = element_blank(),
+        legend.position = "top")
 ```
 :::
 
@@ -199,6 +293,7 @@ ggp2_waffle +
 
 ```{r}
 #| label: create_graph_waffle
+#| fig-asp: 1
 #| eval: true
 #| echo: false
 #| warning: false
@@ -207,16 +302,19 @@ ggp2_waffle +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_waffle <- labs(
-  title = "Palmer penguin species",
-  x = "", y = "", fill = "Species")
-ggp2_waffle <- ggplot(data = waffle_peng, 
+  title = "A Pogs collection (simulated)",
+  subtitle = "100 pieces, one square each",
+  x = "", y = "", fill = NULL)
+ggp2_waffle <- ggplot(data = waffle_pogs, 
        aes(x = x, 
            y = y, 
            fill = group)) + 
-  ggwaffle::geom_waffle() 
+  ggwaffle::geom_waffle() +
+  coord_equal()
 ggp2_waffle + 
   labs_waffle +
-  ggwaffle::theme_waffle() +
-  theme(legend.position = "top")
+  theme(axis.text = element_blank(),
+        panel.grid = element_blank(),
+        legend.position = "top")
 ```
 

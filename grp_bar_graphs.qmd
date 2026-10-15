@@ -17,7 +17,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_jurassic(
     base_size = 15))
 ```
 
@@ -56,27 +56,33 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
-peng_grp_col <- palmerpenguins::penguins |>
-    dplyr::select(body_mass_g, island) |> 
-    tidyr::drop_na() |> 
-    dplyr::group_by(island) |>
-    dplyr::summarise(
-        sum_body_mass_g = sum(body_mass_g)
-        ) |>
-    dplyr::ungroup()
-# glimpse(peng_grp_col)
+library(dplyr)
+set.seed(1993)
+jp_dinos <- tibble(
+  species = c("Brachiosaurus", "Triceratops", "Tyrannosaurus",
+              "Gallimimus", "Velociraptor"),
+  n = c(3, 5, 2, 20, 8),
+  mean_tons = c(40, 9, 8, 0.45, 0.15),
+  sd_tons = c(5, 1.2, 1, 0.08, 0.03)) |>
+  tidyr::uncount(n) |>
+  mutate(weight_tons = round(rnorm(n(), mean = mean_tons, sd = sd_tons), 2)) |>
+  select(species, weight_tons)
+jp_paddocks <- jp_dinos |>
+  group_by(species) |>
+  summarise(total_tons = sum(weight_tons)) |>
+  ungroup()
 labs_grp_col <- labs(
-    title = "Total Penguin Mass",
-    subtitle = "What's the total mass of penguins per Island?",
-    x = "Island",
-    y = "Total penguin body mass (g)")
-ggp2_grp_col <- ggplot(data = peng_grp_col,
-              aes(x = island, 
-                  y = sum_body_mass_g)) + 
-        geom_col(aes(fill = island),
-            show.legend = FALSE)
+    title = "Jurassic Park (simulated)",
+    subtitle = "Total weight of the dinosaurs in each paddock",
+    x = "Paddock",
+    y = "Total weight (tons)")
+ggp2_grp_col <- ggplot(data = jp_paddocks,
+              aes(x = species, 
+                  y = total_tons)) + 
+        geom_col(aes(fill = species),
+            show.legend = FALSE) +
+        scale_x_discrete(guide = guide_axis(n.dodge = 2))
 ggp2_grp_col + 
     labs_grp_col
 ```
@@ -106,9 +112,9 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
+library(tidyr) # for uncount()
 ```
 :::
 
@@ -118,11 +124,7 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
-Remove the missing values and reduce the `palmerpenguins::penguins` dataset to only `body_mass_g` and `island`, then group the data by `island` and calculate the sum of `body_mass_g` (as `sum_body_mass_g`). 
+In *Jurassic Park* (1993), every species lives in its own paddock. We'll simulate the weight of every dinosaur in the park: each species gets a head count (`n`) and its own normal distribution of weights (`mean_tons` and `sd_tons`). `tidyr::uncount()` repeats each row `n` times (one row per dinosaur), and `rnorm()` draws each dinosaur's weight. Then we add up the weights in each paddock (`total_tons`). Setting the seed with `set.seed()` means you'll get the same dinosaurs every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -130,17 +132,94 @@ Remove the missing values and reduce the `palmerpenguins::penguins` dataset to o
 #| code-fold: show
 #| eval: true
 #| echo: true
-peng_grp_col <- palmerpenguins::penguins |>
-    dplyr::select(body_mass_g, island) |> 
-    tidyr::drop_na() |> 
-    dplyr::group_by(island) |>
-    dplyr::summarise(
-        sum_body_mass_g = sum(body_mass_g)
-        ) |>
-    dplyr::ungroup()
-glimpse(peng_grp_col)
+set.seed(1993)
+jp_dinos <- tibble(
+  species = c("Brachiosaurus", "Triceratops", "Tyrannosaurus",
+              "Gallimimus", "Velociraptor"),
+  n = c(3, 5, 2, 20, 8),
+  mean_tons = c(40, 9, 8, 0.45, 0.15),
+  sd_tons = c(5, 1.2, 1, 0.08, 0.03)) |>
+  tidyr::uncount(n) |>
+  mutate(weight_tons = round(rnorm(n(), mean = mean_tons, sd = sd_tons), 2)) |>
+  select(species, weight_tons)
+jp_paddocks <- jp_dinos |>
+  group_by(species) |>
+  summarise(total_tons = sum(weight_tons)) |>
+  ungroup()
+glimpse(jp_paddocks)
 ```
 :::
+
+## Distribution
+
+A grouped bar graph shows one number per group, and here that number is a total. Totals depend on two things: how many dinosaurs live in a paddock and how much each one weighs. Twenty Gallimimus still weigh less than two Tyrannosaurs. Below we'll move from the dinosaurs, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first six dinosaurs.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_grp_col
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(jp_dinos, 6)
+```
+:::
+
+Each Brachiosaurus weighs close to 40 tons, and each Triceratops weighs close to 9. For every paddock, the total is the number of dinosaurs times their average weight.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_grp_col
+#| code-fold: show
+#| eval: true
+#| echo: true
+jp_dinos |> 
+  group_by(species) |> 
+  summarise(
+    dinosaurs = n(), 
+    mean_tons = mean(weight_tons),
+    total_tons = sum(weight_tons))
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+Each bar in a grouped bar graph is a bar model: a total made of parts. Below we draw every dinosaur as its own segment and stack the segments in each paddock. The height of each stack is the paddock's total, and the number of segments is its head count. The Gallimimus bar has 20 thin segments, and the Brachiosaurus bar has three thick ones.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_grp_col
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(data = jp_dinos, 
+    aes(x = species, y = weight_tons, fill = species)) + 
+  geom_col(color = "#111111", linewidth = 0.3, show.legend = FALSE) + 
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) + 
+  labs(x = "Paddock", y = "Total weight (tons)")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each dinosaur's weight comes from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) for its species, $X_i \sim \text{Normal}(\mu, \sigma)$. A paddock's total adds up $n$ of these weights:
+
+$$
+T = X_1 + X_2 + \dots + X_n \sim \text{Normal}(n\mu, \; \sqrt{n}\,\sigma)
+$$
+
+The expected total is $n\mu$: $3 \times 40 = 120$ tons for the Brachiosaurus paddock and $20 \times 0.45 = 9$ tons for Gallimimus. The spread grows with $\sqrt{n}$, not $n$, because heavy and light dinosaurs partly cancel each other out. Our Brachiosaurus paddock weighs `r round(sum(jp_dinos$weight_tons[jp_dinos$species == "Brachiosaurus"]), 1)` tons, within one standard deviation ($\sqrt{3} \times 5 \approx 8.7$ tons) of its expected 120.
+
+Try changing the head counts in `n`. Doubling the Velociraptors doubles their bar, but the bar would still be the shortest in the park.
 
 
 ## Grammar
@@ -155,9 +234,11 @@ Grouped bar graphs assume the statistical measure (i.e., the value that the leng
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Map `island` to the `x` and `sum_body_mass_g` to the `y`
+  -   Map `species` to the `x` and `total_tons` to the `y`
 
-  -   Map `island` to `fill` *inside* the `aes()` of `geom_col()` 
+  -   Map `species` to `fill` *inside* the `aes()` of `geom_col()` 
+
+  -   Stagger the long paddock names over two lines with `scale_x_discrete(guide = guide_axis(n.dodge = 2))`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -170,15 +251,16 @@ Grouped bar graphs assume the statistical measure (i.e., the value that the leng
 #| out-height: '100%'
 #| out-width: '100%'
 labs_grp_col <- labs(
-    title = "Total Penguin Mass",
-    subtitle = "What's the total mass of penguins per Island?",
-    x = "Island",
-    y = "Total penguin body mass (g)")
-ggp2_grp_col <- ggplot(data = peng_grp_col,
-              aes(x = island, 
-                  y = sum_body_mass_g)) + 
-        geom_col(aes(fill = island),
-            show.legend = FALSE)
+    title = "Jurassic Park (simulated)",
+    subtitle = "Total weight of the dinosaurs in each paddock",
+    x = "Paddock",
+    y = "Total weight (tons)")
+ggp2_grp_col <- ggplot(data = jp_paddocks,
+              aes(x = species, 
+                  y = total_tons)) + 
+        geom_col(aes(fill = species),
+            show.legend = FALSE) +
+        scale_x_discrete(guide = guide_axis(n.dodge = 2))
 ggp2_grp_col + 
     labs_grp_col
 ```
@@ -198,15 +280,16 @@ ggp2_grp_col +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_grp_col <- labs(
-    title = "Total Penguin Mass",
-    subtitle = "What's the total mass of penguins per Island?",
-    x = "Island",
-    y = "Total penguin body mass (g)")
-ggp2_grp_col <- ggplot(data = peng_grp_col,
-              aes(x = island, 
-                  y = sum_body_mass_g)) + 
-        geom_col(aes(fill = island),
-            show.legend = FALSE)
+    title = "Jurassic Park (simulated)",
+    subtitle = "Total weight of the dinosaurs in each paddock",
+    x = "Paddock",
+    y = "Total weight (tons)")
+ggp2_grp_col <- ggplot(data = jp_paddocks,
+              aes(x = species, 
+                  y = total_tons)) + 
+        geom_col(aes(fill = species),
+            show.legend = FALSE) +
+        scale_x_discrete(guide = guide_axis(n.dodge = 2))
 ggp2_grp_col + 
     labs_grp_col
 ```
@@ -214,9 +297,9 @@ ggp2_grp_col +
 
 ## More info
 
-We didn't have to calculate `sum_body_mass_g` (displayed on the `y` axis) by `island` because `ggplot2` does this for us!
+We didn't have to calculate `total_tons` (displayed on the `y` axis) by `species` because `ggplot2` does this for us!
 
-If we pass a categorical variable to the `x` (like `island`) and a continuous variable to `y` (like `body_mass_kg`), `geom_col()` will calculate the `sum()` of `y` by levels of `x`:
+If we pass a categorical variable to the `x` (like `species`) and a continuous variable to `y` (like `weight_tons`), `geom_col()` stacks the rows in each group, which adds up `y` for each level of `x`:
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -225,18 +308,17 @@ If we pass a categorical variable to the `x` (like `island`) and a continuous va
 #| echo: true
 #| warning: false
 #| message: false
-  penguins |> 
-  dplyr::select(body_mass_g, island) |> 
-  tidyr::drop_na() |>
-  ggplot(aes(x = island, y = body_mass_g)) + 
-        geom_col(aes(fill = island),
+jp_dinos |> 
+  ggplot(aes(x = species, y = weight_tons)) + 
+        geom_col(aes(fill = species),
             show.legend = FALSE) + 
+        scale_x_discrete(guide = guide_axis(n.dodge = 2)) + 
   labs_grp_col
 ```
 :::
 
 
-We can see the underlying totaling of `body_mass_g` using `dplyr`’s `group_by()` and `summarise()` functions.
+We can see the underlying totals using `dplyr`'s `group_by()` and `summarise()` functions.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -245,16 +327,14 @@ We can see the underlying totaling of `body_mass_g` using `dplyr`’s `group_by(
 #| echo: true
 #| warning: false
 #| message: false
-palmerpenguins::penguins |> 
-    dplyr::select(body_mass_g, island) |> 
-    tidyr::drop_na() |> 
-    dplyr::group_by(island) |>
+jp_dinos |> 
+    dplyr::group_by(species) |>
     dplyr::summarise(
-        `Total Penguin Body Mass (kg)` = sum(body_mass_g)
+        `Total weight (tons)` = sum(weight_tons)
         ) |>
     dplyr::ungroup() |> 
-    dplyr::select(`Island` = island, 
-        `Total Penguin Body Mass (kg)`)
+    dplyr::select(`Paddock` = species, 
+        `Total weight (tons)`)
 ```
 :::
 
@@ -266,16 +346,14 @@ palmerpenguins::penguins |>
 #| warning: false
 #| message: false
 #| layout-nrow: 1
-palmerpenguins::penguins |> 
-    dplyr::select(body_mass_g, island) |> 
-    tidyr::drop_na() |> 
-    dplyr::group_by(island) |>
+jp_dinos |> 
+    dplyr::group_by(species) |>
     dplyr::summarise(
-        `Total Penguin Body Mass (kg)` = sum(body_mass_g)
+        `Total weight (tons)` = sum(weight_tons)
         ) |>
     dplyr::ungroup() |> 
-    dplyr::select(`Island` = island, 
-        `Total Penguin Body Mass (kg)`) |> 
+    dplyr::select(`Paddock` = species, 
+        `Total weight (tons)`) |> 
     knitr::kable() |> 
     kableExtra::kable_minimal()
 ```

@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_freshprince(
     base_size = 15))
 ```
 
@@ -45,32 +45,30 @@ ggplot2::theme_set(theme_ggp2g(
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(fivethirtyeight) 
 library(ggplot2)
-heatmap_ross <- fivethirtyeight::bob_ross |>
-  pivot_longer(-c(episode, season,
-    episode_num, title),
-    names_to = "object",
-    values_to = "present") |>
-  mutate(present = as.logical(present),
-    object = str_replace_all(object, "_", " ")) |>
-  arrange(episode, object) |> 
-  filter(object %in% c("conifer", "trees", 
-    "tree", "snow", "palm trees", "grass", 
-    "flowers", "cactus", "bushes", "cirrus", 
-    "cumulus", "deciduous", "clouds", "fog")) |>
-  group_by(season, object) |>
-  summarise(occurrences = sum(present)) |>
-  ungroup()
-# glimpse(heatmap_ross)
+library(dplyr)
+set.seed(1990)
+fp_gags <- tibble(
+  gag = c("Will flirts", "Phil yells at Will", "Geoffrey zinger",
+          "Jazz thrown out", "Hilary goes shopping", "Carlton dance"),
+  base = c(1.5, 1.2, 0.8, -0.4, -0.2, -2.2),
+  trend = c(-0.3, -0.1, 0, 0.2, 0, 0.5))
+fp_episodes <- fp_gags |>
+  tidyr::expand_grid(season = 1:6, episode = 1:24) |>
+  mutate(p = plogis(base + trend * (season - 3.5)),
+         present = rbinom(n(), size = 1, prob = p))
+fp_heatmap <- fp_episodes |>
+  group_by(season, gag) |>
+  summarise(occurrences = sum(present), .groups = "drop")
 labs_heatmap_tile <- labs(
-  title = "Bob Ross' plants & clouds", 
-  x = "Episode", 
-  y = "Plant & Cloud Objects", 
-  fill = "Occurrences")
-ggp2_heatmap_tile <- ggplot(data = heatmap_ross, 
+  title = "The Fresh Prince of Bel-Air (simulated)", 
+  subtitle = "Running gags per season (24 episodes each)",
+  x = "Season", 
+  y = "Running gag", 
+  fill = "Episodes")
+ggp2_heatmap_tile <- ggplot(data = fp_heatmap, 
        aes(x = season, 
-           y = object, 
+           y = gag, 
            fill = occurrences)) + 
        geom_tile() + 
     theme(legend.position = "bottom")
@@ -104,9 +102,9 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("fivethirtyeight")
-library(fivethirtyeight) 
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
+library(tidyr) # for expand_grid()
 ```
 :::
 
@@ -116,12 +114,7 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![](www/538.png){fig-align="right" width="45%" height="45%"}
-:::
-
-
-For the heatmap, we're going to re-structure and filter the `bob_ross` data from the `fivethirtyeight` package.
+*The Fresh Prince of Bel-Air* ran for six seasons (1990 to 1996) and leaned on a handful of running gags. We'll simulate whether each gag shows up in each of the 24 episodes per season. Every gag gets a starting chance of appearing (`base`) and a `trend` that makes it more or less common as the show goes on. `plogis()` turns those numbers into a probability between 0 and 1, and `rbinom()` flips a weighted coin for every gag in every episode (`present` is 1 when the gag appears). Then we count the episodes with each gag in each season (`occurrences`). Setting the seed with `set.seed()` means you'll get the same 144 episodes every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -129,23 +122,108 @@ For the heatmap, we're going to re-structure and filter the `bob_ross` data from
 #| code-fold: show
 #| eval: true
 #| echo: true
-heatmap_ross <- fivethirtyeight::bob_ross |>
-  pivot_longer(-c(episode, season,
-    episode_num, title),
-    names_to = "object",
-    values_to = "present") |>
-  mutate(present = as.logical(present),
-    object = str_replace_all(object, "_", " ")) |>
-  arrange(episode, object) |> 
-  filter(object %in% c("conifer", "trees", 
-    "tree", "snow", "palm trees", "grass", 
-    "flowers", "cactus", "bushes", "cirrus", 
-    "cumulus", "deciduous", "clouds", "fog")) |>
-  group_by(season, object) |>
-  summarise(occurrences = sum(present)) |>
-  ungroup()
+set.seed(1990)
+fp_gags <- tibble(
+  gag = c("Will flirts", "Phil yells at Will", "Geoffrey zinger",
+          "Jazz thrown out", "Hilary goes shopping", "Carlton dance"),
+  base = c(1.5, 1.2, 0.8, -0.4, -0.2, -2.2),
+  trend = c(-0.3, -0.1, 0, 0.2, 0, 0.5))
+fp_episodes <- fp_gags |>
+  tidyr::expand_grid(season = 1:6, episode = 1:24) |>
+  mutate(p = plogis(base + trend * (season - 3.5)),
+         present = rbinom(n(), size = 1, prob = p))
+fp_heatmap <- fp_episodes |>
+  group_by(season, gag) |>
+  summarise(occurrences = sum(present), .groups = "drop")
+glimpse(fp_heatmap)
 ```
 :::
+
+## Distribution
+
+Every tile in a heatmap is a count, and every count here is built from 24 yes or no outcomes. A gag that appears in most episodes produces bright tiles in every season, and a gag whose chances grow over time produces tiles that brighten from left to right. Below we'll move from the episodes, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first four episodes of season 1.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_heatmap
+#| code-fold: show
+#| eval: true
+#| echo: true
+fp_episodes |> 
+  filter(season == 1, episode <= 4) |> 
+  select(gag, episode, p, present) |> 
+  arrange(episode)
+```
+:::
+
+Each row is one coin flip, and `p` is the chance the coin comes up 1. Will flirts in almost every episode (`p` is above 0.9), while the Carlton dance has only about a 3% chance in season 1. Now compare the counts for those two gags across all six seasons with the counts we'd expect (24 episodes times `p`).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_heatmap
+#| code-fold: show
+#| eval: true
+#| echo: true
+fp_episodes |> 
+  filter(gag %in% c("Will flirts", "Carlton dance")) |> 
+  group_by(gag, season) |> 
+  summarise(occurrences = sum(present), 
+            expected = round(24 * first(p), 1), 
+            .groups = "drop")
+```
+:::
+
+The Carlton dance climbs from almost never to a few times a season, while Will flirts in nearly every episode no matter the season.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+Below are two heatmaps. The first shows the expected counts (24 times `p`), and the second shows what our simulation actually produced. The patterns match: Will's flirting stays bright in every season, and the Carlton dance slowly lights up from left to right. The simulated heatmap is a little patchier because each tile is only 24 coin flips.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_heatmap
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| layout-ncol: 2
+fp_episodes |> 
+  distinct(gag, season, p) |> 
+  ggplot(aes(x = season, y = gag, fill = 24 * p)) + 
+  geom_tile() + 
+  scale_fill_continuous(limits = c(0, 24)) + 
+  labs(title = "Expected", x = "Season", y = NULL, fill = "Episodes") + 
+  theme(legend.position = "bottom")
+
+ggplot(fp_heatmap, aes(x = season, y = gag, fill = occurrences)) + 
+  geom_tile() + 
+  scale_fill_continuous(limits = c(0, 24)) + 
+  labs(title = "Simulated", x = "Season", y = NULL, fill = "Episodes") + 
+  theme(legend.position = "bottom")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each gag in each episode is a [Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial) (a single yes or no outcome) with probability $p$. Adding up 24 independent trials gives a [binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution):
+
+$$
+\text{occurrences} \sim \text{Binomial}(n = 24, \; p_{\text{gag, season}})
+$$
+
+The expected count is $24p$, and the standard deviation is $\sqrt{24p(1 - p)}$. That spread is largest when $p = 0.5$ (about 2.4 episodes) and shrinks toward zero when a gag almost always or almost never appears. That's why the Will flirts row looks so steady while the middle rows flicker from season to season.
+
+The probability itself comes from `plogis()`, which turns `base + trend * (season - 3.5)` into a number between 0 and 1. A positive `trend` (like the Carlton dance's 0.5) makes a gag more likely every season. Try giving "Jazz thrown out" a negative trend and watch his row fade from left to right.
+
 
 ## Grammar
 
@@ -157,7 +235,7 @@ heatmap_ross <- fivethirtyeight::bob_ross |>
 
   -  Initialize the graph with `ggplot()` and provide `data`
 
-  -  Assign `season` to `x`, `object` to `y`, and `occurrences` to `fill`
+  -  Assign `season` to `x`, `gag` to `y`, and `occurrences` to `fill`
 
   -  Add the `geom_tile()`
 
@@ -174,17 +252,18 @@ heatmap_ross <- fivethirtyeight::bob_ross |>
 #| out-height: '100%'
 #| out-width: '100%'
 labs_heatmap_tile <- labs(
-  title = "Bob Ross' plants & clouds", 
-  x = "Episode", 
-  y = "Plant & Cloud Objects", 
-  fill = "Occurrences")
-ggp2_heatmap_tile <- ggplot(data = heatmap_ross, 
+  title = "The Fresh Prince of Bel-Air (simulated)", 
+  subtitle = "Running gags per season (24 episodes each)",
+  x = "Season", 
+  y = "Running gag", 
+  fill = "Episodes")
+ggp2_heatmap_tile <- ggplot(data = fp_heatmap, 
        aes(x = season, 
-           y = object, 
+           y = gag, 
            fill = occurrences)) + 
        geom_tile() + 
     theme(legend.position = "bottom")
-ggp2_heatmap_tile + 
+ggp2_heatmap_tile +
   labs_heatmap_tile
 ```
 :::
@@ -205,17 +284,18 @@ ggp2_heatmap_tile +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_heatmap_tile <- labs(
-  title = "Bob Ross' plants & clouds", 
-  x = "Episode", 
-  y = "Plant & Cloud Objects", 
-  fill = "Occurrences")
-ggp2_heatmap_tile <- ggplot(data = heatmap_ross, 
+  title = "The Fresh Prince of Bel-Air (simulated)", 
+  subtitle = "Running gags per season (24 episodes each)",
+  x = "Season", 
+  y = "Running gag", 
+  fill = "Episodes")
+ggp2_heatmap_tile <- ggplot(data = fp_heatmap, 
        aes(x = season, 
-           y = object, 
+           y = gag, 
            fill = occurrences)) + 
        geom_tile() + 
     theme(legend.position = "bottom")
-ggp2_heatmap_tile + 
+ggp2_heatmap_tile +
   labs_heatmap_tile
 ```
 
@@ -232,7 +312,7 @@ In addition to `geom_tile()`, heatmaps can also be created with the `geom_raster
 
   -  Initialize the graph with `ggplot()` and provide `data`
 
-  -  Assign `season` to `x`, `object` to `y`, and `occurrences` to fill
+  -  Assign `season` to `x`, `gag` to `y`, and `occurrences` to fill
 
   -  Add the `geom_raster()`
 
@@ -247,13 +327,14 @@ In addition to `geom_tile()`, heatmaps can also be created with the `geom_raster
 #| message: false
 #| layout-nrow: 1
 labs_heatmap_raster <- labs(
-  title = "Bob Ross' plants & clouds", 
-  x = "Episode", 
-  y = "Plant/Cloud Object", 
-  fill = "Occurrences")
-ggp2_heatmap_raster <- ggplot(data = heatmap_ross, 
+  title = "The Fresh Prince of Bel-Air (simulated)", 
+  subtitle = "Running gags per season (24 episodes each)",
+  x = "Season", 
+  y = "Running gag", 
+  fill = "Episodes")
+ggp2_heatmap_raster <- ggplot(data = fp_heatmap, 
        aes(x = season, 
-           y = object, 
+           y = gag, 
            fill = occurrences)) + 
        geom_raster() + 
     theme(legend.position = "bottom")

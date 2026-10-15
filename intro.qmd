@@ -6,7 +6,6 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(palmerpenguins)
 library(scales)
 library(knitr)
 library(kableExtra)
@@ -15,7 +14,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_win98(
     base_size = 15))
 ```
 
@@ -42,14 +41,21 @@ The `ggplot2` syntax is comprised of layers, which we can use as templates to bu
 
 ### The Data Layer
 
-The data layer consists of a rectangular object (like a spreadsheet) with columns and rows:
+The data layer consists of a rectangular object (like a spreadsheet) with columns and rows. Every dataset in this book is simulated, so we'll create one here: 150 home PCs sold in 1998, with each PC's `brand`, operating system (`os`), processor speed (`cpu_mhz`), and price (`price_usd`). Faster processors cost more, and Windows 98 adds a little to the price.
 
 ```{r}
 #| message: false
 #| warning: false
-# drop missing values
-penguins <- tidyr::drop_na(penguins)
-ggplot(data = penguins)
+set.seed(1998)
+pc_sales <- tibble(
+  brand = sample(c("Compaq", "Dell", "Gateway"), 150, replace = TRUE),
+  os = sample(c("Windows 95", "Windows 98"), 150, replace = TRUE, 
+    prob = c(0.4, 0.6)),
+  cpu_mhz = sample(c(133, 166, 200, 233, 266, 300, 350, 400), 150, 
+    replace = TRUE),
+  price_usd = round(700 + 4 * cpu_mhz + 
+    if_else(os == "Windows 98", 150, 0) + rnorm(150, 0, 200)))
+ggplot(data = pc_sales)
 ```
 
 ### The Mapping Layer
@@ -61,10 +67,10 @@ The mapping layer assigns columns (variables) from the data to a visual property
 #| warning: false
 #| dpi: 320
 #| fig-asp: 0.618
-ggplot(data = penguins,
+ggplot(data = pc_sales,
   mapping = 
     aes(
-      x = flipper_length_mm, y = bill_length_mm
+      x = cpu_mhz, y = price_usd
       )
   )
 ```
@@ -85,14 +91,14 @@ ggplot(data = <DATA>) +
 #| warning: false
 #| dpi: 320
 #| fig-asp: 0.618
-ggplot(data = penguins,
+ggplot(data = pc_sales,
   mapping = aes(
-    x = flipper_length_mm, y = bill_length_mm
+    x = cpu_mhz, y = price_usd
     )
   ) +
   geom_point(
     aes(
-      shape = species, color = sex
+      shape = brand, color = os
       )
     )
 ```
@@ -104,21 +110,21 @@ We can have multiple layers (data, mappings, geoms) in a single graph.
 #| warning: false
 #| dpi: 320
 #| fig-asp: 0.618
-ggplot(data = penguins,
+ggplot(data = pc_sales,
  # layer 1
   mapping = aes(
-    x = flipper_length_mm, y = bill_length_mm
+    x = cpu_mhz, y = price_usd
     )
   ) +
   geom_point(
     aes(
-      shape = species, color = sex
+      shape = brand, color = os
       )
     ) +
 # layer 2
   geom_smooth(
     mapping = aes(
-      x = flipper_length_mm, y = bill_length_mm), 
+      x = cpu_mhz, y = price_usd), 
         se = FALSE
     )
 ```
@@ -139,35 +145,35 @@ With a finite number of objects & functions, we can combine `ggplot2`’s gramma
 #| message: false
 #| warning: false
 #| dpi: 320
-#| fig-asp: 0.618
-ggplot(data = penguins,
+#| fig-asp: 1
+ggplot(data = pc_sales,
  # layer 1
   mapping = aes(
-    x = flipper_length_mm, y = bill_length_mm
+    x = cpu_mhz, y = price_usd
     )
   ) +
   geom_point(
     aes(
-      shape = species, color = sex
+      shape = brand, color = os
       )
     ) +
 # layer 2
   geom_smooth(
     mapping = aes(
-      x = flipper_length_mm, y = bill_length_mm), 
+      x = cpu_mhz, y = price_usd), 
         se = FALSE
     ) +
 # layer 3
   facet_wrap(
-    . ~ island, ncol = 2
+    . ~ brand, ncol = 2
     ) + 
   # labels
   labs(
-    x = 'Flipper length (mm)', y = 'Bill length (mm)', 
-    title = 'Penguins',  subtitle = 'Bills vs. Flippers'
+    x = 'Processor speed (MHz)', y = 'Price (USD)', 
+    title = 'Home PCs in 1998 (simulated)',  subtitle = 'Price vs. processor speed'
     ) + 
   # themes
-  theme(legend.position = "top") 
+  theme(legend.position = "bottom", legend.box = "vertical")
 ```
 
 **Template + 2 Layers + Facets + Theme + Labels**
@@ -224,21 +230,57 @@ Each graph has the following sections:
 3.  **Set up**
 
     -   Packages
-        -   *Code for installing development version of packages (if necessary) for graphs **and** data.*
+        -   *Code for installing development version of packages (if necessary) for graphs.*
     -   Data
-        -   *Any steps used to create (i.e., manipulate and prepare) the data for the graph.*
+        -   *The code that simulates the data for the graph (with `set.seed()`, so you get the same values every time).*
 
-4.  **The grammar**
+4.  **Distribution**
+
+    -   *How the distribution we simulated from shapes the graph, in three steps:*
+        -   ***COUNT IT***: *look at a handful of values and a few summary numbers.*
+        -   ***DRAW IT***: *draw the data as a bar model or annotated graph.*
+        -   ***NAME IT***: *write down the distribution and connect each parameter to the graph.*
+
+5.  **The grammar**
 
     -   Graph Code  
         -   *Graph labels have the `labs_` prefix*
         -   *Graph layers have a `ggp2_` prefix*
 
-5.  **More info**
+6.  **More info**
 
     -   Additional methods, arguments, or applications
         -   *Color palettes*\
         -   *Complimentary packages*
+
+The diagram below shows how the sections fit together. The data is simulated in **Set up**, explained in **Distribution**, and graphed in **The grammar**.
+
+```{mermaid}
+%%| fig-align: 'center'
+%%| fig-cap: 'The sections in each graph chapter'
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'monospace', 'fontSize': '14px', 'darkMode': false}}}%%
+
+flowchart TD
+    req(["<strong>Prerequisites</strong><br>what the graph needs"]) --> desc["<strong>Description</strong><br>what the graph shows"]
+    desc --> setup[/"<strong>Set up</strong><br>packages + simulated data"/]
+    setup --> dist
+    subgraph dist["<strong>Distribution</strong>"]
+        count["i. COUNT IT<br>values + summaries"] --> draw["ii. DRAW IT<br>bar model or<br>annotated graph"]
+        draw --> name["iii. NAME IT<br>distribution +<br>parameters"]
+    end
+    dist --> grammar[["<strong>The grammar</strong><br><code>labs_*</code> + <code>ggp2_*</code>"]]
+    grammar --> more(["<strong>More info</strong><br>other geoms + options"])
+
+    style req fill:#4CBB9D,color:#FFFFFF,rx:5,ry:5
+    style desc fill:#FFFFFF,color:#000000,stroke:#333
+    style setup fill:#C0C0C0,color:#000000,stroke:#333
+    style dist fill:#FFFFFF,color:#000000,stroke:#333,stroke-width:1px,rx:10,ry:10
+    style count fill:#000080,color:#FFFFFF,rx:5,ry:5
+    style draw fill:#000080,color:#FFFFFF,rx:5,ry:5
+    style name fill:#000080,color:#FFFFFF,rx:5,ry:5
+    style grammar fill:#FFFFFF,color:#000000,stroke:#333
+    style more fill:#4CBB9D,color:#FFFFFF,rx:5,ry:5
+```
 
 I've attempted to balance brevity and clarity, but with the assumption that its best to err on the latter. I've also followed the general principle that if a graph can be *easily* built using one of `ggplot2` 's `geom_*` functions, that method is shown first.
 

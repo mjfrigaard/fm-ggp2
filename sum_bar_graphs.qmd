@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_happymeal(
     base_size = 15))
 ```
 
@@ -44,27 +44,30 @@ ggplot2::theme_set(theme_ggp2g(
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-peng_sum_col <- palmerpenguins::penguins |> 
-    dplyr::select(body_mass_g, island) |> 
-    tidyr::drop_na() |> 
-    # divide the mass value by 1000
-    dplyr::mutate(
-        body_mass_kg = body_mass_g / 1000
-    ) |> 
-    dplyr::group_by(island) |> 
-    dplyr::summarise(
-      avg_bmi_kg = mean(body_mass_kg)
-    ) |> 
-    dplyr::ungroup()
+library(ggplot2)
+library(dplyr)
+set.seed(1997)
+happy_meals <- tibble(
+  promotion = c("Teenie Beanie Babies", "Furby", 
+                "Hot Wheels", "Inspector Gadget"),
+  lambda = c(420, 310, 220, 180)) |>
+  tidyr::uncount(28, .id = "day") |>
+  mutate(promotion = factor(promotion, levels = unique(promotion)),
+         sold = rpois(n(), lambda = lambda)) |>
+  select(promotion, day, sold)
+hm_sum_col <- happy_meals |> 
+  group_by(promotion) |> 
+  summarise(avg_sold = mean(sold)) |> 
+  ungroup()
 labs_sum_col <- labs(
-    title = "Average Penguin Body Mass",
-    subtitle = "What is the average penguin BMI per Island?",
-    x = "Island",
-    y = "Average Penguin Body Mass (kg)")
-ggp2_sum_col <- ggplot(data = peng_sum_col,
-    aes(x = island,
-        y = avg_bmi_kg)) +
-    geom_col(aes(fill = island), 
+    title = "Happy Meals (simulated)",
+    subtitle = "Average Happy Meals sold per day during each toy promotion",
+    x = "Toy promotion",
+    y = "Average sold per day")
+ggp2_sum_col <- ggplot(data = hm_sum_col,
+    aes(x = promotion,
+        y = avg_sold)) +
+    geom_col(aes(fill = promotion), 
         show.legend = FALSE)  
 ggp2_sum_col + 
     labs_sum_col
@@ -96,9 +99,9 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
+library(tidyr) # for uncount()
 ```
 :::
 
@@ -108,14 +111,7 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
-
-Remove the missing values from `body_mass_g` and `island` in the `palmerpenguins::penguins` data and convert body mass in grams to kilograms (`body_mass_kg`).
-
-*We'll also reduce the number of columns in the `penguins` data for clarity.*
+McDonald's ran a different Happy Meal toy promotion every few weeks in the late 90s, and some toys (like the 1997 Teenie Beanie Babies) sold out almost everywhere. We'll simulate 28 days of Happy Meal sales at one restaurant for four promotions. Each promotion gets its own daily sales rate (`lambda`), `tidyr::uncount()` creates one row per day, and `rpois()` draws the number sold. Then we average the daily sales for each promotion (`avg_sold`). Setting the seed with `set.seed()` means you'll get the same 112 days every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -123,21 +119,100 @@ Remove the missing values from `body_mass_g` and `island` in the `palmerpenguins
 #| code-fold: show
 #| eval: true
 #| echo: true
-peng_sum_col <- palmerpenguins::penguins |> 
-    dplyr::select(body_mass_g, island) |> 
-    tidyr::drop_na() |> 
-    # divide the mass value by 1000
-    dplyr::mutate(
-        body_mass_kg = body_mass_g / 1000
-    ) |> 
-    dplyr::group_by(island) |> 
-    dplyr::summarise(
-      avg_bmi_kg = mean(body_mass_kg)
-    ) |> 
-    dplyr::ungroup()
-dplyr::glimpse(peng_sum_col)
+set.seed(1997)
+happy_meals <- tibble(
+  promotion = c("Teenie Beanie Babies", "Furby", 
+                "Hot Wheels", "Inspector Gadget"),
+  lambda = c(420, 310, 220, 180)) |>
+  tidyr::uncount(28, .id = "day") |>
+  mutate(promotion = factor(promotion, levels = unique(promotion)),
+         sold = rpois(n(), lambda = lambda)) |>
+  select(promotion, day, sold)
+hm_sum_col <- happy_meals |> 
+  group_by(promotion) |> 
+  summarise(avg_sold = mean(sold)) |> 
+  ungroup()
+dplyr::glimpse(hm_sum_col)
 ```
 :::
+
+## Distribution
+
+A summary bar graph shows one statistic per group (here, the mean). Each bar hides 28 days of sales behind a single height, so it's worth knowing how much those days vary before we trust the differences between bars. Below we'll move from the daily sales, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first week of the Teenie Beanie Babies promotion.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_sum_col
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(happy_meals, 7)
+```
+:::
+
+Daily sales bounce around between about 400 and 450, but they never drift far from the rate we gave `rpois()` (420). The summary below shows the mean and standard deviation for each promotion, along with the standard error of the mean (`se`), which measures how much each average would move if we simulated another 28 days.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_sum_col
+#| code-fold: show
+#| eval: true
+#| echo: true
+hm_stats <- happy_meals |> 
+  group_by(promotion) |> 
+  summarise(
+    mean = mean(sold), 
+    sd = sd(sold), 
+    se = sd(sold) / sqrt(n()))
+hm_stats
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The graph below puts each promotion's 28 days back behind its bar. The bar is the average, the points are the individual days, and the error bars stretch two standard errors above and below the average. The points spread out more for the busier promotions, but the error bars stay short because each average is built from 28 days.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_sum_col
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(data = hm_stats, aes(x = promotion, y = mean)) + 
+  geom_col(aes(fill = promotion), show.legend = FALSE) + 
+  geom_jitter(data = happy_meals, aes(y = sold), 
+    width = 0.2, height = 0, alpha = 0.5, size = 1) + 
+  geom_errorbar(aes(ymin = mean - 2 * se, ymax = mean + 2 * se), 
+    width = 0.3, linewidth = 0.8) + 
+  labs(x = "Toy promotion", y = "Happy Meals sold per day")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each day's sales come from a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) with the promotion's rate:
+
+$$
+X \sim \text{Poisson}(\lambda)
+$$
+
+For a Poisson distribution, the variance equals $\lambda$, so the standard deviation is $\sqrt{\lambda}$. For Teenie Beanie Babies that's $\sqrt{420} \approx 20.5$ Happy Meals a day, and our simulated days have a standard deviation of `r round(hm_stats$sd[1], 1)`. The average of $n$ days has a much smaller spread, $\sqrt{\lambda / n}$, which is the standard error:
+
+$$
+\bar{X} \approx \text{Normal}\left(\lambda, \; \sqrt{\lambda / n}\right)
+$$
+
+With $n = 28$ days, the Teenie Beanie Babies average should land within about $2 \times \sqrt{420 / 28} \approx 7.7$ Happy Meals of 420. Ours is `r round(hm_stats$mean[1], 1)`. That's why the bars are trustworthy here: the gaps between promotions (100 or more Happy Meals a day) are much larger than the error bars. Try cutting the 28 in `tidyr::uncount()` down to 3 days and watch the error bars grow.
 
 
 ## Grammar
@@ -150,9 +225,9 @@ dplyr::glimpse(peng_sum_col)
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Map `island` to `x` and `avg_bmi_kg` to `y`
+  -   Map `promotion` to `x` and `avg_sold` to `y`
 
-  -   *Inside* the `aes()` of `geom_col()`, map `island` to `fill` 
+  -   *Inside* the `aes()` of `geom_col()`, map `promotion` to `fill` 
 
   -   *Outside* the `aes()` of `geom_col()`, remove the legend with `show.legend = FALSE`
 
@@ -167,14 +242,14 @@ dplyr::glimpse(peng_sum_col)
 #| out-height: '100%'
 #| out-width: '100%'
 labs_sum_col <- labs(
-    title = "Average Penguin Body Mass",
-    subtitle = "What is the average penguin BMI per Island?",
-    x = "Island",
-    y = "Average Penguin Body Mass (kg)")
-ggp2_sum_col <- ggplot(data = peng_sum_col,
-    aes(x = island,
-        y = avg_bmi_kg)) +
-    geom_col(aes(fill = island), 
+    title = "Happy Meals (simulated)",
+    subtitle = "Average Happy Meals sold per day during each toy promotion",
+    x = "Toy promotion",
+    y = "Average sold per day")
+ggp2_sum_col <- ggplot(data = hm_sum_col,
+    aes(x = promotion,
+        y = avg_sold)) +
+    geom_col(aes(fill = promotion), 
         show.legend = FALSE)  
 ggp2_sum_col + 
     labs_sum_col
@@ -197,14 +272,14 @@ ggp2_sum_col +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_sum_col <- labs(
-    title = "Average Penguin Body Mass",
-    subtitle = "What is the average penguin BMI per Island?",
-    x = "Island",
-    y = "Average Penguin Body Mass (kg)")
-ggp2_sum_col <- ggplot(data = peng_sum_col,
-    aes(x = island,
-        y = avg_bmi_kg)) +
-    geom_col(aes(fill = island), 
+    title = "Happy Meals (simulated)",
+    subtitle = "Average Happy Meals sold per day during each toy promotion",
+    x = "Toy promotion",
+    y = "Average sold per day")
+ggp2_sum_col <- ggplot(data = hm_sum_col,
+    aes(x = promotion,
+        y = avg_sold)) +
+    geom_col(aes(fill = promotion), 
         show.legend = FALSE)  
 ggp2_sum_col + 
     labs_sum_col
@@ -229,10 +304,10 @@ Below is more information on `geom_bar()` vs. `geom_col()`.
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-ggplot(data = peng_sum_col,
-    aes(x = island,
-        y = avg_bmi_kg)) +
-    geom_bar(aes(fill = island),
+ggplot(data = hm_sum_col,
+    aes(x = promotion,
+        y = avg_sold)) +
+    geom_bar(aes(fill = promotion),
         show.legend = FALSE,
         stat = "identity") +
     labs_sum_col

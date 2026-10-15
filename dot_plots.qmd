@@ -244,7 +244,8 @@ labs_dotplot <- labs(
   x = "Number of rentals")
 ggp2_dotplot <- ggplot(data = blockbuster_rentals,
       aes(x = rentals)) + 
-    geom_dotplot(binwidth = 1, dotsize = 0.3) 
+    geom_dotplot(binwidth = 1, dotsize = 0.2) + 
+    scale_x_continuous(breaks = 0:8) 
 ggp2_dotplot + 
   labs_dotplot
 ```
@@ -268,7 +269,8 @@ labs_dotplot <- labs(
   x = "Number of rentals")
 ggp2_dotplot <- ggplot(data = blockbuster_rentals,
       aes(x = rentals)) + 
-    geom_dotplot(binwidth = 1, dotsize = 0.3) 
+    geom_dotplot(binwidth = 1, dotsize = 0.2) + 
+    scale_x_continuous(breaks = 0:8) 
 ggp2_dotplot + 
   labs_dotplot
 ```

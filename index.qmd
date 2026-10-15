@@ -30,6 +30,34 @@ I created this book as a sort of online 'quick reference' to help me answer ques
 
 [^tidytuesday-twitter-callout]: *Most of these questions come from [#TidyTuesday](https://twitter.com/search?lang=en&q=%23tidytuesday)*
 
+## What's new in this edition
+
+I've rebuilt the examples in this manual around simulated data. Earlier versions borrowed datasets from packages like `palmerpenguins`, `fivethirtyeight`, and `ggplot2movies`. Those are great datasets, but each one meant another package to install, and the shape of the data was whatever the real world handed us. Now every chapter creates its own data with a few lines of R code, using base R functions (like `rnorm()`, `rpois()`, and `sample()`) or user written packages (like [`faux`](https://debruine.github.io/faux/)).
+
+Simulating the data unlocks something real data can't: we know the distribution behind every graph before we draw it. Each chapter uses that to connect the numbers to the picture in a new **Distribution** section, so you'll see *why* a histogram is bell shaped or *why* a box plot shows so many outliers, not just how to build it.
+
+I also wanted the examples to be fun to read, so every dataset is a late 90s throwback. You'll find Napster downloads, Blockbuster rentals, Pokémon starters, and Mario Kart 64 lap times, and each one is drawn with a matching theme (Windows 98, the original Game Boy, the Nintendo 64, and more). The themes live in the [`fmggp2`](https://mjfrigaard.github.io/fmggp2/) package, which also holds the helpers used throughout the book.
+
+```{mermaid}
+%%| fig-align: 'center'
+%%| fig-cap: 'How each chapter builds its example'
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'monospace', 'fontSize': '14px', 'darkMode': false}}}%%
+
+flowchart LR
+    dist(["<strong>Distribution</strong><br>normal, Poisson,<br>gamma, ..."]) -->|"i. set.seed()"| sim["<strong>Simulate</strong><br>base R or <code>faux</code>"]
+    sim --> data[("<strong>90s dataset</strong><br>AOL sessions, Pogs,<br>Happy Meals, ...")]
+    data -->|"ii. Distribution section"| link["<strong>Connect</strong><br>count it, draw it,<br>name it"]
+    link -->|"iii. Grammar section"| graph[["<strong>ggplot2 graph</strong><br><code>fmggp2::theme_*()</code>"]]
+
+    style dist fill:#4CBB9D,color:#FFFFFF,rx:5,ry:5
+    style sim fill:#FFFFFF,color:#000000,stroke:#333
+    style data fill:#C0C0C0,color:#000000,stroke:#333
+    style link fill:#FFFFFF,color:#000000,stroke:#333
+    style graph fill:#000080,color:#FFFFFF,rx:5,ry:5
+```
+
+I'm converting the book one part at a time, starting with the Univariate and Amounts graphs. Chapters that haven't been converted yet still use the original datasets and theme.
+
 ## Getting started
 
 -   Option 1: install `ggplot2` using the code below:
@@ -64,6 +92,18 @@ I created this book as a sort of online 'quick reference' to help me answer ques
 ![](www/tidyverse.png){fig-align="center" width="40%" height="40%"}
 :::
 
+
+-   Install `fmggp2` to use the 90s themes from the book:
+
+    ```{r}
+    #| label: fmggp2-pkg
+    #| eval: false
+    #| echo: true
+    #| code-fold: false
+    install.packages("pak")
+    pak::pak("mjfrigaard/fmggp2")
+    library(fmggp2)
+    ```
 
 ## Who this book was written for
 
