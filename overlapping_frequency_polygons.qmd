@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_supersoaker(
     base_size = 15))
 ```
 
@@ -44,18 +44,28 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
-penguins <- palmerpenguins::penguins
+library(dplyr)
+set.seed(1990)
+soaker_shots <- tibble(
+  shot_id = 1:600,
+  model = rep(c("SS 50", "SS 100", "CPS 2000"), each = 200)) |>
+  mutate(model = factor(model, levels = c("SS 50", "SS 100", "CPS 2000")),
+         avg_range = c(`SS 50` = 25, `SS 100` = 35,
+                       `CPS 2000` = 45)[as.character(model)],
+         range_ft = round(rnorm(n(), mean = avg_range,
+                                sd = 0.12 * avg_range), 1)) |>
+  select(shot_id, model, range_ft)
 labs_ovrlp_freq_poly <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (mm)",
-  color = "Species")
-ggp2_ovrlp_freq_poly <- ggplot(data = penguins, 
-       aes(x = flipper_length_mm,
-           group = species)) + 
-  geom_freqpoly(aes(color = species))
-ggp2_ovrlp_freq_poly + 
+  title = "Super Soaker range (simulated)",
+  subtitle = "200 shots from each model",
+  x = "Range (feet)",
+  color = "Model")
+ggp2_ovrlp_freq_poly <- ggplot(data = soaker_shots,
+       aes(x = range_ft,
+           group = model)) +
+  geom_freqpoly(aes(color = model), linewidth = 1)
+ggp2_ovrlp_freq_poly +
   labs_ovrlp_freq_poly
 ```
 
@@ -64,7 +74,7 @@ ggp2_ovrlp_freq_poly +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -73,11 +83,11 @@ ggp2_ovrlp_freq_poly +
 
 ::::
 
-## Description 
+## Description
 
 Overlapping frequency polygons are similar to overlapping histograms--they allow us to compare distributions of a continuous variable across the levels of a categorical variable.
 
-Instead of using bars, frequency polygons use lines to show the shape of the distribution. 
+Instead of using bars, frequency polygons use lines to show the shape of the distribution.
 
 ## Set up
 
@@ -96,9 +106,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -108,12 +117,7 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
-
-The `penguins` data.
+Every summer in the early 90s, backyard water fights were won by whoever had the biggest Super Soaker. We'll simulate 200 shots from each of three models. Each model gets its own average range (`avg_range`), and `rnorm()` draws each shot's range with a standard deviation equal to 12% of that average, so the more powerful models also spray a wider spread of distances. Setting the seed with `set.seed()` means you'll get the same 600 shots every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -121,10 +125,93 @@ The `penguins` data.
 #| code-fold: show
 #| eval: true
 #| echo: true
-penguins <- palmerpenguins::penguins
-glimpse(penguins)
+set.seed(1990)
+soaker_shots <- tibble(
+  shot_id = 1:600,
+  model = rep(c("SS 50", "SS 100", "CPS 2000"), each = 200)) |>
+  mutate(model = factor(model, levels = c("SS 50", "SS 100", "CPS 2000")),
+         avg_range = c(`SS 50` = 25, `SS 100` = 35,
+                       `CPS 2000` = 45)[as.character(model)],
+         range_ft = round(rnorm(n(), mean = avg_range,
+                                sd = 0.12 * avg_range), 1)) |>
+  select(shot_id, model, range_ft)
+glimpse(soaker_shots)
 ```
 :::
+
+## Distribution
+
+Overlapping frequency polygons make it easy to compare where groups sit *and* how spread out they are. In this simulation, both of those change together: a bigger Super Soaker shoots further on average and less consistently. Below we'll move from the shots, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first five shots (all from the SS 50).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_freq_poly
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(soaker_shots, 5)
+```
+:::
+
+These shots landed between about 22 and 26 feet. The summary below shows that the standard deviation (`sd`) grows with the mean, but the ratio of the two (`cv`, the [coefficient of variation](https://en.wikipedia.org/wiki/Coefficient_of_variation)) stays close to 0.12 for every model.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_freq_poly
+#| code-fold: show
+#| eval: true
+#| echo: true
+soaker_shots |> 
+  group_by(model) |> 
+  summarise(mean = mean(range_ft), sd = sd(range_ft), cv = sd / mean)
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The first graph below shows the three polygons in feet. Each one sits further to the right than the last, and each one is lower and wider. The second graph divides every shot by its model's average range, which puts all three on the same relative scale. Once we do that, the three polygons line up on top of each other, because they all have the same shape.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_freq_poly
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| layout-ncol: 2
+ggplot(soaker_shots, aes(x = range_ft, color = model)) + 
+  geom_freqpoly(binwidth = 2, linewidth = 1) + 
+  labs(title = "Feet", x = "Range (feet)", color = "Model")
+
+soaker_shots |> 
+  group_by(model) |> 
+  mutate(relative_range = range_ft / mean(range_ft)) |> 
+  ggplot(aes(x = relative_range, color = model)) + 
+  geom_freqpoly(binwidth = 0.05, linewidth = 1) + 
+  labs(title = "Relative to the average", 
+    x = "Range / average range", color = "Model")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each model's shots come from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) whose standard deviation is a fixed fraction of its mean:
+
+$$
+X_m \sim \text{Normal}(\mu_m, \; 0.12\,\mu_m), \quad \mu = (25, 35, 45)
+$$
+
+Dividing by the mean removes the difference between models: $X_m / \mu_m \sim \text{Normal}(1, 0.12)$ for every model, which is why the relative polygons line up. A 12% spread is about 3 feet for the SS 50 but more than 5 feet for the CPS 2000, so the CPS 2000's polygon is wider and, with the same 200 shots, lower. Try giving every model the same `sd` in `rnorm()` (say, 4 feet) and the three polygons in the first graph will all have the same width.
+
 
 ## Grammar
 
@@ -137,9 +224,9 @@ glimpse(penguins)
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Map `flipper_length_mm` to the `x` and `species` to `group`  
+  -   Map `range_ft` to the `x` and `model` to `group`
 
-  -   Map `species` to the `color` aesthetic *inside* the `geom_freqpoly()`
+  -   Map `model` to the `color` aesthetic *inside* the `geom_freqpoly()` and set `linewidth` to `1`
 
 
 ::: {style="font-size: 0.85em;"}
@@ -147,20 +234,21 @@ glimpse(penguins)
 #| label: code_graph_freq_poly
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_ovrlp_freq_poly <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (mm)",
-  color = "Species")
-ggp2_ovrlp_freq_poly <- ggplot(data = penguins, 
-       aes(x = flipper_length_mm,
-           group = species)) + 
-  geom_freqpoly(aes(color = species))
-ggp2_ovrlp_freq_poly + 
+  title = "Super Soaker range (simulated)",
+  subtitle = "200 shots from each model",
+  x = "Range (feet)",
+  color = "Model")
+ggp2_ovrlp_freq_poly <- ggplot(data = soaker_shots,
+       aes(x = range_ft,
+           group = model)) +
+  geom_freqpoly(aes(color = model), linewidth = 1)
+ggp2_ovrlp_freq_poly +
   labs_ovrlp_freq_poly
 ```
 :::
@@ -181,13 +269,14 @@ ggp2_ovrlp_freq_poly +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_ovrlp_freq_poly <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (mm)",
-  color = "Species")
-ggp2_ovrlp_freq_poly <- ggplot(data = penguins, 
-       aes(x = flipper_length_mm,
-           group = species)) + 
-  geom_freqpoly(aes(color = species))
-ggp2_ovrlp_freq_poly + 
+  title = "Super Soaker range (simulated)",
+  subtitle = "200 shots from each model",
+  x = "Range (feet)",
+  color = "Model")
+ggp2_ovrlp_freq_poly <- ggplot(data = soaker_shots,
+       aes(x = range_ft,
+           group = model)) +
+  geom_freqpoly(aes(color = model), linewidth = 1)
+ggp2_ovrlp_freq_poly +
   labs_ovrlp_freq_poly
 ```

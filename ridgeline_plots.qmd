@@ -16,9 +16,8 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_trl(
     base_size = 15))
-library(palmerpenguins)
 # pak::pak("wilkelab/ggridges")
 ```
 
@@ -45,20 +44,32 @@ status("complete")
 #| out-width: '60%'
 #| fig-align: right
 library(ggridges)
-library(palmerpenguins) 
 library(ggplot2)
-peng_ridges <- filter(penguins, !is.na(island))
+library(dplyr)
+set.seed(1998)
+trl_videos <- tibble(
+  video_id = 1:360,
+  genre = rep(c("Boy bands", "Pop divas", "R&B", "Rap", "Nu metal", "Rock"),
+              each = 60)) |>
+  mutate(genre = factor(genre, levels = c("Rock", "Nu metal", "Rap", "R&B",
+                                          "Pop divas", "Boy bands")),
+         avg_days = c(`Boy bands` = 40, `Pop divas` = 32, `R&B` = 26, Rap = 22,
+                      `Nu metal` = 18, Rock = 12)[as.character(genre)],
+         days_on_countdown = pmax(1, round(rgamma(n(), shape = 2.5,
+                                                  scale = avg_days / 2.5)))) |>
+  select(video_id, genre, days_on_countdown)
 labs_ridges <- labs(
-  title = "Adult foraging penguins",
-  x = "Bill length (millimeters)",
-  y = "Island", fill = "Island")
-ggp2_ridges <- ggplot(data = peng_ridges,
-       aes(x = bill_length_mm, 
-           y = island, 
-        fill = island)) +
-  ggridges::geom_density_ridges(alpha = 2/3, 
-      show.legend = FALSE) 
-ggp2_ridges + 
+  title = "MTV TRL (simulated)",
+  subtitle = "Days each video stayed on the countdown",
+  x = "Days on the countdown",
+  y = "Genre", fill = "Genre")
+ggp2_ridges <- ggplot(data = trl_videos,
+       aes(x = days_on_countdown,
+           y = genre,
+        fill = genre)) +
+  ggridges::geom_density_ridges(alpha = 2/3,
+      show.legend = FALSE)
+ggp2_ridges +
   labs_ridges
 ```
 
@@ -67,7 +78,7 @@ ggp2_ridges +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -76,7 +87,7 @@ ggp2_ridges +
 
 ::::
 
-## Description 
+## Description
 
 If we want to plot density curves but retain the interpretability of the axes, consider comparing multiple distributions using the [`ggridges` package](https://wilkelab.org/ggridges/).
 
@@ -100,9 +111,10 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins)
+install.packages("ggridges")
+library(ggridges)
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -110,12 +122,8 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
 ::: {style="font-size: 0.95rem;"}
-Remove missing `island` from `penguins`
+MTV's *Total Request Live* (TRL) counted down the ten most requested music videos every afternoon starting in 1998, and some videos hung on for weeks. We'll simulate how many days 60 videos from each of six genres stayed on the countdown. Each genre gets its own average (`avg_days`), and `rgamma()` draws each video's run from a gamma distribution with the same shape (2.5) for every genre. Setting the seed with `set.seed()` means you'll get the same 360 videos every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -124,10 +132,90 @@ Remove missing `island` from `penguins`
 #| code-fold: show
 #| eval: true
 #| echo: true
-peng_ridges <- filter(penguins, !is.na(island))
-glimpse(peng_ridges)
+set.seed(1998)
+trl_videos <- tibble(
+  video_id = 1:360,
+  genre = rep(c("Boy bands", "Pop divas", "R&B", "Rap", "Nu metal", "Rock"),
+              each = 60)) |>
+  mutate(genre = factor(genre, levels = c("Rock", "Nu metal", "Rap", "R&B",
+                                          "Pop divas", "Boy bands")),
+         avg_days = c(`Boy bands` = 40, `Pop divas` = 32, `R&B` = 26, Rap = 22,
+                      `Nu metal` = 18, Rock = 12)[as.character(genre)],
+         days_on_countdown = pmax(1, round(rgamma(n(), shape = 2.5,
+                                                  scale = avg_days / 2.5)))) |>
+  select(video_id, genre, days_on_countdown)
+glimpse(trl_videos)
 ```
 :::
+
+## Distribution
+
+Ridgeline plots stack one density curve per group, which makes them good for comparing many groups at once. All six genres here share the same *kind* of distribution: most videos drop off the countdown fairly quickly, and a few hang on for a long time. What changes from genre to genre is the scale. Below we'll move from the videos, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first five boy band videos.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_ridges
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(trl_videos, 5)
+```
+:::
+
+These five videos lasted anywhere from 11 to 55 days. The summary below shows that the mean is above the median for every genre (a sign of right skew), and that the standard deviation grows with the mean. The ratio of the two (`cv`) stays between about 0.5 and 0.7 for every genre.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_ridges
+#| code-fold: show
+#| eval: true
+#| echo: true
+trl_videos |> 
+  group_by(genre) |> 
+  summarise(mean = mean(days_on_countdown), 
+            median = median(days_on_countdown),
+            sd = sd(days_on_countdown), cv = sd / mean)
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The ridgeline plot below adds a line at each genre's median (`quantile_lines = TRUE` with `quantiles = 2`). Every ridge has a hump on the left and a tail on the right. Moving up from rock to boy bands, the humps slide right and the tails get longer, but the overall shape stays the same (the extra bumps, like the one in the boy band ridge, are noise from having only 60 videos per genre).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_ridges
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| message: false
+ggplot(trl_videos, aes(x = days_on_countdown, y = genre, fill = genre)) + 
+  ggridges::geom_density_ridges(alpha = 2/3, quantile_lines = TRUE, 
+    quantiles = 2, color = "#F5F5F5", show.legend = FALSE) + 
+  labs(x = "Days on the countdown", y = NULL)
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each genre's runs come from a [gamma distribution](https://en.wikipedia.org/wiki/Gamma_distribution) with a shared shape ($k$) and its own scale ($\theta$):
+
+$$
+X_{\text{genre}} \sim \text{Gamma}(k = 2.5, \; \theta_{\text{genre}}), \quad \theta = \frac{\text{avg days}}{2.5}
+$$
+
+The mean of a gamma distribution is $k\theta$ and its standard deviation is $\sqrt{k}\,\theta$, so their ratio is $1 / \sqrt{k} = 1 / \sqrt{2.5} \approx 0.63$ no matter the genre. That's why the `cv` column stays near 0.63 and why the ridges all have the same shape: changing $\theta$ stretches a ridge along the `x` axis without changing its shape. This is the same distribution we used for the Napster downloads in @sec-freq-poly. Try giving one genre a larger `shape` in `rgamma()` and its ridge becomes more symmetric.
+
 
 ## Grammar
 
@@ -139,9 +227,9 @@ glimpse(peng_ridges)
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Map `bill_length_mm` to the `x` axis
+  -   Map `days_on_countdown` to the `x` axis
 
-  -   Map `island` to the `y` axis and `fill`
+  -   Map `genre` to the `y` axis and `fill`
 
   -   Add the `ggridges::geom_density_ridges()` layer (with `alpha` set to `2/3`)
 
@@ -152,22 +240,23 @@ glimpse(peng_ridges)
 #| label: code_graph_ridges
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_ridges <- labs(
-  title = "Adult foraging penguins",
-  x = "Bill length (millimeters)",
-  y = "Island", fill = "Island")
-ggp2_ridges <- ggplot(data = peng_ridges,
-       aes(x = bill_length_mm, 
-           y = island, 
-        fill = island)) +
-  ggridges::geom_density_ridges(alpha = 2/3, 
+  title = "MTV TRL (simulated)",
+  subtitle = "Days each video stayed on the countdown",
+  x = "Days on the countdown",
+  y = "Genre", fill = "Genre")
+ggp2_ridges <- ggplot(data = trl_videos,
+       aes(x = days_on_countdown,
+           y = genre,
+        fill = genre)) +
+  ggridges::geom_density_ridges(alpha = 2/3,
       show.legend = FALSE)
-ggp2_ridges + 
+ggp2_ridges +
   labs_ridges
 ```
 :::
@@ -178,7 +267,7 @@ ggp2_ridges +
 **GRAPH:**
 :::
 
-Ridgeline plots are excellent for comparing continuous distributions across groups. 
+Ridgeline plots are excellent for comparing continuous distributions across groups.
 
 ```{r}
 #| label: create_graph_ridges
@@ -190,16 +279,17 @@ Ridgeline plots are excellent for comparing continuous distributions across grou
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_ridges <- labs(
-  title = "Adult foraging penguins",
-  x = "Bill length (millimeters)",
-  y = "Island", fill = "Island")
-ggp2_ridges <- ggplot(data = peng_ridges,
-       aes(x = bill_length_mm, 
-           y = island, 
-        fill = island)) +
-    ggridges::geom_density_ridges(alpha = 2/3, 
-      show.legend = FALSE) 
-ggp2_ridges + 
+  title = "MTV TRL (simulated)",
+  subtitle = "Days each video stayed on the countdown",
+  x = "Days on the countdown",
+  y = "Genre", fill = "Genre")
+ggp2_ridges <- ggplot(data = trl_videos,
+       aes(x = days_on_countdown,
+           y = genre,
+        fill = genre)) +
+  ggridges::geom_density_ridges(alpha = 2/3,
+      show.legend = FALSE)
+ggp2_ridges +
   labs_ridges
 ```
 

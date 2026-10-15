@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_aim(
     base_size = 15))
 ```
 
@@ -42,21 +42,33 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
-peng_violin <- filter(penguins, !is.na(island))
+library(dplyr)
+set.seed(1997)
+aim_buddies <- tibble(
+  user_id = 1:450,
+  school = rep(c("Middle school", "High school", "College"), each = 150)) |>
+  mutate(school = factor(school,
+           levels = c("Middle school", "High school", "College")),
+         buddies = case_when(
+           school == "Middle school" ~ rpois(n(), lambda = 20),
+           school == "High school" ~ round(rlnorm(n(), meanlog = log(45),
+                                                  sdlog = 0.45)),
+           TRUE ~ round(if_else(runif(n()) < 0.7,
+                                rnorm(n(), mean = 60, sd = 10),
+                                rnorm(n(), mean = 150, sd = 20)))))
 labs_grp_violin <- labs(
-  title = "Adult foraging penguins", 
-  subtitle = "Palmer Archipelago, Antarctica",
-  x = "Island", fill = "Island",
-  y = "Bill length (millimeters)")
-ggp2_grp_violin <- ggplot(data = peng_violin,
-       aes(x = island, 
-           y = bill_length_mm, 
-        fill = island)) +
-  geom_violin(alpha = 2/3, 
-      show.legend = FALSE) 
-ggp2_grp_violin + 
+  title = "AOL Instant Messenger (simulated)",
+  subtitle = "Buddy list sizes for 150 users at each level of school",
+  x = "School", fill = "School",
+  y = "Buddies")
+ggp2_grp_violin <- ggplot(data = aim_buddies,
+       aes(x = school,
+           y = buddies,
+        fill = school)) +
+  geom_violin(alpha = 2/3,
+      show.legend = FALSE)
+ggp2_grp_violin +
   labs_grp_violin
 ```
 
@@ -65,7 +77,7 @@ ggp2_grp_violin +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -74,7 +86,7 @@ ggp2_grp_violin +
 
 ::::
 
-## Description 
+## Description
 
 A ‘violin plot’ is a variation of a density or ridgeline plot,  where the distribution is plotted symmetrically, creating a two-sided, smoothed distribution.
 
@@ -98,9 +110,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins)
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -110,12 +121,8 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
 ::: {style="font-size: 0.95rem;"}
-Remove missing `island` from `penguins`
+In the late 90s, your AOL Instant Messenger (AIM) buddy list was a status symbol. We'll simulate buddy list sizes for 150 users at each level of school, and each level gets a different *kind* of distribution. Middle schoolers' lists are counts from `rpois()`. High schoolers' lists come from `rlnorm()`, so a few popular kids have much longer lists. College students are a mix of two groups (`runif()` decides which): most have about 60 buddies, and about 30% are heavy users with about 150. Setting the seed with `set.seed()` means you'll get the same 450 users every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -124,10 +131,93 @@ Remove missing `island` from `penguins`
 #| code-fold: show
 #| eval: true
 #| echo: true
-peng_violin <- filter(penguins, !is.na(island))
-glimpse(peng_violin)
+set.seed(1997)
+aim_buddies <- tibble(
+  user_id = 1:450,
+  school = rep(c("Middle school", "High school", "College"), each = 150)) |>
+  mutate(school = factor(school,
+           levels = c("Middle school", "High school", "College")),
+         buddies = case_when(
+           school == "Middle school" ~ rpois(n(), lambda = 20),
+           school == "High school" ~ round(rlnorm(n(), meanlog = log(45),
+                                                  sdlog = 0.45)),
+           TRUE ~ round(if_else(runif(n()) < 0.7,
+                                rnorm(n(), mean = 60, sd = 10),
+                                rnorm(n(), mean = 150, sd = 20)))))
+glimpse(aim_buddies)
 ```
 :::
+
+## Distribution
+
+Violin plots are at their best when groups differ in *shape*, not just in center and spread. Summary numbers (and box plots built from them) can make three very different distributions look alike. Below we'll move from the users, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first eight users (all middle schoolers).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_grp_violin
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(aim_buddies$buddies, 8)
+```
+:::
+
+These middle schoolers have between 11 and 25 buddies. The summary below shows each group's mean, median, and standard deviation. For middle schoolers the mean and median match, for high schoolers the mean is a little higher, and for college students the mean is almost 20 buddies higher than the median. The numbers hint that something is different about the college group, but they don't tell us what.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_grp_violin
+#| code-fold: show
+#| eval: true
+#| echo: true
+aim_buddies |> 
+  group_by(school) |> 
+  summarise(mean = mean(buddies), median = median(buddies), 
+            sd = sd(buddies))
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The graph below draws a narrow box plot inside each violin. The middle school violin is a short, symmetric diamond. The high school violin has a wide base and a tail that stretches up. The college violin has *two* bulges, one near 60 buddies and one near 150, with almost nobody in between. The college box plot hides that gap completely: it looks like one long, lopsided box.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_grp_violin
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(aim_buddies, aes(x = school, y = buddies, fill = school)) + 
+  geom_violin(alpha = 1/2, show.legend = FALSE) + 
+  geom_boxplot(width = 0.12, fill = "#FFFFFF", outlier.shape = NA) + 
+  labs(x = NULL, y = "Buddies")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each level of school has its own distribution:
+
+$$
+\begin{aligned}
+\text{Middle school} &\sim \text{Poisson}(\lambda = 20) \\
+\log(\text{High school}) &\sim \text{Normal}(\log(45), \; 0.45) \\
+\text{College} &\sim 0.7 \cdot \text{Normal}(60, 10) + 0.3 \cdot \text{Normal}(150, 20)
+\end{aligned}
+$$
+
+The [Poisson](https://en.wikipedia.org/wiki/Poisson_distribution) gives a narrow, nearly symmetric violin because its standard deviation is only $\sqrt{20} \approx 4.5$. The [log normal](https://en.wikipedia.org/wiki/Log-normal_distribution) gives the long upper tail. The [mixture](https://en.wikipedia.org/wiki/Mixture_distribution) gives two peaks, and its mean ($0.7 \times 60 + 0.3 \times 150 = 87$) lands in the empty space between them. A box plot only knows about quartiles, so it can't show a gap like that. Try moving the two college means closer together in `rnorm()` and the two bulges merge into one.
+
 
 ## Grammar
 
@@ -139,7 +229,7 @@ glimpse(peng_violin)
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Map `island` to the `x`, `bill_length_mm` to the `y`, and  `island` to `fill` 
+  -   Map `school` to the `x`, `buddies` to the `y`, and `school` to `fill`
 
   -   Set `alpha` to `2/3`
 
@@ -150,23 +240,23 @@ glimpse(peng_violin)
 #| label: code_graph_grp_violin
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_grp_violin <- labs(
-  title = "Adult foraging penguins", 
-  subtitle = "Palmer Archipelago, Antarctica",
-  x = "Island", fill = "Island",
-  y = "Bill length (millimeters)")
-ggp2_grp_violin <- ggplot(data = peng_violin,
-       aes(x = island, 
-           y = bill_length_mm, 
-        fill = island)) +
-  geom_violin(alpha = 2/3, 
-      show.legend = FALSE) 
-ggp2_grp_violin + 
+  title = "AOL Instant Messenger (simulated)",
+  subtitle = "Buddy list sizes for 150 users at each level of school",
+  x = "School", fill = "School",
+  y = "Buddies")
+ggp2_grp_violin <- ggplot(data = aim_buddies,
+       aes(x = school,
+           y = buddies,
+        fill = school)) +
+  geom_violin(alpha = 2/3,
+      show.legend = FALSE)
+ggp2_grp_violin +
   labs_grp_violin
 ```
 :::
@@ -191,17 +281,17 @@ Violin plots can allow us to compare the 'center' and 'spread' of continuous var
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_grp_violin <- labs(
-  title = "Adult foraging penguins", 
-  subtitle = "Palmer Archipelago, Antarctica",
-  x = "Island", fill = "Island",
-  y = "Bill length (millimeters)")
-ggp2_grp_violin <- ggplot(data = peng_violin,
-       aes(x = island, 
-           y = bill_length_mm, 
-        fill = island)) +
-  geom_violin(alpha = 2/3, 
-      show.legend = FALSE) 
-ggp2_grp_violin + 
+  title = "AOL Instant Messenger (simulated)",
+  subtitle = "Buddy list sizes for 150 users at each level of school",
+  x = "School", fill = "School",
+  y = "Buddies")
+ggp2_grp_violin <- ggplot(data = aim_buddies,
+       aes(x = school,
+           y = buddies,
+        fill = school)) +
+  geom_violin(alpha = 2/3,
+      show.legend = FALSE)
+ggp2_grp_violin +
   labs_grp_violin
 ```
 :::
@@ -215,7 +305,7 @@ Change the shape of the line with [`linetype` and `linewidth`](https://ggplot2.t
 :::
 
 
-We can include lines for the 25th, 50th, and 75th quartiles using the `draw_quantiles` argument. 
+We can include lines for the 25th, 50th, and 75th quartiles using the `draw_quantiles` argument.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -227,22 +317,22 @@ We can include lines for the 25th, 50th, and 75th quartiles using the `draw_quan
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-ggplot(data = peng_violin,
-       aes(x = island, 
-           y = bill_length_mm, 
-        fill = island)) +
+ggplot(data = aim_buddies,
+       aes(x = school,
+           y = buddies,
+        fill = school)) +
   geom_violin(
       draw_quantiles = c(0.25, 0.5, 0.75),
-      alpha = 1/2, 
-      linewidth = 0.5, 
-      show.legend = FALSE) 
+      alpha = 1/2,
+      linewidth = 0.5,
+      show.legend = FALSE)
 ```
 :::
 
 ### Kernel
 
 
-The [`kernel` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments) let's us change the "*kernel density estimate*" used to create the violin shape. The possible [kernel density estimates](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/density.html) are `"gaussian"`, `"epanechnikov"`, `"rectangular"`, `"triangular"`, `"biweight"`, `"cosine"`, and `"optcosine"` 
+The [`kernel` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments) let's us change the "*kernel density estimate*" used to create the violin shape. The possible [kernel density estimates](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/density.html) are `"gaussian"`, `"epanechnikov"`, `"rectangular"`, `"triangular"`, `"biweight"`, `"cosine"`, and `"optcosine"`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -254,14 +344,14 @@ The [`kernel` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-ggplot(data = peng_violin,
-       aes(x = island, 
-           y = bill_length_mm, 
-        fill = island)) +
-  geom_violin(alpha = 1/2, 
-      linewidth = 0.5, 
+ggplot(data = aim_buddies,
+       aes(x = school,
+           y = buddies,
+        fill = school)) +
+  geom_violin(alpha = 1/2,
+      linewidth = 0.5,
       kernel = "rectangular",
-      show.legend = FALSE) 
+      show.legend = FALSE)
 ```
 :::
 
@@ -280,29 +370,29 @@ We can directly adjust the shape of the violin with the [`bw` argument](https://
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-# bw of 0.5
-grp_violin_bw0p5 <- ggplot(data = peng_violin,
-       aes(x = island, 
-           y = bill_length_mm, 
-        fill = island)) +
-  geom_violin(bw = 0.5, 
-      alpha = 2/3, 
+# bw of 2
+grp_violin_bw2 <- ggplot(data = aim_buddies,
+       aes(x = school,
+           y = buddies,
+        fill = school)) +
+  geom_violin(bw = 2,
+      alpha = 2/3,
       trim = TRUE,
-      show.legend = FALSE) 
-grp_violin_bw0p5 + 
-    labs_grp_violin + 
-    labs(caption = "bw = 0.5")
-# bw of 4.5
-grp_violin_bw4p5 <- ggplot(data = peng_violin,
-       aes(x = island, 
-           y = bill_length_mm, 
-        fill = island)) +
-  geom_violin(bw = 4.5, 
-      alpha = 2/3, 
+      show.legend = FALSE)
+grp_violin_bw2 +
+    labs_grp_violin +
+    labs(caption = "bw = 2")
+# bw of 20
+grp_violin_bw20 <- ggplot(data = aim_buddies,
+       aes(x = school,
+           y = buddies,
+        fill = school)) +
+  geom_violin(bw = 20,
+      alpha = 2/3,
       trim = TRUE,
-      show.legend = FALSE) 
-grp_violin_bw4p5 + 
-    labs_grp_violin + 
-    labs(caption = "bw = 4.5")
+      show.legend = FALSE)
+grp_violin_bw20 +
+    labs_grp_violin +
+    labs(caption = "bw = 20")
 ```
 :::

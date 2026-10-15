@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_oregontrail(
     base_size = 15))
 ```
 
@@ -43,21 +43,31 @@ status("polish")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
-peng_box <- filter(penguins, !is.na(island))
+library(dplyr)
+set.seed(1985)
+oregon_trail <- tibble(
+  party_id = 1:300,
+  profession = rep(c("Banker", "Carpenter", "Farmer"), each = 100)) |>
+  mutate(profession = factor(profession,
+           levels = c("Banker", "Carpenter", "Farmer")),
+         median_days = c(Banker = 140, Carpenter = 155,
+                         Farmer = 170)[as.character(profession)],
+         days_to_oregon = round(rlnorm(n(), meanlog = log(median_days),
+                                       sdlog = 0.2))) |>
+  select(party_id, profession, days_to_oregon)
 labs_grp_boxplots <- labs(
-  title = "Adult foraging penguins", 
-  subtitle = "Palmer Archipelago, Antarctica",
-  x = "Island", fill = "Island",
-  y = "Bill length (millimeters)")
-ggp2_grp_boxplots <- ggplot(data = peng_box,
-       aes(x = island, 
-           y = bill_length_mm, 
-        fill = island)) +
-  geom_boxplot(alpha = 2/3, 
-      show.legend = FALSE) 
-ggp2_grp_boxplots + 
+  title = "The Oregon Trail (simulated)",
+  subtitle = "Days for 100 parties of each profession to reach Oregon",
+  x = "Profession", fill = "Profession",
+  y = "Days to reach Oregon")
+ggp2_grp_boxplots <- ggplot(data = oregon_trail,
+       aes(x = profession,
+           y = days_to_oregon,
+        fill = profession)) +
+  geom_boxplot(alpha = 2/3,
+      show.legend = FALSE)
+ggp2_grp_boxplots +
   labs_grp_boxplots
 ```
 
@@ -66,7 +76,7 @@ ggp2_grp_boxplots +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -75,7 +85,7 @@ ggp2_grp_boxplots +
 
 ::::
 
-## Description 
+## Description
 
 Grouped box plots display five different statistical measures across a series of categories, or groups, of a discrete, ordinal, or interval variable.
 
@@ -98,9 +108,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -110,12 +119,7 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
-
-Remove the missing `island` values from the `penguins` data.
+In *The Oregon Trail*, you picked a profession before you set out, and it decided how much money (and how many supplies) your party started with. We'll simulate how many days it took 100 parties of each profession to reach Oregon. Each profession gets its own typical trip length (`median_days`), and `rlnorm()` draws each trip from a log normal distribution, so a few unlucky parties (dysentery, broken axles, lost oxen) take much longer than the rest. Setting the seed with `set.seed()` means you'll get the same 300 trips every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -123,10 +127,96 @@ Remove the missing `island` values from the `penguins` data.
 #| code-fold: show
 #| eval: true
 #| echo: true
-peng_box <- filter(penguins, !is.na(island))
-glimpse(peng_box)
+set.seed(1985)
+oregon_trail <- tibble(
+  party_id = 1:300,
+  profession = rep(c("Banker", "Carpenter", "Farmer"), each = 100)) |>
+  mutate(profession = factor(profession,
+           levels = c("Banker", "Carpenter", "Farmer")),
+         median_days = c(Banker = 140, Carpenter = 155,
+                         Farmer = 170)[as.character(profession)],
+         days_to_oregon = round(rlnorm(n(), meanlog = log(median_days),
+                                       sdlog = 0.2))) |>
+  select(party_id, profession, days_to_oregon)
+glimpse(oregon_trail)
 ```
 :::
+
+## Distribution
+
+Grouped box plots compare five summary numbers across groups. When the data are skewed, those five numbers aren't evenly spaced: the median sits closer to the bottom of the box, and the upper whisker is longer than the lower one. Below we'll move from the trips, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first eight trips (all bankers).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_grp_boxplots
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(oregon_trail$days_to_oregon, 8)
+```
+:::
+
+These trips took between 112 and 180 days. The summary below shows each profession's quartiles. For every profession, the distance from the median up to the third quartile (`upper_gap`) is larger than the distance down to the first quartile (`lower_gap`).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_grp_boxplots
+#| code-fold: show
+#| eval: true
+#| echo: true
+oregon_trail |> 
+  group_by(profession) |> 
+  summarise(q1 = quantile(days_to_oregon, 0.25), 
+            median = median(days_to_oregon),
+            q3 = quantile(days_to_oregon, 0.75)) |> 
+  mutate(lower_gap = median - q1, upper_gap = q3 - median)
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The box plots on the left use days, so each box is lopsided: the median line sits low in the box, and the long trips stretch the upper whiskers (the farmers even have a few outliers). The box plots on the right put the same trips on a log scale with `scale_y_log10()`. On the log scale the boxes are symmetric and the whiskers are about the same length on both sides.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_grp_boxplots
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| layout-ncol: 2
+ggplot(oregon_trail, aes(x = profession, y = days_to_oregon, 
+    fill = profession)) + 
+  geom_boxplot(alpha = 2/3, show.legend = FALSE) + 
+  labs(title = "Days", x = NULL, y = "Days to reach Oregon")
+
+ggplot(oregon_trail, aes(x = profession, y = days_to_oregon, 
+    fill = profession)) + 
+  geom_boxplot(alpha = 2/3, show.legend = FALSE) + 
+  scale_y_log10() + 
+  labs(title = "Log scale", x = NULL, y = "Days (log scale)")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each profession's trips come from a [log normal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution), the same distribution as the Beanie Babies prices in the violin plot chapter:
+
+$$
+\log(X_{\text{profession}}) \sim \text{Normal}(\log(m_{\text{profession}}), \; \sigma = 0.2), \quad m = (140, 155, 170)
+$$
+
+On the log scale, the quartiles sit $0.674\,\sigma$ above and below the center, which is why the log scale boxes are symmetric. Back on the day scale, those quartiles become $m\,e^{-0.674 \times 0.2}$ and $m\,e^{0.674 \times 0.2}$: for bankers, about 122 and 160 days. That's 18 days below the median but 20 days above it, and the gap grows the further out you go, which is why the upper whiskers are longer. Try a larger `sdlog` in `rlnorm()` and the boxes become even more lopsided.
+
 
 ## Grammar
 
@@ -138,9 +228,9 @@ glimpse(peng_box)
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Map `island` to the `x` axis and to `fill`
+  -   Map `profession` to the `x` axis and to `fill`
 
-  -   Map `bill_length_mm` to the `y` axis
+  -   Map `days_to_oregon` to the `y` axis
 
   -   Add `geom_boxplot()` and set the `alpha` to `2/3`
 
@@ -151,23 +241,23 @@ glimpse(peng_box)
 #| label: code_graph_grp_boxplots
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_grp_boxplots <- labs(
-  title = "Adult foraging penguins", 
-  subtitle = "Palmer Archipelago, Antarctica",
-  x = "Island", fill = "Island",
-  y = "Bill length (millimeters)")
-ggp2_grp_boxplots <- ggplot(data = peng_box,
-       aes(x = island, 
-           y = bill_length_mm, 
-        fill = island)) +
-  geom_boxplot(alpha = 2/3, 
-      show.legend = FALSE) 
-ggp2_grp_boxplots + 
+  title = "The Oregon Trail (simulated)",
+  subtitle = "Days for 100 parties of each profession to reach Oregon",
+  x = "Profession", fill = "Profession",
+  y = "Days to reach Oregon")
+ggp2_grp_boxplots <- ggplot(data = oregon_trail,
+       aes(x = profession,
+           y = days_to_oregon,
+        fill = profession)) +
+  geom_boxplot(alpha = 2/3,
+      show.legend = FALSE)
+ggp2_grp_boxplots +
   labs_grp_boxplots
 ```
 :::
@@ -192,26 +282,26 @@ When a categorical variable is supplied, the plot will contain a box for each le
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_grp_boxplots <- labs(
-  title = "Adult foraging penguins", 
-  subtitle = "Palmer Archipelago, Antarctica",
-  x = "Island", fill = "Island",
-  y = "Bill length (millimeters)")
-ggp2_grp_boxplots <- ggplot(data = peng_box,
-       aes(x = island, 
-           y = bill_length_mm, 
-        fill = island)) +
-  geom_boxplot(alpha = 2/3, 
-      show.legend = FALSE) 
-ggp2_grp_boxplots + 
+  title = "The Oregon Trail (simulated)",
+  subtitle = "Days for 100 parties of each profession to reach Oregon",
+  x = "Profession", fill = "Profession",
+  y = "Days to reach Oregon")
+ggp2_grp_boxplots <- ggplot(data = oregon_trail,
+       aes(x = profession,
+           y = days_to_oregon,
+        fill = profession)) +
+  geom_boxplot(alpha = 2/3,
+      show.legend = FALSE)
+ggp2_grp_boxplots +
   labs_grp_boxplots
 ```
 :::
 
-## More info 
+## More info
 
-### Notches 
+### Notches
 
-Add notches to the box plot using the `notch = TRUE` and `notchwidth` arguments. 
+Add notches to the box plot using the `notch = TRUE` and `notchwidth` arguments.
 
 
 ::: {style="font-size: 0.85em;"}
@@ -224,23 +314,23 @@ Add notches to the box plot using the `notch = TRUE` and `notchwidth` arguments.
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-ggp2_grp_box_notch <- ggplot(data = peng_box,
-       aes(x = island, 
-           y = bill_length_mm, 
-        fill = island)) +
+ggp2_grp_box_notch <- ggplot(data = oregon_trail,
+       aes(x = profession,
+           y = days_to_oregon,
+        fill = profession)) +
   geom_boxplot(
-      notch = TRUE, 
-      notchwidth = 0.85, 
-      alpha = 2/3, 
-      show.legend = FALSE) 
-ggp2_grp_box_notch + 
+      notch = TRUE,
+      notchwidth = 0.85,
+      alpha = 2/3,
+      show.legend = FALSE)
+ggp2_grp_box_notch +
     labs_grp_boxplots
 ```
 :::
 
-### Outliers 
+### Outliers
 
-Box plots display outliers using points, and we can change the color these using the `outlier.colour` argument. Inside the `geom_boxplot()`, we map `island` to `color` and set `outlier.colour` to `NULL`:
+Box plots display outliers using points, and we can change the color these using the `outlier.colour` argument. Inside the `geom_boxplot()`, we map `profession` to `color` and set `outlier.colour` to `NULL`:
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -252,18 +342,18 @@ Box plots display outliers using points, and we can change the color these using
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-ggp2_grp_box_outliers <- ggplot(data = peng_box,
-       aes(x = island, 
-           y = bill_length_mm,
-           fill = island)) +
-  geom_boxplot(aes(color = island),
-      outlier.colour = NULL, 
+ggp2_grp_box_outliers <- ggplot(data = oregon_trail,
+       aes(x = profession,
+           y = days_to_oregon,
+           fill = profession)) +
+  geom_boxplot(aes(color = profession),
+      outlier.colour = NULL,
       outlier.size = 2,
-      notch = TRUE, 
-      notchwidth = 0.85, 
-      alpha = 2/3, 
-      show.legend = FALSE) 
-ggp2_grp_box_outliers + 
+      notch = TRUE,
+      notchwidth = 0.85,
+      alpha = 2/3,
+      show.legend = FALSE)
+ggp2_grp_box_outliers +
     labs_grp_boxplots
 ```
 :::

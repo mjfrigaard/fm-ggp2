@@ -36,7 +36,7 @@ status("complete")
 ```{r}
 #| label: full_code_display
 #| fig-asp: 1
-#| dev.args: !expr list(bg = "#FF6EC7")
+#| dev.args: !expr list(bg = "#AC3CFE")
 #| eval: true
 #| echo: false
 #| warning: false
@@ -210,7 +210,7 @@ A pie chart bends the same bar into a circle. Below, the pie on the left uses th
 ```{r}
 #| label: draw_pie
 #| fig-asp: 1
-#| dev.args: !expr list(bg = "#FF6EC7")
+#| dev.args: !expr list(bg = "#AC3CFE")
 #| code-fold: show
 #| eval: true
 #| echo: true
@@ -314,7 +314,7 @@ ggp2_pie +
 ```{r}
 #| label: create_graph_pie
 #| fig-asp: 1
-#| dev.args: !expr list(bg = "#FF6EC7")
+#| dev.args: !expr list(bg = "#AC3CFE")
 #| eval: true
 #| echo: false
 #| warning: false

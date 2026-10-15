@@ -16,9 +16,8 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_magiceye(
     base_size = 15))
-library(palmerpenguins)
 library(raincloudplots)
 library(ggdist)
 ```
@@ -47,74 +46,86 @@ status("complete")
 #| fig-align: right
 library(raincloudplots)
 library(ggdist)
-library(palmerpenguins)
 library(ggplot2)
-# remove missing
-peng_raincloud <- palmerpenguins::penguins |> 
-    filter(!is.na(sex) & !is.na(species))
+library(dplyr)
+set.seed(1994)
+magic_eye_posters <- tibble(
+  viewer_id = 1:240,
+  poster = rep(c("Dolphins", "Space shuttle", "Dinosaur"), each = 80)) |>
+  mutate(poster = factor(poster,
+           levels = c("Dolphins", "Space shuttle", "Dinosaur")),
+         seconds = round(rlnorm(n(), sdlog = 0.5,
+           meanlog = log(c(Dolphins = 15, `Space shuttle` = 30,
+                           Dinosaur = 60)[as.character(poster)])), 1))
 labs_raincloud_2 <- ggplot2::labs(
-    title = "Flipper length of Palmer penguins",
-         x = "Flipper length (mm)",
-         y = "Species")
-ggplot(peng_raincloud,
-    aes( x = flipper_length_mm, y = species)) + 
-  geom_boxplot(aes(fill = species),
-    notch = TRUE, 
+    title = "Magic Eye (simulated)",
+    x = "Seconds to see the hidden image",
+    y = "Poster")
+ggplot(magic_eye_posters,
+    aes(x = seconds, y = poster)) +
+  geom_boxplot(aes(fill = poster),
+    notch = TRUE,
     notchwidth = 0.9,
-    width = .15, 
+    width = .15,
     outlier.shape = NA) +
-  ggdist::stat_halfeye(aes(fill = species),
+  ggdist::stat_halfeye(aes(fill = poster),
     adjust = 0.6, # shape = adjust * density estimator
     .width = 0, # can use probabilities or 0
     point_colour = NA, # removes the point in center
     orientation = "horizontal", # like the box plot
     height = 0.5, # height of curve
     justification = -0.3) + # shift vertically above box
-    geom_point(aes(fill = species),
-        shape = 21, 
-        color = "#ffffff", 
+    geom_point(aes(fill = poster),
+        shape = 21,
+        color = "#ffffff",
         alpha = 1/3, size = 1.8,
     position = position_jitter(
-      seed = 321, 
-      height = .07)) + 
-    theme(legend.position = "none") + 
+      seed = 321,
+      height = .07)) +
+    theme(legend.position = "none") +
     labs_raincloud_2
 ```
 
 ```{r}
 #| label: full_code_raincloudplots
-#| eval: false
+#| eval: true
 #| echo: false
 #| warning: false
 #| message: false
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-# filter flipper length by years 2008 & 2009
-peng_1x1 <- raincloudplots::data_1x1(
-  array_1 = dplyr::filter(peng_raincloud, year == 2008)$flipper_length_mm,
-  array_2 = dplyr::filter(peng_raincloud, year == 2009)$flipper_length_mm,
+set.seed(1993)
+magic_eye <- faux::rnorm_multi(n = 100,
+    mu = c(log(40), log(20)), sd = 0.5, r = 0.7,
+    varnames = c("log_first", "log_second")) |>
+  as_tibble() |>
+  mutate(viewer_id = 1:100,
+         first_try = round(exp(log_first), 1),
+         second_try = round(exp(log_second), 1)) |>
+  select(viewer_id, first_try, second_try)
+magic_eye_1x1 <- raincloudplots::data_1x1(
+  array_1 = magic_eye$first_try,
+  array_2 = magic_eye$second_try,
   jit_distance = 0.2, # distance between points
-  jit_seed = 2736) # used in set.seed() 
-
+  jit_seed = 2736) # used in set.seed()
 ggp2_raincloud <- raincloud_1x1(
-    data_1x1 = peng_1x1,
-    colors = (c('#0bd3d3', '#282b2d')),
-    fills = (c('#0bd3d3', '#282b2d')),
+    data_1x1 = magic_eye_1x1,
+    colors = (c('#FF2E93', '#14D8C4')),
+    fills = (c('#FF2E93', '#14D8C4')),
     size = 0.8,
     alpha = 3/4,
     ort = 'h'
-) 
+)
 ggp2_raincloud_x <- ggp2_raincloud +
     scale_x_continuous(
         breaks = c(1, 2),
-        labels = c("2008", "2009"),
+        labels = c("First try", "Second try"),
         limits = c(0, 3))
-
-ggp2_raincloud_x + 
-    labs(title = "Flipper length of Palmer penguins",
-        subtitle = "Years 2008 & 2009", 
-         x = "Year", y = "Flipper length (mm)")
+ggp2_raincloud_x +
+    labs(title = "Magic Eye (simulated)",
+        subtitle = "100 viewers, two tries each",
+         x = NULL, y = "Seconds to see the hidden image")
 ```
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
@@ -122,7 +133,7 @@ ggp2_raincloud_x +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -131,14 +142,13 @@ ggp2_raincloud_x +
 
 ::::
 
-## Description 
+## Description
 
 Raincloud plots are a combination of density graph, a box plot, and a beeswarm (or jitter) plot, and are used to compare distributions of quantitative/numerical variables across the levels of a categorical (or discrete) grouping variable.
 
 We can use the [`raincloudplots` package](https://github.com/jorvlan/raincloudplots) to create raincloud plots, or they can be built using the [`ggdist` package](https://mjskay.github.io/ggdist/) and geoms from `ggplot2`.
 
 ## Set up
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -147,7 +157,6 @@ We can use the [`raincloudplots` package](https://github.com/jorvlan/raincloudpl
 ::: {style="font-size: 0.95rem;"}
 Install packages.
 :::
-
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -160,29 +169,24 @@ Install packages.
 #| results: hide
 remotes::install_github('jorvlan/raincloudplots')
 remotes::install_github('mjskay/ggdist')
+install.packages("faux")
 library(raincloudplots)
 library(ggdist)
-library(palmerpenguins)
+library(faux) # for rnorm_multi()
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
-
-
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
+Magic Eye stereogram posters hid a 3D picture inside a pattern of colorful noise, and in the 90s they hung in every mall. The trick was learning to relax your eyes, so most people found the hidden image much faster the second time. We'll simulate how many seconds it took 100 viewers to see the image on their first and second tries.
 
+`faux::rnorm_multi()` draws two correlated columns from a normal distribution: the log of the first try (centered on 40 seconds) and the log of the second try (centered on 20 seconds), with a correlation (`r`) of 0.7, so viewers who are slow the first time tend to be slow the second time too. `exp()` turns the logs back into seconds. Setting the seed with `set.seed()` means you'll get the same 100 viewers every time you run the code below.
 
-Remove the missing values from `year` and `flipper_length_mm` the `penguins` data. The `raincloudplots` package has a `data_1x1()` function we can use to build the dataset for a 1x1 repeated measure graph (`peng_1x1`).
-
-This function takes two array arguments (`array_1` and `array_2`), which we create with the flipper length (`flipper_length_mm`) for two levels of `year` in the `peng_raincloud` data. 
-
-The `jit_distance` and `jit_seed` refer to the points in the plot.
+The `raincloudplots` package has a `data_1x1()` function we can use to build the dataset for a 1x1 repeated measure graph (`magic_eye_1x1`). This function takes two array arguments (`array_1` and `array_2`), which we create from the `first_try` and `second_try` columns. The `jit_distance` and `jit_seed` refer to the points in the plot.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -190,18 +194,97 @@ The `jit_distance` and `jit_seed` refer to the points in the plot.
 #| code-fold: show
 #| eval: true
 #| echo: true
-# remove missing
-peng_raincloud <- palmerpenguins::penguins |> 
-    filter(!is.na(year) & !is.na(body_mass_g))
-# filter flipper length by years 2008 & 2009
-peng_1x1 <- raincloudplots::data_1x1(
-  array_1 = dplyr::filter(peng_raincloud, year == 2008)$flipper_length_mm,
-  array_2 = dplyr::filter(peng_raincloud, year == 2009)$flipper_length_mm,
+set.seed(1993)
+magic_eye <- faux::rnorm_multi(n = 100,
+    mu = c(log(40), log(20)), sd = 0.5, r = 0.7,
+    varnames = c("log_first", "log_second")) |>
+  as_tibble() |>
+  mutate(viewer_id = 1:100,
+         first_try = round(exp(log_first), 1),
+         second_try = round(exp(log_second), 1)) |>
+  select(viewer_id, first_try, second_try)
+magic_eye_1x1 <- raincloudplots::data_1x1(
+  array_1 = magic_eye$first_try,
+  array_2 = magic_eye$second_try,
   jit_distance = 0.2, # distance between points
-  jit_seed = 2736) # used in set.seed() 
-glimpse(peng_1x1)
+  jit_seed = 2736) # used in set.seed()
+glimpse(magic_eye_1x1)
 ```
 :::
+
+## Distribution
+
+A raincloud plot shows a whole distribution three ways at once (the cloud, the box, and the rain). The Magic Eye data adds a twist: the two groups are the *same* 100 viewers measured twice, so each first try has a partner second try. Comparing the two clouds only tells part of the story; the pairs tell the rest. Below we'll move from the viewers, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first five viewers.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_raincloud
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(magic_eye, 5)
+```
+:::
+
+Four of these five viewers saw the image much faster on their second try, but viewer 3 took more than twice as long. The summary below compares the two tries for all 100 viewers. The median drops by about half, almost every viewer was faster the second time, and the correlation shows that slow first tries go with slow second tries.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_raincloud
+#| code-fold: show
+#| eval: true
+#| echo: true
+magic_eye |>
+  summarise(median_first = median(first_try),
+            median_second = median(second_try),
+            share_faster = mean(second_try < first_try),
+            correlation = cor(log(first_try), log(second_try)))
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The graph below plots each viewer's two tries against each other on log scales. The solid line is "no change" (second try = first try), and the dashed line is "twice as fast" (second try = half the first try). The points cluster around the dashed line, and they fall along a band rather than a blob because of the correlation.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_raincloud
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(magic_eye, aes(x = first_try, y = second_try)) +
+  geom_abline(slope = 1, intercept = 0, color = "#F2F0FF") +
+  geom_abline(slope = 1, intercept = log10(0.5), linetype = "dashed",
+    color = "#14D8C4") +
+  geom_point(shape = 21, fill = "#FF2E93", color = "#ffffff",
+    size = 2.2, alpha = 0.8) +
+  scale_x_log10() +
+  scale_y_log10() +
+  labs(x = "First try (seconds, log scale)",
+       y = "Second try (seconds, log scale)")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+The two log times come from a [bivariate normal distribution](https://en.wikipedia.org/wiki/Multivariate_normal_distribution), which makes each try [log normal](https://en.wikipedia.org/wiki/Log-normal_distribution) on the seconds scale:
+
+$$
+\begin{pmatrix} \log(\text{first}) \\ \log(\text{second}) \end{pmatrix} \sim \text{Normal}\left(\begin{pmatrix} \log 40 \\ \log 20 \end{pmatrix}, \; \sigma = 0.5, \; \rho = 0.7\right)
+$$
+
+The difference between the two logs is the log of the speed up, $\log(\text{second} / \text{first})$. It's centered on $\log(20 / 40) = \log(0.5)$ (twice as fast), and its standard deviation is $\sigma\sqrt{2(1 - \rho)} = 0.5\sqrt{0.6} \approx 0.39$. The correlation shrinks that spread: if the two tries were independent ($\rho = 0$), the spread would be $0.5\sqrt{2} \approx 0.71$, and many more viewers would have been slower the second time. That's why paired data (and raincloud plots that connect the pairs) can show a difference that two separate clouds hide. Try changing `r` to `0` in `rnorm_multi()` and the band of points spreads into a cloud.
+
 
 ## Grammar (`raincloudplots`)
 
@@ -211,10 +294,10 @@ glimpse(peng_1x1)
 
 Create labels with `labs()`
 
-Use the `raincloudplots::raincloud_1x1()` to build the plot, assigning `peng_1x1` to `data_1x1`  
+Use the `raincloudplots::raincloud_1x1()` to build the plot, assigning `magic_eye_1x1` to `data_1x1`
 
-  - assign `colors` and `fills` 
-  
+  - assign `colors` and `fills`
+
   - set the size (of the points) and alpha (for opacity)
 
 ::: {style="font-size: 0.85em;"}
@@ -222,31 +305,29 @@ Use the `raincloudplots::raincloud_1x1()` to build the plot, assigning `peng_1x1
 #| label: code_graph_raincloud
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 ggp2_raincloud <- raincloudplots::raincloud_1x1(
-    data_1x1 = peng_1x1,
-    colors = (c('#0bd3d3', '#282b2d')),
-    fills = (c('#0bd3d3', '#282b2d')),
+    data_1x1 = magic_eye_1x1,
+    colors = (c('#FF2E93', '#14D8C4')),
+    fills = (c('#FF2E93', '#14D8C4')),
     size = 0.8,
     alpha = 3/4,
-    ort = 'h') 
-
+    ort = 'h')
 ggp2_raincloud_x <- ggp2_raincloud +
     ggplot2::scale_x_continuous(
         breaks = c(1, 2),
-        labels = c("2008", "2009"),
+        labels = c("First try", "Second try"),
         limits = c(0, 3))
-
-ggp2_raincloud_x + 
+ggp2_raincloud_x +
     ggplot2::labs(
-        title = "Flipper length of Palmer penguins",
-        subtitle = "Years 2008 & 2009", 
-        x = "Year", 
-        y = "Flipper length (mm)")
+        title = "Magic Eye (simulated)",
+        subtitle = "100 viewers, two tries each",
+        x = NULL,
+        y = "Seconds to see the hidden image")
 ```
 :::
 
@@ -266,25 +347,23 @@ ggp2_raincloud_x +
 #| out-width: '100%'
 #| layout-nrow: 1
 ggp2_raincloud <- raincloudplots::raincloud_1x1(
-    data_1x1 = peng_1x1,
-    colors = (c('#0bd3d3', '#282b2d')),
-    fills = (c('#0bd3d3', '#282b2d')),
+    data_1x1 = magic_eye_1x1,
+    colors = (c('#FF2E93', '#14D8C4')),
+    fills = (c('#FF2E93', '#14D8C4')),
     size = 0.8,
     alpha = 3/4,
-    ort = 'h') 
-
+    ort = 'h')
 ggp2_raincloud_x <- ggp2_raincloud +
     ggplot2::scale_x_continuous(
         breaks = c(1, 2),
-        labels = c("2008", "2009"),
+        labels = c("First try", "Second try"),
         limits = c(0, 3))
-
-ggp2_raincloud_x + 
+ggp2_raincloud_x +
     ggplot2::labs(
-        title = "Flipper length of Palmer penguins",
-        subtitle = "Years 2008 & 2009", 
-         x = "Year", 
-        y = "Flipper length (mm)")
+        title = "Magic Eye (simulated)",
+        subtitle = "100 viewers, two tries each",
+         x = NULL,
+        y = "Seconds to see the hidden image")
 ```
 
 ## More info
@@ -293,23 +372,23 @@ ggp2_raincloud_x +
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
-
-We'll use the `peng_raincloud` data (with the missing values removed from `species` and `body_mass_g`).
+We'll simulate first tries for 80 viewers on each of three Magic Eye posters (`magic_eye_posters`). Each poster gets its own typical time (15, 30, or 60 seconds), and `rlnorm()` draws each viewer's time.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_ggdist
 #| eval: true
 #| echo: true
-# remove missing
-peng_raincloud <- palmerpenguins::penguins |> 
-                    filter(!is.na(species) & 
-                            !is.na(body_mass_g))
-glimpse(peng_raincloud)
+set.seed(1994)
+magic_eye_posters <- tibble(
+  viewer_id = 1:240,
+  poster = rep(c("Dolphins", "Space shuttle", "Dinosaur"), each = 80)) |>
+  mutate(poster = factor(poster,
+           levels = c("Dolphins", "Space shuttle", "Dinosaur")),
+         seconds = round(rlnorm(n(), sdlog = 0.5,
+           meanlog = log(c(Dolphins = 15, `Space shuttle` = 30,
+                           Dinosaur = 60)[as.character(poster)])), 1))
+glimpse(magic_eye_posters)
 ```
 :::
 
@@ -319,7 +398,7 @@ glimpse(peng_raincloud)
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   For the first layer, we create a box plot with `geom_boxplot()`, but include notches and remove the outliers. 
+  -   For the first layer, we create a box plot with `geom_boxplot()`, but include notches and remove the outliers.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -332,25 +411,25 @@ glimpse(peng_raincloud)
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_raincloud_2 <- ggplot2::labs(
-    title = "Flipper length of Palmer penguins",
-         x = "Flipper length (mm)",
-         y = "Species")
-ggp2_box <- ggplot(peng_raincloud,
-    aes( x = flipper_length_mm, y = species)) + 
-  geom_boxplot(aes(fill = species),
-    notch = TRUE, 
+    title = "Magic Eye (simulated)",
+    x = "Seconds to see the hidden image",
+    y = "Poster")
+ggp2_box <- ggplot(magic_eye_posters,
+    aes(x = seconds, y = poster)) +
+  geom_boxplot(aes(fill = poster),
+    notch = TRUE,
     notchwidth = 0.9,
-    width = 0.15, 
+    width = 0.15,
     outlier.shape = NA,
     show.legend = FALSE)
-ggp2_box + 
+ggp2_box +
     labs_raincloud_2
 ```
 :::
 
 ### Density
 
-We then add a horizontal density curve with `ggdist::stat_halfeye()`, mapping `species` to `fill`, and adjusting the size and shape of the density curve and shifting it slightly above the box plot.
+We then add a horizontal density curve with `ggdist::stat_halfeye()`, mapping `poster` to `fill`, and adjusting the size and shape of the density curve and shifting it slightly above the box plot.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -363,28 +442,27 @@ We then add a horizontal density curve with `ggdist::stat_halfeye()`, mapping `s
 #| out-width: '100%'
 #| layout-nrow: 1
 ggp2_stat_halfeye <- ggp2_box +
-  ggdist::stat_halfeye(aes(fill = species),
+  ggdist::stat_halfeye(aes(fill = poster),
     adjust = 0.6, # shape = adjust * density estimator
     .width = 0, # can use probabilities or 0
     point_colour = NA, # removes the point in center
     orientation = "horizontal", # like the box plot
     height = 0.5, # height of curve
     justification = -0.3, # shift vertically above box
-    show.legend = FALSE # don't need this 
-) 
-ggp2_stat_halfeye + 
+    show.legend = FALSE # don't need this
+)
+ggp2_stat_halfeye +
     labs_raincloud_2
 ```
 :::
 
-
 ### Points
 
-The final layer is a `geom_point()`, mapping `fill` to `species` and setting `position` to `position_jitter()`. Additional adjustments to the points include:
+The final layer is a `geom_point()`, mapping `fill` to `poster` and setting `position` to `position_jitter()`. Additional adjustments to the points include:
 
-- Using `shape = 21`, we can `color` the outside of the point (white makes it appear to glow). 
+- Using `shape = 21`, we can `color` the outside of the point (white makes it appear to glow).
 
-- Manually set the `height`, which refers to the vertical area for the points 
+- Manually set the `height`, which refers to the vertical area for the points
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -396,17 +474,17 @@ The final layer is a `geom_point()`, mapping `fill` to `species` and setting `po
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-ggp2_jitter <- ggp2_stat_halfeye + 
-    geom_point(aes(fill = species),
+ggp2_jitter <- ggp2_stat_halfeye +
+    geom_point(aes(fill = poster),
         position = position_jitter(
-          seed = 321, 
+          seed = 321,
           height = .07),
-            shape = 21, 
-            color = "#ffffff", 
-            alpha = 1/3, 
+            shape = 21,
+            color = "#ffffff",
+            alpha = 1/3,
             size = 1.8,
-            show.legend = FALSE) 
-ggp2_jitter + 
+            show.legend = FALSE)
+ggp2_jitter +
     labs_raincloud_2
 ```
 :::
@@ -421,7 +499,6 @@ Cédric also covers some alternative methods for plotting the points (I particul
 
 We can switch to this layout by applying `ggplot2::coord_flip()` to the `ggp2_stat_halfeye` layer, then adding `geom_point()` with `shape` set to `95`
 
-
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_raincloud2_point_lines
@@ -432,25 +509,22 @@ We can switch to this layout by applying `ggplot2::coord_flip()` to the `ggp2_st
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-ggp2_stat_halfeye + 
-    ggplot2::coord_flip() + 
+ggp2_stat_halfeye +
+    ggplot2::coord_flip() +
 ggplot2::geom_point(
     shape = 95,
     size = 8,
-    alpha = 0.2) + 
-    theme(legend.position = "none") + 
+    alpha = 0.2) +
+    theme(legend.position = "none") +
     labs_raincloud_2
 ```
 :::
 
-
 ### #TidyTuesday example
 
-The code to re-create the #TidyTuesday graph is contained in this [gist.](https://gist.github.com/z3tt/8b2a06d05e8fae308abbf027ce357f01) 
+The code to re-create the #TidyTuesday graph is contained in this [gist.](https://gist.github.com/z3tt/8b2a06d05e8fae308abbf027ce357f01)
 
 ![](www/rainclouds_gist.png){fig-align="center" width="85%"}
-
-
 
 ### More resources
 
@@ -459,9 +533,11 @@ The code to re-create the #TidyTuesday graph is contained in this [gist.](https:
 :::
 
 ::: {style="font-size: 0.95rem;"}
+
 1. Raincloud plots: a multi-platform tool for robust data visualization. [1](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6480976/)
 
 2. Shape and point sizes in R. [2](https://r-graphics.org/recipe-scatter-shapes)
 
 3. RainCloudPlots package on GitHub. [3](https://github.com/RainCloudPlots/RainCloudPlots)
+
 :::

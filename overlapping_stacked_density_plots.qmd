@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_furby(
     base_size = 15))
 ```
 
@@ -44,37 +44,44 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr)
 library(patchwork)
-peng_density <- filter(penguins, !is.na(sex))
+set.seed(1998)
+furby_chatter <- tibble(
+  hour_id = 1:300,
+  language = rep(c("Furbish", "English"), times = c(180, 120))) |>
+  mutate(language = factor(language, levels = c("Furbish", "English")),
+         words_per_hour = round(if_else(language == "Furbish",
+           rnorm(n(), mean = 45, sd = 8),
+           rnorm(n(), mean = 30, sd = 10))))
 labs_ovrlp_density <- labs(
   subtitle = "position = 'identity'",
-  x = "Flipper length (mm)",
-  fill = "Sex")
-ggp2_ovrlp_density <- ggplot(data = peng_density, 
-       aes(x = flipper_length_mm, 
-           fill = sex)) +
-      geom_density(alpha = 1/3) 
+  x = "Words per hour",
+  fill = "Language")
+ggp2_ovrlp_density <- ggplot(data = furby_chatter,
+       aes(x = words_per_hour,
+           fill = language)) +
+      geom_density(alpha = 1/3)
 
-ovrlp_density <- ggp2_ovrlp_density + 
-  labs_ovrlp_density + 
-    ggplot2::theme_minimal(base_size = 11)
+ovrlp_density <- ggp2_ovrlp_density +
+  labs_ovrlp_density +
+    theme(legend.position = "bottom")
 
 labs_stack_density <- labs(
   subtitle = "position = 'stack'",
-  x = "Flipper length (mm)", 
-  fill = "Sex")
-ggp2_stack_density <- ggplot(data = peng_density, 
-       aes(x = flipper_length_mm, 
+  x = "Words per hour",
+  fill = "Language")
+ggp2_stack_density <- ggplot(data = furby_chatter,
+       aes(x = words_per_hour,
            after_stat(count),
-           fill = sex)) +
-      geom_density(position = "stack", 
-                   alpha = 1/3) 
-stack_density <- ggp2_stack_density + 
-  labs_stack_density + 
-    ggplot2::theme_minimal(base_size = 11)
-ovrlp_density + stack_density + 
+           fill = language)) +
+      geom_density(position = "stack",
+                   alpha = 1/3)
+stack_density <- ggp2_stack_density +
+  labs_stack_density +
+    theme(legend.position = "bottom")
+ovrlp_density + stack_density +
     patchwork::plot_layout(ncol = 1)
 ```
 
@@ -83,7 +90,7 @@ ovrlp_density + stack_density +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -92,9 +99,9 @@ ovrlp_density + stack_density +
 
 ::::
 
-## Description 
+## Description
 
-Density plots are [*smoothed version(s) of  histogram(s)*](https://ggplot2.tidyverse.org/reference/geom_density.html). They can are great for comparing the distributions of a continuous variable across the levels of a categorical variable. 
+Density plots are [*smoothed version(s) of  histogram(s)*](https://ggplot2.tidyverse.org/reference/geom_density.html). They can are great for comparing the distributions of a continuous variable across the levels of a categorical variable.
 
 `geom_density()` creates a kernel density estimate. The default `position` argument is `"identity"`, which takes the data as is. However, we can change `position` to `"stack"` to display overlapping distributions.
 
@@ -118,9 +125,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins)
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -130,12 +136,8 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
 ::: {style="font-size: 0.95rem;"}
-Remove missing `sex` from the `penguins` data
+Furby was the must have toy of 1998. Out of the box it spoke "Furbish," and the longer you played with it, the more English it seemed to learn. We'll simulate 300 hours of Furby chatter: 180 hours spent mostly in Furbish and 120 hours mostly in English. Each language gets its own normal distribution of words per hour (`rnorm()`), and Furbish hours are both chattier and more consistent. Setting the seed with `set.seed()` means you'll get the same 300 hours every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -144,10 +146,112 @@ Remove missing `sex` from the `penguins` data
 #| code-fold: show
 #| eval: true
 #| echo: true
-peng_density <- dplyr::filter(penguins, !is.na(sex))
-dplyr::glimpse(peng_density)
+set.seed(1998)
+furby_chatter <- tibble(
+  hour_id = 1:300,
+  language = rep(c("Furbish", "English"), times = c(180, 120))) |>
+  mutate(language = factor(language, levels = c("Furbish", "English")),
+         words_per_hour = round(if_else(language == "Furbish",
+           rnorm(n(), mean = 45, sd = 8),
+           rnorm(n(), mean = 30, sd = 10))))
+dplyr::glimpse(furby_chatter)
 ```
 :::
+
+## Distribution
+
+Overlapping and stacked density plots can tell two different stories about the same data. By default, each group's curve covers an area of 1, which hides the fact that one group might be much bigger than the other. Our two languages aren't the same size (180 hours vs. 120), so the choice matters here. Below we'll move from the hours, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first five hours (all in Furbish).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_ovrlp_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(furby_chatter, 5)
+```
+:::
+
+These five hours range from 23 to 57 words. The summary below compares the two languages: Furbish has more hours, more words per hour on average, and a smaller standard deviation.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_ovrlp_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+furby_chatter |> 
+  group_by(language) |> 
+  summarise(hours = n(), mean = mean(words_per_hour), 
+            sd = sd(words_per_hour))
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+A bar model shows the two groups as parts of all 300 hours. Furbish takes up 60% of the bar and English takes up 40%.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_bar_model_ovrlp_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| fig-asp: 0.45
+furby_chatter |> 
+  count(language) |> 
+  ggplot(aes(x = n, y = "300 hours", fill = language)) + 
+  geom_col(position = position_stack(reverse = TRUE)) + 
+  geom_text(aes(label = n), color = "#2D1B4E", 
+    position = position_stack(vjust = 0.5, reverse = TRUE)) + 
+  labs(x = "Hours", y = NULL, fill = "Language")
+```
+:::
+
+The two graphs below show why the bar model matters. On the left, the default densities each cover an area of 1, so the English curve looks almost as big as the Furbish curve. On the right, `after_stat(count)` scales each curve by its number of hours, so the Furbish curve is 1.5 times the size of the English curve, just like the bar model.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_ovrlp_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| layout-ncol: 2
+ggplot(furby_chatter, aes(x = words_per_hour, fill = language)) + 
+  geom_density(alpha = 1/2) + 
+  labs(title = "Area of 1 each", x = "Words per hour", 
+    fill = "Language") + 
+  theme(legend.position = "bottom")
+
+ggplot(furby_chatter, aes(x = words_per_hour, after_stat(count), 
+    fill = language)) + 
+  geom_density(alpha = 1/2) + 
+  labs(title = "Scaled by hours", x = "Words per hour", y = "count",
+    fill = "Language") + 
+  theme(legend.position = "bottom")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each language has its own [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution), and the two are mixed in proportion to their number of hours:
+
+$$
+f(x) = 0.6 \cdot \text{Normal}(x;\, 45, 8) + 0.4 \cdot \text{Normal}(x;\, 30, 10)
+$$
+
+`geom_density()` estimates each group's curve so that its area is 1 (each $\text{Normal}$ term on its own). `after_stat(count)` multiplies each curve by its group size, so the two curves have areas of 180 and 120. Stacking those count curves (`position = "stack"`) adds them together into $300 \times f(x)$, the curve for all 300 hours. Try making the two groups the same size in `rep()` and the two graphs above will look almost identical.
+
 
 ## Grammar
 
@@ -161,9 +265,9 @@ dplyr::glimpse(peng_density)
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Map the `flipper_length_mm` to the `x` and `sex` to `fill` 
+  -   Map the `words_per_hour` to the `x` and `language` to `fill`
 
-  -   Add the `geom_density()`  
+  -   Add the `geom_density()`
 
   -   Set the `alpha` to `1/3` (to handle the overlapping areas)
 
@@ -172,20 +276,20 @@ dplyr::glimpse(peng_density)
 #| label: code_graph_ovrlp_density
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_ovrlp_density <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (millimeters)",
-  fill = "Sex")
-ggp2_ovrlp_density <- ggplot(data = peng_density, 
-       aes(x = flipper_length_mm, 
-           fill = sex)) +
-      geom_density(alpha = 1/3) 
-ggp2_ovrlp_density + 
+  title = "Furby chatter (simulated)",
+  x = "Words per hour",
+  fill = "Language")
+ggp2_ovrlp_density <- ggplot(data = furby_chatter,
+       aes(x = words_per_hour,
+           fill = language)) +
+      geom_density(alpha = 1/3)
+ggp2_ovrlp_density +
   labs_ovrlp_density
 ```
 :::
@@ -213,14 +317,14 @@ Make density area slightly transparent to handle over-plotting.
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_ovrlp_density <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (millimeters)",
-  fill = "Sex")
-ggp2_ovrlp_density <- ggplot(data = peng_density, 
-       aes(x = flipper_length_mm, 
-           fill = sex)) +
-      geom_density(alpha = 1/3) 
-ggp2_ovrlp_density + 
+  title = "Furby chatter (simulated)",
+  x = "Words per hour",
+  fill = "Language")
+ggp2_ovrlp_density <- ggplot(data = furby_chatter,
+       aes(x = words_per_hour,
+           fill = language)) +
+      geom_density(alpha = 1/3)
+ggp2_ovrlp_density +
   labs_ovrlp_density
 ```
 
@@ -237,18 +341,18 @@ If we change the `position` to `"stack"` we can see the smoothed estimates are '
 ```{r}
 #| label: code_graph_stack_density
 #| eval: true
-#| echo: true 
+#| echo: true
 #| warning: false
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_stack_density <- labs(
-    title = "Adult foraging penguins",
-    x = "Flipper length (millimeters)",
-    fill = "Sex")
-ggp2_stack_density <- ggplot(data = peng_density,
-    mapping = aes(x = flipper_length_mm,
-               fill = sex)) +
+    title = "Furby chatter (simulated)",
+    x = "Words per hour",
+    fill = "Language")
+ggp2_stack_density <- ggplot(data = furby_chatter,
+    mapping = aes(x = words_per_hour,
+               fill = language)) +
     geom_density(position = "stack",
                  alpha = 1 / 3)
 ggp2_stack_density +
@@ -269,23 +373,23 @@ If we include `after_stat(count)` as one of our mapped aesthetics, the mapping i
 ```{r}
 #| label: code_graph_after_stat_density
 #| eval: true
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_after_stat_density <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (millimeters)", 
-  fill = "Sex")
-ggp2_after_stat_density <- ggplot(data = peng_density, 
-       aes(x = flipper_length_mm, 
+  title = "Furby chatter (simulated)",
+  x = "Words per hour",
+  fill = "Language")
+ggp2_after_stat_density <- ggplot(data = furby_chatter,
+       aes(x = words_per_hour,
            after_stat(count),
-           fill = sex)) +
-      geom_density(position = "stack", 
-                   alpha = 1/3) 
-ggp2_after_stat_density + 
+           fill = language)) +
+      geom_density(position = "stack",
+                   alpha = 1/3)
+ggp2_after_stat_density +
   labs_after_stat_density
 ```
 :::
@@ -296,29 +400,29 @@ Adding [`after_stat(count)`](https://ggplot2.tidyverse.org/reference/geom_densit
 ### `"fill"`
 
 
-Using `after_stat(count)` with `position = "fill"` creates in a conditional density estimate. 
+Using `after_stat(count)` with `position = "fill"` creates in a conditional density estimate.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_fill_density
 #| eval: true
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_fill_density <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (millimeters)", 
-  fill = "Sex")
-ggp2_fill_density <- ggplot(data = peng_density, 
-       aes(x = flipper_length_mm, 
+  title = "Furby chatter (simulated)",
+  x = "Words per hour",
+  fill = "Language")
+ggp2_fill_density <- ggplot(data = furby_chatter,
+       aes(x = words_per_hour,
            after_stat(count),
-           fill = sex)) +
-      geom_density(position = "fill", 
-                   alpha = 1/3) 
-ggp2_fill_density + 
+           fill = language)) +
+      geom_density(position = "fill",
+                   alpha = 1/3)
+ggp2_fill_density +
   labs_fill_density
 ```
 :::

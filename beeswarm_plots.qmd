@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_tetris(
     base_size = 15))
 ```
 
@@ -47,22 +47,26 @@ status("complete")
 #| out-width: '60%'
 #| fig-align: right
 library(ggbeeswarm)
-library(palmerpenguins)
 library(ggplot2)
-peng_beeswarm <- palmerpenguins::penguins |>
-    dplyr::group_by(species) |> 
-    dplyr::mutate(bill_ratio = bill_length_mm / bill_depth_mm) |>  
-    dplyr::filter(!is.na(bill_ratio))
+library(dplyr)
+set.seed(1989)
+tetris_games <- tibble(
+  game_id = 1:240,
+  player = rep(c("Casual", "Regular", "Expert"), each = 80)) |>
+  mutate(player = factor(player, levels = c("Casual", "Regular", "Expert")),
+         lines_cleared = rnbinom(n(), size = 5,
+           mu = c(Casual = 25, Regular = 60,
+                  Expert = 120)[as.character(player)]))
 # ggp2_beeswarm ----
 labs_beeswarm <- labs(
-    title = "Adult Foraging Penguins",
-    subtitle = "Bill Length (mm) / Bill Depth (mm) = Bill Ratio",
-    x = "Species",
-    y = "Bill Ratio")
-ggp2_beeswarm <-  ggplot(data = peng_beeswarm,
-    aes(x = species,
-        y = bill_ratio,
-        color = species)) +
+    title = "Tetris (simulated)",
+    subtitle = "Lines cleared in 80 games by each player",
+    x = "Player",
+    y = "Lines cleared")
+ggp2_beeswarm <-  ggplot(data = tetris_games,
+    aes(x = player,
+        y = lines_cleared,
+        color = player)) +
     ggbeeswarm::geom_beeswarm(
         alpha = 2 / 3,
         size = 1.15,
@@ -79,7 +83,7 @@ ggp2_beeswarm
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -88,11 +92,11 @@ ggp2_beeswarm
 
 ::::
 
-## Description 
+## Description
 
-The beeswarm plot uses points to display the distribution of a continuous variable across the levels of a categorical variable. 
+The beeswarm plot uses points to display the distribution of a continuous variable across the levels of a categorical variable.
 
-The points are grouped by level, and the shape (or swarm) of the distribution is mirrored above and below the quantitative axis (similar to a violin plot). 
+The points are grouped by level, and the shape (or swarm) of the distribution is mirrored above and below the quantitative axis (similar to a violin plot).
 
 We can create beeswarm plot using `geom_jitter()` or the [`ggbeeswarm` package](https://github.com/eclarke/ggbeeswarm).
 
@@ -117,9 +121,8 @@ Install packages.
 #| results: hide
 # pak::pak("eclarke/ggbeeswarm")
 library(ggbeeswarm)
-install.packages("palmerpenguins")
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -129,12 +132,7 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
-
-Create `peng_beeswarm` by grouping `penguins` by `species`, then calculating the `bill_ratio` (`bill_length_mm / bill_depth_mm`), and then removing any missing values from `bill_ratio`
+Tetris came bundled with every Game Boy, and by the 90s everyone had a high score to brag about. We'll simulate the number of lines cleared in 80 games by each of three players. `rnbinom()` draws each game's count from a negative binomial distribution, with a different average (`mu`) for each player: 25 lines for a casual player, 60 for a regular, and 120 for an expert. Setting the seed with `set.seed()` means you'll get the same 240 games every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -142,14 +140,90 @@ Create `peng_beeswarm` by grouping `penguins` by `species`, then calculating the
 #| code-fold: show
 #| eval: true
 #| echo: true
-peng_beeswarm <- palmerpenguins::penguins |> 
-    dplyr::group_by(species) |> 
-    dplyr::mutate(bill_ratio = bill_length_mm / bill_depth_mm) |>  
-    dplyr::filter(!is.na(bill_ratio)) |> 
-    dplyr::ungroup()
-glimpse(peng_beeswarm)
+set.seed(1989)
+tetris_games <- tibble(
+  game_id = 1:240,
+  player = rep(c("Casual", "Regular", "Expert"), each = 80)) |>
+  mutate(player = factor(player, levels = c("Casual", "Regular", "Expert")),
+         lines_cleared = rnbinom(n(), size = 5,
+           mu = c(Casual = 25, Regular = 60,
+                  Expert = 120)[as.character(player)]))
+glimpse(tetris_games)
 ```
 :::
+
+## Distribution
+
+A beeswarm plot draws every game as its own point, so it shows the spread of each group directly. Tetris scores are counts, but they're much more spread out than the counts in the dot plot chapters: one bad drop can end a game early, and one good streak can keep it going for a long time. Below we'll move from the games, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first ten games (all from the casual player).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_beeswarm
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(tetris_games$lines_cleared, 10)
+```
+:::
+
+The casual player averages about 25 lines, but these games range from 6 to 42. The summary below shows the variance for each player. For Poisson counts (like the Goosebumps books), the variance would be close to the mean. Here the variance is several times larger than the mean, and the gap grows with the player's skill.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_beeswarm
+#| code-fold: show
+#| eval: true
+#| echo: true
+tetris_games |> 
+  group_by(player) |> 
+  summarise(mean = mean(lines_cleared), variance = var(lines_cleared),
+            min = min(lines_cleared), max = max(lines_cleared))
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The beeswarms below compare our regular player's 80 games to 80 games drawn from a Poisson distribution with the same average (60 lines). The Poisson swarm is a tight cluster around 60. The negative binomial swarm stretches from single digits to more than twice the average, with a long tail of great games at the top.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_beeswarm
+#| code-fold: show
+#| eval: true
+#| echo: true
+regular_games <- tibble(
+  model = rep(c("Negative binomial", "Poisson"), each = 80),
+  lines_cleared = c(
+    tetris_games$lines_cleared[tetris_games$player == "Regular"],
+    rpois(80, lambda = 60)))
+
+ggplot(regular_games, aes(x = model, y = lines_cleared, color = model)) + 
+  ggbeeswarm::geom_beeswarm(size = 1.6, show.legend = FALSE) + 
+  geom_hline(yintercept = 60, linetype = "dashed", color = "#F5F5F5") + 
+  labs(x = NULL, y = "Lines cleared")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+The [negative binomial distribution](https://en.wikipedia.org/wiki/Negative_binomial_distribution) is a common model for counts that are more spread out than a Poisson distribution allows (called *overdispersion*). With an average $\mu$ and a size (or dispersion) parameter $r$, its variance is:
+
+$$
+X \sim \text{NB}(\mu, \; r = 5), \quad \text{Var}(X) = \mu + \frac{\mu^2}{r}
+$$
+
+The first term ($\mu$) is the Poisson variance, and the second term ($\mu^2 / r$) is the extra spread. For the regular player that's $60 + 3600 / 5 = 780$, compared to just 60 for a Poisson distribution. Because the extra spread grows with $\mu^2$, the expert's games ($\mu = 120$) spread out much more than the casual player's ($\mu = 25$). As $r$ gets larger, the extra term shrinks and the negative binomial turns into a Poisson. Try `size = 500` in `rnbinom()` and the three swarms tighten up.
+
 
 ## Grammar
 
@@ -161,9 +235,9 @@ glimpse(peng_beeswarm)
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Map `species` to the `x` axis and `color`
+  -   Map `player` to the `x` axis and `color`
 
-  -   Map `bill_ratio` to the `y` axis
+  -   Map `lines_cleared` to the `y` axis
 
   -   Add the `ggbeeswarm::geom_beeswarm()` layer (with `alpha`)
 
@@ -174,20 +248,20 @@ glimpse(peng_beeswarm)
 #| label: code_graph_beeswarm
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_beeswarm <- labs(
-    title = "Adult Foraging Penguins",
-    subtitle = "Bill Length (mm) / Bill Depth (mm) = Bill Ratio",
-    x = "Species",
-    y = "Bill Ratio")
-ggp2_beeswarm <- ggplot(data = peng_beeswarm,
-    aes(x = species,
-        y = bill_ratio,
-        color = species)) +
+    title = "Tetris (simulated)",
+    subtitle = "Lines cleared in 80 games by each player",
+    x = "Player",
+    y = "Lines cleared")
+ggp2_beeswarm <- ggplot(data = tetris_games,
+    aes(x = player,
+        y = lines_cleared,
+        color = player)) +
     ggbeeswarm::geom_beeswarm(alpha = 2 / 3,
         show.legend = FALSE)
 ggp2_beeswarm +
@@ -214,14 +288,14 @@ Adjust the size/shape of the swarm using `method =` or the  `geom_quasirandom()`
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_beeswarm <- labs(
-    title = "Adult Foraging Penguins",
-    subtitle = "Bill Length (mm) / Bill Depth (mm) = Bill Ratio",
-    x = "Species",
-    y = "Bill Ratio")
-ggp2_beeswarm <- ggplot(data = peng_beeswarm,
-    aes(x = species,
-        y = bill_ratio,
-        color = species)) +
+    title = "Tetris (simulated)",
+    subtitle = "Lines cleared in 80 games by each player",
+    x = "Player",
+    y = "Lines cleared")
+ggp2_beeswarm <- ggplot(data = tetris_games,
+    aes(x = player,
+        y = lines_cleared,
+        color = player)) +
     ggbeeswarm::geom_beeswarm(alpha = 2 / 3,
         show.legend = FALSE)
 ggp2_beeswarm +
@@ -242,7 +316,7 @@ Use method to adjust the shape of the beeswarm (`swarm`, `compactswarm`, `hex`, 
 
 :::: {.column-margin}
 ::: {style="font-size: 0.95rem;"}
-Set the point `shape` to `21` to control the `fill` and `color` 
+Set the point `shape` to `21` to control the `fill` and `color`
 :::
 ::::
 
@@ -256,19 +330,19 @@ Set the point `shape` to `21` to control the `fill` and `color`
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-ggp2_compact_swarm <- ggplot(data = peng_beeswarm,
-    mapping = aes(x = species,
-                  y = bill_ratio,
-                color = species)) +
+ggp2_compact_swarm <- ggplot(data = tetris_games,
+    mapping = aes(x = player,
+                  y = lines_cleared,
+                color = player)) +
     ggbeeswarm::geom_beeswarm(
-      aes(fill = species),
-        method = 'compactswarm', 
+      aes(fill = player),
+        method = 'compactswarm',
         dodge.width = 0.5,
         shape = 21,
         color = "#ffffff",
         alpha = 2/3, size = 1.7,
-        show.legend = FALSE) 
-ggp2_compact_swarm + 
+        show.legend = FALSE)
+ggp2_compact_swarm +
     # add labels
     labs_beeswarm
 ```
@@ -278,7 +352,7 @@ ggp2_compact_swarm +
 
 <br>
 
-For a beeswarm that falls across the vertical axis, use the `side` argument. 
+For a beeswarm that falls across the vertical axis, use the `side` argument.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -290,19 +364,19 @@ For a beeswarm that falls across the vertical axis, use the `side` argument.
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-ggp2_rside_swarm <- ggplot(data = peng_beeswarm,
-    mapping = aes(x = species,
-                  y = bill_ratio,
-                color = species)) +
+ggp2_rside_swarm <- ggplot(data = tetris_games,
+    mapping = aes(x = player,
+                  y = lines_cleared,
+                color = player)) +
     ggbeeswarm::geom_beeswarm(
-      aes(fill = species),
+      aes(fill = player),
         side = 1, # right/upwards
         shape = 21,
         color = "#ffffff",
-        alpha = 2/3, 
+        alpha = 2/3,
         size = 1.7,
-        show.legend = FALSE) 
-ggp2_rside_swarm + 
+        show.legend = FALSE)
+ggp2_rside_swarm +
     # add labels
     labs_beeswarm
 ```
@@ -324,19 +398,19 @@ The `cex` argument controls the "*scaling for adjusting point spacing*"
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-ggp2_beeswarm_cex <- ggplot(data = peng_beeswarm,
-    mapping = aes(x = species,
-                  y = bill_ratio,
-                color = species)) +
+ggp2_beeswarm_cex <- ggplot(data = tetris_games,
+    mapping = aes(x = player,
+                  y = lines_cleared,
+                color = player)) +
     ggbeeswarm::geom_beeswarm(
-      aes(fill = species),
+      aes(fill = player),
         cex = 1.6,
         shape = 21,
         color = "#ffffff",
-        alpha = 2/3, 
+        alpha = 2/3,
         size = 1.7,
-        show.legend = FALSE) 
-ggp2_beeswarm_cex + 
+        show.legend = FALSE)
+ggp2_beeswarm_cex +
     # add labels
     labs_beeswarm
 ```
@@ -359,12 +433,12 @@ We can also create a beeswarm using the `geom_jitter()` and setting the `height`
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-ggp2_jitter_swarm <- ggplot(data = peng_beeswarm,
-    mapping = aes(x = species,
-        y = bill_ratio,
-        color = species)) +
+ggp2_jitter_swarm <- ggplot(data = tetris_games,
+    mapping = aes(x = player,
+        y = lines_cleared,
+        color = player)) +
     geom_jitter(
-        aes(fill = species),
+        aes(fill = player),
         height = 0.05,
         width = 0.11,
         shape = 21,
@@ -372,7 +446,7 @@ ggp2_jitter_swarm <- ggplot(data = peng_beeswarm,
         alpha = 2 / 3,
         size = 1.7,
         show.legend = FALSE)
-ggp2_jitter_swarm + 
+ggp2_jitter_swarm +
     # add labels
     labs_beeswarm
 ```

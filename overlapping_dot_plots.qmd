@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_goosebumps(
     base_size = 15))
 ```
 
@@ -42,22 +42,31 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
-peng_dotplot <- filter(penguins, !is.na(sex))
+library(dplyr)
+set.seed(1992)
+goosebumps_readers <- tibble(
+  student_id = 1:120,
+  grade = rep(c("3rd grade", "4th grade", "5th grade"), each = 40)) |>
+  mutate(grade = factor(grade,
+           levels = c("3rd grade", "4th grade", "5th grade")),
+         books_read = rpois(n(), lambda = c(`3rd grade` = 3, `4th grade` = 6,
+                                            `5th grade` = 9)[as.character(grade)]))
 labs_ovrlp_dotplot <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (millimeters)",
+  title = "Goosebumps books read (simulated)",
+  subtitle = "40 students in each grade, one school year",
+  x = "Books read",
   y = "Count",
-  fill = "Species")
-ggp2_ovrlp_dotplot <- ggplot(data = peng_dotplot, 
-    aes(x = flipper_length_mm,
-        fill = factor(species))) +
+  fill = "Grade")
+ggp2_ovrlp_dotplot <- ggplot(data = goosebumps_readers,
+    aes(x = books_read,
+        fill = factor(grade))) +
   geom_dotplot(
     method = "histodot",
-    binwidth = 1.35,
-    binpositions = "all")
-ggp2_ovrlp_dotplot + 
+    binwidth = 1,
+    binpositions = "all",
+    stackgroups = TRUE)
+ggp2_ovrlp_dotplot +
   labs_ovrlp_dotplot
 ```
 
@@ -66,7 +75,7 @@ ggp2_ovrlp_dotplot +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -102,9 +111,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -112,12 +120,8 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
 ::: {style="font-size: 0.95rem;"}
-Remove missing `sex` from `penguins`
+R.L. Stine's *Goosebumps* books were everywhere in the mid 90s, and older kids tended to tear through more of them. We'll simulate how many Goosebumps books 40 students in each of three grades read in one school year. `rpois()` draws each student's count from a Poisson distribution with a different average (`lambda`) for each grade: 3, 6, and 9 books. Setting the seed with `set.seed()` means you'll get the same 120 students every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -126,10 +130,90 @@ Remove missing `sex` from `penguins`
 #| code-fold: show
 #| eval: true
 #| echo: true
-peng_dotplot <- dplyr::filter(penguins, !is.na(sex))
-dplyr::glimpse(peng_dotplot)
+set.seed(1992)
+goosebumps_readers <- tibble(
+  student_id = 1:120,
+  grade = rep(c("3rd grade", "4th grade", "5th grade"), each = 40)) |>
+  mutate(grade = factor(grade,
+           levels = c("3rd grade", "4th grade", "5th grade")),
+         books_read = rpois(n(), lambda = c(`3rd grade` = 3, `4th grade` = 6,
+                                            `5th grade` = 9)[as.character(grade)]))
+dplyr::glimpse(goosebumps_readers)
 ```
 :::
+
+## Distribution
+
+Dot plots are a natural fit for small counts: every student gets one dot, and every number of books gets its own stack. With three grades stacked together, we can see two things change from grade to grade: where the stacks are centered, and how far they spread out. Below we'll move from the students, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first ten students (all in 3rd grade).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_ovrlp_dot_plots
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(goosebumps_readers$books_read, 10)
+```
+:::
+
+These 3rd graders read between two and five books. The summary below compares each grade's mean and variance. For counts like these, the variance grows along with the mean, so the older students' counts are more spread out.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_ovrlp_dot_plots
+#| code-fold: show
+#| eval: true
+#| echo: true
+goosebumps_readers |> 
+  group_by(grade) |> 
+  summarise(mean = mean(books_read), variance = var(books_read),
+            min = min(books_read), max = max(books_read))
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The graph below gives each grade its own row of dot stacks (with `facet_wrap()`), and the dashed lines mark the average we gave each grade in `rpois()`. The 3rd grade stacks are tall and bunched together near three books, and the 5th grade stacks are short and spread from three books to well past a dozen.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_ovrlp_dot_plots
+#| fig-asp: 1.4
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(goosebumps_readers, aes(x = books_read, fill = grade)) + 
+  geom_dotplot(method = "histodot", binwidth = 1, dotsize = 0.55,
+    show.legend = FALSE) + 
+  geom_vline(data = tibble(grade = factor(c("3rd grade", "4th grade", 
+      "5th grade")), lambda = c(3, 6, 9)), 
+    aes(xintercept = lambda), linetype = "dashed", color = "#F2E8CF") + 
+  facet_wrap(~ grade, ncol = 1) + 
+  scale_y_continuous(NULL, breaks = NULL) + 
+  labs(x = "Books read")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each grade's counts come from a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution):
+
+$$
+X_{\text{grade}} \sim \text{Poisson}(\lambda_{\text{grade}}), \quad \lambda = (3, 6, 9)
+$$
+
+For a Poisson distribution, the variance equals the mean ($\lambda$), so the standard deviation is $\sqrt{\lambda}$: about 1.7 books for 3rd graders and 3 books for 5th graders. Tripling the average book count only spreads the stacks out by $\sqrt{3} \approx 1.7$ times, which is why the 5th grade stacks are wider but not three times wider. When we stack the three grades into one dot plot, the middle grade overlaps both of its neighbors. Try giving the three grades averages that are closer together in `rpois()` and the colors will mix into the same stacks.
+
 
 ## Grammar
 
@@ -147,35 +231,37 @@ dplyr::glimpse(peng_dotplot)
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Map `flipper_length_mm` to `x`
+  -   Map `books_read` to `x`
 
-  -   Map `species` to `fill` (*inside* `factor()`)
+  -   Map `grade` to `fill` (*inside* `factor()`)
 
-  -   Inside `geom_dotplot`, set `method` to `"histodot"`, `binwidth` to `1.35`, and `binpositions` to `"all"`
+  -   Inside `geom_dotplot`, set `method` to `"histodot"`, `binwidth` to `1` (one stack per count), `binpositions` to `"all"`, and `stackgroups` to `TRUE` (so the grades stack on top of each other instead of overplotting)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_ovrlp_dot_plots
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_ovrlp_dotplot <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (millimeters)",
+  title = "Goosebumps books read (simulated)",
+  subtitle = "40 students in each grade, one school year",
+  x = "Books read",
   y = "Count",
-  fill = "Species")
-ggp2_ovrlp_dotplot <- ggplot(data = peng_dotplot, 
-    aes(x = flipper_length_mm,
-        fill = factor(species))) +
+  fill = "Grade")
+ggp2_ovrlp_dotplot <- ggplot(data = goosebumps_readers,
+    aes(x = books_read,
+        fill = factor(grade))) +
   geom_dotplot(
     method = "histodot",
-    binwidth = 1.35,
-    binpositions = "all")
-ggp2_ovrlp_dotplot + 
+    binwidth = 1,
+    binpositions = "all",
+    stackgroups = TRUE)
+ggp2_ovrlp_dotplot +
   labs_ovrlp_dotplot
 ```
 :::
@@ -196,18 +282,20 @@ ggp2_ovrlp_dotplot +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_ovrlp_dotplot <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (millimeters)",
+  title = "Goosebumps books read (simulated)",
+  subtitle = "40 students in each grade, one school year",
+  x = "Books read",
   y = "Count",
-  fill = "Species")
-ggp2_ovrlp_dotplot <- ggplot(data = peng_dotplot,
-    aes(x = flipper_length_mm,
-        fill = factor(species))) +
+  fill = "Grade")
+ggp2_ovrlp_dotplot <- ggplot(data = goosebumps_readers,
+    aes(x = books_read,
+        fill = factor(grade))) +
   geom_dotplot(
     method = "histodot",
-    binwidth = 1.35,
-    binpositions = "all")
-ggp2_ovrlp_dotplot + 
+    binwidth = 1,
+    binpositions = "all",
+    stackgroups = TRUE)
+ggp2_ovrlp_dotplot +
   labs_ovrlp_dotplot
 ```
 

@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_tamagotchi(
     base_size = 15))
 ```
 
@@ -42,18 +42,26 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
-penguins <- palmerpenguins::penguins
+library(dplyr)
+set.seed(1997)
+tamagotchi_pets <- tibble(
+  pet_id = 1:450,
+  care = rep(c("Neglected", "Average", "Pampered"), each = 150)) |>
+  mutate(care = factor(care, levels = c("Neglected", "Average", "Pampered")),
+         lifespan_days = round(rweibull(n(), shape = 2.2,
+           scale = c(Neglected = 6, Average = 13,
+                     Pampered = 21)[as.character(care)]), 1))
 labs_ovrlp_hist <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (mm)", 
-  fill = "Species")
-ggp2_ovrlp_hist <- ggplot(data = penguins,
-     aes(x = flipper_length_mm, 
-         fill = species)) + 
-     geom_histogram(alpha = 2/3) 
-ggp2_ovrlp_hist + 
+  title = "Tamagotchi lifespans (simulated)",
+  subtitle = "450 virtual pets and how they were cared for",
+  x = "Lifespan (days)",
+  fill = "Care")
+ggp2_ovrlp_hist <- ggplot(data = tamagotchi_pets,
+     aes(x = lifespan_days,
+         fill = care)) +
+     geom_histogram(alpha = 2/3, position = "identity", bins = 40)
+ggp2_ovrlp_hist +
   labs_ovrlp_hist
 ```
 
@@ -62,7 +70,7 @@ ggp2_ovrlp_hist +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -94,9 +102,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -106,12 +113,7 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
-
-The `penguins` data.
+In 1997, kids everywhere were feeding, cleaning, and playing with Tamagotchis, and how long a virtual pet lived depended on how well it was cared for. We'll simulate the lifespans of 450 pets, 150 for each level of care. `rweibull()` draws each lifespan from a Weibull distribution, and the `scale` for each level of care (6, 13, or 21 days) stretches the lifespans of better cared for pets. Setting the seed with `set.seed()` means you'll get the same 450 pets every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -119,10 +121,99 @@ The `penguins` data.
 #| code-fold: show
 #| eval: true
 #| echo: true
-penguins <- palmerpenguins::penguins
-glimpse(penguins)
+set.seed(1997)
+tamagotchi_pets <- tibble(
+  pet_id = 1:450,
+  care = rep(c("Neglected", "Average", "Pampered"), each = 150)) |>
+  mutate(care = factor(care, levels = c("Neglected", "Average", "Pampered")),
+         lifespan_days = round(rweibull(n(), shape = 2.2,
+           scale = c(Neglected = 6, Average = 13,
+                     Pampered = 21)[as.character(care)]), 1))
+glimpse(tamagotchi_pets)
 ```
 :::
+
+## Distribution
+
+Overlapping histograms compare the shape of one variable across groups. Here the groups have the same *kind* of shape (they all come from the same distribution), but each one is stretched by a different amount. Below we'll move from the pets, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first five pets (all neglected).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_ovrlp_hist
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(tamagotchi_pets, 5)
+```
+:::
+
+None of these neglected pets made it past nine days. The summary below compares the three levels of care. Each mean is a little higher than its median, and the longest lived pet in each group lasted more than twice as long as the median.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_ovrlp_hist
+#| code-fold: show
+#| eval: true
+#| echo: true
+tamagotchi_pets |> 
+  group_by(care) |> 
+  summarise(
+    mean = mean(lifespan_days), 
+    median = median(lifespan_days), 
+    max = max(lifespan_days))
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The histograms below are drawn on top of each other (`position = "identity"`), and the lines are the Weibull curves we drew the lifespans from, scaled to match the counts. Every group has the same lopsided hump with a tail to the right. Better care doesn't change the shape; it stretches the hump to the right and flattens it out.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_ovrlp_hist
+#| code-fold: show
+#| eval: true
+#| echo: true
+weibull_curves <- tidyr::expand_grid(
+  care = factor(c("Neglected", "Average", "Pampered"), 
+    levels = c("Neglected", "Average", "Pampered")),
+  lifespan_days = seq(0, 45, by = 0.25)) |> 
+  mutate(scale = c(Neglected = 6, Average = 13, 
+                   Pampered = 21)[as.character(care)],
+         count = 150 * (45 / 40) * dweibull(lifespan_days, 
+           shape = 2.2, scale = scale))
+
+ggplot(data = tamagotchi_pets, aes(x = lifespan_days, fill = care)) + 
+  geom_histogram(alpha = 2/3, position = "identity", 
+    binwidth = 45 / 40, boundary = 0) + 
+  geom_line(data = weibull_curves, aes(y = count, color = care), 
+    linewidth = 1, show.legend = FALSE) + 
+  labs(x = "Lifespan (days)", y = "Pets", fill = "Care")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+The [Weibull distribution](https://en.wikipedia.org/wiki/Weibull_distribution) is a common model for lifetimes. It has a shape ($k$) and a scale ($\lambda$):
+
+$$
+X \sim \text{Weibull}(k = 2.2, \; \lambda_{\text{care}}), \quad \lambda = (6, 13, 21)
+$$
+
+The chance that a pet is still alive after $t$ days is $e^{-(t/\lambda)^k}$. When the shape is greater than 1 (like our 2.2), the risk of a pet dying grows the longer it lives, which gives the histogram its hump and right tail. The scale stretches everything: the median lifespan is $\lambda (\ln 2)^{1/k}$, which is about 5, 11, and 18 days for our three groups. Our simulated medians are `r paste(round(tapply(tamagotchi_pets$lifespan_days, tamagotchi_pets$care, median), 1), collapse = ", ")` days. 
+
+Try changing `shape` in `rweibull()`. A shape of 1 turns the hump into a steady decline (pets die at the same rate no matter their age), and a large shape makes every pet in a group die at about the same time.
+
 
 ## Grammar
 
@@ -135,29 +226,30 @@ glimpse(penguins)
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Map `flipper_length_mm` to the `x` axis and `species` to `fill` 
+  -   Map `lifespan_days` to the `x` axis and `care` to `fill`
 
-  -   Set `alpha` to `2/3` inside `geom_histogram()`
+  -   Inside `geom_histogram()`, set `alpha` to `2/3`, `position` to `"identity"` (so the bars overlap instead of stacking), and `bins` to `40`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_ovrlp_hist
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_ovrlp_hist <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (mm)", 
-  fill = "Species")
-ggp2_ovrlp_hist <- ggplot(data = penguins,
-     aes(x = flipper_length_mm, 
-         fill = species)) + 
-     geom_histogram(alpha = 2/3) 
-ggp2_ovrlp_hist + 
+  title = "Tamagotchi lifespans (simulated)",
+  subtitle = "450 virtual pets and how they were cared for",
+  x = "Lifespan (days)",
+  fill = "Care")
+ggp2_ovrlp_hist <- ggplot(data = tamagotchi_pets,
+     aes(x = lifespan_days,
+         fill = care)) +
+     geom_histogram(alpha = 2/3, position = "identity", bins = 40)
+ggp2_ovrlp_hist +
   labs_ovrlp_hist
 ```
 :::
@@ -165,7 +257,7 @@ ggp2_ovrlp_hist +
 
 
 ::: {.column-margin}
-Experiment with different `binwidth`s when comparing distributions across groups. 
+Experiment with different `binwidth`s when comparing distributions across groups.
 :::
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
@@ -185,14 +277,15 @@ Histograms work by dividing the variable provided to `x` [*into bins and countin
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_ovrlp_hist <- labs(
-  title = "Adult foraging penguins",
-  x = "Flipper length (mm)", 
-  fill = "Species")
-ggp2_ovrlp_hist <- ggplot(data = penguins,
-     aes(x = flipper_length_mm, 
-         fill = species)) + 
-     geom_histogram(alpha = 2/3) 
-ggp2_ovrlp_hist + 
+  title = "Tamagotchi lifespans (simulated)",
+  subtitle = "450 virtual pets and how they were cared for",
+  x = "Lifespan (days)",
+  fill = "Care")
+ggp2_ovrlp_hist <- ggplot(data = tamagotchi_pets,
+     aes(x = lifespan_days,
+         fill = care)) +
+     geom_histogram(alpha = 2/3, position = "identity", bins = 40)
+ggp2_ovrlp_hist +
   labs_ovrlp_hist
 ```
 :::
