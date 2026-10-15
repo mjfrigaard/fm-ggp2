@@ -110,6 +110,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
@@ -529,6 +532,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome!</a>
   <ul>
+  <li><a href="#whats-new-in-this-edition" id="toc-whats-new-in-this-edition" class="nav-link" data-scroll-target="#whats-new-in-this-edition">What’s new in this edition</a></li>
   <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting started</a></li>
   <li><a href="#who-this-book-was-written-for" id="toc-who-this-book-was-written-for" class="nav-link" data-scroll-target="#who-this-book-was-written-for">Who this book was written for</a></li>
   <li><a href="#where-to-learn-more" id="toc-where-to-learn-more" class="nav-link" data-scroll-target="#where-to-learn-more">Where to learn more</a></li>
@@ -573,6 +577,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>“<em>What kind of graph is that?</em>”</p></li>
 <li><p>“<em>Can (or should) I build that graph?</em>”</p></li>
 </ul>
+<section id="whats-new-in-this-edition" class="level2">
+<h2 class="anchored" data-anchor-id="whats-new-in-this-edition">What’s new in this edition</h2>
+<p>I’ve rebuilt the examples in this manual around simulated data. Earlier versions borrowed datasets from packages like <code>palmerpenguins</code>, <code>fivethirtyeight</code>, and <code>ggplot2movies</code>. Those are great datasets, but each one meant another package to install, and the shape of the data was whatever the real world handed us. Now every chapter creates its own data with a few lines of R code, using base R functions (like <code>rnorm()</code>, <code>rpois()</code>, and <code>sample()</code>) or user written packages (like <a href="https://debruine.github.io/faux/"><code>faux</code></a>).</p>
+<p>Simulating the data unlocks something real data can’t: we know the distribution behind every graph before we draw it. Each chapter uses that to connect the numbers to the picture in a new <strong>Distribution</strong> section, so you’ll see <em>why</em> a histogram is bell shaped or <em>why</em> a box plot shows so many outliers, not just how to build it.</p>
+<p>I also wanted the examples to be fun to read, so every dataset is a late 90s throwback. You’ll find Napster downloads, Blockbuster rentals, Pokémon starters, and Mario Kart 64 lap times, and each one is drawn with a matching theme (Windows 98, the original Game Boy, the Nintendo 64, and more). The themes live in the <a href="https://mjfrigaard.github.io/fmggp2/"><code>fmggp2</code></a> package, which also holds the helpers used throughout the book.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'monospace', 'fontSize': '14px', 'darkMode': false}}}%%
+
+flowchart LR
+    dist(["&lt;strong&gt;Distribution&lt;/strong&gt;&lt;br&gt;normal, Poisson,&lt;br&gt;gamma, ..."]) --&gt;|"i. set.seed()"| sim["&lt;strong&gt;Simulate&lt;/strong&gt;&lt;br&gt;base R or &lt;code&gt;faux&lt;/code&gt;"]
+    sim --&gt; data[("&lt;strong&gt;90s dataset&lt;/strong&gt;&lt;br&gt;AOL sessions, Pogs,&lt;br&gt;Happy Meals, ...")]
+    data --&gt;|"ii. Distribution section"| link["&lt;strong&gt;Connect&lt;/strong&gt;&lt;br&gt;count it, draw it,&lt;br&gt;name it"]
+    link --&gt;|"iii. Grammar section"| graph[["&lt;strong&gt;ggplot2 graph&lt;/strong&gt;&lt;br&gt;&lt;code&gt;fmggp2::theme_*()&lt;/code&gt;"]]
+
+    style dist fill:#4CBB9D,color:#FFFFFF,rx:5,ry:5
+    style sim fill:#FFFFFF,color:#000000,stroke:#333
+    style data fill:#C0C0C0,color:#000000,stroke:#333
+    style link fill:#FFFFFF,color:#000000,stroke:#333
+    style graph fill:#000080,color:#FFFFFF,rx:5,ry:5
+</pre>
+</div>
+<p></p><figcaption> How each chapter builds its example</figcaption> </figure><p></p>
+</div>
+</div>
+</div>
+<p>I’m converting the book one part at a time, starting with the Univariate and Amounts graphs. Chapters that haven’t been converted yet still use the original datasets and theme.</p>
+</section>
 <section id="getting-started" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="getting-started">Getting started</h2>
 <ul>
@@ -603,7 +638,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="www/tidyverse.png" class="quarto-figure quarto-figure-center figure-img" style="width:40.0%;height:40.0%"></p>
 </figure>
 </div>
-</div></div></section>
+</div></div><ul>
+<li><p>Install <code>fmggp2</code> to use the 90s themes from the book:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"pak"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">"mjfrigaard/fmggp2"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fmggp2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></li>
+</ul>
+</section>
 <section id="who-this-book-was-written-for" class="level2">
 <h2 class="anchored" data-anchor-id="who-this-book-was-written-for">Who this book was written for</h2>
 <p>I created this resource with the following <a href="https://teachtogether.tech/en/index.html#s:process-personas">learner personas</a> in mind:</p>
