@@ -113,10 +113,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar floating slimcontent quarto-light">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -529,17 +558,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">25.1</span> Description</a></li>
   <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up"><span class="header-section-number">25.2</span> Set up</a></li>
-  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">25.3</span> Grammar</a></li>
-  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">25.4</span> More info</a>
+  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">25.3</span> Distribution</a></li>
+  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">25.4</span> Grammar</a></li>
+  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">25.5</span> More info</a>
   <ul>
-  <li><a href="#notches" id="toc-notches" class="nav-link" data-scroll-target="#notches"><span class="header-section-number">25.4.1</span> Notches</a></li>
-  <li><a href="#outliers" id="toc-outliers" class="nav-link" data-scroll-target="#outliers"><span class="header-section-number">25.4.2</span> Outliers</a></li>
+  <li><a href="#notches" id="toc-notches" class="nav-link" data-scroll-target="#notches"><span class="header-section-number">25.5.1</span> Notches</a></li>
+  <li><a href="#outliers" id="toc-outliers" class="nav-link" data-scroll-target="#outliers"><span class="header-section-number">25.5.2</span> Outliers</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/grouped_box_plots.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./distributions.html">DISTRIBUTIONS</a></li><li class="breadcrumb-item"><a href="./grouped_box_plots.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Grouped box plots</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -603,7 +633,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Grouped box plots display five different statistical measures across a series of categories, or groups, of a discrete, ordinal, or interval variable.</p>
 <p>The five statistical measures are 1) the first quartile, 2) the second quartile, and 3) the third quartile. The fourth and fifth values are the largest/smallest values no further than 1.5 X inter-quartile range from the hinges.</p>
 </section>
-<section id="set-up" class="level2 page-columns page-full" data-number="25.2">
+<section id="set-up" class="level2" data-number="25.2">
 <h2 data-number="25.2" class="anchored" data-anchor-id="set-up"><span class="header-section-number">25.2</span> Set up</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>PACKAGES:</strong></p>
@@ -613,54 +643,125 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"palmerpenguins"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins) </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># for tibble() and data manipulation</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure">
-<p><img src="www/lter_penguins.png" class="img-fluid figure-img" style="width:65.0%"></p>
-<figcaption>Artwork by Allison Horst</figcaption>
-</figure>
-</div>
-</div></div><p>Remove the missing <code>island</code> values from the <code>penguins</code> data.</p>
+<p>In <em>The Oregon Trail</em>, you picked a profession before you set out, and it decided how much money (and how many supplies) your party started with. We’ll simulate how many days it took 100 parties of each profession to reach Oregon. Each profession gets its own typical trip length (<code>median_days</code>), and <code>rlnorm()</code> draws each trip from a log normal distribution, so a few unlucky parties (dysentery, broken axles, lost oxen) take much longer than the rest. Setting the seed with <code>set.seed()</code> means you’ll get the same 300 trips every time you run the code below.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>peng_box <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, <span class="sc">!</span><span class="fu">is.na</span>(island))</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(peng_box)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 344</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 8</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ species           &lt;fct&gt; Adelie, Adelie, Adelie…</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ island            &lt;fct&gt; Torgersen, Torgersen, …</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, …</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, …</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193…</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, …</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ sex               &lt;fct&gt; male, female, female, …</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year              &lt;int&gt; 2007, 2007, 2007, 2007…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1985</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>oregon_trail <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">party_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">300</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">profession =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"Banker"</span>, <span class="st">"Carpenter"</span>, <span class="st">"Farmer"</span>), <span class="at">each =</span> <span class="dv">100</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">profession =</span> <span class="fu">factor</span>(profession,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Banker"</span>, <span class="st">"Carpenter"</span>, <span class="st">"Farmer"</span>)),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">median_days =</span> <span class="fu">c</span>(<span class="at">Banker =</span> <span class="dv">140</span>, <span class="at">Carpenter =</span> <span class="dv">155</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Farmer =</span> <span class="dv">170</span>)[<span class="fu">as.character</span>(profession)],</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">days_to_oregon =</span> <span class="fu">round</span>(<span class="fu">rlnorm</span>(<span class="fu">n</span>(), <span class="at">meanlog =</span> <span class="fu">log</span>(median_days),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">sdlog =</span> <span class="fl">0.2</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(party_id, profession, days_to_oregon)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(oregon_trail)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 300</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ party_id       &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9…</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ profession     &lt;fct&gt; Banker, Banker, Banker, B…</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ days_to_oregon &lt;dbl&gt; 152, 112, 131, 144, 180, …</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
-<section id="grammar" class="level2" data-number="25.3">
-<h2 data-number="25.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">25.3</span> Grammar</h2>
+<section id="distribution" class="level2" data-number="25.3">
+<h2 data-number="25.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">25.3</span> Distribution</h2>
+<p>Grouped box plots compare five summary numbers across groups. When the data are skewed, those five numbers aren’t evenly spaced: the median sits closer to the bottom of the box, and the upper whisker is longer than the lower one. Below we’ll move from the trips, to a picture, to the formula.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>COUNT IT:</strong></p>
+</div>
+<p>Start with the first eight trips (all bankers).</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(oregon_trail<span class="sc">$</span>days_to_oregon, <span class="dv">8</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 152 112 131 144 180 126 164 179</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</div>
+<p>These trips took between 112 and 180 days. The summary below shows each profession’s quartiles. For every profession, the distance from the median up to the third quartile (<code>upper_gap</code>) is larger than the distance down to the first quartile (<code>lower_gap</code>).</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>oregon_trail <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(profession) <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">q1 =</span> <span class="fu">quantile</span>(days_to_oregon, <span class="fl">0.25</span>), </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">median =</span> <span class="fu">median</span>(days_to_oregon),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">q3 =</span> <span class="fu">quantile</span>(days_to_oregon, <span class="fl">0.75</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lower_gap =</span> median <span class="sc">-</span> q1, <span class="at">upper_gap =</span> q3 <span class="sc">-</span> median)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["profession"],"name":[1],"type":["fct"],"align":["left"]},{"label":["q1"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["median"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["q3"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["lower_gap"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["upper_gap"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"Banker","2":"121.25","3":"136.5","4":"159.75","5":"15.25","6":"23.25"},{"1":"Carpenter","2":"134.50","3":"157.5","4":"180.00","5":"23.00","6":"22.50"},{"1":"Farmer","2":"147.75","3":"173.0","4":"193.50","5":"25.25","6":"20.50"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>DRAW IT:</strong></p>
+</div>
+<p>The box plots on the left use days, so each box is lopsided: the median line sits low in the box, and the long trips stretch the upper whiskers (the farmers even have a few outliers). The box plots on the right put the same trips on a log scale with <code>scale_y_log10()</code>. On the log scale the boxes are symmetric and the whiskers are about the same length on both sides.</p>
+<div style="font-size: 0.85em;">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(oregon_trail, <span class="fu">aes</span>(<span class="at">x =</span> profession, <span class="at">y =</span> days_to_oregon, </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> profession)) <span class="sc">+</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Days"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Days to reach Oregon"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(oregon_trail, <span class="fu">aes</span>(<span class="at">x =</span> profession, <span class="at">y =</span> days_to_oregon, </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> profession)) <span class="sc">+</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span> </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Log scale"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Days (log scale)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="grouped_box_plots_files/figure-html/draw_grp_boxplots-1.png" class="img-fluid" width="576"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="grouped_box_plots_files/figure-html/draw_grp_boxplots-2.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>NAME IT:</strong></p>
+</div>
+<p>Each profession’s trips come from a <a href="https://en.wikipedia.org/wiki/Log-normal_distribution">log normal distribution</a>, the same distribution as the Beanie Babies prices in the violin plot chapter:</p>
+<p><span class="math display">\[
+\log(X_{\text{profession}}) \sim \text{Normal}(\log(m_{\text{profession}}), \; \sigma = 0.2), \quad m = (140, 155, 170)
+\]</span></p>
+<p>On the log scale, the quartiles sit <span class="math inline">\(0.674\,\sigma\)</span> above and below the center, which is why the log scale boxes are symmetric. Back on the day scale, those quartiles become <span class="math inline">\(m\,e^{-0.674 \times 0.2}\)</span> and <span class="math inline">\(m\,e^{0.674 \times 0.2}\)</span>: for bankers, about 122 and 160 days. That’s 18 days below the median but 20 days above it, and the gap grows the further out you go, which is why the upper whiskers are longer. Try a larger <code>sdlog</code> in <code>rlnorm()</code> and the boxes become even more lopsided.</p>
+</section>
+<section id="grammar" class="level2" data-number="25.4">
+<h2 data-number="25.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">25.4</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
 </div>
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map <code>island</code> to the <code>x</code> axis and to <code>fill</code></p></li>
-<li><p>Map <code>bill_length_mm</code> to the <code>y</code> axis</p></li>
+<li><p>Map <code>profession</code> to the <code>x</code> axis and to <code>fill</code></p></li>
+<li><p>Map <code>days_to_oregon</code> to the <code>y</code> axis</p></li>
 <li><p>Add <code>geom_boxplot()</code> and set the <code>alpha</code> to <code>2/3</code></p></li>
 <li><p>Remove the legend with <code>show.legend = FALSE</code></p></li>
 </ul>
@@ -668,19 +769,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>labs_grp_boxplots <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Adult foraging penguins"</span>, </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Palmer Archipelago, Antarctica"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Island"</span>, <span class="at">fill =</span> <span class="st">"Island"</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Bill length (millimeters)"</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>ggp2_grp_boxplots <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> peng_box,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> island, </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> bill_length_mm, </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> island)) <span class="sc">+</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, </span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">show.legend =</span> <span class="cn">FALSE</span>) </span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>ggp2_grp_boxplots <span class="sc">+</span> </span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  labs_grp_boxplots</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>labs_grp_boxplots <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"The Oregon Trail (simulated)"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Days for 100 parties of each profession to reach Oregon"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Profession"</span>, <span class="at">fill =</span> <span class="st">"Profession"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Days to reach Oregon"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>ggp2_grp_boxplots <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> oregon_trail,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> profession,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> days_to_oregon,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> profession)) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>ggp2_grp_boxplots <span class="sc">+</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  labs_grp_boxplots</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
@@ -698,25 +799,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2" data-number="25.4">
-<h2 data-number="25.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">25.4</span> More info</h2>
-<section id="notches" class="level3" data-number="25.4.1">
-<h3 data-number="25.4.1" class="anchored" data-anchor-id="notches"><span class="header-section-number">25.4.1</span> Notches</h3>
+<section id="more-info" class="level2" data-number="25.5">
+<h2 data-number="25.5" class="anchored" data-anchor-id="more-info"><span class="header-section-number">25.5</span> More info</h2>
+<section id="notches" class="level3" data-number="25.5.1">
+<h3 data-number="25.5.1" class="anchored" data-anchor-id="notches"><span class="header-section-number">25.5.1</span> Notches</h3>
 <p>Add notches to the box plot using the <code>notch = TRUE</code> and <code>notchwidth</code> arguments.</p>
 <div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ggp2_grp_box_notch <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> peng_box,</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> island, </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> bill_length_mm, </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> island)) <span class="sc">+</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">notch =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">notchwidth =</span> <span class="fl">0.85</span>, </span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">show.legend =</span> <span class="cn">FALSE</span>) </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>ggp2_grp_box_notch <span class="sc">+</span> </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    labs_grp_boxplots</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ggp2_grp_box_notch <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> oregon_trail,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> profession,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> days_to_oregon,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> profession)) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">notch =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">notchwidth =</span> <span class="fl">0.85</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>ggp2_grp_box_notch <span class="sc">+</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    labs_grp_boxplots</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
@@ -727,25 +828,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="outliers" class="level3" data-number="25.4.2">
-<h3 data-number="25.4.2" class="anchored" data-anchor-id="outliers"><span class="header-section-number">25.4.2</span> Outliers</h3>
-<p>Box plots display outliers using points, and we can change the color these using the <code>outlier.colour</code> argument. Inside the <code>geom_boxplot()</code>, we map <code>island</code> to <code>color</code> and set <code>outlier.colour</code> to <code>NULL</code>:</p>
+<section id="outliers" class="level3" data-number="25.5.2">
+<h3 data-number="25.5.2" class="anchored" data-anchor-id="outliers"><span class="header-section-number">25.5.2</span> Outliers</h3>
+<p>Box plots display outliers using points, and we can change the color these using the <code>outlier.colour</code> argument. Inside the <code>geom_boxplot()</code>, we map <code>profession</code> to <code>color</code> and set <code>outlier.colour</code> to <code>NULL</code>:</p>
 <div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ggp2_grp_box_outliers <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> peng_box,</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> island, </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> bill_length_mm,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> island)) <span class="sc">+</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color =</span> island),</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">outlier.colour =</span> <span class="cn">NULL</span>, </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">outlier.size =</span> <span class="dv">2</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">notch =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">notchwidth =</span> <span class="fl">0.85</span>, </span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, </span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">show.legend =</span> <span class="cn">FALSE</span>) </span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>ggp2_grp_box_outliers <span class="sc">+</span> </span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    labs_grp_boxplots</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ggp2_grp_box_outliers <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> oregon_trail,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> profession,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> days_to_oregon,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> profession)) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color =</span> profession),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">outlier.colour =</span> <span class="cn">NULL</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">outlier.size =</span> <span class="dv">2</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">notch =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">notchwidth =</span> <span class="fl">0.85</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>ggp2_grp_box_outliers <span class="sc">+</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    labs_grp_boxplots</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">

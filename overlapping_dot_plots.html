@@ -113,6 +113,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -529,7 +558,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">21.1</span> Description</a></li>
   <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up"><span class="header-section-number">21.2</span> Set up</a></li>
-  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">21.3</span> Grammar</a></li>
+  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">21.3</span> Distribution</a></li>
+  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">21.4</span> Grammar</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/overlapping_dot_plots.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -598,7 +628,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Overlapping dot plots display distributions of a continuous variable across the levels of a categorical variable.</p>
 <p>To adjust the dot plot display to look similar to a histogram or frequency polygon, change the <code>method</code> and <code>binposition</code> arguments.</p>
 </section>
-<section id="set-up" class="level2 page-columns page-full" data-number="21.2">
+<section id="set-up" class="level2" data-number="21.2">
 <h2 data-number="21.2" class="anchored" data-anchor-id="set-up"><span class="header-section-number">21.2</span> Set up</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>PACKAGES:</strong></p>
@@ -610,48 +640,112 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"palmerpenguins"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins) </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># for tibble() and data manipulation</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure">
-<p><img src="www/lter_penguins.png" class="img-fluid figure-img" style="width:65.0%"></p>
-<figcaption>Artwork by Allison Horst</figcaption>
-</figure>
-</div>
-</div></div><div style="font-size: 0.95rem;">
-<p>Remove missing <code>sex</code> from <code>penguins</code></p>
+<div style="font-size: 0.95rem;">
+<p>R.L. Stine’s <em>Goosebumps</em> books were everywhere in the mid 90s, and older kids tended to tear through more of them. We’ll simulate how many Goosebumps books 40 students in each of three grades read in one school year. <code>rpois()</code> draws each student’s count from a Poisson distribution with a different average (<code>lambda</code>) for each grade: 3, 6, and 9 books. Setting the seed with <code>set.seed()</code> means you’ll get the same 120 students every time you run the code below.</p>
 </div>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>peng_dotplot <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(penguins, <span class="sc">!</span><span class="fu">is.na</span>(sex))</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(peng_dotplot)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 333</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 8</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ species           &lt;fct&gt; Adelie, Adelie, Adelie…</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ island            &lt;fct&gt; Torgersen, Torgersen, …</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, 36.7…</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, 19.3…</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ flipper_length_mm &lt;int&gt; 181, 186, 195, 193, 19…</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ body_mass_g       &lt;int&gt; 3750, 3800, 3250, 3450…</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ sex               &lt;fct&gt; male, female, female, …</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year              &lt;int&gt; 2007, 2007, 2007, 2007…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1992</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>goosebumps_readers <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">student_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">120</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">grade =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"3rd grade"</span>, <span class="st">"4th grade"</span>, <span class="st">"5th grade"</span>), <span class="at">each =</span> <span class="dv">40</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">grade =</span> <span class="fu">factor</span>(grade,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"3rd grade"</span>, <span class="st">"4th grade"</span>, <span class="st">"5th grade"</span>)),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">books_read =</span> <span class="fu">rpois</span>(<span class="fu">n</span>(), <span class="at">lambda =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">3rd grade</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">`</span><span class="at">4th grade</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">6</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">`</span><span class="at">5th grade</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">9</span>)[<span class="fu">as.character</span>(grade)]))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(goosebumps_readers)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 120</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ student_id &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10…</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ grade      &lt;fct&gt; 3rd grade, 3rd grade, 3rd gra…</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ books_read &lt;int&gt; 3, 5, 4, 3, 3, 4, 2, 4, 3, 5,…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
-<section id="grammar" class="level2 page-columns page-full" data-number="21.3">
-<h2 data-number="21.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">21.3</span> Grammar</h2>
+<section id="distribution" class="level2" data-number="21.3">
+<h2 data-number="21.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">21.3</span> Distribution</h2>
+<p>Dot plots are a natural fit for small counts: every student gets one dot, and every number of books gets its own stack. With three grades stacked together, we can see two things change from grade to grade: where the stacks are centered, and how far they spread out. Below we’ll move from the students, to a picture, to the formula.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>COUNT IT:</strong></p>
+</div>
+<p>Start with the first ten students (all in 3rd grade).</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(goosebumps_readers<span class="sc">$</span>books_read, <span class="dv">10</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] 3 5 4 3 3 4 2 4 3 5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</div>
+<p>These 3rd graders read between two and five books. The summary below compares each grade’s mean and variance. For counts like these, the variance grows along with the mean, so the older students’ counts are more spread out.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>goosebumps_readers <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(grade) <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean =</span> <span class="fu">mean</span>(books_read), <span class="at">variance =</span> <span class="fu">var</span>(books_read),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">min =</span> <span class="fu">min</span>(books_read), <span class="at">max =</span> <span class="fu">max</span>(books_read))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["grade"],"name":[1],"type":["fct"],"align":["left"]},{"label":["mean"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["variance"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["min"],"name":[4],"type":["int"],"align":["right"]},{"label":["max"],"name":[5],"type":["int"],"align":["right"]}],"data":[{"1":"3rd grade","2":"2.850","3":"2.079487","4":"0","5":"7"},{"1":"4th grade","2":"5.575","3":"4.968590","4":"2","5":"10"},{"1":"5th grade","2":"9.275","3":"10.819872","4":"3","5":"18"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>DRAW IT:</strong></p>
+</div>
+<p>The graph below gives each grade its own row of dot stacks (with <code>facet_wrap()</code>), and the dashed lines mark the average we gave each grade in <code>rpois()</code>. The 3rd grade stacks are tall and bunched together near three books, and the 5th grade stacks are short and spread from three books to well past a dozen.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(goosebumps_readers, <span class="fu">aes</span>(<span class="at">x =</span> books_read, <span class="at">fill =</span> grade)) <span class="sc">+</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_dotplot</span>(<span class="at">method =</span> <span class="st">"histodot"</span>, <span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">dotsize =</span> <span class="fl">0.55</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">data =</span> <span class="fu">tibble</span>(<span class="at">grade =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"3rd grade"</span>, <span class="st">"4th grade"</span>, </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"5th grade"</span>)), <span class="at">lambda =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">9</span>)), </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">xintercept =</span> lambda), <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"#F2E8CF"</span>) <span class="sc">+</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> grade, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="cn">NULL</span>, <span class="at">breaks =</span> <span class="cn">NULL</span>) <span class="sc">+</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Books read"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="overlapping_dot_plots_files/figure-html/draw_ovrlp_dot_plots-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>NAME IT:</strong></p>
+</div>
+<p>Each grade’s counts come from a <a href="https://en.wikipedia.org/wiki/Poisson_distribution">Poisson distribution</a>:</p>
+<p><span class="math display">\[
+X_{\text{grade}} \sim \text{Poisson}(\lambda_{\text{grade}}), \quad \lambda = (3, 6, 9)
+\]</span></p>
+<p>For a Poisson distribution, the variance equals the mean (<span class="math inline">\(\lambda\)</span>), so the standard deviation is <span class="math inline">\(\sqrt{\lambda}\)</span>: about 1.7 books for 3rd graders and 3 books for 5th graders. Tripling the average book count only spreads the stacks out by <span class="math inline">\(\sqrt{3} \approx 1.7\)</span> times, which is why the 5th grade stacks are wider but not three times wider. When we stack the three grades into one dot plot, the middle grade overlaps both of its neighbors. Try giving the three grades averages that are closer together in <code>rpois()</code> and the colors will mix into the same stacks.</p>
+</section>
+<section id="grammar" class="level2 page-columns page-full" data-number="21.4">
+<h2 data-number="21.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">21.4</span> Grammar</h2>
 
 <div class="no-row-height column-margin column-container"><div class="">
 <ul>
@@ -664,28 +758,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map <code>flipper_length_mm</code> to <code>x</code></p></li>
-<li><p>Map <code>species</code> to <code>fill</code> (<em>inside</em> <code>factor()</code>)</p></li>
-<li><p>Inside <code>geom_dotplot</code>, set <code>method</code> to <code>"histodot"</code>, <code>binwidth</code> to <code>1.35</code>, and <code>binpositions</code> to <code>"all"</code></p></li>
+<li><p>Map <code>books_read</code> to <code>x</code></p></li>
+<li><p>Map <code>grade</code> to <code>fill</code> (<em>inside</em> <code>factor()</code>)</p></li>
+<li><p>Inside <code>geom_dotplot</code>, set <code>method</code> to <code>"histodot"</code>, <code>binwidth</code> to <code>1</code> (one stack per count), <code>binpositions</code> to <code>"all"</code>, and <code>stackgroups</code> to <code>TRUE</code> (so the grades stack on top of each other instead of overplotting)</p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>labs_ovrlp_dotplot <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Adult foraging penguins"</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Flipper length (millimeters)"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Count"</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Species"</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>ggp2_ovrlp_dotplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> peng_dotplot, </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> flipper_length_mm,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="fu">factor</span>(species))) <span class="sc">+</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_dotplot</span>(</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"histodot"</span>,</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">binwidth =</span> <span class="fl">1.35</span>,</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">binpositions =</span> <span class="st">"all"</span>)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>ggp2_ovrlp_dotplot <span class="sc">+</span> </span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  labs_ovrlp_dotplot</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>labs_ovrlp_dotplot <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Goosebumps books read (simulated)"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"40 students in each grade, one school year"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Books read"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Count"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Grade"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>ggp2_ovrlp_dotplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> goosebumps_readers,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> books_read,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="fu">factor</span>(grade))) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_dotplot</span>(</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"histodot"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">binwidth =</span> <span class="dv">1</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">binpositions =</span> <span class="st">"all"</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">stackgroups =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>ggp2_ovrlp_dotplot <span class="sc">+</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  labs_ovrlp_dotplot</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
