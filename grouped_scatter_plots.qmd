@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_consolewars(
     base_size = 13))
 ```
 
@@ -42,20 +42,35 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr)
+library(faux)
+set.seed(1991)
+genesis <- faux::rnorm_multi(n = 120,
+    mu = c(games = 12, hours = 9), sd = c(4, 3), r = 0.6) |>
+  mutate(console = "Sega Genesis")
+snes <- faux::rnorm_multi(n = 120,
+    mu = c(games = 10, hours = 11), sd = c(3.5, 3), r = 0.3) |>
+  mutate(console = "Super Nintendo")
+console_kids <- bind_rows(genesis, snes) |>
+  mutate(kid_id = row_number(),
+         games_owned = pmax(1, round(games)),
+         hours_per_week = round(pmax(0, hours), 1)) |>
+  select(kid_id, console, games_owned, hours_per_week)
 labs_grp_scatter <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)", 
-  y = "Flipper length (mm)", 
-  color = "Species")
-ggp2_grp_scatter <- penguins |> 
+  title = "The console wars",
+  subtitle = "Games owned vs. hours played per week",
+  caption = "Simulated data",
+  x = "Games owned",
+  y = "Hours played per week",
+  color = "Console")
+ggp2_grp_scatter <- console_kids |>
   ggplot(
-    aes(x = bill_length_mm, 
-        y = flipper_length_mm)) + 
-  geom_point(aes(color = species)) 
+    aes(x = games_owned,
+        y = hours_per_week)) +
+  geom_point(aes(color = console))
 
-ggp2_grp_scatter + 
+ggp2_grp_scatter +
   labs_grp_scatter
 ```
 
@@ -68,12 +83,12 @@ ggp2_grp_scatter +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 ::::
 
-## Description 
+## Description
 
 Grouped scatter-plots display the relationships between two continuous variables across a *third* categorical variable.
 
@@ -97,9 +112,10 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins)
+install.packages("faux")
+library(faux)
 library(ggplot2)
+library(dplyr) # for data manipulation
 ```
 :::
 
@@ -108,12 +124,7 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
-
-The `penguins` data.
+In the early 90s, every kid picked a side: Sega or Nintendo. We'll simulate 120 Sega Genesis kids and 120 Super Nintendo kids, and record how many games each one owned (`games_owned`) and how many hours a week they played (`hours_per_week`). The two numbers go together, so we'll draw them in pairs with [`faux::rnorm_multi()`](https://debruine.github.io/faux/reference/rnorm_multi.html), which takes a mean (`mu`) and standard deviation (`sd`) for each variable and a correlation (`r`) between them. Genesis kids own a few more games, Super Nintendo kids play a few more hours, and the link between games and hours is stronger for the Genesis kids (a correlation of 0.6) than the Super Nintendo kids (a correlation of 0.3). Setting the seed with `set.seed()` means you'll get the same 240 kids every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -121,10 +132,102 @@ The `penguins` data.
 #| code-fold: show
 #| eval: true
 #| echo: true
-penguins <- palmerpenguins::penguins
-glimpse(penguins)
+set.seed(1991)
+genesis <- faux::rnorm_multi(n = 120,
+    mu = c(games = 12, hours = 9), sd = c(4, 3), r = 0.6) |>
+  mutate(console = "Sega Genesis")
+snes <- faux::rnorm_multi(n = 120,
+    mu = c(games = 10, hours = 11), sd = c(3.5, 3), r = 0.3) |>
+  mutate(console = "Super Nintendo")
+console_kids <- bind_rows(genesis, snes) |>
+  mutate(kid_id = row_number(),
+         games_owned = pmax(1, round(games)),
+         hours_per_week = round(pmax(0, hours), 1)) |>
+  select(kid_id, console, games_owned, hours_per_week)
+glimpse(console_kids)
 ```
 :::
+
+## Distribution
+
+A grouped scatter plot puts two clouds of points on the same axes. To compare the groups, we compare three things about each cloud: its center, its spread in each direction, and its tilt. Below we'll move from the kids, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first three kids on each side.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_grp_scatter
+#| code-fold: show
+#| eval: true
+#| echo: true
+console_kids |>
+  group_by(console) |>
+  slice_head(n = 3)
+```
+:::
+
+Below we calculate the center (`mean_games` and `mean_hours`), the spread (`sd_games` and `sd_hours`), and the tilt (the correlation, `r`) for each console.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_grp_scatter
+#| code-fold: show
+#| eval: true
+#| echo: true
+console_stats <- console_kids |>
+  group_by(console) |>
+  summarise(mean_games = mean(games_owned),
+            mean_hours = mean(hours_per_week),
+            sd_games = sd(games_owned),
+            sd_hours = sd(hours_per_week),
+            r = cor(games_owned, hours_per_week))
+console_stats
+```
+:::
+
+The Genesis kids own about `r round(console_stats$mean_games[1], 1)` games on average and play about `r round(console_stats$mean_hours[1], 1)` hours a week, while the Super Nintendo kids own about `r round(console_stats$mean_games[2], 1)` games and play about `r round(console_stats$mean_hours[2], 1)` hours. The correlation for the Genesis kids (`r round(console_stats$r[1], 2)`) is about twice the correlation for the Super Nintendo kids (`r round(console_stats$r[2], 2)`).
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The graph below adds an ellipse around each cloud with `stat_ellipse()`. Each ellipse is drawn to hold about 95% of its group's points. The Genesis ellipse is longer and more tilted (a stronger correlation), and the Super Nintendo ellipse is rounder and sits higher on the `y` axis.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_grp_scatter
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(console_kids, aes(x = games_owned, y = hours_per_week,
+                         color = console)) +
+  geom_point(alpha = 1 / 2) +
+  stat_ellipse(level = 0.95, linewidth = 1) +
+  geom_point(data = console_stats,
+             aes(x = mean_games, y = mean_hours),
+             shape = 4, size = 5, stroke = 2) +
+  labs(x = "Games owned", y = "Hours played per week",
+       color = "Console")
+```
+:::
+
+The `x` in the middle of each ellipse marks the group means from **COUNT IT**.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each console's pairs come from a [bivariate normal distribution](https://en.wikipedia.org/wiki/Multivariate_normal_distribution), which is described by a vector of means and a covariance matrix:
+
+$$
+\begin{pmatrix} \text{games} \\ \text{hours} \end{pmatrix} \sim \text{Normal}\left( \begin{pmatrix} \mu_g \\ \mu_h \end{pmatrix}, \; \begin{pmatrix} \sigma_g^2 & r \sigma_g \sigma_h \\ r \sigma_g \sigma_h & \sigma_h^2 \end{pmatrix} \right)
+$$
+
+The means set the center of each cloud, the standard deviations ($\sigma_g$ and $\sigma_h$) set how wide and tall it is, and the correlation ($r$) sets the tilt. When $r = 0$ the ellipse lines up with the axes, and as $r$ gets closer to 1 it stretches into a thin, tilted line. The ellipses in **DRAW IT** are just the outlines of these distributions. Try changing the Super Nintendo `r` to `0.9` in `rnorm_multi()` and its ellipse collapses toward a line.
 
 ## Grammar
 
@@ -137,35 +240,37 @@ glimpse(penguins)
 
   - Initialize the graph with `ggplot()` and provide `data`
 
-  - Map `bill_length_mm` to the `x` axis 
+  - Map `games_owned` to the `x` axis
 
-  - Map `flipper_length_mm` to the `y` axis  
+  - Map `hours_per_week` to the `y` axis
 
-  - Map `species` to `color` inside the `geom_point()`
+  - Map `console` to `color` inside the `geom_point()`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_grp_scatter
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_grp_scatter <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)", 
-  y = "Flipper length (mm)", 
-  color = "Species")
+  title = "The console wars",
+  subtitle = "Games owned vs. hours played per week",
+  caption = "Simulated data",
+  x = "Games owned",
+  y = "Hours played per week",
+  color = "Console")
 
-ggp2_grp_scatter <- penguins |> 
+ggp2_grp_scatter <- console_kids |>
   ggplot(
-    aes(x = bill_length_mm, 
-        y = flipper_length_mm)) + 
-  geom_point(aes(color = species)) 
+    aes(x = games_owned,
+        y = hours_per_week)) +
+  geom_point(aes(color = console))
 
-ggp2_grp_scatter + 
+ggp2_grp_scatter +
   labs_grp_scatter
 ```
 :::
@@ -188,16 +293,18 @@ Adjust over-plotting with transparency (`alpha`).
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_grp_scatter <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)", 
-  y = "Flipper length (mm)", 
-  color = "Species")
-ggp2_grp_scatter <- penguins |> 
+  title = "The console wars",
+  subtitle = "Games owned vs. hours played per week",
+  caption = "Simulated data",
+  x = "Games owned",
+  y = "Hours played per week",
+  color = "Console")
+ggp2_grp_scatter <- console_kids |>
   ggplot(
-    aes(x = bill_length_mm, 
-        y = flipper_length_mm)) + 
-  geom_point(aes(color = species)) 
+    aes(x = games_owned,
+        y = hours_per_week)) +
+  geom_point(aes(color = console))
 
-ggp2_grp_scatter + 
+ggp2_grp_scatter +
   labs_grp_scatter
 ```

@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_powerrangers(
     base_size = 14))
 ```
 
@@ -28,7 +28,6 @@ ggplot2::theme_set(theme_ggp2g(
 # polish, dev, draft, complete
 status("complete")
 ```
-
 
 :::: {.callout-note collapse="false" icon=false}
 
@@ -43,24 +42,39 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr)
+library(tidyr)
+set.seed(1993)
+ranger_fights <- expand_grid(
+  ranger = c("Red", "Blue", "Yellow", "Pink", "Black"),
+  fight = 1:24) |>
+  mutate(
+    ranger = factor(ranger,
+      levels = c("Red", "Blue", "Yellow", "Pink", "Black")),
+    putty_rate = c(Red = 2.0, Blue = 1.2, Yellow = 1.6,
+                   Pink = 1.4, Black = 1.8)[as.character(ranger)],
+    fight_minutes = round(rgamma(n(), shape = 4, rate = 1), 1),
+    putties_defeated = rpois(n(), lambda = putty_rate * fight_minutes),
+    hits_taken = rpois(n(), lambda = 0.6 * fight_minutes))
 labs_grp_bubble <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)", 
-  y = "Flipper length (mm)", 
-  size = "Body Mass", 
-  fill = "Species")
+  title = "Power Rangers vs. the Putties",
+  subtitle = "Putties defeated by fight length",
+  caption = "Simulated data",
+  x = "Fight length (minutes)",
+  y = "Putties defeated",
+  size = "Hits taken",
+  fill = "Ranger")
 
-ggp2_grp_bubble <- penguins |> 
+ggp2_grp_bubble <- ranger_fights |>
   ggplot(aes(
-    x = bill_length_mm, y = flipper_length_mm)) + 
+    x = fight_minutes, y = putties_defeated)) +
   geom_point(
-    aes(size = body_mass_g, fill = species), 
-        alpha = 2/3, shape = 21, color = "#000000") + 
+    aes(size = hits_taken, fill = ranger),
+        alpha = 2/3, shape = 21, color = "#000000") +
   scale_size(range = c(.04, 6))
 
-ggp2_grp_bubble + 
+ggp2_grp_bubble +
   labs_grp_bubble
 ```
 
@@ -69,7 +83,7 @@ ggp2_grp_bubble +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -78,7 +92,7 @@ ggp2_grp_bubble +
 
 ::::
 
-## Description 
+## Description
 
 Grouped bubble graphs use position, color, and size to display the relationships between four variables (three numerical/quantitative, one categorical).
 
@@ -102,9 +116,9 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins)
 library(ggplot2)
+library(dplyr) # for data manipulation
+library(tidyr) # for expand_grid()
 ```
 :::
 
@@ -113,11 +127,17 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
+Every episode of *Mighty Morphin Power Rangers* had the same rhythm: Rita Repulsa sent down a squad of Putties, and the Rangers kicked their way through them. We'll simulate 24 fights for each of the five original Rangers with four variables:
 
-The `penguins` data.
+  - `fight_minutes`: how long the fight lasted, drawn from a gamma distribution with `rgamma()`
+
+  - `putties_defeated`: a count from `rpois()`. Each Ranger has their own `putty_rate` (putties per minute), and the longer the fight, the more putties they defeat
+
+  - `hits_taken`: another `rpois()` count, at 0.6 hits per minute for every Ranger
+
+  - `ranger`: the Ranger, ordered red, blue, yellow, pink, and black so the theme colors match the suits
+
+Setting the seed with `set.seed()` means you'll get the same 120 fights every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -125,12 +145,104 @@ The `penguins` data.
 #| code-fold: show
 #| eval: true
 #| echo: true
-penguins <- palmerpenguins::penguins
-glimpse(penguins)
+set.seed(1993)
+ranger_fights <- expand_grid(
+  ranger = c("Red", "Blue", "Yellow", "Pink", "Black"),
+  fight = 1:24) |>
+  mutate(
+    ranger = factor(ranger,
+      levels = c("Red", "Blue", "Yellow", "Pink", "Black")),
+    putty_rate = c(Red = 2.0, Blue = 1.2, Yellow = 1.6,
+                   Pink = 1.4, Black = 1.8)[as.character(ranger)],
+    fight_minutes = round(rgamma(n(), shape = 4, rate = 1), 1),
+    putties_defeated = rpois(n(), lambda = putty_rate * fight_minutes),
+    hits_taken = rpois(n(), lambda = 0.6 * fight_minutes))
+glimpse(ranger_fights)
 ```
 :::
 
-## Grammar 
+## Distribution
+
+In this grouped bubble chart, the `y` variable is a count that piles up over time. Longer fights don't just give more putties on average; they also give a wider range of possible counts, so each Ranger's points fan out as they move to the right. Below we'll move from the fights, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the Red Ranger's first five fights.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_grp_bubble
+#| code-fold: show
+#| eval: true
+#| echo: true
+ranger_fights |>
+  filter(ranger == "Red") |>
+  select(fight, fight_minutes, putties_defeated, hits_taken) |>
+  head(5)
+```
+:::
+
+Below we divide each Ranger's total putties by their total fight minutes to estimate their rate (`putties_per_min`), and compare it to the rate we built in (`putty_rate`).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_grp_bubble
+#| code-fold: show
+#| eval: true
+#| echo: true
+ranger_rates <- ranger_fights |>
+  group_by(ranger) |>
+  summarise(putty_rate = first(putty_rate),
+            putties_per_min = sum(putties_defeated) / sum(fight_minutes),
+            hits_per_min = sum(hits_taken) / sum(fight_minutes))
+ranger_rates
+```
+:::
+
+Every putty estimate lands within a few tenths of the rate we built in. The hits per minute range from about `r round(min(ranger_rates$hits_per_min), 1)` to `r round(max(ranger_rates$hits_per_min), 1)` around the true rate of 0.6 (hits are rarer than putties, so their estimates bounce around more).
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The graph below shows the Red and Blue Rangers' fights. Each line is the putty rate times the fight length, and each ribbon covers two standard deviations above and below the line. Both ribbons get wider as the fights get longer.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_grp_bubble
+#| code-fold: show
+#| eval: true
+#| echo: true
+red_blue <- ranger_fights |>
+  filter(ranger %in% c("Red", "Blue"))
+ggplot(red_blue, aes(x = fight_minutes, fill = ranger, color = ranger)) +
+  geom_ribbon(aes(ymin = pmax(0, putty_rate * fight_minutes -
+                                2 * sqrt(putty_rate * fight_minutes)),
+                  ymax = putty_rate * fight_minutes +
+                    2 * sqrt(putty_rate * fight_minutes)),
+              alpha = 1 / 5, color = NA) +
+  geom_line(aes(y = putty_rate * fight_minutes), linewidth = 1) +
+  geom_point(aes(y = putties_defeated), size = 2) +
+  labs(x = "Fight length (minutes)", y = "Putties defeated",
+       color = "Ranger", fill = "Ranger")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+The putties in each fight follow a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) whose average is the Ranger's rate ($\lambda$) times the length of the fight ($t$):
+
+$$
+\text{putties} \sim \text{Poisson}(\lambda_{\text{ranger}} \times t)
+$$
+
+A Poisson count has a variance equal to its mean, so its standard deviation is $\sqrt{\lambda t}$. For the Red Ranger ($\lambda = 2$), a 2 minute fight averages 4 putties give or take about 2, while an 8 minute fight averages 16 putties give or take about 4. The spread grows with the square root of the fight length, which is why the points fan out (and why the ribbons in **DRAW IT** get wider). The `hits_taken` that set the bubble sizes work the same way with $\lambda = 0.6$, so bigger bubbles show up in longer fights for every Ranger. Try changing `rate = 1` to `rate = 4` in `rgamma()` and the fights get shorter, the points crowd to the left, and the fan almost disappears.
+
+## Grammar
 
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
@@ -141,15 +253,15 @@ glimpse(penguins)
 
   - Initialize the graph with `ggplot()` and provide `data`
 
-  - Map `bill_length_mm` to the `x` axis and  `flipper_length_mm` to the `y` axis  
+  - Map `fight_minutes` to the `x` axis and `putties_defeated` to the `y` axis
 
-  - Inside `geom_point()`  
+  - Inside `geom_point()`
 
-    - map `body_mass_g` to `size` and `species` to `fill`  
-    
+    - map `hits_taken` to `size` and `ranger` to `color`
+
     - set the `alpha` to `2/3`
-    
-  - In the `scale_size()`  
+
+  - In the `scale_size()`
 
     - set `range` to `c(.04, 6)`
 
@@ -159,28 +271,31 @@ glimpse(penguins)
 #| label: code_graph_grp_bubble
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_grp_bubble <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)", 
-  y = "Flipper length (mm)", 
-  size = "Body Mass", 
-  fill = "Species")
+  title = "Power Rangers vs. the Putties",
+  subtitle = "Putties defeated by fight length",
+  caption = "Simulated data",
+  x = "Fight length (minutes)",
+  y = "Putties defeated",
+  size = "Hits taken",
+  color = "Ranger",
+  fill = "Ranger")
 
-ggp2_grp_bubble <- penguins |> 
+ggp2_grp_bubble <- ranger_fights |>
   ggplot(aes(
-    x = bill_length_mm, y = flipper_length_mm)) + 
+    x = fight_minutes, y = putties_defeated)) +
   geom_point(
-    aes(size = body_mass_g, 
-        color = species), 
-            alpha = 2/3) + 
-  scale_size(range = c(.04, 6)) 
+    aes(size = hits_taken,
+        color = ranger),
+            alpha = 2/3) +
+  scale_size(range = c(.04, 6))
 
-ggp2_grp_bubble + 
+ggp2_grp_bubble +
   labs_grp_bubble
 ```
 :::
@@ -199,28 +314,31 @@ ggp2_grp_bubble +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_grp_bubble <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)", 
-  y = "Flipper length (mm)", 
-  size = "Body Mass", 
-  fill = "Species")
+  title = "Power Rangers vs. the Putties",
+  subtitle = "Putties defeated by fight length",
+  caption = "Simulated data",
+  x = "Fight length (minutes)",
+  y = "Putties defeated",
+  size = "Hits taken",
+  color = "Ranger",
+  fill = "Ranger")
 
-ggp2_grp_bubble <- penguins |> 
+ggp2_grp_bubble <- ranger_fights |>
   ggplot(aes(
-    x = bill_length_mm, y = flipper_length_mm)) + 
+    x = fight_minutes, y = putties_defeated)) +
   geom_point(
-    aes(size = body_mass_g, 
-        color = species), 
-            alpha = 2/3) + 
-  scale_size(range = c(.04, 6)) 
+    aes(size = hits_taken,
+        color = ranger),
+            alpha = 2/3) +
+  scale_size(range = c(.04, 6))
 
-ggp2_grp_bubble + 
+ggp2_grp_bubble +
   labs_grp_bubble
 ```
 
-## More info 
+## More info
 
-We can change the `shape` of the points for more control of the `color` and `fill`. 
+We can change the `shape` of the points for more control of the `color` and `fill`.
 
 ### Shape
 
@@ -228,24 +346,19 @@ Inside `geom_point()`, we can set `shape` to `21`, and `color` to `"#000000"` to
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: shape_21
+#| label: code_graph_grp_bubble_s21
 #| code-fold: show
 #| eval: true
-#| echo: true 
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-ggp2_grp_bubble_s21 <- penguins |> 
+#| echo: true
+ggp2_grp_bubble_s21 <- ranger_fights |>
   ggplot(aes(
-    x = bill_length_mm, y = flipper_length_mm)) + 
+    x = fight_minutes, y = putties_defeated)) +
   geom_point(
-    aes(size = body_mass_g, fill = species), 
-        alpha = 2/3, shape = 21, color = "#000000") + 
-  scale_size(range = c(.04, 6)) 
+    aes(size = hits_taken, fill = ranger),
+        alpha = 2/3, shape = 21, color = "#000000") +
+  scale_size(range = c(.04, 6))
 
-ggp2_grp_bubble_s21 + 
+ggp2_grp_bubble_s21 +
   labs_grp_bubble
 ```
 :::
@@ -253,30 +366,25 @@ ggp2_grp_bubble_s21 +
 ### Color
 
 
-Inside the `aes()` of `geom_point()`, we can set `shape` to `21`, and map `color` to `"species"` to outline the points in the same colors as `fill`
+Inside the `aes()` of `geom_point()`, we can set `shape` to `21`, and map `color` to `ranger` to outline the points in the same colors as `fill`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: shape_21_color_aes
+#| label: code_graph_grp_bubble_s21_color
 #| code-fold: show
 #| eval: true
-#| echo: true 
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-ggp2_grp_bubble_s21_color <- penguins |> 
+#| echo: true
+ggp2_grp_bubble_s21_color <- ranger_fights |>
   ggplot(aes(
-    x = bill_length_mm, y = flipper_length_mm)) + 
+    x = fight_minutes, y = putties_defeated)) +
   geom_point(
-    aes(size = body_mass_g, 
-        fill = species, 
-        color = species), 
-        alpha = 2/3, shape = 21) + 
-  scale_size(range = c(.04, 6)) 
+    aes(size = hits_taken,
+        fill = ranger,
+        color = ranger),
+        alpha = 2/3, shape = 21) +
+  scale_size(range = c(.04, 6))
 
-ggp2_grp_bubble_s21_color + 
+ggp2_grp_bubble_s21_color +
   labs_grp_bubble
 ```
 :::

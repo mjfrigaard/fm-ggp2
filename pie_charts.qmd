@@ -65,7 +65,8 @@ pie_theme <- fmggp2::theme_lisafrank(base_size = 14) +
         axis.ticks = element_blank(), panel.grid.major = element_blank(),
         legend.position = "bottom")
 labs_pie <- labs(
-  title = "Trapper Keepers (simulated)",
+  title = "Trapper Keepers",
+  caption = "Simulated data",
   subtitle = "Lisa Frank designs sold",
   fill = NULL)
 ggp2_pie <- ggpubr::ggpie(keeper_pie,
@@ -290,7 +291,8 @@ pie_theme <- fmggp2::theme_lisafrank(base_size = 14) +
         axis.ticks = element_blank(), panel.grid.major = element_blank(),
         legend.position = "bottom")
 labs_pie <- labs(
-  title = "Trapper Keepers (simulated)",
+  title = "Trapper Keepers",
+  caption = "Simulated data",
   subtitle = "Lisa Frank designs sold",
   fill = NULL)
 
@@ -328,7 +330,8 @@ pie_theme <- fmggp2::theme_lisafrank(base_size = 14) +
         axis.ticks = element_blank(), panel.grid.major = element_blank(),
         legend.position = "bottom")
 labs_pie <- labs(
-  title = "Trapper Keepers (simulated)",
+  title = "Trapper Keepers",
+  caption = "Simulated data",
   subtitle = "Lisa Frank designs sold",
   fill = NULL)
 

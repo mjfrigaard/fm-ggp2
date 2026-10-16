@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_batman(
     base_size = 14))
 ```
 
@@ -42,38 +42,23 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(fivethirtyeight)
 library(ggplot2)
-library(paletteer)
-library(ggthemes)
-# remove extra dates
-US_births_2004_2014 <- filter(fivethirtyeight::US_births_2000_2014, year > 2003)
-avg_birth_ym <- US_births_2004_2014 |>
-    dplyr::bind_rows(fivethirtyeight::US_births_1994_2003) |> 
-    dplyr::mutate(
-        mon_chr = dplyr::if_else(
-            condition = month < 10,
-            true = paste0("0", month),
-            false = as.character(month)),
-        month = lubridate::month(date, label = TRUE),
-        yr_mnth = paste0(year, "-", mon_chr),
-        yr_mnth = lubridate::ym(yr_mnth),
-        yr_qtr = paste0(lubridate::year(date),
-                              "/0", 
-                              quarter(date)),
-        yr_qtr = factor(yr_qtr, ordered = TRUE)) |> 
-    dplyr::group_by(yr_mnth) |>
-    dplyr::summarise(
-        avg_births = mean(births, na.rm = TRUE)) |>
-    dplyr::ungroup() 
-labs_line <- labs(title = "Average US births", 
-                subtitle = "1994-2014",
-                y = "Average number of US births",
-                x = "Year/Month")
-ggp2_line <- ggplot(avg_birth_ym,
-    aes(y = avg_births, x = yr_mnth)) + 
-    geom_line()
-ggp2_line + 
+library(dplyr)
+set.seed(1989)
+batman_box <- tibble(
+  week = 1:26,
+  week_of = as.Date("1989-06-23") + 7 * (week - 1),
+  gross = round(55 * exp(-0.25 * (week - 1)) *
+                  exp(rnorm(26, mean = 0, sd = 0.12)), 2))
+labs_line <- labs(title = "Batman",
+                caption = "Simulated data",
+                subtitle = "Weekly box office, summer and fall 1989",
+                y = "Weekly gross ($ millions)",
+                x = "Week of")
+ggp2_line <- ggplot(data = batman_box,
+    mapping = aes(x = week_of, y = gross)) +
+    geom_line(color = "#F9BB2C", linewidth = 1)
+ggp2_line +
     labs_line
 ```
 
@@ -91,11 +76,11 @@ ggp2_line +
 
 ::::
 
-## Description 
+## Description
 
-Line graphs display changes of a numeric quantitative variable (on the `y` axis) over time (on the `x` axis). 
+Line graphs display changes of a numeric quantitative variable (on the `y` axis) over time (on the `x` axis).
 
-## Set up 
+## Set up
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -114,9 +99,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("fivethirtyeight")
-library(fivethirtyeight)
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -126,24 +110,7 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![](www/538.png){fig-align="right" width="40%" height="40%"}
-:::
-
-
-We'll be using the `US_births_1994_2003` and `US_births_2000_2014` datasets from the `fivethirtyeight` package. 
-
-  - Remove duplicate dates from `US_births_2000_2014`
-  
-  - Binding these together (they have identical columns)  
-
-  - Use `year` and `month`  to create `yr_mnth`  
-
-  - Use `year` and `quarter` to create `yr_qtr` 
-  
-  - Group by yr_month to create `avg_births`, then un-group
-  
-  - Save as `avg_birth_ym`
+Tim Burton's *Batman* opened on June 23, 1989, and the bat signal was everywhere that summer (t-shirts, hats, cereal boxes, and a soundtrack by Prince). Like most blockbusters, it made the most money in its first week and a little less every week after that. We'll simulate 26 weeks of box office gross (in millions of dollars) that start at \$55 million and shrink by about the same percent each week. Each week also gets a random nudge from `rnorm()`, because no week's ticket sales land exactly on the trend. Setting the seed with `set.seed()` means you'll get the same 26 weeks every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -151,30 +118,86 @@ We'll be using the `US_births_1994_2003` and `US_births_2000_2014` datasets from
 #| code-fold: show
 #| eval: true
 #| echo: true
-US_births_2004_2014 <-
-    filter(fivethirtyeight::US_births_2000_2014, year > 2003)
-avg_birth_ym <- US_births_2004_2014 |>
-    dplyr::bind_rows(fivethirtyeight::US_births_1994_2003) |>
-    dplyr::mutate(
-        mon_chr = dplyr::if_else(
-            condition = month < 10,
-            true = paste0("0", month),
-            false = as.character(month)
-        ),
-        month = lubridate::month(date, label = TRUE),
-        yr_mnth = paste0(year, "-", mon_chr),
-        yr_mnth = lubridate::ym(yr_mnth),
-        yr_qtr = paste0(lubridate::year(date),
-            "/0",
-            lubridate::quarter(date)),
-        yr_qtr = factor(yr_qtr, ordered = TRUE)
-    ) |>
-    dplyr::group_by(yr_mnth) |>
-    dplyr::summarise(avg_births = mean(births, na.rm = TRUE)) |>
-    dplyr::ungroup() 
-dplyr::glimpse(avg_birth_ym)
+set.seed(1989)
+batman_box <- tibble(
+  week = 1:26,
+  week_of = as.Date("1989-06-23") + 7 * (week - 1),
+  gross = round(55 * exp(-0.25 * (week - 1)) *
+                  exp(rnorm(26, mean = 0, sd = 0.12)), 2))
+glimpse(batman_box)
 ```
 :::
+
+## Distribution
+
+A line graph connects each value to the one that came before it, so it's built to show *change*. For the Batman data, the question is how fast the weekly gross falls. The answer isn't a fixed number of dollars per week; it's a fixed *share* of the previous week. Below we'll move from the box office numbers, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first six weeks.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_line
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(batman_box, 6)
+```
+:::
+
+The drop from week one to week two is about \$`r round(batman_box$gross[1] - batman_box$gross[2], 1)` million, but the drop from week five to week six is only about \$`r round(batman_box$gross[5] - batman_box$gross[6], 1)` million. The dollar drops keep shrinking, so we'll divide each week by the week before it instead (`ratio`).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_line
+#| code-fold: show
+#| eval: true
+#| echo: true
+batman_ratios <- batman_box |>
+  mutate(ratio = gross / lag(gross))
+batman_ratios |>
+  summarise(median_ratio = median(ratio, na.rm = TRUE),
+            total_gross = sum(gross))
+```
+:::
+
+The median ratio is about `r round(median(batman_ratios$ratio, na.rm = TRUE), 2)`, which means a typical week keeps about `r round(100 * median(batman_ratios$ratio, na.rm = TRUE))`% of the previous week's gross. The 26 weeks add up to about \$`r round(sum(batman_box$gross))` million.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+On a regular `y` axis the line drops fast and then flattens out, which makes the late weeks hard to read. Below we draw the same line on a log scale with `scale_y_log10()`. On a log scale, equal *ratios* are equal distances, so a gross that keeps the same share every week becomes a straight line (the wiggles are the random nudges).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_line
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(data = batman_box, aes(x = week_of, y = gross)) +
+  geom_line(color = "#F9BB2C", linewidth = 1) +
+  geom_point(color = "#E96A23") +
+  scale_y_log10() +
+  labs(x = "Week of", y = "Weekly gross ($ millions, log scale)")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+The weekly gross follows [exponential decay](https://en.wikipedia.org/wiki/Exponential_decay) with a random multiplier for each week:
+
+$$
+\text{gross}_w = 55 \, e^{-0.25 (w - 1)} \, \varepsilon_w, \quad \log(\varepsilon_w) \sim \text{Normal}(0, \; 0.12)
+$$
+
+Each week keeps $e^{-0.25} \approx 0.78$ of the week before, which is why the median `ratio` landed near 0.78. Taking the log of both sides turns the formula into a straight line, $\log(\text{gross}_w) = \log(55) - 0.25(w - 1) + \log(\varepsilon_w)$, which is the line we saw on the log scale. The random part is a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) on the log scale (a [lognormal](https://en.wikipedia.org/wiki/Log-normal_distribution) multiplier), the same one we used for the Beanie Babies in @sec-violin-plots. Try changing `-0.25` to `-0.10` in the code above and the movie has much longer legs.
+
 
 ## Grammar
 
@@ -183,32 +206,33 @@ dplyr::glimpse(avg_birth_ym)
 :::
 
 
-  - Create labels with `labs()` 
+  - Create labels with `labs()`
 
   - Initialize the graph with `ggplot()` and provide `data`
 
-  - Map `yr_mnth` to `x` and `avg_births` to `y`
+  - Map `week_of` to `x` and `gross` to `y`
 
-  - Add `geom_line()`
+  - Add `geom_line()` (with a gold `color` and a thicker `linewidth`, because the default black line disappears into the Gotham night)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_line
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-labs_line <- labs(title = "Average US births", 
-                subtitle = "1994-2014",
-                y = "Average number of US births",
-                x = "Year/Month")
-ggp2_line <- ggplot(data = avg_birth_ym,
-    mapping = aes(x = yr_mnth, y = avg_births)) + 
-    geom_line()
-ggp2_line + 
+labs_line <- labs(title = "Batman",
+                caption = "Simulated data",
+                subtitle = "Weekly box office, summer and fall 1989",
+                y = "Weekly gross ($ millions)",
+                x = "Week of")
+ggp2_line <- ggplot(data = batman_box,
+    mapping = aes(x = week_of, y = gross)) +
+    geom_line(color = "#F9BB2C", linewidth = 1)
+ggp2_line +
     labs_line
 ```
 :::
@@ -228,14 +252,14 @@ ggp2_line +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-labs_line <- labs(title = "Average US births", 
-                subtitle = "1994-2014",
-                y = "Average number of US births",
-                x = "Year/Month")
-ggp2_line <- ggplot(data = avg_birth_ym,
-    mapping = aes(x = yr_mnth, y = avg_births)) + 
-    geom_line()
-ggp2_line + 
+labs_line <- labs(title = "Batman",
+                caption = "Simulated data",
+                subtitle = "Weekly box office, summer and fall 1989",
+                y = "Weekly gross ($ millions)",
+                x = "Week of")
+ggp2_line <- ggplot(data = batman_box,
+    mapping = aes(x = week_of, y = gross)) +
+    geom_line(color = "#F9BB2C", linewidth = 1)
+ggp2_line +
     labs_line
 ```
-

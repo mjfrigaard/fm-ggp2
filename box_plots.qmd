@@ -58,7 +58,8 @@ mario_kart_laps <- tibble(
   seconds = round(45 + 2 * rt(n = 200, df = 3), 2)
 )
 labs_boxplot <- labs(
-  title = "Mario Kart 64 (simulated)",
+  title = "Mario Kart 64",
+  caption = "Simulated data",
   subtitle = "200 lap times on Luigi Raceway",
   x = NULL,
   y = "Lap time (seconds)")
@@ -272,7 +273,8 @@ Add the `geom_boxplot()` layer
 #| warning: false
 #| message: false
 labs_boxplot <- labs(
-  title = "Mario Kart 64 (simulated)",
+  title = "Mario Kart 64",
+  caption = "Simulated data",
   subtitle = "200 lap times on Luigi Raceway",
   x = "",
   y = "Lap time (seconds)")
@@ -299,7 +301,8 @@ ggp2_boxplot +
 #| message: false
 #| layout-nrow: 1
 labs_boxplot <- labs(
-  title = "Mario Kart 64 (simulated)",
+  title = "Mario Kart 64",
+  caption = "Simulated data",
   subtitle = "200 lap times on Luigi Raceway",
   x = "",
   y = "Lap time (seconds)")

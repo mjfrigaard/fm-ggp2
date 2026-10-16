@@ -1,6 +1,5 @@
 # Scatter plots {#sec-scatter-plot}
 
-
 ```{r}
 #| label: setup
 #| message: false
@@ -17,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_doom(
     base_size = 14))
 ```
 
@@ -43,18 +42,26 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr)
+set.seed(1993)
+doom_pcs <- tibble(
+  pc_id = 1:200,
+  cpu_mhz = round(runif(200, min = 25, max = 100)),
+  fps = round(pmin(35, 0.45 * cpu_mhz +
+                     rnorm(200, mean = 0, sd = 3)), 1))
 labs_scatter <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)", y = "Flipper length (mm)")
-ggp2_scatter <- penguins |>
+  title = "Doom frame rates",
+  subtitle = "Frames per second by processor speed",
+  caption = "Simulated data",
+  x = "CPU speed (MHz)", y = "Frames per second")
+ggp2_scatter <- doom_pcs |>
   ggplot(
-    aes(x = bill_length_mm, 
-      y = flipper_length_mm)) +
+    aes(x = cpu_mhz,
+      y = fps)) +
   geom_point()
 
-ggp2_scatter + 
+ggp2_scatter +
   labs_scatter
 ```
 
@@ -94,9 +101,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins)
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -105,12 +111,7 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
-
-The `penguins` data.
+When *Doom* came out in December 1993, the first question every PC owner asked was how well it would run on their machine. A faster processor drew more frames per second, but only up to a point: the Doom engine never drew more than 35 frames per second, no matter how fast the computer was. We'll simulate 200 PCs with processors between 25 and 100 MHz (`cpu_mhz`, drawn with `runif()`). Each PC's frame rate (`fps`) is 0.45 frames per megahertz, plus some noise from `rnorm()` (for the graphics card, the RAM, and whatever else was running), and `pmin()` caps it at 35. Setting the seed with `set.seed()` means you'll get the same 200 PCs every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -118,10 +119,89 @@ The `penguins` data.
 #| code-fold: show
 #| eval: true
 #| echo: true
-penguins <- palmerpenguins::penguins
-glimpse(penguins)
+set.seed(1993)
+doom_pcs <- tibble(
+  pc_id = 1:200,
+  cpu_mhz = round(runif(200, min = 25, max = 100)),
+  fps = round(pmin(35, 0.45 * cpu_mhz +
+                     rnorm(200, mean = 0, sd = 3)), 1))
+glimpse(doom_pcs)
 ```
 :::
+
+## Distribution
+
+A scatter plot shows how one variable changes as the other changes. In the Doom data, the frame rate climbs in a straight line with the processor speed, wobbles around that line, and then hits a ceiling. Below we'll move from the PCs, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first six PCs.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_scatter
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(doom_pcs)
+```
+:::
+
+Faster processors tend to have higher frame rates. Below we fit a straight line to the PCs at or below 66 MHz (well under the cap) with `lm()`, and count how many PCs landed exactly on the 35 frame ceiling.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_scatter
+#| code-fold: show
+#| eval: true
+#| echo: true
+slow_pcs <- doom_pcs |>
+  filter(cpu_mhz <= 66)
+slow_fit <- lm(fps ~ cpu_mhz, data = slow_pcs)
+coef(slow_fit)
+sigma(slow_fit)
+sum(doom_pcs$fps == 35)
+```
+:::
+
+The fitted slope is about `r round(coef(slow_fit)[["cpu_mhz"]], 2)` frames per megahertz (close to the 0.45 we built in), and the typical distance from the line (`sigma()`) is about `r round(sigma(slow_fit), 1)` frames. `r sum(doom_pcs$fps == 35)` of the 200 PCs are stuck at exactly 35 frames per second.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The graph below adds the line we built the data from (`geom_abline()`), a ribbon two standard deviations above and below it, and a dashed line at the 35 frame cap. Most of the points fall inside the ribbon until the line runs into the cap, and from there the points pile up in a flat row.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_scatter
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(doom_pcs, aes(x = cpu_mhz, y = fps)) +
+  geom_ribbon(aes(ymin = 0.45 * cpu_mhz - 6, ymax = 0.45 * cpu_mhz + 6),
+              fill = "#8A8D8F", alpha = 1 / 4) +
+  geom_abline(intercept = 0, slope = 0.45, color = "#F2C14E",
+              linewidth = 1) +
+  geom_hline(yintercept = 35, linetype = "dashed", color = "#D63A1E") +
+  geom_point() +
+  labs(x = "CPU speed (MHz)", y = "Frames per second")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each PC's frame rate is a draw from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) centered on a straight line (the [simple linear regression](https://en.wikipedia.org/wiki/Simple_linear_regression) model), and then capped:
+
+$$
+\text{fps}_i = \min\left(35, \; 0.45 \times \text{MHz}_i + \varepsilon_i\right), \quad \varepsilon_i \sim \text{Normal}(0, \; 3)
+$$
+
+About 95% of the points land within $2 \times 3 = 6$ frames of the line, which is the ribbon in **DRAW IT**. The line reaches the cap at $35 / 0.45 \approx `r round(35 / 0.45)`$ MHz, so above that speed most of the PCs sit on the ceiling. A cap like this is called [censoring](https://en.wikipedia.org/wiki/Censoring_(statistics)), and it bends the relationship: the correlation for all 200 PCs is `r round(cor(doom_pcs$cpu_mhz, doom_pcs$fps), 2)`, but a straight line fit to all of them would underestimate the slope for the slow PCs and overestimate it for the fast ones. Try removing `pmin(35, ...)` and the points keep climbing in a straight line.
 
 ## Grammar
 
@@ -135,32 +215,34 @@ glimpse(penguins)
 
   - Initialize the graph with `ggplot()` and provide `data`
 
-  - Map `bill_length_mm` to the `x` axis
+  - Map `cpu_mhz` to the `x` axis
 
-  - Map `flipper_length_mm` to the `y` axis
+  - Map `fps` to the `y` axis
 
-  - Add `geom_point()`  
+  - Add `geom_point()`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_scatter
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_scatter <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)", y = "Flipper length (mm)")
-ggp2_scatter <- penguins |>
+  title = "Doom frame rates",
+  subtitle = "Frames per second by processor speed",
+  caption = "Simulated data",
+  x = "CPU speed (MHz)", y = "Frames per second")
+ggp2_scatter <- doom_pcs |>
   ggplot(
-    aes(x = bill_length_mm, 
-      y = flipper_length_mm)) +
+    aes(x = cpu_mhz,
+      y = fps)) +
   geom_point()
 
-ggp2_scatter + 
+ggp2_scatter +
   labs_scatter
 ```
 :::
@@ -184,14 +266,16 @@ If multiple points occupy the same value position, use transparency (`alpha`) to
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_scatter <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)", y = "Flipper length (mm)")
-ggp2_scatter <- penguins |>
+  title = "Doom frame rates",
+  subtitle = "Frames per second by processor speed",
+  caption = "Simulated data",
+  x = "CPU speed (MHz)", y = "Frames per second")
+ggp2_scatter <- doom_pcs |>
   ggplot(
-    aes(x = bill_length_mm, 
-      y = flipper_length_mm)) +
+    aes(x = cpu_mhz,
+      y = fps)) +
   geom_point()
 
-ggp2_scatter + 
+ggp2_scatter +
   labs_scatter
 ```

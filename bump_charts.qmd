@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_boyband(
     base_size = 13))
 ```
 
@@ -43,29 +43,42 @@ status("complete")
 #| out-width: '60%'
 #| fig-align: right
 library(ggbump)
-library(fivethirtyeight) 
 library(ggplot2)
-fivethirtyeight::tv_hurricanes |> 
-  filter(date > as_date("2017-09-15")) |> 
-  pivot_longer(cols = -date, 
-    names_to = 'hurricane', 
-    values_to = 'value') |> 
-  group_by(date) |>
-  mutate(rank = rank(value, 
-    ties.method = "random")) |> 
-  ungroup() -> tidy_hurricanes
-labs_bump <- labs(title = "TV News Hurricane Mentions",   
-  subtitle = "Between Sep 15-25th, 2017", 
-  x = "Date", y = "Rank", 
-  color = "Hurricanes")
-ggp2_bump <- ggplot(tidy_hurricanes, 
-    aes(x = date, 
-      y = rank, 
-      color = hurricane)) +
-    ggbump::geom_bump(size = 2) + 
+library(dplyr)
+library(tidyr)
+set.seed(1999)
+boy_bands <- expand_grid(
+  week = 1:12,
+  band = c("Backstreet Boys", "*NSYNC", "98 Degrees",
+           "Boyz II Men", "LFO", "Hanson")) |>
+  mutate(
+    band = factor(band, levels = unique(band)),
+    week_of = as.Date("1999-06-05") + 7 * (week - 1),
+    avg_spins = case_when(
+      band == "Backstreet Boys" ~ 420 - 8 * (week - 1),
+      band == "*NSYNC" ~ 300 + 15 * (week - 1),
+      band == "98 Degrees" ~ 330,
+      band == "Boyz II Men" ~ 360 - 5 * (week - 1),
+      band == "LFO" ~ 200 + 20 * (week - 1),
+      band == "Hanson" ~ 280 - 10 * (week - 1)),
+    spins = rpois(n(), lambda = avg_spins)) |>
+  group_by(week) |>
+  mutate(rank = rank(-spins, ties.method = "random")) |>
+  ungroup()
+labs_bump <- labs(title = "Boy band radio spins",
+  caption = "Simulated data",
+  subtitle = "Weekly rank, summer 1999",
+  x = "Week of", y = "Rank",
+  color = "Band")
+ggp2_bump <- ggplot(boy_bands,
+    aes(x = week_of,
+      y = rank,
+      color = band)) +
+    ggbump::geom_bump(linewidth = 2) +
+    scale_y_reverse(breaks = 1:6) +
     theme(legend.position = "bottom")
 
-ggp2_bump + 
+ggp2_bump +
   labs_bump
 ```
 
@@ -74,7 +87,7 @@ ggp2_bump +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -87,11 +100,11 @@ ggp2_bump +
 
 ::::
 
-## Description 
+## Description
 
 Bump charts show how numerical (ranked) values change over time for different categories (or groups). Differences are represented with connecting lines (along the `y` axis) that cover the full timescale (along the `x` axis).
 
-We can build bump charts in `ggplot2` with the [`ggbump` package:](https://github.com/davidsjoberg/ggbump)  
+We can build bump charts in `ggplot2` with the [`ggbump` package:](https://github.com/davidsjoberg/ggbump)
 
 ## Set up
 
@@ -116,9 +129,9 @@ Install packages.
 #| results: hide
 # pak::pak("davidsjoberg/ggbump")
 library(ggbump)
-install.packages("fivethirtyeight")
-library(fivethirtyeight) 
 library(ggplot2)
+library(dplyr) # for data manipulation
+library(tidyr) # for expand_grid()
 ```
 :::
 
@@ -128,12 +141,8 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![](www/538.png){fig-align="right" width="45%" height="45%"}
-:::
-
 ::: {style="font-size: 0.95rem;"}
-We'll use the `fivethirtyeight::tv_hurricanes` data, but slightly restructured and filtered. 
+The summer of 1999 belonged to boy bands. The Backstreet Boys had *Millennium*, \*NSYNC was a few months away from *No Strings Attached*, and LFO's *Summer Girls* was on every pool deck radio. We'll simulate 12 weeks of radio spins (the number of times a song was played across a panel of stations) for six boy bands. Each band gets a weekly average (`avg_spins`) that rises, falls, or holds steady, and `rpois()` draws each week's actual spins around that average. Then we rank the bands within each week (`rank`), with `1` for the most spins. Setting the seed with `set.seed()` means you'll get the same 72 band weeks every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -142,18 +151,115 @@ We'll use the `fivethirtyeight::tv_hurricanes` data, but slightly restructured a
 #| code-fold: show
 #| eval: true
 #| echo: true
-fivethirtyeight::tv_hurricanes |> 
-  filter(date > as_date("2017-09-15")) |> 
-  pivot_longer(cols = -date, 
-    names_to = 'hurricane', 
-    values_to = 'value') |> 
-  group_by(date) |>
-  mutate(rank = rank(value, 
-    ties.method = "random")) |> 
-  ungroup() -> tidy_hurricanes
-glimpse(tidy_hurricanes)
+set.seed(1999)
+boy_bands <- expand_grid(
+  week = 1:12,
+  band = c("Backstreet Boys", "*NSYNC", "98 Degrees",
+           "Boyz II Men", "LFO", "Hanson")) |>
+  mutate(
+    band = factor(band, levels = unique(band)),
+    week_of = as.Date("1999-06-05") + 7 * (week - 1),
+    avg_spins = case_when(
+      band == "Backstreet Boys" ~ 420 - 8 * (week - 1),
+      band == "*NSYNC" ~ 300 + 15 * (week - 1),
+      band == "98 Degrees" ~ 330,
+      band == "Boyz II Men" ~ 360 - 5 * (week - 1),
+      band == "LFO" ~ 200 + 20 * (week - 1),
+      band == "Hanson" ~ 280 - 10 * (week - 1)),
+    spins = rpois(n(), lambda = avg_spins)) |>
+  group_by(week) |>
+  mutate(rank = rank(-spins, ties.method = "random")) |>
+  ungroup()
+glimpse(boy_bands)
 ```
 :::
+
+## Distribution
+
+A bump chart throws away the raw numbers and keeps only the order. That makes it easy to see who passed whom, but it also hides *how close* the race was. When two bands have similar spins, random week to week noise can swap their ranks even though nothing real changed. Below we'll move from the spins, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first week.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_bump
+#| code-fold: show
+#| eval: true
+#| echo: true
+boy_bands |>
+  filter(week == 1) |>
+  select(band, avg_spins, spins, rank) |>
+  arrange(rank)
+```
+:::
+
+Every band landed within a few dozen spins of its average, and the ranks match the order of the averages. Below we count how many times each band changed rank from one week to the next.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_bump
+#| code-fold: show
+#| eval: true
+#| echo: true
+rank_changes <- boy_bands |>
+  group_by(band) |>
+  summarise(rank_changes = sum(rank != lag(rank), na.rm = TRUE),
+            first_rank = first(rank), last_rank = last(rank))
+rank_changes
+```
+:::
+
+\*NSYNC and LFO climb because their averages climb, and the Backstreet Boys and Hanson slide because theirs slide. But 98 Degrees changes rank `r rank_changes$rank_changes[rank_changes$band == "98 Degrees"]` times even though its average never changes.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The graph below plots the raw spins for 98 Degrees and Boyz II Men. The ribbon around each line covers the average plus or minus two standard deviations (more on that below). Wherever the two ribbons overlap, either band could come out ahead in a given week.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_bump
+#| code-fold: show
+#| eval: true
+#| echo: true
+two_bands <- boy_bands |>
+  filter(band %in% c("98 Degrees", "Boyz II Men"))
+ggplot(two_bands, aes(x = week_of, color = band, fill = band)) +
+  geom_ribbon(aes(ymin = avg_spins - 2 * sqrt(avg_spins),
+                  ymax = avg_spins + 2 * sqrt(avg_spins)),
+              alpha = 1 / 4, color = NA) +
+  geom_line(aes(y = spins), linewidth = 1) +
+  geom_point(aes(y = spins), size = 2) +
+  scale_color_manual(values = c("98 Degrees" = "#F2C14E", "Boyz II Men" = "#B79CFF"),
+                     aesthetics = c("color", "fill")) +
+  labs(x = "Week of", y = "Spins", color = "Band", fill = "Band")
+```
+:::
+
+The ribbons overlap for the whole summer, which is why these two bands trade places in the bump chart.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each band's weekly spins follow a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) with its own average for that week ($\lambda$):
+
+$$
+\text{spins}_{b,w} \sim \text{Poisson}(\lambda_{b,w})
+$$
+
+A Poisson count has a standard deviation of $\sqrt{\lambda}$, so a band averaging 330 spins wobbles by about $\sqrt{330} \approx 18$ spins a week (that's the ribbon width above). The gap between two bands is approximately normal, with a mean of $\lambda_1 - \lambda_2$ and a standard deviation of $\sqrt{\lambda_1 + \lambda_2}$. In week one, Boyz II Men averages 360 spins and 98 Degrees averages 330, so the chance that 98 Degrees comes out ahead anyway is:
+
+$$
+P(\text{swap}) \approx \Phi\left(\frac{-(360 - 330)}{\sqrt{360 + 330}}\right) \approx `r round(pnorm(-30 / sqrt(690)), 2)`
+$$
+
+By week seven, both bands average 330 spins and the chance is a coin flip (0.5). Rank charts are great for showing who's on top, but small gaps between ranks are often just Poisson noise. Try making the averages twice as far apart in `case_when()` and the bump chart gets a lot calmer.
 
 ## Grammar
 
@@ -163,9 +269,11 @@ glimpse(tidy_hurricanes)
 
   - Create labels with `labs()`
 
-  - Map date to the `x`, `rank` to the `y`, and `hurricane` to `color`
+  - Map `week_of` to the `x`, `rank` to the `y`, and `band` to `color`
 
-  - Add `ggbump::geom_bump()` and set `size` to `2`
+  - Add `ggbump::geom_bump()` and set `linewidth` to `2`
+
+  - Flip the `y` axis with `scale_y_reverse()` so rank `1` is on top
 
   - Move legend to bottom with `theme(legend.position = "bottom")`
 
@@ -174,23 +282,25 @@ glimpse(tidy_hurricanes)
 #| label: code_graph_bump
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-labs_bump <- labs(title = "TV News Hurricane Mentions",   
-  subtitle = "Between Sep 15-25th, 2017", 
-  x = "Date", y = "Rank", 
-  color = "Hurricanes")
-ggp2_bump <- ggplot(tidy_hurricanes, 
-    aes(x = date, 
-      y = rank, 
-      color = hurricane)) +
-    ggbump::geom_bump(size = 2) + 
+labs_bump <- labs(title = "Boy band radio spins",
+  caption = "Simulated data",
+  subtitle = "Weekly rank, summer 1999",
+  x = "Week of", y = "Rank",
+  color = "Band")
+ggp2_bump <- ggplot(boy_bands,
+    aes(x = week_of,
+      y = rank,
+      color = band)) +
+    ggbump::geom_bump(linewidth = 2) +
+    scale_y_reverse(breaks = 1:6) +
     theme(legend.position = "bottom")
 
-ggp2_bump + 
+ggp2_bump +
   labs_bump
 ```
 :::
@@ -210,17 +320,19 @@ ggp2_bump +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-labs_bump <- labs(title = "TV News Hurricane Mentions",   
-  subtitle = "Between Sep 15-25th, 2017", 
-  x = "Date", y = "Rank", 
-  color = "Hurricanes")
-ggp2_bump <- ggplot(tidy_hurricanes, 
-    aes(x = date, 
-      y = rank, 
-      color = hurricane)) +
-    ggbump::geom_bump(size = 2) + 
+labs_bump <- labs(title = "Boy band radio spins",
+  caption = "Simulated data",
+  subtitle = "Weekly rank, summer 1999",
+  x = "Week of", y = "Rank",
+  color = "Band")
+ggp2_bump <- ggplot(boy_bands,
+    aes(x = week_of,
+      y = rank,
+      color = band)) +
+    ggbump::geom_bump(linewidth = 2) +
+    scale_y_reverse(breaks = 1:6) +
     theme(legend.position = "bottom")
 
-ggp2_bump + 
+ggp2_bump +
   labs_bump
 ```

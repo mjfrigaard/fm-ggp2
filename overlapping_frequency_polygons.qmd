@@ -57,7 +57,8 @@ soaker_shots <- tibble(
                                 sd = 0.12 * avg_range), 1)) |>
   select(shot_id, model, range_ft)
 labs_ovrlp_freq_poly <- labs(
-  title = "Super Soaker range (simulated)",
+  title = "Super Soaker range",
+  caption = "Simulated data",
   subtitle = "200 shots from each model",
   x = "Range (feet)",
   color = "Model")
@@ -240,7 +241,8 @@ Dividing by the mean removes the difference between models: $X_m / \mu_m \sim \t
 #| out-height: '100%'
 #| out-width: '100%'
 labs_ovrlp_freq_poly <- labs(
-  title = "Super Soaker range (simulated)",
+  title = "Super Soaker range",
+  caption = "Simulated data",
   subtitle = "200 shots from each model",
   x = "Range (feet)",
   color = "Model")
@@ -269,7 +271,8 @@ ggp2_ovrlp_freq_poly +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_ovrlp_freq_poly <- labs(
-  title = "Super Soaker range (simulated)",
+  title = "Super Soaker range",
+  caption = "Simulated data",
   subtitle = "200 shots from each model",
   x = "Range (feet)",
   color = "Model")

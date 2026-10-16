@@ -16,8 +16,8 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
-    base_size = 11))
+ggplot2::theme_set(fmggp2::theme_y2k(
+    base_size = 13))
 # pak::pak("corybrunson/ggalluvial")
 ```
 
@@ -29,8 +29,6 @@ ggplot2::theme_set(theme_ggp2g(
 # polish, dev, draft, complete
 status("complete")
 ```
-
-
 
 :::: {.callout-note collapse="false" icon=false}
 
@@ -46,37 +44,51 @@ status("complete")
 #| out-width: '60%'
 #| fig-align: right
 library(ggalluvial)
-library(palmerpenguins) 
 library(ggplot2)
-library(patchwork)
+library(dplyr)
+prep_levels <- c("Not worried", "Some supplies", "Bunker ready")
+move_probs <- matrix(c(0.70, 0.25, 0.05,
+                       0.15, 0.65, 0.20,
+                       0.05, 0.15, 0.80),
+                     nrow = 3, byrow = TRUE,
+                     dimnames = list(prep_levels, prep_levels))
+next_survey <- function(prep) {
+  vapply(prep, function(p) {
+    sample(prep_levels, size = 1, prob = move_probs[p, ])
+  }, character(1), USE.NAMES = FALSE)
+}
+set.seed(1999)
+y2k_households <- tibble(
+  household_id = 1:300,
+  jan_1999 = sample(prep_levels, size = 300, replace = TRUE,
+                    prob = c(0.6, 0.3, 0.1))) |>
+  mutate(jul_1999 = next_survey(jan_1999),
+         dec_1999 = next_survey(jul_1999)) |>
+  mutate(across(-household_id, function(x) factor(x, levels = prep_levels)))
+y2k_wide <- y2k_households |>
+  count(jan_1999, jul_1999, dec_1999, name = "freq")
+labs_alluvial <- labs(title = "Y2K prep",
+    caption = "Simulated data",
+    subtitle = "300 households surveyed three times in 1999")
+labs_alluvial_y <- ylab("Households")
+labs_alluvial_fill <- labs(fill = "January")
 
-peng_wide <- penguins |> 
-  drop_na() |> 
-  count(year, island, sex, species) |> 
-  mutate(year = factor(year)) |> 
-  rename(freq = n)
-
-labs_alluvial <- ggtitle(label = "Palmer Penguins", 
-    subtitle = "Stratified by year, island and species")
-labs_alluvial_y <- ylab("Frequency") 
-labs_alluvial_fill <- labs(fill = "Sex")
-
-ggp2_alluvial_w <- ggplot(data = peng_wide,
-  aes(axis1 = year, axis2 = island,
-      axis3 = species, y = freq)) +
+ggp2_alluvial_w <- ggplot(data = y2k_wide,
+  aes(axis1 = jan_1999, axis2 = jul_1999,
+      axis3 = dec_1999, y = freq)) +
   scale_x_discrete(
-    limits = c("Year", "Island", "Species"),
+    limits = c("Jan 1999", "Jul 1999", "Dec 1999"),
     expand = c(0.1, 0.07)) +
-  geom_alluvium(aes(fill = sex)) +
+  geom_alluvium(aes(fill = jan_1999)) +
   geom_stratum() +
-  geom_text(stat = "stratum", 
+  geom_text(stat = "stratum",
     aes(label = after_stat(stratum)),
       size = 3)
 
-ggp2_alluvial_w + 
+ggp2_alluvial_w +
   theme(legend.position = "bottom") +
-  labs_alluvial + 
-  labs_alluvial_y + 
+  labs_alluvial +
+  labs_alluvial_y +
   labs_alluvial_fill
 ```
 
@@ -85,20 +97,20 @@ ggp2_alluvial_w +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ multiple categorical variables**     
+**✅ multiple categorical variables**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a date or time variable**    
+**✅ a date or time variable**
 :::
 
 ::::
 
-## Description 
+## Description
 
-An alluvial graph displays the changes in composition or flow over time or across multiple categories. 
+An alluvial graph displays the changes in composition or flow over time or across multiple categories.
 
-We can build alluvial charts in `ggplot2` with the [`ggalluvial` package:](https://corybrunson.github.io/ggalluvial/). 
+We can build alluvial charts in `ggplot2` with the [`ggalluvial` package:](https://corybrunson.github.io/ggalluvial/).
 
 See also: [parallel sets](parallel_sets.qmd)
 
@@ -122,9 +134,8 @@ Install packages.
 #| results: hide
 # pak::pak("corybrunson/ggalluvial")
 library(ggalluvial)
-install.packages("palmerpenguins")
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr) # for data manipulation
 ```
 :::
 
@@ -132,12 +143,9 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
+As 1999 went on, the news filled up with warnings about the Y2K bug: computers that stored years with two digits might think January 1, 2000 was January 1, 1900, and nobody was quite sure what would break. We'll simulate 300 households surveyed three times in 1999 (January, July, and December) about how prepared they were: `"Not worried"`, `"Some supplies"` (extra batteries and bottled water), or `"Bunker ready"`.
 
-
-Below we create a wide example of the `penguins` data (as `peng_wide`).
+In January, most households aren't worried (we draw these with `sample()`). After that, each household's next answer depends only on its last answer. The `move_probs` matrix holds those chances: each row is where a household is now, and each column is where it might be at the next survey. For example, a household that isn't worried has a 70% chance of staying that way, a 25% chance of picking up some supplies, and a 5% chance of going all the way to the bunker. The `next_survey()` function uses `sample()` to draw each household's next answer from its row. Setting the seed with `set.seed()` means you'll get the same 300 households every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -145,14 +153,131 @@ Below we create a wide example of the `penguins` data (as `peng_wide`).
 #| code-fold: show
 #| eval: true
 #| echo: true
-peng_wide <- penguins |> 
-  tidyr::drop_na() |> 
-  dplyr::count(year, island, sex, species) |> 
-  dplyr::mutate(year = factor(year)) |> 
-  dplyr::rename(freq = n)
-dplyr::glimpse(peng_wide)
+prep_levels <- c("Not worried", "Some supplies", "Bunker ready")
+move_probs <- matrix(c(0.70, 0.25, 0.05,
+                       0.15, 0.65, 0.20,
+                       0.05, 0.15, 0.80),
+                     nrow = 3, byrow = TRUE,
+                     dimnames = list(prep_levels, prep_levels))
+next_survey <- function(prep) {
+  vapply(prep, function(p) {
+    sample(prep_levels, size = 1, prob = move_probs[p, ])
+  }, character(1), USE.NAMES = FALSE)
+}
+set.seed(1999)
+y2k_households <- tibble(
+  household_id = 1:300,
+  jan_1999 = sample(prep_levels, size = 300, replace = TRUE,
+                    prob = c(0.6, 0.3, 0.1))) |>
+  mutate(jul_1999 = next_survey(jan_1999),
+         dec_1999 = next_survey(jul_1999)) |>
+  mutate(across(-household_id, function(x) factor(x, levels = prep_levels)))
+glimpse(y2k_households)
 ```
 :::
+
+Below we count every combination of the three answers (as `y2k_wide`). Each row is a path through the three surveys, and `freq` is how many households took it.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: data_code_y2k_wide
+#| code-fold: show
+#| eval: true
+#| echo: true
+y2k_wide <- y2k_households |>
+  count(jan_1999, jul_1999, dec_1999, name = "freq")
+glimpse(y2k_wide)
+```
+:::
+
+## Distribution
+
+An alluvial chart shows how things move between categories. The width of each flow is a count, and the counts come from a chain of random moves: every household rolls the dice at every survey. Below we'll move from the households, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first five households.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_alluvial
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(y2k_households, 5)
+```
+:::
+
+Some households stay put and some move. Below we cross January's answers (rows) with July's answers (columns) using `table()`.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_alluvial
+#| code-fold: show
+#| eval: true
+#| echo: true
+jan_jul <- table(January = y2k_households$jan_1999,
+                 July = y2k_households$jul_1999)
+jan_jul
+```
+:::
+
+Of the `r sum(jan_jul["Not worried", ])` households that weren't worried in January, `r jan_jul["Not worried", "Not worried"]` still weren't worried in July. That's about `r round(100 * jan_jul["Not worried", "Not worried"] / sum(jan_jul["Not worried", ]))`%, close to the 70% in the first row of `move_probs`.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The alluvial chart below draws the same table. Each of the nine cells in `jan_jul` becomes a flow from January to July, and the width of the flow is the count in that cell.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_alluvial
+#| code-fold: show
+#| eval: true
+#| echo: true
+y2k_households |>
+  count(jan_1999, jul_1999, name = "freq") |>
+  ggplot(aes(axis1 = jan_1999, axis2 = jul_1999, y = freq)) +
+  scale_x_discrete(limits = c("Jan 1999", "Jul 1999"),
+                   expand = c(0.1, 0.07)) +
+  geom_alluvium(aes(fill = jan_1999)) +
+  geom_stratum() +
+  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 3) +
+  labs(y = "Households", fill = "January") +
+  theme(legend.position = "bottom")
+```
+:::
+
+The widest flows are the ones that stay in the same category, which matches the large numbers on the diagonal of `move_probs`.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+A process where the next step depends only on the current step is a [Markov chain](https://en.wikipedia.org/wiki/Markov_chain). The households in each starting category split across the three categories according to a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution) (the same distribution we used for the Pokémon starters in @sec-bar-graphs), with probabilities from that category's row of `move_probs`:
+
+$$
+(N_{\text{not}}, N_{\text{some}}, N_{\text{bunker}}) \mid \text{Not worried} \sim \text{Multinomial}\left(n_{\text{not}}, \; (0.70, 0.25, 0.05)\right)
+$$
+
+Multiplying January's counts by the matrix gives the counts we'd expect in July:
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: name_alluvial
+#| code-fold: show
+#| eval: true
+#| echo: true
+expected_jul <- as.vector(table(y2k_households$jan_1999)) %*% move_probs
+rbind(expected = round(expected_jul[1, ], 1),
+      observed = table(y2k_households$jul_1999))
+```
+:::
+
+The observed July counts land close to the expected ones. Because the off diagonal chances of moving toward the bunker (0.25 and 0.20) are bigger than the chances of moving back (0.15 and 0.15), each survey pushes more households toward the right side of the matrix. Try changing the first row of `move_probs` to `c(0.95, 0.04, 0.01)` and most of the flows stay flat.
 
 ## Grammar
 
@@ -162,38 +287,39 @@ dplyr::glimpse(peng_wide)
 
 
 
-  - Create labels with `labs()` (with `ggtitle()`, `ylab()`, and `labs()`)
+  - Create labels with `labs()` and `ylab()`
 
-  - Add `scale_x_discrete()` with the `limits` set to `"Year"`, `"Island"` and `"Species"`, and `expand` to `0.1` and `0.07`
+  - Add `scale_x_discrete()` with the `limits` set to `"Jan 1999"`, `"Jul 1999"` and `"Dec 1999"`, and `expand` to `0.1` and `0.07`
 
-  - Add `geom_alluvium()` with `fill` set to the `sex` variable and `geom_stratum()`
+  - Add `geom_alluvium()` with `fill` set to the `jan_1999` variable and `geom_stratum()`
 
-  - Add `geom_text()`, with `stat` set to `stratum` and label set to `after_stat(stratum)` (*inside* `aes()`) 
+  - Add `geom_text()`, with `stat` set to `stratum` and label set to `after_stat(stratum)` (*inside* `aes()`)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_alluvial
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-labs_alluvial <- ggtitle(label = "Palmer Penguins", 
-    subtitle = "Stratified by year, island and species")
-labs_alluvial_y <- ylab("Frequency") 
-labs_alluvial_fill <- labs(fill = "Sex")
+labs_alluvial <- labs(title = "Y2K prep",
+    caption = "Simulated data",
+    subtitle = "300 households surveyed three times in 1999")
+labs_alluvial_y <- ylab("Households")
+labs_alluvial_fill <- labs(fill = "January")
 
-ggp2_alluvial_w <- ggplot(data = peng_wide,
-  aes(axis1 = year, axis2 = island,
-      axis3 = species, y = freq)) +
+ggp2_alluvial_w <- ggplot(data = y2k_wide,
+  aes(axis1 = jan_1999, axis2 = jul_1999,
+      axis3 = dec_1999, y = freq)) +
   scale_x_discrete(
-    limits = c("Year", "Island", "Species"),
+    limits = c("Jan 1999", "Jul 1999", "Dec 1999"),
     expand = c(0.1, 0.07)) +
-  geom_alluvium(aes(fill = sex)) +
+  geom_alluvium(aes(fill = jan_1999)) +
   geom_stratum() +
-  geom_text(stat = "stratum", 
+  geom_text(stat = "stratum",
     aes(label = after_stat(stratum)),
       size = 3)
 
@@ -209,7 +335,7 @@ ggp2_alluvial_w +
 **GRAPH:**
 :::
 
-The `ggalluvial` functions can handle wide or long data. 
+The `ggalluvial` functions can handle wide or long data.
 
 ```{r}
 #| label: create_graph_alluvial
@@ -220,27 +346,28 @@ The `ggalluvial` functions can handle wide or long data.
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-labs_alluvial <- ggtitle(label = "Palmer Penguins", 
-    subtitle = "Stratified by year, island and species")
-labs_alluvial_y <- ylab("Frequency") 
-labs_alluvial_fill <- labs(fill = "Sex")
+labs_alluvial <- labs(title = "Y2K prep",
+    caption = "Simulated data",
+    subtitle = "300 households surveyed three times in 1999")
+labs_alluvial_y <- ylab("Households")
+labs_alluvial_fill <- labs(fill = "January")
 
-ggp2_alluvial_w <- ggplot(data = peng_wide,
-  aes(axis1 = year, axis2 = island,
-      axis3 = species, y = freq)) +
+ggp2_alluvial_w <- ggplot(data = y2k_wide,
+  aes(axis1 = jan_1999, axis2 = jul_1999,
+      axis3 = dec_1999, y = freq)) +
   scale_x_discrete(
-    limits = c("Year", "Island", "Species"),
+    limits = c("Jan 1999", "Jul 1999", "Dec 1999"),
     expand = c(0.1, 0.07)) +
-  geom_alluvium(aes(fill = sex)) +
+  geom_alluvium(aes(fill = jan_1999)) +
   geom_stratum() +
-  geom_text(stat = "stratum", 
+  geom_text(stat = "stratum",
     aes(label = after_stat(stratum)),
       size = 3)
 
-ggp2_alluvial_w + 
+ggp2_alluvial_w +
   theme(legend.position = "bottom") +
-  labs_alluvial + 
-  labs_alluvial_y + 
+  labs_alluvial +
+  labs_alluvial_y +
   labs_alluvial_fill
 ```
 
@@ -248,91 +375,82 @@ ggp2_alluvial_w +
 
 The `ggalluvial` package can also help reshape data with the `to_lodes_form()` function.
 
-### `to_lodes_form()` 
+### `to_lodes_form()`
 
-Below we create `peng_lodes` from the `penguins` dataset using the `to_lodes_form()` from the `ggalluvial` package.
+Below we create `y2k_lodes` from the `y2k_wide` data using the `to_lodes_form()` from the `ggalluvial` package. We'll keep a copy of each household's January answer (`January`) so we can still use it for `fill` after the reshaping.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: data_code_alluvial_lf
+#| label: data_code_y2k_lodes
+#| code-fold: show
 #| eval: true
 #| echo: true
-peng_lodes <- penguins |> 
-  dplyr::select(Year = year, Island = island, 
-         Species = species, Sex = sex) |> 
-  tidyr::drop_na() |> 
-  dplyr::count(Year, Island, Species, Sex) |> 
-  dplyr::mutate(Year = factor(Year)) |> 
-  dplyr::rename(Freqency = n) |> 
-  ggalluvial::to_lodes_form(key = "Measure", axes = 1:3) 
-glimpse(peng_lodes)
+y2k_lodes <- y2k_wide |>
+  rename(`Jan 1999` = jan_1999, `Jul 1999` = jul_1999,
+         `Dec 1999` = dec_1999, Households = freq) |>
+  mutate(January = `Jan 1999`) |>
+  ggalluvial::to_lodes_form(key = "Survey", axes = 1:3)
+glimpse(y2k_lodes)
 ```
 :::
 
 Create labels with `labs()`
 
-  - Map `Measure` to `x`, `Frequency` to `y`, `stratum` to `stratum`, `alluvium` to `alluvium`, and `label` to `stratum`.
+  - Map `Survey` to `x`, `Households` to `y`, `stratum` to `stratum`, `alluvium` to `alluvium`, and `label` to `stratum`.
 
-  - Add the `geom_alluvium()` and map `Sex` to `fill`  
+  - Add the `geom_alluvium()` and map `January` to `fill`
 
-  - Add the `geom_stratum()` and set the `width` to `0.45`  
+  - Add the `geom_stratum()` and set the `width` to `0.45`
 
   - Add `geom_text()` and set `stat` to `"stratum"`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: create_graph_alluvial_lf
-#| code-fold: true
+#| label: code_graph_alluvial_lf
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-labs_alluvial <- ggtitle(label = "Palmer Penguins", 
-    subtitle = "Stratified by year, island and species")
+labs_alluvial <- labs(title = "Y2K prep",
+    caption = "Simulated data",
+    subtitle = "300 households surveyed three times in 1999")
 
 ggp2_alluvial_lf <- ggplot(
-    data = peng_lodes,
-    aes(x = Measure,
-        y = Freqency,
+    data = y2k_lodes,
+    aes(x = Survey,
+        y = Households,
         stratum = stratum,
         alluvium = alluvium,
         label = stratum)) +
-    ggalluvial::geom_alluvium(aes(fill = Sex)) +
+    ggalluvial::geom_alluvium(aes(fill = January)) +
     ggalluvial::geom_stratum(width = 0.45) +
     geom_text(stat = "stratum", size = 2.5)
 
 ggp2_alluvial_lf +
     labs_alluvial +
-    theme_ggp2g(base_size = 13)
+    theme(legend.position = "bottom")
 ```
 :::
 
-### `geom_flow()` 
+### `geom_flow()`
 
-If you'd like to arrange the date or time variable across the `x`, you can use the `ggalluvial::geom_flow()` with `ggalluvial::geom_stratum()`. 
+If you'd like to arrange the date or time variable across the `x`, you can use the `ggalluvial::geom_flow()` with `ggalluvial::geom_stratum()`.
 
-  - First create `peng_alluvial`, a subset of `palmerpenguins::penguins_raw` with all variables turned to factors. 
+  - First create `y2k_long`, a long version of `y2k_households` with one row per household per survey (and `survey` as a factor in the order the surveys happened).
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: peng_alluvial
+#| label: data_code_y2k_long
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-peng_alluvial <- palmerpenguins::penguins_raw |> 
-  janitor::clean_names() |> 
-  dplyr::mutate(year = lubridate::year(date_egg),
-         year = factor(year),
-         individual_id = factor(individual_id),
-         island = factor(island)) |> 
-  dplyr::select(year, individual_id, island)
-dplyr::glimpse(peng_alluvial)
+y2k_long <- y2k_households |>
+  tidyr::pivot_longer(cols = -household_id,
+                      names_to = "survey", values_to = "prep") |>
+  mutate(survey = factor(survey,
+                         levels = c("jan_1999", "jul_1999", "dec_1999"),
+                         labels = c("Jan 1999", "Jul 1999", "Dec 1999")),
+         household_id = factor(household_id))
+glimpse(y2k_long)
 ```
 :::
 
@@ -340,55 +458,47 @@ dplyr::glimpse(peng_alluvial)
 
   - Initiate graph with `data`
 
-  - Map the `year` to the `x`, `island` to `stratum`, `individual_id` to `alluvium`, `island` to `fill`, and `island` to `label`.
+  - Map the `survey` to the `x`, `prep` to `stratum`, `household_id` to `alluvium`, `prep` to `fill`, and `prep` to `label`.
 
-  - Add `scale_fill_brewer()`, and set the `type` to `"qual"` and choose a `palette`
-
-  - Add the `geom_flow()`, with `stat` set to `"alluvium"`, `lode.guidance` set to `"frontback"`, and `color` to `"#A9A9A9"`
+  - Add the `geom_flow()`, with `stat` set to `"alluvium"` and `lode.guidance` set to `"frontback"` (with 300 households, each flow is only one household wide, so we leave the outline `color` off or it covers the fill)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: ggp2_alluvial_flow
-#| code-fold: true
+#| label: code_graph_alluvial_flow
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
 # labels
 labs_alluvial <- labs(
-  title = "Penguin measurements across three years")
-# add geom_flow() 
-ggp2_alluvial_flow <- ggplot(data = peng_alluvial,
-  mapping = aes(x = year, stratum = island, 
-    alluvium = individual_id, 
-    fill = island, label = island)) +
-  scale_fill_brewer(type = "qual", palette = "Pastel2") +
+  title = "Y2K prep across three surveys",
+  caption = "Simulated data",
+  fill = "Prep")
+# add geom_flow()
+ggp2_alluvial_flow <- ggplot(data = y2k_long,
+  mapping = aes(x = survey, stratum = prep,
+    alluvium = household_id,
+    fill = prep, label = prep)) +
   geom_flow(stat = "alluvium",
-    lode.guidance = "frontback",
-    color = "#A9A9A9")
+    lode.guidance = "frontback")
 
-ggp2_alluvial_flow
+ggp2_alluvial_flow +
+  labs_alluvial
 ```
+:::
 
   - Add `ggalluvial::geom_stratum()`
 
+::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: ggp2_alluvial_geom_stratum
-#| code-fold: true
+#| label: code_graph_alluvial_stratum
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
 # add geom_stratum()
 ggp2_alluvial_stratum <- ggp2_alluvial_flow +
-  geom_stratum() 
-ggp2_alluvial_stratum
+  geom_stratum()
+ggp2_alluvial_stratum +
+  labs_alluvial
 ```
 :::
 
@@ -398,17 +508,12 @@ Move legend to bottom with `theme(legend.position = "bottom")`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: ggp2_alluvial_legend_position
-#| code-fold: true
+#| label: code_graph_alluvial_legend
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-ggp2_alluvial_stratum + 
-  labs_alluvial + 
+ggp2_alluvial_stratum +
+  labs_alluvial +
   theme(legend.position = "bottom")
 ```
 :::

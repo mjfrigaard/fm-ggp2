@@ -54,7 +54,8 @@ friends_episodes <- tibble(
          audience = if_else(viewers_m >= 25, "25M or more", "Under 25M")) |>
   select(season, episode, viewers_m, audience)
 labs_bar_ovrlp <- labs(
-  title = "Friends (simulated)",
+  title = "Friends",
+  caption = "Simulated data",
   subtitle = "Viewers per episode in three seasons",
   x = "Viewers (millions)",
   y = "Episodes",
@@ -233,7 +234,8 @@ So a season 5 episode beats a season 3 episode about 20% of the time, while a se
 #| out-height: '100%'
 #| out-width: '100%'
 labs_bar_ovrlp <- labs(
-  title = "Friends (simulated)",
+  title = "Friends",
+  caption = "Simulated data",
   subtitle = "Viewers per episode in three seasons",
   x = "Viewers (millions)",
   y = "Episodes",
@@ -260,7 +262,8 @@ ggp2_bar_ovrlp +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_bar_ovrlp <- labs(
-  title = "Friends (simulated)",
+  title = "Friends",
+  caption = "Simulated data",
   subtitle = "Viewers per episode in three seasons",
   x = "Viewers (millions)",
   y = "Episodes",
@@ -306,7 +309,8 @@ friends_col <- friends_episodes |>
 #| echo: true
 #| layout-nrow: 1
 labs_col_ovrlp <- labs(
-  title = "Friends (simulated)",
+  title = "Friends",
+  caption = "Simulated data",
   subtitle = "built with 'geom_col()'",
   x = "Viewers (millions)",
   y = "Episodes",
@@ -381,7 +385,8 @@ count(friends_episodes, audience, season)
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_bar_dodge <- labs(
-  title = "Friends (simulated)",
+  title = "Friends",
+  caption = "Simulated data",
   subtitle = "position = 'dodge'",
   x = "Audience",
   y = "Episodes",
@@ -430,7 +435,8 @@ ggp2_bar_dodge +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_bar_dodge2 <- labs(
-  title = "Friends (simulated)",
+  title = "Friends",
+  caption = "Simulated data",
   subtitle = "position = 'dodge2'",
   x = "Audience",
   y = "Episodes",

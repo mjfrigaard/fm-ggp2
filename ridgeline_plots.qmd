@@ -59,7 +59,8 @@ trl_videos <- tibble(
                                                   scale = avg_days / 2.5)))) |>
   select(video_id, genre, days_on_countdown)
 labs_ridges <- labs(
-  title = "MTV TRL (simulated)",
+  title = "MTV TRL",
+  caption = "Simulated data",
   subtitle = "Days each video stayed on the countdown",
   x = "Days on the countdown",
   y = "Genre", fill = "Genre")
@@ -246,7 +247,8 @@ The mean of a gamma distribution is $k\theta$ and its standard deviation is $\sq
 #| out-height: '100%'
 #| out-width: '100%'
 labs_ridges <- labs(
-  title = "MTV TRL (simulated)",
+  title = "MTV TRL",
+  caption = "Simulated data",
   subtitle = "Days each video stayed on the countdown",
   x = "Days on the countdown",
   y = "Genre", fill = "Genre")
@@ -279,7 +281,8 @@ Ridgeline plots are excellent for comparing continuous distributions across grou
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_ridges <- labs(
-  title = "MTV TRL (simulated)",
+  title = "MTV TRL",
+  caption = "Simulated data",
   subtitle = "Days each video stayed on the countdown",
   x = "Days on the countdown",
   y = "Genre", fill = "Genre")

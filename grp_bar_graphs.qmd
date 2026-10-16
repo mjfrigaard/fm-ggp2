@@ -73,7 +73,8 @@ jp_paddocks <- jp_dinos |>
   summarise(total_tons = sum(weight_tons)) |>
   ungroup()
 labs_grp_col <- labs(
-    title = "Jurassic Park (simulated)",
+    title = "Jurassic Park",
+    caption = "Simulated data",
     subtitle = "Total weight of the dinosaurs in each paddock",
     x = "Paddock",
     y = "Total weight (tons)")
@@ -251,7 +252,8 @@ Grouped bar graphs assume the statistical measure (i.e., the value that the leng
 #| out-height: '100%'
 #| out-width: '100%'
 labs_grp_col <- labs(
-    title = "Jurassic Park (simulated)",
+    title = "Jurassic Park",
+    caption = "Simulated data",
     subtitle = "Total weight of the dinosaurs in each paddock",
     x = "Paddock",
     y = "Total weight (tons)")
@@ -280,7 +282,8 @@ ggp2_grp_col +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_grp_col <- labs(
-    title = "Jurassic Park (simulated)",
+    title = "Jurassic Park",
+    caption = "Simulated data",
     subtitle = "Total weight of the dinosaurs in each paddock",
     x = "Paddock",
     y = "Total weight (tons)")

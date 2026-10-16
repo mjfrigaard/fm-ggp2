@@ -282,7 +282,8 @@ $$
 #| out-height: '100%'
 #| out-width: '100%'
 labs_ovrlp_density <- labs(
-  title = "Furby chatter (simulated)",
+  title = "Furby chatter",
+  caption = "Simulated data",
   x = "Words per hour",
   fill = "Language")
 ggp2_ovrlp_density <- ggplot(data = furby_chatter,
@@ -317,7 +318,8 @@ Make density area slightly transparent to handle over-plotting.
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_ovrlp_density <- labs(
-  title = "Furby chatter (simulated)",
+  title = "Furby chatter",
+  caption = "Simulated data",
   x = "Words per hour",
   fill = "Language")
 ggp2_ovrlp_density <- ggplot(data = furby_chatter,
@@ -347,7 +349,8 @@ If we change the `position` to `"stack"` we can see the smoothed estimates are '
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_stack_density <- labs(
-    title = "Furby chatter (simulated)",
+    title = "Furby chatter",
+    caption = "Simulated data",
     x = "Words per hour",
     fill = "Language")
 ggp2_stack_density <- ggplot(data = furby_chatter,
@@ -380,7 +383,8 @@ If we include `after_stat(count)` as one of our mapped aesthetics, the mapping i
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_after_stat_density <- labs(
-  title = "Furby chatter (simulated)",
+  title = "Furby chatter",
+  caption = "Simulated data",
   x = "Words per hour",
   fill = "Language")
 ggp2_after_stat_density <- ggplot(data = furby_chatter,
@@ -413,7 +417,8 @@ Using `after_stat(count)` with `position = "fill"` creates in a conditional dens
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_fill_density <- labs(
-  title = "Furby chatter (simulated)",
+  title = "Furby chatter",
+  caption = "Simulated data",
   x = "Words per hour",
   fill = "Language")
 ggp2_fill_density <- ggplot(data = furby_chatter,

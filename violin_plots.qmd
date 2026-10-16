@@ -58,7 +58,8 @@ beanie_prices <- tibble(
   price = round(rlnorm(n = 300, meanlog = log(15), sdlog = 0.8), 2)
 )
 labs_violin <- labs(
-  title = "Beanie Babies resale prices (simulated)",
+  title = "Beanie Babies resale prices",
+  caption = "Simulated data",
   subtitle = "300 listings from 1998",
   x = "",
   y = "Price (USD)")
@@ -263,7 +264,8 @@ Add `geom_violin()`
 #| warning: false
 #| message: false
 labs_violin <- labs(
-  title = "Beanie Babies resale prices (simulated)",
+  title = "Beanie Babies resale prices",
+  caption = "Simulated data",
   subtitle = "300 listings from 1998",
   x = "",
   y = "Price (USD)")
@@ -292,7 +294,8 @@ ggp2_violin +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_violin <- labs(
-  title = "Beanie Babies resale prices (simulated)",
+  title = "Beanie Babies resale prices",
+  caption = "Simulated data",
   subtitle = "300 listings from 1998",
   x = "",
   y = "Price (USD)")

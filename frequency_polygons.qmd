@@ -51,7 +51,8 @@ napster_downloads <- tibble(
   minutes = round(rgamma(n = 300, shape = 4, rate = 0.5), 1)
 )
 labs_freqpoly <- labs(
-  title = "Napster MP3 downloads (simulated)",
+  title = "Napster MP3 downloads",
+  caption = "Simulated data",
   subtitle = "Download time over a 56k modem",
   x = "Download time (minutes)")
 ggp2_freqpoly <- ggplot(data = napster_downloads,
@@ -250,7 +251,8 @@ Our simulated downloads come close: the mean is `r round(mean(napster_downloads$
 #| warning: false
 #| message: false
 labs_freqpoly <- labs(
-  title = "Napster MP3 downloads (simulated)",
+  title = "Napster MP3 downloads",
+  caption = "Simulated data",
   subtitle = "Download time over a 56k modem",
   x = "Download time (minutes)")
 ggp2_freqpoly <- ggplot(data = napster_downloads,
@@ -275,7 +277,8 @@ ggp2_freqpoly +
 #| message: false
 #| layout-nrow: 1
 labs_freqpoly <- labs(
-  title = "Napster MP3 downloads (simulated)",
+  title = "Napster MP3 downloads",
+  caption = "Simulated data",
   subtitle = "Download time over a 56k modem",
   x = "Download time (minutes)")
 ggp2_freqpoly <- ggplot(data = napster_downloads,

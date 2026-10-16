@@ -108,10 +108,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar floating slimcontent quarto-light">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -524,17 +553,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">32.1</span> Description</a></li>
   <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up"><span class="header-section-number">32.2</span> Set up</a></li>
-  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">32.3</span> Grammar</a></li>
-  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">32.4</span> More info</a>
+  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">32.3</span> Distribution</a></li>
+  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">32.4</span> Grammar</a></li>
+  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">32.5</span> More info</a>
   <ul>
-  <li><a href="#type" id="toc-type" class="nav-link" data-scroll-target="#type"><span class="header-section-number">32.4.1</span> Type</a></li>
-  <li><a href="#sorting" id="toc-sorting" class="nav-link" data-scroll-target="#sorting"><span class="header-section-number">32.4.2</span> Sorting</a></li>
+  <li><a href="#type" id="toc-type" class="nav-link" data-scroll-target="#type"><span class="header-section-number">32.5.1</span> Type</a></li>
+  <li><a href="#sorting" id="toc-sorting" class="nav-link" data-scroll-target="#sorting"><span class="header-section-number">32.5.2</span> Sorting</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/stream_plots.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dates_and_times.html">DATES &amp; TIMES</a></li><li class="breadcrumb-item"><a href="./stream_plots.html"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Stream plots</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -601,7 +631,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Stream graphs display how a numerical variable (typically on the <code>y</code> axis) changes over time (on the <code>x</code> axis) across levels of a categorical variable. These graphs are handy if the numerical value varies wildly (or isn’t always present) over the time measurement.</p>
 <p>Categorical groups are differentiated by color layers, with the area of the layer representing the change in <code>y</code> value. In <code>ggplot2</code>, we can create stream graphs using <a href="https://github.com/davidsjoberg/ggstream">ggstream.</a></p>
 </section>
-<section id="set-up" class="level2 page-columns page-full" data-number="32.2">
+<section id="set-up" class="level2" data-number="32.2">
 <h2 data-number="32.2" class="anchored" data-anchor-id="set-up"><span class="header-section-number">32.2</span> Set up</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>PACKAGES:</strong></p>
@@ -612,100 +642,166 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"davidsjoberg/ggstream"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggplot2movies"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggstream)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2movies)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggstream)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># for data manipulation</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr) <span class="co"># for expand_grid()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure">
-<p><img src="www/imdb.png" class="quarto-figure quarto-figure-right figure-img" style="width:40.0%;height:40.0%"></p>
-</figure>
-</div>
-</div></div><p>We’re going to use only the <code>mpaa</code>, <code>year</code>, and <code>budget</code> columns from <code>ggplot2movies::movies</code>, then drop all missing values (we have to remove special missing characters from <code>mpaa</code>).</p>
-<p>We’ll then convert <code>mpaa</code> to an ordered factor, then group by <code>year</code> and <code>mpaa</code> to calculate the average budget and filter to only those movies after <code>1984</code>.</p>
+<p>The 90s were a decade of fads that showed up overnight and vanished just as fast. Slap bracelets were banned from schools, Hypercolor shirts changed color when you touched them, and Koosh balls and scrunchies were everywhere. We’ll simulate the monthly sales (in thousands) for four fads from 1990 through 1999. Each fad in <code>fads</code> gets a <code>peak</code> (the year it was most popular), a <code>spread</code> (how long it lasted, in years), and a <code>total</code> (how many it sold overall). The monthly average (<code>avg_sales</code>) follows a bell shaped curve around the peak, and <code>rpois()</code> draws the actual monthly sales. Setting the seed with <code>set.seed()</code> means you’ll get the same 480 months of sales every time you run the code below.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>movies_stream <span class="ot">&lt;-</span> ggplot2movies<span class="sc">::</span>movies <span class="sc">|&gt;</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(mpaa, year, budget) <span class="sc">|&gt;</span> </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    tidyr<span class="sc">::</span><span class="fu">drop_na</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(mpaa <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">mpaa =</span> <span class="fu">factor</span>(mpaa, </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"NC-17"</span>, <span class="st">"R"</span>, </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"PG-13"</span>, <span class="st">"PG"</span>), </span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                            <span class="at">ordered =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(year, mpaa) <span class="sc">|&gt;</span> </span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">avg_budget =</span> <span class="fu">mean</span>(budget, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(year <span class="sc">&gt;</span> <span class="dv">1984</span>)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; `summarise()` has regrouped the output.</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Summaries were computed grouped by year and</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   mpaa.</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Output is grouped by year.</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `summarise(.groups = "drop_last")` to</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   silence this message.</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `summarise(.by = c(year, mpaa))` for</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   per-operation grouping (`?dplyr::dplyr_by`)</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   instead.</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(movies_stream)</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 47</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year       &lt;int&gt; 1986, 1989, 1989, 1990, 1991,…</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ mpaa       &lt;ord&gt; R, R, PG-13, R, R, PG, R, R, …</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_budget &lt;dbl&gt; 17250000, 787000, 39250000, 3…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fads <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">fad =</span> <span class="fu">c</span>(<span class="st">"Slap bracelets"</span>, <span class="st">"Hypercolor"</span>, <span class="st">"Koosh balls"</span>, <span class="st">"Scrunchies"</span>),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">peak =</span> <span class="fu">c</span>(<span class="fl">1990.8</span>, <span class="fl">1991.5</span>, <span class="fl">1992.5</span>, <span class="dv">1994</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">spread =</span> <span class="fu">c</span>(<span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">1.5</span>, <span class="fl">2.2</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">total =</span> <span class="fu">c</span>(<span class="dv">3000</span>, <span class="dv">4000</span>, <span class="dv">5000</span>, <span class="dv">9000</span>))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1991</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>fad_sales <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">month =</span> <span class="fu">seq</span>(<span class="fu">as.Date</span>(<span class="st">"1990-01-01"</span>), <span class="fu">as.Date</span>(<span class="st">"1999-12-01"</span>), <span class="at">by =</span> <span class="st">"month"</span>),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  fads) <span class="sc">|&gt;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">fad =</span> <span class="fu">factor</span>(fad, <span class="at">levels =</span> fads<span class="sc">$</span>fad),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">t =</span> lubridate<span class="sc">::</span><span class="fu">year</span>(month) <span class="sc">+</span> (lubridate<span class="sc">::</span><span class="fu">month</span>(month) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">12</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_sales =</span> total <span class="sc">/</span> <span class="dv">12</span> <span class="sc">*</span> <span class="fu">dnorm</span>(t, <span class="at">mean =</span> peak, <span class="at">sd =</span> spread),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">sales =</span> <span class="fu">rpois</span>(<span class="fu">n</span>(), <span class="at">lambda =</span> avg_sales)) <span class="sc">|&gt;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(month, fad, avg_sales, sales)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(fad_sales)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 480</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ month     &lt;date&gt; 1990-01-01, 1990-01-01, 1990-…</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ fad       &lt;fct&gt; Slap bracelets, Hypercolor, Ko…</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_sales &lt;dbl&gt; 33.744354, 9.737945, 27.632539…</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ sales     &lt;int&gt; 44, 11, 32, 24, 51, 18, 24, 22…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
-<section id="grammar" class="level2" data-number="32.3">
-<h2 data-number="32.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">32.3</span> Grammar</h2>
+<section id="distribution" class="level2" data-number="32.3">
+<h2 data-number="32.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">32.3</span> Distribution</h2>
+<p>A stream plot stacks each group’s values on top of one another and lets the stack flow over time. Each fad’s layer has its own shape: a quick spike for fads that burned out fast, and a long, low hump for fads that hung around. Below we’ll move from the monthly sales, to a picture, to the formula, and see where those shapes come from.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>COUNT IT:</strong></p>
+</div>
+<p>Start with the first six months of Hypercolor sales in 1991.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fad_sales <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(fad <span class="sc">==</span> <span class="st">"Hypercolor"</span>, month <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"1991-01-01"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["month"],"name":[1],"type":["date"],"align":["right"]},{"label":["fad"],"name":[2],"type":["fct"],"align":["left"]},{"label":["avg_sales"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["sales"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"1991-01-01","2":"Hypercolor","3":"156.6177","4":"154"},{"1":"1991-02-01","2":"Hypercolor","3":"174.1477","4":"186"},{"1":"1991-03-01","2":"Hypercolor","3":"189.9402","4":"179"},{"1":"1991-04-01","2":"Hypercolor","3":"203.2069","4":"223"},{"1":"1991-05-01","2":"Hypercolor","3":"213.2467","4":"214"},{"1":"1991-06-01","2":"Hypercolor","3":"219.5072","4":"217"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>Sales climb month after month toward the summer of 1991. Below we total each fad’s sales and find its best month.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fad_peaks <span class="ot">&lt;-</span> fad_sales <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(fad) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_sales =</span> <span class="fu">sum</span>(sales),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">best_month =</span> month[<span class="fu">which.max</span>(sales)],</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">best_sales =</span> <span class="fu">max</span>(sales))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>fad_peaks</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["fad"],"name":[1],"type":["fct"],"align":["left"]},{"label":["total_sales"],"name":[2],"type":["int"],"align":["right"]},{"label":["best_month"],"name":[3],"type":["date"],"align":["right"]},{"label":["best_sales"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Slap bracelets","2":"2909","3":"1990-12-01","4":"255"},{"1":"Hypercolor","2":"4154","3":"1991-07-01","4":"239"},{"1":"Koosh balls","2":"4781","3":"1992-06-01","4":"124"},{"1":"Scrunchies","2":"8748","3":"1993-10-01","4":"150"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>Scrunchies sold the most overall (8,748 thousand), but slap bracelets had the biggest single month (255 thousand). Selling the most and peaking the highest are two different things.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>DRAW IT:</strong></p>
+</div>
+<p>The graph below draws each fad’s monthly sales as points and its <code>avg_sales</code> as a line. Every fad follows the same bell shaped curve. Slap bracelets and Hypercolor have narrow, tall bells, and scrunchies have a wide, short one.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(fad_sales, <span class="fu">aes</span>(<span class="at">x =</span> month, <span class="at">color =</span> fad)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> sales), <span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> avg_sales), <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> fad, <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Month"</span>, <span class="at">y =</span> <span class="st">"Sales (thousands)"</span>) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="stream_plots_files/figure-html/draw_stream-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>A stream plot stacks these four bells on top of each other (and centers the stack), which is why the stream bulges in the early 90s and thins out by the end of the decade.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>NAME IT:</strong></p>
+</div>
+<p>The monthly sales are <a href="https://en.wikipedia.org/wiki/Poisson_distribution">Poisson</a> counts, and the average for each month follows the shape of a <a href="https://en.wikipedia.org/wiki/Normal_distribution">normal distribution</a> over time:</p>
+<p><span class="math display">\[
+\text{sales}_t \sim \text{Poisson}(\lambda_t), \quad \lambda_t = \frac{\text{total}}{12} \times \frac{1}{\text{spread}\sqrt{2\pi}} \, e^{-\frac{(t - \text{peak})^2}{2 \, \text{spread}^2}}
+\]</span></p>
+<p>Here we only borrow the normal curve for its shape (it describes <em>when</em> the sales happen, not a random variable). The area under the curve is always the <code>total</code>, so the height of the peak is <span class="math inline">\(\frac{\text{total}}{12 \times \text{spread} \sqrt{2\pi}}\)</span>. Slap bracelets sold 3000 thousand over a spread of 0.4 years, so their peak is about 249 thousand a month. Scrunchies sold three times as much, but spread those sales over 2.2 years, so their peak is only about 136 thousand a month. Try changing the <code>spread</code> for scrunchies to <code>0.5</code> and watch their layer turn into a spike.</p>
+</section>
+<section id="grammar" class="level2" data-number="32.4">
+<h2 data-number="32.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">32.4</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
 </div>
 <ul>
 <li><p>Create labels with <code>labs()</code></p>
 <ul>
-<li>Use <code>paste0()</code> in the <code>subtitle</code> to automatically update the <code>year</code> when the <code>movies_stream</code> changes</li>
+<li>Use <code>paste0()</code> in the <code>subtitle</code> to automatically update the years when <code>fad_sales</code> changes</li>
 </ul></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map <code>year</code> to the <code>x</code>, <code>avg_budget</code> to <code>y</code>, and <code>mpaa</code> to <code>fill</code></p></li>
+<li><p>Map <code>month</code> to the <code>x</code>, <code>sales</code> to <code>y</code>, and <code>fad</code> to <code>fill</code></p></li>
 <li><p>Add the <code>geom_stream()</code> layer</p></li>
-<li><p>Adjust the <code>y</code> axis with <code>scale_y_continuous()</code> and <code>scales::dollar</code></p></li>
 <li><p>Finally, move the legend with <code>theme(legend.position = "bottom")</code></p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>labs_stream <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"20 years of movie budgets"</span>, </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">paste0</span>(<span class="st">"movies between "</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">min</span>(movies_stream<span class="sc">$</span>year),</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">" and "</span>, </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>            <span class="fu">max</span>(movies_stream<span class="sc">$</span>year)),</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Year"</span>, </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Average Movie Budget"</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>ggp2_stream <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> movies_stream, </span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, </span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> avg_budget, </span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                  <span class="at">fill =</span> mpaa)) <span class="sc">+</span> </span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    ggstream<span class="sc">::</span><span class="fu">geom_stream</span>() <span class="sc">+</span> </span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>dollar)</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>ggp2_stream <span class="sc">+</span> </span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    labs_stream <span class="sc">+</span> </span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>labs_stream <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"90s fads"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">paste0</span>(<span class="st">"Monthly sales between "</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">min</span>(fad_sales<span class="sc">$</span>month), <span class="st">"%Y"</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">" and "</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">max</span>(fad_sales<span class="sc">$</span>month), <span class="st">"%Y"</span>)),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Month"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Sales (thousands)"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Fad"</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>ggp2_stream <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> fad_sales,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> month,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> sales,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                  <span class="at">fill =</span> fad)) <span class="sc">+</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    ggstream<span class="sc">::</span><span class="fu">geom_stream</span>()</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>ggp2_stream <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    labs_stream <span class="sc">+</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
@@ -720,13 +816,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2" data-number="32.4">
-<h2 data-number="32.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">32.4</span> More info</h2>
+<section id="more-info" class="level2" data-number="32.5">
+<h2 data-number="32.5" class="anchored" data-anchor-id="more-info"><span class="header-section-number">32.5</span> More info</h2>
 <p>The <a href="https://github.com/davidsjoberg/ggstream"><code>ggstream</code> package</a> has multiple arguments for adjusting the shape and look of the categorical levels (and text labels).</p>
-<section id="type" class="level3" data-number="32.4.1">
-<h3 data-number="32.4.1" class="anchored" data-anchor-id="type"><span class="header-section-number">32.4.1</span> Type</h3>
+<section id="type" class="level3" data-number="32.5.1">
+<h3 data-number="32.5.1" class="anchored" data-anchor-id="type"><span class="header-section-number">32.5.1</span> Type</h3>
 <ul>
-<li><p>Map <code>mpaa</code> to <code>fill</code> (wrapped in <code>forcats::fct_rev()</code>)</p></li>
+<li><p>Map <code>fad</code> to <code>fill</code> (wrapped in <code>forcats::fct_rev()</code>)</p></li>
 <li><p>We can adjust the look of the graph by setting the <code>type</code> argument in <code>geom_stream()</code></p>
 <ul>
 <li><code>type</code>: change type from <code>"mirror"</code> (the default) to <code>"proportional"</code></li>
@@ -738,35 +834,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Finally, add the <code>fill</code> to the labels and move the legend with <code>theme(legend.position = "bottom")</code></p></li>
 </ul>
 <div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ggp2_stream_prp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> movies_stream, </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> avg_budget, </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">fill =</span> forcats<span class="sc">::</span><span class="fu">fct_rev</span>(mpaa))) <span class="sc">+</span> </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    ggstream<span class="sc">::</span><span class="fu">geom_stream</span>(<span class="at">type =</span> <span class="st">"proportional"</span>) <span class="sc">+</span> </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span> </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"PG-13"</span> <span class="ot">=</span> <span class="st">"#0bd3d3"</span>, </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"PG"</span> <span class="ot">=</span> <span class="st">"#f890e7"</span>, </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"R"</span> <span class="ot">=</span> <span class="st">"#282b2d"</span>, </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"NC-17"</span> <span class="ot">=</span> <span class="st">"#772953"</span>))</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>ggp2_stream_prp <span class="sc">+</span> </span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    labs_stream <span class="sc">+</span> </span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"mpaa"</span>) <span class="sc">+</span> </span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fad_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Slap bracelets"</span> <span class="ot">=</span> <span class="st">"#FFE135"</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Hypercolor"</span> <span class="ot">=</span> <span class="st">"#E0218A"</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Koosh balls"</span> <span class="ot">=</span> <span class="st">"#2DBE60"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Scrunchies"</span> <span class="ot">=</span> <span class="st">"#1F9BFF"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ggp2_stream_prp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> fad_sales,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> month,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> sales,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">fill =</span> forcats<span class="sc">::</span><span class="fu">fct_rev</span>(fad))) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    ggstream<span class="sc">::</span><span class="fu">geom_stream</span>(<span class="at">type =</span> <span class="st">"proportional"</span>) <span class="sc">+</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> fad_colors)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>ggp2_stream_prp <span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    labs_stream <span class="sc">+</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Share of sales"</span>, <span class="at">fill =</span> <span class="st">"Fad"</span>) <span class="sc">+</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="stream_plots_files/figure-html/code_graph_type-1.png" class="img-fluid"></p>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="stream_plots_files/figure-html/code_graph_stream_prp-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
 </div>
 </div>
 </div>
 </div>
+<p>The proportional stream shows each fad’s <em>share</em> of the month’s sales. Scrunchies take over the whole stream by the end of the decade, because their wide bell is the last one still selling.</p>
 </section>
-<section id="sorting" class="level3" data-number="32.4.2">
-<h3 data-number="32.4.2" class="anchored" data-anchor-id="sorting"><span class="header-section-number">32.4.2</span> Sorting</h3>
+<section id="sorting" class="level3" data-number="32.5.2">
+<h3 data-number="32.5.2" class="anchored" data-anchor-id="sorting"><span class="header-section-number">32.5.2</span> Sorting</h3>
 <p>To change how the categorical areas are sorted, adjust the sorting argument to either <code>"none"</code>, <code>"onset"</code>, or <code>"inside_out"</code></p>
 <ul>
 <li><p><code>sorting</code>: set the <code>sorting</code> method to <code>"inside_out"</code> in <em>both</em> <code>ggstream::geom_stream()</code> and <code>ggstream::geom_stream_label()</code></p></li>
@@ -774,59 +873,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>We can also add text labels using <code>ggstream::geom_stream_label()</code>:</p>
 <ul>
-<li><p>Map <code>mpaa</code> (wrapped in <code>forcats::fct_rev()</code>) to <code>label</code> globally</p></li>
+<li><p>Map <code>fad</code> (wrapped in <code>forcats::fct_rev()</code>) to <code>label</code> globally</p></li>
 <li><p>Inside <code>ggstream::geom_stream_label()</code>:</p>
 <ul>
-<li><p>set color to white (<code>"#ffffff"</code>) and the <code>size</code> to <code>2.7</code></p></li>
+<li><p>set color to white (<code>"#FDF6FF"</code>) and the <code>size</code> to <code>3</code></p></li>
+<li><p>set <code>n_grid</code> to <code>1000</code> (the default grid of <code>100</code> points is smaller than our 120 months, which causes an error)</p></li>
 <li><p>Remove the legend with <code>show.legend = FALSE</code></p></li>
 </ul></li>
 </ul>
 <p>Colors:</p>
 <ul>
-<li><p>Use <code>scale_colour_manual()</code> and <code>scale_fill_manual()</code> to manually set the values using a named vector</p>
-<ul>
-<li>Change the <code>y</code> axis to US dollars using <code>scale_y_continuous()</code> and <code>scales::dollar</code></li>
-</ul></li>
+<li><p>Use <code>scale_fill_manual()</code> to manually set the values using the named <code>fad_colors</code> vector</p></li>
 <li><p>Finally, add the <code>fill</code> to the labels and move the legend with <code>theme(legend.position = "bottom")</code></p></li>
 </ul>
 <div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ggp2_stream_srt <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> movies_stream, </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> avg_budget, </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">fill =</span> <span class="fu">fct_rev</span>(mpaa),</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">label =</span> <span class="fu">fct_rev</span>(mpaa))) <span class="sc">+</span> </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    ggstream<span class="sc">::</span><span class="fu">geom_stream</span>(</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">"ridge"</span>, </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">sorting =</span> <span class="st">"inside_out"</span>) <span class="sc">+</span> </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    ggstream<span class="sc">::</span><span class="fu">geom_stream_label</span>(</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">"ridge"</span>, </span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">sorting =</span> <span class="st">"inside_out"</span>, </span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">"#ffffff"</span>, </span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="fl">2.7</span>,</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_colour_manual</span>(</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"PG-13"</span> <span class="ot">=</span> <span class="st">"#0bd3d3"</span>, </span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"PG"</span> <span class="ot">=</span> <span class="st">"#f890e7"</span>, </span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"R"</span> <span class="ot">=</span> <span class="st">"#282b2d"</span>, </span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"NC-17"</span> <span class="ot">=</span> <span class="st">"#772953"</span>)) <span class="sc">+</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"PG-13"</span> <span class="ot">=</span> <span class="st">"#0bd3d3"</span>, </span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"PG"</span> <span class="ot">=</span> <span class="st">"#f890e7"</span>, </span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"R"</span> <span class="ot">=</span> <span class="st">"#282b2d"</span>, </span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"NC-17"</span> <span class="ot">=</span> <span class="st">"#772953"</span>)) <span class="sc">+</span> </span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>dollar) </span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>ggp2_stream_srt <span class="sc">+</span> </span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    labs_stream <span class="sc">+</span> </span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"mpaa"</span>) <span class="sc">+</span> </span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ggp2_stream_srt <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> fad_sales,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> month,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> sales,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">fill =</span> forcats<span class="sc">::</span><span class="fu">fct_rev</span>(fad),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">label =</span> forcats<span class="sc">::</span><span class="fu">fct_rev</span>(fad))) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    ggstream<span class="sc">::</span><span class="fu">geom_stream</span>(</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">"ridge"</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">sorting =</span> <span class="st">"inside_out"</span>) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    ggstream<span class="sc">::</span><span class="fu">geom_stream_label</span>(</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">"ridge"</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">sorting =</span> <span class="st">"inside_out"</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">"#FDF6FF"</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">n_grid =</span> <span class="dv">1000</span>,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> fad_colors)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>ggp2_stream_srt <span class="sc">+</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    labs_stream <span class="sc">+</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Fad"</span>) <span class="sc">+</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="stream_plots_files/figure-html/create_graph_sorting-1.png" class="img-fluid"></p>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="stream_plots_files/figure-html/code_graph_stream_srt-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
 </div>
 </div>
 </div>

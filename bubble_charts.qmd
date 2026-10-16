@@ -16,8 +16,8 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
-    base_size = 15))
+ggplot2::theme_set(fmggp2::theme_seinfeld(
+    base_size = 14))
 ```
 
 ```{r}
@@ -28,7 +28,6 @@ ggplot2::theme_set(theme_ggp2g(
 # polish, dev, draft, complete
 status("complete")
 ```
-
 
 :::: {.callout-note collapse="false" icon=false}
 
@@ -43,22 +42,34 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
+library(dplyr)
+set.seed(1989)
+seinfeld_eps <- tibble(
+  episode = 1:180,
+  season = rep(1:9, each = 20)) |>
+  mutate(
+    kramer_minutes = round(rgamma(n(), shape = 6, rate = 1.5), 1),
+    laughs_per_min = round(2 + 0.3 * kramer_minutes +
+                             rnorm(n(), mean = 0, sd = 0.5), 1),
+    viewers = round(exp(rnorm(n(), mean = log(10 + 3 * (season - 1)),
+                              sd = 0.15)), 1))
 labs_bubble <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)", y = "Flipper length (mm)", 
-  size = "Body Mass (g)")
+  title = "Seinfeld episodes",
+  subtitle = "Kramer's screen time vs. laughs per minute",
+  caption = "Simulated data",
+  x = "Kramer screen time (minutes)", y = "Laughs per minute",
+  size = "Viewers (millions)")
 
-ggp2_bubble <- penguins |> 
+ggp2_bubble <- seinfeld_eps |>
   ggplot(
-    aes(x = bill_length_mm, y = flipper_length_mm)) + 
-  geom_point(aes(size = body_mass_g), alpha = 1/3) + 
-  scale_size(range = c(.1, 10), 
-             name = "Body Mass (g)") + 
+    aes(x = kramer_minutes, y = laughs_per_min)) +
+  geom_point(aes(size = viewers), alpha = 1/3) +
+  scale_size(range = c(.1, 10),
+             name = "Viewers (millions)") +
   theme(legend.position = "bottom")
 
-ggp2_bubble + 
+ggp2_bubble +
   labs_bubble
 ```
 
@@ -73,11 +84,11 @@ ggp2_bubble +
 
 ::::
 
-## Description 
+## Description
 
 Bubble graphs display relationships between three numeric (continuous) variables.
 
-The position on the `x` and `y` axis illustrates the relationship between the first two variables, and the `size` of the point (i.e., the bubble) conveys the numeric value of the third. 
+The position on the `x` and `y` axis illustrates the relationship between the first two variables, and the `size` of the point (i.e., the bubble) conveys the numeric value of the third.
 
 ## Set up
 
@@ -97,9 +108,8 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins)
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -108,12 +118,15 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
+*Seinfeld* was famously a show about nothing, and every episode got a bump whenever Kramer slid through Jerry's door. We'll simulate 180 episodes across nine seasons (20 per season) with three numeric variables:
 
+  - `kramer_minutes`: Kramer's screen time, drawn from a right skewed gamma distribution with `rgamma()`
 
-The `penguins` data.
+  - `laughs_per_min`: the studio audience's laughs per minute, which go up 0.3 for every minute of Kramer (plus noise from `rnorm()`)
+
+  - `viewers`: the audience in millions, which grows by about 3 million each season. We draw these on the log scale with `rnorm()` and convert them back with `exp()`
+
+Setting the seed with `set.seed()` means you'll get the same 180 episodes every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -121,10 +134,105 @@ The `penguins` data.
 #| code-fold: show
 #| eval: true
 #| echo: true
-penguins <- palmerpenguins::penguins
-glimpse(penguins)
+set.seed(1989)
+seinfeld_eps <- tibble(
+  episode = 1:180,
+  season = rep(1:9, each = 20)) |>
+  mutate(
+    kramer_minutes = round(rgamma(n(), shape = 6, rate = 1.5), 1),
+    laughs_per_min = round(2 + 0.3 * kramer_minutes +
+                             rnorm(n(), mean = 0, sd = 0.5), 1),
+    viewers = round(exp(rnorm(n(), mean = log(10 + 3 * (season - 1)),
+                              sd = 0.15)), 1))
+glimpse(seinfeld_eps)
 ```
 :::
+
+## Distribution
+
+A bubble chart adds a third variable to a scatter plot with the size of each point. Our eyes read the *area* of a bubble, not its width, so how a value gets turned into a size matters as much as the value itself. Below we'll move from the viewers, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first five episodes.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_bubble
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(seinfeld_eps, 5)
+```
+:::
+
+Below we summarise the `viewers` for each season. The mean grows each season, and so does the standard deviation, but their ratio (`cv`) stays close to 0.15.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_bubble
+#| code-fold: show
+#| eval: true
+#| echo: true
+seinfeld_seasons <- seinfeld_eps |>
+  group_by(season) |>
+  summarise(mean_viewers = mean(viewers),
+            sd_viewers = sd(viewers),
+            cv = sd_viewers / mean_viewers)
+seinfeld_seasons
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The graph below draws three bubbles for 10, 20, and 40 million viewers, two ways. On the left, `scale_size()` makes the *area* of each bubble proportional to the value (so 40 million looks four times bigger than 10 million). On the right, `scale_radius()` makes the *width* proportional to the value, and 40 million looks sixteen times bigger than 10 million.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_bubble
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| layout-ncol: 2
+three_bubbles <- tibble(x = 1:3, y = 1, viewers = c(10, 20, 40))
+ggplot(three_bubbles, aes(x = x, y = y, size = viewers)) +
+  geom_point(color = "#F7C33C") +
+  scale_size(range = c(0, 20), limits = c(0, 40)) +
+  scale_x_continuous(limits = c(0.5, 3.5)) +
+  labs(title = "scale_size()", x = NULL, y = NULL) +
+  theme(legend.position = "none", axis.text = element_blank())
+ggplot(three_bubbles, aes(x = x, y = y, size = viewers)) +
+  geom_point(color = "#F7C33C") +
+  scale_radius(range = c(0, 20), limits = c(0, 40)) +
+  scale_x_continuous(limits = c(0.5, 3.5)) +
+  labs(title = "scale_radius()", x = NULL, y = NULL) +
+  theme(legend.position = "none", axis.text = element_blank())
+```
+:::
+
+`scale_size()` is the default for `size` in `ggplot2`, and it's the right choice for bubble charts.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+The viewers come from a [lognormal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution) (normal on the log scale), with a median that grows each season:
+
+$$
+\log(\text{viewers}) \sim \text{Normal}\left(\log(10 + 3(\text{season} - 1)), \; 0.15\right)
+$$
+
+On the log scale every season has the same spread (0.15), which is why the `cv` stays near 0.15 in every season: a lognormal variable wobbles by about the same *percent*, not the same number of viewers. When we map `viewers` to `size`, `scale_size()` sets each bubble's area in proportion to its value:
+
+$$
+\text{area} \propto \text{viewers}, \quad \text{radius} \propto \sqrt{\text{viewers}}
+$$
+
+A season nine episode with about `r round(seinfeld_seasons$mean_viewers[9])` million viewers gets a bubble about `r round(seinfeld_seasons$mean_viewers[9] / seinfeld_seasons$mean_viewers[1], 1)` times the area of a season one episode (`r round(seinfeld_seasons$mean_viewers[1])` million), but only about `r round(sqrt(seinfeld_seasons$mean_viewers[9] / seinfeld_seasons$mean_viewers[1]), 1)` times as wide. Try changing `sd = 0.15` to `sd = 0.5` and the bubbles within each season range from tiny to huge.
 
 ## Grammar
 
@@ -134,15 +242,15 @@ glimpse(penguins)
 
   - Create labels with `labs()`
 
-  - Map `bill_length_mm` to `x` axis
+  - Map `kramer_minutes` to `x` axis
 
-  - Map `flipper_length_mm` to `y` axis 
+  - Map `laughs_per_min` to `y` axis
 
-  - Map `body_mass_g` to `size`  
+  - Map `viewers` to `size`
 
-  - Set `alpha` to `1/3`  
+  - Set `alpha` to `1/3`
 
-  - Add `scale_size()`, set the `range` to `c(0.1, 10)` and `name` to `"Body Mass (g)"`
+  - Add `scale_size()`, set the `range` to `c(0.1, 10)` and `name` to `"Viewers (millions)"`
 
   - Move the legend to the bottom of the graph with `theme(legend.position = "bottom")`
 
@@ -151,25 +259,27 @@ glimpse(penguins)
 #| label: code_graph_bubble
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_bubble <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)", y = "Flipper length (mm)", 
-  size = "Body Mass (g)")
+  title = "Seinfeld episodes",
+  subtitle = "Kramer's screen time vs. laughs per minute",
+  caption = "Simulated data",
+  x = "Kramer screen time (minutes)", y = "Laughs per minute",
+  size = "Viewers (millions)")
 
-ggp2_bubble <- penguins |> 
+ggp2_bubble <- seinfeld_eps |>
   ggplot(
-    aes(x = bill_length_mm, y = flipper_length_mm)) + 
-  geom_point(aes(size = body_mass_g), alpha = 1/3) + 
-  scale_size(range = c(.1, 10), 
-             name = "Body Mass (g)") + 
+    aes(x = kramer_minutes, y = laughs_per_min)) +
+  geom_point(aes(size = viewers), alpha = 1/3) +
+  scale_size(range = c(.1, 10),
+             name = "Viewers (millions)") +
   theme(legend.position = "bottom")
 
-ggp2_bubble + 
+ggp2_bubble +
   labs_bubble
 ```
 :::
@@ -189,18 +299,20 @@ ggp2_bubble +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_bubble <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)", y = "Flipper length (mm)", 
-  size = "Body Mass (g)")
+  title = "Seinfeld episodes",
+  subtitle = "Kramer's screen time vs. laughs per minute",
+  caption = "Simulated data",
+  x = "Kramer screen time (minutes)", y = "Laughs per minute",
+  size = "Viewers (millions)")
 
-ggp2_bubble <- penguins |> 
+ggp2_bubble <- seinfeld_eps |>
   ggplot(
-    aes(x = bill_length_mm, y = flipper_length_mm)) + 
-  geom_point(aes(size = body_mass_g), alpha = 1/3) + 
-  scale_size(range = c(.1, 10), 
-             name = "Body Mass (g)") + 
+    aes(x = kramer_minutes, y = laughs_per_min)) +
+  geom_point(aes(size = viewers), alpha = 1/3) +
+  scale_size(range = c(.1, 10),
+             name = "Viewers (millions)") +
   theme(legend.position = "bottom")
 
-ggp2_bubble + 
+ggp2_bubble +
   labs_bubble
 ```

@@ -16,8 +16,8 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
-    base_size = 11))
+ggplot2::theme_set(fmggp2::theme_rugrats(
+    base_size = 14))
 ```
 
 ```{r}
@@ -26,9 +26,8 @@ ggplot2::theme_set(theme_ggp2g(
 #| echo: false
 # status ----
 # polish, dev, draft, complete
-status("polish")
+status("complete")
 ```
-
 
 :::: {.callout-note collapse="false" icon=false}
 
@@ -43,31 +42,38 @@ status("polish")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
-library(ggplot2movies)
 library(ggplot2)
-library(babynames)
-top_bby_nms_1907 <- babynames::babynames |> 
-  dplyr::filter(year == 1907) |> 
-  dplyr::arrange(desc(n)) |> 
-  dplyr::slice_head(n = 6)
-popular_bby_nms <- babynames::babynames |> 
-  dplyr::filter(name %in% top_bby_nms_1907[['name']] & 
-      year >= 1917)
-# popular_bby_nms
-labs_inst_pop_nms <- labs(
-  title = "Popular names: then and now", 
-  subtitle = "Most popular names from 1907 appearing between 1917 - 2017",
+library(dplyr)
+library(tidyr)
+rugrats_names <- tibble(
+  name = c("Tommy", "Chuckie", "Angelica", "Phil",
+           "Lil", "Susie", "Dil", "Kimi"),
+  before = c(4, 0.3, 1, 1.5, 0.2, 1, 0.05, 0.05),
+  after = c(8, 1.5, 4, 1.5, 0.8, 1.5, 2, 3),
+  debut = c(1991, 1991, 1991, 1991, 1991, 1992, 1998, 2001))
+set.seed(1993)
+hospital_names <- expand_grid(year = 1980:2005, rugrats_names) |>
+  mutate(name = factor(name, levels = rugrats_names$name),
+         avg_n = if_else(year < debut, before, after),
+         n = rpois(n(), lambda = avg_n)) |>
+  select(year, name, debut, avg_n, n)
+rugrats_babies <- hospital_names |>
+  filter(n > 0)
+labs_inst_rugrats <- labs(
+  title = "Rugrats baby names",
+  caption = "Simulated data",
+  subtitle = "Babies named at one hospital, 1980 - 2005",
   x = "Year", y = "Name")
-ggp2_inst_pop_nms <- ggplot(data = popular_bby_nms, 
-    mapping = aes(x = year, 
-                  y = name, 
-                  color = name)) + 
-  geom_point(aes(alpha = n), 
-    shape = 124, size = 5, 
-    show.legend = FALSE)
-ggp2_inst_pop_nms + 
-  labs_inst_pop_nms
+ggp2_inst_rugrats <- ggplot(data = rugrats_babies,
+    mapping = aes(x = year,
+                  y = name,
+                  color = name)) +
+  geom_point(aes(alpha = n),
+    shape = 124, size = 5,
+    show.legend = FALSE) +
+  scale_alpha_continuous(range = c(0.35, 1))
+ggp2_inst_rugrats +
+  labs_inst_rugrats
 ```
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
@@ -75,7 +81,7 @@ ggp2_inst_pop_nms +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -88,16 +94,16 @@ ggp2_inst_pop_nms +
 
 ::::
 
-## Description 
+## Description
 
-An instance chart (or instance graph) displays frequencies (or 'instances') of different categorical values over time time. 
+An instance chart (or instance graph) displays frequencies (or 'instances') of different categorical values over time.
 
 The time dimension is placed on the `x` and each
-separate categorical item is placed on the `y`-axis. The instances are typically represented using the vertical hashes from `geom_point()` (i.e., shape `124` or the 'pipe' `"|"`). 
+separate categorical item is placed on the `y`-axis. The instances are typically represented using the vertical hashes from `geom_point()` (i.e., shape `124` or the 'pipe' `"|"`).
 
-Saturation and color are also used to represent different categorical levels and counts. 
+Saturation and color are also used to represent different categorical levels and counts.
 
-## Set up 
+## Set up
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -115,9 +121,9 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("babynames")
-library(babynames)
 library(ggplot2)
+library(dplyr) # for data manipulation
+library(tidyr) # for expand_grid()
 ```
 :::
 
@@ -127,22 +133,7 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![](www/ssa.png){fig-align="center" width="60%" height="60%"}
-:::
-
-<!-- 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="30%" height="30%"}
-![](www/538.png){fig-align="right" width="15%" height="15%"}
-![](www/imdb.png){fig-align="right" width="20%" height="20%"}
-:::
--->
-
-
-  - Filter the `babynames::babynames` to only those names in `1887`, then group by `name` and `sex`, arrange descending by the `n`, and store only the top 6 names in `top_bby_nms_1887`. 
-
-  - Use the names from `top_bby_nms_1887` to filter `babynames::babynames` for names *after* `1897` and store in `popular_bby_nms`. 
+*Rugrats* premiered on Nickelodeon in 1991, and a generation of parents suddenly had new ideas for baby names. We'll simulate how many babies were given each Rugrats character's name at one hospital every year from 1980 to 2005. Each name in `rugrats_names` has an average number of babies per year `before` the character's `debut` and an average `after` it (Susie showed up in 1992, Dil in 1998, and Kimi in 2001). `rpois()` draws each year's count (`n`) from the matching average. Setting the seed with `set.seed()` means you'll get the same `r nrow(hospital_names)` name years every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -150,20 +141,112 @@ library(ggplot2)
 #| code-fold: show
 #| eval: true
 #| echo: true
-library(babynames)
-top_bby_nms_1887 <- babynames::babynames |> 
-  dplyr::filter(year == 1887) |> 
-  dplyr::group_by(name, sex) |> 
-  dplyr::slice_max(order_by = sex) |> 
-  dplyr::arrange(desc(n)) |> 
-  utils::head(n = 6) |> 
-  dplyr::ungroup()
-top_bby_nms_1887
-popular_bby_nms <- babynames::babynames |> 
-  dplyr::filter(name %in% top_bby_nms_1887[['name']] & 
-      year >= 1897)
+rugrats_names <- tibble(
+  name = c("Tommy", "Chuckie", "Angelica", "Phil",
+           "Lil", "Susie", "Dil", "Kimi"),
+  before = c(4, 0.3, 1, 1.5, 0.2, 1, 0.05, 0.05),
+  after = c(8, 1.5, 4, 1.5, 0.8, 1.5, 2, 3),
+  debut = c(1991, 1991, 1991, 1991, 1991, 1992, 1998, 2001))
+set.seed(1993)
+hospital_names <- expand_grid(year = 1980:2005, rugrats_names) |>
+  mutate(name = factor(name, levels = rugrats_names$name),
+         avg_n = if_else(year < debut, before, after),
+         n = rpois(n(), lambda = avg_n)) |>
+  select(year, name, debut, avg_n, n)
+glimpse(hospital_names)
 ```
 :::
+
+An instance chart only shows the years a name was used, so we'll filter out the years with no babies and store the rest in `rugrats_babies`.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: data_code_inst_babies
+#| code-fold: show
+#| eval: true
+#| echo: true
+rugrats_babies <- hospital_names |>
+  filter(n > 0)
+glimpse(rugrats_babies)
+```
+:::
+
+## Distribution
+
+An instance chart is built from two things: whether a name shows up in a given year (the tick), and how many times it shows up (the shading). The empty spaces between the ticks matter just as much as the ticks, and the number of empty spaces depends on how popular the name is. Below we'll move from the counts, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with Chuckie in the five years before and after the show premiered.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_inst
+#| code-fold: show
+#| eval: true
+#| echo: true
+hospital_names |>
+  filter(name == "Chuckie", year >= 1986, year <= 1995)
+```
+:::
+
+Before 1991, most years have no Chuckies at all. Below we count the years with zero babies (`zero_years`) for each name, before and after its character's debut.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_inst
+#| code-fold: show
+#| eval: true
+#| echo: true
+zero_counts <- hospital_names |>
+  mutate(era = if_else(year < debut, "before", "after")) |>
+  group_by(name, era) |>
+  summarise(years = n(), zero_years = sum(n == 0), .groups = "drop") |>
+  pivot_wider(names_from = era, values_from = c(years, zero_years)) |>
+  select(name, years_before, zero_years_before,
+         years_after, zero_years_after)
+zero_counts
+```
+:::
+
+Chuckie went `r zero_counts$zero_years_before[zero_counts$name == "Chuckie"]` of `r zero_counts$years_before[zero_counts$name == "Chuckie"]` years without a baby before the show, and only `r zero_counts$zero_years_after[zero_counts$name == "Chuckie"]` of `r zero_counts$years_after[zero_counts$name == "Chuckie"]` years after it. Tommy, the most popular name, never had a year without a baby.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The graph below draws Chuckie's yearly counts as bars (including the zeros) and the same years as instance ticks across the bottom. Every gap in the ticks is a year with a bar of height zero.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_inst
+#| code-fold: show
+#| eval: true
+#| echo: true
+chuckie <- hospital_names |>
+  filter(name == "Chuckie")
+ggplot(chuckie, aes(x = year)) +
+  geom_col(aes(y = n), fill = "#F7941D") +
+  geom_point(data = filter(chuckie, n > 0), aes(y = -0.5),
+             shape = 124, size = 5, color = "#7B3FA0") +
+  geom_vline(xintercept = 1990.5, linetype = "dashed") +
+  labs(x = "Year", y = "Babies named Chuckie")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each yearly count follows a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) with the average for that name and era:
+
+$$
+n_{\text{name, year}} \sim \text{Poisson}(\lambda), \quad P(n = 0) = e^{-\lambda}
+$$
+
+The chance of an empty year depends only on $\lambda$. Before the show, Chuckie's average is 0.3 babies a year, so $P(n = 0) = e^{-0.3} \approx `r round(exp(-0.3), 2)`$, and we'd expect about $11 \times `r round(exp(-0.3), 2)` \approx `r round(11 * exp(-0.3), 1)`$ empty years out of 11. After the show, the average jumps to 1.5, so $P(n = 0) = e^{-1.5} \approx `r round(exp(-1.5), 2)`$ and we'd expect about `r round(15 * exp(-1.5), 1)` empty years out of 15. Tommy averages 8 babies a year after the show, so an empty year has a chance of $e^{-8} \approx 0.0003$ (practically never). That's why rare names look like scattered ticks and popular names look like solid lines. Try changing Chuckie's `after` value to `5` and his row fills in.
 
 ## Grammar
 
@@ -179,30 +262,37 @@ popular_bby_nms <- babynames::babynames |>
 
   - Add `geom_point()`, map `n` to `alpha`, and set the `shape` to `124` and `size` to `5`
 
+  - Most years have only a few babies, so we raise the lightest `alpha` with `scale_alpha_continuous(range = c(0.35, 1))` (otherwise the faint ticks disappear)
+
+  - Remove the `color` legend with `guides()` (the names are already on the `y` axis)
+
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_inst
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-labs_inst_pop_nms <- labs(
-  title = "Popular names: then and now",
-  subtitle = "Most popular names from 1887 appearing between 1897 - 2017",
+labs_inst_rugrats <- labs(
+  title = "Rugrats baby names",
+  caption = "Simulated data",
+  subtitle = "Babies named at one hospital, 1980 - 2005",
   x = "Year",
   y = "Name")
-ggp2_inst_pop_nms <- ggplot(data = popular_bby_nms, 
-    mapping = aes(x = year, 
-                  y = name, 
-                  color = name)) + 
+ggp2_inst_rugrats <- ggplot(data = rugrats_babies,
+    mapping = aes(x = year,
+                  y = name,
+                  color = name)) +
   geom_point(aes(alpha = n),
               shape = 124,
-              size = 5)
-ggp2_inst_pop_nms + 
-  labs_inst_pop_nms
+              size = 5) +
+  scale_alpha_continuous(range = c(0.35, 1)) +
+  guides(color = "none")
+ggp2_inst_rugrats +
+  labs_inst_rugrats
 ```
 :::
 
@@ -220,20 +310,23 @@ ggp2_inst_pop_nms +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-labs_inst_pop_nms <- labs(
-  title = "Popular names: then and now",
-  subtitle = "Most popular names from 1887 appearing between 1897 - 2017",
+labs_inst_rugrats <- labs(
+  title = "Rugrats baby names",
+  caption = "Simulated data",
+  subtitle = "Babies named at one hospital, 1980 - 2005",
   x = "Year",
   y = "Name")
-ggp2_inst_pop_nms <- ggplot(data = popular_bby_nms, 
-    mapping = aes(x = year, 
-                  y = name, 
-                  color = name)) + 
+ggp2_inst_rugrats <- ggplot(data = rugrats_babies,
+    mapping = aes(x = year,
+                  y = name,
+                  color = name)) +
   geom_point(aes(alpha = n),
               shape = 124,
-              size = 5)
-ggp2_inst_pop_nms + 
-  labs_inst_pop_nms
+              size = 5) +
+  scale_alpha_continuous(range = c(0.35, 1)) +
+  guides(color = "none")
+ggp2_inst_rugrats +
+  labs_inst_rugrats
 ```
 
 
@@ -241,148 +334,76 @@ ggp2_inst_pop_nms +
 
 ### Saturation with `cut_interval()`
 
-`ggplot2` has two great functions for splitting numerical variables into intervals or widths. We're going to create two datasets from `babynames::babynames` that capture the top names in `1900` and and the top names `2000`.
+`ggplot2` has two great functions for splitting numerical variables into intervals or widths. We'll use `cut_interval()` to create an `n_range` variable, which splits the yearly counts (`n`) into intervals based on the `length` argument.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: top_nms_prop_inst
-#| code-fold: true
+#| label: data_code_inst_range
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-top_nms_prop_1900 <- babynames::babynames |>
-  dplyr::filter(year == 1900) |>
-  dplyr::group_by(sex, name) |> 
-  dplyr::summarise(max_prop = max(prop)) |> 
-  dplyr::slice_max(n = 2, order_by = max_prop) |>
-  dplyr::ungroup()
-top_nms_prop_1900
-top_nms_prop_2000 <- babynames::babynames |>
-  dplyr::filter(year == 2000) |>
-  dplyr::group_by(sex, name) |> 
-  dplyr::summarise(max_prop = max(prop)) |> 
-  dplyr::slice_max(n = 2, order_by = max_prop) |>
-  dplyr::ungroup()
-top_nms_prop_2000
+rugrats_babies_range <- rugrats_babies |>
+  mutate(n_range = ggplot2::cut_interval(x = n, length = 3))
+rugrats_babies_range |>
+  count(n_range)
 ```
 :::
 
-These two tibbles tell us something about the top names over a century. The top names in 1900 have much higher proportions than the top names in 2000s.
+Below we can see the count ranges have been built with the [interval notation](https://ggplot2.tidyverse.org/reference/cut_interval.html): `"(a,b]"`
 
-  - We'll get the names from both tibbles and filter `babynames::babynames` to only these eight names between the years 1900 and 2000. 
-
-  - We'll create a `prop_range` variable, which splits the `prop` variable into intervals based on the `length` argument.
+  - Most of the ticks fall in the lowest range, and every count above 9 belongs to Tommy after the show premiered.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: popular_bby_nms_prop
-#| code-fold: true
+#| label: code_graph_inst_range
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-nms_1900 <- top_nms_prop_1900[["name"]]
-nms_2000 <- top_nms_prop_2000[["name"]]
-
-top_nms_1900_2000 <- c(nms_1900, nms_2000)
-
-popular_bby_nms_prop <- babynames::babynames |>
-  dplyr::filter(name %in% top_nms_1900_2000 &
-                  year >= 1900 &
-                    year <= 2000) |>
-  dplyr::mutate(
-    # proportion range 
-    prop_range = ggplot2::cut_interval(x = prop, 
-                                       length = 0.025))
-```
-:::
-
-
-Below we can see the proportion ranges have been built with the [interval notation](https://ggplot2.tidyverse.org/reference/cut_interval.html): `"(a,b]"` 
-
-  - We can also see the proportion of names changes considerably between the two groups of names. 
-
-::: {style="font-size: 0.85em;"}
-```{r}
-#| label: more_info_color_inst
-#| code-fold: true
-#| eval: true
-#| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-labs_inst_pop_nms_prop <- labs(
-  title = "100 years of popular names",
-  subtitle = "Most popular names from 1900 and 2000",
-  caption = "*based on proportion",
+labs_inst_rugrats_range <- labs(
+  title = "Rugrats baby names",
+  caption = "Simulated data",
+  subtitle = "Babies named at one hospital, 1980 - 2005",
   x = "Year",
   y = "Name",
-  color = "Proportion ranges",
-  alpha = "Proportion")
-ggp2_inst_pop_nms_prop <- ggplot(data = popular_bby_nms_prop, 
-    mapping = aes(x = year, 
-                  y = name, 
-              color = prop_range)) + 
-  geom_point(aes(alpha = prop),
+  color = "Babies per year",
+  alpha = "Babies per year")
+ggp2_inst_rugrats_range <- ggplot(data = rugrats_babies_range,
+    mapping = aes(x = year,
+                  y = name,
+              color = n_range)) +
+  geom_point(aes(alpha = n),
                 shape = 124,
-                size = 2.5) 
-ggp2_inst_pop_nms_prop + 
-  labs_inst_pop_nms_prop 
+                size = 4) +
+  scale_alpha_continuous(range = c(0.35, 1))
+ggp2_inst_rugrats_range +
+  labs_inst_rugrats_range
 ```
 
 :::
 
 ### Facets with `cut_number()`
 
-To demonstrate facets, we'll create two other variables: `year_range` and `group`:   
+To demonstrate facets, we'll create two other variables: `year_range` and `group`:
 
-  - `year_range` uses `ggplot2::cut_number()` to create three groups based on the `year`, orders the results, and removes the labels. We manually assign the labels to this variable with `case_when()` and `factor()`    
-  
-  - `group` is a factor variable with two levels: `1900 names` and `2000 names`   
+  - `year_range` uses `ggplot2::cut_number()` to split the `year` into three groups with about the same number of ticks in each, then we build a label for each group from its first and last year
+
+  - `group` is a factor variable with two levels: `"Babies"` and `"Big kids"` (Angelica and Susie)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: bby_nms_fct_inst
-#| code-fold: true
+#| label: data_code_inst_fct
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-popular_bby_nms_fct <- popular_bby_nms_prop |>
-  dplyr::mutate(
-    # year range 
-    year_range = ggplot2::cut_number(year, 
-                                       n = 3, 
-                                  labels = FALSE,
-                          ordered_result = TRUE),
-  year_range = case_when(
-    year_range == 1 ~ "1900 - 1936",
-    year_range == 2 ~ "1937 - 1970",
-    year_range == 3 ~ "1971 - 2000"),
-  year_range = factor(year_range,
-    levels = c("1900 - 1936",
-               "1937 - 1970",
-               "1971 - 2000"),
-    ordered = TRUE),
-    group = case_when(
-      name %in% nms_1900 ~ "1900 names",
-      name %in% nms_2000 ~ "2000 names",
-      TRUE ~ NA_character_),
-    group = factor(group, 
-      levels = c("1900 names", 
-                 "2000 names")))
+rugrats_babies_fct <- rugrats_babies |>
+  mutate(year_grp = ggplot2::cut_number(year, n = 3, labels = FALSE)) |>
+  group_by(year_grp) |>
+  mutate(year_range = paste(min(year), "-", max(year))) |>
+  ungroup() |>
+  mutate(
+    year_range = factor(year_range, levels = unique(year_range[order(year)])),
+    group = if_else(name %in% c("Angelica", "Susie"), "Big kids", "Babies"),
+    group = factor(group, levels = c("Babies", "Big kids")))
 ```
 :::
 
@@ -390,74 +411,55 @@ Below we can see the total counts of names in the cross-table of `year_range` an
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: xtable_popular_bby_nms_fct
-#| code-fold: true
+#| label: count_inst_fct
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-popular_bby_nms_fct |> 
-  dplyr::count(year_range, group) |> 
-  tidyr::pivot_wider(names_from = group, 
+rugrats_babies_fct |>
+  count(year_range, group) |>
+  pivot_wider(names_from = group,
     values_from = n)
 ```
 :::
 
-In the graph, we'll create labels using the `levels` from the `year_range` variable. 
+In the graph, we'll create labels using the `levels` from the `year_range` variable.
 
   - We can also change the `shape` used in `geom_point()` to the pipe operator (`"|"`)
 
+  - With `scales = "free"`, each panel picks its own `x` breaks, so we set them every five years with `scale_x_continuous()`
+
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: bby_nms_facet_inst
-#| code-fold: true
+#| label: code_graph_inst_facet
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-
-# create labels from factor levels 
+#| fig-asp: 1.4
+# create labels from factor levels
 st_lbls <- paste0(
-              levels(popular_bby_nms_fct$year_range),
+              levels(rugrats_babies_fct$year_range),
             collapse = ", ")
 
-labs_inst_pop_nms_facet <- labs(
-  title = "Baby name popularity over time",
+labs_inst_rugrats_facet <- labs(
+  title = "Rugrats baby names",
+  caption = "Simulated data",
   subtitle = paste0("Time span: ", st_lbls),
   x = "Year",
   y = "Name")
 
-ggp2_inst_pop_nms_facet <- ggplot(popular_bby_nms_fct,
+ggp2_inst_rugrats_facet <- ggplot(rugrats_babies_fct,
   mapping = aes(x = year,
                 y = name)) +
-  geom_point(aes(alpha = prop, color = name),
+  geom_point(aes(alpha = n, color = name),
                  shape = "|",
                  size = 3,
                  show.legend = FALSE) +
+  scale_x_continuous(breaks = seq(1980, 2005, by = 5)) +
+  scale_alpha_continuous(range = c(0.35, 1)) +
   facet_wrap(year_range ~ group,
-             scales = "free_y", 
+             scales = "free",
              ncol = 2)
-ggp2_inst_pop_nms_facet +
-  labs_inst_pop_nms_facet
-```
-:::
-
-::: {style="font-size: 0.95rem;"}
-```{r }
-#| label: bby_nms_facet_inst_notes
-#| code-fold: true
-#| eval: true
-#| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
+ggp2_inst_rugrats_facet +
+  labs_inst_rugrats_facet
 ```
 :::

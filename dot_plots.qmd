@@ -60,12 +60,14 @@ blockbuster_rentals <- tibble(
   rentals = rpois(n = 60, lambda = 3)
 )
 labs_dotplot <- labs(
-  title = "Blockbuster Video (simulated)",
+  title = "Blockbuster Video",
+  caption = "Simulated data",
   subtitle = "Rentals per household in one week",
   x = "Number of rentals")
 ggp2_dotplot <- ggplot(data = blockbuster_rentals,
       aes(x = rentals)) + 
-    geom_dotplot(binwidth = 1, dotsize = 0.3) 
+    geom_dotplot(binwidth = 1, dotsize = 0.2) + 
+    scale_x_continuous(breaks = 0:8) 
 ggp2_dotplot + 
   labs_dotplot
 ```
@@ -239,7 +241,8 @@ This is what `dpois()` calculates. For $k = 3$, $P(X = 3) = 3^3 e^{-3} / 3! \app
 #| warning: false
 #| message: false
 labs_dotplot <- labs(
-  title = "Blockbuster Video (simulated)",
+  title = "Blockbuster Video",
+  caption = "Simulated data",
   subtitle = "Rentals per household in one week",
   x = "Number of rentals")
 ggp2_dotplot <- ggplot(data = blockbuster_rentals,
@@ -264,7 +267,8 @@ ggp2_dotplot +
 #| message: false
 #| layout-nrow: 1
 labs_dotplot <- labs(
-  title = "Blockbuster Video (simulated)",
+  title = "Blockbuster Video",
+  caption = "Simulated data",
   subtitle = "Rentals per household in one week",
   x = "Number of rentals")
 ggp2_dotplot <- ggplot(data = blockbuster_rentals,

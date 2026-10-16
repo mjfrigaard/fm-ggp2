@@ -53,7 +53,8 @@ goosebumps_readers <- tibble(
          books_read = rpois(n(), lambda = c(`3rd grade` = 3, `4th grade` = 6,
                                             `5th grade` = 9)[as.character(grade)]))
 labs_ovrlp_dotplot <- labs(
-  title = "Goosebumps books read (simulated)",
+  title = "Goosebumps books read",
+  caption = "Simulated data",
   subtitle = "40 students in each grade, one school year",
   x = "Books read",
   y = "Count",
@@ -248,7 +249,8 @@ For a Poisson distribution, the variance equals the mean ($\lambda$), so the sta
 #| out-height: '100%'
 #| out-width: '100%'
 labs_ovrlp_dotplot <- labs(
-  title = "Goosebumps books read (simulated)",
+  title = "Goosebumps books read",
+  caption = "Simulated data",
   subtitle = "40 students in each grade, one school year",
   x = "Books read",
   y = "Count",
@@ -282,7 +284,8 @@ ggp2_ovrlp_dotplot +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_ovrlp_dotplot <- labs(
-  title = "Goosebumps books read (simulated)",
+  title = "Goosebumps books read",
+  caption = "Simulated data",
   subtitle = "40 students in each grade, one school year",
   x = "Books read",
   y = "Count",

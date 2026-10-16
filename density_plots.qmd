@@ -64,7 +64,8 @@ spice_fans <- tibble(
     rnorm(400, mean = 37, sd = 6)))
 )
 labs_density <- labs(
-  title = "Spice World tour (simulated)",
+  title = "Spice World tour",
+  caption = "Simulated data",
   subtitle = "Ages of 400 fans at a 1998 concert",
   x = "Age (years)")
 ggp2_density <- ggplot(data = spice_fans,
@@ -262,7 +263,8 @@ Add the `geom_density()` layer
 #| warning: false
 #| message: false
 labs_density <- labs(
-  title = "Spice World tour (simulated)",
+  title = "Spice World tour",
+  caption = "Simulated data",
   subtitle = "Ages of 400 fans at a 1998 concert",
   x = "Age (years)")
 ggp2_density <- ggplot(data = spice_fans,
@@ -288,7 +290,8 @@ ggp2_density +
 #| message: false
 #| layout-nrow: 1
 labs_density <- labs(
-  title = "Spice World tour (simulated)",
+  title = "Spice World tour",
+  caption = "Simulated data",
   subtitle = "Ages of 400 fans at a 1998 concert",
   x = "Age (years)")
 ggp2_density <- ggplot(data = spice_fans,

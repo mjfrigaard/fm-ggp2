@@ -108,10 +108,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar floating slimcontent quarto-light">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -524,12 +553,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">28.1</span> Description</a></li>
   <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up"><span class="header-section-number">28.2</span> Set up</a></li>
-  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">28.3</span> Grammar</a></li>
+  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">28.3</span> Distribution</a></li>
+  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">28.4</span> Grammar</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/line_graphs.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dates_and_times.html">DATES &amp; TIMES</a></li><li class="breadcrumb-item"><a href="./line_graphs.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Line graphs</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -592,7 +622,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="28.1" class="anchored" data-anchor-id="description"><span class="header-section-number">28.1</span> Description</h2>
 <p>Line graphs display changes of a numeric quantitative variable (on the <code>y</code> axis) over time (on the <code>x</code> axis).</p>
 </section>
-<section id="set-up" class="level2 page-columns page-full" data-number="28.2">
+<section id="set-up" class="level2" data-number="28.2">
 <h2 data-number="28.2" class="anchored" data-anchor-id="set-up"><span class="header-section-number">28.2</span> Set up</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>PACKAGES:</strong></p>
@@ -602,89 +632,135 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"fivethirtyeight"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fivethirtyeight)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># for tibble() and data manipulation</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure">
-<p><img src="www/538.png" class="quarto-figure quarto-figure-right figure-img" style="width:40.0%;height:40.0%"></p>
-</figure>
-</div>
-</div></div><p>We’ll be using the <code>US_births_1994_2003</code> and <code>US_births_2000_2014</code> datasets from the <code>fivethirtyeight</code> package.</p>
-<ul>
-<li><p>Remove duplicate dates from <code>US_births_2000_2014</code></p></li>
-<li><p>Binding these together (they have identical columns)</p></li>
-<li><p>Use <code>year</code> and <code>month</code> to create <code>yr_mnth</code></p></li>
-<li><p>Use <code>year</code> and <code>quarter</code> to create <code>yr_qtr</code></p></li>
-<li><p>Group by yr_month to create <code>avg_births</code>, then un-group</p></li>
-<li><p>Save as <code>avg_birth_ym</code></p></li>
-</ul>
+<p>Tim Burton’s <em>Batman</em> opened on June 23, 1989, and the bat signal was everywhere that summer (t-shirts, hats, cereal boxes, and a soundtrack by Prince). Like most blockbusters, it made the most money in its first week and a little less every week after that. We’ll simulate 26 weeks of box office gross (in millions of dollars) that start at $55 million and shrink by about the same percent each week. Each week also gets a random nudge from <code>rnorm()</code>, because no week’s ticket sales land exactly on the trend. Setting the seed with <code>set.seed()</code> means you’ll get the same 26 weeks every time you run the code below.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>US_births_2004_2014 <span class="ot">&lt;-</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(fivethirtyeight<span class="sc">::</span>US_births_2000_2014, year <span class="sc">&gt;</span> <span class="dv">2003</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>avg_birth_ym <span class="ot">&lt;-</span> US_births_2004_2014 <span class="sc">|&gt;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(fivethirtyeight<span class="sc">::</span>US_births_1994_2003) <span class="sc">|&gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">mon_chr =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">condition =</span> month <span class="sc">&lt;</span> <span class="dv">10</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">true =</span> <span class="fu">paste0</span>(<span class="st">"0"</span>, month),</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">false =</span> <span class="fu">as.character</span>(month)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">month =</span> lubridate<span class="sc">::</span><span class="fu">month</span>(date, <span class="at">label =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">yr_mnth =</span> <span class="fu">paste0</span>(year, <span class="st">"-"</span>, mon_chr),</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">yr_mnth =</span> lubridate<span class="sc">::</span><span class="fu">ym</span>(yr_mnth),</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">yr_qtr =</span> <span class="fu">paste0</span>(lubridate<span class="sc">::</span><span class="fu">year</span>(date),</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>            <span class="st">"/0"</span>,</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>            lubridate<span class="sc">::</span><span class="fu">quarter</span>(date)),</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">yr_qtr =</span> <span class="fu">factor</span>(yr_qtr, <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(yr_mnth) <span class="sc">|&gt;</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">avg_births =</span> <span class="fu">mean</span>(births, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">ungroup</span>() </span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(avg_birth_ym)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 252</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 2</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ yr_mnth    &lt;date&gt; 1994-01-01, 1994-02-01, 1994…</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_births &lt;dbl&gt; 10345.32, 10761.68, 10959.23,…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1989</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>batman_box <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">week =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">26</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">week_of =</span> <span class="fu">as.Date</span>(<span class="st">"1989-06-23"</span>) <span class="sc">+</span> <span class="dv">7</span> <span class="sc">*</span> (week <span class="sc">-</span> <span class="dv">1</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">gross =</span> <span class="fu">round</span>(<span class="dv">55</span> <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.25</span> <span class="sc">*</span> (week <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">*</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">exp</span>(<span class="fu">rnorm</span>(<span class="dv">26</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="fl">0.12</span>)), <span class="dv">2</span>))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(batman_box)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 26</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ week    &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1…</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ week_of &lt;date&gt; 1989-06-23, 1989-06-30, 1989-07…</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ gross   &lt;dbl&gt; 62.78, 48.98, 26.82, 25.38, 18.8…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
-<section id="grammar" class="level2" data-number="28.3">
-<h2 data-number="28.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">28.3</span> Grammar</h2>
+<section id="distribution" class="level2" data-number="28.3">
+<h2 data-number="28.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">28.3</span> Distribution</h2>
+<p>A line graph connects each value to the one that came before it, so it’s built to show <em>change</em>. For the Batman data, the question is how fast the weekly gross falls. The answer isn’t a fixed number of dollars per week; it’s a fixed <em>share</em> of the previous week. Below we’ll move from the box office numbers, to a picture, to the formula.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>COUNT IT:</strong></p>
+</div>
+<p>Start with the first six weeks.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(batman_box, <span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["week"],"name":[1],"type":["int"],"align":["right"]},{"label":["week_of"],"name":[2],"type":["date"],"align":["right"]},{"label":["gross"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"1989-06-23","3":"62.78"},{"1":"2","2":"1989-06-30","3":"48.98"},{"1":"3","2":"1989-07-07","3":"26.82"},{"1":"4","2":"1989-07-14","3":"25.38"},{"1":"5","2":"1989-07-21","3":"18.80"},{"1":"6","2":"1989-07-28","3":"15.12"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>The drop from week one to week two is about $13.8 million, but the drop from week five to week six is only about $3.7 million. The dollar drops keep shrinking, so we’ll divide each week by the week before it instead (<code>ratio</code>).</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>batman_ratios <span class="ot">&lt;-</span> batman_box <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ratio =</span> gross <span class="sc">/</span> <span class="fu">lag</span>(gross))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>batman_ratios <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_ratio =</span> <span class="fu">median</span>(ratio, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">total_gross =</span> <span class="fu">sum</span>(gross))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["median_ratio"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["total_gross"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"0.7801848","2":"255.11"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>The median ratio is about 0.78, which means a typical week keeps about 78% of the previous week’s gross. The 26 weeks add up to about $255 million.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>DRAW IT:</strong></p>
+</div>
+<p>On a regular <code>y</code> axis the line drops fast and then flattens out, which makes the late weeks hard to read. Below we draw the same line on a log scale with <code>scale_y_log10()</code>. On a log scale, equal <em>ratios</em> are equal distances, so a gross that keeps the same share every week becomes a straight line (the wiggles are the random nudges).</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> batman_box, <span class="fu">aes</span>(<span class="at">x =</span> week_of, <span class="at">y =</span> gross)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"#F9BB2C"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"#E96A23"</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Week of"</span>, <span class="at">y =</span> <span class="st">"Weekly gross ($ millions, log scale)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="line_graphs_files/figure-html/draw_line-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>NAME IT:</strong></p>
+</div>
+<p>The weekly gross follows <a href="https://en.wikipedia.org/wiki/Exponential_decay">exponential decay</a> with a random multiplier for each week:</p>
+<p><span class="math display">\[
+\text{gross}_w = 55 \, e^{-0.25 (w - 1)} \, \varepsilon_w, \quad \log(\varepsilon_w) \sim \text{Normal}(0, \; 0.12)
+\]</span></p>
+<p>Each week keeps <span class="math inline">\(e^{-0.25} \approx 0.78\)</span> of the week before, which is why the median <code>ratio</code> landed near 0.78. Taking the log of both sides turns the formula into a straight line, <span class="math inline">\(\log(\text{gross}_w) = \log(55) - 0.25(w - 1) + \log(\varepsilon_w)\)</span>, which is the line we saw on the log scale. The random part is a <a href="https://en.wikipedia.org/wiki/Normal_distribution">normal distribution</a> on the log scale (a <a href="https://en.wikipedia.org/wiki/Log-normal_distribution">lognormal</a> multiplier), the same one we used for the Beanie Babies in <a href="violin_plots.html" class="quarto-xref"><span>Chapter 6</span></a>. Try changing <code>-0.25</code> to <code>-0.10</code> in the code above and the movie has much longer legs.</p>
+</section>
+<section id="grammar" class="level2" data-number="28.4">
+<h2 data-number="28.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">28.4</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
 </div>
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map <code>yr_mnth</code> to <code>x</code> and <code>avg_births</code> to <code>y</code></p></li>
-<li><p>Add <code>geom_line()</code></p></li>
+<li><p>Map <code>week_of</code> to <code>x</code> and <code>gross</code> to <code>y</code></p></li>
+<li><p>Add <code>geom_line()</code> (with a gold <code>color</code> and a thicker <code>linewidth</code>, because the default black line disappears into the Gotham night)</p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>labs_line <span class="ot">&lt;-</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average US births"</span>, </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">subtitle =</span> <span class="st">"1994-2014"</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> <span class="st">"Average number of US births"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">x =</span> <span class="st">"Year/Month"</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>ggp2_line <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> avg_birth_ym,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth, <span class="at">y =</span> avg_births)) <span class="sc">+</span> </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>()</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>ggp2_line <span class="sc">+</span> </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    labs_line</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>labs_line <span class="ot">&lt;-</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Batman"</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">subtitle =</span> <span class="st">"Weekly box office, summer and fall 1989"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> <span class="st">"Weekly gross ($ millions)"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">x =</span> <span class="st">"Week of"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>ggp2_line <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> batman_box,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> week_of, <span class="at">y =</span> gross)) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"#F9BB2C"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>ggp2_line <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    labs_line</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>

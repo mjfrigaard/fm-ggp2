@@ -64,7 +64,8 @@ pog_collection <- tibble(
 waffle_pogs <- ggwaffle::waffle_iron(pog_collection,
                       aes_d(group = type), rows = 10)
 labs_waffle <- labs(
-  title = "A Pogs collection (simulated)",
+  title = "A Pogs collection",
+  caption = "Simulated data",
   subtitle = "100 pieces, one square each",
   x = "", y = "", fill = NULL)
 ggp2_waffle <- ggplot(data = waffle_pogs, 
@@ -77,7 +78,8 @@ ggp2_waffle +
   labs_waffle +
   theme(axis.text = element_blank(),
         panel.grid = element_blank(),
-        legend.position = "top")
+        legend.position = "top") +
+  guides(fill = guide_legend(nrow = 2))
 ```
 
 ::::
@@ -216,7 +218,8 @@ ggplot(data = waffle_pogs, aes(x = x, y = y, fill = group)) +
   labs(x = NULL, y = NULL, fill = NULL) + 
   theme(axis.text = element_blank(),
         panel.grid = element_blank(),
-        legend.position = "top")
+        legend.position = "top") +
+  guides(fill = guide_legend(nrow = 2))
 ```
 :::
 
@@ -255,6 +258,8 @@ With $n = 100$, the expected count for each type is its probability times 100, w
 
   -   Remove the axis text and grid lines, and move the legend to the top with `theme()`
 
+  -   Split the legend into two rows with `guides()` so it fits above the square waffle
+
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -268,7 +273,8 @@ With $n = 100$, the expected count for each type is its probability times 100, w
 #| out-height: '100%'
 #| out-width: '100%'
 labs_waffle <- labs(
-  title = "A Pogs collection (simulated)",
+  title = "A Pogs collection",
+  caption = "Simulated data",
   subtitle = "100 pieces, one square each",
   x = "", y = "", fill = NULL)
 ggp2_waffle <- ggplot(data = waffle_pogs, 
@@ -281,7 +287,8 @@ ggp2_waffle +
   labs_waffle +
   theme(axis.text = element_blank(),
         panel.grid = element_blank(),
-        legend.position = "top")
+        legend.position = "top") +
+  guides(fill = guide_legend(nrow = 2))
 ```
 :::
 
@@ -302,7 +309,8 @@ ggp2_waffle +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_waffle <- labs(
-  title = "A Pogs collection (simulated)",
+  title = "A Pogs collection",
+  caption = "Simulated data",
   subtitle = "100 pieces, one square each",
   x = "", y = "", fill = NULL)
 ggp2_waffle <- ggplot(data = waffle_pogs, 
@@ -315,6 +323,7 @@ ggp2_waffle +
   labs_waffle +
   theme(axis.text = element_blank(),
         panel.grid = element_blank(),
-        legend.position = "top")
+        legend.position = "top") +
+  guides(fill = guide_legend(nrow = 2))
 ```
 

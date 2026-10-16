@@ -60,8 +60,9 @@ hm_sum_col <- happy_meals |>
   summarise(avg_sold = mean(sold)) |> 
   ungroup()
 labs_sum_col <- labs(
-    title = "Happy Meals (simulated)",
-    subtitle = "Average Happy Meals sold per day during each toy promotion",
+    title = "Happy Meals",
+    caption = "Simulated data",
+    subtitle = "Average Happy Meals sold per day\nduring each toy promotion",
     x = "Toy promotion",
     y = "Average sold per day")
 ggp2_sum_col <- ggplot(data = hm_sum_col,
@@ -242,8 +243,9 @@ With $n = 28$ days, the Teenie Beanie Babies average should land within about $2
 #| out-height: '100%'
 #| out-width: '100%'
 labs_sum_col <- labs(
-    title = "Happy Meals (simulated)",
-    subtitle = "Average Happy Meals sold per day during each toy promotion",
+    title = "Happy Meals",
+    caption = "Simulated data",
+    subtitle = "Average Happy Meals sold per day\nduring each toy promotion",
     x = "Toy promotion",
     y = "Average sold per day")
 ggp2_sum_col <- ggplot(data = hm_sum_col,
@@ -272,8 +274,9 @@ ggp2_sum_col +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_sum_col <- labs(
-    title = "Happy Meals (simulated)",
-    subtitle = "Average Happy Meals sold per day during each toy promotion",
+    title = "Happy Meals",
+    caption = "Simulated data",
+    subtitle = "Average Happy Meals sold per day\nduring each toy promotion",
     x = "Toy promotion",
     y = "Average sold per day")
 ggp2_sum_col <- ggplot(data = hm_sum_col,

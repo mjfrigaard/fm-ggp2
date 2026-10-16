@@ -18,6 +18,13 @@ showtext::showtext_auto()
 # set theme
 ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
+bare_theme <- theme(plot.title = element_blank(),
+                    plot.subtitle = element_blank(),
+                    plot.caption = element_blank(),
+                    axis.title = element_blank(),
+                    axis.text = element_blank(),
+                    axis.ticks = element_blank(),
+                    legend.position = "none")
 ```
 
 ```{r}
@@ -36,41 +43,48 @@ These graphs display counts or simple summary statistics of one or two columns i
 Grouped bar graphs help compare multiple variables across the same categories. Each category has a cluster of bars representing different subsets of data. The x-axis labels the categories, and the y-axis shows the measured value. Colors or patterns differentiate the subsets within each category, and a legend is usually shown on the side or top of the graph.
 
 ```{r}
-#| label: full_code_grp_bar
+#| label: part_grp_bar_graphs
 #| eval: true
 #| echo: false
 #| warning: false
 #| message: false
-#| out-height: '70%'
-#| out-width: '70%'
+#| out-height: '60%'
+#| out-width: '60%'
 #| fig-align: center
-library(palmerpenguins) 
 library(ggplot2)
-peng_grp_col <- palmerpenguins::penguins |>
-    dplyr::select(body_mass_g, island) |> 
-    tidyr::drop_na() |> 
-    dplyr::group_by(island) |>
-    dplyr::summarise(
-        avg_body_mass_g = mean(body_mass_g)
-        ) |>
-    dplyr::ungroup()
-# glimpse(peng_grp_col)
+library(dplyr)
+set.seed(1993)
+jp_dinos <- tibble(
+  species = c("Brachiosaurus", "Triceratops", "Tyrannosaurus",
+              "Gallimimus", "Velociraptor"),
+  n = c(3, 5, 2, 20, 8),
+  mean_tons = c(40, 9, 8, 0.45, 0.15),
+  sd_tons = c(5, 1.2, 1, 0.08, 0.03)) |>
+  tidyr::uncount(n) |>
+  mutate(weight_tons = round(rnorm(n(), mean = mean_tons, sd = sd_tons), 2)) |>
+  select(species, weight_tons)
+jp_paddocks <- jp_dinos |>
+  group_by(species) |>
+  summarise(total_tons = sum(weight_tons)) |>
+  ungroup()
 labs_grp_col <- labs(
-    title = "",
-    subtitle = "",
-    x = "",
-    y = "")
-ggp2_grp_col <- ggplot(data = peng_grp_col,
-              aes(x = island, 
-                  y = avg_body_mass_g)) + 
-        geom_col(aes(fill = island),
-            show.legend = FALSE)
-ggp2_grp_col + 
-    labs_grp_col + 
-  theme(axis.title.x = element_blank(),
-        axis.text.x = element_blank(),
-        axis.line.y = element_blank(),
-        axis.text.y = element_blank())
+    title = "Jurassic Park",
+    caption = "Simulated data",
+    subtitle = "Total weight of the dinosaurs in each paddock",
+    x = "Paddock",
+    y = "Total weight (tons)")
+ggp2_grp_col <- ggplot(data = jp_paddocks,
+              aes(x = species, 
+                  y = total_tons)) + 
+        geom_col(aes(fill = species),
+            show.legend = FALSE) +
+        scale_x_discrete(guide = guide_axis(n.dodge = 2))
+(
+  ggp2_grp_col +
+      labs_grp_col
+) +
+  fmggp2::theme_jurassic(base_size = 12) +
+  bare_theme
 ```
 
 ## Summary bar graphs
@@ -78,52 +92,236 @@ ggp2_grp_col +
 Bar graphs that summarize data show a statistic for each category. Each bar represents a value calculated for a specific group, such as the mean, median, or total. The x-axis lists the categories, and the y-axis shows the statistic values. These graphs are helpful in quickly displaying essential data points for different categories, and they can include error bars to show variation or confidence intervals.
 
 ```{r}
-#| label: full_code_sum_bar
+#| label: part_sum_bar_graphs
 #| eval: true
 #| echo: false
 #| warning: false
 #| message: false
-#| out-height: '70%'
-#| out-width: '70%'
+#| out-height: '60%'
+#| out-width: '60%'
 #| fig-align: center
-peng_sum_col <- palmerpenguins::penguins |> 
-    dplyr::select(body_mass_g, island) |> 
-    tidyr::drop_na() |> 
-    # divide the mass value by 1000
-    dplyr::mutate(
-        body_mass_kg = body_mass_g / 1000
-    )
+library(ggplot2)
+library(dplyr)
+set.seed(1997)
+happy_meals <- tibble(
+  promotion = c("Teenie Beanie Babies", "Furby", 
+                "Hot Wheels", "Inspector Gadget"),
+  lambda = c(420, 310, 220, 180)) |>
+  tidyr::uncount(28, .id = "day") |>
+  mutate(promotion = factor(promotion, levels = unique(promotion)),
+         sold = rpois(n(), lambda = lambda)) |>
+  select(promotion, day, sold)
+hm_sum_col <- happy_meals |> 
+  group_by(promotion) |> 
+  summarise(avg_sold = mean(sold)) |> 
+  ungroup()
 labs_sum_col <- labs(
-    title = "",
-    subtitle = "",
-    x = "",
-    y = "")
-ggp2_sum_col <- ggplot(data = peng_sum_col,
-    aes(x = island,
-        y = body_mass_kg)) +
-    geom_col(aes(fill = island), 
+    title = "Happy Meals",
+    caption = "Simulated data",
+    subtitle = "Average Happy Meals sold per day\nduring each toy promotion",
+    x = "Toy promotion",
+    y = "Average sold per day")
+ggp2_sum_col <- ggplot(data = hm_sum_col,
+    aes(x = promotion,
+        y = avg_sold)) +
+    geom_col(aes(fill = promotion), 
         show.legend = FALSE)  
-ggp2_sum_col + 
-    labs_sum_col + 
-  theme(axis.title.x = element_blank(),
-        axis.text.x = element_blank(),
-        axis.line.y = element_blank(),
-        axis.text.y = element_blank())
+(
+  ggp2_sum_col +
+      labs_sum_col
+) +
+  fmggp2::theme_happymeal(base_size = 12) +
+  bare_theme
 ```
 
 ## Overlapping bar graphs
 
 When displaying multiple variables on a graph, you can use overlapping bar graphs instead of placing them side by side. This method allows you to compare the values of different groups on the same scale, but it might be harder to read if the bars are entirely opaque. The bars are often made partially transparent to make it easier to see. Legends can help distinguish between the data represented by the different bars.
 
+```{r}
+#| label: part_overlapping_bar_graphs
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+set.seed(1994)
+friends_episodes <- tibble(
+  season = c("Season 1", "Season 3", "Season 5"),
+  mean_viewers = c(22, 27, 24)) |>
+  tidyr::uncount(24, .id = "episode") |>
+  mutate(viewers_m = round(rnorm(n(), mean = mean_viewers, sd = 2.5)),
+         audience = if_else(viewers_m >= 25, "25M or more", "Under 25M")) |>
+  select(season, episode, viewers_m, audience)
+labs_bar_ovrlp <- labs(
+  title = "Friends",
+  caption = "Simulated data",
+  subtitle = "Viewers per episode in three seasons",
+  x = "Viewers (millions)",
+  y = "Episodes",
+  fill = "Season")
+ggp2_bar_ovrlp <- ggplot(data = friends_episodes,
+          aes(x = viewers_m, fill = season)) +
+                geom_bar() 
+(
+  ggp2_bar_ovrlp +
+    labs_bar_ovrlp
+) +
+  fmggp2::theme_friends(base_size = 12) +
+  bare_theme
+```
+
 ## Heatmaps
 
 A heatmap is a graph that shows data as colors. It uses a matrix to represent values, with the x and y axes showing categories. Each cell in the matrix is colored according to its value. Heatmaps help show how big something is in two dimensions. A color scale (legend) is often next to the graph to explain what the colors mean.
+
+```{r}
+#| label: part_heatmaps
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+set.seed(1990)
+fp_gags <- tibble(
+  gag = c("Will flirts", "Phil yells at Will", "Geoffrey zinger",
+          "Jazz thrown out", "Hilary goes shopping", "Carlton dance"),
+  base = c(1.5, 1.2, 0.8, -0.4, -0.2, -2.2),
+  trend = c(-0.3, -0.1, 0, 0.2, 0, 0.5))
+fp_episodes <- fp_gags |>
+  tidyr::expand_grid(season = 1:6, episode = 1:24) |>
+  mutate(p = plogis(base + trend * (season - 3.5)),
+         present = rbinom(n(), size = 1, prob = p))
+fp_heatmap <- fp_episodes |>
+  group_by(season, gag) |>
+  summarise(occurrences = sum(present), .groups = "drop")
+labs_heatmap_tile <- labs(
+  title = "The Fresh Prince of Bel-Air",
+  caption = "Simulated data",
+  subtitle = "Running gags per season (24 episodes each)",
+  x = "Season", 
+  y = "Running gag", 
+  fill = "Episodes")
+ggp2_heatmap_tile <- ggplot(data = fp_heatmap, 
+       aes(x = season, 
+           y = gag, 
+           fill = occurrences)) + 
+       geom_tile() + 
+    theme(legend.position = "bottom")
+(
+  ggp2_heatmap_tile +
+    labs_heatmap_tile
+) +
+  fmggp2::theme_freshprince(base_size = 12) +
+  bare_theme
+```
 
 ## Waffle charts
 
 Waffle charts are a way to show how a whole thing is divided into parts, just like pie charts. Instead of using slices, waffle charts use squares or icons to represent each part and group them into categories that fill a grid. This graph type is appropriate when showing percentages or proportions out of a total. To make it easy to understand, you can add a legend or labels next to each category to explain what it is.
 
+```{r}
+#| label: part_waffle_charts
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-asp: 1
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggwaffle)
+library(ggplot2)
+library(dplyr)
+set.seed(1993)
+pog_collection <- tibble(
+  pog_id = 1:100,
+  type = sample(c("Milk caps", "Printed pogs", "Holographic", "Slammers"),
+    size = 100, replace = TRUE, prob = c(0.45, 0.30, 0.15, 0.10)))
+waffle_pogs <- ggwaffle::waffle_iron(pog_collection,
+                      aes_d(group = type), rows = 10)
+labs_waffle <- labs(
+  title = "A Pogs collection",
+  caption = "Simulated data",
+  subtitle = "100 pieces, one square each",
+  x = "", y = "", fill = NULL)
+ggp2_waffle <- ggplot(data = waffle_pogs, 
+       aes(x = x, 
+           y = y, 
+           fill = group)) + 
+  ggwaffle::geom_waffle() +
+  coord_equal()
+(
+  ggp2_waffle +
+    labs_waffle +
+    theme(axis.text = element_blank(),
+          panel.grid = element_blank(),
+          legend.position = "top") +
+    guides(fill = guide_legend(nrow = 2))
+) +
+  fmggp2::theme_pogs(base_size = 12) +
+  bare_theme
+```
+
 ## Cleveland dot plots
 
 Cleveland dot plots are a graph that helps compare a few different numbers. The graph lists the categories on the side and shows the data with dots along a line. This graph helps show the differences between groups and is more efficient than traditional bar graphs.
 
+```{r}
+#| label: part_cleveland_dot_plots
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+library(forcats)
+set.seed(1979)
+walkman_tests <- faux::sim_design(
+  between = list(model = c("WM2", "Sports", "MegaBass"),
+                 battery = c("Alkaline", "Rechargeable")),
+  n = 20,
+  mu = c(WM2_Alkaline = 10, WM2_Rechargeable = 7,
+         Sports_Alkaline = 16, Sports_Rechargeable = 12,
+         MegaBass_Alkaline = 22, MegaBass_Rechargeable = 17),
+  sd = 2, dv = "hours", long = TRUE, plot = FALSE) |>
+  as_tibble() |>
+  mutate(model = factor(model, levels = c("WM2", "Sports", "MegaBass"),
+    labels = c("WM-2", "WM-F45 Sports", "WM-EX194 Mega Bass")))
+walkman_clev_dots <- walkman_tests |>
+  group_by(battery, model) |>
+  summarise(med_hours = median(hours), .groups = "drop")
+labs_clev_dots <- labs(
+    title = "Sony Walkman battery tests",
+    caption = "Simulated data",
+    subtitle = "Alkaline and rechargeable batteries",
+    x = "Median battery life (hours)",
+    y = "Model",
+    color = "Battery")
+
+ggp2_clev_dots <- ggplot(data = walkman_clev_dots,
+                mapping = aes(x = med_hours, 
+                              y = fct_rev(model))) +
+                geom_line(aes(group = model), 
+                    linewidth = 0.75) + 
+                geom_point(aes(color = battery), 
+                    size = 2.25) 
+
+(
+  ggp2_clev_dots +
+      labs_clev_dots
+) +
+  fmggp2::theme_walkman(base_size = 12) +
+  bare_theme
+```

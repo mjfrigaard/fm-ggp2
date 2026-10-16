@@ -58,7 +58,8 @@ aim_buddies <- tibble(
                                 rnorm(n(), mean = 60, sd = 10),
                                 rnorm(n(), mean = 150, sd = 20)))))
 labs_grp_violin <- labs(
-  title = "AOL Instant Messenger (simulated)",
+  title = "AOL Instant Messenger",
+  caption = "Simulated data",
   subtitle = "Buddy list sizes for 150 users at each level of school",
   x = "School", fill = "School",
   y = "Buddies")
@@ -246,7 +247,8 @@ The [Poisson](https://en.wikipedia.org/wiki/Poisson_distribution) gives a narrow
 #| out-height: '100%'
 #| out-width: '100%'
 labs_grp_violin <- labs(
-  title = "AOL Instant Messenger (simulated)",
+  title = "AOL Instant Messenger",
+  caption = "Simulated data",
   subtitle = "Buddy list sizes for 150 users at each level of school",
   x = "School", fill = "School",
   y = "Buddies")
@@ -281,7 +283,8 @@ Violin plots can allow us to compare the 'center' and 'spread' of continuous var
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_grp_violin <- labs(
-  title = "AOL Instant Messenger (simulated)",
+  title = "AOL Instant Messenger",
+  caption = "Simulated data",
   subtitle = "Buddy list sizes for 150 users at each level of school",
   x = "School", fill = "School",
   y = "Buddies")

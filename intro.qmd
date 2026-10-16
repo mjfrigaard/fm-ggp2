@@ -170,7 +170,8 @@ ggplot(data = pc_sales,
   # labels
   labs(
     x = 'Processor speed (MHz)', y = 'Price (USD)', 
-    title = 'Home PCs in 1998 (simulated)',  subtitle = 'Price vs. processor speed'
+    title = 'Home PCs in 1998',  subtitle = 'Price vs. processor speed',
+    caption = 'Simulated data'
     ) + 
   # themes
   theme(legend.position = "bottom", legend.box = "vertical")

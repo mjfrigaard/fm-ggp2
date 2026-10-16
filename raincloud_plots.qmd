@@ -58,7 +58,8 @@ magic_eye_posters <- tibble(
            meanlog = log(c(Dolphins = 15, `Space shuttle` = 30,
                            Dinosaur = 60)[as.character(poster)])), 1))
 labs_raincloud_2 <- ggplot2::labs(
-    title = "Magic Eye (simulated)",
+    title = "Magic Eye",
+    caption = "Simulated data",
     x = "Seconds to see the hidden image",
     y = "Poster")
 ggplot(magic_eye_posters,
@@ -123,7 +124,8 @@ ggp2_raincloud_x <- ggp2_raincloud +
         labels = c("First try", "Second try"),
         limits = c(0, 3))
 ggp2_raincloud_x +
-    labs(title = "Magic Eye (simulated)",
+    labs(title = "Magic Eye",
+        caption = "Simulated data",
         subtitle = "100 viewers, two tries each",
          x = NULL, y = "Seconds to see the hidden image")
 ```
@@ -324,7 +326,8 @@ ggp2_raincloud_x <- ggp2_raincloud +
         limits = c(0, 3))
 ggp2_raincloud_x +
     ggplot2::labs(
-        title = "Magic Eye (simulated)",
+        title = "Magic Eye",
+        caption = "Simulated data",
         subtitle = "100 viewers, two tries each",
         x = NULL,
         y = "Seconds to see the hidden image")
@@ -360,7 +363,8 @@ ggp2_raincloud_x <- ggp2_raincloud +
         limits = c(0, 3))
 ggp2_raincloud_x +
     ggplot2::labs(
-        title = "Magic Eye (simulated)",
+        title = "Magic Eye",
+        caption = "Simulated data",
         subtitle = "100 viewers, two tries each",
          x = NULL,
         y = "Seconds to see the hidden image")
@@ -411,7 +415,8 @@ glimpse(magic_eye_posters)
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_raincloud_2 <- ggplot2::labs(
-    title = "Magic Eye (simulated)",
+    title = "Magic Eye",
+    caption = "Simulated data",
     x = "Seconds to see the hidden image",
     y = "Poster")
 ggp2_box <- ggplot(magic_eye_posters,

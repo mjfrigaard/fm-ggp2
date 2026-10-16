@@ -63,7 +63,8 @@ encarta_diverg <- encyclopedia_survey |>
          choice = factor(choice, levels = c("Encarta", "Britannica")),
          year = factor(year))
 labs_geom_bar_diverg <- labs(
-  title = "Encarta vs. Britannica (simulated)",
+  title = "Encarta vs. Britannica",
+  caption = "Simulated data",
   subtitle = "Encyclopedia households used most each year",
   x = "Year",
   y = "Share of households",
@@ -351,7 +352,8 @@ Each simulated share wobbles around its point by about $\sqrt{p(1 - p) / 400}$, 
 #| out-height: '100%'
 #| out-width: '100%'
 labs_geom_bar_diverg <- labs(
-  title = "Encarta vs. Britannica (simulated)",
+  title = "Encarta vs. Britannica",
+  caption = "Simulated data",
   subtitle = "Encyclopedia households used most each year",
   x = "Year",
   y = "Share of households",
@@ -385,7 +387,8 @@ ggp2_bars_diverg +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_geom_bar_diverg <- labs(
-  title = "Encarta vs. Britannica (simulated)",
+  title = "Encarta vs. Britannica",
+  caption = "Simulated data",
   subtitle = "Encyclopedia households used most each year",
   x = "Year",
   y = "Share of households",
@@ -434,7 +437,8 @@ For vertically arranged bars, we switch the `x` and `y` axis variables.
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_geom_bar_diverg_vert <- labs(
-  title = "Encarta vs. Britannica (simulated)",
+  title = "Encarta vs. Britannica",
+  caption = "Simulated data",
   subtitle = "Encyclopedia households used most each year",
   x = "Share of households",
   y = "Year",

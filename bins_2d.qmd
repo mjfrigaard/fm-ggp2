@@ -17,8 +17,8 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
-    base_size = 15))
+ggplot2::theme_set(fmggp2::theme_geocities(
+    base_size = 14))
 ```
 
 ```{r}
@@ -29,7 +29,6 @@ ggplot2::theme_set(theme_ggp2g(
 # polish, dev, draft, complete
 status("complete")
 ```
-
 
 :::: {.callout-note collapse="false" icon=false}
 
@@ -44,25 +43,33 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
-penguins_2dhist <- palmerpenguins::penguins |> 
-    dplyr::select(flipper_length_mm, bill_length_mm, year) |> 
-    tidyr::drop_na()
+library(dplyr)
+set.seed(1997)
+geocities_pages <- tibble(
+  page_id = 1:5000,
+  modem = sample(c("28.8k", "56k"), size = 5000, replace = TRUE),
+  page_kb = round(rlnorm(5000, meanlog = log(60), sdlog = 0.45), 1)) |>
+  mutate(
+    kbps = if_else(modem == "28.8k", 24, 44),
+    load_sec = round(2 + page_kb * 8 / kbps +
+                       rnorm(n(), mean = 0, sd = 1.5), 1)) |>
+  select(-kbps)
 
 labs_2dhist <- labs(
-    title = "Adult Foraging Penguins", 
-    subtitle = "Near Palmer Station, Antarctica", 
-    x = "Bill length (mm)", 
-    y = "Flipper length (mm)")
+    title = "GeoCities page loads",
+    subtitle = "Page size vs. seconds to load on a dial-up modem",
+    caption = "Simulated data",
+    x = "Page size (KB)",
+    y = "Seconds to load")
 
-ggp2_base <- ggplot(data = penguins_2dhist, 
-    mapping = aes(x = bill_length_mm, 
-                  y = flipper_length_mm)) 
+ggp2_base <- ggplot(data = geocities_pages,
+    mapping = aes(x = page_kb,
+                  y = load_sec))
 
-ggp2_base + 
-     geom_bin2d(bins = 15) + 
-     labs_2dhist 
+ggp2_base +
+     geom_bin2d(bins = 30) +
+     labs_2dhist
 ```
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
@@ -75,11 +82,11 @@ ggp2_base +
 
 ::::
 
-## Description 
+## Description
 
-Standard histograms separate a variable's values into discrete groups, or 'bins,' which are arranged in increasing order across the `x` axis. The `y` axis displays the frequency (or count) of values within each bin. 
+Standard histograms separate a variable's values into discrete groups, or 'bins,' which are arranged in increasing order across the `x` axis. The `y` axis displays the frequency (or count) of values within each bin.
 
-Vertical bars capture the variable's distribution using the height of the bar to represent the number of values per 'bin', and the number of bars corresponds with the bin value (or 'bin-width'). 
+Vertical bars capture the variable's distribution using the height of the bar to represent the number of values per 'bin', and the number of bars corresponds with the bin value (or 'bin-width').
 
 When we extend this display to two numerical/quantitative variables, the bins are used to divide the total graph area into a grid, and color is used to display the variation in frequency (or count) of both variable values that fall within each intersecting square.
 
@@ -95,16 +102,17 @@ Install packages.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: pkg_code_2d_hist
+#| label: pkg_code_2dhist
 #| code-fold: show
 #| eval: false
 #| echo: true
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins)
+install.packages("colorspace")
+library(colorspace)
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -114,25 +122,104 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
+In the late 90s, anyone could build a home page on GeoCities, and most people loaded those pages (animated GIFs, MIDI files, and all) over a dial-up modem. We'll simulate 5,000 page loads with three variables:
 
-We'll take the `flipper_length_mm`, `bill_length_mm`, and `species` variables from `palmerpenguins::penguins` and drop the missing values. 
+  - `modem`: a 28.8k or 56k modem, drawn with `sample()`
+
+  - `page_kb`: the size of the page in kilobytes. Most pages are small and a few are huge, so we draw these from a lognormal distribution with `rlnorm()`
+
+  - `load_sec`: the seconds it takes to load the page. Each load takes 2 seconds to connect, plus the page size in kilobits (`page_kb * 8`) divided by the modem's real world speed (24 kilobits per second for a 28.8k modem, 44 for a 56k modem), plus some noise from `rnorm()`
+
+Setting the seed with `set.seed()` means you'll get the same 5,000 page loads every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: data_code_2d_hist
+#| label: data_code_2dhist
 #| code-fold: show
 #| eval: true
 #| echo: true
-penguins_2dhist <- palmerpenguins::penguins |> 
-    dplyr::select(flipper_length_mm, bill_length_mm, 
-                  sex, species, body_mass_g) |> 
-    tidyr::drop_na()
-glimpse(penguins_2dhist)
+set.seed(1997)
+geocities_pages <- tibble(
+  page_id = 1:5000,
+  modem = sample(c("28.8k", "56k"), size = 5000, replace = TRUE),
+  page_kb = round(rlnorm(5000, meanlog = log(60), sdlog = 0.45), 1)) |>
+  mutate(
+    kbps = if_else(modem == "28.8k", 24, 44),
+    load_sec = round(2 + page_kb * 8 / kbps +
+                       rnorm(n(), mean = 0, sd = 1.5), 1)) |>
+  select(-kbps)
+glimpse(geocities_pages)
 ```
 :::
+
+## Distribution
+
+With 5,000 points, a scatter plot turns into a solid blob. A 2D histogram counts how many points land in each square of a grid and colors the squares by those counts. The counts reveal a pattern the blob would hide: there are two kinds of page loads, one for each modem. Below we'll move from the page loads, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first five page loads.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_2dhist
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(geocities_pages, 5)
+```
+:::
+
+Below we build a small 2D histogram by hand. We cut the page sizes into 25 KB bins and the load times into 5 second bins with `cut_width()`, then count the page loads in each pair of bins (only the most crowded cells are shown).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_2dhist
+#| code-fold: show
+#| eval: true
+#| echo: true
+geocities_cells <- geocities_pages |>
+  mutate(kb_bin = cut_width(page_kb, width = 25, boundary = 0),
+         sec_bin = cut_width(load_sec, width = 5, boundary = 0)) |>
+  count(kb_bin, sec_bin, sort = TRUE)
+head(geocities_cells, 6)
+```
+:::
+
+The busiest cell holds `r geocities_cells$n[1]` page loads, and `r sum(geocities_cells$n == 1)` of the `r nrow(geocities_cells)` cells hold only a single page load. Each of these counts becomes one colored square in the graph.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The graph below shows the same 5,000 page loads with `geom_bin2d()`, split into two panels by `modem`. Each modem draws its own straight band: the band for the slow 28.8k modem climbs almost twice as steeply as the band for the 56k modem.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_2dhist
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(geocities_pages, aes(x = page_kb, y = load_sec)) +
+  geom_bin2d(bins = 30) +
+  facet_wrap(~ modem) +
+  labs(x = "Page size (KB)", y = "Seconds to load")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+The page sizes follow a [lognormal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution), and the load times follow a normal distribution centered on a straight line whose slope depends on the modem:
+
+$$
+\log(\text{KB}) \sim \text{Normal}(\log(60), \; 0.45), \quad \text{seconds} \mid \text{KB}, \text{modem} \sim \text{Normal}\left(2 + \frac{8 \times \text{KB}}{\text{kbps}_{\text{modem}}}, \; 1.5\right)
+$$
+
+The slopes are $8 / 24 \approx 0.33$ seconds per kilobyte for a 28.8k modem and $8 / 44 \approx 0.18$ for a 56k modem, which is why one band is about twice as steep as the other. With both modems together, the data come from a [mixture](https://en.wikipedia.org/wiki/Mixture_distribution) of two of these distributions. Each square in a 2D histogram counts how many of our 5,000 page loads fell inside it, so its count is about $5000 \times p$, where $p$ is the chance a page load lands in that square. Smaller squares have smaller counts, and counts that small bounce around a lot from square to square (the noise in a count is about its square root). Try changing `bins = 30` to `bins = 80` in the graph above and the bands break up into speckles.
 
 ## Grammar
 
@@ -144,32 +231,33 @@ glimpse(penguins_2dhist)
 
   - Initialize the graph with `ggplot()` and provide `data`
 
-  - Map `bill_length_mm` to the `x` and `flipper_length_mm` to the `y`
+  - Map `page_kb` to the `x` and `load_sec` to the `y`
 
   - Add the `geom_bin2d()` layer
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: code_graph_2d_hist
+#| label: code_graph_2dhist
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_2dhist <- labs(
-    title = "Adult Foraging Penguins", 
-    subtitle = "Near Palmer Station, Antarctica", 
-    x = "Bill length (mm)", 
-    y = "Flipper length (mm)")
+    title = "GeoCities page loads",
+    subtitle = "Page size vs. seconds to load on a dial-up modem",
+    caption = "Simulated data",
+    x = "Page size (KB)",
+    y = "Seconds to load")
 
-ggp2_2dhist <- ggplot(data = penguins_2dhist, 
-    mapping = aes(x = bill_length_mm, 
-                  y = flipper_length_mm)) + 
-    geom_bin2d(bins = 15)
-            
-ggp2_2dhist + 
+ggp2_2dhist <- ggplot(data = geocities_pages,
+    mapping = aes(x = page_kb,
+                  y = load_sec)) +
+    geom_bin2d(bins = 30)
+
+ggp2_2dhist +
     labs_2dhist
 ```
 :::
@@ -181,26 +269,27 @@ ggp2_2dhist +
 :::
 
 ```{r}
-#| label: create_graph_2d_hist
+#| label: create_graph_2dhist
 #| eval: true
 #| echo: false
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-#| layout-ncol: 1
+#| layout-nrow: 1
 labs_2dhist <- labs(
-    title = "Adult Foraging Penguins", 
-    subtitle = "Near Palmer Station, Antarctica", 
-    x = "Bill length (mm)", 
-    y = "Flipper length (mm)")
+    title = "GeoCities page loads",
+    subtitle = "Page size vs. seconds to load on a dial-up modem",
+    caption = "Simulated data",
+    x = "Page size (KB)",
+    y = "Seconds to load")
 
-ggp2_2dhist <- ggplot(data = penguins_2dhist, 
-    mapping = aes(x = bill_length_mm, 
-                  y = flipper_length_mm)) + 
-    geom_bin2d(bins = 15)
-            
-ggp2_2dhist + 
+ggp2_2dhist <- ggplot(data = geocities_pages,
+    mapping = aes(x = page_kb,
+                  y = load_sec)) +
+    geom_bin2d(bins = 30)
+
+ggp2_2dhist +
     labs_2dhist
 ```
 
@@ -208,47 +297,40 @@ ggp2_2dhist +
 
 ### Bins
 
-The value for `bins` will be vary depending on the variable values--there is no correct number:
+The value for `bins` will vary depending on the variable values (there is no correct number):
 
-  - If the number of `bins` is too low, the density may hide important nuances between the variables. 
-  
+  - If the number of `bins` is too low, the density may hide important nuances between the variables.
+
   - If the number of `bins` is too high, the noise might drown out the signal.
 
-  - Below we change the `bins` to `9`, `12` and `18` to compare the display:
+  - Below we change the `bins` to `15`, `45` and `60` to compare the display:
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: bins_2d_hist
+#| label: code_graph_2dhist_bins
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 2
-ggp2_base <- ggplot(data = penguins_2dhist, 
-    mapping = aes(x = bill_length_mm, 
-                  y = flipper_length_mm))
+ggp2_base <- ggplot(data = geocities_pages,
+    mapping = aes(x = page_kb,
+                  y = load_sec))
 
-ggp2_2dhist_bins18 <- ggp2_base + 
-                    geom_bin2d(bins = 18)
+ggp2_2dhist_bins15 <- ggp2_base +
+                    geom_bin2d(bins = 15)
 
-ggp2_2dhist_bins12 <- ggp2_base + 
-                    geom_bin2d(bins = 12) 
+ggp2_2dhist_bins45 <- ggp2_base +
+                    geom_bin2d(bins = 45)
 
-ggp2_2dhist_bins9 <- ggp2_base + 
-                    geom_bin2d(bins = 9)
+ggp2_2dhist_bins60 <- ggp2_base +
+                    geom_bin2d(bins = 60)
 
-ggp2_2dhist_bins18 + 
-     labs_2dhist 
+ggp2_2dhist_bins15 +
+     labs_2dhist
 
-ggp2_2dhist + 
-    labs_2dhist
+ggp2_2dhist_bins45 +
+     labs_2dhist
 
-ggp2_2dhist_bins12 + 
-     labs_2dhist 
-
-ggp2_2dhist_bins9 + 
+ggp2_2dhist_bins60 +
   labs_2dhist
 ```
 
@@ -256,31 +338,27 @@ ggp2_2dhist_bins9 +
 
 ### Scale
 
-`scale_fill_continuous_sequential()` comes with a variety of palettes to choose from (run `hcl_palettes(type = "sequential")` to view the full list).
+`scale_fill_continuous_sequential()` from the [`colorspace` package](https://colorspace.r-forge.r-project.org/) comes with a variety of palettes to choose from (run `hcl_palettes(type = "sequential")` to view the full list).
 
 We can also reverse the order of the fill color scale with `rev` (`TRUE` or `FALSE`).
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: scales_2d_hist
+#| label: code_graph_2dhist_scale
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-ncol: 1
-ggp2_2dhist_bins12 + 
+ggp2_2dhist_bins45 +
     scale_fill_continuous_sequential(
-        palette = "Mako", 
+        palette = "Mako",
         rev = TRUE) +
-    labs_2dhist 
+    labs_2dhist
 
-ggp2_2dhist_bins12 + 
+ggp2_2dhist_bins45 +
     scale_fill_continuous_sequential(
-        palette = "Mako", 
+        palette = "Mako",
         rev = FALSE) +
-    labs_2dhist 
+    labs_2dhist
 ```
 
 :::
@@ -288,37 +366,33 @@ ggp2_2dhist_bins12 +
 ### Options
 
 ::: {.column-margin}
-If you set the point `shape` to `21`, you have control over *both* `color` and `fill`. 
+If you set the point `shape` to `21`, you have control over *both* `color` and `fill`.
 :::
 
-In the previous example we showed how to `rev`erse the color scale for the `palette` in `scale_fill_continuous_sequential()`. 
+In the previous example we showed how to `rev`erse the color scale for the `palette` in `scale_fill_continuous_sequential()`.
 
   - Below we reverse the color scale, but also manually set which colors on the scale we want to `begin` with (i.e., smallest data value) and which color we want to `end` with (i.e., the largest data value). Possible values range from `0` - `1`.
 
-  - We also add a `geom_point()` layer. 
+  - We also add a `geom_point()` layer (with a small `size` and `alpha`, because there are 5,000 points).
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: pals_2d_hist
+#| label: code_graph_2dhist_options
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-ggp2_2dhist_bins12 +
+ggp2_2dhist_bins45 +
   scale_fill_continuous_sequential(
     palette = "SunsetDark",
     rev = TRUE,
     begin = 1.0,
     end = 0.3) +
   geom_point(
-    fill = "#D4F0FC",
-    color = "#02577A",
+    fill = "#00FFFF",
+    color = "#000033",
     shape = 21,
-    size = 1.8,
-    alpha = 0.60) +
-  labs_2dhist 
+    size = 0.8,
+    alpha = 0.25) +
+  labs_2dhist
 ```
 :::

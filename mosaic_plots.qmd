@@ -19,7 +19,7 @@ source("_common.R")
 showtext::showtext_auto()
 # set theme
 ggplot2::theme_set(fmggp2::theme_titanic(
-    base_size = 14))
+    base_size = 12))
 ```
 
 ```{r}
@@ -65,7 +65,8 @@ titanic_fans <- tibble(
     viewings = factor(viewings, levels = c("Once", "Twice", "3+ times")),
     soundtrack = factor(soundtrack, levels = c("No", "Yes")))
 labs_mosaic <- labs(
-      title = "Titanic (simulated)",
+      title = "Titanic",
+      caption = "Simulated data",
       subtitle = "500 moviegoers in 1998",
       fill = "Age group")
 ggp2_mosaic <- ggplot(data = titanic_fans) +
@@ -280,7 +281,8 @@ When two variables are [independent](https://en.wikipedia.org/wiki/Independence_
 #| out-height: '100%'
 #| out-width: '100%'
 labs_mosaic <- labs(
-      title = "Titanic (simulated)",
+      title = "Titanic",
+      caption = "Simulated data",
       subtitle = "500 moviegoers in 1998",
       fill = "Age group")
 ggp2_mosaic <- ggplot(data = titanic_fans) +
@@ -313,7 +315,8 @@ ggp2_mosaic +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_mosaic <- labs(
-      title = "Titanic (simulated)",
+      title = "Titanic",
+      caption = "Simulated data",
       subtitle = "500 moviegoers in 1998",
       fill = "Age group")
 ggp2_mosaic <- ggplot(data = titanic_fans) +
@@ -351,7 +354,8 @@ It's a good idea to adjust the `fig-height` and `fig-width` of your graph
 #| fig-align: center
 # graph
 labs_mosaic <- labs(
-      title = "Titanic (simulated)",
+      title = "Titanic",
+      caption = "Simulated data",
       subtitle = "f(viewings | age_group) f(age_group)",
       fill = "Age group")
 ggp2_mosaic <- ggplot(data = titanic_fans) +
@@ -429,7 +433,8 @@ Once again we can see the counts for each category in the cross-tabulation:
 #| layout-nrow: 1
 # build 2-variable mosiac plot
 labs_mosaic_2var <- labs(
-  title = "Titanic (simulated)",
+  title = "Titanic",
+  caption = "Simulated data",
   subtitle = "2-Variable plot",
   fill = "soundtrack")
 
@@ -462,7 +467,8 @@ For conditional variables, we map the `product()` variable as `viewings` and the
 #| layout-nrow: 1
 # build conditional mosiac plot
 labs_mosaic_cond <- labs(
-  title = "Titanic (simulated)",
+  title = "Titanic",
+  caption = "Simulated data",
   subtitle = "Conditional plot",
   fill = "viewings")
 ggp2_mosaic_cond <- ggplot(data = titanic_fans) +
@@ -489,6 +495,7 @@ The `divider` argument let's us control the spine partitions (vertically and hor
 ::: {style="font-size: 0.95rem;"}
 ```{r}
 #| label: patchwork_mosaic_run_v
+#| fig-asp: 1.1
 #| eval: true
 #| echo: false
 #| error: true
@@ -498,7 +505,7 @@ The `divider` argument let's us control the spine partitions (vertically and hor
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_mosaic_facet <- labs(
-        title = "Titanic (simulated)",
+        title = "Titanic",
         caption = "divider = 'vspine'",
         fill = "soundtrack")
 ggp2_mosaic_vspine <- ggplot(data = titanic_fans) +
@@ -507,7 +514,7 @@ ggp2_mosaic_vspine <- ggplot(data = titanic_fans) +
                               divider = "vspine") +
                     facet_grid(. ~ viewings) +
             scale_x_productlist("Times seen in theaters") +
-            scale_y_productlist("Bought the soundtrack?") +
+            scale_y_productlist("Soundtrack?") +
             theme(
                 axis.text.x = element_blank(),
                 axis.ticks.x = element_blank(),
@@ -521,7 +528,7 @@ ggp2_mosaic_vbar <- ggplot(data = titanic_fans) +
                               divider = "vbar") +
                     facet_grid(. ~ viewings) +
             scale_x_productlist("Times seen in theaters") +
-            scale_y_productlist("Bought the soundtrack?") +
+            scale_y_productlist("Soundtrack?") +
             theme(
                 axis.text.x = element_blank(),
                 axis.ticks.x = element_blank(),
@@ -542,6 +549,7 @@ The two horizontal orientation options make the axis text harder to read, so the
 ::: {style="font-size: 0.95rem;"}
 ```{r}
 #| label: patchwork_mosaic_run_h
+#| fig-asp: 1.1
 #| eval: true
 #| echo: false
 #| error: true

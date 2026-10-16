@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_bopit(
     base_size = 13))
 ```
 
@@ -28,8 +28,6 @@ ggplot2::theme_set(theme_ggp2g(
 # polish, dev, draft, complete
 status("complete")
 ```
-
-
 
 :::: {.callout-note collapse="false" icon=false}
 
@@ -44,30 +42,42 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins)
 library(ggplot2)
-peng_dnsty_2d <- palmerpenguins::penguins |>
-  filter(!is.na(bill_length_mm) &
-    !is.na(flipper_length_mm) &
-    !is.na(species)) |>
-  mutate(species = factor(species))
+library(dplyr)
+library(faux)
+make_group <- function(group, n, mu, sd, r) {
+  faux::rnorm_multi(n = n, mu = c(bop_ms = mu[1], twist_ms = mu[2]),
+                    sd = sd, r = r) |>
+    mutate(age_group = group)
+}
+set.seed(1996)
+bopit_players <- bind_rows(
+  make_group("Teens", 150, mu = c(350, 400), sd = c(30, 35), r = 0.6),
+  make_group("Kids", 150, mu = c(480, 560), sd = c(40, 45), r = 0.7),
+  make_group("Parents", 150, mu = c(630, 720), sd = c(50, 60), r = 0.5)) |>
+  mutate(player_id = row_number(),
+         age_group = factor(age_group, levels = c("Teens", "Kids", "Parents")),
+         across(c(bop_ms, twist_ms), round)) |>
+  select(player_id, age_group, bop_ms, twist_ms)
 # x limits
-x_min <- min(peng_dnsty_2d$bill_length_mm) - 5
-x_max <- max(peng_dnsty_2d$bill_length_mm) + 5
+x_min <- min(bopit_players$bop_ms) - 50
+x_max <- max(bopit_players$bop_ms) + 50
 # y limits
-y_min <- min(peng_dnsty_2d$flipper_length_mm) - 10
-y_max <- max(peng_dnsty_2d$flipper_length_mm) + 10
+y_min <- min(bopit_players$twist_ms) - 50
+y_max <- max(bopit_players$twist_ms) + 50
 labs_dnsty_2d <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)",
-  y = "Flipper length (mm)"
+  title = "Bop It reaction times",
+  subtitle = "Milliseconds to respond to each command",
+  caption = "Simulated data",
+  x = "'Bop it!' (ms)",
+  y = "'Twist it!' (ms)"
 )
 ggp2_dnsty_2d_fill <- ggplot(
-  data = peng_dnsty_2d,
+  data = bopit_players,
   mapping = aes(
-    x = bill_length_mm,
+    x = bop_ms,
     fill = after_stat(level),
-    y = flipper_length_mm
+    y = twist_ms
   )
 ) +
   # expand limits
@@ -78,13 +88,13 @@ ggp2_dnsty_2d_fill <- ggplot(
   # stat polygon
   stat_density_2d(
     geom = "polygon",
-    color = "#000000",
+    color = "#23123F",
     linewidth = 0.15
   ) +
   # gradient
   scale_fill_gradient(
-    low = "#02577A",
-    high = "#ffffff",
+    low = "#5B2A9A",
+    high = "#FFD400",
     guide = "none"
   )
 ggp2_dnsty_2d_fill +
@@ -96,7 +106,7 @@ ggp2_dnsty_2d_fill +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**      
+**✅ a categorical variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -107,7 +117,7 @@ ggp2_dnsty_2d_fill +
 
 ## Description
 
-Density contours (or 2-D density plots) are helpful for displaying differences in values between two numeric (continuous) variables. 
+Density contours (or 2-D density plots) are helpful for displaying differences in values between two numeric (continuous) variables.
 
 In [topographical maps](https://en.wikipedia.org/wiki/Topography), contour lines are drawn around areas of equal elevation above sea-level. In density contours, the contour lines are drawn around the areas our data occupy (essentially replacing sea-level as '*an area without any x or y values.*')
 
@@ -131,9 +141,10 @@ Install packages.
 #| warning: false
 #| message: false
 #| results: hide
-install.packages("palmerpenguins")
-library(palmerpenguins)
+install.packages("faux")
+library(faux)
 library(ggplot2)
+library(dplyr) # for data manipulation
 ```
 :::
 
@@ -143,11 +154,7 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
-
-We'll use the `penguins` data from the `palmerpenguins` package, but remove the missing values from `bill_length_mm`, `flipper_length_mm`, and `species`.
+*Bop It* (1996) shouted commands at you ("Bop it!", "Twist it!", "Pull it!") and sped up until you missed one. We'll simulate the reaction times (in milliseconds) of 450 players to the "Bop it!" (`bop_ms`) and "Twist it!" (`twist_ms`) commands. A player who's quick on one command tends to be quick on the other, so we'll draw the two times in pairs with [`faux::rnorm_multi()`](https://debruine.github.io/faux/reference/rnorm_multi.html). The `make_group()` function does this for one age group at a time, with its own means (`mu`), standard deviations (`sd`), and correlation (`r`). Teens are the fastest, parents are the slowest, and kids land in between. Setting the seed with `set.seed()` means you'll get the same 450 players every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -155,14 +162,100 @@ We'll use the `penguins` data from the `palmerpenguins` package, but remove the 
 #| code-fold: show
 #| eval: true
 #| echo: true
-peng_dnsty_2d <- palmerpenguins::penguins |>
-  dplyr::filter(!is.na(bill_length_mm) &
-    !is.na(flipper_length_mm) &
-    !is.na(species)) |>
-  dplyr::mutate(species = factor(species))
-glimpse(peng_dnsty_2d)
+make_group <- function(group, n, mu, sd, r) {
+  faux::rnorm_multi(n = n, mu = c(bop_ms = mu[1], twist_ms = mu[2]),
+                    sd = sd, r = r) |>
+    mutate(age_group = group)
+}
+set.seed(1996)
+bopit_players <- bind_rows(
+  make_group("Teens", 150, mu = c(350, 400), sd = c(30, 35), r = 0.6),
+  make_group("Kids", 150, mu = c(480, 560), sd = c(40, 45), r = 0.7),
+  make_group("Parents", 150, mu = c(630, 720), sd = c(50, 60), r = 0.5)) |>
+  mutate(player_id = row_number(),
+         age_group = factor(age_group, levels = c("Teens", "Kids", "Parents")),
+         across(c(bop_ms, twist_ms), round)) |>
+  select(player_id, age_group, bop_ms, twist_ms)
+glimpse(bopit_players)
 ```
 :::
+
+## Distribution
+
+A density contour is a map of where the points are crowded. Each contour line connects spots with the same density, like the lines on a hiking map connect spots at the same elevation. The Bop It data has three hills (one for each age group), and each hill has the shape of a bivariate normal distribution. Below we'll move from the players, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first two players in each age group.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_dnsty_2d
+#| code-fold: show
+#| eval: true
+#| echo: true
+bopit_players |>
+  group_by(age_group) |>
+  slice_head(n = 2)
+```
+:::
+
+Below we calculate the center, spread, and correlation for each age group.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_dnsty_2d
+#| code-fold: show
+#| eval: true
+#| echo: true
+bopit_stats <- bopit_players |>
+  group_by(age_group) |>
+  summarise(mean_bop = mean(bop_ms), mean_twist = mean(twist_ms),
+            sd_bop = sd(bop_ms), sd_twist = sd(twist_ms),
+            r = cor(bop_ms, twist_ms))
+bopit_stats
+```
+:::
+
+The teens average about `r round(bopit_stats$mean_bop[1])` milliseconds to bop and the parents average about `r round(bopit_stats$mean_bop[3])`. The groups are far enough apart that they form separate crowds, but close enough that their edges overlap.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The graph below shows only the teens, with their points and their density contours. The contour lines are ellipses stacked inside each other, tilted because the two reaction times are correlated. The innermost ellipse surrounds the most crowded spot, right around the teens' means.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_dnsty_2d
+#| code-fold: show
+#| eval: true
+#| echo: true
+teens <- bopit_players |>
+  filter(age_group == "Teens")
+ggplot(teens, aes(x = bop_ms, y = twist_ms)) +
+  geom_point(alpha = 1 / 2, color = "#1E90FF") +
+  geom_density_2d(color = "#FFD400") +
+  geom_point(data = filter(bopit_stats, age_group == "Teens"),
+             aes(x = mean_bop, y = mean_twist),
+             shape = 4, size = 5, stroke = 2, color = "#FF8C00") +
+  labs(x = "'Bop it!' (ms)", y = "'Twist it!' (ms)")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each age group's reaction times come from a [bivariate normal distribution](https://en.wikipedia.org/wiki/Multivariate_normal_distribution). Its density (the height of the hill) at any point depends on how far that point is from the center, measured in standard deviations and adjusted for the correlation:
+
+$$
+f(x, y) = \frac{1}{2\pi \sigma_x \sigma_y \sqrt{1 - r^2}} \exp\left(-\frac{1}{2(1 - r^2)}\left[\frac{(x - \mu_x)^2}{\sigma_x^2} - \frac{2r(x - \mu_x)(y - \mu_y)}{\sigma_x \sigma_y} + \frac{(y - \mu_y)^2}{\sigma_y^2}\right]\right)
+$$
+
+Points where the part in square brackets takes the same value share the same density, and those points always form an ellipse. That's why the contours in **DRAW IT** are ellipses. With all three groups together, the density is a [mixture](https://en.wikipedia.org/wiki/Mixture_distribution) (one third of each group's hill), which is why the graph at the top of the page has three peaks. The `level` values that `ggplot2` reports are these heights estimated from the data, in units of "players per square millisecond" (tiny numbers, because a square millisecond is a very small area). Try changing the kids' `mu` to `c(380, 430)` and two of the hills merge into one.
 
 ## Grammar
 
@@ -174,13 +267,13 @@ glimpse(peng_dnsty_2d)
 
   - Initialize the graph with `ggplot()` and provide `data`
 
-  - Create two values for extending the range of the `x` and `y` axis (`x_min`/`x_max` and `y_min`/`y_max`) 
+  - Create two values for extending the range of the `x` and `y` axis (`x_min`/`x_max` and `y_min`/`y_max`)
 
-  - Map `bill_length_mm` to `x` and `flipper_length_mm` to `y`
+  - Map `bop_ms` to `x` and `twist_ms` to `y`
 
   - Add the `expand_limits()` function, assigning our stored values to `x` and `y`
 
-  - Add the `geom_density_2d()` 
+  - Add the `geom_density_2d()`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -194,23 +287,25 @@ glimpse(peng_dnsty_2d)
 #| out-width: '100%'
 # labels
 labs_dnsty_2d <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)",
-  y = "Flipper length (mm)"
+  title = "Bop It reaction times",
+  subtitle = "Milliseconds to respond to each command",
+  caption = "Simulated data",
+  x = "'Bop it!' (ms)",
+  y = "'Twist it!' (ms)"
 )
 
 # x limits
-x_min <- min(peng_dnsty_2d$bill_length_mm) - 5
-x_max <- max(peng_dnsty_2d$bill_length_mm) + 5
+x_min <- min(bopit_players$bop_ms) - 50
+x_max <- max(bopit_players$bop_ms) + 50
 # y limits
-y_min <- min(peng_dnsty_2d$flipper_length_mm) - 10
-y_max <- max(peng_dnsty_2d$flipper_length_mm) + 10
+y_min <- min(bopit_players$twist_ms) - 50
+y_max <- max(bopit_players$twist_ms) + 50
 
 ggp2_dnsty_2d <- ggplot(
-  data = peng_dnsty_2d,
+  data = bopit_players,
   mapping = aes(
-    x = bill_length_mm,
-    y = flipper_length_mm
+    x = bop_ms,
+    y = twist_ms
   )
 ) +
   # use our stored values
@@ -240,24 +335,26 @@ ggp2_dnsty_2d +
 #| out-width: '100%'
 #| layout-nrow: 1
 # x limits
-x_min <- min(peng_dnsty_2d$bill_length_mm) - 5
-x_max <- max(peng_dnsty_2d$bill_length_mm) + 5
+x_min <- min(bopit_players$bop_ms) - 50
+x_max <- max(bopit_players$bop_ms) + 50
 # y limits
-y_min <- min(peng_dnsty_2d$flipper_length_mm) - 10
-y_max <- max(peng_dnsty_2d$flipper_length_mm) + 10
+y_min <- min(bopit_players$twist_ms) - 50
+y_max <- max(bopit_players$twist_ms) + 50
 
 # labels
 labs_dnsty_2d <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)",
-  y = "Flipper length (mm)"
+  title = "Bop It reaction times",
+  subtitle = "Milliseconds to respond to each command",
+  caption = "Simulated data",
+  x = "'Bop it!' (ms)",
+  y = "'Twist it!' (ms)"
 )
 
 ggp2_dnsty_2d <- ggplot(
-  data = peng_dnsty_2d,
+  data = bopit_players,
   mapping = aes(
-    x = bill_length_mm,
-    y = flipper_length_mm
+    x = bop_ms,
+    y = twist_ms
   )
 ) +
   # use our stored values
@@ -281,9 +378,9 @@ We're going to break down how to create the density contour layer-by-layer using
 
   - Initialize the graph with `ggplot()` and provide `data`
 
-  - Build a base layer: 
+  - Build a base layer:
 
-    - Map `bill_length_mm` to `x` and `flipper_length_mm` to `y`  
+    - Map `bop_ms` to `x` and `twist_ms` to `y`
 
     - Expand the `x` and `y` values with `expand_limits()` (using the values we created above)
 
@@ -291,25 +388,22 @@ We're going to break down how to create the density contour layer-by-layer using
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_base_layer
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
 labs_sdens_2d <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)",
-  y = "Flipper length (mm)",
-  color = "Species"
+  title = "Bop It reaction times",
+  caption = "Simulated data",
+  x = "'Bop it!' (ms)",
+  y = "'Twist it!' (ms)",
+  color = "Age group"
 )
 # base
 base_sdens_2d <- ggplot(
-  data = peng_dnsty_2d,
+  data = bopit_players,
   mapping = aes(
-    x = bill_length_mm,
-    y = flipper_length_mm
+    x = bop_ms,
+    y = twist_ms
   )
 ) +
   expand_limits(
@@ -329,7 +423,7 @@ Add the `stat_density_2d()` layer:
 
 - Set the `geom` to `"polygon"`
 
-- Change the `color` to black (`#000000`)
+- Change the `color` to the dark purple background (`#23123F`)
 
 - adjust the `linewidth` to `0.35`
 
@@ -337,114 +431,63 @@ Add the `stat_density_2d()` layer:
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_stat_layer
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
 stat_sdens_2d <- base_sdens_2d +
   stat_density_2d(
     aes(fill = after_stat(level)),
     geom = "polygon",
-    color = "#000000",
+    color = "#23123F",
     linewidth = 0.35
   )
 stat_sdens_2d +
   labs_sdens_2d
 ```
-
-```{r}
-#| label: code_graph_stat_layer_pw
-#| eval: true
-#| echo: false
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-ggp1 <- stat_sdens_2d +
-  labs(
-    x = "Bill Length (mm)",
-    y = "Flipper length (mm)"
-  ) +
-  theme(
-    axis.title = element_text(size = 8),
-    axis.text = element_text(size = 6),
-    legend.text = element_text(size = 7),
-    legend.title = element_text(size = 9, face = "bold")
-  )
-```
-
 :::
 
 ### Fill
 
 ***Where did levels come from?***
 
-*You probably noticed the `stat_density_2d()` produced a legend with `level`, and a series of values for the color gradient. These numbers are difficult to interpret directly, but you can think of them as 'elevation changes' in point density. Read more [here on SO.](https://stackoverflow.com/questions/53172200/stat-density2d-what-does-the-legend-mean)*
+*You probably noticed the `stat_density_2d()` produced a legend with `level`, and a series of values for the color gradient. These are the heights of the density 'hills' we described in the* **NAME IT** *section above (in players per square millisecond).*
 
-Now that we have a color gradient for our contour lines, we can adjust it's the range of colors using  `scale_fill_gradient()`
+Now that we have a color gradient for our contour lines, we can adjust the range of colors using `scale_fill_gradient()`
 
-- `low` is the color for the low values of `level`    
+- `low` is the color for the low values of `level`
 
-- `high` is the color for the high values of `level`   
+- `high` is the color for the high values of `level`
 
-- `guide` let's us control the `legend`    
+- `guide` let's us control the `legend`
 
-We'll set these to white (`"#ffffff"`) and dark gray (`"#404040"`)
+We'll set these to purple (`"#5B2A9A"`) and Bop It yellow (`"#FFD400"`)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_fill_layer
-#| eval: false
-#| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-fill_sdens_2d <- stat_sdens_2d +
-  scale_fill_gradient(
-    low = "#ffffff",
-    high = "#404040",
-    guide = "legend"
-  )
-fill_sdens_2d +
-  labs_sdens_2d
-```
-
-```{r}
-#| label: code_graph_fill_layer_pw
+#| code-fold: show
 #| eval: true
-#| echo: false
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
+#| echo: true
 fill_sdens_2d <- stat_sdens_2d +
   scale_fill_gradient(
-    low = "#ffffff",
-    high = "#404040",
+    low = "#5B2A9A",
+    high = "#FFD400",
     guide = "legend"
   )
 fill_sdens_2d +
   labs_sdens_2d
 ```
-
 :::
 
 ### Points
 
-The dark areas in the contour lines are the areas with higher value density, but why don't we test that by adding some data points? 
+The bright areas in the contour lines are the areas with higher value density, but why don't we test that by adding some data points?
 
   - Add a `geom_point()` layer
 
-    - *Inside* `aes()`, map `species` to `color` (this will tell us if the three dark areas represent differences in the three species in the dataset)
+    - *Inside* `aes()`, map `age_group` to `color` (this will tell us if the three bright areas represent the three age groups in the dataset)
 
-    - Set `size` to `2`  
+    - Set `size` to `2`
 
     - Change the `alpha` to `2/3`
 
@@ -452,101 +495,78 @@ The dark areas in the contour lines are the areas with higher value density, but
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_points_layer
-#| eval: false
+#| code-fold: show
+#| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
 # geom_point()
 pnts_sdens_2d <- fill_sdens_2d +
-  geom_point(aes(color = species),
+  geom_point(aes(color = age_group),
     size = 2,
     alpha = 2 / 3
-  )
+  ) +
+  scale_color_manual(values = c("#1E90FF", "#3CB043", "#FF5FA2"))
 # final
 pnts_sdens_2d +
   labs_sdens_2d
 ```
 :::
 
-::: {style="font-size: 0.85em;"}
-```{r}
-#| label: code_graph_points_layer_pw
-#| eval: true
-#| echo: false
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-pnts_sdens_2d <- fill_sdens_2d +
-  geom_point(aes(color = species),
-    size = 2,
-    alpha = 2 / 3)
-pnts_sdens_2d +
-  labs_sdens_2d
-```
-:::
+We set the point colors with `scale_color_manual()` so they stand out from the yellow and purple fill.
 
 ## Even more info
 
-In the previous plot, we used the `species` variable in the `geom_point()` layer to identify the points using color. In the section below, we'll show more methods of displaying groups with density contour lines. 
+In the previous plot, we used the `age_group` variable in the `geom_point()` layer to identify the points using color. In the section below, we'll show more methods of displaying groups with density contour lines.
 
 ### Groups
 
-Re-create the labels 
+Re-create the labels
 
 Initialize the graph with `ggplot()` and provide `data`
 
-Build a `geom_density_2d()` layer:   
+Build a `geom_density_2d()` layer:
 
-  - Map `bill_length_mm` to `x` and `flipper_length_mm` to `y`  
-  
-  - Expand the limits using our adjusted min/max `x` and `y` values 
-  
-  - Add the `geom_density_2d()`, mapping `species` to `color`  
+  - Map `bop_ms` to `x` and `twist_ms` to `y`
 
-Build the `geom_point()` layer:  
+  - Expand the limits using our adjusted min/max `x` and `y` values
 
-  - Map `species` to `color` 
-  
-  - set the `alpha` and remove the `legend` 
+  - Add the `geom_density_2d()`, mapping `age_group` to `color`
+
+Build the `geom_point()` layer:
+
+  - Map `age_group` to `color`
+
+  - set the `alpha` and remove the `legend`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_points
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
 labs_dnsty_2d_grp <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)",
-  y = "Flipper length (mm)",
-  color = "Species"
+  title = "Bop It reaction times",
+  caption = "Simulated data",
+  x = "'Bop it!' (ms)",
+  y = "'Twist it!' (ms)",
+  color = "Age group"
 )
 
 ggp2_dnsty_2d_grp <- ggplot(
-  data = peng_dnsty_2d,
+  data = bopit_players,
   mapping = aes(
-    x = bill_length_mm,
-    y = flipper_length_mm
+    x = bop_ms,
+    y = twist_ms
   )
 ) +
   expand_limits(
     x = c(x_min, x_max),
     y = c(y_min, y_max)
   ) +
-  geom_density_2d(aes(color = species))
+  geom_density_2d(aes(color = age_group))
 
 
 ggp2_dnsty_2d_pnts <- ggp2_dnsty_2d_grp +
-  geom_point(aes(color = species),
+  geom_point(aes(color = age_group),
     alpha = 2 / 3,
     show.legend = FALSE
   )
@@ -562,91 +582,45 @@ ggp2_dnsty_2d_pnts +
 
   - Initialize the graph with `ggplot()` and provide `data`
 
-  - Build the base/limits: 
+  - Build the base/limits:
 
-    - Map `bill_length_mm` to `x` and `flipper_length_mm` to `y`  
-  
-    - Expand the limits using our adjusted min/max `x` and `y` values 
+    - Map `bop_ms` to `x` and `twist_ms` to `y`
 
-  - Build the `geom_density_2d_filled()` layer: 
+    - Expand the limits using our adjusted min/max `x` and `y` values
+
+  - Build the `geom_density_2d_filled()` layer:
 
     - Add the `geom_density_2d_filled()`, setting `linewidth` to `0.30` and `contour_var` to `"ndensity"`
-  
+
   - Add the `scale_discrete_manual()`:
 
-    - Set `aesthetics` to `"fill"`  
-  
-    - Provide a set of color `values` (this plot needed 10 values, and I grabbed them all from [color-hex](https://www.color-hex.com/).
-  
-  - Facet: 
+    - Set `aesthetics` to `"fill"`
 
-    - Add `facet_wrap()`, and place `species` in the [`vars()`](https://ggplot2.tidyverse.org/reference/vars.html)
+    - Provide a set of color `values` (this plot needs 10 values, so we create them with `colorRampPalette()`, which blends the dark purple panel color into Bop It yellow)
+
+  - Facet:
+
+    - Add `facet_wrap()`, and place `age_group` in the [`vars()`](https://ggplot2.tidyverse.org/reference/vars.html)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_facets
-#| eval: false
-#| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-labs_dnsty_2d_facet <- labs(
-  title = "Bill Length vs. Flipper Length",
-  subtitle = "By Species",
-  x = "Bill Length (mm)",
-  y = "Flipper length (mm)"
-)
-ggp2_dnsty_2d_facet <- ggplot(
-  data = peng_dnsty_2d,
-  mapping = aes(
-    x = bill_length_mm,
-    y = flipper_length_mm
-  )
-) +
-  expand_limits(
-    x = c(x_min, x_max),
-    y = c(y_min, y_max)
-  ) +
-  geom_density_2d_filled(
-    linewidth = 0.30,
-    contour_var = "ndensity"
-  ) +
-  scale_discrete_manual(
-    aesthetics = "fill",
-    values = c(
-      "#18507a", "#2986cc", "#3e92d1", "#539ed6", "#69aadb",
-      "#7eb6e0", "#a9ceea", "#bedaef", "#d4e6f4", "#e9f2f9"
-    )
-  ) +
-  facet_wrap(vars(species))
-
-ggp2_dnsty_2d_facet +
-  labs_dnsty_2d_facet
-```
-
-```{r}
-#| label: code_graph_facets_run
+#| code-fold: show
 #| eval: true
-#| echo: false
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
+#| echo: true
+#| fig-asp: 0.8
 labs_dnsty_2d_facet <- labs(
-  title = "Bill Length vs. Flipper Length",
-  subtitle = "By Species",
-  x = "Bill Length (mm)",
-  y = "Flipper length (mm)"
+  title = "Bop It reaction times",
+  subtitle = "By age group",
+  caption = "Simulated data",
+  x = "'Bop it!' (ms)",
+  y = "'Twist it!' (ms)"
 )
-
 ggp2_dnsty_2d_facet <- ggplot(
-  data = peng_dnsty_2d,
+  data = bopit_players,
   mapping = aes(
-    x = bill_length_mm,
-    y = flipper_length_mm
+    x = bop_ms,
+    y = twist_ms
   )
 ) +
   expand_limits(
@@ -659,42 +633,35 @@ ggp2_dnsty_2d_facet <- ggplot(
   ) +
   scale_discrete_manual(
     aesthetics = "fill",
-    values = c(
-      "#18507a", "#2986cc", "#3e92d1", "#539ed6", "#69aadb",
-      "#7eb6e0", "#a9ceea", "#bedaef", "#d4e6f4", "#e9f2f9"
-    )
+    values = colorRampPalette(c("#2E1A52", "#FFD400"))(10)
   ) +
-  facet_wrap(vars(species))
+  facet_wrap(vars(age_group))
 
 ggp2_dnsty_2d_facet +
   labs_dnsty_2d_facet +
   theme(
-    axis.title = element_text(size = 9),
     axis.text = element_text(size = 7),
     legend.position = "bottom",
     legend.text = element_text(size = 7),
-    legend.title = element_text(
-      size = 8,
-      face = "bold"
-    )
+    legend.title = element_text(size = 8, face = "bold")
   )
 ```
-
 :::
 
+Setting `contour_var` to `"ndensity"` scales each panel's density so its highest point is `1`, which is why every age group gets the full range of colors.
 
-### Fill 
+### Fill
 
-In the previous section, we defined the color values used in `geom_density_2d_filled()` with `scale_discrete_manual()`. Below we give an example using the default colors: 
+In the previous section, we defined the color values used in `geom_density_2d_filled()` with `scale_discrete_manual()`. Below we give an example using the default colors:
 
   - Re-create the labels
 
   - Initialize the graph with `ggplot()` and provide `data`
 
-  - Build the base/limits: 
+  - Build the base/limits:
 
-    - Map `bill_length_mm` to `x` and `flipper_length_mm` to `y`  
-  
+    - Map `bop_ms` to `x` and `twist_ms` to `y`
+
     - Expand the limits using our adjusted min/max `x` and `y` values
 
   - Add the `geom_density_2d()` layer
@@ -704,60 +671,21 @@ In the previous section, we defined the color values used in `geom_density_2d_fi
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_fill
-#| eval: false
-#| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-labs_dnsty_2d <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)",
-  y = "Flipper length (mm)"
-)
-
-ggp2_dnsty_2d <- ggplot(
-  data = peng_dnsty_2d,
-  mapping = aes(
-    x = bill_length_mm,
-    y = flipper_length_mm
-  )
-) +
-  # use our stored values
-  expand_limits(
-    x = c(x_min, x_max),
-    y = c(y_min, y_max)
-  ) +
-  geom_density_2d()
-
-ggp2_dnsty_2d_fill <- ggp2_dnsty_2d +
-  geom_density_2d_filled(alpha = 0.8)
-
-ggp2_dnsty_2d_fill +
-  labs_dnsty_2d
-```
-
-```{r}
-#| label: code_graph_fill_run
+#| code-fold: show
 #| eval: true
-#| echo: false
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
+#| echo: true
 labs_dnsty_2d <- labs(
-  title = "Bill Length vs. Flipper Length",
-  x = "Bill Length (mm)",
-  y = "Flipper length (mm)"
+  title = "Bop It reaction times",
+  caption = "Simulated data",
+  x = "'Bop it!' (ms)",
+  y = "'Twist it!' (ms)"
 )
 
 ggp2_dnsty_2d <- ggplot(
-  data = peng_dnsty_2d,
+  data = bopit_players,
   mapping = aes(
-    x = bill_length_mm,
-    y = flipper_length_mm
+    x = bop_ms,
+    y = twist_ms
   )
 ) +
   # use our stored values
@@ -773,70 +701,36 @@ ggp2_dnsty_2d_fill <- ggp2_dnsty_2d +
 ggp2_dnsty_2d_fill +
   labs_dnsty_2d +
   theme(
-    axis.title = element_text(size = 11),
-    axis.text = element_text(size = 10),
     legend.text = element_text(size = 6),
-    legend.title = element_text(
-      size = 9,
-      face = "bold"
-    )
+    legend.title = element_text(size = 9, face = "bold")
   )
 ```
 :::
 
 ### Lines
 
-We can also outline the contours by adding color to the lines using another `geom_density_2d()` layer: 
+We can also outline the contours by adding color to the lines using another `geom_density_2d()` layer:
 
   - Set `linewidth` to `0.30`
-  
-  - Set `color` to `"#ffffff"`
+
+  - Set `color` to `"#FFF6D6"`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_lines
-#| eval: false
-#| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-ggp2_dnsty_2d_fill_lns <- ggp2_dnsty_2d_fill +
-  geom_density_2d(
-    linewidth = 0.30,
-    color = "#ffffff"
-  )
-ggp2_dnsty_2d_fill_lns +
-  labs_dnsty_2d
-```
-
-```{r}
-#| label: code_graph_lines_run
+#| code-fold: show
 #| eval: true
-#| echo: false
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
+#| echo: true
 ggp2_dnsty_2d_fill_lns <- ggp2_dnsty_2d_fill +
   geom_density_2d(
     linewidth = 0.30,
-    color = "#ffffff"
+    color = "#FFF6D6"
   )
 ggp2_dnsty_2d_fill_lns +
   labs_dnsty_2d +
   theme(
-    axis.title = element_text(size = 11),
-    axis.text = element_text(size = 10),
     legend.text = element_text(size = 6),
-    legend.title = element_text(
-      size = 9,
-      face = "bold"
-    )
+    legend.title = element_text(size = 9, face = "bold")
   )
 ```
-
 :::
-

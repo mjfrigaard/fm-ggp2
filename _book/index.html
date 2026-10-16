@@ -584,7 +584,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div>
 <pre class="mermaid mermaid-js">%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'monospace', 'fontSize': '14px', 'darkMode': false}}}%%
 
-flowchart LR
+flowchart TB
     dist(["&lt;strong&gt;Distribution&lt;/strong&gt;&lt;br&gt;normal, Poisson,&lt;br&gt;gamma, ..."]) --&gt;|"i. set.seed()"| sim["&lt;strong&gt;Simulate&lt;/strong&gt;&lt;br&gt;base R or &lt;code&gt;faux&lt;/code&gt;"]
     sim --&gt; dset[("&lt;strong&gt;90s dataset&lt;/strong&gt;&lt;br&gt;AOL sessions, Pogs,&lt;br&gt;Happy Meals, ...")]
     dset --&gt;|"ii. Distribution section"| connect["&lt;strong&gt;Connect&lt;/strong&gt;&lt;br&gt;count it, draw it,&lt;br&gt;name it"]

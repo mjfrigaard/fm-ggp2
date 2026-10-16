@@ -53,7 +53,8 @@ tamagotchi_pets <- tibble(
            scale = c(Neglected = 6, Average = 13,
                      Pampered = 21)[as.character(care)]), 1))
 labs_ovrlp_hist <- labs(
-  title = "Tamagotchi lifespans (simulated)",
+  title = "Tamagotchi lifespans",
+  caption = "Simulated data",
   subtitle = "450 virtual pets and how they were cared for",
   x = "Lifespan (days)",
   fill = "Care")
@@ -241,7 +242,8 @@ Try changing `shape` in `rweibull()`. A shape of 1 turns the hump into a steady 
 #| out-height: '100%'
 #| out-width: '100%'
 labs_ovrlp_hist <- labs(
-  title = "Tamagotchi lifespans (simulated)",
+  title = "Tamagotchi lifespans",
+  caption = "Simulated data",
   subtitle = "450 virtual pets and how they were cared for",
   x = "Lifespan (days)",
   fill = "Care")
@@ -277,7 +279,8 @@ Histograms work by dividing the variable provided to `x` [*into bins and countin
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_ovrlp_hist <- labs(
-  title = "Tamagotchi lifespans (simulated)",
+  title = "Tamagotchi lifespans",
+  caption = "Simulated data",
   subtitle = "450 virtual pets and how they were cared for",
   x = "Lifespan (days)",
   fill = "Care")

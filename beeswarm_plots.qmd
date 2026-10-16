@@ -59,7 +59,8 @@ tetris_games <- tibble(
                   Expert = 120)[as.character(player)]))
 # ggp2_beeswarm ----
 labs_beeswarm <- labs(
-    title = "Tetris (simulated)",
+    title = "Tetris",
+    caption = "Simulated data",
     subtitle = "Lines cleared in 80 games by each player",
     x = "Player",
     y = "Lines cleared")
@@ -254,7 +255,8 @@ The first term ($\mu$) is the Poisson variance, and the second term ($\mu^2 / r$
 #| out-height: '100%'
 #| out-width: '100%'
 labs_beeswarm <- labs(
-    title = "Tetris (simulated)",
+    title = "Tetris",
+    caption = "Simulated data",
     subtitle = "Lines cleared in 80 games by each player",
     x = "Player",
     y = "Lines cleared")
@@ -288,7 +290,8 @@ Adjust the size/shape of the swarm using `method =` or the  `geom_quasirandom()`
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_beeswarm <- labs(
-    title = "Tetris (simulated)",
+    title = "Tetris",
+    caption = "Simulated data",
     subtitle = "Lines cleared in 80 games by each player",
     x = "Player",
     y = "Lines cleared")

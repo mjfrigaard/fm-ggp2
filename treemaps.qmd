@@ -61,7 +61,8 @@ toy_sales <- tibble(
          units = rpois(n(), lambda = lambda)) |>
   select(department, toy, season, lambda, units)
 labs_treemap <- labs(
-  title = "Toys\"R\"Us 1998 (simulated)",
+  title = "Toys\"R\"Us 1998",
+    caption = "Simulated data",
     fill = "Season")
 ggp2_treemap <- ggplot(toy_sales,
        aes(area = units,
@@ -312,7 +313,8 @@ The standard deviation of a Poisson count is $\sqrt{\lambda}$, so its relative w
 #| out-height: '100%'
 #| out-width: '100%'
 labs_treemap <- labs(
-  title = "Toys\"R\"Us 1998 (simulated)",
+  title = "Toys\"R\"Us 1998",
+    caption = "Simulated data",
     fill = "Season")
 ggp2_treemap <- ggplot(toy_sales,
        aes(area = units,
@@ -350,7 +352,8 @@ ggp2_treemap +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_treemap <- labs(
-  title = "Toys\"R\"Us 1998 (simulated)",
+  title = "Toys\"R\"Us 1998",
+    caption = "Simulated data",
     fill = "Season")
 ggp2_treemap <- ggplot(toy_sales,
        aes(area = units,

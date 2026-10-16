@@ -16,8 +16,8 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
-    base_size = 15))
+ggplot2::theme_set(fmggp2::theme_hypercolor(
+    base_size = 14))
 ```
 
 ```{r}
@@ -42,39 +42,43 @@ status("complete")
 #| out-height: '75%'
 #| out-width: '75%'
 #| fig-align: right
-library(ggplot2movies)
 library(ggstream)
 library(ggplot2)
-movies_stream <- ggplot2movies::movies |> 
-    dplyr::select(mpaa, year, budget) |> 
-    tidyr::drop_na() |> 
-    dplyr::filter(mpaa != "") |> 
-    dplyr::mutate(mpaa = factor(mpaa, 
-                            levels = c("NC-17", "R", 
-                                       "PG-13", "PG"), 
-                            ordered = TRUE)) |> 
-    dplyr::group_by(year, mpaa) |> 
-    dplyr::summarise(
-        avg_budget = mean(budget, na.rm = TRUE)) |> 
-    dplyr::ungroup() |> 
-    dplyr::filter(year > 1984)
+library(dplyr)
+library(tidyr)
+fads <- tibble(
+  fad = c("Slap bracelets", "Hypercolor", "Koosh balls", "Scrunchies"),
+  peak = c(1990.8, 1991.5, 1992.5, 1994),
+  spread = c(0.4, 0.6, 1.5, 2.2),
+  total = c(3000, 4000, 5000, 9000))
+set.seed(1991)
+fad_sales <- expand_grid(
+  month = seq(as.Date("1990-01-01"), as.Date("1999-12-01"), by = "month"),
+  fads) |>
+  mutate(
+    fad = factor(fad, levels = fads$fad),
+    t = lubridate::year(month) + (lubridate::month(month) - 1) / 12,
+    avg_sales = total / 12 * dnorm(t, mean = peak, sd = spread),
+    sales = rpois(n(), lambda = avg_sales)) |>
+  select(month, fad, avg_sales, sales)
 labs_stream <- labs(
-    title = "20 years of movie budgets", 
-    subtitle = 
-        paste0("movies between ",
-            min(movies_stream$year),
-            " and ", 
-            max(movies_stream$year)),
-    x = "Year", 
-    y = "Average Movie Budget")
-ggp2_stream <- ggplot(data = movies_stream, 
-    mapping = aes(x = year, 
-                  y = avg_budget, 
-                  fill = mpaa)) + 
-    ggstream::geom_stream() + 
-    scale_y_continuous(labels = scales::dollar)
-ggp2_stream + 
-    labs_stream + 
+    title = "90s fads",
+    caption = "Simulated data",
+    subtitle =
+        paste0("Monthly sales between ",
+            format(min(fad_sales$month), "%Y"),
+            " and ",
+            format(max(fad_sales$month), "%Y")),
+    x = "Month",
+    y = "Sales (thousands)",
+    fill = "Fad")
+ggp2_stream <- ggplot(data = fad_sales,
+    mapping = aes(x = month,
+                  y = sales,
+                  fill = fad)) +
+    ggstream::geom_stream()
+ggp2_stream +
+    labs_stream +
     theme(legend.position = "bottom")
 ```
 
@@ -83,22 +87,22 @@ ggp2_stream +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable**   
+**✅ a categorical variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a numeric (continuous) variable** 
+**✅ a numeric (continuous) variable**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a numeric (date) variable**  
+**✅ a numeric (date) variable**
 :::
 
 ::::
 
-## Description 
+## Description
 
-Stream graphs display how a numerical variable (typically on the `y` axis) changes over time (on the `x` axis) across levels of a categorical variable. These graphs are handy if the numerical value varies wildly (or isn't always present) over the time measurement.  
+Stream graphs display how a numerical variable (typically on the `y` axis) changes over time (on the `x` axis) across levels of a categorical variable. These graphs are handy if the numerical value varies wildly (or isn't always present) over the time measurement.
 
 Categorical groups are differentiated by color layers, with the area of the layer representing the change in `y` value. In `ggplot2`, we can create stream graphs using [ggstream.](https://github.com/davidsjoberg/ggstream)
 
@@ -121,10 +125,10 @@ Install packages.
 #| message: false
 #| results: hide
 remotes::install_github("davidsjoberg/ggstream")
-install.packages("ggplot2movies")
 library(ggstream)
-library(ggplot2movies)
 library(ggplot2)
+library(dplyr) # for data manipulation
+library(tidyr) # for expand_grid()
 ```
 :::
 
@@ -134,13 +138,7 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![](www/imdb.png){fig-align="right" width="40%" height="40%"}
-:::
-
-We're going to use only the `mpaa`, `year`, and `budget` columns from `ggplot2movies::movies`, then drop all missing values (we have to remove special missing characters from `mpaa`). 
-
-We'll then convert `mpaa` to an ordered factor, then group by `year` and `mpaa` to calculate the average budget and filter to only those movies after `1984`. 
+The 90s were a decade of fads that showed up overnight and vanished just as fast. Slap bracelets were banned from schools, Hypercolor shirts changed color when you touched them, and Koosh balls and scrunchies were everywhere. We'll simulate the monthly sales (in thousands) for four fads from 1990 through 1999. Each fad in `fads` gets a `peak` (the year it was most popular), a `spread` (how long it lasted, in years), and a `total` (how many it sold overall). The monthly average (`avg_sales`) follows a bell shaped curve around the peak, and `rpois()` draws the actual monthly sales. Setting the seed with `set.seed()` means you'll get the same `r nrow(fad_sales)` months of sales every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -148,22 +146,100 @@ We'll then convert `mpaa` to an ordered factor, then group by `year` and `mpaa` 
 #| code-fold: show
 #| eval: true
 #| echo: true
-movies_stream <- ggplot2movies::movies |> 
-    dplyr::select(mpaa, year, budget) |> 
-    tidyr::drop_na() |> 
-    dplyr::filter(mpaa != "") |> 
-    dplyr::mutate(mpaa = factor(mpaa, 
-                            levels = c("NC-17", "R", 
-                                       "PG-13", "PG"), 
-                            ordered = TRUE)) |> 
-    dplyr::group_by(year, mpaa) |> 
-    dplyr::summarise(
-        avg_budget = mean(budget, na.rm = TRUE)) |> 
-    dplyr::ungroup() |> 
-    dplyr::filter(year > 1984)
-dplyr::glimpse(movies_stream)
+fads <- tibble(
+  fad = c("Slap bracelets", "Hypercolor", "Koosh balls", "Scrunchies"),
+  peak = c(1990.8, 1991.5, 1992.5, 1994),
+  spread = c(0.4, 0.6, 1.5, 2.2),
+  total = c(3000, 4000, 5000, 9000))
+set.seed(1991)
+fad_sales <- expand_grid(
+  month = seq(as.Date("1990-01-01"), as.Date("1999-12-01"), by = "month"),
+  fads) |>
+  mutate(
+    fad = factor(fad, levels = fads$fad),
+    t = lubridate::year(month) + (lubridate::month(month) - 1) / 12,
+    avg_sales = total / 12 * dnorm(t, mean = peak, sd = spread),
+    sales = rpois(n(), lambda = avg_sales)) |>
+  select(month, fad, avg_sales, sales)
+glimpse(fad_sales)
 ```
 :::
+
+## Distribution
+
+A stream plot stacks each group's values on top of one another and lets the stack flow over time. Each fad's layer has its own shape: a quick spike for fads that burned out fast, and a long, low hump for fads that hung around. Below we'll move from the monthly sales, to a picture, to the formula, and see where those shapes come from.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first six months of Hypercolor sales in 1991.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_stream
+#| code-fold: show
+#| eval: true
+#| echo: true
+fad_sales |>
+  filter(fad == "Hypercolor", month >= as.Date("1991-01-01")) |>
+  head(6)
+```
+:::
+
+Sales climb month after month toward the summer of 1991. Below we total each fad's sales and find its best month.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_stream
+#| code-fold: show
+#| eval: true
+#| echo: true
+fad_peaks <- fad_sales |>
+  group_by(fad) |>
+  summarise(total_sales = sum(sales),
+            best_month = month[which.max(sales)],
+            best_sales = max(sales))
+fad_peaks
+```
+:::
+
+Scrunchies sold the most overall (`r scales::comma(fad_peaks$total_sales[fad_peaks$fad == "Scrunchies"])` thousand), but slap bracelets had the biggest single month (`r fad_peaks$best_sales[fad_peaks$fad == "Slap bracelets"]` thousand). Selling the most and peaking the highest are two different things.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The graph below draws each fad's monthly sales as points and its `avg_sales` as a line. Every fad follows the same bell shaped curve. Slap bracelets and Hypercolor have narrow, tall bells, and scrunchies have a wide, short one.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_stream
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(fad_sales, aes(x = month, color = fad)) +
+  geom_point(aes(y = sales), alpha = 1 / 2, size = 1) +
+  geom_line(aes(y = avg_sales), linewidth = 1) +
+  facet_wrap(~ fad, ncol = 2) +
+  labs(x = "Month", y = "Sales (thousands)") +
+  theme(legend.position = "none")
+```
+:::
+
+A stream plot stacks these four bells on top of each other (and centers the stack), which is why the stream bulges in the early 90s and thins out by the end of the decade.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+The monthly sales are [Poisson](https://en.wikipedia.org/wiki/Poisson_distribution) counts, and the average for each month follows the shape of a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) over time:
+
+$$
+\text{sales}_t \sim \text{Poisson}(\lambda_t), \quad \lambda_t = \frac{\text{total}}{12} \times \frac{1}{\text{spread}\sqrt{2\pi}} \, e^{-\frac{(t - \text{peak})^2}{2 \, \text{spread}^2}}
+$$
+
+Here we only borrow the normal curve for its shape (it describes *when* the sales happen, not a random variable). The area under the curve is always the `total`, so the height of the peak is $\frac{\text{total}}{12 \times \text{spread} \sqrt{2\pi}}$. Slap bracelets sold `r fads$total[1]` thousand over a spread of `r fads$spread[1]` years, so their peak is about `r round(fads$total[1] / (12 * fads$spread[1] * sqrt(2 * pi)))` thousand a month. Scrunchies sold three times as much, but spread those sales over `r fads$spread[4]` years, so their peak is only about `r round(fads$total[4] / (12 * fads$spread[4] * sqrt(2 * pi)))` thousand a month. Try changing the `spread` for scrunchies to `0.5` and watch their layer turn into a spike.
 
 ## Grammar
 
@@ -173,46 +249,45 @@ dplyr::glimpse(movies_stream)
 
   - Create labels with `labs()`
 
-    - Use `paste0()` in the `subtitle` to automatically update the `year` when the `movies_stream` changes   
+    - Use `paste0()` in the `subtitle` to automatically update the years when `fad_sales` changes
 
   - Initialize the graph with `ggplot()` and provide `data`
 
-  - Map `year` to the `x`, `avg_budget` to `y`, and `mpaa` to `fill`
+  - Map `month` to the `x`, `sales` to `y`, and `fad` to `fill`
 
-  - Add the `geom_stream()` layer 
+  - Add the `geom_stream()` layer
 
-  - Adjust the `y` axis with `scale_y_continuous()` and `scales::dollar`
-
-  - Finally, move the legend with  `theme(legend.position = "bottom")` 
+  - Finally, move the legend with  `theme(legend.position = "bottom")`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_stream
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_stream <- labs(
-    title = "20 years of movie budgets", 
-    subtitle = 
-        paste0("movies between ",
-            min(movies_stream$year),
-            " and ", 
-            max(movies_stream$year)),
-    x = "Year", 
-    y = "Average Movie Budget")
+    title = "90s fads",
+    caption = "Simulated data",
+    subtitle =
+        paste0("Monthly sales between ",
+            format(min(fad_sales$month), "%Y"),
+            " and ",
+            format(max(fad_sales$month), "%Y")),
+    x = "Month",
+    y = "Sales (thousands)",
+    fill = "Fad")
 
-ggp2_stream <- ggplot(data = movies_stream, 
-    mapping = aes(x = year, 
-                  y = avg_budget, 
-                  fill = mpaa)) + 
-    ggstream::geom_stream() + 
-    scale_y_continuous(labels = scales::dollar)
-ggp2_stream + 
-    labs_stream + 
+ggp2_stream <- ggplot(data = fad_sales,
+    mapping = aes(x = month,
+                  y = sales,
+                  fill = fad)) +
+    ggstream::geom_stream()
+ggp2_stream +
+    labs_stream +
     theme(legend.position = "bottom")
 ```
 :::
@@ -233,22 +308,23 @@ ggp2_stream +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_stream <- labs(
-    title = "20 years of movie budgets", 
-    subtitle = 
-        paste0("movies between ",
-            min(movies_stream$year),
-            " and ", 
-            max(movies_stream$year)),
-    x = "Year", 
-    y = "Average Movie Budget")
-ggp2_stream <- ggplot(data = movies_stream, 
-    mapping = aes(x = year, 
-                  y = avg_budget, 
-                  fill = mpaa)) + 
-    ggstream::geom_stream() + 
-    scale_y_continuous(labels = scales::dollar)
-ggp2_stream + 
-    labs_stream + 
+    title = "90s fads",
+    caption = "Simulated data",
+    subtitle =
+        paste0("Monthly sales between ",
+            format(min(fad_sales$month), "%Y"),
+            " and ",
+            format(max(fad_sales$month), "%Y")),
+    x = "Month",
+    y = "Sales (thousands)",
+    fill = "Fad")
+ggp2_stream <- ggplot(data = fad_sales,
+    mapping = aes(x = month,
+                  y = sales,
+                  fill = fad)) +
+    ggstream::geom_stream()
+ggp2_stream +
+    labs_stream +
     theme(legend.position = "bottom")
 ```
 
@@ -258,112 +334,100 @@ The [`ggstream` package](https://github.com/davidsjoberg/ggstream) has multiple 
 
 ### Type
 
-  - Map `mpaa` to `fill` (wrapped in `forcats::fct_rev()`)
+  - Map `fad` to `fill` (wrapped in `forcats::fct_rev()`)
 
   - We can adjust the look of the graph by setting the `type` argument in `geom_stream()`
 
     - `type`: change type from `"mirror"` (the default) to `"proportional"`
 
-  - Adjust colors: 
+  - Adjust colors:
 
     - `scale_fill_manual()`: Add colors as a named vector to `values`
 
-  - Finally, add the `fill` to the labels and move the legend with  `theme(legend.position = "bottom")` 
+  - Finally, add the `fill` to the labels and move the legend with  `theme(legend.position = "bottom")`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: code_graph_type
-#| eval: true
-#| echo: true 
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-ggp2_stream_prp <- ggplot(data = movies_stream, 
-    mapping = aes(x = year, 
-                  y = avg_budget, 
-                  fill = forcats::fct_rev(mpaa))) + 
-    ggstream::geom_stream(type = "proportional") + 
-    scale_y_continuous(labels = scales::percent) + 
-  scale_fill_manual(
-      values = c("PG-13" = "#0bd3d3", 
-                 "PG" = "#f890e7", 
-                 "R" = "#282b2d", 
-                 "NC-17" = "#772953"))
-ggp2_stream_prp + 
-    labs_stream + 
-    labs(fill = "mpaa") + 
-    theme(legend.position = "bottom")
-```
-:::
-
-### Sorting
-
-To change how the categorical areas are sorted, adjust the sorting argument to either `"none"`, `"onset"`, or `"inside_out"`  
-
-  - `sorting`: set the `sorting` method to `"inside_out"` in *both* `ggstream::geom_stream()` and `ggstream::geom_stream_label()` 
-  
-  - `type`: change the type to `"ridge"` in *both* `ggstream::geom_stream()` and `ggstream::geom_stream_label()`    
-
-We can also add text labels using `ggstream::geom_stream_label()`:
-
-  - Map `mpaa` (wrapped in `forcats::fct_rev()`) to `label` globally  
-  
-  - Inside `ggstream::geom_stream_label()`:  
-  
-    - set color to white (`"#ffffff"`) and the `size` to `2.7` 
-    
-    - Remove the legend with `show.legend = FALSE`  
-
-Colors:
-
-  - Use `scale_colour_manual()` and `scale_fill_manual()` to manually set the values using a named vector 
-
-    - Change the `y` axis to US dollars using `scale_y_continuous()` and `scales::dollar`
-
-  - Finally, add the `fill` to the labels and move the legend with  `theme(legend.position = "bottom")` 
-
-::: {style="font-size: 0.85em;"}
-```{r}
-#| label: create_graph_sorting
+#| label: code_graph_stream_prp
+#| code-fold: show
 #| eval: true
 #| echo: true
 #| warning: false
 #| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-ggp2_stream_srt <- ggplot(data = movies_stream, 
-    mapping = aes(x = year, 
-                  y = avg_budget, 
-                  fill = fct_rev(mpaa),
-                  label = fct_rev(mpaa))) + 
-    ggstream::geom_stream(
-        type = "ridge", 
-        sorting = "inside_out") + 
-    ggstream::geom_stream_label(
-        type = "ridge", 
-        sorting = "inside_out", 
-        color = "#ffffff", 
-        size = 2.7,
-        show.legend = FALSE) +
-    scale_colour_manual(
-      values = c("PG-13" = "#0bd3d3", 
-                 "PG" = "#f890e7", 
-                 "R" = "#282b2d", 
-                 "NC-17" = "#772953")) +
-    scale_fill_manual(
-      values = c("PG-13" = "#0bd3d3", 
-                 "PG" = "#f890e7", 
-                 "R" = "#282b2d", 
-                 "NC-17" = "#772953")) + 
-    scale_y_continuous(labels = scales::dollar) 
-    
-ggp2_stream_srt + 
-    labs_stream + 
-    labs(fill = "mpaa") + 
+fad_colors <- c("Slap bracelets" = "#FFE135",
+                "Hypercolor" = "#E0218A",
+                "Koosh balls" = "#2DBE60",
+                "Scrunchies" = "#1F9BFF")
+ggp2_stream_prp <- ggplot(data = fad_sales,
+    mapping = aes(x = month,
+                  y = sales,
+                  fill = forcats::fct_rev(fad))) +
+    ggstream::geom_stream(type = "proportional") +
+    scale_y_continuous(labels = scales::percent) +
+    scale_fill_manual(values = fad_colors)
+ggp2_stream_prp +
+    labs_stream +
+    labs(y = "Share of sales", fill = "Fad") +
     theme(legend.position = "bottom")
 ```
 :::
 
+The proportional stream shows each fad's *share* of the month's sales. Scrunchies take over the whole stream by the end of the decade, because their wide bell is the last one still selling.
+
+### Sorting
+
+To change how the categorical areas are sorted, adjust the sorting argument to either `"none"`, `"onset"`, or `"inside_out"`
+
+  - `sorting`: set the `sorting` method to `"inside_out"` in *both* `ggstream::geom_stream()` and `ggstream::geom_stream_label()`
+
+  - `type`: change the type to `"ridge"` in *both* `ggstream::geom_stream()` and `ggstream::geom_stream_label()`
+
+We can also add text labels using `ggstream::geom_stream_label()`:
+
+  - Map `fad` (wrapped in `forcats::fct_rev()`) to `label` globally
+
+  - Inside `ggstream::geom_stream_label()`:
+
+    - set color to white (`"#FDF6FF"`) and the `size` to `3`
+
+    - set `n_grid` to `1000` (the default grid of `100` points is smaller than our 120 months, which causes an error)
+
+    - Remove the legend with `show.legend = FALSE`
+
+Colors:
+
+  - Use `scale_fill_manual()` to manually set the values using the named `fad_colors` vector
+
+  - Finally, add the `fill` to the labels and move the legend with  `theme(legend.position = "bottom")`
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: code_graph_stream_srt
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+ggp2_stream_srt <- ggplot(data = fad_sales,
+    mapping = aes(x = month,
+                  y = sales,
+                  fill = forcats::fct_rev(fad),
+                  label = forcats::fct_rev(fad))) +
+    ggstream::geom_stream(
+        type = "ridge",
+        sorting = "inside_out") +
+    ggstream::geom_stream_label(
+        type = "ridge",
+        sorting = "inside_out",
+        color = "#FDF6FF",
+        size = 3,
+        n_grid = 1000,
+        show.legend = FALSE) +
+    scale_fill_manual(values = fad_colors)
+
+ggp2_stream_srt +
+    labs_stream +
+    labs(fill = "Fad") +
+    theme(legend.position = "bottom")
+```
+:::

@@ -1,6 +1,5 @@
 # Parallel sets {#sec-parallel-sets}
 
-
 ```{r}
 #| label: setup
 #| message: false
@@ -17,12 +16,11 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(theme_ggp2g(
+ggplot2::theme_set(fmggp2::theme_clueless(
     base_size = 12))
 # pak::pak("thomasp85/ggforce")
 library(ggforce)
 ```
-
 
 ```{r}
 #| label: status
@@ -46,39 +44,57 @@ status("complete")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: right
-library(palmerpenguins) 
 library(ggplot2)
 library(ggforce)
-peng_wide <- palmerpenguins::penguins |> 
-  drop_na() |> 
-  count(island, species, sex) |> 
+library(dplyr)
+style_probs <- list(
+  Popular = c(Plaid = 0.6, Preppy = 0.3, Grunge = 0.1),
+  Skaters = c(Plaid = 0.05, Preppy = 0.15, Grunge = 0.8),
+  Drama = c(Plaid = 0.3, Preppy = 0.3, Grunge = 0.4))
+set.seed(1995)
+bronson_alcott <- tibble(
+  student_id = 1:300,
+  clique = sample(c("Popular", "Skaters", "Drama"), size = 300,
+                  replace = TRUE, prob = c(0.3, 0.4, 0.3))) |>
+  mutate(
+    style = vapply(clique, function(cl) {
+      sample(names(style_probs[[cl]]), size = 1, prob = style_probs[[cl]])
+    }, character(1), USE.NAMES = FALSE),
+    driving_test = sample(c("Passed", "Failed"), size = 300,
+                          replace = TRUE, prob = c(0.7, 0.3)))
+clueless_wide <- bronson_alcott |>
+  count(clique, style, driving_test) |>
   rename(value = n)
-para_set_peng <- ggforce::gather_set_data(
-                            data = peng_wide, 
-                            x = 1:3)
+para_set_clueless <- ggforce::gather_set_data(
+                            data = clueless_wide,
+                            x = 1:3) |>
+  mutate(x = factor(x, levels = c("clique", "style", "driving_test")))
 labs_psets <- labs(
-        title = "Categories of Palmer Penguins", 
-        y = "Count", fill = "Sex")
+        title = "Bronson Alcott High",
+        subtitle = "Cliques, styles, and driving tests",
+        caption = "Simulated data",
+        y = "Students", fill = "Driving test")
 
-ggp2_psets <- ggplot(data = para_set_peng, 
-    mapping = aes(x = x, 
-        id = id, 
-        split = y, 
+ggp2_psets <- ggplot(data = para_set_clueless,
+    mapping = aes(x = x,
+        id = id,
+        split = y,
         value = value)) +
-  geom_parallel_sets(aes(fill = sex), 
-        alpha = 0.3, 
-        axis.width = 0.07) 
+  geom_parallel_sets(aes(fill = driving_test),
+        alpha = 0.3,
+        axis.width = 0.07)
 
 ggp2_psets_axes <- ggp2_psets +
   geom_parallel_sets_axes(
-        axis.width = 0.07) 
+        axis.width = 0.07)
 
 ggp2_psets_labs <- ggp2_psets_axes +
   geom_parallel_sets_labels(
-        size = 2.0, 
+        size = 2.0,
         color = '#ffffff') +
   scale_x_discrete(
-        labels = c(island = "Island", species = "Species", sex = "Sex")) +
+        labels = c(clique = "Clique", style = "Style",
+                   driving_test = "Driving test")) +
   theme(axis.title.x = element_blank())
 
 ggp2_psets_labs +
@@ -90,7 +106,7 @@ ggp2_psets_labs +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ three categorical variables**    
+**✅ three categorical variables**
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
@@ -103,13 +119,13 @@ ggp2_psets_labs +
 
 Parallel sets (also referred to as Sankey diagrams or Alluvial charts) show the counts of categorical variables connected via a two-sided parallel display (or 'sets'). Parallel sets can also be used to show different states of paired dependent relationships (such as input vs output), or time 1 vs time 2.
 
-The height of the connecting bands *between* the categories on the `x` axis represent the relative counts for each discrete level (displayed on the `y` axis). The levels *within* each variable are represented with color. 
+The height of the connecting bands *between* the categories on the `x` axis represent the relative counts for each discrete level (displayed on the `y` axis). The levels *within* each variable are represented with color.
 
-We can build parallel set diagrams with the [`ggforce` package](https://ggforce.data-imaginist.com/index.html).  
+We can build parallel set diagrams with the [`ggforce` package](https://ggforce.data-imaginist.com/index.html).
 
 Also check out [alluvial charts.](alluvial_charts.qmd)
 
-## Set up 
+## Set up
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **PACKAGES:**
@@ -120,7 +136,7 @@ Install packages.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: pkg_code_parallel_sets
+#| label: pkg_code_psets
 #| code-fold: show
 #| eval: false
 #| echo: true
@@ -128,10 +144,9 @@ Install packages.
 #| message: false
 #| results: hide
 # pak::pak("thomasp85/ggforce")
-install.packages("palmerpenguins")
 library(ggforce)
-library(palmerpenguins)
 library(ggplot2)
+library(dplyr) # for tibble() and data manipulation
 ```
 :::
 
@@ -140,31 +155,145 @@ library(ggplot2)
 **DATA:**
 :::
 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="65%"}
-:::
+In *Clueless* (1995), Cher Horowitz gives Tai (and the audience) a tour of the cliques at Bronson Alcott High. We'll simulate 300 students with three categorical variables:
 
+  - `clique`: `"Popular"`, `"Skaters"`, or `"Drama"`, drawn with `sample()`
 
-We're going to remove the missing values from `palmerpenguins::penguins`, count the categorical variables (`island`, `sex`, `species`), and rename the `n` column (produced by the `count()` function) to `value`.
+  - `style`: `"Plaid"`, `"Preppy"`, or `"Grunge"`. Each clique has its own chances in `style_probs` (the popular kids mostly wear plaid, and the skaters mostly wear grunge), so a student's style depends on their clique
 
-  - `ggforce` has a special [`gather_set_data()`](https://ggforce.data-imaginist.com/reference/gather_set_data.html) function that *changes tidy data into a tidy(er) format*
+  - `driving_test`: `"Passed"` or `"Failed"`. Every student has the same 70% chance of passing, no matter their clique or style (Cher failed hers, so nobody's safe)
+
+Setting the seed with `set.seed()` means you'll get the same 300 students every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: data_code_parallel_sets
+#| label: data_code_psets
 #| code-fold: show
 #| eval: true
 #| echo: true
-peng_wide <- palmerpenguins::penguins |> 
-  drop_na() |> 
-  count(island, species, sex) |> 
-  rename(value = n)
-para_set_peng <- ggforce::gather_set_data(
-                            data = peng_wide, 
-                            x = 1:3)
-dplyr::glimpse(para_set_peng)
+style_probs <- list(
+  Popular = c(Plaid = 0.6, Preppy = 0.3, Grunge = 0.1),
+  Skaters = c(Plaid = 0.05, Preppy = 0.15, Grunge = 0.8),
+  Drama = c(Plaid = 0.3, Preppy = 0.3, Grunge = 0.4))
+set.seed(1995)
+bronson_alcott <- tibble(
+  student_id = 1:300,
+  clique = sample(c("Popular", "Skaters", "Drama"), size = 300,
+                  replace = TRUE, prob = c(0.3, 0.4, 0.3))) |>
+  mutate(
+    style = vapply(clique, function(cl) {
+      sample(names(style_probs[[cl]]), size = 1, prob = style_probs[[cl]])
+    }, character(1), USE.NAMES = FALSE),
+    driving_test = sample(c("Passed", "Failed"), size = 300,
+                          replace = TRUE, prob = c(0.7, 0.3)))
+glimpse(bronson_alcott)
 ```
 :::
+
+Next we count the categorical variables (`clique`, `style`, `driving_test`) with `count()` and rename its `n` column to `value`.
+
+  - `ggforce` has a special [`gather_set_data()`](https://ggforce.data-imaginist.com/reference/gather_set_data.html) function that *changes tidy data into a tidy(er) format*
+
+  - `gather_set_data()` stores the variable names in `x` as text (which would sort them alphabetically), so we convert `x` to a factor in the order we want the sets
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: data_code_psets_gather
+#| code-fold: show
+#| eval: true
+#| echo: true
+clueless_wide <- bronson_alcott |>
+  count(clique, style, driving_test) |>
+  rename(value = n)
+para_set_clueless <- ggforce::gather_set_data(
+                            data = clueless_wide,
+                            x = 1:3) |>
+  mutate(x = factor(x, levels = c("clique", "style", "driving_test")))
+glimpse(para_set_clueless)
+```
+:::
+
+## Distribution
+
+Parallel sets are good at showing whether two categorical variables are *related*. When one variable depends on another, the bands leaving each category split up in different ways. When they're unrelated, every category splits up the same way. Our data has one of each, so below we'll move from the students, to a picture, to the formula.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**COUNT IT:**
+:::
+
+Start with the first five students.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_values_psets
+#| code-fold: show
+#| eval: true
+#| echo: true
+head(bronson_alcott, 5)
+```
+:::
+
+Below we use `prop.table()` to turn two cross tables into row percentages. Each row adds up to one, so we can compare how each clique splits.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: count_summary_psets
+#| code-fold: show
+#| eval: true
+#| echo: true
+clique_style <- prop.table(table(bronson_alcott$clique,
+                                 bronson_alcott$style), margin = 1)
+round(clique_style, 2)
+clique_test <- prop.table(table(bronson_alcott$clique,
+                                bronson_alcott$driving_test), margin = 1)
+round(clique_test, 2)
+```
+:::
+
+The style rows look very different from clique to clique (`r round(100 * clique_style["Skaters", "Grunge"])`% of the skaters wear grunge, but only `r round(100 * clique_style["Popular", "Grunge"])`% of the popular kids do). The driving test rows look almost the same for every clique (about 70% passed).
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**DRAW IT:**
+:::
+
+The two graphs below draw each pair of variables as parallel sets, with the bands colored by clique. On the left, the clique bands spread across the styles in very different ways. On the right, every clique splits into passed and failed in about the same proportion.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: draw_psets
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| layout-ncol: 2
+two_sets <- function(var) {
+  bronson_alcott |>
+    count(clique, .data[[var]]) |>
+    rename(value = n) |>
+    ggforce::gather_set_data(x = 1:2) |>
+    mutate(x = factor(x, levels = c("clique", var))) |>
+    ggplot(aes(x = x, id = id, split = y, value = value)) +
+    geom_parallel_sets(aes(fill = clique), alpha = 0.5, axis.width = 0.1) +
+    geom_parallel_sets_axes(axis.width = 0.1) +
+    geom_parallel_sets_labels(size = 3, color = "#ffffff") +
+    labs(x = NULL, y = "Students", fill = "Clique") +
+    theme(legend.position = "bottom")
+}
+two_sets("style")
+two_sets("driving_test")
+```
+:::
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**NAME IT:**
+:::
+
+Each student's style comes from a [categorical distribution](https://en.wikipedia.org/wiki/Categorical_distribution) with probabilities that depend on their clique, so the styles within each clique follow a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
+
+$$
+(N_{\text{plaid}}, N_{\text{preppy}}, N_{\text{grunge}}) \mid \text{clique} \sim \text{Multinomial}\left(n_{\text{clique}}, \; P(\text{style} \mid \text{clique})\right)
+$$
+
+The driving test is [independent](https://en.wikipedia.org/wiki/Independence_(probability_theory)) of the clique, which means $P(\text{passed} \mid \text{clique}) = P(\text{passed}) = 0.7$ for every clique. When two variables are independent, the count we'd expect in each pair of categories is the row total times the column share. For example, there are `r sum(bronson_alcott$clique == "Skaters")` skaters, so we'd expect about $`r sum(bronson_alcott$clique == "Skaters")` \times 0.7 \approx `r round(sum(bronson_alcott$clique == "Skaters") * 0.7)`$ of them to pass (and `r sum(bronson_alcott$clique == "Skaters" & bronson_alcott$driving_test == "Passed")` did). Bands that split in the same proportions everywhere are the picture of independence, and bands that split differently are the picture of a relationship. Try giving every clique the same `style_probs` and the left graph in **DRAW IT** will look like the right one.
 
 ## Grammar
 
@@ -178,49 +307,52 @@ dplyr::glimpse(para_set_peng)
 
   - Map `x` to `x`, `id` to `id`, `y` to `split`, and `value` to `value`
 
-  - In the `geom_parallel_sets()` function, map `sex` to `fill` and manually set the `alpha` (opacity) and the `axis.width` 
+  - In the `geom_parallel_sets()` function, map `driving_test` to `fill` and manually set the `alpha` (opacity) and the `axis.width`
 
   - In the `geom_parallel_sets_axes()` function, set the `axis.width` to the same value as the `geom_parallel_sets()` above
 
   - For labeling, adjust the `size` manually and set the `color` to something that stands out against the black vertical axes
 
-  - Manually label the `x` axis with `scale_x_continuous()`, setting the `breaks` and `labels` to the variable names in the `peng_wide` dataset
+  - Manually label the `x` axis with `scale_x_discrete()`, setting the `labels` to the variable names in the `clueless_wide` dataset
 
   - Finally, remove the `x` title with `axis.title.x = element_blank()`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: code_graph_parallel_sets
+#| label: code_graph_psets
 #| code-fold: show
 #| eval: false
-#| echo: true 
+#| echo: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
 labs_psets <- labs(
-        title = "Categories of Palmer Penguins", 
-        y = "Count", fill = "Sex")
+        title = "Bronson Alcott High",
+        subtitle = "Cliques, styles, and driving tests",
+        caption = "Simulated data",
+        y = "Students", fill = "Driving test")
 
-ggp2_psets <- ggplot(data = para_set_peng, 
-    mapping = aes(x = x, 
-        id = id, 
-        split = y, 
+ggp2_psets <- ggplot(data = para_set_clueless,
+    mapping = aes(x = x,
+        id = id,
+        split = y,
         value = value)) +
-  geom_parallel_sets(aes(fill = sex), 
-        alpha = 0.3, 
-        axis.width = 0.07) 
+  geom_parallel_sets(aes(fill = driving_test),
+        alpha = 0.3,
+        axis.width = 0.07)
 
 ggp2_psets_axes <- ggp2_psets +
   geom_parallel_sets_axes(
-        axis.width = 0.07) 
+        axis.width = 0.07)
 
 ggp2_psets_labs <- ggp2_psets_axes +
   geom_parallel_sets_labels(
-        size = 2.0, 
+        size = 2.0,
         color = '#ffffff') +
   scale_x_discrete(
-        labels = c(island = "Island", species = "Species", sex = "Sex")) +
+        labels = c(clique = "Clique", style = "Style",
+                   driving_test = "Driving test")) +
   theme(axis.title.x = element_blank())
 
 ggp2_psets_labs +
@@ -235,7 +367,7 @@ ggp2_psets_labs +
 :::
 
 ```{r}
-#| label: create_graph_parallel_sets
+#| label: create_graph_psets
 #| eval: true
 #| echo: false
 #| warning: false
@@ -244,28 +376,31 @@ ggp2_psets_labs +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_psets <- labs(
-        title = "Categories of Palmer Penguins", 
-        y = "Count", fill = "Sex")
+        title = "Bronson Alcott High",
+        subtitle = "Cliques, styles, and driving tests",
+        caption = "Simulated data",
+        y = "Students", fill = "Driving test")
 
-ggp2_psets <- ggplot(data = para_set_peng, 
-    mapping = aes(x = x, 
-        id = id, 
-        split = y, 
+ggp2_psets <- ggplot(data = para_set_clueless,
+    mapping = aes(x = x,
+        id = id,
+        split = y,
         value = value)) +
-  geom_parallel_sets(aes(fill = sex), 
-        alpha = 0.3, 
-        axis.width = 0.07) 
+  geom_parallel_sets(aes(fill = driving_test),
+        alpha = 0.3,
+        axis.width = 0.07)
 
 ggp2_psets_axes <- ggp2_psets +
   geom_parallel_sets_axes(
-        axis.width = 0.07) 
+        axis.width = 0.07)
 
 ggp2_psets_labs <- ggp2_psets_axes +
   geom_parallel_sets_labels(
-        size = 2.0, 
+        size = 2.0,
         color = '#ffffff') +
   scale_x_discrete(
-        labels = c(island = "Island", species = "Species", sex = "Sex")) +
+        labels = c(clique = "Clique", style = "Style",
+                   driving_test = "Driving test")) +
   theme(axis.title.x = element_blank())
 
 ggp2_psets_labs +
@@ -274,35 +409,32 @@ ggp2_psets_labs +
 
 ## More info
 
-If the categories have long names, you can move the location of the labels *outside* the set. 
+If the categories have long names, you can move the location of the labels *outside* the set.
 
 ### Labeling sets
 
-If the categories have long names, use the `angle`, `nudge_x`/`nudge_y` and `hjust`/`vjust` in `geom_parallel_sets_labels()` to adjust the size, location, and color of the labels. 
+If the categories have long names, use the `angle`, `nudge_x`/`nudge_y` and `hjust`/`vjust` in `geom_parallel_sets_labels()` to adjust the size, location, and color of the labels.
 
-  - Manually setting the `limits` of the `x` axis in `scale_x_continuous()` will also give more room for the labels. 
+  - Manually setting the `expand` argument of the `x` axis in `scale_x_discrete()` will also give more room for the labels.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: create_graph_parallel_sets_labs
+#| label: code_graph_psets_labels
+#| code-fold: show
 #| eval: true
 #| echo: true
-#| warning: false
-#| message: false
-#| out-height: '100%'
-#| out-width: '100%'
-#| layout-nrow: 1
-ggp2_psets_axes + 
+ggp2_psets_axes +
   geom_parallel_sets_labels(
-      size = 3.2, 
+      size = 3.2,
       colour = '#000000',
-      angle = 0, 
-      nudge_x = 0.1, 
-      hjust = 0) + 
+      angle = 0,
+      nudge_x = 0.1,
+      hjust = 0) +
   scale_x_discrete(
-        labels = c(island = "Island", species = "Species", sex = "Sex"),
+        labels = c(clique = "Clique", style = "Style",
+                   driving_test = "Driving test"),
         expand = expansion(add = c(0.1, 0.4))) +
-  theme(axis.title.x = element_blank()) + 
+  theme(axis.title.x = element_blank()) +
     labs_psets
 ```
 :::

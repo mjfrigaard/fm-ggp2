@@ -56,7 +56,8 @@ modem_sessions <- tibble(
     TRUE ~ rnorm(600, mean = 44, sd = 5)), 1)) |>
   mutate(modem = factor(modem, levels = c("14.4k", "28.8k", "56k")))
 labs_fill_density <- labs(
-  title = "Dial up connections (simulated)",
+  title = "Dial up connections",
+  caption = "Simulated data",
   subtitle = "Share of sessions from each modem at every speed",
   x = "Connection speed (kbps)",
   fill = "Modem")
@@ -260,7 +261,8 @@ At 33 kbps, the 14.4k curve is essentially zero, so the share splits between the
 #| out-height: '100%'
 #| out-width: '100%'
 labs_fill_density <- labs(
-  title = "Dial up connections (simulated)",
+  title = "Dial up connections",
+  caption = "Simulated data",
   subtitle = "Share of sessions from each modem at every speed",
   x = "Connection speed (kbps)",
   fill = "Modem")
@@ -289,7 +291,8 @@ ggp2_fill_density +
 #| out-height: '100%'
 #| out-width: '100%'
 labs_fill_density <- labs(
-  title = "Dial up connections (simulated)",
+  title = "Dial up connections",
+  caption = "Simulated data",
   subtitle = "Share of sessions from each modem at every speed",
   x = "Connection speed (kbps)",
   fill = "Modem")

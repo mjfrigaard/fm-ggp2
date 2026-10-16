@@ -61,7 +61,8 @@ fp_heatmap <- fp_episodes |>
   group_by(season, gag) |>
   summarise(occurrences = sum(present), .groups = "drop")
 labs_heatmap_tile <- labs(
-  title = "The Fresh Prince of Bel-Air (simulated)", 
+  title = "The Fresh Prince of Bel-Air",
+  caption = "Simulated data",
   subtitle = "Running gags per season (24 episodes each)",
   x = "Season", 
   y = "Running gag", 
@@ -252,7 +253,8 @@ The probability itself comes from `plogis()`, which turns `base + trend * (seaso
 #| out-height: '100%'
 #| out-width: '100%'
 labs_heatmap_tile <- labs(
-  title = "The Fresh Prince of Bel-Air (simulated)", 
+  title = "The Fresh Prince of Bel-Air",
+  caption = "Simulated data",
   subtitle = "Running gags per season (24 episodes each)",
   x = "Season", 
   y = "Running gag", 
@@ -284,7 +286,8 @@ ggp2_heatmap_tile +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_heatmap_tile <- labs(
-  title = "The Fresh Prince of Bel-Air (simulated)", 
+  title = "The Fresh Prince of Bel-Air",
+  caption = "Simulated data",
   subtitle = "Running gags per season (24 episodes each)",
   x = "Season", 
   y = "Running gag", 
@@ -327,7 +330,8 @@ In addition to `geom_tile()`, heatmaps can also be created with the `geom_raster
 #| message: false
 #| layout-nrow: 1
 labs_heatmap_raster <- labs(
-  title = "The Fresh Prince of Bel-Air (simulated)", 
+  title = "The Fresh Prince of Bel-Air",
+  caption = "Simulated data",
   subtitle = "Running gags per season (24 episodes each)",
   x = "Season", 
   y = "Running gag", 

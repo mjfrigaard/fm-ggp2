@@ -64,7 +64,8 @@ walkman_clev_dots <- walkman_tests |>
   group_by(battery, model) |>
   summarise(med_hours = median(hours), .groups = "drop")
 labs_clev_dots <- labs(
-    title = "Sony Walkman battery tests (simulated)",
+    title = "Sony Walkman battery tests",
+    caption = "Simulated data",
     subtitle = "Alkaline and rechargeable batteries",
     x = "Median battery life (hours)",
     y = "Model",
@@ -245,7 +246,8 @@ The line in each row estimates the difference between two of these means, $\mu_{
 #| warning: false
 #| message: false
 labs_clev_dots <- labs(
-    title = "Sony Walkman battery tests (simulated)",
+    title = "Sony Walkman battery tests",
+    caption = "Simulated data",
     subtitle = "Alkaline and rechargeable batteries",
     x = "Median battery life (hours)",
     y = "Model",
@@ -278,7 +280,8 @@ ggp2_clev_dots +
 #| message: false
 #| layout-nrow: 1
 labs_clev_dots <- labs(
-    title = "Sony Walkman battery tests (simulated)",
+    title = "Sony Walkman battery tests",
+    caption = "Simulated data",
     subtitle = "Alkaline and rechargeable batteries",
     x = "Median battery life (hours)",
     y = "Model",
@@ -373,7 +376,8 @@ glimpse(walkman_clev_dots2)
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_clev_dots2 <- labs(
-    title = "Sony Walkman tests (simulated)",
+    title = "Sony Walkman tests",
+    caption = "Simulated data",
     subtitle = "Alkaline and rechargeable batteries",
     x = "Median (hours or seconds)",
     y = "Model",

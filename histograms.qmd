@@ -50,7 +50,8 @@ aol_sessions <- tibble(
   minutes = round(rnorm(n = 300, mean = 45, sd = 12))
 )
 labs_histogram <- labs(
-  title = "AOL dial up sessions (simulated)",
+  title = "AOL dial up sessions",
+  caption = "Simulated data",
   subtitle = "Distribution of session length",
   x = "Session length (minutes)")
 ggp2_hist <- ggplot(data = aol_sessions,
@@ -238,7 +239,8 @@ The small gap between the rule and our sample is just sampling variation. Change
 #| warning: false
 #| message: false
 labs_histogram <- labs(
-  title = "AOL dial up sessions (simulated)",
+  title = "AOL dial up sessions",
+  caption = "Simulated data",
   subtitle = "Distribution of session length",
   x = "Session length (minutes)")
 
@@ -264,7 +266,8 @@ ggp2_hist +
 #| message: false
 #| layout-nrow: 1
 labs_histogram <- labs(
-  title = "AOL dial up sessions (simulated)",
+  title = "AOL dial up sessions",
+  caption = "Simulated data",
   subtitle = "Distribution of session length",
   x = "Session length (minutes)")
 

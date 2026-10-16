@@ -57,7 +57,8 @@ oregon_trail <- tibble(
                                        sdlog = 0.2))) |>
   select(party_id, profession, days_to_oregon)
 labs_grp_boxplots <- labs(
-  title = "The Oregon Trail (simulated)",
+  title = "The Oregon Trail",
+  caption = "Simulated data",
   subtitle = "Days for 100 parties of each profession to reach Oregon",
   x = "Profession", fill = "Profession",
   y = "Days to reach Oregon")
@@ -247,7 +248,8 @@ On the log scale, the quartiles sit $0.674\,\sigma$ above and below the center, 
 #| out-height: '100%'
 #| out-width: '100%'
 labs_grp_boxplots <- labs(
-  title = "The Oregon Trail (simulated)",
+  title = "The Oregon Trail",
+  caption = "Simulated data",
   subtitle = "Days for 100 parties of each profession to reach Oregon",
   x = "Profession", fill = "Profession",
   y = "Days to reach Oregon")
@@ -282,7 +284,8 @@ When a categorical variable is supplied, the plot will contain a box for each le
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_grp_boxplots <- labs(
-  title = "The Oregon Trail (simulated)",
+  title = "The Oregon Trail",
+  caption = "Simulated data",
   subtitle = "Days for 100 parties of each profession to reach Oregon",
   x = "Profession", fill = "Profession",
   y = "Days to reach Oregon")

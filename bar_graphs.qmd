@@ -51,7 +51,8 @@ pokemon_starters <- tibble(
     size = 300, replace = TRUE, prob = c(0.30, 0.42, 0.28))
 )
 labs_bar <- labs(
-  title = "Pokemon Red and Blue (simulated)",
+  title = "Pokemon Red and Blue",
+  caption = "Simulated data",
   subtitle = "Starter chosen by 300 players",
   x = "Starter", y = "Count",
   fill = "Starter")
@@ -235,7 +236,8 @@ Our simulated players show exactly that trade off: Bulbasaur came in `r 90 - sum
 #| out-height: '100%'
 #| out-width: '100%'
 labs_bar <- labs(
-  title = "Pokemon Red and Blue (simulated)",
+  title = "Pokemon Red and Blue",
+  caption = "Simulated data",
   subtitle = "Starter chosen by 300 players",
   x = "Starter", y = "Count",
   fill = "Starter")
@@ -264,7 +266,8 @@ ggp2_bar +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_bar <- labs(
-  title = "Pokemon Red and Blue (simulated)",
+  title = "Pokemon Red and Blue",
+  caption = "Simulated data",
   subtitle = "Starter chosen by 300 players",
   x = "Starter", y = "Count",
   fill = "Starter")
