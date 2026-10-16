@@ -95,23 +95,23 @@ A [Histogram](histograms.qmd) shows how numerical values are spread out over a s
 library(ggplot2)
 library(dplyr)
 set.seed(1014)
-aol_sessions <- tibble(
-  session_id = 1:300,
-  minutes = round(rnorm(n = 300, mean = 45, sd = 12))
+ok_soda_sales <- tibble(
+  store_id = 1:300,
+  cans = round(rnorm(n = 300, mean = 45, sd = 12))
 )
 labs_histogram <- labs(
-  title = "AOL dial up sessions",
+  title = "OK Soda",
   caption = "Simulated data",
-  subtitle = "Distribution of session length",
-  x = "Session length (minutes)")
-ggp2_hist <- ggplot(data = aol_sessions,
-     aes(x = minutes)) + 
+  subtitle = "Cans sold per store in one day",
+  x = "Cans sold")
+ggp2_hist <- ggplot(data = ok_soda_sales,
+     aes(x = cans)) + 
      geom_histogram() 
 (
   ggp2_hist +
     labs_histogram
 ) +
-  fmggp2::theme_win98(base_size = 12) +
+  fmggp2::theme_oksoda(base_size = 12) +
   bare_theme
 ```
 
@@ -131,23 +131,23 @@ A [frequency polygon](frequency_polygons.qmd) displays data distributions. It is
 library(ggplot2)
 library(dplyr)
 set.seed(1999)
-napster_downloads <- tibble(
-  download_id = 1:300,
-  minutes = round(rgamma(n = 300, shape = 4, rate = 0.5), 1)
+talkboy_clips <- tibble(
+  clip_id = 1:300,
+  seconds = round(rgamma(n = 300, shape = 4, rate = 0.5), 1)
 )
 labs_freqpoly <- labs(
-  title = "Napster MP3 downloads",
+  title = "Talkboy",
   caption = "Simulated data",
-  subtitle = "Download time over a 56k modem",
-  x = "Download time (minutes)")
-ggp2_freqpoly <- ggplot(data = napster_downloads,
-      aes(x = minutes)) +
+  subtitle = "Length of 300 recorded messages",
+  x = "Message length (seconds)")
+ggp2_freqpoly <- ggplot(data = talkboy_clips,
+      aes(x = seconds)) +
     geom_freqpoly()
 (
   ggp2_freqpoly +
     labs_freqpoly
 ) +
-  fmggp2::theme_napster(base_size = 12) +
+  fmggp2::theme_talkboy(base_size = 12) +
   bare_theme
 ```
 
@@ -204,8 +204,8 @@ A [density plot](density_plots.qmd) displays the distribution of data in a smoot
 library(ggplot2)
 library(dplyr)
 set.seed(1998)
-spice_fans <- tibble(
-  fan_id = 1:400,
+crystal_tasters <- tibble(
+  taster_id = 1:400,
   group = sample(c("kid", "parent"), size = 400, replace = TRUE,
     prob = c(0.65, 0.35)),
   age = round(if_else(group == "kid", 
@@ -213,11 +213,11 @@ spice_fans <- tibble(
     rnorm(400, mean = 37, sd = 6)))
 )
 labs_density <- labs(
-  title = "Spice World tour",
+  title = "Crystal Pepsi",
   caption = "Simulated data",
-  subtitle = "Ages of 400 fans at a 1998 concert",
+  subtitle = "Ages of 400 people at a 1992 mall taste test",
   x = "Age (years)")
-ggp2_density <- ggplot(data = spice_fans,
+ggp2_density <- ggplot(data = crystal_tasters,
         aes(x = age)) +
       geom_density()
 
@@ -225,7 +225,7 @@ ggp2_density <- ggplot(data = spice_fans,
   ggp2_density +
     labs_density
 ) +
-  fmggp2::theme_spice(base_size = 12) +
+  fmggp2::theme_crystalpepsi(base_size = 12) +
   bare_theme
 ```
 

@@ -17,7 +17,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_spice(
+ggplot2::theme_set(fmggp2::theme_crystalpepsi(
     base_size = 15))
 ```
 
@@ -55,8 +55,8 @@ status("complete")
 library(ggplot2)
 library(dplyr)
 set.seed(1998)
-spice_fans <- tibble(
-  fan_id = 1:400,
+crystal_tasters <- tibble(
+  taster_id = 1:400,
   group = sample(c("kid", "parent"), size = 400, replace = TRUE,
     prob = c(0.65, 0.35)),
   age = round(if_else(group == "kid", 
@@ -64,11 +64,11 @@ spice_fans <- tibble(
     rnorm(400, mean = 37, sd = 6)))
 )
 labs_density <- labs(
-  title = "Spice World tour",
+  title = "Crystal Pepsi",
   caption = "Simulated data",
-  subtitle = "Ages of 400 fans at a 1998 concert",
+  subtitle = "Ages of 400 people at a 1992 mall taste test",
   x = "Age (years)")
-ggp2_density <- ggplot(data = spice_fans,
+ggp2_density <- ggplot(data = crystal_tasters,
         aes(x = age)) +
       geom_density()
 
@@ -116,7 +116,7 @@ library(dplyr) # for tibble() and data manipulation
 :::
 
 ::: {style="font-size: 0.95rem;"}
-The 1998 Spice World tour drew two very different crowds: kids who loved the Spice Girls, and the parents who drove them to the show. We'll simulate the ages of 400 fans in two steps. First, `sample()` decides whether each fan is a kid or a parent. Then `rnorm()` draws an age from that group's own normal distribution. Setting the seed with `set.seed()` means you'll get the same 400 fans every time you run the code below.
+[Crystal Pepsi](https://en.wikipedia.org/wiki/Crystal_Pepsi) was a clear cola that Pepsi launched in 1992 and pulled in 1994. Picture a mall taste test table in 1992: kids lining up for a free sample of see through soda, and the parents who brought them to the mall. We'll simulate the ages of 400 tasters in two steps. First, `sample()` decides whether each taster is a kid or a parent. Then `rnorm()` draws an age from that group's own normal distribution. Setting the seed with `set.seed()` means you'll get the same 400 fans every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -126,27 +126,27 @@ The 1998 Spice World tour drew two very different crowds: kids who loved the Spi
 #| eval: true
 #| echo: true
 set.seed(1998)
-spice_fans <- tibble(
-  fan_id = 1:400,
+crystal_tasters <- tibble(
+  taster_id = 1:400,
   group = sample(c("kid", "parent"), size = 400, replace = TRUE,
     prob = c(0.65, 0.35)),
   age = round(if_else(group == "kid", 
     rnorm(400, mean = 11, sd = 2.5), 
     rnorm(400, mean = 37, sd = 6)))
 )
-glimpse(spice_fans)
+glimpse(crystal_tasters)
 ```
 :::
 
 ## Distribution
 
-Every distribution we've seen so far has a single peak. Real data doesn't always cooperate, and the concert crowd is a good example: it has two peaks, one for kids and one for parents. Density plots are good at showing this kind of shape, but summary statistics can hide it completely. Below we'll move from the ages, to a picture, to the formula.
+Every distribution we've seen so far has a single peak. Real data doesn't always cooperate, and the taste test crowd is a good example: it has two peaks, one for kids and one for parents. Density plots are good at showing this kind of shape, but summary statistics can hide it completely. Below we'll move from the ages, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the first ten fans.
+Start with the first ten tasters.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -154,11 +154,11 @@ Start with the first ten fans.
 #| code-fold: show
 #| eval: true
 #| echo: true
-head(spice_fans, 10)
+head(crystal_tasters, 10)
 ```
 :::
 
-The ages fall into two clumps: kids between 7 and 15, and parents between 34 and 40. Nobody in this first ten is in their twenties. Now look at what the mean and median say about all 400 fans.
+The ages fall into two clumps: kids between 7 and 15, and parents between 34 and 40. Nobody in this first ten is in their twenties. Now look at what the mean and median say about all 400 tasters.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -166,15 +166,15 @@ The ages fall into two clumps: kids between 7 and 15, and parents between 34 and
 #| code-fold: show
 #| eval: true
 #| echo: true
-spice_fans |> 
+crystal_tasters |> 
   summarise(
     mean = mean(age), 
     median = median(age), 
-    fans_age_18_to_25 = sum(age >= 18 & age <= 25))
+    tasters_age_18_to_25 = sum(age >= 18 & age <= 25))
 ```
 :::
 
-The mean age is about 20, but only `r sum(spice_fans$age >= 18 & spice_fans$age <= 25)` of the 400 fans are between 18 and 25. The mean describes almost nobody in the crowd.
+The mean age is about 20, but only `r sum(crystal_tasters$age >= 18 & crystal_tasters$age <= 25)` of the 400 tasters are between 18 and 25. The mean describes almost nobody in line.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
@@ -189,13 +189,13 @@ A bar model shows the crowd as two parts of one whole. Kids make up about two th
 #| eval: true
 #| echo: true
 #| fig-asp: 0.45
-spice_fans |> 
+crystal_tasters |> 
   count(group) |> 
-  ggplot(aes(x = n, y = "400 fans", fill = group)) + 
+  ggplot(aes(x = n, y = "400 tasters", fill = group)) + 
   geom_col(position = position_stack(reverse = TRUE)) + 
   geom_text(aes(label = n), color = "white", 
     position = position_stack(vjust = 0.5, reverse = TRUE)) + 
-  labs(x = "Number of fans", y = NULL, fill = "Group")
+  labs(x = "Number of tasters", y = NULL, fill = "Group")
 ```
 :::
 
@@ -209,23 +209,23 @@ The density plot below draws each group's ages as its own curve. The kid curve i
 #| echo: true
 #| warning: false
 #| message: false
-ggplot(data = spice_fans, 
+ggplot(data = crystal_tasters, 
     aes(x = age)) + 
   geom_density(aes(y = after_stat(count), fill = group), 
     alpha = 0.6, color = NA) + 
   geom_density(aes(y = after_stat(count)), fill = NA) + 
-  geom_vline(xintercept = mean(spice_fans$age), linetype = "dashed") + 
-  labs(x = "Age (years)", y = "Fans per year of age", fill = "Group")
+  geom_vline(xintercept = mean(crystal_tasters$age), linetype = "dashed") + 
+  labs(x = "Age (years)", y = "Tasters per year of age", fill = "Group")
 ```
 :::
 
-The solid line is what `geom_density()` draws for all 400 fans together. It finds the same two peaks, but it uses one amount of smoothing (the bandwidth) for the whole crowd, so the narrow kid peak comes out lower and wider than the kid curve. You can adjust the smoothing with the `adjust` argument (e.g., `geom_density(adjust = 0.5)`).
+The solid line is what `geom_density()` draws for all 400 tasters together. It finds the same two peaks, but it uses one amount of smoothing (the bandwidth) for the whole crowd, so the narrow kid peak comes out lower and wider than the kid curve. You can adjust the smoothing with the `adjust` argument (e.g., `geom_density(adjust = 0.5)`).
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **NAME IT:**
 :::
 
-Our two step simulation creates a [mixture distribution](https://en.wikipedia.org/wiki/Mixture_distribution). Each fan's age comes from one of two normal distributions, chosen with probabilities 0.65 and 0.35:
+Our two step simulation creates a [mixture distribution](https://en.wikipedia.org/wiki/Mixture_distribution). Each taster's age comes from one of two normal distributions, chosen with probabilities 0.65 and 0.35:
 
 $$
 f(x) = 0.65 \cdot \text{Normal}(x;\, 11, 2.5) + 0.35 \cdot \text{Normal}(x;\, 37, 6)
@@ -263,11 +263,11 @@ Add the `geom_density()` layer
 #| warning: false
 #| message: false
 labs_density <- labs(
-  title = "Spice World tour",
+  title = "Crystal Pepsi",
   caption = "Simulated data",
-  subtitle = "Ages of 400 fans at a 1998 concert",
+  subtitle = "Ages of 400 people at a 1992 mall taste test",
   x = "Age (years)")
-ggp2_density <- ggplot(data = spice_fans,
+ggp2_density <- ggplot(data = crystal_tasters,
         aes(x = age)) +
       geom_density()
 
@@ -290,11 +290,11 @@ ggp2_density +
 #| message: false
 #| layout-nrow: 1
 labs_density <- labs(
-  title = "Spice World tour",
+  title = "Crystal Pepsi",
   caption = "Simulated data",
-  subtitle = "Ages of 400 fans at a 1998 concert",
+  subtitle = "Ages of 400 people at a 1992 mall taste test",
   x = "Age (years)")
-ggp2_density <- ggplot(data = spice_fans,
+ggp2_density <- ggplot(data = crystal_tasters,
         aes(x = age)) +
       geom_density()
 

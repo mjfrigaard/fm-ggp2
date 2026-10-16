@@ -423,37 +423,37 @@ An [instance chart](instance_chart.qmd) marks each time a category appears with 
 library(ggplot2)
 library(dplyr)
 library(tidyr)
-rugrats_names <- tibble(
-  name = c("Tommy", "Chuckie", "Angelica", "Phil",
-           "Lil", "Susie", "Dil", "Kimi"),
+snack_flavors <- tibble(
+  flavor = c("Strawberry", "Lime", "Blue raspberry", "Orange",
+           "Watermelon", "Berry punch", "Sour apple", "Mystery"),
   before = c(4, 0.3, 1, 1.5, 0.2, 1, 0.05, 0.05),
   after = c(8, 1.5, 4, 1.5, 0.8, 1.5, 2, 3),
   debut = c(1991, 1991, 1991, 1991, 1991, 1992, 1998, 2001))
 set.seed(1993)
-hospital_names <- expand_grid(year = 1980:2005, rugrats_names) |>
-  mutate(name = factor(name, levels = rugrats_names$name),
+lunch_trades <- expand_grid(year = 1980:2005, snack_flavors) |>
+  mutate(flavor = factor(flavor, levels = snack_flavors$flavor),
          avg_n = if_else(year < debut, before, after),
          n = rpois(n(), lambda = avg_n)) |>
-  select(year, name, debut, avg_n, n)
-rugrats_babies <- hospital_names |>
+  select(year, flavor, debut, avg_n, n)
+gushers_trades <- lunch_trades |>
   filter(n > 0)
-labs_inst_rugrats <- labs(
-  title = "Rugrats baby names",
+labs_inst_gushers <- labs(
+  title = "Fruit Gushers",
   caption = "Simulated data",
-  subtitle = "Babies named at one hospital, 1980 - 2005",
-  x = "Year", y = "Name")
-ggp2_inst_rugrats <- ggplot(data = rugrats_babies,
+  subtitle = "Fruit snack trades at one lunch table, 1980 - 2005",
+  x = "Year", y = "Flavor")
+ggp2_inst_gushers <- ggplot(data = gushers_trades,
     mapping = aes(x = year,
-                  y = name,
-                  color = name)) +
+                  y = flavor,
+                  color = flavor)) +
   geom_point(aes(alpha = n),
     shape = 124, size = 5,
     show.legend = FALSE) +
   scale_alpha_continuous(range = c(0.35, 1))
 (
-  ggp2_inst_rugrats +
-    labs_inst_rugrats
+  ggp2_inst_gushers +
+    labs_inst_gushers
 ) +
-  fmggp2::theme_rugrats(base_size = 12) +
+  fmggp2::theme_gushers(base_size = 12) +
   bare_theme
 ```

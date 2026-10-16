@@ -744,7 +744,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="whats-new-in-this-edition">What’s new in this edition</h2>
 <p>I’ve rebuilt the examples in this manual around simulated data. Earlier versions borrowed datasets from packages like <code>palmerpenguins</code>, <code>fivethirtyeight</code>, and <code>ggplot2movies</code>. Those are great datasets, but each one meant another package to install, and the shape of the data was whatever the real world handed us. Now every chapter creates its own data with a few lines of R code, using base R functions (like <code>rnorm()</code>, <code>rpois()</code>, and <code>sample()</code>) or user written packages (like <a href="https://debruine.github.io/faux/"><code>faux</code></a>).</p>
 <p>Simulating the data unlocks something real data can’t: we know the distribution behind every graph before we draw it. Each chapter uses that to connect the numbers to the picture in a new <strong>Distribution</strong> section, so you’ll see <em>why</em> a histogram is bell shaped or <em>why</em> a box plot shows so many outliers, not just how to build it.</p>
-<p>I also wanted the examples to be fun to read, so every dataset is a late 90s throwback. You’ll find Napster downloads, Blockbuster rentals, Pokémon starters, and Mario Kart 64 lap times, and each one is drawn with a matching theme (Windows 98, the original Game Boy, the Nintendo 64, and more). The themes live in the <a href="https://mjfrigaard.github.io/fmggp2/"><code>fmggp2</code></a> package, which also holds the helpers used throughout the book.</p>
+<p>I also wanted the examples to be fun to read, so every dataset is a late 90s throwback. You’ll find Talkboy messages, Blockbuster rentals, Pokémon starters, and Mario Kart 64 lap times, and each one is drawn with a matching theme (Windows 98, the original Game Boy, the Nintendo 64, and more). The themes live in the <a href="https://mjfrigaard.github.io/fmggp2/"><code>fmggp2</code></a> package, which also holds the helpers used throughout the book.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div>
@@ -754,7 +754,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 flowchart TB
     dist(["&lt;strong&gt;Distribution&lt;/strong&gt;&lt;br&gt;normal, Poisson,&lt;br&gt;gamma, ..."]) --&gt;|"i. set.seed()"| sim["&lt;strong&gt;Simulate&lt;/strong&gt;&lt;br&gt;base R or &lt;code&gt;faux&lt;/code&gt;"]
-    sim --&gt; dset[("&lt;strong&gt;90s dataset&lt;/strong&gt;&lt;br&gt;AOL sessions, Pogs,&lt;br&gt;Happy Meals, ...")]
+    sim --&gt; dset[("&lt;strong&gt;90s dataset&lt;/strong&gt;&lt;br&gt;OK Soda, Pogs,&lt;br&gt;Happy Meals, ...")]
     dset --&gt;|"ii. Distribution section"| connect["&lt;strong&gt;Connect&lt;/strong&gt;&lt;br&gt;count it, draw it,&lt;br&gt;name it"]
     connect --&gt;|"iii. Grammar section"| gg[["&lt;strong&gt;ggplot2 graph&lt;/strong&gt;&lt;br&gt;&lt;code&gt;fmggp2::theme_*()&lt;/code&gt;"]]
 

@@ -17,7 +17,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_win98(
+ggplot2::theme_set(fmggp2::theme_oksoda(
     base_size = 15))
 ```
 
@@ -45,17 +45,17 @@ ggplot2::theme_set(fmggp2::theme_win98(
 library(ggplot2)
 library(dplyr)
 set.seed(1014)
-aol_sessions <- tibble(
-  session_id = 1:300,
-  minutes = round(rnorm(n = 300, mean = 45, sd = 12))
+ok_soda_sales <- tibble(
+  store_id = 1:300,
+  cans = round(rnorm(n = 300, mean = 45, sd = 12))
 )
 labs_histogram <- labs(
-  title = "AOL dial up sessions",
+  title = "OK Soda",
   caption = "Simulated data",
-  subtitle = "Distribution of session length",
-  x = "Session length (minutes)")
-ggp2_hist <- ggplot(data = aol_sessions,
-     aes(x = minutes)) + 
+  subtitle = "Cans sold per store in one day",
+  x = "Cans sold")
+ggp2_hist <- ggplot(data = ok_soda_sales,
+     aes(x = cans)) + 
      geom_histogram() 
 ggp2_hist + 
   labs_histogram
@@ -100,7 +100,7 @@ library(dplyr) # for tibble() and data manipulation
 **DATA:**
 :::
 
-We'll simulate 300 AOL dial up sessions with `rnorm()`, rounding each session length to the nearest minute. Setting the seed with `set.seed()` means you'll get the same 300 values every time you run the code below.
+OK Soda was Coca-Cola's 1993 soda for Gen X, sold in gray comic book cans with slogans like "Things are going to be OK." We'll simulate one day of sales at 300 test market stores with `rnorm()`, rounding each store's sales to a whole number of cans. Setting the seed with `set.seed()` means you'll get the same 300 values every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -109,23 +109,23 @@ We'll simulate 300 AOL dial up sessions with `rnorm()`, rounding each session le
 #| eval: true
 #| echo: true
 set.seed(1014)
-aol_sessions <- tibble(
-  session_id = 1:300,
-  minutes = round(rnorm(n = 300, mean = 45, sd = 12))
+ok_soda_sales <- tibble(
+  store_id = 1:300,
+  cans = round(rnorm(n = 300, mean = 45, sd = 12))
 )
-glimpse(aol_sessions)
+glimpse(ok_soda_sales)
 ```
 :::
 
 ## Distribution
 
-You don't have to be a statistician to read a histogram, but it helps to know what shape you should expect. Because we generated `minutes` ourselves, we already know the answer: every value came from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) with a mean of 45 minutes and a standard deviation of 12 minutes. Below we'll move from the numbers, to a picture, to the formula.
+You don't have to be a statistician to read a histogram, but it helps to know what shape you should expect. Because we generated `cans` ourselves, we already know the answer: every value came from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) with a mean of 45 cans and a standard deviation of 12 cans. Below we'll move from the numbers, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the first ten sessions.
+Start with the first ten stores.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -133,11 +133,11 @@ Start with the first ten sessions.
 #| code-fold: show
 #| eval: true
 #| echo: true
-head(aol_sessions$minutes, 10)
+head(ok_soda_sales$cans, 10)
 ```
 :::
 
-Most of these values land within 12 minutes of 45, and a few (like 16 and 23) sit further out. If we sort all 300 sessions into three ranges (below one standard deviation, within one standard deviation, and above one standard deviation), the middle range holds most of the sessions.
+Most of these values land within 12 cans of 45, and a few (like 16 and 23) sit further out. If we sort all 300 stores into three ranges (below one standard deviation, within one standard deviation, and above one standard deviation), the middle range holds most of the stores.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -145,13 +145,13 @@ Most of these values land within 12 minutes of 45, and a few (like 16 and 23) si
 #| code-fold: show
 #| eval: true
 #| echo: true
-aol_ranges <- aol_sessions |>
-  mutate(range = cut(minutes,
+ok_soda_ranges <- ok_soda_sales |>
+  mutate(range = cut(cans,
     breaks = c(-Inf, 33, 57, Inf),
     labels = c("under 33", "33 to 56", "57 and over"),
     right = FALSE)) |>
   count(range)
-aol_ranges
+ok_soda_ranges
 ```
 :::
 
@@ -159,7 +159,7 @@ aol_ranges
 **DRAW IT:**
 :::
 
-A bar model shows these counts as parts of one whole. The full bar is all 300 sessions, and the middle part takes up roughly two thirds of it.
+A bar model shows these counts as parts of one whole. The full bar is all 300 stores, and the middle part takes up roughly two thirds of it.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -168,18 +168,18 @@ A bar model shows these counts as parts of one whole. The full bar is all 300 se
 #| eval: true
 #| echo: true
 #| fig-asp: 0.45
-ggplot(data = aol_ranges,
-    aes(x = n, y = "300 sessions", fill = range)) +
+ggplot(data = ok_soda_ranges,
+    aes(x = n, y = "300 stores", fill = range)) +
   geom_col(position = position_stack(reverse = TRUE),
     color = "white") +
   geom_text(aes(label = n), color = "white",
     position = position_stack(vjust = 0.5, reverse = TRUE)) +
-  labs(x = "Number of sessions", y = NULL,
-    fill = "Session length (minutes)")
+  labs(x = "Number of stores", y = NULL,
+    fill = "Cans sold")
 ```
 :::
 
-A histogram is the same idea, cut into 30 thinner pieces and stood upright. The dashed lines below mark 33 and 57 minutes, the edges of the middle part of the bar model.
+A histogram is the same idea, cut into 30 thinner pieces and stood upright. The dashed lines below mark 33 and 57 cans, the edges of the middle part of the bar model.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -189,11 +189,11 @@ A histogram is the same idea, cut into 30 thinner pieces and stood upright. The 
 #| echo: true
 #| warning: false
 #| message: false
-ggplot(data = aol_sessions,
-    aes(x = minutes)) +
+ggplot(data = ok_soda_sales,
+    aes(x = cans)) +
   geom_histogram() +
   geom_vline(xintercept = c(33, 57), linetype = "dashed") +
-  labs(x = "Session length (minutes)")
+  labs(x = "Cans sold")
 ```
 :::
 
@@ -207,9 +207,9 @@ $$
 X \sim \text{Normal}(\mu = 45, \sigma = 12)
 $$
 
-The mean ($\mu$) sets where the tallest bars sit on the `x` axis, and the standard deviation ($\sigma$) sets how far the bars spread out from it. For a normal distribution, roughly 68% of values fall within one $\sigma$ of $\mu$ and 95% fall within two. Our simulated sessions come close: `r round(mean(aol_sessions$minutes >= 33 & aol_sessions$minutes < 57) * 100)`% are within one $\sigma$ and `r round(mean(aol_sessions$minutes >= 21 & aol_sessions$minutes < 69) * 100)`% are within two.
+The mean ($\mu$) sets where the tallest bars sit on the `x` axis, and the standard deviation ($\sigma$) sets how far the bars spread out from it. For a normal distribution, roughly 68% of values fall within one $\sigma$ of $\mu$ and 95% fall within two. Our simulated stores come close: `r round(mean(ok_soda_sales$cans >= 33 & ok_soda_sales$cans < 57) * 100)`% are within one $\sigma$ and `r round(mean(ok_soda_sales$cans >= 21 & ok_soda_sales$cans < 69) * 100)`% are within two.
 
-The small gap between the rule and our sample is just sampling variation. Change the number in `set.seed()` and the bars shift, but the bell shape stays centered near 45 minutes.
+The small gap between the rule and our sample is just sampling variation. Change the number in `set.seed()` and the bars shift, but the bell shape stays centered near 45 cans.
 
 
 ## Grammar 
@@ -224,7 +224,7 @@ The small gap between the rule and our sample is just sampling variation. Change
 
 2. Initialize the graph with `ggplot()` and provide `data`
 
-3. Assign `minutes` to the `x`
+3. Assign `cans` to the `x`
 
 4. Add the `geom_histogram()`
 
@@ -239,13 +239,13 @@ The small gap between the rule and our sample is just sampling variation. Change
 #| warning: false
 #| message: false
 labs_histogram <- labs(
-  title = "AOL dial up sessions",
+  title = "OK Soda",
   caption = "Simulated data",
-  subtitle = "Distribution of session length",
-  x = "Session length (minutes)")
+  subtitle = "Cans sold per store in one day",
+  x = "Cans sold")
 
-ggp2_hist <- ggplot(data = aol_sessions,
-     aes(x = minutes)) + 
+ggp2_hist <- ggplot(data = ok_soda_sales,
+     aes(x = cans)) + 
      geom_histogram() 
 
 ggp2_hist + 
@@ -266,13 +266,13 @@ ggp2_hist +
 #| message: false
 #| layout-nrow: 1
 labs_histogram <- labs(
-  title = "AOL dial up sessions",
+  title = "OK Soda",
   caption = "Simulated data",
-  subtitle = "Distribution of session length",
-  x = "Session length (minutes)")
+  subtitle = "Cans sold per store in one day",
+  x = "Cans sold")
 
-ggp2_hist <- ggplot(data = aol_sessions,
-     aes(x = minutes)) + 
+ggp2_hist <- ggplot(data = ok_soda_sales,
+     aes(x = cans)) + 
      geom_histogram() 
 
 ggp2_hist + 
@@ -291,15 +291,15 @@ The standard number of bins is `30`, but ['you should always override this value
 #| warning: false
 #| message: false
 #| layout-nrow: 1
-ggp2_hist_bins45 <- ggplot(data = aol_sessions,
-     aes(x = minutes)) + 
+ggp2_hist_bins45 <- ggplot(data = ok_soda_sales,
+     aes(x = cans)) + 
      geom_histogram(bins = 45) 
 
 ggp2_hist_bins45 + 
   labs_histogram
 
-ggp2_hist_bins15 <- ggplot(data = aol_sessions,
-     aes(x = minutes)) + 
+ggp2_hist_bins15 <- ggplot(data = ok_soda_sales,
+     aes(x = cans)) + 
      geom_histogram(bins = 15) 
 
 ggp2_hist_bins15 + 

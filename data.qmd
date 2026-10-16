@@ -43,10 +43,10 @@ The tables below list the dataset in each chapter, its 90s reference, the distri
 | Chapter | Dataset | 90s reference | Distribution | Seed |
 |---|---|---|---|---|
 | [Bar graphs](bar_graphs.qmd) | `pokemon_starters` | Pokémon starters | Multinomial | `1998` |
-| [Histograms](histograms.qmd) | `aol_sessions` | AOL dial up sessions | Normal | `1014` |
-| [Frequency polygons](frequency_polygons.qmd) | `napster_downloads` | Napster MP3 downloads | Gamma | `1999` |
+| [Histograms](histograms.qmd) | `ok_soda_sales` | OK Soda cans sold | Normal | `1014` |
+| [Frequency polygons](frequency_polygons.qmd) | `talkboy_clips` | Talkboy recorded messages | Gamma | `1999` |
 | [Dot plots](dot_plots.qmd) | `blockbuster_rentals` | Blockbuster Video rentals | Poisson | `1993` |
-| [Density plots](density_plots.qmd) | `spice_fans` | Spice World tour fans | Normal mixture | `1998` |
+| [Density plots](density_plots.qmd) | `crystal_tasters` | Crystal Pepsi taste test | Normal mixture | `1998` |
 | [Violin plots](violin_plots.qmd) | `beanie_prices` | Beanie Babies prices | Lognormal | `1996` |
 | [Box plots](box_plots.qmd) | `mario_kart_laps` | Mario Kart 64 lap times | t | `64` |
 :::
@@ -71,10 +71,10 @@ The tables below list the dataset in each chapter, its 90s reference, the distri
 
 | Chapter | Dataset | 90s reference | Distribution | Seed |
 |---|---|---|---|---|
-| [Diverging bar graphs](diverging_bar_graphs.qmd) | `encyclopedia_survey` | Encarta vs. Britannica survey | Multinomial | `1993` |
+| [Diverging bar graphs](diverging_bar_graphs.qmd) | `lunchroom_survey` | Orbitz vs. Surge lunchroom survey | Multinomial | `1993` |
 | [Stacked densities](stacked_filled_density_graphs.qmd) | `modem_sessions` | Netscape modem sessions | Normal and Bayes' theorem | `1996` |
 | [Mosaic plots](mosaic_plots.qmd) | `titanic_fans` | Titanic moviegoers | Multinomial | `1997` |
-| [Pie charts](pie_charts.qmd) | `trapper_keepers` | Lisa Frank Trapper Keepers | Multinomial | `1993` |
+| [Pie charts](pie_charts.qmd) | `koosh_balls` | Koosh ball styles | Multinomial | `1993` |
 | [Treemaps](treemaps.qmd) | `toy_sales` | Toys"R"Us 1998 sales | Poisson | `1999` |
 :::
 
@@ -89,10 +89,10 @@ The tables below list the dataset in each chapter, its 90s reference, the distri
 | [Overlapping dot plots](overlapping_dot_plots.qmd) | `goosebumps_readers` | Goosebumps books read | Poisson | `1992` |
 | [Beeswarm plots](beeswarm_plots.qmd) | `tetris_games` | Tetris line clears | Negative binomial | `1989` |
 | [Overlapping density plot](overlapping_stacked_density_plots.qmd) | `furby_chatter` | Furby chatter | Normal | `1998` |
-| [Ridgeline plots](ridgeline_plots.qmd) | `trl_videos` | MTV TRL countdown | Gamma | `1998` |
+| [Ridgeline plots](ridgeline_plots.qmd) | `squeezit_drinks` | Squeezit flavors | Gamma | `1998` |
 | [Grouped box plots](grouped_box_plots.qmd) | `oregon_trail` | The Oregon Trail | Lognormal | `1985` |
 | [Grouped violin plots](grouped_violin_plots.qmd) | `aim_buddies` | AOL Instant Messenger buddy lists | Poisson and normal mixture | `1997` |
-| [Raincloud plots](raincloud_plots.qmd) | `magic_eye` | Magic Eye posters | Paired lognormal (`faux`) | `1994` |
+| [Raincloud plots](raincloud_plots.qmd) | `rzone_tries` | Tiger R-Zone first level times | Paired lognormal (`faux`) | `1994` |
 :::
 
 ### Dates & times
@@ -107,7 +107,7 @@ The tables below list the dataset in each chapter, its 90s reference, the distri
 | [Slope graphs](slope_graphs.qmd) | `bayside_quizzes` | Saved by the Bell quizzes | Normal | `1989` |
 | [Stream plots](stream_plots.qmd) | `fad_sales` | 90s fads (Hypercolor, slap bracelets) | Poisson | `1991` |
 | [Alluvial charts](alluvial_charts.qmd) | `y2k_households` | Y2K prep surveys | Markov chain (multinomial) | `1999` |
-| [Instance chart](instance_chart.qmd) | `hospital_names` | Rugrats baby names | Poisson | `1993` |
+| [Instance chart](instance_chart.qmd) | `lunch_trades` | Fruit Gushers lunch table trades | Poisson | `1993` |
 :::
 
 ### Relationships

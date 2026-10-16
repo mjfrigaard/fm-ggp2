@@ -18,7 +18,7 @@ ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
 ```
 
-Every chapter in this book has its own late 90s `ggplot2` theme to match its simulated data (Game Boy greens for the Pokémon starters, a Windows 98 dialog box for the AOL sessions, and so on). The themes and the small helpers the book uses live in the [`fmggp2` package](https://mjfrigaard.github.io/fmggp2/), so every chapter loads the same tested code.
+Every chapter in this book has its own late 90s `ggplot2` theme to match its simulated data (Game Boy greens for the Pokémon starters, silver comic book cans for OK Soda, and so on). The themes and the small helpers the book uses live in the [`fmggp2` package](https://mjfrigaard.github.io/fmggp2/), so every chapter loads the same tested code.
 
 ## Installing `fmggp2`
 
@@ -49,7 +49,7 @@ ggplot2::theme_set(fmggp2::theme_gameboy(base_size = 14))
 ```
 :::
 
-We can also add a theme to a single graph like any other `ggplot2` theme. Below we simulate a few home PCs from 1998 and add `theme_win98()`:
+We can also add a theme to a single graph like any other `ggplot2` theme. Below we simulate a few home PCs from 1998 and add `theme_netscape()`:
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -64,7 +64,7 @@ ggplot(home_pcs, aes(x = mhz, y = price)) +
   geom_point() +
   labs(title = "Home PCs in 1998", caption = "Simulated data",
        x = "Processor speed (MHz)", y = "Price (USD)") +
-  fmggp2::theme_win98(base_size = 14)
+  fmggp2::theme_netscape(base_size = 14)
 ```
 :::
 
@@ -74,7 +74,7 @@ The 90s themes are built on `ggplot2::theme_bw()` and use features from `ggplot2
 
   - **Colors**: the plot background, the frame around the plot, the panel, and the grid lines all come from a palette sampled from the 90s reference.
 
-  - **Fonts**: most themes pair Arial body text with a title display font that fits the reference (Impact for Blockbuster, Chalkduster for Friends, Comic Sans for GeoCities). A few use a single font throughout, like Tahoma for Windows 98.
+  - **Fonts**: most themes pair Arial body text with a title display font that fits the reference (Impact for Blockbuster, Chalkduster for Friends, Comic Sans for GeoCities). `theme_beanie()` uses a single font throughout (Comic Sans).
 
   - **Discrete palettes**: `palette.fill.discrete` and `palette.colour.discrete` set the colors for categorical variables, so mapping a variable to `fill` or `color` uses the theme's colors automatically.
 
@@ -98,7 +98,7 @@ The display fonts are system fonts that ship with macOS. Each theme registers it
 #| eval: false
 #| echo: true
 #| code-fold: show
-fmggp2::theme_win98(base_family = "sans")
+fmggp2::theme_oksoda(base_family = "sans", title_family = "sans")
 fmggp2::theme_batman(base_family = "sans", title_family = "sans")
 ```
 :::
@@ -116,10 +116,10 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 | Chapter | Theme | Reference |
 |---|---|---|
 | [Bar graphs](bar_graphs.qmd) | `theme_gameboy()` | Original Game Boy screen |
-| [Histograms](histograms.qmd) | `theme_win98()` | Windows 98 desktop |
-| [Frequency polygons](frequency_polygons.qmd) | `theme_napster()` | 1999 Napster client |
+| [Histograms](histograms.qmd) | `theme_oksoda()` | OK Soda cans |
+| [Frequency polygons](frequency_polygons.qmd) | `theme_talkboy()` | Talkboy cassette recorder |
 | [Dot plots](dot_plots.qmd) | `theme_blockbuster()` | Blockbuster Video |
-| [Density plots](density_plots.qmd) | `theme_spice()` | Spice Girls era pop |
+| [Density plots](density_plots.qmd) | `theme_crystalpepsi()` | Crystal Pepsi |
 | [Violin plots](violin_plots.qmd) | `theme_beanie()` | Beanie Babies heart tag |
 | [Box plots](box_plots.qmd) | `theme_n64()` | Nintendo 64 |
 
@@ -146,10 +146,10 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 
 | Chapter | Theme | Reference |
 |---|---|---|
-| [Diverging bar graphs](diverging_bar_graphs.qmd) | `theme_encarta()` | Microsoft Encarta / Britannica |
+| [Diverging bar graphs](diverging_bar_graphs.qmd) | `theme_orbitz()` | Orbitz drink |
 | [Stacked densities](stacked_filled_density_graphs.qmd) | `theme_netscape()` | Netscape Navigator |
 | [Mosaic plots](mosaic_plots.qmd) | `theme_titanic()` | Titanic (1997) |
-| [Pie charts](pie_charts.qmd) | `theme_lisafrank()` | Lisa Frank school supplies |
+| [Pie charts](pie_charts.qmd) | `theme_koosh()` | Koosh ball |
 | [Treemaps](treemaps.qmd) | `theme_toysrus()` | Toys”R”Us |
 
 :::
@@ -165,10 +165,10 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 | [Overlapping dot plots](overlapping_dot_plots.qmd) | `theme_goosebumps()` | Goosebumps books |
 | [Beeswarm plots](beeswarm_plots.qmd) | `theme_tetris()` | Tetris |
 | [Overlapping density plot](overlapping_stacked_density_plots.qmd) | `theme_furby()` | Furby |
-| [Ridgeline plots](ridgeline_plots.qmd) | `theme_trl()` | MTV TRL |
+| [Ridgeline plots](ridgeline_plots.qmd) | `theme_squeezit()` | Squeezit drinks |
 | [Grouped box plots](grouped_box_plots.qmd) | `theme_oregontrail()` | The Oregon Trail |
 | [Grouped violin plots](grouped_violin_plots.qmd) | `theme_aim()` | AOL Instant Messenger |
-| [Raincloud plots](raincloud_plots.qmd) | `theme_magiceye()` | Magic Eye |
+| [Raincloud plots](raincloud_plots.qmd) | `theme_rzone()` | Tiger R-Zone |
 
 :::
 
@@ -184,7 +184,7 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 | [Slope graphs](slope_graphs.qmd) | `theme_savedbythebell()` | Saved by the Bell |
 | [Stream plots](stream_plots.qmd) | `theme_hypercolor()` | Hypercolor |
 | [Alluvial charts](alluvial_charts.qmd) | `theme_y2k()` | Y2K |
-| [Instance chart](instance_chart.qmd) | `theme_rugrats()` | Rugrats |
+| [Instance chart](instance_chart.qmd) | `theme_gushers()` | Fruit Gushers |
 
 :::
 

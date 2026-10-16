@@ -295,34 +295,34 @@ library(ggridges)
 library(ggplot2)
 library(dplyr)
 set.seed(1998)
-trl_videos <- tibble(
-  video_id = 1:360,
-  genre = rep(c("Boy bands", "Pop divas", "R&B", "Rap", "Nu metal", "Rock"),
+squeezit_drinks <- tibble(
+  bottle_id = 1:360,
+  flavor = rep(c("Tropical", "Blue raspberry", "Strawberry", "Green punch", "Orange", "Cherry"),
               each = 60)) |>
-  mutate(genre = factor(genre, levels = c("Rock", "Nu metal", "Rap", "R&B",
-                                          "Pop divas", "Boy bands")),
-         avg_days = c(`Boy bands` = 40, `Pop divas` = 32, `R&B` = 26, Rap = 22,
-                      `Nu metal` = 18, Rock = 12)[as.character(genre)],
-         days_on_countdown = pmax(1, round(rgamma(n(), shape = 2.5,
-                                                  scale = avg_days / 2.5)))) |>
-  select(video_id, genre, days_on_countdown)
+  mutate(flavor = factor(flavor, levels = c("Cherry", "Orange", "Green punch", "Strawberry",
+                                          "Blue raspberry", "Tropical")),
+         avg_seconds = c(Tropical = 40, `Blue raspberry` = 32, Strawberry = 26, `Green punch` = 22,
+                      Orange = 18, Cherry = 12)[as.character(flavor)],
+         seconds_to_finish = pmax(1, round(rgamma(n(), shape = 2.5,
+                                                  scale = avg_seconds / 2.5)))) |>
+  select(bottle_id, flavor, seconds_to_finish)
 labs_ridges <- labs(
-  title = "MTV TRL",
+  title = "Squeezit",
   caption = "Simulated data",
-  subtitle = "Days each video stayed on the countdown",
-  x = "Days on the countdown",
-  y = "Genre", fill = "Genre")
-ggp2_ridges <- ggplot(data = trl_videos,
-       aes(x = days_on_countdown,
-           y = genre,
-        fill = genre)) +
+  subtitle = "Seconds to squeeze out a whole bottle",
+  x = "Seconds to finish",
+  y = "Flavor", fill = "Flavor")
+ggp2_ridges <- ggplot(data = squeezit_drinks,
+       aes(x = seconds_to_finish,
+           y = flavor,
+        fill = flavor)) +
   ggridges::geom_density_ridges(alpha = 2/3,
       show.legend = FALSE)
 (
   ggp2_ridges +
     labs_ridges
 ) +
-  fmggp2::theme_trl(base_size = 12) +
+  fmggp2::theme_squeezit(base_size = 12) +
   bare_theme
 ```
 
@@ -438,35 +438,35 @@ library(ggdist)
 library(ggplot2)
 library(dplyr)
 set.seed(1994)
-magic_eye_posters <- tibble(
-  viewer_id = 1:240,
-  poster = rep(c("Dolphins", "Space shuttle", "Dinosaur"), each = 80)) |>
-  mutate(poster = factor(poster,
-           levels = c("Dolphins", "Space shuttle", "Dinosaur")),
+rzone_games <- tibble(
+  player_id = 1:240,
+  game = rep(c("Racing", "Fighting", "Shooter"), each = 80)) |>
+  mutate(game = factor(game,
+           levels = c("Racing", "Fighting", "Shooter")),
          seconds = round(rlnorm(n(), sdlog = 0.5,
-           meanlog = log(c(Dolphins = 15, `Space shuttle` = 30,
-                           Dinosaur = 60)[as.character(poster)])), 1))
+           meanlog = log(c(Racing = 15, Fighting = 30,
+                           Shooter = 60)[as.character(game)])), 1))
 labs_raincloud_2 <- ggplot2::labs(
-    title = "Magic Eye",
+    title = "Tiger R-Zone",
     caption = "Simulated data",
-    x = "Seconds to see the hidden image",
-    y = "Poster")
+    x = "Seconds to clear the first level",
+    y = "Game")
 (
-  ggplot(magic_eye_posters,
-      aes(x = seconds, y = poster)) +
-    geom_boxplot(aes(fill = poster),
+  ggplot(rzone_games,
+      aes(x = seconds, y = game)) +
+    geom_boxplot(aes(fill = game),
       notch = TRUE,
       notchwidth = 0.9,
       width = .15,
       outlier.shape = NA) +
-    ggdist::stat_halfeye(aes(fill = poster),
+    ggdist::stat_halfeye(aes(fill = game),
       adjust = 0.6, # shape = adjust * density estimator
       .width = 0, # can use probabilities or 0
       point_colour = NA, # removes the point in center
       orientation = "horizontal", # like the box plot
       height = 0.5, # height of curve
       justification = -0.3) + # shift vertically above box
-      geom_point(aes(fill = poster),
+      geom_point(aes(fill = game),
           shape = 21,
           color = "#ffffff",
           alpha = 1/3, size = 1.8,
@@ -476,6 +476,6 @@ labs_raincloud_2 <- ggplot2::labs(
       theme(legend.position = "none") +
       labs_raincloud_2
 ) +
-  fmggp2::theme_magiceye(base_size = 12) +
+  fmggp2::theme_rzone(base_size = 12) +
   bare_theme
 ```

@@ -57,32 +57,32 @@ A [diverging bar graph](diverging_bar_graphs.qmd) shows values that split in two
 library(ggplot2)
 library(dplyr)
 set.seed(1993)
-encyclopedia_survey <- tibble(year = 1993:1999) |>
-  mutate(p_encarta = 0.8 * plogis(-2 + 0.6 * (year - 1993)),
-         p_britannica = 0.8 - p_encarta) |>
-  tidyr::uncount(400, .id = "household") |>
+lunchroom_survey <- tibble(week = 1:7) |>
+  mutate(p_surge = 0.8 * plogis(-2 + 0.6 * (week - 1)),
+         p_orbitz = 0.8 - p_surge) |>
+  tidyr::uncount(400, .id = "kid") |>
   mutate(u = runif(n()),
-         choice = case_when(u < p_encarta ~ "Encarta",
-                            u < p_encarta + p_britannica ~ "Britannica",
+         choice = case_when(u < p_surge ~ "Surge",
+                            u < p_surge + p_orbitz ~ "Orbitz",
                             TRUE ~ "Other")) |>
-  select(year, household, choice)
-encarta_diverg <- encyclopedia_survey |>
+  select(week, kid, choice)
+orbitz_diverg <- lunchroom_survey |>
   filter(choice != "Other") |>
-  count(year, choice) |>
+  count(week, choice) |>
   mutate(share = n / 400,
-         share = if_else(choice == "Britannica", -share, share),
-         choice = factor(choice, levels = c("Encarta", "Britannica")),
-         year = factor(year))
+         share = if_else(choice == "Orbitz", -share, share),
+         choice = factor(choice, levels = c("Surge", "Orbitz")),
+         week = factor(week))
 labs_geom_bar_diverg <- labs(
-  title = "Encarta vs. Britannica",
+  title = "Orbitz vs. Surge",
   caption = "Simulated data",
-  subtitle = "Encyclopedia households used most each year",
-  x = "Year",
-  y = "Share of households",
-  fill = "Encyclopedia")
+  subtitle = "Drink 400 kids bought each week in 1997",
+  x = "Week",
+  y = "Share of kids",
+  fill = "Drink")
 ggp2_bars_diverg <- ggplot(
-  data = encarta_diverg,
-    aes(x = year, y = share)) +
+  data = orbitz_diverg,
+    aes(x = week, y = share)) +
   geom_bar(aes(fill = choice),
     stat = "identity", width = .5) +
   scale_y_continuous(limits = c(-1, 1),
@@ -92,7 +92,7 @@ ggp2_bars_diverg <- ggplot(
   ggp2_bars_diverg +
     labs_geom_bar_diverg
 ) +
-  fmggp2::theme_encarta(base_size = 12) +
+  fmggp2::theme_orbitz(base_size = 12) +
   bare_theme
 ```
 
@@ -205,7 +205,7 @@ A [pie chart](pie_charts.qmd) divides a circle into slices, and each slice shows
 #| warning: false
 #| message: false
 #| fig-asp: 1
-#| dev.args: !expr list(bg = "#AC3CFE")
+#| dev.args: !expr list(bg = "#FFFFFF")
 #| out-height: '60%'
 #| out-width: '60%'
 #| fig-align: center
@@ -213,38 +213,38 @@ library(ggplot2)
 library(ggpubr)
 library(dplyr)
 set.seed(1993)
-trapper_keepers <- tibble(
-  keeper_id = 1:200,
-  design = sample(c("Rainbow leopards", "Unicorns", "Dolphins", "Pandas"),
+koosh_balls <- tibble(
+  ball_id = 1:200,
+  style = sample(c("Tri color", "Rainbow", "Neon", "Glow"),
     size = 200, replace = TRUE, prob = c(1/2, 1/4, 1/8, 1/8)))
-keeper_pie <- trapper_keepers |>
-  count(design, name = "cnt") |>
+koosh_pie <- koosh_balls |>
+  count(style, name = "cnt") |>
   mutate(
     perc = cnt / sum(cnt),
-    design = factor(design,
-      levels = c("Rainbow leopards", "Unicorns", "Dolphins", "Pandas"))) |>
-  arrange(design)
-pie_labels <- paste0(round(100 * keeper_pie$perc), "%")
-pie_theme <- fmggp2::theme_lisafrank(base_size = 14) +
+    style = factor(style,
+      levels = c("Tri color", "Rainbow", "Neon", "Glow"))) |>
+  arrange(style)
+pie_labels <- paste0(round(100 * koosh_pie$perc), "%")
+pie_theme <- fmggp2::theme_koosh(base_size = 14) +
   theme(axis.text = element_blank(), axis.title = element_blank(),
         axis.ticks = element_blank(), panel.grid.major = element_blank(),
         legend.position = "bottom")
 labs_pie <- labs(
-  title = "Trapper Keepers",
+  title = "Koosh balls",
   caption = "Simulated data",
-  subtitle = "Lisa Frank designs sold",
+  subtitle = "Styles sold at one toy store",
   fill = NULL)
-ggp2_pie <- ggpubr::ggpie(keeper_pie,
+ggp2_pie <- ggpubr::ggpie(koosh_pie,
           x = "perc", label = pie_labels,
-          lab.pos = "in", lab.font = "#3D0066",
-          fill = "design", color = "white") +
+          lab.pos = "in", lab.font = "#FFFFFF",
+          fill = "style", color = "white") +
     pie_theme
 
 (
   ggp2_pie +
     labs_pie
 ) +
-  fmggp2::theme_lisafrank(base_size = 12) +
+  fmggp2::theme_koosh(base_size = 12) +
   bare_theme +
   theme(panel.grid.major = element_blank())
 ```

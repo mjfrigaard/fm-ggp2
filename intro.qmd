@@ -14,7 +14,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_win98(
+ggplot2::theme_set(fmggp2::theme_netscape(
     base_size = 15))
 ```
 

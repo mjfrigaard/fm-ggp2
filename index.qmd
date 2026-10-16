@@ -36,7 +36,7 @@ I've rebuilt the examples in this manual around simulated data. Earlier versions
 
 Simulating the data unlocks something real data can't: we know the distribution behind every graph before we draw it. Each chapter uses that to connect the numbers to the picture in a new **Distribution** section, so you'll see *why* a histogram is bell shaped or *why* a box plot shows so many outliers, not just how to build it.
 
-I also wanted the examples to be fun to read, so every dataset is a late 90s throwback. You'll find Napster downloads, Blockbuster rentals, Pokémon starters, and Mario Kart 64 lap times, and each one is drawn with a matching theme (Windows 98, the original Game Boy, the Nintendo 64, and more). The themes live in the [`fmggp2`](https://mjfrigaard.github.io/fmggp2/) package, which also holds the helpers used throughout the book.
+I also wanted the examples to be fun to read, so every dataset is a late 90s throwback. You'll find Talkboy messages, Blockbuster rentals, Pokémon starters, and Mario Kart 64 lap times, and each one is drawn with a matching theme (Windows 98, the original Game Boy, the Nintendo 64, and more). The themes live in the [`fmggp2`](https://mjfrigaard.github.io/fmggp2/) package, which also holds the helpers used throughout the book.
 
 ```{mermaid}
 %%| fig-align: 'center'
@@ -45,7 +45,7 @@ I also wanted the examples to be fun to read, so every dataset is a late 90s thr
 
 flowchart TB
     dist(["<strong>Distribution</strong><br>normal, Poisson,<br>gamma, ..."]) -->|"i. set.seed()"| sim["<strong>Simulate</strong><br>base R or <code>faux</code>"]
-    sim --> dset[("<strong>90s dataset</strong><br>AOL sessions, Pogs,<br>Happy Meals, ...")]
+    sim --> dset[("<strong>90s dataset</strong><br>OK Soda, Pogs,<br>Happy Meals, ...")]
     dset -->|"ii. Distribution section"| connect["<strong>Connect</strong><br>count it, draw it,<br>name it"]
     connect -->|"iii. Grammar section"| gg[["<strong>ggplot2 graph</strong><br><code>fmggp2::theme_*()</code>"]]
 

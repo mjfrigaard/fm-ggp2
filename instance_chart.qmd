@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_rugrats(
+ggplot2::theme_set(fmggp2::theme_gushers(
     base_size = 14))
 ```
 
@@ -45,35 +45,35 @@ status("complete")
 library(ggplot2)
 library(dplyr)
 library(tidyr)
-rugrats_names <- tibble(
-  name = c("Tommy", "Chuckie", "Angelica", "Phil",
-           "Lil", "Susie", "Dil", "Kimi"),
+snack_flavors <- tibble(
+  flavor = c("Strawberry", "Lime", "Blue raspberry", "Orange",
+           "Watermelon", "Berry punch", "Sour apple", "Mystery"),
   before = c(4, 0.3, 1, 1.5, 0.2, 1, 0.05, 0.05),
   after = c(8, 1.5, 4, 1.5, 0.8, 1.5, 2, 3),
   debut = c(1991, 1991, 1991, 1991, 1991, 1992, 1998, 2001))
 set.seed(1993)
-hospital_names <- expand_grid(year = 1980:2005, rugrats_names) |>
-  mutate(name = factor(name, levels = rugrats_names$name),
+lunch_trades <- expand_grid(year = 1980:2005, snack_flavors) |>
+  mutate(flavor = factor(flavor, levels = snack_flavors$flavor),
          avg_n = if_else(year < debut, before, after),
          n = rpois(n(), lambda = avg_n)) |>
-  select(year, name, debut, avg_n, n)
-rugrats_babies <- hospital_names |>
+  select(year, flavor, debut, avg_n, n)
+gushers_trades <- lunch_trades |>
   filter(n > 0)
-labs_inst_rugrats <- labs(
-  title = "Rugrats baby names",
+labs_inst_gushers <- labs(
+  title = "Fruit Gushers",
   caption = "Simulated data",
-  subtitle = "Babies named at one hospital, 1980 - 2005",
-  x = "Year", y = "Name")
-ggp2_inst_rugrats <- ggplot(data = rugrats_babies,
+  subtitle = "Fruit snack trades at one lunch table, 1980 - 2005",
+  x = "Year", y = "Flavor")
+ggp2_inst_gushers <- ggplot(data = gushers_trades,
     mapping = aes(x = year,
-                  y = name,
-                  color = name)) +
+                  y = flavor,
+                  color = flavor)) +
   geom_point(aes(alpha = n),
     shape = 124, size = 5,
     show.legend = FALSE) +
   scale_alpha_continuous(range = c(0.35, 1))
-ggp2_inst_rugrats +
-  labs_inst_rugrats
+ggp2_inst_gushers +
+  labs_inst_gushers
 ```
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
@@ -133,7 +133,7 @@ library(tidyr) # for expand_grid()
 **DATA:**
 :::
 
-*Rugrats* premiered on Nickelodeon in 1991, and a generation of parents suddenly had new ideas for baby names. We'll simulate how many babies were given each Rugrats character's name at one hospital every year from 1980 to 2005. Each name in `rugrats_names` has an average number of babies per year `before` the character's `debut` and an average `after` it (Susie showed up in 1992, Dil in 1998, and Kimi in 2001). `rpois()` draws each year's count (`n`) from the matching average. Setting the seed with `set.seed()` means you'll get the same `r nrow(hospital_names)` name years every time you run the code below.
+Fruit Gushers arrived in 1991: fruit snacks with a liquid center, sold with commercials where a kid's head turned into a giant piece of fruit. Fruit snacks were already the currency of the lunch table, and a new Gushers flavor made its fruit worth more. We'll simulate how many packs of each flavor were traded at one lunch table every year from 1980 to 2005. Each flavor in `snack_flavors` has an average number of trades per year `before` its pretend Gushers `debut` and an average `after` it (berry punch shows up in 1992, sour apple in 1998, and mystery in 2001). `rpois()` draws each year's count (`n`) from the matching average. Setting the seed with `set.seed()` means you'll get the same `r nrow(lunch_trades)` flavor years every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -141,23 +141,23 @@ library(tidyr) # for expand_grid()
 #| code-fold: show
 #| eval: true
 #| echo: true
-rugrats_names <- tibble(
-  name = c("Tommy", "Chuckie", "Angelica", "Phil",
-           "Lil", "Susie", "Dil", "Kimi"),
+snack_flavors <- tibble(
+  flavor = c("Strawberry", "Lime", "Blue raspberry", "Orange",
+           "Watermelon", "Berry punch", "Sour apple", "Mystery"),
   before = c(4, 0.3, 1, 1.5, 0.2, 1, 0.05, 0.05),
   after = c(8, 1.5, 4, 1.5, 0.8, 1.5, 2, 3),
   debut = c(1991, 1991, 1991, 1991, 1991, 1992, 1998, 2001))
 set.seed(1993)
-hospital_names <- expand_grid(year = 1980:2005, rugrats_names) |>
-  mutate(name = factor(name, levels = rugrats_names$name),
+lunch_trades <- expand_grid(year = 1980:2005, snack_flavors) |>
+  mutate(flavor = factor(flavor, levels = snack_flavors$flavor),
          avg_n = if_else(year < debut, before, after),
          n = rpois(n(), lambda = avg_n)) |>
-  select(year, name, debut, avg_n, n)
-glimpse(hospital_names)
+  select(year, flavor, debut, avg_n, n)
+glimpse(lunch_trades)
 ```
 :::
 
-An instance chart only shows the years a name was used, so we'll filter out the years with no babies and store the rest in `rugrats_babies`.
+An instance chart only shows the years a flavor was traded, so we'll filter out the years with no trades and store the rest in `gushers_trades`.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -165,21 +165,21 @@ An instance chart only shows the years a name was used, so we'll filter out the 
 #| code-fold: show
 #| eval: true
 #| echo: true
-rugrats_babies <- hospital_names |>
+gushers_trades <- lunch_trades |>
   filter(n > 0)
-glimpse(rugrats_babies)
+glimpse(gushers_trades)
 ```
 :::
 
 ## Distribution
 
-An instance chart is built from two things: whether a name shows up in a given year (the tick), and how many times it shows up (the shading). The empty spaces between the ticks matter just as much as the ticks, and the number of empty spaces depends on how popular the name is. Below we'll move from the counts, to a picture, to the formula.
+An instance chart is built from two things: whether a flavor shows up in a given year (the tick), and how many times it shows up (the shading). The empty spaces between the ticks matter just as much as the ticks, and the number of empty spaces depends on how popular the flavor is. Below we'll move from the counts, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with Chuckie in the five years before and after the show premiered.
+Start with lime in the five years before and after Gushers arrived.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -187,12 +187,12 @@ Start with Chuckie in the five years before and after the show premiered.
 #| code-fold: show
 #| eval: true
 #| echo: true
-hospital_names |>
-  filter(name == "Chuckie", year >= 1986, year <= 1995)
+lunch_trades |>
+  filter(flavor == "Lime", year >= 1986, year <= 1995)
 ```
 :::
 
-Before 1991, most years have no Chuckies at all. Below we count the years with zero babies (`zero_years`) for each name, before and after its character's debut.
+Before 1991, most years have no lime trades at all. Below we count the years with zero trades (`zero_years`) for each flavor, before and after its debut.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -200,24 +200,24 @@ Before 1991, most years have no Chuckies at all. Below we count the years with z
 #| code-fold: show
 #| eval: true
 #| echo: true
-zero_counts <- hospital_names |>
+zero_counts <- lunch_trades |>
   mutate(era = if_else(year < debut, "before", "after")) |>
-  group_by(name, era) |>
+  group_by(flavor, era) |>
   summarise(years = n(), zero_years = sum(n == 0), .groups = "drop") |>
   pivot_wider(names_from = era, values_from = c(years, zero_years)) |>
-  select(name, years_before, zero_years_before,
+  select(flavor, years_before, zero_years_before,
          years_after, zero_years_after)
 zero_counts
 ```
 :::
 
-Chuckie went `r zero_counts$zero_years_before[zero_counts$name == "Chuckie"]` of `r zero_counts$years_before[zero_counts$name == "Chuckie"]` years without a baby before the show, and only `r zero_counts$zero_years_after[zero_counts$name == "Chuckie"]` of `r zero_counts$years_after[zero_counts$name == "Chuckie"]` years after it. Tommy, the most popular name, never had a year without a baby.
+Lime went `r zero_counts$zero_years_before[zero_counts$flavor == "Lime"]` of `r zero_counts$years_before[zero_counts$flavor == "Lime"]` years without a trade before Gushers, and only `r zero_counts$zero_years_after[zero_counts$flavor == "Lime"]` of `r zero_counts$years_after[zero_counts$flavor == "Lime"]` years after it. Strawberry, the most popular flavor, never had a year without a trade.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-The graph below draws Chuckie's yearly counts as bars (including the zeros) and the same years as instance ticks across the bottom. Every gap in the ticks is a year with a bar of height zero.
+The graph below draws lime's yearly counts as bars (including the zeros) and the same years as instance ticks across the bottom. Every gap in the ticks is a year with a bar of height zero.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -225,14 +225,14 @@ The graph below draws Chuckie's yearly counts as bars (including the zeros) and 
 #| code-fold: show
 #| eval: true
 #| echo: true
-chuckie <- hospital_names |>
-  filter(name == "Chuckie")
-ggplot(chuckie, aes(x = year)) +
-  geom_col(aes(y = n), fill = "#F7941D") +
-  geom_point(data = filter(chuckie, n > 0), aes(y = -0.5),
-             shape = 124, size = 5, color = "#7B3FA0") +
+lime <- lunch_trades |>
+  filter(flavor == "Lime")
+ggplot(lime, aes(x = year)) +
+  geom_col(aes(y = n), fill = "#4E6B44") +
+  geom_point(data = filter(lime, n > 0), aes(y = -0.5),
+             shape = 124, size = 5, color = "#D01D27") +
   geom_vline(xintercept = 1990.5, linetype = "dashed") +
-  labs(x = "Year", y = "Babies named Chuckie")
+  labs(x = "Year", y = "Lime trades")
 ```
 :::
 
@@ -240,13 +240,13 @@ ggplot(chuckie, aes(x = year)) +
 **NAME IT:**
 :::
 
-Each yearly count follows a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) with the average for that name and era:
+Each yearly count follows a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) with the average for that flavor and era:
 
 $$
-n_{\text{name, year}} \sim \text{Poisson}(\lambda), \quad P(n = 0) = e^{-\lambda}
+n_{\text{flavor, year}} \sim \text{Poisson}(\lambda), \quad P(n = 0) = e^{-\lambda}
 $$
 
-The chance of an empty year depends only on $\lambda$. Before the show, Chuckie's average is 0.3 babies a year, so $P(n = 0) = e^{-0.3} \approx `r round(exp(-0.3), 2)`$, and we'd expect about $11 \times `r round(exp(-0.3), 2)` \approx `r round(11 * exp(-0.3), 1)`$ empty years out of 11. After the show, the average jumps to 1.5, so $P(n = 0) = e^{-1.5} \approx `r round(exp(-1.5), 2)`$ and we'd expect about `r round(15 * exp(-1.5), 1)` empty years out of 15. Tommy averages 8 babies a year after the show, so an empty year has a chance of $e^{-8} \approx 0.0003$ (practically never). That's why rare names look like scattered ticks and popular names look like solid lines. Try changing Chuckie's `after` value to `5` and his row fills in.
+The chance of an empty year depends only on $\lambda$. Before Gushers, lime's average is 0.3 trades a year, so $P(n = 0) = e^{-0.3} \approx `r round(exp(-0.3), 2)`$, and we'd expect about $11 \times `r round(exp(-0.3), 2)` \approx `r round(11 * exp(-0.3), 1)`$ empty years out of 11. After Gushers, the average jumps to 1.5, so $P(n = 0) = e^{-1.5} \approx `r round(exp(-1.5), 2)`$ and we'd expect about `r round(15 * exp(-1.5), 1)` empty years out of 15. Strawberry averages 8 trades a year after Gushers, so an empty year has a chance of $e^{-8} \approx 0.0003$ (practically never). That's why rare flavors look like scattered ticks and popular flavors look like solid lines. Try changing lime's `after` value to `5` and its row fills in.
 
 ## Grammar
 
@@ -258,13 +258,13 @@ The chance of an empty year depends only on $\lambda$. Before the show, Chuckie'
 
   - Initialize the graph with `ggplot()` and provide `data`
 
-  - Map `year` to `x`, `name` to `y`, and `color` to `name`
+  - Map `year` to `x`, `flavor` to `y`, and `color` to `flavor`
 
   - Add `geom_point()`, map `n` to `alpha`, and set the `shape` to `124` and `size` to `5`
 
-  - Most years have only a few babies, so we raise the lightest `alpha` with `scale_alpha_continuous(range = c(0.35, 1))` (otherwise the faint ticks disappear)
+  - Most years have only a few trades, so we raise the lightest `alpha` with `scale_alpha_continuous(range = c(0.35, 1))` (otherwise the faint ticks disappear)
 
-  - Remove the `color` legend with `guides()` (the names are already on the `y` axis)
+  - Remove the `color` legend with `guides()` (the flavors are already on the `y` axis)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -276,23 +276,23 @@ The chance of an empty year depends only on $\lambda$. Before the show, Chuckie'
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-labs_inst_rugrats <- labs(
-  title = "Rugrats baby names",
+labs_inst_gushers <- labs(
+  title = "Fruit Gushers",
   caption = "Simulated data",
-  subtitle = "Babies named at one hospital, 1980 - 2005",
+  subtitle = "Fruit snack trades at one lunch table, 1980 - 2005",
   x = "Year",
-  y = "Name")
-ggp2_inst_rugrats <- ggplot(data = rugrats_babies,
+  y = "Flavor")
+ggp2_inst_gushers <- ggplot(data = gushers_trades,
     mapping = aes(x = year,
-                  y = name,
-                  color = name)) +
+                  y = flavor,
+                  color = flavor)) +
   geom_point(aes(alpha = n),
               shape = 124,
               size = 5) +
   scale_alpha_continuous(range = c(0.35, 1)) +
   guides(color = "none")
-ggp2_inst_rugrats +
-  labs_inst_rugrats
+ggp2_inst_gushers +
+  labs_inst_gushers
 ```
 :::
 
@@ -310,23 +310,23 @@ ggp2_inst_rugrats +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-labs_inst_rugrats <- labs(
-  title = "Rugrats baby names",
+labs_inst_gushers <- labs(
+  title = "Fruit Gushers",
   caption = "Simulated data",
-  subtitle = "Babies named at one hospital, 1980 - 2005",
+  subtitle = "Fruit snack trades at one lunch table, 1980 - 2005",
   x = "Year",
-  y = "Name")
-ggp2_inst_rugrats <- ggplot(data = rugrats_babies,
+  y = "Flavor")
+ggp2_inst_gushers <- ggplot(data = gushers_trades,
     mapping = aes(x = year,
-                  y = name,
-                  color = name)) +
+                  y = flavor,
+                  color = flavor)) +
   geom_point(aes(alpha = n),
               shape = 124,
               size = 5) +
   scale_alpha_continuous(range = c(0.35, 1)) +
   guides(color = "none")
-ggp2_inst_rugrats +
-  labs_inst_rugrats
+ggp2_inst_gushers +
+  labs_inst_gushers
 ```
 
 
@@ -342,16 +342,16 @@ ggp2_inst_rugrats +
 #| code-fold: show
 #| eval: true
 #| echo: true
-rugrats_babies_range <- rugrats_babies |>
+gushers_trades_range <- gushers_trades |>
   mutate(n_range = ggplot2::cut_interval(x = n, length = 3))
-rugrats_babies_range |>
+gushers_trades_range |>
   count(n_range)
 ```
 :::
 
 Below we can see the count ranges have been built with the [interval notation](https://ggplot2.tidyverse.org/reference/cut_interval.html): `"(a,b]"`
 
-  - Most of the ticks fall in the lowest range, and every count above 9 belongs to Tommy after the show premiered.
+  - Most of the ticks fall in the lowest range, and every count above 9 belongs to strawberry after Gushers arrived.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -359,24 +359,24 @@ Below we can see the count ranges have been built with the [interval notation](h
 #| code-fold: show
 #| eval: true
 #| echo: true
-labs_inst_rugrats_range <- labs(
-  title = "Rugrats baby names",
+labs_inst_gushers_range <- labs(
+  title = "Fruit Gushers",
   caption = "Simulated data",
-  subtitle = "Babies named at one hospital, 1980 - 2005",
+  subtitle = "Fruit snack trades at one lunch table, 1980 - 2005",
   x = "Year",
-  y = "Name",
-  color = "Babies per year",
-  alpha = "Babies per year")
-ggp2_inst_rugrats_range <- ggplot(data = rugrats_babies_range,
+  y = "Flavor",
+  color = "Trades per year",
+  alpha = "Trades per year")
+ggp2_inst_gushers_range <- ggplot(data = gushers_trades_range,
     mapping = aes(x = year,
-                  y = name,
+                  y = flavor,
               color = n_range)) +
   geom_point(aes(alpha = n),
                 shape = 124,
                 size = 4) +
   scale_alpha_continuous(range = c(0.35, 1))
-ggp2_inst_rugrats_range +
-  labs_inst_rugrats_range
+ggp2_inst_gushers_range +
+  labs_inst_gushers_range
 ```
 
 :::
@@ -387,7 +387,7 @@ To demonstrate facets, we'll create two other variables: `year_range` and `group
 
   - `year_range` uses `ggplot2::cut_number()` to split the `year` into three groups with about the same number of ticks in each, then we build a label for each group from its first and last year
 
-  - `group` is a factor variable with two levels: `"Babies"` and `"Big kids"` (Angelica and Susie)
+  - `group` is a factor variable with two levels: `"Single fruit"` and `"Berry blends"` (blue raspberry and berry punch)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -395,19 +395,19 @@ To demonstrate facets, we'll create two other variables: `year_range` and `group
 #| code-fold: show
 #| eval: true
 #| echo: true
-rugrats_babies_fct <- rugrats_babies |>
+gushers_trades_fct <- gushers_trades |>
   mutate(year_grp = ggplot2::cut_number(year, n = 3, labels = FALSE)) |>
   group_by(year_grp) |>
   mutate(year_range = paste(min(year), "-", max(year))) |>
   ungroup() |>
   mutate(
     year_range = factor(year_range, levels = unique(year_range[order(year)])),
-    group = if_else(name %in% c("Angelica", "Susie"), "Big kids", "Babies"),
-    group = factor(group, levels = c("Babies", "Big kids")))
+    group = if_else(flavor %in% c("Blue raspberry", "Berry punch"), "Berry blends", "Single fruit"),
+    group = factor(group, levels = c("Single fruit", "Berry blends")))
 ```
 :::
 
-Below we can see the total counts of names in the cross-table of `year_range` and `group`
+Below we can see the total counts of flavors in the cross-table of `year_range` and `group`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -415,7 +415,7 @@ Below we can see the total counts of names in the cross-table of `year_range` an
 #| code-fold: show
 #| eval: true
 #| echo: true
-rugrats_babies_fct |>
+gushers_trades_fct |>
   count(year_range, group) |>
   pivot_wider(names_from = group,
     values_from = n)
@@ -437,20 +437,20 @@ In the graph, we'll create labels using the `levels` from the `year_range` varia
 #| fig-asp: 1.4
 # create labels from factor levels
 st_lbls <- paste0(
-              levels(rugrats_babies_fct$year_range),
+              levels(gushers_trades_fct$year_range),
             collapse = ", ")
 
-labs_inst_rugrats_facet <- labs(
-  title = "Rugrats baby names",
+labs_inst_gushers_facet <- labs(
+  title = "Fruit Gushers",
   caption = "Simulated data",
   subtitle = paste0("Time span: ", st_lbls),
   x = "Year",
-  y = "Name")
+  y = "Flavor")
 
-ggp2_inst_rugrats_facet <- ggplot(rugrats_babies_fct,
+ggp2_inst_gushers_facet <- ggplot(gushers_trades_fct,
   mapping = aes(x = year,
-                y = name)) +
-  geom_point(aes(alpha = n, color = name),
+                y = flavor)) +
+  geom_point(aes(alpha = n, color = flavor),
                  shape = "|",
                  size = 3,
                  show.legend = FALSE) +
@@ -459,7 +459,7 @@ ggp2_inst_rugrats_facet <- ggplot(rugrats_babies_fct,
   facet_wrap(year_range ~ group,
              scales = "free",
              ncol = 2)
-ggp2_inst_rugrats_facet +
-  labs_inst_rugrats_facet
+ggp2_inst_gushers_facet +
+  labs_inst_gushers_facet
 ```
 :::

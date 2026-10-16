@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_lisafrank(
+ggplot2::theme_set(fmggp2::theme_koosh(
     base_size = 14))
 ```
 
@@ -36,7 +36,7 @@ status("complete")
 ```{r}
 #| label: full_code_display
 #| fig-asp: 1
-#| dev.args: !expr list(bg = "#AC3CFE")
+#| dev.args: !expr list(bg = "#FFFFFF")
 #| eval: true
 #| echo: false
 #| warning: false
@@ -48,31 +48,31 @@ library(ggplot2)
 library(ggpubr)
 library(dplyr)
 set.seed(1993)
-trapper_keepers <- tibble(
-  keeper_id = 1:200,
-  design = sample(c("Rainbow leopards", "Unicorns", "Dolphins", "Pandas"),
+koosh_balls <- tibble(
+  ball_id = 1:200,
+  style = sample(c("Tri color", "Rainbow", "Neon", "Glow"),
     size = 200, replace = TRUE, prob = c(1/2, 1/4, 1/8, 1/8)))
-keeper_pie <- trapper_keepers |>
-  count(design, name = "cnt") |>
+koosh_pie <- koosh_balls |>
+  count(style, name = "cnt") |>
   mutate(
     perc = cnt / sum(cnt),
-    design = factor(design,
-      levels = c("Rainbow leopards", "Unicorns", "Dolphins", "Pandas"))) |>
-  arrange(design)
-pie_labels <- paste0(round(100 * keeper_pie$perc), "%")
-pie_theme <- fmggp2::theme_lisafrank(base_size = 14) +
+    style = factor(style,
+      levels = c("Tri color", "Rainbow", "Neon", "Glow"))) |>
+  arrange(style)
+pie_labels <- paste0(round(100 * koosh_pie$perc), "%")
+pie_theme <- fmggp2::theme_koosh(base_size = 14) +
   theme(axis.text = element_blank(), axis.title = element_blank(),
         axis.ticks = element_blank(), panel.grid.major = element_blank(),
         legend.position = "bottom")
 labs_pie <- labs(
-  title = "Trapper Keepers",
+  title = "Koosh balls",
   caption = "Simulated data",
-  subtitle = "Lisa Frank designs sold",
+  subtitle = "Styles sold at one toy store",
   fill = NULL)
-ggp2_pie <- ggpubr::ggpie(keeper_pie,
+ggp2_pie <- ggpubr::ggpie(koosh_pie,
           x = "perc", label = pie_labels,
-          lab.pos = "in", lab.font = "#3D0066",
-          fill = "design", color = "white") +
+          lab.pos = "in", lab.font = "#FFFFFF",
+          fill = "style", color = "white") +
     pie_theme
 
 ggp2_pie +
@@ -126,7 +126,7 @@ library(dplyr) # for tibble() and data manipulation
 **DATA:**
 :::
 
-Every 90s school year started with a new Trapper Keeper, and the Lisa Frank designs (rainbow leopards, unicorns, dolphins, and pandas in neon colors) were the ones everyone wanted. We'll simulate the designs of 200 Trapper Keepers sold at a school supply store with `sample()`. The probabilities are simple fractions on purpose: one half, one quarter, one eighth, and one eighth. Then we count each design (`cnt`) and convert the counts to proportions (`perc`). Setting the seed with `set.seed()` means you'll get the same 200 Trapper Keepers every time you run the code below.
+The [Koosh ball](https://en.wikipedia.org/wiki/Koosh_ball) was a ball of rubber filaments that was easy to catch and impossible to bounce, and by the 90s it came in more styles than anyone needed. We'll simulate the styles of 200 Koosh balls sold at a toy store (tri color, rainbow, neon, and glow in the dark) with `sample()`. The probabilities are simple fractions on purpose: one half, one quarter, one eighth, and one eighth. Then we count each style (`cnt`) and convert the counts to proportions (`perc`). Setting the seed with `set.seed()` means you'll get the same 200 Koosh balls every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -135,30 +135,30 @@ Every 90s school year started with a new Trapper Keeper, and the Lisa Frank desi
 #| eval: true
 #| echo: true
 set.seed(1993)
-trapper_keepers <- tibble(
-  keeper_id = 1:200,
-  design = sample(c("Rainbow leopards", "Unicorns", "Dolphins", "Pandas"),
+koosh_balls <- tibble(
+  ball_id = 1:200,
+  style = sample(c("Tri color", "Rainbow", "Neon", "Glow"),
     size = 200, replace = TRUE, prob = c(1/2, 1/4, 1/8, 1/8)))
-keeper_pie <- trapper_keepers |>
-  count(design, name = "cnt") |>
+koosh_pie <- koosh_balls |>
+  count(style, name = "cnt") |>
   mutate(
     perc = cnt / sum(cnt),
-    design = factor(design,
-      levels = c("Rainbow leopards", "Unicorns", "Dolphins", "Pandas"))) |>
-  arrange(design)
-glimpse(keeper_pie)
+    style = factor(style,
+      levels = c("Tri color", "Rainbow", "Neon", "Glow"))) |>
+  arrange(style)
+glimpse(koosh_pie)
 ```
 :::
 
 ## Distribution
 
-A pie chart is a whole cut into slices, so it only makes sense when the slices add up to one thing (here, 200 Trapper Keepers). Pie charts are easiest to read when the slices are simple fractions, and because we chose those fractions in `sample()`, we know what each slice should look like. Below we'll move from the Trapper Keepers, to a picture, to the formula.
+A pie chart is a whole cut into slices, so it only makes sense when the slices add up to one thing (here, 200 Koosh balls). Pie charts are easiest to read when the slices are simple fractions, and because we chose those fractions in `sample()`, we know what each slice should look like. Below we'll move from the Koosh balls, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the first ten Trapper Keepers.
+Start with the first ten Koosh balls.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -166,7 +166,7 @@ Start with the first ten Trapper Keepers.
 #| code-fold: show
 #| eval: true
 #| echo: true
-head(trapper_keepers$design, 10)
+head(koosh_balls$style, 10)
 ```
 :::
 
@@ -178,7 +178,7 @@ Counting all 200 and comparing each count to the count we'd expect (200 times ea
 #| code-fold: show
 #| eval: true
 #| echo: true
-keeper_pie |>
+koosh_pie |>
   mutate(expected = 200 * c(1/2, 1/4, 1/8, 1/8))
 ```
 :::
@@ -187,7 +187,7 @@ keeper_pie |>
 **DRAW IT:**
 :::
 
-A bar model lays the 200 Trapper Keepers out in a line. Rainbow leopards fill about half the bar, unicorns about a quarter, and dolphins and pandas split the last quarter.
+A bar model lays the 200 Koosh balls out in a line. Tri color balls fill about half the bar, rainbow balls about a quarter, and neon and glow balls split the last quarter.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -196,39 +196,39 @@ A bar model lays the 200 Trapper Keepers out in a line. Rainbow leopards fill ab
 #| eval: true
 #| echo: true
 #| fig-asp: 0.45
-ggplot(data = keeper_pie, aes(x = cnt, y = "200 Trapper Keepers",
-    fill = design)) +
+ggplot(data = koosh_pie, aes(x = cnt, y = "200 Koosh balls",
+    fill = style)) +
   geom_col(position = position_stack(reverse = TRUE)) +
-  geom_text(aes(label = cnt), color = "#3D0066",
+  geom_text(aes(label = cnt), color = "#FFFFFF",
     position = position_stack(vjust = 0.5, reverse = TRUE)) +
-  labs(x = "Trapper Keepers", y = NULL, fill = "Design")
+  labs(x = "Koosh balls", y = NULL, fill = "Style")
 ```
 :::
 
-A pie chart bends the same bar into a circle. Below, the pie on the left uses the exact fractions from `sample()`, and the pie on the right uses our simulated counts. The leopard slice covers about half the circle in both, and the unicorn slice covers about a quarter.
+A pie chart bends the same bar into a circle. Below, the pie on the left uses the exact fractions from `sample()`, and the pie on the right uses our simulated counts. The tri color slice covers about half the circle in both, and the rainbow slice covers about a quarter.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_pie
 #| fig-asp: 1
-#| dev.args: !expr list(bg = "#AC3CFE")
+#| dev.args: !expr list(bg = "#FFFFFF")
 #| code-fold: show
 #| eval: true
 #| echo: true
 #| layout-ncol: 2
-expected_pie <- keeper_pie |>
+expected_pie <- koosh_pie |>
   mutate(perc = c(1/2, 1/4, 1/8, 1/8))
 ggpubr::ggpie(expected_pie, x = "perc",
     label = paste0(round(100 * expected_pie$perc, 1), "%"),
-    lab.pos = "in", lab.font = "#3D0066",
-    fill = "design", color = "white") +
+    lab.pos = "in", lab.font = "#FFFFFF",
+    fill = "style", color = "white") +
   labs(title = "Expected", fill = NULL) +
   pie_theme
 
-ggpubr::ggpie(keeper_pie, x = "perc",
-    label = paste0(round(100 * keeper_pie$perc, 1), "%"),
-    lab.pos = "in", lab.font = "#3D0066",
-    fill = "design", color = "white") +
+ggpubr::ggpie(koosh_pie, x = "perc",
+    label = paste0(round(100 * koosh_pie$perc, 1), "%"),
+    lab.pos = "in", lab.font = "#FFFFFF",
+    fill = "style", color = "white") +
   labs(title = "Simulated", fill = NULL) +
   pie_theme
 ```
@@ -238,15 +238,15 @@ ggpubr::ggpie(keeper_pie, x = "perc",
 **NAME IT:**
 :::
 
-Each Trapper Keeper is one draw from four designs, so the four counts follow a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
+Each Koosh ball is one draw from four styles, so the four counts follow a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
 
 $$
-(N_{\text{leopards}}, N_{\text{unicorns}}, N_{\text{dolphins}}, N_{\text{pandas}}) \sim \text{Multinomial}\left(200, \; \left(\tfrac{1}{2}, \tfrac{1}{4}, \tfrac{1}{8}, \tfrac{1}{8}\right)\right)
+(N_{\text{tri color}}, N_{\text{rainbow}}, N_{\text{neon}}, N_{\text{glow}}) \sim \text{Multinomial}\left(200, \; \left(\tfrac{1}{2}, \tfrac{1}{4}, \tfrac{1}{8}, \tfrac{1}{8}\right)\right)
 $$
 
 A slice's angle is its share of the 360 degrees in the circle: $\tfrac{1}{2}$ is 180 degrees, $\tfrac{1}{4}$ is 90 degrees, and each $\tfrac{1}{8}$ is 45 degrees. Simple fractions like these line up with the "clock positions" our eyes already know (half past, quarter past), which is why pie charts work best with them.
 
-Each simulated share wobbles around its fraction by about $\sqrt{p(1 - p) / 200}$: about 3.5 percentage points for the leopard slice and 2.3 points for the dolphin and panda slices. That's why our slices are close to the expected ones but not exact. Try changing `size = 200` to `size = 20` in `sample()` and the slices drift much further from the simple fractions.
+Each simulated share wobbles around its fraction by about $\sqrt{p(1 - p) / 200}$: about 3.5 percentage points for the tri color slice and 2.3 points for the neon and glow slices. That's why our slices are close to the expected ones but not exact. Try changing `size = 200` to `size = 20` in `sample()` and the slices drift much further from the simple fractions.
 
 
 ## Grammar
@@ -271,7 +271,7 @@ Each simulated share wobbles around its fraction by about $\sqrt{p(1 - p) / 200}
 
   -   Assign a dark color to `lab.font` and `"white"` to `color`
 
-  -   Assign `"design"` to `fill`
+  -   Assign `"style"` to `fill`
 
   -   Add `pie_theme` (which also moves the legend to the bottom)
 
@@ -285,21 +285,21 @@ Each simulated share wobbles around its fraction by about $\sqrt{p(1 - p) / 200}
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-pie_labels <- paste0(round(100 * keeper_pie$perc), "%")
-pie_theme <- fmggp2::theme_lisafrank(base_size = 14) +
+pie_labels <- paste0(round(100 * koosh_pie$perc), "%")
+pie_theme <- fmggp2::theme_koosh(base_size = 14) +
   theme(axis.text = element_blank(), axis.title = element_blank(),
         axis.ticks = element_blank(), panel.grid.major = element_blank(),
         legend.position = "bottom")
 labs_pie <- labs(
-  title = "Trapper Keepers",
+  title = "Koosh balls",
   caption = "Simulated data",
-  subtitle = "Lisa Frank designs sold",
+  subtitle = "Styles sold at one toy store",
   fill = NULL)
 
-ggp2_pie <- ggpubr::ggpie(keeper_pie,
+ggp2_pie <- ggpubr::ggpie(koosh_pie,
           x = "perc", label = pie_labels,
-          lab.pos = "in", lab.font = "#3D0066",
-          fill = "design", color = "white") +
+          lab.pos = "in", lab.font = "#FFFFFF",
+          fill = "style", color = "white") +
     pie_theme
 
 ggp2_pie +
@@ -316,7 +316,7 @@ ggp2_pie +
 ```{r}
 #| label: create_graph_pie
 #| fig-asp: 1
-#| dev.args: !expr list(bg = "#AC3CFE")
+#| dev.args: !expr list(bg = "#FFFFFF")
 #| eval: true
 #| echo: false
 #| warning: false
@@ -324,21 +324,21 @@ ggp2_pie +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-pie_labels <- paste0(round(100 * keeper_pie$perc), "%")
-pie_theme <- fmggp2::theme_lisafrank(base_size = 14) +
+pie_labels <- paste0(round(100 * koosh_pie$perc), "%")
+pie_theme <- fmggp2::theme_koosh(base_size = 14) +
   theme(axis.text = element_blank(), axis.title = element_blank(),
         axis.ticks = element_blank(), panel.grid.major = element_blank(),
         legend.position = "bottom")
 labs_pie <- labs(
-  title = "Trapper Keepers",
+  title = "Koosh balls",
   caption = "Simulated data",
-  subtitle = "Lisa Frank designs sold",
+  subtitle = "Styles sold at one toy store",
   fill = NULL)
 
-ggp2_pie <- ggpubr::ggpie(keeper_pie,
+ggp2_pie <- ggpubr::ggpie(koosh_pie,
           x = "perc", label = pie_labels,
-          lab.pos = "in", lab.font = "#3D0066",
-          fill = "design", color = "white") +
+          lab.pos = "in", lab.font = "#FFFFFF",
+          fill = "style", color = "white") +
     pie_theme
 
 ggp2_pie +

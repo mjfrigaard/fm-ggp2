@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_trl(
+ggplot2::theme_set(fmggp2::theme_squeezit(
     base_size = 15))
 # pak::pak("wilkelab/ggridges")
 ```
@@ -47,27 +47,27 @@ library(ggridges)
 library(ggplot2)
 library(dplyr)
 set.seed(1998)
-trl_videos <- tibble(
-  video_id = 1:360,
-  genre = rep(c("Boy bands", "Pop divas", "R&B", "Rap", "Nu metal", "Rock"),
+squeezit_drinks <- tibble(
+  bottle_id = 1:360,
+  flavor = rep(c("Tropical", "Blue raspberry", "Strawberry", "Green punch", "Orange", "Cherry"),
               each = 60)) |>
-  mutate(genre = factor(genre, levels = c("Rock", "Nu metal", "Rap", "R&B",
-                                          "Pop divas", "Boy bands")),
-         avg_days = c(`Boy bands` = 40, `Pop divas` = 32, `R&B` = 26, Rap = 22,
-                      `Nu metal` = 18, Rock = 12)[as.character(genre)],
-         days_on_countdown = pmax(1, round(rgamma(n(), shape = 2.5,
-                                                  scale = avg_days / 2.5)))) |>
-  select(video_id, genre, days_on_countdown)
+  mutate(flavor = factor(flavor, levels = c("Cherry", "Orange", "Green punch", "Strawberry",
+                                          "Blue raspberry", "Tropical")),
+         avg_seconds = c(Tropical = 40, `Blue raspberry` = 32, Strawberry = 26, `Green punch` = 22,
+                      Orange = 18, Cherry = 12)[as.character(flavor)],
+         seconds_to_finish = pmax(1, round(rgamma(n(), shape = 2.5,
+                                                  scale = avg_seconds / 2.5)))) |>
+  select(bottle_id, flavor, seconds_to_finish)
 labs_ridges <- labs(
-  title = "MTV TRL",
+  title = "Squeezit",
   caption = "Simulated data",
-  subtitle = "Days each video stayed on the countdown",
-  x = "Days on the countdown",
-  y = "Genre", fill = "Genre")
-ggp2_ridges <- ggplot(data = trl_videos,
-       aes(x = days_on_countdown,
-           y = genre,
-        fill = genre)) +
+  subtitle = "Seconds to squeeze out a whole bottle",
+  x = "Seconds to finish",
+  y = "Flavor", fill = "Flavor")
+ggp2_ridges <- ggplot(data = squeezit_drinks,
+       aes(x = seconds_to_finish,
+           y = flavor,
+        fill = flavor)) +
   ggridges::geom_density_ridges(alpha = 2/3,
       show.legend = FALSE)
 ggp2_ridges +
@@ -124,7 +124,7 @@ library(dplyr) # for tibble() and data manipulation
 :::
 
 ::: {style="font-size: 0.95rem;"}
-MTV's *Total Request Live* (TRL) counted down the ten most requested music videos every afternoon starting in 1998, and some videos hung on for weeks. We'll simulate how many days 60 videos from each of six genres stayed on the countdown. Each genre gets its own average (`avg_days`), and `rgamma()` draws each video's run from a gamma distribution with the same shape (2.5) for every genre. Setting the seed with `set.seed()` means you'll get the same 360 videos every time you run the code below.
+Squeezit was General Mills' fruit drink in a squeezable plastic bottle shaped like a little character, and every flavor came in a different color. We'll simulate how many seconds it took kids to squeeze out 60 bottles of each of six flavors. Each flavor gets its own average (`avg_seconds`), and `rgamma()` draws each bottle's time from a gamma distribution with the same shape (2.5) for every flavor. Setting the seed with `set.seed()` means you'll get the same 360 bottles every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -134,30 +134,30 @@ MTV's *Total Request Live* (TRL) counted down the ten most requested music video
 #| eval: true
 #| echo: true
 set.seed(1998)
-trl_videos <- tibble(
-  video_id = 1:360,
-  genre = rep(c("Boy bands", "Pop divas", "R&B", "Rap", "Nu metal", "Rock"),
+squeezit_drinks <- tibble(
+  bottle_id = 1:360,
+  flavor = rep(c("Tropical", "Blue raspberry", "Strawberry", "Green punch", "Orange", "Cherry"),
               each = 60)) |>
-  mutate(genre = factor(genre, levels = c("Rock", "Nu metal", "Rap", "R&B",
-                                          "Pop divas", "Boy bands")),
-         avg_days = c(`Boy bands` = 40, `Pop divas` = 32, `R&B` = 26, Rap = 22,
-                      `Nu metal` = 18, Rock = 12)[as.character(genre)],
-         days_on_countdown = pmax(1, round(rgamma(n(), shape = 2.5,
-                                                  scale = avg_days / 2.5)))) |>
-  select(video_id, genre, days_on_countdown)
-glimpse(trl_videos)
+  mutate(flavor = factor(flavor, levels = c("Cherry", "Orange", "Green punch", "Strawberry",
+                                          "Blue raspberry", "Tropical")),
+         avg_seconds = c(Tropical = 40, `Blue raspberry` = 32, Strawberry = 26, `Green punch` = 22,
+                      Orange = 18, Cherry = 12)[as.character(flavor)],
+         seconds_to_finish = pmax(1, round(rgamma(n(), shape = 2.5,
+                                                  scale = avg_seconds / 2.5)))) |>
+  select(bottle_id, flavor, seconds_to_finish)
+glimpse(squeezit_drinks)
 ```
 :::
 
 ## Distribution
 
-Ridgeline plots stack one density curve per group, which makes them good for comparing many groups at once. All six genres here share the same *kind* of distribution: most videos drop off the countdown fairly quickly, and a few hang on for a long time. What changes from genre to genre is the scale. Below we'll move from the videos, to a picture, to the formula.
+Ridgeline plots stack one density curve per group, which makes them good for comparing many groups at once. All six flavors here share the same *kind* of distribution: most bottles are empty fairly quickly, and a few take a long time. What changes from flavor to flavor is the scale. Below we'll move from the bottles, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the first five boy band videos.
+Start with the first five tropical bottles.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -165,11 +165,11 @@ Start with the first five boy band videos.
 #| code-fold: show
 #| eval: true
 #| echo: true
-head(trl_videos, 5)
+head(squeezit_drinks, 5)
 ```
 :::
 
-These five videos lasted anywhere from 11 to 55 days. The summary below shows that the mean is above the median for every genre (a sign of right skew), and that the standard deviation grows with the mean. The ratio of the two (`cv`) stays between about 0.5 and 0.7 for every genre.
+These five bottles took anywhere from 11 to 55 seconds. The summary below shows that the mean is above the median for every flavor (a sign of right skew), and that the standard deviation grows with the mean. The ratio of the two (`cv`) stays between about 0.5 and 0.7 for every flavor.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -177,11 +177,11 @@ These five videos lasted anywhere from 11 to 55 days. The summary below shows th
 #| code-fold: show
 #| eval: true
 #| echo: true
-trl_videos |> 
-  group_by(genre) |> 
-  summarise(mean = mean(days_on_countdown), 
-            median = median(days_on_countdown),
-            sd = sd(days_on_countdown), cv = sd / mean)
+squeezit_drinks |> 
+  group_by(flavor) |> 
+  summarise(mean = mean(seconds_to_finish), 
+            median = median(seconds_to_finish),
+            sd = sd(seconds_to_finish), cv = sd / mean)
 ```
 :::
 
@@ -189,7 +189,7 @@ trl_videos |>
 **DRAW IT:**
 :::
 
-The ridgeline plot below adds a line at each genre's median (`quantile_lines = TRUE` with `quantiles = 2`). Every ridge has a hump on the left and a tail on the right. Moving up from rock to boy bands, the humps slide right and the tails get longer, but the overall shape stays the same (the extra bumps, like the one in the boy band ridge, are noise from having only 60 videos per genre).
+The ridgeline plot below adds a line at each flavor's median (`quantile_lines = TRUE` with `quantiles = 2`). Every ridge has a hump on the left and a tail on the right. Moving up from cherry to tropical, the humps slide right and the tails get longer, but the overall shape stays the same (the extra bumps, like the one in the tropical ridge, are noise from having only 60 bottles per flavor).
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -198,10 +198,10 @@ The ridgeline plot below adds a line at each genre's median (`quantile_lines = T
 #| eval: true
 #| echo: true
 #| message: false
-ggplot(trl_videos, aes(x = days_on_countdown, y = genre, fill = genre)) + 
+ggplot(squeezit_drinks, aes(x = seconds_to_finish, y = flavor, fill = flavor)) + 
   ggridges::geom_density_ridges(alpha = 2/3, quantile_lines = TRUE, 
     quantiles = 2, color = "#F5F5F5", show.legend = FALSE) + 
-  labs(x = "Days on the countdown", y = NULL)
+  labs(x = "Seconds to finish", y = NULL)
 ```
 :::
 
@@ -209,13 +209,13 @@ ggplot(trl_videos, aes(x = days_on_countdown, y = genre, fill = genre)) +
 **NAME IT:**
 :::
 
-Each genre's runs come from a [gamma distribution](https://en.wikipedia.org/wiki/Gamma_distribution) with a shared shape ($k$) and its own scale ($\theta$):
+Each flavor's runs come from a [gamma distribution](https://en.wikipedia.org/wiki/Gamma_distribution) with a shared shape ($k$) and its own scale ($\theta$):
 
 $$
-X_{\text{genre}} \sim \text{Gamma}(k = 2.5, \; \theta_{\text{genre}}), \quad \theta = \frac{\text{avg days}}{2.5}
+X_{\text{flavor}} \sim \text{Gamma}(k = 2.5, \; \theta_{\text{flavor}}), \quad \theta = \frac{\text{avg seconds}}{2.5}
 $$
 
-The mean of a gamma distribution is $k\theta$ and its standard deviation is $\sqrt{k}\,\theta$, so their ratio is $1 / \sqrt{k} = 1 / \sqrt{2.5} \approx 0.63$ no matter the genre. That's why the `cv` column stays near 0.63 and why the ridges all have the same shape: changing $\theta$ stretches a ridge along the `x` axis without changing its shape. This is the same distribution we used for the Napster downloads in @sec-freq-poly. Try giving one genre a larger `shape` in `rgamma()` and its ridge becomes more symmetric.
+The mean of a gamma distribution is $k\theta$ and its standard deviation is $\sqrt{k}\,\theta$, so their ratio is $1 / \sqrt{k} = 1 / \sqrt{2.5} \approx 0.63$ no matter the flavor. That's why the `cv` column stays near 0.63 and why the ridges all have the same shape: changing $\theta$ stretches a ridge along the `x` axis without changing its shape. This is the same distribution we used for the Talkboy messages in @sec-freq-poly. Try giving one flavor a larger `shape` in `rgamma()` and its ridge becomes more symmetric.
 
 
 ## Grammar
@@ -228,9 +228,9 @@ The mean of a gamma distribution is $k\theta$ and its standard deviation is $\sq
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Map `days_on_countdown` to the `x` axis
+  -   Map `seconds_to_finish` to the `x` axis
 
-  -   Map `genre` to the `y` axis and `fill`
+  -   Map `flavor` to the `y` axis and `fill`
 
   -   Add the `ggridges::geom_density_ridges()` layer (with `alpha` set to `2/3`)
 
@@ -247,15 +247,15 @@ The mean of a gamma distribution is $k\theta$ and its standard deviation is $\sq
 #| out-height: '100%'
 #| out-width: '100%'
 labs_ridges <- labs(
-  title = "MTV TRL",
+  title = "Squeezit",
   caption = "Simulated data",
-  subtitle = "Days each video stayed on the countdown",
-  x = "Days on the countdown",
-  y = "Genre", fill = "Genre")
-ggp2_ridges <- ggplot(data = trl_videos,
-       aes(x = days_on_countdown,
-           y = genre,
-        fill = genre)) +
+  subtitle = "Seconds to squeeze out a whole bottle",
+  x = "Seconds to finish",
+  y = "Flavor", fill = "Flavor")
+ggp2_ridges <- ggplot(data = squeezit_drinks,
+       aes(x = seconds_to_finish,
+           y = flavor,
+        fill = flavor)) +
   ggridges::geom_density_ridges(alpha = 2/3,
       show.legend = FALSE)
 ggp2_ridges +
@@ -281,15 +281,15 @@ Ridgeline plots are excellent for comparing continuous distributions across grou
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_ridges <- labs(
-  title = "MTV TRL",
+  title = "Squeezit",
   caption = "Simulated data",
-  subtitle = "Days each video stayed on the countdown",
-  x = "Days on the countdown",
-  y = "Genre", fill = "Genre")
-ggp2_ridges <- ggplot(data = trl_videos,
-       aes(x = days_on_countdown,
-           y = genre,
-        fill = genre)) +
+  subtitle = "Seconds to squeeze out a whole bottle",
+  x = "Seconds to finish",
+  y = "Flavor", fill = "Flavor")
+ggp2_ridges <- ggplot(data = squeezit_drinks,
+       aes(x = seconds_to_finish,
+           y = flavor,
+        fill = flavor)) +
   ggridges::geom_density_ridges(alpha = 2/3,
       show.legend = FALSE)
 ggp2_ridges +

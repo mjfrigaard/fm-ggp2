@@ -17,7 +17,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_napster(
+ggplot2::theme_set(fmggp2::theme_talkboy(
     base_size = 15))
 ```
 
@@ -46,17 +46,17 @@ ggplot2::theme_set(fmggp2::theme_napster(
 library(ggplot2)
 library(dplyr)
 set.seed(1999)
-napster_downloads <- tibble(
-  download_id = 1:300,
-  minutes = round(rgamma(n = 300, shape = 4, rate = 0.5), 1)
+talkboy_clips <- tibble(
+  clip_id = 1:300,
+  seconds = round(rgamma(n = 300, shape = 4, rate = 0.5), 1)
 )
 labs_freqpoly <- labs(
-  title = "Napster MP3 downloads",
+  title = "Talkboy",
   caption = "Simulated data",
-  subtitle = "Download time over a 56k modem",
-  x = "Download time (minutes)")
-ggp2_freqpoly <- ggplot(data = napster_downloads,
-      aes(x = minutes)) +
+  subtitle = "Length of 300 recorded messages",
+  x = "Message length (seconds)")
+ggp2_freqpoly <- ggplot(data = talkboy_clips,
+      aes(x = seconds)) +
     geom_freqpoly()
 ggp2_freqpoly +
   labs_freqpoly
@@ -96,7 +96,7 @@ library(dplyr) # for tibble() and data manipulation
 **DATA:**
 :::
 
-We'll simulate 300 MP3 downloads from [Napster](https://en.wikipedia.org/wiki/Napster) over a 56k dial up modem with `rgamma()`, rounding each download time to a tenth of a minute. Setting the seed with `set.seed()` means you'll get the same 300 downloads every time you run the code below.
+The [Talkboy](https://en.wikipedia.org/wiki/Talkboy) was the handheld cassette recorder Kevin used in *Home Alone 2* (1992), and Tiger Electronics sold the real thing that Christmas. We'll simulate 300 messages recorded on a Talkboy with `rgamma()`, rounding each message length to a tenth of a second. Setting the seed with `set.seed()` means you'll get the same 300 messages every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -105,23 +105,23 @@ We'll simulate 300 MP3 downloads from [Napster](https://en.wikipedia.org/wiki/Na
 #| eval: true
 #| echo: true
 set.seed(1999)
-napster_downloads <- tibble(
-  download_id = 1:300,
-  minutes = round(rgamma(n = 300, shape = 4, rate = 0.5), 1)
+talkboy_clips <- tibble(
+  clip_id = 1:300,
+  seconds = round(rgamma(n = 300, shape = 4, rate = 0.5), 1)
 )
-glimpse(napster_downloads)
+glimpse(talkboy_clips)
 ```
 :::
 
 ## Distribution
 
-If you downloaded music in 1999, you already know the shape of this distribution. Most songs finished in a few minutes, but every so often a download crawled along for 15 or 20. Those slow downloads stretch the right side of the distribution into a long tail, which makes it [right skewed](https://en.wikipedia.org/wiki/Skewness). Below we'll move from the numbers, to a picture, to the formula.
+If you ever handed a kid a tape recorder, you already know the shape of this distribution. Most messages last a few seconds, but every so often someone rambles on for 15 or 20. Those long messages stretch the right side of the distribution into a long tail, which makes it [right skewed](https://en.wikipedia.org/wiki/Skewness). Below we'll move from the numbers, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the first ten downloads.
+Start with the first ten messages.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -129,11 +129,11 @@ Start with the first ten downloads.
 #| code-fold: show
 #| eval: true
 #| echo: true
-head(napster_downloads$minutes, 10)
+head(talkboy_clips$seconds, 10)
 ```
 :::
 
-Most of these finish in under 12 minutes, but one (14.5) takes much longer. Slow downloads like this pull the mean up, while the median (the middle download) barely moves. Comparing the two is a quick way to check for skew.
+Most of these are under 12 seconds, but one (14.5) runs much longer. Long messages like this pull the mean up, while the median (the middle message) barely moves. Comparing the two is a quick way to check for skew.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -141,14 +141,14 @@ Most of these finish in under 12 minutes, but one (14.5) takes much longer. Slow
 #| code-fold: show
 #| eval: true
 #| echo: true
-napster_downloads |>
+talkboy_clips |>
   summarise(
-    mean = mean(minutes),
-    median = median(minutes))
+    mean = mean(seconds),
+    median = median(seconds))
 ```
 :::
 
-The mean is larger than the median, so more than half of the downloads finish faster than the mean. We can count them by splitting the downloads at 8 minutes.
+The mean is larger than the median, so more than half of the messages are shorter than the mean. We can count them by splitting the messages at 8 seconds.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -156,13 +156,13 @@ The mean is larger than the median, so more than half of the downloads finish fa
 #| code-fold: show
 #| eval: true
 #| echo: true
-napster_split <- napster_downloads |>
-  mutate(speed = if_else(minutes < 8,
-    "under 8 minutes", "8 minutes or more"),
+talkboy_split <- talkboy_clips |>
+  mutate(speed = if_else(seconds < 8,
+    "under 8 seconds", "8 seconds or more"),
     speed = factor(speed,
-      levels = c("under 8 minutes", "8 minutes or more"))) |>
+      levels = c("under 8 seconds", "8 seconds or more"))) |>
   count(speed)
-napster_split
+talkboy_split
 ```
 :::
 
@@ -170,7 +170,7 @@ napster_split
 **DRAW IT:**
 :::
 
-A bar model shows the split as two parts of one whole. If the distribution were symmetric, the two parts would be about the same size. Here the fast downloads take up the bigger part of the bar.
+A bar model shows the split as two parts of one whole. If the distribution were symmetric, the two parts would be about the same size. Here the short messages take up the bigger part of the bar.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -179,14 +179,14 @@ A bar model shows the split as two parts of one whole. If the distribution were 
 #| eval: true
 #| echo: true
 #| fig-asp: 0.45
-ggplot(data = napster_split,
-    aes(x = n, y = "300 downloads", fill = speed)) +
+ggplot(data = talkboy_split,
+    aes(x = n, y = "300 messages", fill = speed)) +
   geom_col(position = position_stack(reverse = TRUE),
     color = "white") +
   geom_text(aes(label = n), color = "black",
     position = position_stack(vjust = 0.5, reverse = TRUE)) +
-  labs(x = "Number of downloads", y = NULL,
-    fill = "Download time")
+  labs(x = "Number of messages", y = NULL,
+    fill = "Message length")
 ```
 :::
 
@@ -200,14 +200,14 @@ The frequency polygon below shows the same imbalance as a line. The dashed line 
 #| echo: true
 #| warning: false
 #| message: false
-ggplot(data = napster_downloads,
-    aes(x = minutes)) +
+ggplot(data = talkboy_clips,
+    aes(x = seconds)) +
   geom_freqpoly() +
-  geom_vline(xintercept = median(napster_downloads$minutes),
+  geom_vline(xintercept = median(talkboy_clips$seconds),
     linetype = "dashed", color = "white") +
-  geom_vline(xintercept = mean(napster_downloads$minutes),
+  geom_vline(xintercept = mean(talkboy_clips$seconds),
     color = "white") +
-  labs(x = "Download time (minutes)")
+  labs(x = "Message length (seconds)")
 ```
 :::
 
@@ -221,9 +221,9 @@ $$
 X \sim \text{Gamma}(k = 4, \lambda = 0.5)
 $$
 
-The [gamma distribution](https://en.wikipedia.org/wiki/Gamma_distribution) has two parameters. The shape ($k$) controls how lopsided the polygon is, and the rate ($\lambda$) controls how far it stretches along the `x` axis. From these two numbers we can calculate the mean ($k / \lambda = 8$ minutes), the peak ($(k - 1) / \lambda = 6$ minutes), and the standard deviation ($\sqrt{k} / \lambda = 4$ minutes). The peak comes before the mean, which is what right skew looks like in a formula.
+The [gamma distribution](https://en.wikipedia.org/wiki/Gamma_distribution) has two parameters. The shape ($k$) controls how lopsided the polygon is, and the rate ($\lambda$) controls how far it stretches along the `x` axis. From these two numbers we can calculate the mean ($k / \lambda = 8$ seconds), the peak ($(k - 1) / \lambda = 6$ seconds), and the standard deviation ($\sqrt{k} / \lambda = 4$ seconds). The peak comes before the mean, which is what right skew looks like in a formula.
 
-Our simulated downloads come close: the mean is `r round(mean(napster_downloads$minutes), 1)` minutes and the standard deviation is `r round(sd(napster_downloads$minutes), 1)` minutes. Try raising `shape` in `rgamma()` and the polygon becomes more symmetric. A gamma distribution with a large shape looks a lot like the normal distribution from @sec-histograms.
+Our simulated messages come close: the mean is `r round(mean(talkboy_clips$seconds), 1)` seconds and the standard deviation is `r round(sd(talkboy_clips$seconds), 1)` seconds. Try raising `shape` in `rgamma()` and the polygon becomes more symmetric. A gamma distribution with a large shape looks a lot like the normal distribution from @sec-histograms.
 
 
 ## Grammar
@@ -237,7 +237,7 @@ Our simulated downloads come close: the mean is `r round(mean(napster_downloads$
 
 2. Initialize the graph with `ggplot()` and provide `data`
 
-3. Map `minutes` to the `x` axis
+3. Map `seconds` to the `x` axis
 
 4. Add the `geom_freqpoly()` layer
 
@@ -251,12 +251,12 @@ Our simulated downloads come close: the mean is `r round(mean(napster_downloads$
 #| warning: false
 #| message: false
 labs_freqpoly <- labs(
-  title = "Napster MP3 downloads",
+  title = "Talkboy",
   caption = "Simulated data",
-  subtitle = "Download time over a 56k modem",
-  x = "Download time (minutes)")
-ggp2_freqpoly <- ggplot(data = napster_downloads,
-      aes(x = minutes)) +
+  subtitle = "Length of 300 recorded messages",
+  x = "Message length (seconds)")
+ggp2_freqpoly <- ggplot(data = talkboy_clips,
+      aes(x = seconds)) +
     geom_freqpoly()
 ggp2_freqpoly +
   labs_freqpoly
@@ -277,12 +277,12 @@ ggp2_freqpoly +
 #| message: false
 #| layout-nrow: 1
 labs_freqpoly <- labs(
-  title = "Napster MP3 downloads",
+  title = "Talkboy",
   caption = "Simulated data",
-  subtitle = "Download time over a 56k modem",
-  x = "Download time (minutes)")
-ggp2_freqpoly <- ggplot(data = napster_downloads,
-      aes(x = minutes)) +
+  subtitle = "Length of 300 recorded messages",
+  x = "Message length (seconds)")
+ggp2_freqpoly <- ggplot(data = talkboy_clips,
+      aes(x = seconds)) +
     geom_freqpoly()
 ggp2_freqpoly +
   labs_freqpoly
@@ -300,15 +300,15 @@ Experiment to see how many `bins` fit your variable’s distribution.
 #| layout-nrow: 1
 
 
-ggp2_freqpoly_bins45 <- ggplot(data = napster_downloads,
-     aes(x = minutes)) +
+ggp2_freqpoly_bins45 <- ggplot(data = talkboy_clips,
+     aes(x = seconds)) +
      geom_freqpoly(bins = 45)
 
 ggp2_freqpoly_bins45 +
   labs_freqpoly
 
-ggp2_freqpoly_bins15 <- ggplot(data = napster_downloads,
-     aes(x = minutes)) +
+ggp2_freqpoly_bins15 <- ggplot(data = talkboy_clips,
+     aes(x = seconds)) +
      geom_freqpoly(bins = 15)
 
 ggp2_freqpoly_bins15 +
