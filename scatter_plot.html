@@ -113,10 +113,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar floating slimcontent quarto-light">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -529,12 +558,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">35.1</span> Description</a></li>
   <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up"><span class="header-section-number">35.2</span> Set up</a></li>
-  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">35.3</span> Grammar</a></li>
+  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">35.3</span> Distribution</a></li>
+  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">35.4</span> Grammar</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/scatter_plot.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./relationships.html">RELATIONSHIPS</a></li><li class="breadcrumb-item"><a href="./scatter_plot.html"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Scatter plots</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -595,7 +625,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Scatter plots are used to display two continuous variables.</p>
 <p>If one of the continuous variables is assumed to affect the other (i.e., <code>outcome</code> vs.&nbsp;<code>predictor</code>), place the <code>outcome</code> on the <code>y</code> axis and the <code>predictor</code> on the <code>x</code> axis.</p>
 </section>
-<section id="set-up" class="level2 page-columns page-full" data-number="35.2">
+<section id="set-up" class="level2" data-number="35.2">
 <h2 data-number="35.2" class="anchored" data-anchor-id="set-up"><span class="header-section-number">35.2</span> Set up</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>PACKAGES:</strong></p>
@@ -607,71 +637,140 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"palmerpenguins"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># for tibble() and data manipulation</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure">
-<p><img src="www/lter_penguins.png" class="img-fluid figure-img" style="width:65.0%"></p>
-<figcaption>Artwork by Allison Horst</figcaption>
-</figure>
-</div>
-</div></div><p>The <code>penguins</code> data.</p>
+<p>When <em>Doom</em> came out in December 1993, the first question every PC owner asked was how well it would run on their machine. A faster processor drew more frames per second, but only up to a point: the Doom engine never drew more than 35 frames per second, no matter how fast the computer was. We’ll simulate 200 PCs with processors between 25 and 100 MHz (<code>cpu_mhz</code>, drawn with <code>runif()</code>). Each PC’s frame rate (<code>fps</code>) is 0.45 frames per megahertz, plus some noise from <code>rnorm()</code> (for the graphics card, the RAM, and whatever else was running), and <code>pmin()</code> caps it at 35. Setting the seed with <code>set.seed()</code> means you’ll get the same 200 PCs every time you run the code below.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> palmerpenguins<span class="sc">::</span>penguins</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 344</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 8</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ species           &lt;fct&gt; Adelie, Adelie, Adelie…</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ island            &lt;fct&gt; Torgersen, Torgersen, …</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, …</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, …</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193…</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, …</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ sex               &lt;fct&gt; male, female, female, …</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year              &lt;int&gt; 2007, 2007, 2007, 2007…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1993</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>doom_pcs <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">pc_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">cpu_mhz =</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="dv">200</span>, <span class="at">min =</span> <span class="dv">25</span>, <span class="at">max =</span> <span class="dv">100</span>)),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fps =</span> <span class="fu">round</span>(<span class="fu">pmin</span>(<span class="dv">35</span>, <span class="fl">0.45</span> <span class="sc">*</span> cpu_mhz <span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">rnorm</span>(<span class="dv">200</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">3</span>)), <span class="dv">1</span>))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(doom_pcs)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 200</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ pc_id   &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1…</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ cpu_mhz &lt;dbl&gt; 48, 27, 51, 78, 64, 65, 44, 44, …</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ fps     &lt;dbl&gt; 19.2, 10.8, 34.7, 35.0, 29.6, 26…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
-<section id="grammar" class="level2" data-number="35.3">
-<h2 data-number="35.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">35.3</span> Grammar</h2>
+<section id="distribution" class="level2" data-number="35.3">
+<h2 data-number="35.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">35.3</span> Distribution</h2>
+<p>A scatter plot shows how one variable changes as the other changes. In the Doom data, the frame rate climbs in a straight line with the processor speed, wobbles around that line, and then hits a ceiling. Below we’ll move from the PCs, to a picture, to the formula.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>COUNT IT:</strong></p>
+</div>
+<p>Start with the first six PCs.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(doom_pcs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["pc_id"],"name":[1],"type":["int"],"align":["right"]},{"label":["cpu_mhz"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["fps"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"48","3":"19.2"},{"1":"2","2":"27","3":"10.8"},{"1":"3","2":"51","3":"34.7"},{"1":"4","2":"78","3":"35.0"},{"1":"5","2":"64","3":"29.6"},{"1":"6","2":"65","3":"26.0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>Faster processors tend to have higher frame rates. Below we fit a straight line to the PCs at or below 66 MHz (well under the cap) with <code>lm()</code>, and count how many PCs landed exactly on the 35 frame ceiling.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>slow_pcs <span class="ot">&lt;-</span> doom_pcs <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cpu_mhz <span class="sc">&lt;=</span> <span class="dv">66</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>slow_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(fps <span class="sc">~</span> cpu_mhz, <span class="at">data =</span> slow_pcs)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(slow_fit)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)     cpu_mhz </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0.7081649   0.4389735</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sigma</span>(slow_fit)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3.272555</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(doom_pcs<span class="sc">$</span>fps <span class="sc">==</span> <span class="dv">35</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 60</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</div>
+<p>The fitted slope is about 0.44 frames per megahertz (close to the 0.45 we built in), and the typical distance from the line (<code>sigma()</code>) is about 3.3 frames. 60 of the 200 PCs are stuck at exactly 35 frames per second.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>DRAW IT:</strong></p>
+</div>
+<p>The graph below adds the line we built the data from (<code>geom_abline()</code>), a ribbon two standard deviations above and below it, and a dashed line at the 35 frame cap. Most of the points fall inside the ribbon until the line runs into the cap, and from there the points pile up in a flat row.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(doom_pcs, <span class="fu">aes</span>(<span class="at">x =</span> cpu_mhz, <span class="at">y =</span> fps)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> <span class="fl">0.45</span> <span class="sc">*</span> cpu_mhz <span class="sc">-</span> <span class="dv">6</span>, <span class="at">ymax =</span> <span class="fl">0.45</span> <span class="sc">*</span> cpu_mhz <span class="sc">+</span> <span class="dv">6</span>),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"#8A8D8F"</span>, <span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="fl">0.45</span>, <span class="at">color =</span> <span class="st">"#F2C14E"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">35</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"#D63A1E"</span>) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"CPU speed (MHz)"</span>, <span class="at">y =</span> <span class="st">"Frames per second"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="scatter_plot_files/figure-html/draw_scatter-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>NAME IT:</strong></p>
+</div>
+<p>Each PC’s frame rate is a draw from a <a href="https://en.wikipedia.org/wiki/Normal_distribution">normal distribution</a> centered on a straight line (the <a href="https://en.wikipedia.org/wiki/Simple_linear_regression">simple linear regression</a> model), and then capped:</p>
+<p><span class="math display">\[
+\text{fps}_i = \min\left(35, \; 0.45 \times \text{MHz}_i + \varepsilon_i\right), \quad \varepsilon_i \sim \text{Normal}(0, \; 3)
+\]</span></p>
+<p>About 95% of the points land within <span class="math inline">\(2 \times 3 = 6\)</span> frames of the line, which is the ribbon in <strong>DRAW IT</strong>. The line reaches the cap at <span class="math inline">\(35 / 0.45 \approx 78\)</span> MHz, so above that speed most of the PCs sit on the ceiling. A cap like this is called <a href="https://en.wikipedia.org/wiki/Censoring_(statistics)">censoring</a>, and it bends the relationship: the correlation for all 200 PCs is 0.92, but a straight line fit to all of them would underestimate the slope for the slow PCs and overestimate it for the fast ones. Try removing <code>pmin(35, ...)</code> and the points keep climbing in a straight line.</p>
+</section>
+<section id="grammar" class="level2" data-number="35.4">
+<h2 data-number="35.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">35.4</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
 </div>
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map <code>bill_length_mm</code> to the <code>x</code> axis</p></li>
-<li><p>Map <code>flipper_length_mm</code> to the <code>y</code> axis</p></li>
+<li><p>Map <code>cpu_mhz</code> to the <code>x</code> axis</p></li>
+<li><p>Map <code>fps</code> to the <code>y</code> axis</p></li>
 <li><p>Add <code>geom_point()</code></p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>labs_scatter <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Bill Length vs. Flipper Length"</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Bill Length (mm)"</span>, <span class="at">y =</span> <span class="st">"Flipper length (mm)"</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>ggp2_scatter <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> flipper_length_mm)) <span class="sc">+</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>ggp2_scatter <span class="sc">+</span> </span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  labs_scatter</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>labs_scatter <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Doom frame rates"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Frames per second by processor speed"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"CPU speed (MHz)"</span>, <span class="at">y =</span> <span class="st">"Frames per second"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>ggp2_scatter <span class="ot">&lt;-</span> doom_pcs <span class="sc">|&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> cpu_mhz,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> fps)) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>ggp2_scatter <span class="sc">+</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  labs_scatter</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>

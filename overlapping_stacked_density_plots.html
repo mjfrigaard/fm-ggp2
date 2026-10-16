@@ -799,15 +799,16 @@ f(x) = 0.6 \cdot \text{Normal}(x;\, 45, 8) + 0.4 \cdot \text{Normal}(x;\, 30, 10
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>labs_ovrlp_density <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Furby chatter (simulated)"</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Words per hour"</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Language"</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ggp2_ovrlp_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> furby_chatter,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> words_per_hour,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> language)) <span class="sc">+</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>ggp2_ovrlp_density <span class="sc">+</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  labs_ovrlp_density</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Furby chatter"</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Words per hour"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Language"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ggp2_ovrlp_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> furby_chatter,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> words_per_hour,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> language)) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>ggp2_ovrlp_density <span class="sc">+</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  labs_ovrlp_density</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
@@ -836,16 +837,17 @@ f(x) = 0.6 \cdot \text{Normal}(x;\, 45, 8) + 0.4 \cdot \text{Normal}(x;\, 30, 10
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>labs_stack_density <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Furby chatter (simulated)"</span>,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Words per hour"</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Language"</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>ggp2_stack_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> furby_chatter,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> words_per_hour,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill =</span> language)) <span class="sc">+</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_density</span>(<span class="at">position =</span> <span class="st">"stack"</span>,</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>ggp2_stack_density <span class="sc">+</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    labs_stack_density</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Furby chatter"</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Words per hour"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Language"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>ggp2_stack_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> furby_chatter,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> words_per_hour,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill =</span> language)) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_density</span>(<span class="at">position =</span> <span class="st">"stack"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>ggp2_stack_density <span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    labs_stack_density</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
@@ -866,17 +868,18 @@ f(x) = 0.6 \cdot \text{Normal}(x;\, 45, 8) + 0.4 \cdot \text{Normal}(x;\, 30, 10
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>labs_after_stat_density <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Furby chatter (simulated)"</span>,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Words per hour"</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Language"</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>ggp2_after_stat_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> furby_chatter,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> words_per_hour,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>           <span class="fu">after_stat</span>(count),</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> language)) <span class="sc">+</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_density</span>(<span class="at">position =</span> <span class="st">"stack"</span>,</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>ggp2_after_stat_density <span class="sc">+</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  labs_after_stat_density</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Furby chatter"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Words per hour"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Language"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>ggp2_after_stat_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> furby_chatter,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> words_per_hour,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>           <span class="fu">after_stat</span>(count),</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> language)) <span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_density</span>(<span class="at">position =</span> <span class="st">"stack"</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>ggp2_after_stat_density <span class="sc">+</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  labs_after_stat_density</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
@@ -895,17 +898,18 @@ f(x) = 0.6 \cdot \text{Normal}(x;\, 45, 8) + 0.4 \cdot \text{Normal}(x;\, 30, 10
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>labs_fill_density <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Furby chatter (simulated)"</span>,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Words per hour"</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Language"</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>ggp2_fill_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> furby_chatter,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> words_per_hour,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>           <span class="fu">after_stat</span>(count),</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> language)) <span class="sc">+</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_density</span>(<span class="at">position =</span> <span class="st">"fill"</span>,</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>ggp2_fill_density <span class="sc">+</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  labs_fill_density</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Furby chatter"</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Words per hour"</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Language"</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>ggp2_fill_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> furby_chatter,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> words_per_hour,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>           <span class="fu">after_stat</span>(count),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> language)) <span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_density</span>(<span class="at">position =</span> <span class="st">"fill"</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>ggp2_fill_density <span class="sc">+</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  labs_fill_density</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">

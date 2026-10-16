@@ -113,10 +113,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar floating slimcontent quarto-light">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -529,22 +558,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">29.1</span> Description</a></li>
   <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up"><span class="header-section-number">29.2</span> Set up</a></li>
-  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">29.3</span> Grammar</a></li>
-  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">29.4</span> More info</a>
+  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">29.3</span> Distribution</a></li>
+  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">29.4</span> Grammar</a></li>
+  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">29.5</span> More info</a>
   <ul>
-  <li><a href="#groups" id="toc-groups" class="nav-link" data-scroll-target="#groups"><span class="header-section-number">29.4.1</span> Groups</a></li>
-  <li><a href="#line-styles" id="toc-line-styles" class="nav-link" data-scroll-target="#line-styles"><span class="header-section-number">29.4.2</span> Line Styles</a></li>
-  <li><a href="#alpha-linewidth" id="toc-alpha-linewidth" class="nav-link" data-scroll-target="#alpha-linewidth"><span class="header-section-number">29.4.3</span> <code>alpha</code> &amp; <code>linewidth</code></a></li>
-  <li><a href="#linetype" id="toc-linetype" class="nav-link" data-scroll-target="#linetype"><span class="header-section-number">29.4.4</span> <code>linetype</code></a></li>
-  <li><a href="#color-palettes" id="toc-color-palettes" class="nav-link" data-scroll-target="#color-palettes"><span class="header-section-number">29.4.5</span> Color palettes</a></li>
-  <li><a href="#labels" id="toc-labels" class="nav-link" data-scroll-target="#labels"><span class="header-section-number">29.4.6</span> Labels</a></li>
-  <li><a href="#facets" id="toc-facets" class="nav-link" data-scroll-target="#facets"><span class="header-section-number">29.4.7</span> Facets</a></li>
+  <li><a href="#groups" id="toc-groups" class="nav-link" data-scroll-target="#groups"><span class="header-section-number">29.5.1</span> Groups</a></li>
+  <li><a href="#line-styles" id="toc-line-styles" class="nav-link" data-scroll-target="#line-styles"><span class="header-section-number">29.5.2</span> Line Styles</a></li>
+  <li><a href="#alpha-linewidth" id="toc-alpha-linewidth" class="nav-link" data-scroll-target="#alpha-linewidth"><span class="header-section-number">29.5.3</span> <code>alpha</code> &amp; <code>linewidth</code></a></li>
+  <li><a href="#linetype" id="toc-linetype" class="nav-link" data-scroll-target="#linetype"><span class="header-section-number">29.5.4</span> <code>linetype</code></a></li>
+  <li><a href="#color-palettes" id="toc-color-palettes" class="nav-link" data-scroll-target="#color-palettes"><span class="header-section-number">29.5.5</span> Color palettes</a></li>
+  <li><a href="#labels" id="toc-labels" class="nav-link" data-scroll-target="#labels"><span class="header-section-number">29.5.6</span> Labels</a></li>
+  <li><a href="#facets" id="toc-facets" class="nav-link" data-scroll-target="#facets"><span class="header-section-number">29.5.7</span> Facets</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/grp_line_graphs.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dates_and_times.html">DATES &amp; TIMES</a></li><li class="breadcrumb-item"><a href="./grp_line_graphs.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Grouped line graphs</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -610,7 +640,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="29.1" class="anchored" data-anchor-id="description"><span class="header-section-number">29.1</span> Description</h2>
 <p>Grouped line graphs use color, line style, and faceting to show group changes over time for a continuous variable across categorical levels.</p>
 </section>
-<section id="set-up" class="level2 page-columns page-full" data-number="29.2">
+<section id="set-up" class="level2" data-number="29.2">
 <h2 data-number="29.2" class="anchored" data-anchor-id="set-up"><span class="header-section-number">29.2</span> Set up</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>PACKAGES:</strong></p>
@@ -620,84 +650,71 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"fivethirtyeight"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fivethirtyeight)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># for tibble() and data manipulation</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate) <span class="co"># for working with dates</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure">
-<p><img src="www/538.png" class="quarto-figure quarto-figure-right figure-img" style="width:40.0%;height:40.0%"></p>
-</figure>
-</div>
-</div></div><p>We’ll be using the <code>US_births_1994_2003</code> and <code>US_births_2000_2014</code> datasets from the <code>fivethirtyeight</code> package:</p>
+<p>Every Saturday night starting in 1992, Nickelodeon kids parked themselves in front of SNICK (<em>Clarissa Explains It All</em>, <em>Are You Afraid of the Dark?</em>, and <em>All That</em>) and the orange couch. We’ll simulate a Nielsen style rating for Nickelodeon for every day from 1993 through 1999. Each night of the week gets its own average (<code>night_avg</code>), with Saturday on top. Two smooth patterns get added to the nightly averages: a <code>trend</code> that rises through the middle of the decade and falls off near the end, and a <code>summer</code> bump when school is out. Then <code>rnorm()</code> adds day to day noise. Setting the seed with <code>set.seed()</code> means you’ll get the same 2,556 days every time you run the code below.</p>
+<p>We’ll also create the date variables we need for grouping:</p>
 <ul>
-<li><p>Binding these together (they have identical columns)</p></li>
-<li><p>Create a <code>day_category</code> variable that distinguishes between weekdays (<code>Weekends</code>) and weekends (<code>Weekday</code>)</p></li>
-<li><p>Use <code>year</code> and <code>month</code> to create <code>yr_mnth</code></p></li>
-<li><p>Use <code>year</code> and <code>quarter</code> to create <code>yr_qtr</code></p></li>
-<li><p>Save these changes to <code>usbirth_1994_2014</code></p></li>
+<li><p><code>day_of_week</code> (a factor from <code>wday()</code>, unordered so the graphs use the theme colors) and <code>day_category</code> (<code>"Weekday"</code> or <code>"Weekend"</code>)</p></li>
+<li><p><code>yr_mnth</code> (the first day of each month) and <code>yr_qtr</code> (the year and quarter)</p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>US_births_2004_2014 <span class="ot">&lt;-</span> <span class="fu">filter</span>(fivethirtyeight<span class="sc">::</span>US_births_2000_2014, year <span class="sc">&gt;</span> <span class="dv">2003</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>usbirth_1994_2014 <span class="ot">&lt;-</span> US_births_2004_2014 <span class="sc">|&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(fivethirtyeight<span class="sc">::</span>US_births_1994_2003) <span class="sc">|&gt;</span> </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">day_category =</span> <span class="fu">case_when</span>(</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>            day_of_week <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Sun"</span>, <span class="st">"Sat"</span>) <span class="sc">~</span> <span class="st">"Weekend"</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>            day_of_week <span class="sc">%nin%</span> <span class="fu">c</span>(<span class="st">"Sun"</span>, <span class="st">"Sat"</span>) <span class="sc">~</span> <span class="st">"Weekday"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">month =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">condition =</span> month <span class="sc">&lt;</span> <span class="dv">10</span>,</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">true =</span> <span class="fu">paste0</span>(<span class="st">"0"</span>, month),</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">false =</span> <span class="fu">as.character</span>(month)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">yr_mnth =</span> <span class="fu">paste0</span>(year, <span class="st">"-"</span>, month),</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">yr_mnth =</span> lubridate<span class="sc">::</span><span class="fu">ym</span>(yr_mnth),</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">yr_qtr =</span> <span class="fu">paste0</span>(lubridate<span class="sc">::</span><span class="fu">year</span>(date),</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"/0"</span>, </span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">quarter</span>(date)),</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">yr_qtr =</span> <span class="fu">factor</span>(yr_qtr, <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(usbirth_1994_2014)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 7,670</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 9</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year          &lt;int&gt; 2004, 2004, 2004, 2004, 20…</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ month         &lt;chr&gt; "01", "01", "01", "01", "0…</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ date_of_month &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9,…</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ date          &lt;date&gt; 2004-01-01, 2004-01-02, 2…</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ day_of_week   &lt;ord&gt; Thurs, Fri, Sat, Sun, Mon,…</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ births        &lt;int&gt; 8205, 10586, 8337, 7359, 1…</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ day_category  &lt;chr&gt; "Weekday", "Weekday", "Wee…</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ yr_mnth       &lt;date&gt; 2004-01-01, 2004-01-01, 2…</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ yr_qtr        &lt;ord&gt; 2004/01, 2004/01, 2004/01,…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1992</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>nick_ratings <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">date =</span> <span class="fu">seq</span>(<span class="fu">as.Date</span>(<span class="st">"1993-01-01"</span>), <span class="fu">as.Date</span>(<span class="st">"1999-12-31"</span>), <span class="at">by =</span> <span class="st">"day"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="fu">year</span>(date),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">month =</span> <span class="fu">month</span>(date),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">day_of_week =</span> <span class="fu">factor</span>(<span class="fu">wday</span>(date, <span class="at">label =</span> <span class="cn">TRUE</span>), <span class="at">ordered =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">day_category =</span> <span class="fu">if_else</span>(day_of_week <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Sat"</span>, <span class="st">"Sun"</span>),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"Weekend"</span>, <span class="st">"Weekday"</span>),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">yr_mnth =</span> <span class="fu">floor_date</span>(date, <span class="at">unit =</span> <span class="st">"month"</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">yr_qtr =</span> <span class="fu">factor</span>(<span class="fu">paste0</span>(year, <span class="st">"/0"</span>, <span class="fu">quarter</span>(date)), <span class="at">ordered =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">night_avg =</span> <span class="fu">c</span>(<span class="at">Sun =</span> <span class="fl">3.0</span>, <span class="at">Mon =</span> <span class="fl">2.4</span>, <span class="at">Tue =</span> <span class="fl">2.3</span>, <span class="at">Wed =</span> <span class="fl">2.3</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Thu =</span> <span class="fl">2.4</span>, <span class="at">Fri =</span> <span class="fl">2.8</span>, <span class="at">Sat =</span> <span class="fl">4.2</span>)[<span class="fu">as.character</span>(day_of_week)],</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">trend =</span> <span class="fl">0.25</span> <span class="sc">*</span> (year <span class="sc">-</span> <span class="dv">1993</span>) <span class="sc">-</span> <span class="fl">0.04</span> <span class="sc">*</span> (year <span class="sc">-</span> <span class="dv">1993</span>)<span class="sc">^</span><span class="dv">2</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">summer =</span> <span class="fl">0.3</span> <span class="sc">*</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> (month <span class="sc">-</span> <span class="dv">4</span>) <span class="sc">/</span> <span class="dv">12</span>),</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">rating =</span> <span class="fu">round</span>(<span class="fu">rnorm</span>(<span class="fu">n</span>(), <span class="at">mean =</span> night_avg <span class="sc">+</span> trend <span class="sc">+</span> summer,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sd =</span> <span class="fl">0.35</span>), <span class="dv">2</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>night_avg, <span class="sc">-</span>trend, <span class="sc">-</span>summer)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(nick_ratings)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 2,556</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 8</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ date         &lt;date&gt; 1993-01-01, 1993-01-02, 19…</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year         &lt;dbl&gt; 1993, 1993, 1993, 1993, 199…</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ month        &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, …</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ day_of_week  &lt;fct&gt; Fri, Sat, Sun, Mon, Tue, We…</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ day_category &lt;chr&gt; "Weekday", "Weekend", "Week…</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ yr_mnth      &lt;date&gt; 1993-01-01, 1993-01-01, 19…</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ yr_qtr       &lt;ord&gt; 1993/01, 1993/01, 1993/01, …</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ rating       &lt;dbl&gt; 2.61, 4.20, 2.65, 1.81, 2.1…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <p>We’ll use these data in the <em>More info</em> section for more line graphs, but for now:</p>
 <ul>
-<li><p>Group <code>usbirth_1994_2014</code> on <code>year</code> and <code>day_category</code></p></li>
-<li><p>Calculate the average <code>births</code> as <code>avg_births</code></p></li>
-<li><p>Store the data in <code>avg_birth_day_cat_yr</code>.</p></li>
+<li><p>Group <code>nick_ratings</code> on <code>year</code> and <code>day_category</code></p></li>
+<li><p>Calculate the average <code>rating</code> as <code>avg_rating</code></p></li>
+<li><p>Store the data in <code>avg_rating_day_cat_yr</code>.</p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>avg_birth_day_cat_yr <span class="ot">&lt;-</span> usbirth_1994_2014 <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(year, day_category) <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">avg_births =</span> <span class="fu">mean</span>(births, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">ungroup</span>() </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>avg_rating_day_cat_yr <span class="ot">&lt;-</span> nick_ratings <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(year, day_category) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">avg_rating =</span> <span class="fu">mean</span>(rating)) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; `summarise()` has regrouped the output.</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Summaries were computed grouped by year and</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   day_category.</span></span>
@@ -707,43 +724,130 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `summarise(.by = c(year, day_category))`</span></span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   for per-operation grouping (`?dplyr::dplyr_by`)</span></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   instead.</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(avg_birth_day_cat_yr)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 42</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(avg_rating_day_cat_yr)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 14</span></span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year         &lt;int&gt; 1994, 1994, 1995, 1995, 199…</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year         &lt;dbl&gt; 1993, 1993, 1994, 1994, 199…</span></span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ day_category &lt;chr&gt; "Weekday", "Weekend", "Week…</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_births   &lt;dbl&gt; 11728.012, 8604.610, 11593.…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_rating   &lt;dbl&gt; 2.405057, 3.604519, 2.64930…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
-<section id="grammar" class="level2" data-number="29.3">
-<h2 data-number="29.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">29.3</span> Grammar</h2>
+<section id="distribution" class="level2" data-number="29.3">
+<h2 data-number="29.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">29.3</span> Distribution</h2>
+<p>A grouped line graph rarely plots raw values. It plots an <em>average</em> for each group at each point in time, and averages behave very differently from the values they’re built from. Below we’ll move from the daily ratings, to a picture, to the formula, and see why averaging makes the group differences easy to see.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>COUNT IT:</strong></p>
+</div>
+<p>Start with the first week of 1996.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>nick_ratings <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">1996</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(date, day_of_week, rating) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">7</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["date"],"name":[1],"type":["date"],"align":["right"]},{"label":["day_of_week"],"name":[2],"type":["fct"],"align":["left"]},{"label":["rating"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1996-01-01","2":"Mon","3":"2.49"},{"1":"1996-01-02","2":"Tue","3":"1.82"},{"1":"1996-01-03","2":"Wed","3":"2.99"},{"1":"1996-01-04","2":"Thu","3":"2.58"},{"1":"1996-01-05","2":"Fri","3":"2.80"},{"1":"1996-01-06","2":"Sat","3":"4.72"},{"1":"1996-01-07","2":"Sun","3":"2.93"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>Saturday is the clear winner this week, but the weeknights are close enough that the order could flip next week. Below we count every night in 1996 and calculate the mean and standard deviation for each night of the week.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>nick_1996 <span class="ot">&lt;-</span> nick_ratings <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">1996</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(day_of_week) <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">mean =</span> <span class="fu">mean</span>(rating), <span class="at">sd =</span> <span class="fu">sd</span>(rating))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>nick_1996</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["day_of_week"],"name":[1],"type":["fct"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]},{"label":["mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Sun","2":"52","3":"3.343846","4":"0.5136000"},{"1":"Mon","2":"53","3":"2.863585","4":"0.4092681"},{"1":"Tue","2":"53","3":"2.669623","4":"0.3806167"},{"1":"Wed","2":"52","3":"2.712692","4":"0.3663124"},{"1":"Thu","2":"52","3":"2.742885","4":"0.4224222"},{"1":"Fri","2":"52","3":"3.195962","4":"0.3372278"},{"1":"Sat","2":"52","3":"4.626154","4":"0.4219802"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>Each night of the week shows up 52 or 53 times in a year. The Saturday mean (4.63) is well above the Tuesday mean (2.67), but any single night wanders about 0.4 rating points from its mean.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>DRAW IT:</strong></p>
+</div>
+<p>The graph below draws every Tuesday and Saturday rating from 1996 as a thin, faded line, then adds each month’s average as a thick line. The daily lines zig and zag, while the monthly averages are much smoother.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>tue_sat_1996 <span class="ot">&lt;-</span> nick_ratings <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">1996</span>, day_of_week <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Tue"</span>, <span class="st">"Sat"</span>))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>tue_sat_monthly <span class="ot">&lt;-</span> tue_sat_1996 <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(yr_mnth, day_of_week) <span class="sc">|&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_rating =</span> <span class="fu">mean</span>(rating), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> tue_sat_1996,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> rating, <span class="at">color =</span> day_of_week),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> tue_sat_monthly,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth, <span class="at">y =</span> avg_rating, <span class="at">color =</span> day_of_week),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"1996"</span>, <span class="at">y =</span> <span class="st">"Rating"</span>, <span class="at">color =</span> <span class="st">"Night"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="grp_line_graphs_files/figure-html/draw_grp_line-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>NAME IT:</strong></p>
+</div>
+<p>Each day’s rating is a draw from a <a href="https://en.wikipedia.org/wiki/Normal_distribution">normal distribution</a> centered on that night’s average for that time of year:</p>
+<p><span class="math display">\[
+\text{rating}_d \sim \text{Normal}\left(\mu_{\text{night}} + \text{trend}_{\text{year}} + \text{summer}_{\text{month}}, \; \sigma = 0.35\right)
+\]</span></p>
+<p>The standard deviation of an average of <span class="math inline">\(n\)</span> draws is <span class="math inline">\(\sigma / \sqrt{n}\)</span> (the <a href="https://en.wikipedia.org/wiki/Standard_error">standard error</a>). A monthly average of about four Saturdays wobbles by about <span class="math inline">\(0.35 / \sqrt{4} \approx 0.18\)</span> points, and a yearly average of about 52 Saturdays wobbles by only <span class="math inline">\(0.35 / \sqrt{52} \approx 0.05\)</span> points. That’s why the yearly <code>avg_rating</code> lines below are so smooth, and why the gap between weekdays and weekends stands out. The <code>sd</code> column in <strong>COUNT IT</strong> is a little larger than 0.35 because it also includes the summer bump. Try changing <code>sd = 0.35</code> to <code>sd = 1</code> and watch the daily lines in <strong>DRAW IT</strong> turn into a tangle while the yearly lines barely move.</p>
+</section>
+<section id="grammar" class="level2" data-number="29.4">
+<h2 data-number="29.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">29.4</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
 </div>
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
-<li><p>Map <code>yr_mnth</code> to the <code>x</code>, <code>avg_births</code> to the <code>y</code>, and <code>day_category</code> to <code>group</code></p></li>
+<li><p>Map <code>year</code> to the <code>x</code>, <code>avg_rating</code> to the <code>y</code>, and <code>day_category</code> to <code>group</code></p></li>
 <li><p>Add the <code>geom_line()</code> layer and map <code>day_category</code> to color (<em>inside</em> <code>aes()</code>)</p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>labs_line_graph <span class="ot">&lt;-</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average US births"</span>, </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">subtitle =</span> <span class="st">"1994-2014"</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">y =</span> <span class="st">"Average number of US births"</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">x =</span> <span class="st">"Year"</span>,  </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">color =</span> <span class="st">"Day Category"</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>ggp2_line <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> avg_birth_day_cat_yr, </span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> avg_births, </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">group =</span> day_category)) <span class="sc">+</span> </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> day_category)) </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>ggp2_line <span class="sc">+</span> </span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    labs_line_graph</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>labs_line_graph <span class="ot">&lt;-</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Nickelodeon ratings"</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">subtitle =</span> <span class="st">"1993-1999"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">y =</span> <span class="st">"Average rating"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">color =</span> <span class="st">"Day Category"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>ggp2_line <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> avg_rating_day_cat_yr,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> avg_rating,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">group =</span> day_category)) <span class="sc">+</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> day_category))</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>ggp2_line <span class="sc">+</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    labs_line_graph</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
@@ -758,32 +862,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2" data-number="29.4">
-<h2 data-number="29.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">29.4</span> More info</h2>
+<section id="more-info" class="level2" data-number="29.5">
+<h2 data-number="29.5" class="anchored" data-anchor-id="more-info"><span class="header-section-number">29.5</span> More info</h2>
 <p>Line graphs are great for displaying relationships across variables with multiple groups (or levels). We can also use facets for multiple comparisons (i.e., small multiples).</p>
-<section id="groups" class="level3" data-number="29.4.1">
-<h3 data-number="29.4.1" class="anchored" data-anchor-id="groups"><span class="header-section-number">29.4.1</span> Groups</h3>
-<p>In the previous graph, we can see the number of births begins to decline around <code>2007</code> or <code>2008</code>.</p>
+<section id="groups" class="level3" data-number="29.5.1">
+<h3 data-number="29.5.1" class="anchored" data-anchor-id="groups"><span class="header-section-number">29.5.1</span> Groups</h3>
+<p>In the previous graph, we can see the ratings peak around <code>1996</code> or <code>1997</code>.</p>
 <ul>
-<li><p>We’ll create another summarized dataset from the <code>usbirth_2010_2014</code> data, but this time we restrict the observations to only births in between <code>2008</code> and <code>2009</code></p></li>
+<li><p>We’ll create another summarized dataset from <code>nick_ratings</code>, but this time we restrict the observations to the ratings between <code>1996</code> and <code>1997</code></p></li>
 <li><p>Group the data on <code>yr_qtr</code> and <code>day_of_week</code></p></li>
-<li><p>Then calculate the average number of <code>births</code> as <code>avg_births</code></p></li>
+<li><p>Then calculate the average <code>rating</code> as <code>avg_rating</code></p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>avg_births_dow_qtr <span class="ot">&lt;-</span> usbirth_1994_2014 <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(year <span class="sc">&gt;=</span> <span class="dv">2008</span> <span class="sc">&amp;</span> year <span class="sc">&lt;=</span> <span class="dv">2009</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(yr_qtr, day_of_week) <span class="sc">|&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">avg_births =</span> <span class="fu">mean</span>(births, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">ungroup</span>() </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(avg_births_dow_qtr)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 56</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ yr_qtr      &lt;ord&gt; 2008/01, 2008/01, 2008/01, 2…</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ day_of_week &lt;ord&gt; Sun, Mon, Tues, Wed, Thurs, …</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_births  &lt;dbl&gt; 7497.231, 12464.385, 13099.6…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>avg_rating_dow_qtr <span class="ot">&lt;-</span> nick_ratings <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(year <span class="sc">&gt;=</span> <span class="dv">1996</span> <span class="sc">&amp;</span> year <span class="sc">&lt;=</span> <span class="dv">1997</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(yr_qtr, day_of_week) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">avg_rating =</span> <span class="fu">mean</span>(rating)) <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(avg_rating_dow_qtr)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 56</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ yr_qtr      &lt;ord&gt; 1996/01, 1996/01, 1996/01, 1…</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ day_of_week &lt;fct&gt; Sun, Mon, Tue, Wed, Thu, Fri…</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_rating  &lt;dbl&gt; 2.941538, 2.486923, 2.319231…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
@@ -793,240 +897,240 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Move the legend to the top of the graph using <code>theme(legend.position = "top")</code> (to improve readability).</p></li>
 </ul>
 <div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># here we create the labels (with the subtitle updating with the data)</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>labs_line_graph_grp <span class="ot">&lt;-</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average US births"</span>, </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">"Between "</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                                    <span class="fu">min</span>(avg_births_dow_qtr<span class="sc">$</span>yr_qtr), </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">" and "</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                                    <span class="fu">max</span>(avg_births_dow_qtr<span class="sc">$</span>yr_qtr)),</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                        <span class="at">y =</span> <span class="st">"Average births"</span>, </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">x =</span> <span class="st">"Year/Quarter"</span>,  </span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">color =</span> <span class="st">"Day of Week"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># here we create the labels (with the subtitle updating with the data)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>labs_line_graph_grp <span class="ot">&lt;-</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Nickelodeon ratings"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">"Between "</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                                    <span class="fu">min</span>(avg_rating_dow_qtr<span class="sc">$</span>yr_qtr),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">" and "</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                                    <span class="fu">max</span>(avg_rating_dow_qtr<span class="sc">$</span>yr_qtr)),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">y =</span> <span class="st">"Average rating"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">x =</span> <span class="st">"Year/Quarter"</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">color =</span> <span class="st">"Day of Week"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-
 </div>
 </div>
 <div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build layer with yr_qtr and day_of_week</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ggp2_line_grp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> avg_births_dow_qtr, </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> yr_qtr, </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">y =</span> avg_births, </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">group =</span> day_of_week)) <span class="sc">+</span> </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> day_of_week)) </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># move legend</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>ggp2_line_grp <span class="sc">+</span> </span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    labs_line_graph_grp <span class="sc">+</span> </span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build layer with yr_qtr and day_of_week</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ggp2_line_grp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> avg_rating_dow_qtr,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> yr_qtr,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">y =</span> avg_rating,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">group =</span> day_of_week)) <span class="sc">+</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> day_of_week))</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># move legend</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>ggp2_line_grp <span class="sc">+</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    labs_line_graph_grp <span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="grp_line_graphs_files/figure-html/avg_births_dow_qtr_grp_line-1.png" class="img-fluid"></p>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="grp_line_graphs_files/figure-html/ggp2_line_grp-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
 </div>
 </div>
 </div>
 </div>
+<p>The Saturday line sits on top of every quarter (that’s SNICK), and every night rises and falls with the summer bump.</p>
 </section>
-<section id="line-styles" class="level3" data-number="29.4.2">
-<h3 data-number="29.4.2" class="anchored" data-anchor-id="line-styles"><span class="header-section-number">29.4.2</span> Line Styles</h3>
+<section id="line-styles" class="level3" data-number="29.5.2">
+<h3 data-number="29.5.2" class="anchored" data-anchor-id="line-styles"><span class="header-section-number">29.5.2</span> Line Styles</h3>
 <ul>
 <li><p>We can make it easier to distinguish between lines in our graph by adjusting the line style (<code>linetype</code> and <code>linewidth</code>), or by changing overall opacity (<code>alpha</code>).</p></li>
-<li><p>We’ll work through some examples below using another subset from <code>usbirth_1994_2014</code>.</p></li>
+<li><p>We’ll work through some examples below using another subset from <code>nick_ratings</code>.</p></li>
 </ul>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
 <div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>avg_births_dow_mnth <span class="ot">&lt;-</span> usbirth_1994_2014 <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(year <span class="sc">&gt;=</span> <span class="dv">2008</span> <span class="sc">&amp;</span> year <span class="sc">&lt;</span> <span class="dv">2010</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(yr_mnth, day_of_week) <span class="sc">|&gt;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">avg_births =</span> <span class="fu">mean</span>(births, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">ungroup</span>()</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(avg_births_dow_mnth)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 168</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ yr_mnth     &lt;date&gt; 2008-01-01, 2008-01-01, 200…</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ day_of_week &lt;ord&gt; Sun, Mon, Tues, Wed, Thurs, …</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_births  &lt;dbl&gt; 7535.25, 12344.00, 12280.60,…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>avg_rating_dow_mnth <span class="ot">&lt;-</span> nick_ratings <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(year <span class="sc">&gt;=</span> <span class="dv">1996</span> <span class="sc">&amp;</span> year <span class="sc">&lt;=</span> <span class="dv">1997</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(yr_mnth, day_of_week) <span class="sc">|&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">avg_rating =</span> <span class="fu">mean</span>(rating)) <span class="sc">|&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(avg_rating_dow_mnth)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 168</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ yr_mnth     &lt;date&gt; 1996-01-01, 1996-01-01, 199…</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ day_of_week &lt;fct&gt; Sun, Mon, Tue, Wed, Thu, Fri…</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_rating  &lt;dbl&gt; 3.0575, 2.5040, 2.2940, 2.39…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-
 </div>
 </div>
 <div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>labs_line_styles <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Average US births"</span>,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste0</span>(</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Between "</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">min</span>(avg_births_dow_mnth<span class="sc">$</span>yr_mnth),</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">" and "</span>,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">max</span>(avg_births_dow_mnth<span class="sc">$</span>yr_mnth)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Average births"</span>,</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Year-Month"</span>,</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Day of Week"</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>labs_line_styles <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Nickelodeon ratings"</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste0</span>(</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Between "</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">min</span>(avg_rating_dow_mnth<span class="sc">$</span>yr_mnth),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">" and "</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">max</span>(avg_rating_dow_mnth<span class="sc">$</span>yr_mnth)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Average rating"</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Year-Month"</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Day of Week"</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-
 </div>
 </div>
 </section>
-<section id="alpha-linewidth" class="level3" data-number="29.4.3">
-<h3 data-number="29.4.3" class="anchored" data-anchor-id="alpha-linewidth"><span class="header-section-number">29.4.3</span> <code>alpha</code> &amp; <code>linewidth</code></h3>
-<p>Color palettes are a excellent too for highlighting or emphasizing certain lines over others.</p>
+<section id="alpha-linewidth" class="level3" data-number="29.5.3">
+<h3 data-number="29.5.3" class="anchored" data-anchor-id="alpha-linewidth"><span class="header-section-number">29.5.3</span> <code>alpha</code> &amp; <code>linewidth</code></h3>
+<p>Line styles are an excellent tool for highlighting or emphasizing certain lines over others.</p>
 <ul>
-<li>We’ll start by creating a line graph layer for Monday (<code>"Mon"</code>), Thursday (<code>"Thurs"</code>), and Friday (<code>"Fri"</code>) adjusting the opacity with <code>alpha</code>.</li>
+<li>We’ll start by creating a line graph layer for Monday (<code>"Mon"</code>), Thursday (<code>"Thu"</code>), and Friday (<code>"Fri"</code>) adjusting the opacity with <code>alpha</code>.</li>
 </ul>
 <div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ggp2_line_mon_thur_fri <span class="ot">&lt;-</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="at">data =</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(avg_births_dow_mnth,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        day_of_week <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Mon"</span>, <span class="st">"Thurs"</span>, <span class="st">"Fri"</span>))) <span class="sc">+</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> avg_births,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">group =</span> day_of_week,</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">4</span>,</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">linewidth =</span> <span class="fl">0.85</span>)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co"># layer 1</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>ggp2_line_mon_thur_fri <span class="sc">+</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    labs_line_styles <span class="sc">+</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ggp2_line_mon_thu_fri <span class="ot">&lt;-</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">filter</span>(avg_rating_dow_mnth,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>        day_of_week <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Mon"</span>, <span class="st">"Thu"</span>, <span class="st">"Fri"</span>))) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> avg_rating,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">group =</span> day_of_week,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">4</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">linewidth =</span> <span class="fl">0.85</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co"># layer 1</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>ggp2_line_mon_thu_fri <span class="sc">+</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    labs_line_styles <span class="sc">+</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="grp_line_graphs_files/figure-html/ggp2_line_mon_thur_fri-1.png" class="img-fluid"></p>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="grp_line_graphs_files/figure-html/ggp2_line_mon_thu_fri-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="linetype" class="level3" data-number="29.4.4">
-<h3 data-number="29.4.4" class="anchored" data-anchor-id="linetype"><span class="header-section-number">29.4.4</span> <code>linetype</code></h3>
-<p>Then we’ll change the <code>linetype</code> of Saturday and Sunday to <code>"longdash'</code> (and make this <em>somewhat</em> transparent with a slightly higher <code>alpha</code>).</p>
+<section id="linetype" class="level3" data-number="29.5.4">
+<h3 data-number="29.5.4" class="anchored" data-anchor-id="linetype"><span class="header-section-number">29.5.4</span> <code>linetype</code></h3>
+<p>Then we’ll change the <code>linetype</code> of Saturday and Sunday to <code>"longdash"</code> (and make this <em>somewhat</em> transparent with a slightly higher <code>alpha</code>).</p>
 <div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ggp2_line_sat_sun <span class="ot">&lt;-</span> ggp2_line_mon_thur_fri <span class="sc">+</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">data =</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(avg_births_dow_mnth,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>            day_of_week <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Sat"</span>, <span class="st">"Sun"</span>)),</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> avg_births,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">group =</span> day_of_week,</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span>,</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">linewidth =</span> <span class="fl">0.75</span>,</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">linetype =</span> <span class="st">"longdash"</span>)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># layers 1 &amp; 2</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>ggp2_line_sat_sun <span class="sc">+</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    labs_line_styles <span class="sc">+</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ggp2_line_sat_sun <span class="ot">&lt;-</span> ggp2_line_mon_thu_fri <span class="sc">+</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">data =</span> <span class="fu">filter</span>(avg_rating_dow_mnth,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>            day_of_week <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Sat"</span>, <span class="st">"Sun"</span>)),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> avg_rating,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">group =</span> day_of_week,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">linewidth =</span> <span class="fl">0.75</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">linetype =</span> <span class="st">"longdash"</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co"># layers 1 &amp; 2</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>ggp2_line_sat_sun <span class="sc">+</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    labs_line_styles <span class="sc">+</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="grp_line_graphs_files/figure-html/ggp2_line_sat_sun-1.png" class="img-fluid"></p>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="grp_line_graphs_files/figure-html/ggp2_line_sat_sun-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="color-palettes" class="level3" data-number="29.4.5">
-<h3 data-number="29.4.5" class="anchored" data-anchor-id="color-palettes"><span class="header-section-number">29.4.5</span> Color palettes</h3>
+<section id="color-palettes" class="level3" data-number="29.5.5">
+<h3 data-number="29.5.5" class="anchored" data-anchor-id="color-palettes"><span class="header-section-number">29.5.5</span> Color palettes</h3>
 <ul>
-<li><p>Add <code>geom_line()</code> for Wednesday and Tuesday, but change the color palette with <code>paletteer</code> and <code>ggthemes</code>.</p></li>
+<li><p>Add <code>geom_line()</code> for Tuesday and Wednesday, and set the colors manually with <code>scale_color_manual()</code> (below we use a named vector of SNICK colors).</p></li>
 <li><p>We also manually set the legend order by supplying the original factor levels to the <code>breaks</code> argument.</p></li>
 </ul>
 <div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># original factor levels</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>lev_order <span class="ot">&lt;-</span> <span class="fu">levels</span>(avg_births_dow_mnth<span class="sc">$</span>day_of_week)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># layer 3</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>ggp2_line_pal_d <span class="ot">&lt;-</span> ggp2_line_sat_sun <span class="sc">+</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add line</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">data =</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(avg_births_dow_mnth,</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>            day_of_week <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Wed"</span>, <span class="st">"Tues"</span>)),</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> avg_births,</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">group =</span> day_of_week,</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">linewidth =</span> <span class="fl">1.25</span>) <span class="sc">+</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add palette</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">scale_color_manual</span>(</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">breaks =</span> lev_order,</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>        <span class="co"># original factor levels</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">values =</span> paletteer<span class="sc">::</span><span class="fu">paletteer_d</span>(<span class="at">palette =</span> <span class="st">"ggthemes::Color_Blind"</span>,</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">n =</span> <span class="dv">7</span>))</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co"># three layers</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>ggp2_line_pal_d <span class="sc">+</span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># labels</span></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    labs_line_styles <span class="sc">+</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># legend position</span></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># original factor levels</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>lev_order <span class="ot">&lt;-</span> <span class="fu">levels</span>(avg_rating_dow_mnth<span class="sc">$</span>day_of_week)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># SNICK colors</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>snick_pal <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Sun =</span> <span class="st">"#FF5FA2"</span>, <span class="at">Mon =</span> <span class="st">"#29B6F6"</span>, <span class="at">Tue =</span> <span class="st">"#8CC63F"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">Wed =</span> <span class="st">"#FFD200"</span>, <span class="at">Thu =</span> <span class="st">"#B07CE8"</span>, <span class="at">Fri =</span> <span class="st">"#F4F1FA"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">Sat =</span> <span class="st">"#F57D0D"</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># layer 3</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>ggp2_line_pal_d <span class="ot">&lt;-</span> ggp2_line_sat_sun <span class="sc">+</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add line</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">data =</span> <span class="fu">filter</span>(avg_rating_dow_mnth,</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>            day_of_week <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Tue"</span>, <span class="st">"Wed"</span>)),</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> avg_rating,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">group =</span> day_of_week,</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">linewidth =</span> <span class="fl">1.25</span>) <span class="sc">+</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add palette</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">breaks =</span> lev_order,</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># original factor levels</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">values =</span> snick_pal)</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co"># three layers</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>ggp2_line_pal_d <span class="sc">+</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># labels</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>    labs_line_styles <span class="sc">+</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># legend position</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="grp_line_graphs_files/figure-html/ggp2_line_pal_d-1.png" class="img-fluid"></p>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="grp_line_graphs_files/figure-html/ggp2_line_pal_d-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
 </div>
 </div>
 </div>
 </div>
 <p>Changing the look of the lines is a great way to highlight or emphasize some lines over others.</p>
 </section>
-<section id="labels" class="level3" data-number="29.4.6">
-<h3 data-number="29.4.6" class="anchored" data-anchor-id="labels"><span class="header-section-number">29.4.6</span> Labels</h3>
-<p>In the previous graph, we can see the number of average births reaches it’s peak in <code>2008</code> or <code>2009</code>, so we’ll use labels to display the max births and max average births.</p>
+<section id="labels" class="level3" data-number="29.5.6">
+<h3 data-number="29.5.6" class="anchored" data-anchor-id="labels"><span class="header-section-number">29.5.6</span> Labels</h3>
+<p>We’ll use labels to display the highest daily rating and the highest monthly average rating for a few nights of the week.</p>
 <ul>
 <li><p>To accomplish this, we’re going to create two small tables of labels, <code>label_max_dow</code> and <code>label_max_avg_dow</code>, that we’ll use to label the maximum values.</p></li>
-<li><p>They will each have 7 rows (one for each day of the week) and a label variable (<code>lbl</code>) which we can use with <code>geom_label()</code>.</p></li>
+<li><p>Each has a row for every night of the week (<code>label_max_dow</code> can have more if two nights tie for the max) and a label variable (<code>lbl</code>) which we can use with <code>geom_label()</code>.</p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>label_max_dow <span class="ot">&lt;-</span> usbirth_1994_2014 <span class="sc">|&gt;</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(day_of_week) <span class="sc">|&gt;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">max_births =</span> <span class="fu">max</span>(births, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(max_births)) <span class="sc">|&gt;</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">inner_join</span>(<span class="at">y =</span> usbirth_1994_2014,</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"max_births"</span> <span class="ot">=</span> <span class="st">"births"</span>, <span class="st">"day_of_week"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">lbl =</span> <span class="fu">paste0</span>(day_of_week,</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">" ("</span>,</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        date,</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">" )"</span>,</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">", max births = "</span>,</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        max_births)) <span class="sc">|&gt;</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(day_of_week, yr_mnth, max_births, lbl)</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">arrange</span>(label_max_dow, <span class="fu">desc</span>(max_births)) <span class="sc">|&gt;</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>label_max_dow <span class="ot">&lt;-</span> nick_ratings <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(day_of_week) <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">max_rating =</span> <span class="fu">max</span>(rating)) <span class="sc">|&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">inner_join</span>(<span class="at">y =</span> nick_ratings,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"max_rating"</span> <span class="ot">=</span> <span class="st">"rating"</span>, <span class="st">"day_of_week"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">lbl =</span> <span class="fu">paste0</span>(day_of_week,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">" ("</span>, date, <span class="st">"), max rating = "</span>, max_rating)) <span class="sc">|&gt;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(day_of_week, yr_mnth, max_rating, lbl)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(label_max_dow, <span class="fu">desc</span>(max_rating)) <span class="sc">|&gt;</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-</div>
-</div>
-<div style="font-size: 0.85em;">
-<div class="cell">
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["day_of_week"],"name":[1],"type":["ord"],"align":["right"]},{"label":["yr_mnth"],"name":[2],"type":["date"],"align":["right"]},{"label":["max_births"],"name":[3],"type":["int"],"align":["right"]},{"label":["lbl"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Wed","2":"2009-09-01","3":"16081","4":"Wed (2009-09-09 ), max births = 16081"},{"1":"Tues","2":"2008-12-01","3":"15645","4":"Tues (2008-12-30 ), max births = 15645"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["day_of_week"],"name":[1],"type":["fct"],"align":["left"]},{"label":["yr_mnth"],"name":[2],"type":["date"],"align":["right"]},{"label":["max_rating"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["lbl"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Sat","2":"1996-06-01","3":"5.5","4":"Sat (1996-06-01), max rating = 5.5"},{"1":"Sun","2":"1996-08-01","3":"4.4","4":"Sun (1996-08-11), max rating = 4.4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -1036,39 +1140,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>label_max_avg_dow <span class="ot">&lt;-</span> avg_births_dow_mnth <span class="sc">|&gt;</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># group by mon-sun</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(day_of_week) <span class="sc">|&gt;</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># get max avg</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">max_avg_births =</span> <span class="fu">max</span>(avg_births, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ungroup</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># join back to table</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">inner_join</span>(<span class="at">y =</span> avg_births_dow_mnth,</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">by =</span> <span class="st">"day_of_week"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># check for max</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">is_max =</span> <span class="fu">case_when</span>(</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        avg_births <span class="sc">==</span> max_avg_births <span class="sc">~</span> <span class="cn">TRUE</span>,</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        avg_births <span class="sc">!=</span> max_avg_births <span class="sc">~</span> <span class="cn">FALSE</span>,</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    )) <span class="sc">|&gt;</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># remove non-maxes</span></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(is_max <span class="sc">==</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">lbl =</span> <span class="fu">paste0</span>(day_of_week,</span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">": Max avg births = "</span>,</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>        max_avg_births)) <span class="sc">|&gt;</span></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># reduce</span></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(day_of_week, yr_mnth, max_avg_births, lbl)</span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">arrange</span>(label_max_avg_dow, <span class="fu">desc</span>(max_avg_births)) <span class="sc">|&gt;</span></span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>label_max_avg_dow <span class="ot">&lt;-</span> avg_rating_dow_mnth <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># group by sun-sat</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(day_of_week) <span class="sc">|&gt;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># get max avg</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice_max</span>(<span class="at">order_by =</span> avg_rating, <span class="at">n =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ungroup</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">max_avg_rating =</span> avg_rating) <span class="sc">|&gt;</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">lbl =</span> <span class="fu">paste0</span>(day_of_week,</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">": max avg rating = "</span>, <span class="fu">round</span>(max_avg_rating, <span class="dv">2</span>)))</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(label_max_avg_dow, <span class="fu">desc</span>(max_avg_rating)) <span class="sc">|&gt;</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-</div>
-</div>
-<div style="font-size: 0.85em;">
-<div class="cell">
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["day_of_week"],"name":[1],"type":["ord"],"align":["right"]},{"label":["yr_mnth"],"name":[2],"type":["date"],"align":["right"]},{"label":["max_avg_births"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["lbl"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Tues","2":"2008-07-01","3":"14368.40","4":"Tues: Max avg births = 14368.4"},{"1":"Wed","2":"2008-09-01","3":"14365.75","4":"Wed: Max avg births = 14365.75"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["yr_mnth"],"name":[1],"type":["date"],"align":["right"]},{"label":["day_of_week"],"name":[2],"type":["fct"],"align":["left"]},{"label":["max_avg_rating"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["lbl"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"1996-06-01","2":"Sat","3":"5.096","4":"Sat: max avg rating = 5.1"},{"1":"1996-05-01","2":"Sun","3":"3.740","4":"Sun: max avg rating = 3.74"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -1082,29 +1170,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get wed</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>label_max_wed_dow <span class="ot">&lt;-</span> label_max_dow <span class="sc">|&gt;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(day_of_week <span class="sc">==</span> <span class="st">"Wed"</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>label_max_wed_dow</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>label_max_avg_wed_dow <span class="ot">&lt;-</span> label_max_avg_dow <span class="sc">|&gt;</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(day_of_week <span class="sc">==</span> <span class="st">"Wed"</span>)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>label_max_avg_wed_dow</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get wed</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>label_max_wed_dow <span class="ot">&lt;-</span> label_max_dow <span class="sc">|&gt;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(day_of_week <span class="sc">==</span> <span class="st">"Wed"</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>label_max_wed_dow</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-</div>
-</div>
-<div style="font-size: 0.85em;">
-<div class="cell">
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["day_of_week"],"name":[1],"type":["ord"],"align":["right"]},{"label":["yr_mnth"],"name":[2],"type":["date"],"align":["right"]},{"label":["max_births"],"name":[3],"type":["int"],"align":["right"]},{"label":["lbl"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Wed","2":"2009-09-01","3":"16081","4":"Wed (2009-09-09 ), max births = 16081"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["day_of_week"],"name":[1],"type":["fct"],"align":["left"]},{"label":["yr_mnth"],"name":[2],"type":["date"],"align":["right"]},{"label":["max_rating"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["lbl"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Wed","2":"1996-06-01","3":"3.64","4":"Wed (1996-06-19), max rating = 3.64"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>label_max_avg_wed_dow <span class="ot">&lt;-</span> label_max_avg_dow <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(day_of_week <span class="sc">==</span> <span class="st">"Wed"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>label_max_avg_wed_dow</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["day_of_week"],"name":[1],"type":["ord"],"align":["right"]},{"label":["yr_mnth"],"name":[2],"type":["date"],"align":["right"]},{"label":["max_avg_births"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["lbl"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Wed","2":"2008-09-01","3":"14365.75","4":"Wed: Max avg births = 14365.75"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["yr_mnth"],"name":[1],"type":["date"],"align":["right"]},{"label":["day_of_week"],"name":[2],"type":["fct"],"align":["left"]},{"label":["max_avg_rating"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["lbl"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"1996-06-01","2":"Wed","3":"3.09","4":"Wed: max avg rating = 3.09"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -1112,98 +1199,98 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Add <code>geom_point()</code> and <code>geom_label()</code> for Wednesday.</p>
 <div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># point for max births/day</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>ggp2_line_wed_max_births_pnts <span class="ot">&lt;-</span> <span class="fu">geom_point</span>(</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> label_max_wed_dow,</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> max_births,</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> day_of_week),</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>,</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>ggp2_line_wed_max_avg_births_pnts <span class="ot">&lt;-</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> label_max_avg_wed_dow,</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> max_avg_births,</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="fl">2.5</span>,</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>,</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>ggp2_line_wed_max_births_lbl <span class="ot">&lt;-</span> <span class="fu">geom_label</span>(</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> label_max_wed_dow,</span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> max_births,</span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">label =</span> lbl,</span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> day_of_week),</span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"#ffffff"</span>,</span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_y =</span> <span class="sc">-</span><span class="dv">480</span>,</span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_x =</span> <span class="dv">25</span>,</span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">1.3</span>,</span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>ggp2_line_wed_max_avg_births_lbl <span class="ot">&lt;-</span></span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_label</span>(<span class="at">data =</span> label_max_avg_wed_dow,</span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> max_avg_births,</span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>            <span class="at">label =</span> lbl,</span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="st">"#ffffff"</span>,</span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>        <span class="at">nudge_y =</span> <span class="dv">145</span>,</span>
-<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">nudge_x =</span> <span class="dv">85</span>,</span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="fl">1.3</span>,</span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>        <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>ggp2_line_pal_d <span class="sc">+</span> </span>
-<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_births_pnts <span class="sc">+</span> </span>
-<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_avg_births_pnts <span class="sc">+</span></span>
-<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_births_lbl <span class="sc">+</span> </span>
-<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_avg_births_lbl <span class="sc">+</span> </span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add labels</span></span>
-<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>    labs_line_styles <span class="sc">+</span></span>
-<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># move legend to top</span></span>
-<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># point for max rating</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>ggp2_line_wed_max_pnts <span class="ot">&lt;-</span> <span class="fu">geom_point</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> label_max_wed_dow,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> max_rating,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> day_of_week),</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>ggp2_line_wed_max_avg_pnts <span class="ot">&lt;-</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> label_max_avg_wed_dow,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> max_avg_rating,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>ggp2_line_wed_max_lbl <span class="ot">&lt;-</span> <span class="fu">geom_label</span>(</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> label_max_wed_dow,</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> max_rating,</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">label =</span> lbl,</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> day_of_week),</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"#1E1238"</span>,</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_y =</span> <span class="fl">0.25</span>,</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_x =</span> <span class="dv">60</span>,</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>ggp2_line_wed_max_avg_lbl <span class="ot">&lt;-</span></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_label</span>(<span class="at">data =</span> label_max_avg_wed_dow,</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> max_avg_rating,</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>            <span class="at">label =</span> lbl,</span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="st">"#1E1238"</span>,</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>        <span class="at">nudge_y =</span> <span class="sc">-</span><span class="fl">0.35</span>,</span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">nudge_x =</span> <span class="dv">60</span>,</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>        <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>ggp2_line_pal_d <span class="sc">+</span></span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_pnts <span class="sc">+</span></span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_avg_pnts <span class="sc">+</span></span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_lbl <span class="sc">+</span></span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_avg_lbl <span class="sc">+</span></span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add labels</span></span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>    labs_line_styles <span class="sc">+</span></span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># move legend to top</span></span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="grp_line_graphs_files/figure-html/ggp2_line_wed_births_lbl-1.png" class="img-fluid"></p>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="grp_line_graphs_files/figure-html/ggp2_line_wed_labels-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
 </div>
 </div>
 </div>
 </div>
-<p>We’ll use <code>filter()</code> to get the maximum values for <code>"Tues"</code> (in <code>label_max_tues_dow</code> and <code>label_max_avg_tues_dow</code>):</p>
+<p>We’ll use <code>filter()</code> to get the maximum values for <code>"Tue"</code> (in <code>label_max_tue_dow</code> and <code>label_max_avg_tue_dow</code>):</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># point for max births/day</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># get tues</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>label_max_tues_dow <span class="ot">&lt;-</span> label_max_dow <span class="sc">|&gt;</span> </span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(day_of_week <span class="sc">==</span> <span class="st">"Tues"</span>)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>label_max_tues_dow</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>label_max_avg_tues_dow <span class="ot">&lt;-</span> label_max_avg_dow <span class="sc">|&gt;</span> </span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(day_of_week <span class="sc">==</span> <span class="st">"Tues"</span>)</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>label_max_avg_tues_dow</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get tue</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>label_max_tue_dow <span class="ot">&lt;-</span> label_max_dow <span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(day_of_week <span class="sc">==</span> <span class="st">"Tue"</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>label_max_tue_dow</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-</div>
-</div>
-<div style="font-size: 0.85em;">
-<div class="cell">
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["day_of_week"],"name":[1],"type":["ord"],"align":["right"]},{"label":["yr_mnth"],"name":[2],"type":["date"],"align":["right"]},{"label":["max_births"],"name":[3],"type":["int"],"align":["right"]},{"label":["lbl"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Tues","2":"2008-12-01","3":"15645","4":"Tues (2008-12-30 ), max births = 15645"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["day_of_week"],"name":[1],"type":["fct"],"align":["left"]},{"label":["yr_mnth"],"name":[2],"type":["date"],"align":["right"]},{"label":["max_rating"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["lbl"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Tue","2":"1997-07-01","3":"4.11","4":"Tue (1997-07-15), max rating = 4.11"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>label_max_avg_tue_dow <span class="ot">&lt;-</span> label_max_avg_dow <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(day_of_week <span class="sc">==</span> <span class="st">"Tue"</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>label_max_avg_tue_dow</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["day_of_week"],"name":[1],"type":["ord"],"align":["right"]},{"label":["yr_mnth"],"name":[2],"type":["date"],"align":["right"]},{"label":["max_avg_births"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["lbl"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Tues","2":"2008-07-01","3":"14368.4","4":"Tues: Max avg births = 14368.4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["yr_mnth"],"name":[1],"type":["date"],"align":["right"]},{"label":["day_of_week"],"name":[2],"type":["fct"],"align":["left"]},{"label":["max_avg_rating"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["lbl"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"1997-07-01","2":"Tue","3":"3.422","4":"Tue: max avg rating = 3.42"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -1211,102 +1298,100 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Add <code>geom_point()</code> and <code>geom_label()</code> for Tuesday</p>
 <div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># point for max births/day</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ggp2_line_tues_max_births_pnts <span class="ot">&lt;-</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">data =</span> label_max_tues_dow,</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> max_births,</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="fl">2.5</span>,</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>ggp2_line_tues_max_avg_births_pnts <span class="ot">&lt;-</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> label_max_avg_tues_dow,</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> max_avg_births,</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="fl">2.5</span>,</span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>,</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>ggp2_line_tues_max_births_lbl <span class="ot">&lt;-</span></span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_label</span>(<span class="at">data =</span> label_max_tues_dow,</span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> max_births,</span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">label =</span> lbl,</span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="st">"#ffffff"</span>,</span>
-<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">nudge_y =</span> <span class="sc">-</span><span class="dv">480</span>,</span>
-<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">nudge_x =</span> <span class="dv">50</span>,</span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="fl">1.3</span>,</span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>ggp2_line_tues_max_avg_births_lbl <span class="ot">&lt;-</span></span>
-<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_label</span>(<span class="at">data =</span> label_max_avg_tues_dow,</span>
-<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
-<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> max_avg_births,</span>
-<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>            <span class="at">label =</span> lbl,</span>
-<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
-<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="st">"#ffffff"</span>,</span>
-<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>        <span class="at">nudge_y =</span> <span class="dv">300</span>,</span>
-<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">nudge_x =</span> <span class="sc">-</span><span class="dv">80</span>,</span>
-<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="fl">1.3</span>,</span>
-<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>        <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>ggp2_line_pal_d <span class="sc">+</span> </span>
-<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># wednesday layers </span></span>
-<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_births_pnts <span class="sc">+</span> </span>
-<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_avg_births_pnts <span class="sc">+</span></span>
-<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_births_lbl <span class="sc">+</span> </span>
-<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_avg_births_lbl <span class="sc">+</span></span>
-<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># tuesday layers </span></span>
-<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>    ggp2_line_tues_max_births_pnts <span class="sc">+</span> </span>
-<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>    ggp2_line_tues_max_avg_births_pnts <span class="sc">+</span></span>
-<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>    ggp2_line_tues_max_births_lbl <span class="sc">+</span> </span>
-<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a>    ggp2_line_tues_max_avg_births_lbl <span class="sc">+</span> </span>
-<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add labels</span></span>
-<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>    labs_line_styles <span class="sc">+</span></span>
-<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a>    <span class="co"># move legend to top</span></span>
-<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># point for max rating</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>ggp2_line_tue_max_pnts <span class="ot">&lt;-</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">data =</span> label_max_tue_dow,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> max_rating,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>ggp2_line_tue_max_avg_pnts <span class="ot">&lt;-</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> label_max_avg_tue_dow,</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> max_avg_rating,</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>ggp2_line_tue_max_lbl <span class="ot">&lt;-</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_label</span>(<span class="at">data =</span> label_max_tue_dow,</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> max_rating,</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">label =</span> lbl,</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="st">"#1E1238"</span>,</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">nudge_y =</span> <span class="fl">0.25</span>,</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">nudge_x =</span> <span class="sc">-</span><span class="dv">60</span>,</span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>ggp2_line_tue_max_avg_lbl <span class="ot">&lt;-</span></span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_label</span>(<span class="at">data =</span> label_max_avg_tue_dow,</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> yr_mnth,</span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> max_avg_rating,</span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>            <span class="at">label =</span> lbl,</span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>            <span class="at">color =</span> day_of_week),</span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="st">"#1E1238"</span>,</span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>        <span class="at">nudge_y =</span> <span class="sc">-</span><span class="fl">0.35</span>,</span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">nudge_x =</span> <span class="sc">-</span><span class="dv">60</span>,</span>
+<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a>        <span class="at">show.legend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-45"><a href="#cb23-45" aria-hidden="true" tabindex="-1"></a>ggp2_line_pal_d <span class="sc">+</span></span>
+<span id="cb23-46"><a href="#cb23-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># wednesday layers</span></span>
+<span id="cb23-47"><a href="#cb23-47" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_pnts <span class="sc">+</span></span>
+<span id="cb23-48"><a href="#cb23-48" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_avg_pnts <span class="sc">+</span></span>
+<span id="cb23-49"><a href="#cb23-49" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_lbl <span class="sc">+</span></span>
+<span id="cb23-50"><a href="#cb23-50" aria-hidden="true" tabindex="-1"></a>    ggp2_line_wed_max_avg_lbl <span class="sc">+</span></span>
+<span id="cb23-51"><a href="#cb23-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># tuesday layers</span></span>
+<span id="cb23-52"><a href="#cb23-52" aria-hidden="true" tabindex="-1"></a>    ggp2_line_tue_max_pnts <span class="sc">+</span></span>
+<span id="cb23-53"><a href="#cb23-53" aria-hidden="true" tabindex="-1"></a>    ggp2_line_tue_max_avg_pnts <span class="sc">+</span></span>
+<span id="cb23-54"><a href="#cb23-54" aria-hidden="true" tabindex="-1"></a>    ggp2_line_tue_max_lbl <span class="sc">+</span></span>
+<span id="cb23-55"><a href="#cb23-55" aria-hidden="true" tabindex="-1"></a>    ggp2_line_tue_max_avg_lbl <span class="sc">+</span></span>
+<span id="cb23-56"><a href="#cb23-56" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add labels</span></span>
+<span id="cb23-57"><a href="#cb23-57" aria-hidden="true" tabindex="-1"></a>    labs_line_styles <span class="sc">+</span></span>
+<span id="cb23-58"><a href="#cb23-58" aria-hidden="true" tabindex="-1"></a>    <span class="co"># move legend to top</span></span>
+<span id="cb23-59"><a href="#cb23-59" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="grp_line_graphs_files/figure-html/ggp2_line_min_births_lbl-1.png" class="img-fluid"></p>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="grp_line_graphs_files/figure-html/ggp2_line_tue_labels-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
 </div>
 </div>
 </div>
 </div>
+<p>Notice the highest daily ratings sit well above the highest monthly averages. A single night can get lucky, but an average of four nights rarely does (just like we saw in the <strong>Distribution</strong> section).</p>
 </section>
-<section id="facets" class="level3" data-number="29.4.7">
-<h3 data-number="29.4.7" class="anchored" data-anchor-id="facets"><span class="header-section-number">29.4.7</span> Facets</h3>
-<p>Finally, we can use facets to view each of the line graphs seperately (or small multiples).</p>
+<section id="facets" class="level3" data-number="29.5.7">
+<h3 data-number="29.5.7" class="anchored" data-anchor-id="facets"><span class="header-section-number">29.5.7</span> Facets</h3>
+<p>Finally, we can use facets to view each of the line graphs separately (or small multiples).</p>
 <ul>
-<li><p>We’ll create a dataset with the dates limited to births between <code>2008-07-01</code> and <code>2010-01-01</code></p></li>
-<li><p>Calculate the median births, grouped by <code>date</code>, <code>day_category</code></p></li>
-<li><p>And <code>day_of_week</code> and store it as <code>med_births_dcat_dow_mnth</code></p></li>
+<li>We’ll create a dataset with the daily ratings between <code>1998-07-01</code> and <code>1999-12-31</code> and store it as <code>daily_ratings_9899</code></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>med_births_dcat_dow_mnth <span class="ot">&lt;-</span> usbirth_1994_2014 <span class="sc">|&gt;</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(date <span class="sc">&gt;=</span> lubridate<span class="sc">::</span><span class="fu">as_date</span>(<span class="st">"2008-07-01"</span>) <span class="sc">&amp;</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>            date <span class="sc">&lt;</span> lubridate<span class="sc">::</span><span class="fu">as_date</span>(<span class="st">"2010-01-01"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(date, day_category, day_of_week) <span class="sc">|&gt;</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">med_births =</span> <span class="fu">median</span>(births, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">ungroup</span>()</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(med_births_dcat_dow_mnth)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 549</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ date         &lt;date&gt; 2008-07-01, 2008-07-02, 20…</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ day_category &lt;chr&gt; "Weekday", "Weekday", "Week…</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ day_of_week  &lt;ord&gt; Tues, Wed, Thurs, Fri, Sat,…</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ med_births   &lt;int&gt; 14350, 14189, 14182, 9449, …</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>daily_ratings_9899 <span class="ot">&lt;-</span> nick_ratings <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"1998-07-01"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(date, day_category, day_of_week, rating)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(daily_ratings_9899)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 549</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ date         &lt;date&gt; 1998-07-01, 1998-07-02, 19…</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ day_category &lt;chr&gt; "Weekday", "Weekday", "Week…</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ day_of_week  &lt;fct&gt; Wed, Thu, Fri, Sat, Sun, Mo…</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ rating       &lt;dbl&gt; 3.11, 2.48, 3.68, 4.25, 3.3…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
@@ -1314,47 +1399,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Using <code>facet_wrap()</code> with a single categorical variable (<code>. ~ var</code>) will create a plot for each discrete level, while <code>facet_grid()</code> will create a level-by-level grid (specified as <code>var ~ var</code>).</li>
 </ul>
 <div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># labels</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>labs_line_graph_facet_wrap <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Median US births"</span>,</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste0</span>(</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Between "</span>,</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">min</span>(med_births_dcat_dow_mnth<span class="sc">$</span>date),</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">" and "</span>,</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">max</span>(med_births_dcat_dow_mnth<span class="sc">$</span>date)</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Median births"</span>,</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Date"</span>,</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Day of Week"</span></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co"># layer</span></span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>ggp2_line_facet_wrap <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> med_births_dcat_dow_mnth,</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date,</span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> med_births,</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">group =</span> day_of_week)) <span class="sc">+</span></span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> day_of_week)) <span class="sc">+</span></span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"#30123B"</span>, <span class="st">"#4485F6"</span>, <span class="st">"#1AE4B6"</span>,</span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"#A1FB3E"</span>, <span class="st">"#FABA39"</span>, <span class="st">"#E3460B"</span>, <span class="st">"#7A0403"</span></span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    )) <span class="sc">+</span></span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(</span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">4000</span>, <span class="dv">8000</span>, <span class="dv">12000</span>, <span class="dv">16000</span>),</span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'4000'</span>, <span class="st">'8000'</span>, <span class="st">'12000'</span>, <span class="st">'16000'</span>)</span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">"1 year"</span>,</span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">date_labels =</span> <span class="st">"%Y"</span>) <span class="sc">+</span></span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(day_of_week <span class="sc">~</span> ., <span class="at">shrink =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>ggp2_line_facet_wrap <span class="sc">+</span></span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    labs_line_graph_facet_wrap <span class="sc">+</span></span>
-<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># labels</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>labs_line_graph_facet_wrap <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Nickelodeon ratings"</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste0</span>(</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Between "</span>,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">min</span>(daily_ratings_9899<span class="sc">$</span>date),</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">" and "</span>,</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">max</span>(daily_ratings_9899<span class="sc">$</span>date)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Rating"</span>,</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Date"</span>,</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Day of Week"</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co"># layer</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>ggp2_line_facet_wrap <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> daily_ratings_9899,</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date,</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> rating,</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">group =</span> day_of_week)) <span class="sc">+</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> day_of_week)) <span class="sc">+</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(<span class="at">values =</span> snick_pal) <span class="sc">+</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">"1 year"</span>,</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">date_labels =</span> <span class="st">"%Y"</span>) <span class="sc">+</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(day_of_week <span class="sc">~</span> ., <span class="at">shrink =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>ggp2_line_facet_wrap <span class="sc">+</span></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>    labs_line_graph_facet_wrap <span class="sc">+</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="grp_line_graphs_files/figure-html/ggp2_line_facet_wrap-1.png" class="img-fluid"></p>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="grp_line_graphs_files/figure-html/ggp2_line_facet_wrap-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
 </div>
 </div>
 </div>
@@ -1363,52 +1445,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>It’s always a good idea to check the <code>x</code> and <code>y</code> axis text when using facets. I’ve adjusted the <code>x</code> and <code>y</code> axes above using <code>scale_y_continuous()</code> and <code>scale_x_date()</code> before adding <code>facet_wrap()</code></li>
 </ul>
 <div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># labels</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>labs_line_graph_facet_grid <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Median US births"</span>,</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste0</span>(</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Between "</span>,</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">min</span>(med_births_dcat_dow_mnth<span class="sc">$</span>date),</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">" and "</span>,</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">max</span>(med_births_dcat_dow_mnth<span class="sc">$</span>date)</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Median births"</span>,</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Date"</span>,</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Day of Week"</span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co"># layer</span></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>ggp2_line_facet_grid <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> med_births_dcat_dow_mnth,</span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date,</span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> med_births,</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">group =</span> day_of_week)) <span class="sc">+</span></span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> day_of_week)) <span class="sc">+</span></span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"#30123B"</span>, <span class="st">"#4485F6"</span>, <span class="st">"#1AE4B6"</span>,</span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"#A1FB3E"</span>, <span class="st">"#FABA39"</span>, <span class="st">"#E3460B"</span>, <span class="st">"#7A0403"</span></span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>    )) <span class="sc">+</span></span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(</span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">4000</span>, <span class="dv">8000</span>, <span class="dv">12000</span>, <span class="dv">16000</span>),</span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'4000'</span>, <span class="st">'8000'</span>, <span class="st">'12000'</span>, <span class="st">'16000'</span>)</span>
-<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">"1 year"</span>,</span>
-<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">date_labels =</span> <span class="st">"%Y"</span>) <span class="sc">+</span></span>
-<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_grid</span>(day_of_week <span class="sc">~</span> day_category,</span>
-<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">shrink =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>ggp2_line_facet_grid <span class="sc">+</span></span>
-<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>    labs_line_graph_facet_grid</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># labels</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>labs_line_graph_facet_grid <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Nickelodeon ratings"</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste0</span>(</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Between "</span>,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">min</span>(daily_ratings_9899<span class="sc">$</span>date),</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">" and "</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">max</span>(daily_ratings_9899<span class="sc">$</span>date)</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Rating"</span>,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Date"</span>,</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Day of Week"</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="co"># layer</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>ggp2_line_facet_grid <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> daily_ratings_9899,</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> date,</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> rating,</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">group =</span> day_of_week)) <span class="sc">+</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> day_of_week)) <span class="sc">+</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(<span class="at">values =</span> snick_pal) <span class="sc">+</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">"1 year"</span>,</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">date_labels =</span> <span class="st">"%Y"</span>) <span class="sc">+</span></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_grid</span>(day_of_week <span class="sc">~</span> day_category,</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">shrink =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>ggp2_line_facet_grid <span class="sc">+</span></span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>    labs_line_graph_facet_grid</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="grp_line_graphs_files/figure-html/ggp2_line_facet_grid-1.png" class="img-fluid"></p>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="grp_line_graphs_files/figure-html/ggp2_line_facet_grid-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
 </div>
 </div>
 </div>
 </div>
-<p>The colors have been manually, using <code>scale_color_manual()</code> and passing seven color hex codes to the <code>values</code> argument.</p>
+<p>The colors have been set manually using <code>scale_color_manual()</code> and the <code>snick_pal</code> named vector we created in the <em>Color palettes</em> section.</p>
 
 
 </section>

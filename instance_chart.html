@@ -113,10 +113,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar floating slimcontent quarto-light">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -529,17 +558,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">34.1</span> Description</a></li>
   <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up"><span class="header-section-number">34.2</span> Set up</a></li>
-  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">34.3</span> Grammar</a></li>
-  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">34.4</span> More info</a>
+  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">34.3</span> Distribution</a></li>
+  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">34.4</span> Grammar</a></li>
+  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">34.5</span> More info</a>
   <ul>
-  <li><a href="#saturation-with-cut_interval" id="toc-saturation-with-cut_interval" class="nav-link" data-scroll-target="#saturation-with-cut_interval"><span class="header-section-number">34.4.1</span> Saturation with <code>cut_interval()</code></a></li>
-  <li><a href="#facets-with-cut_number" id="toc-facets-with-cut_number" class="nav-link" data-scroll-target="#facets-with-cut_number"><span class="header-section-number">34.4.2</span> Facets with <code>cut_number()</code></a></li>
+  <li><a href="#saturation-with-cut_interval" id="toc-saturation-with-cut_interval" class="nav-link" data-scroll-target="#saturation-with-cut_interval"><span class="header-section-number">34.5.1</span> Saturation with <code>cut_interval()</code></a></li>
+  <li><a href="#facets-with-cut_number" id="toc-facets-with-cut_number" class="nav-link" data-scroll-target="#facets-with-cut_number"><span class="header-section-number">34.5.2</span> Facets with <code>cut_number()</code></a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/instance_chart.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dates_and_times.html">DATES &amp; TIMES</a></li><li class="breadcrumb-item"><a href="./instance_chart.html"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Instance chart</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -560,13 +590,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout callout-style-simple callout-tip no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container">
-<p><strong><em>This graph should be readable but is currently undergoing final polishing.</em></strong></p>
+<p><strong><em>This graph is largely complete and just needs final proof reading.</em></strong></p>
 </div>
 </div>
 </div>
@@ -603,11 +633,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="description" class="level2" data-number="34.1">
 <h2 data-number="34.1" class="anchored" data-anchor-id="description"><span class="header-section-number">34.1</span> Description</h2>
-<p>An instance chart (or instance graph) displays frequencies (or ‘instances’) of different categorical values over time time.</p>
+<p>An instance chart (or instance graph) displays frequencies (or ‘instances’) of different categorical values over time.</p>
 <p>The time dimension is placed on the <code>x</code> and each separate categorical item is placed on the <code>y</code>-axis. The instances are typically represented using the vertical hashes from <code>geom_point()</code> (i.e., shape <code>124</code> or the ‘pipe’ <code>"|"</code>).</p>
 <p>Saturation and color are also used to represent different categorical levels and counts.</p>
 </section>
-<section id="set-up" class="level2 page-columns page-full" data-number="34.2">
+<section id="set-up" class="level2" data-number="34.2">
 <h2 data-number="34.2" class="anchored" data-anchor-id="set-up"><span class="header-section-number">34.2</span> Set up</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>PACKAGES:</strong></p>
@@ -617,65 +647,146 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"babynames"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(babynames)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># for data manipulation</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr) <span class="co"># for expand_grid()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-
-<!-- 
-::: {.column-margin}
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="right" width="30%" height="30%"}
-![](www/538.png){fig-align="right" width="15%" height="15%"}
-![](www/imdb.png){fig-align="right" width="20%" height="20%"}
-:::
--->
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="www/ssa.png" class="quarto-figure quarto-figure-center figure-img" style="width:60.0%;height:60.0%"></p>
-</figure>
-</div>
-</div></div><ul>
-<li><p>Filter the <code>babynames::babynames</code> to only those names in <code>1887</code>, then group by <code>name</code> and <code>sex</code>, arrange descending by the <code>n</code>, and store only the top 6 names in <code>top_bby_nms_1887</code>.</p></li>
-<li><p>Use the names from <code>top_bby_nms_1887</code> to filter <code>babynames::babynames</code> for names <em>after</em> <code>1897</code> and store in <code>popular_bby_nms</code>.</p></li>
-</ul>
+<p><em>Rugrats</em> premiered on Nickelodeon in 1991, and a generation of parents suddenly had new ideas for baby names. We’ll simulate how many babies were given each Rugrats character’s name at one hospital every year from 1980 to 2005. Each name in <code>rugrats_names</code> has an average number of babies per year <code>before</code> the character’s <code>debut</code> and an average <code>after</code> it (Susie showed up in 1992, Dil in 1998, and Kimi in 2001). <code>rpois()</code> draws each year’s count (<code>n</code>) from the matching average. Setting the seed with <code>set.seed()</code> means you’ll get the same 208 name years every time you run the code below.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(babynames)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>top_bby_nms_1887 <span class="ot">&lt;-</span> babynames<span class="sc">::</span>babynames <span class="sc">|&gt;</span> </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">1887</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(name, sex) <span class="sc">|&gt;</span> </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">slice_max</span>(<span class="at">order_by =</span> sex) <span class="sc">|&gt;</span> </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  utils<span class="sc">::</span><span class="fu">head</span>(<span class="at">n =</span> <span class="dv">6</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>()</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>top_bby_nms_1887</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>rugrats_names <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">name =</span> <span class="fu">c</span>(<span class="st">"Tommy"</span>, <span class="st">"Chuckie"</span>, <span class="st">"Angelica"</span>, <span class="st">"Phil"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Lil"</span>, <span class="st">"Susie"</span>, <span class="st">"Dil"</span>, <span class="st">"Kimi"</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">before =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="fl">0.3</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="fl">0.2</span>, <span class="dv">1</span>, <span class="fl">0.05</span>, <span class="fl">0.05</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">after =</span> <span class="fu">c</span>(<span class="dv">8</span>, <span class="fl">1.5</span>, <span class="dv">4</span>, <span class="fl">1.5</span>, <span class="fl">0.8</span>, <span class="fl">1.5</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">debut =</span> <span class="fu">c</span>(<span class="dv">1991</span>, <span class="dv">1991</span>, <span class="dv">1991</span>, <span class="dv">1991</span>, <span class="dv">1991</span>, <span class="dv">1992</span>, <span class="dv">1998</span>, <span class="dv">2001</span>))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1993</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>hospital_names <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(<span class="at">year =</span> <span class="dv">1980</span><span class="sc">:</span><span class="dv">2005</span>, rugrats_names) <span class="sc">|&gt;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">factor</span>(name, <span class="at">levels =</span> rugrats_names<span class="sc">$</span>name),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">avg_n =</span> <span class="fu">if_else</span>(year <span class="sc">&lt;</span> debut, before, after),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">n =</span> <span class="fu">rpois</span>(<span class="fu">n</span>(), <span class="at">lambda =</span> avg_n)) <span class="sc">|&gt;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, name, debut, avg_n, n)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(hospital_names)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 208</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 5</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year  &lt;int&gt; 1980, 1980, 1980, 1980, 1980, 1980…</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ name  &lt;fct&gt; Tommy, Chuckie, Angelica, Phil, Li…</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ debut &lt;dbl&gt; 1991, 1991, 1991, 1991, 1991, 1992…</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_n &lt;dbl&gt; 4.00, 0.30, 1.00, 1.50, 0.20, 1.00…</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ n     &lt;int&gt; 3, 0, 0, 2, 0, 1, 0, 0, 6, 0, 1, 3…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output-display">
-<div data-pagedtable="false">
-  <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["year"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[2],"type":["chr"],"align":["left"]},{"label":["name"],"name":[3],"type":["chr"],"align":["left"]},{"label":["n"],"name":[4],"type":["int"],"align":["right"]},{"label":["prop"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"1887","2":"F","3":"Mary","4":"9888","5":"0.06362034"},{"1":"1887","2":"M","3":"John","4":"8110","5":"0.07419063"},{"1":"1887","2":"M","3":"William","4":"7470","5":"0.06833588"},{"1":"1887","2":"M","3":"James","4":"4768","5":"0.04361787"},{"1":"1887","2":"M","3":"George","4":"4284","5":"0.03919022"},{"1":"1887","2":"F","3":"Anna","4":"4227","5":"0.02719692"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
 </div>
 </div>
+<p>An instance chart only shows the years a name was used, so we’ll filter out the years with no babies and store the rest in <code>rugrats_babies</code>.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>popular_bby_nms <span class="ot">&lt;-</span> babynames<span class="sc">::</span>babynames <span class="sc">|&gt;</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(name <span class="sc">%in%</span> top_bby_nms_1887[[<span class="st">'name'</span>]] <span class="sc">&amp;</span> </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>      year <span class="sc">&gt;=</span> <span class="dv">1897</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rugrats_babies <span class="ot">&lt;-</span> hospital_names <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(rugrats_babies)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 128</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 5</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year  &lt;int&gt; 1980, 1980, 1980, 1981, 1981, 1981…</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ name  &lt;fct&gt; Tommy, Phil, Susie, Tommy, Angelic…</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ debut &lt;dbl&gt; 1991, 1991, 1992, 1991, 1991, 1991…</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_n &lt;dbl&gt; 4.0, 1.5, 1.0, 4.0, 1.0, 1.5, 1.0,…</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ n     &lt;int&gt; 3, 2, 1, 6, 1, 3, 3, 2, 1, 3, 1, 3…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
-<section id="grammar" class="level2" data-number="34.3">
-<h2 data-number="34.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">34.3</span> Grammar</h2>
+<section id="distribution" class="level2" data-number="34.3">
+<h2 data-number="34.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">34.3</span> Distribution</h2>
+<p>An instance chart is built from two things: whether a name shows up in a given year (the tick), and how many times it shows up (the shading). The empty spaces between the ticks matter just as much as the ticks, and the number of empty spaces depends on how popular the name is. Below we’ll move from the counts, to a picture, to the formula.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>COUNT IT:</strong></p>
+</div>
+<p>Start with Chuckie in the five years before and after the show premiered.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>hospital_names <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">==</span> <span class="st">"Chuckie"</span>, year <span class="sc">&gt;=</span> <span class="dv">1986</span>, year <span class="sc">&lt;=</span> <span class="dv">1995</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["year"],"name":[1],"type":["int"],"align":["right"]},{"label":["name"],"name":[2],"type":["fct"],"align":["left"]},{"label":["debut"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["avg_n"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["n"],"name":[5],"type":["int"],"align":["right"]}],"data":[{"1":"1986","2":"Chuckie","3":"1991","4":"0.3","5":"0"},{"1":"1987","2":"Chuckie","3":"1991","4":"0.3","5":"1"},{"1":"1988","2":"Chuckie","3":"1991","4":"0.3","5":"0"},{"1":"1989","2":"Chuckie","3":"1991","4":"0.3","5":"1"},{"1":"1990","2":"Chuckie","3":"1991","4":"0.3","5":"0"},{"1":"1991","2":"Chuckie","3":"1991","4":"1.5","5":"1"},{"1":"1992","2":"Chuckie","3":"1991","4":"1.5","5":"4"},{"1":"1993","2":"Chuckie","3":"1991","4":"1.5","5":"2"},{"1":"1994","2":"Chuckie","3":"1991","4":"1.5","5":"0"},{"1":"1995","2":"Chuckie","3":"1991","4":"1.5","5":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>Before 1991, most years have no Chuckies at all. Below we count the years with zero babies (<code>zero_years</code>) for each name, before and after its character’s debut.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>zero_counts <span class="ot">&lt;-</span> hospital_names <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">era =</span> <span class="fu">if_else</span>(year <span class="sc">&lt;</span> debut, <span class="st">"before"</span>, <span class="st">"after"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name, era) <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">years =</span> <span class="fu">n</span>(), <span class="at">zero_years =</span> <span class="fu">sum</span>(n <span class="sc">==</span> <span class="dv">0</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> era, <span class="at">values_from =</span> <span class="fu">c</span>(years, zero_years)) <span class="sc">|&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(name, years_before, zero_years_before,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>         years_after, zero_years_after)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>zero_counts</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["name"],"name":[1],"type":["fct"],"align":["left"]},{"label":["years_before"],"name":[2],"type":["int"],"align":["right"]},{"label":["zero_years_before"],"name":[3],"type":["int"],"align":["right"]},{"label":["years_after"],"name":[4],"type":["int"],"align":["right"]},{"label":["zero_years_after"],"name":[5],"type":["int"],"align":["right"]}],"data":[{"1":"Tommy","2":"11","3":"0","4":"15","5":"0"},{"1":"Chuckie","2":"11","3":"8","4":"15","5":"3"},{"1":"Angelica","2":"11","3":"4","4":"15","5":"0"},{"1":"Phil","2":"11","3":"2","4":"15","5":"5"},{"1":"Lil","2":"11","3":"8","4":"15","5":"8"},{"1":"Susie","2":"12","3":"1","4":"14","5":"4"},{"1":"Dil","2":"18","3":"16","4":"8","5":"1"},{"1":"Kimi","2":"21","3":"19","4":"5","5":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>Chuckie went 8 of 11 years without a baby before the show, and only 3 of 15 years after it. Tommy, the most popular name, never had a year without a baby.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>DRAW IT:</strong></p>
+</div>
+<p>The graph below draws Chuckie’s yearly counts as bars (including the zeros) and the same years as instance ticks across the bottom. Every gap in the ticks is a year with a bar of height zero.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>chuckie <span class="ot">&lt;-</span> hospital_names <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">==</span> <span class="st">"Chuckie"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(chuckie, <span class="fu">aes</span>(<span class="at">x =</span> year)) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">y =</span> n), <span class="at">fill =</span> <span class="st">"#F7941D"</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> <span class="fu">filter</span>(chuckie, n <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="fu">aes</span>(<span class="at">y =</span> <span class="sc">-</span><span class="fl">0.5</span>),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">124</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="st">"#7B3FA0"</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">1990.5</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Babies named Chuckie"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="instance_chart_files/figure-html/draw_inst-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>NAME IT:</strong></p>
+</div>
+<p>Each yearly count follows a <a href="https://en.wikipedia.org/wiki/Poisson_distribution">Poisson distribution</a> with the average for that name and era:</p>
+<p><span class="math display">\[
+n_{\text{name, year}} \sim \text{Poisson}(\lambda), \quad P(n = 0) = e^{-\lambda}
+\]</span></p>
+<p>The chance of an empty year depends only on <span class="math inline">\(\lambda\)</span>. Before the show, Chuckie’s average is 0.3 babies a year, so <span class="math inline">\(P(n = 0) = e^{-0.3} \approx 0.74\)</span>, and we’d expect about <span class="math inline">\(11 \times 0.74 \approx 8.1\)</span> empty years out of 11. After the show, the average jumps to 1.5, so <span class="math inline">\(P(n = 0) = e^{-1.5} \approx 0.22\)</span> and we’d expect about 3.3 empty years out of 15. Tommy averages 8 babies a year after the show, so an empty year has a chance of <span class="math inline">\(e^{-8} \approx 0.0003\)</span> (practically never). That’s why rare names look like scattered ticks and popular names look like solid lines. Try changing Chuckie’s <code>after</code> value to <code>5</code> and his row fills in.</p>
+</section>
+<section id="grammar" class="level2" data-number="34.4">
+<h2 data-number="34.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">34.4</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
 </div>
@@ -684,25 +795,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
 <li><p>Map <code>year</code> to <code>x</code>, <code>name</code> to <code>y</code>, and <code>color</code> to <code>name</code></p></li>
 <li><p>Add <code>geom_point()</code>, map <code>n</code> to <code>alpha</code>, and set the <code>shape</code> to <code>124</code> and <code>size</code> to <code>5</code></p></li>
+<li><p>Most years have only a few babies, so we raise the lightest <code>alpha</code> with <code>scale_alpha_continuous(range = c(0.35, 1))</code> (otherwise the faint ticks disappear)</p></li>
+<li><p>Remove the <code>color</code> legend with <code>guides()</code> (the names are already on the <code>y</code> axis)</p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>labs_inst_pop_nms <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Popular names: then and now"</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Most popular names from 1887 appearing between 1897 - 2017"</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Year"</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Name"</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>ggp2_inst_pop_nms <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> popular_bby_nms, </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, </span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> name, </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">color =</span> name)) <span class="sc">+</span> </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">alpha =</span> n),</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">shape =</span> <span class="dv">124</span>,</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">size =</span> <span class="dv">5</span>)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>ggp2_inst_pop_nms <span class="sc">+</span> </span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  labs_inst_pop_nms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>labs_inst_rugrats <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Rugrats baby names"</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Babies named at one hospital, 1980 - 2005"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Name"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ggp2_inst_rugrats <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> rugrats_babies,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> name,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">color =</span> name)) <span class="sc">+</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">alpha =</span> n),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">shape =</span> <span class="dv">124</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_alpha_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">0.35</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="st">"none"</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>ggp2_inst_rugrats <span class="sc">+</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  labs_inst_rugrats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
@@ -717,209 +833,151 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2" data-number="34.4">
-<h2 data-number="34.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">34.4</span> More info</h2>
-<section id="saturation-with-cut_interval" class="level3" data-number="34.4.1">
-<h3 data-number="34.4.1" class="anchored" data-anchor-id="saturation-with-cut_interval"><span class="header-section-number">34.4.1</span> Saturation with <code>cut_interval()</code></h3>
-<p><code>ggplot2</code> has two great functions for splitting numerical variables into intervals or widths. We’re going to create two datasets from <code>babynames::babynames</code> that capture the top names in <code>1900</code> and and the top names <code>2000</code>.</p>
+<section id="more-info" class="level2" data-number="34.5">
+<h2 data-number="34.5" class="anchored" data-anchor-id="more-info"><span class="header-section-number">34.5</span> More info</h2>
+<section id="saturation-with-cut_interval" class="level3" data-number="34.5.1">
+<h3 data-number="34.5.1" class="anchored" data-anchor-id="saturation-with-cut_interval"><span class="header-section-number">34.5.1</span> Saturation with <code>cut_interval()</code></h3>
+<p><code>ggplot2</code> has two great functions for splitting numerical variables into intervals or widths. We’ll use <code>cut_interval()</code> to create an <code>n_range</code> variable, which splits the yearly counts (<code>n</code>) into intervals based on the <code>length</code> argument.</p>
 <div style="font-size: 0.85em;">
-<details class="code-fold">
+<div class="cell">
+<details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>top_nms_prop_1900 <span class="ot">&lt;-</span> babynames<span class="sc">::</span>babynames <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">1900</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(sex, name) <span class="sc">|&gt;</span> </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">max_prop =</span> <span class="fu">max</span>(prop)) <span class="sc">|&gt;</span> </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">slice_max</span>(<span class="at">n =</span> <span class="dv">2</span>, <span class="at">order_by =</span> max_prop) <span class="sc">|&gt;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>()</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>top_nms_prop_1900</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>top_nms_prop_2000 <span class="ot">&lt;-</span> babynames<span class="sc">::</span>babynames <span class="sc">|&gt;</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2000</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(sex, name) <span class="sc">|&gt;</span> </span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">max_prop =</span> <span class="fu">max</span>(prop)) <span class="sc">|&gt;</span> </span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">slice_max</span>(<span class="at">n =</span> <span class="dv">2</span>, <span class="at">order_by =</span> max_prop) <span class="sc">|&gt;</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>()</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>top_nms_prop_2000</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rugrats_babies_range <span class="ot">&lt;-</span> rugrats_babies <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n_range =</span> ggplot2<span class="sc">::</span><span class="fu">cut_interval</span>(<span class="at">x =</span> n, <span class="at">length =</span> <span class="dv">3</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>rugrats_babies_range <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(n_range)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["sex"],"name":[1],"type":["chr"],"align":["left"]},{"label":["name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["max_prop"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"F","2":"Mary","3":"0.05257559"},{"1":"F","2":"Helen","3":"0.01996211"},{"1":"M","2":"John","3":"0.06062307"},{"1":"M","2":"William","3":"0.05291335"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div data-pagedtable="false">
-  <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["sex"],"name":[1],"type":["chr"],"align":["left"]},{"label":["name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["max_prop"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"F","2":"Emily","3":"0.01300980"},{"1":"F","2":"Hannah","3":"0.01156961"},{"1":"M","2":"Jacob","3":"0.01651392"},{"1":"M","2":"Michael","3":"0.01534691"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["n_range"],"name":[1],"type":["fct"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"[0,3]","2":"101"},{"1":"(3,6]","2":"17"},{"1":"(6,9]","2":"7"},{"1":"(9,12]","2":"2"},{"1":"(12,15]","2":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
 </div>
 </div>
-</div>
-<p>These two tibbles tell us something about the top names over a century. The top names in 1900 have much higher proportions than the top names in 2000s.</p>
+<p>Below we can see the count ranges have been built with the <a href="https://ggplot2.tidyverse.org/reference/cut_interval.html">interval notation</a>: <code>"(a,b]"</code></p>
 <ul>
-<li><p>We’ll get the names from both tibbles and filter <code>babynames::babynames</code> to only these eight names between the years 1900 and 2000.</p></li>
-<li><p>We’ll create a <code>prop_range</code> variable, which splits the <code>prop</code> variable into intervals based on the <code>length</code> argument.</p></li>
+<li>Most of the ticks fall in the lowest range, and every count above 9 belongs to Tommy after the show premiered.</li>
 </ul>
 <div style="font-size: 0.85em;">
-<details class="code-fold">
+<div class="cell">
+<details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>nms_1900 <span class="ot">&lt;-</span> top_nms_prop_1900[[<span class="st">"name"</span>]]</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>nms_2000 <span class="ot">&lt;-</span> top_nms_prop_2000[[<span class="st">"name"</span>]]</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>top_nms_1900_2000 <span class="ot">&lt;-</span> <span class="fu">c</span>(nms_1900, nms_2000)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>popular_bby_nms_prop <span class="ot">&lt;-</span> babynames<span class="sc">::</span>babynames <span class="sc">|&gt;</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(name <span class="sc">%in%</span> top_nms_1900_2000 <span class="sc">&amp;</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                  year <span class="sc">&gt;=</span> <span class="dv">1900</span> <span class="sc">&amp;</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                    year <span class="sc">&lt;=</span> <span class="dv">2000</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># proportion range </span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">prop_range =</span> ggplot2<span class="sc">::</span><span class="fu">cut_interval</span>(<span class="at">x =</span> prop, </span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">length =</span> <span class="fl">0.025</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>labs_inst_rugrats_range <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Rugrats baby names"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Babies named at one hospital, 1980 - 2005"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Name"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"Babies per year"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="st">"Babies per year"</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>ggp2_inst_rugrats_range <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> rugrats_babies_range,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> name,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> n_range)) <span class="sc">+</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">alpha =</span> n),</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">shape =</span> <span class="dv">124</span>,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_alpha_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">0.35</span>, <span class="dv">1</span>))</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>ggp2_inst_rugrats_range <span class="sc">+</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  labs_inst_rugrats_range</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-
-</div>
-</div>
-<p>Below we can see the proportion ranges have been built with the <a href="https://ggplot2.tidyverse.org/reference/cut_interval.html">interval notation</a>: <code>"(a,b]"</code></p>
-<ul>
-<li>We can also see the proportion of names changes considerably between the two groups of names.</li>
-</ul>
-<div style="font-size: 0.85em;">
-<details class="code-fold">
-<summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>labs_inst_pop_nms_prop <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"100 years of popular names"</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Most popular names from 1900 and 2000"</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"*based on proportion"</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Year"</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Name"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"Proportion ranges"</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="st">"Proportion"</span>)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>ggp2_inst_pop_nms_prop <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> popular_bby_nms_prop, </span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, </span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> name, </span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> prop_range)) <span class="sc">+</span> </span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">alpha =</span> prop),</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">shape =</span> <span class="dv">124</span>,</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="fl">2.5</span>) </span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>ggp2_inst_pop_nms_prop <span class="sc">+</span> </span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  labs_inst_pop_nms_prop </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="instance_chart_files/figure-html/more_info_color_inst-1.png" class="img-fluid"></p>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="instance_chart_files/figure-html/code_graph_inst_range-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="facets-with-cut_number" class="level3" data-number="34.4.2">
-<h3 data-number="34.4.2" class="anchored" data-anchor-id="facets-with-cut_number"><span class="header-section-number">34.4.2</span> Facets with <code>cut_number()</code></h3>
+<section id="facets-with-cut_number" class="level3" data-number="34.5.2">
+<h3 data-number="34.5.2" class="anchored" data-anchor-id="facets-with-cut_number"><span class="header-section-number">34.5.2</span> Facets with <code>cut_number()</code></h3>
 <p>To demonstrate facets, we’ll create two other variables: <code>year_range</code> and <code>group</code>:</p>
 <ul>
-<li><p><code>year_range</code> uses <code>ggplot2::cut_number()</code> to create three groups based on the <code>year</code>, orders the results, and removes the labels. We manually assign the labels to this variable with <code>case_when()</code> and <code>factor()</code></p></li>
-<li><p><code>group</code> is a factor variable with two levels: <code>1900 names</code> and <code>2000 names</code></p></li>
+<li><p><code>year_range</code> uses <code>ggplot2::cut_number()</code> to split the <code>year</code> into three groups with about the same number of ticks in each, then we build a label for each group from its first and last year</p></li>
+<li><p><code>group</code> is a factor variable with two levels: <code>"Babies"</code> and <code>"Big kids"</code> (Angelica and Susie)</p></li>
 </ul>
 <div style="font-size: 0.85em;">
-<details class="code-fold">
+<div class="cell">
+<details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>popular_bby_nms_fct <span class="ot">&lt;-</span> popular_bby_nms_prop <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># year range </span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">year_range =</span> ggplot2<span class="sc">::</span><span class="fu">cut_number</span>(year, </span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">n =</span> <span class="dv">3</span>, </span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">labels =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ordered_result =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">year_range =</span> <span class="fu">case_when</span>(</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    year_range <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"1900 - 1936"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    year_range <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"1937 - 1970"</span>,</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    year_range <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"1971 - 2000"</span>),</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">year_range =</span> <span class="fu">factor</span>(year_range,</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"1900 - 1936"</span>,</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>               <span class="st">"1937 - 1970"</span>,</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>               <span class="st">"1971 - 2000"</span>),</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">ordered =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> <span class="fu">case_when</span>(</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> nms_1900 <span class="sc">~</span> <span class="st">"1900 names"</span>,</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> nms_2000 <span class="sc">~</span> <span class="st">"2000 names"</span>,</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span>),</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> <span class="fu">factor</span>(group, </span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"1900 names"</span>, </span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"2000 names"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>rugrats_babies_fct <span class="ot">&lt;-</span> rugrats_babies <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year_grp =</span> ggplot2<span class="sc">::</span><span class="fu">cut_number</span>(year, <span class="at">n =</span> <span class="dv">3</span>, <span class="at">labels =</span> <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year_grp) <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year_range =</span> <span class="fu">paste</span>(<span class="fu">min</span>(year), <span class="st">"-"</span>, <span class="fu">max</span>(year))) <span class="sc">|&gt;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">year_range =</span> <span class="fu">factor</span>(year_range, <span class="at">levels =</span> <span class="fu">unique</span>(year_range[<span class="fu">order</span>(year)])),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> <span class="fu">if_else</span>(name <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Angelica"</span>, <span class="st">"Susie"</span>), <span class="st">"Big kids"</span>, <span class="st">"Babies"</span>),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> <span class="fu">factor</span>(group, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Babies"</span>, <span class="st">"Big kids"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-
 </div>
 </div>
 <p>Below we can see the total counts of names in the cross-table of <code>year_range</code> and <code>group</code></p>
 <div style="font-size: 0.85em;">
-<details class="code-fold">
+<div class="cell">
+<details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>popular_bby_nms_fct <span class="sc">|&gt;</span> </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">count</span>(year_range, group) <span class="sc">|&gt;</span> </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">names_from =</span> group, </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> n)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>rugrats_babies_fct <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(year_range, group) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> group,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> n)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["year_range"],"name":[1],"type":["ord"],"align":["right"]},{"label":["1900 names"],"name":[2],"type":["int"],"align":["right"]},{"label":["2000 names"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"1900 - 1936","2":"280","3":"191"},{"1":"1937 - 1970","2":"280","3":"190"},{"1":"1971 - 2000","2":"235","3":"236"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["year_range"],"name":[1],"type":["fct"],"align":["left"]},{"label":["Babies"],"name":[2],"type":["int"],"align":["right"]},{"label":["Big kids"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"1980 - 1990","2":"28","3":"17"},{"1":"1991 - 1999","2":"28","3":"16"},{"1":"2000 - 2005","2":"29","3":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
-</div>
 </div>
 </div>
 </div>
 </div>
 <p>In the graph, we’ll create labels using the <code>levels</code> from the <code>year_range</code> variable.</p>
 <ul>
-<li>We can also change the <code>shape</code> used in <code>geom_point()</code> to the pipe operator (<code>"|"</code>)</li>
+<li><p>We can also change the <code>shape</code> used in <code>geom_point()</code> to the pipe operator (<code>"|"</code>)</p></li>
+<li><p>With <code>scales = "free"</code>, each panel picks its own <code>x</code> breaks, so we set them every five years with <code>scale_x_continuous()</code></p></li>
 </ul>
 <div style="font-size: 0.85em;">
-<details class="code-fold">
+<div class="cell">
+<details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create labels from factor levels </span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>st_lbls <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">levels</span>(popular_bby_nms_fct<span class="sc">$</span>year_range),</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">collapse =</span> <span class="st">", "</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>labs_inst_pop_nms_facet <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Baby name popularity over time"</span>,</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">"Time span: "</span>, st_lbls),</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Year"</span>,</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Name"</span>)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>ggp2_inst_pop_nms_facet <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(popular_bby_nms_fct,</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year,</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> name)) <span class="sc">+</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">alpha =</span> prop, <span class="at">color =</span> name),</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>                 <span class="at">shape =</span> <span class="st">"|"</span>,</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>                 <span class="at">size =</span> <span class="dv">3</span>,</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                 <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(year_range <span class="sc">~</span> group,</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>             <span class="at">scales =</span> <span class="st">"free_y"</span>, </span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>ggp2_inst_pop_nms_facet <span class="sc">+</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  labs_inst_pop_nms_facet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create labels from factor levels</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>st_lbls <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">levels</span>(rugrats_babies_fct<span class="sc">$</span>year_range),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">collapse =</span> <span class="st">", "</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>labs_inst_rugrats_facet <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Rugrats baby names"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">"Time span: "</span>, st_lbls),</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Name"</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>ggp2_inst_rugrats_facet <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(rugrats_babies_fct,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year,</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> name)) <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">alpha =</span> n, <span class="at">color =</span> name),</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>                 <span class="at">shape =</span> <span class="st">"|"</span>,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                 <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>                 <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">1980</span>, <span class="dv">2005</span>, <span class="at">by =</span> <span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_alpha_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">0.35</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(year_range <span class="sc">~</span> group,</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>             <span class="at">scales =</span> <span class="st">"free"</span>,</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>ggp2_inst_rugrats_facet <span class="sc">+</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  labs_inst_rugrats_facet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="instance_chart_files/figure-html/bby_nms_facet_inst-1.png" class="img-fluid"></p>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="instance_chart_files/figure-html/code_graph_inst_facet-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
 </div>
 </div>
-</div>
-</div>
-<div style="font-size: 0.95rem;">
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-
 </div>
 </div>
 

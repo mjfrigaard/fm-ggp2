@@ -113,10 +113,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar floating slimcontent quarto-light">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -529,13 +558,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">31.1</span> Description</a></li>
   <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up"><span class="header-section-number">31.2</span> Set up</a></li>
-  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">31.3</span> Grammar</a></li>
-  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">31.4</span> More info</a></li>
+  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">31.3</span> Distribution</a></li>
+  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">31.4</span> Grammar</a></li>
+  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">31.5</span> More info</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/slope_graphs.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dates_and_times.html">DATES &amp; TIMES</a></li><li class="breadcrumb-item"><a href="./slope_graphs.html"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Slope graphs</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -602,7 +632,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Slope graphs show changes in a numeric value (displayed on the <code>y</code> axis) typically over two points in time (along the <code>x</code> axis). The values for each group or unit of measurement are connected by lines, and any differences between the two time points are represented by the slope of the lines (hence the name, ‘slope chart’).</p>
 <p>We can build slope graphs in <code>ggplot2</code> using the <code>geom_line()</code> and <code>geom_point()</code> functions.</p>
 </section>
-<section id="set-up" class="level2 page-columns page-full" data-number="31.2">
+<section id="set-up" class="level2" data-number="31.2">
 <h2 data-number="31.2" class="anchored" data-anchor-id="set-up"><span class="header-section-number">31.2</span> Set up</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>PACKAGES:</strong></p>
@@ -614,152 +644,224 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"palmerpenguins"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># for data manipulation</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr) <span class="co"># for expand_grid()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure">
-<p><img src="www/lter_penguins.png" class="img-fluid figure-img" style="width:65.0%"></p>
-<figcaption>Artwork by Allison Horst</figcaption>
-</figure>
-</div>
-</div></div><p>We’ll be using the penguins data for this graph, but slightly restructured.</p>
+<p>Mr.&nbsp;Belding’s Bayside High gave us six students with very different relationships to homework: Zack scheming his way out of it, Screech and Jessie acing everything, and Slater and Kelly somewhere in between. We’ll simulate ten biology quizzes and ten history quizzes for each student in the fall of 1990 and the spring of 1991. Each student gets an average score for each semester (<code>avg_score</code>). Zack and Slater improve in the spring, Lisa slips a little, and Kelly and Jessie stay exactly the same. <code>rnorm()</code> draws each quiz score around those averages, and <code>pmin()</code> caps the scores at 100. Setting the seed with <code>set.seed()</code> means you’ll get the same 240 quizzes every time you run the code below.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>peng_slope <span class="ot">&lt;-</span> palmerpenguins<span class="sc">::</span>penguins <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(year <span class="sc">&lt;</span> <span class="dv">2009</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(year, island) <span class="sc">|&gt;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="fu">across</span>(</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">.cols =</span> <span class="fu">contains</span>(<span class="st">"mm"</span>), </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">.fns =</span> mean, </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">na.rm =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">.names =</span> <span class="st">"avg_{.col}"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">ungroup</span>()</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; `summarise()` has regrouped the output.</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Summaries were computed grouped by year and</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   island.</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Output is grouped by year.</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `summarise(.groups = "drop_last")` to</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   silence this message.</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `summarise(.by = c(year, island))` for</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   per-operation grouping (`?dplyr::dplyr_by`)</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   instead.</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(peng_slope)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 6</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 5</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year                  &lt;int&gt; 2007, 2007, 2007, …</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ island                &lt;fct&gt; Biscoe, Dream, Tor…</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_bill_length_mm    &lt;dbl&gt; 45.03864, 44.53913…</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_bill_depth_mm     &lt;dbl&gt; 15.54091, 18.57391…</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_flipper_length_mm &lt;dbl&gt; 207.5227, 189.8478…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1989</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>bayside_quizzes <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">student =</span> <span class="fu">c</span>(<span class="st">"Zack"</span>, <span class="st">"Kelly"</span>, <span class="st">"Slater"</span>, <span class="st">"Jessie"</span>, <span class="st">"Lisa"</span>, <span class="st">"Screech"</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">semester =</span> <span class="fu">c</span>(<span class="st">"Fall 1990"</span>, <span class="st">"Spring 1991"</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">subject =</span> <span class="fu">c</span>(<span class="st">"Biology"</span>, <span class="st">"History"</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">quiz =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">student =</span> <span class="fu">factor</span>(student, <span class="at">levels =</span> <span class="fu">unique</span>(student)),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_score =</span> <span class="fu">case_when</span>(</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>      student <span class="sc">==</span> <span class="st">"Zack"</span> <span class="sc">~</span> <span class="fu">if_else</span>(semester <span class="sc">==</span> <span class="st">"Fall 1990"</span>, <span class="dv">70</span>, <span class="dv">80</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>      student <span class="sc">==</span> <span class="st">"Kelly"</span> <span class="sc">~</span> <span class="dv">82</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>      student <span class="sc">==</span> <span class="st">"Slater"</span> <span class="sc">~</span> <span class="fu">if_else</span>(semester <span class="sc">==</span> <span class="st">"Fall 1990"</span>, <span class="dv">72</span>, <span class="dv">78</span>),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      student <span class="sc">==</span> <span class="st">"Jessie"</span> <span class="sc">~</span> <span class="dv">91</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>      student <span class="sc">==</span> <span class="st">"Lisa"</span> <span class="sc">~</span> <span class="fu">if_else</span>(semester <span class="sc">==</span> <span class="st">"Fall 1990"</span>, <span class="dv">84</span>, <span class="dv">81</span>),</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>      student <span class="sc">==</span> <span class="st">"Screech"</span> <span class="sc">~</span> <span class="fu">if_else</span>(semester <span class="sc">==</span> <span class="st">"Fall 1990"</span>, <span class="dv">93</span>, <span class="dv">95</span>)),</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">score =</span> <span class="fu">round</span>(<span class="fu">pmin</span>(<span class="dv">100</span>, <span class="fu">rnorm</span>(<span class="fu">n</span>(), <span class="at">mean =</span> avg_score, <span class="at">sd =</span> <span class="dv">8</span>))))</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(bayside_quizzes)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 240</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 6</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ student   &lt;fct&gt; Zack, Zack, Zack, Zack, Zack, …</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ semester  &lt;chr&gt; "Fall 1990", "Fall 1990", "Fal…</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ subject   &lt;chr&gt; "Biology", "Biology", "Biology…</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ quiz      &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,…</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_score &lt;dbl&gt; 70, 70, 70, 70, 70, 70, 70, 70…</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ score     &lt;dbl&gt; 79, 79, 55, 68, 65, 67, 72, 74…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</div>
+<p>A slope graph needs one value per student per semester, so we’ll average the 20 quizzes in each semester and store the results in <code>bayside_slope</code>.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>bayside_slope <span class="ot">&lt;-</span> bayside_quizzes <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(semester, student) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_score =</span> <span class="fu">mean</span>(score)) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(bayside_slope)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 12</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ semester  &lt;chr&gt; "Fall 1990", "Fall 1990", "Fal…</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ student   &lt;fct&gt; Zack, Kelly, Slater, Jessie, L…</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_score &lt;dbl&gt; 70.00, 83.70, 72.55, 88.30, 83…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
-<section id="grammar" class="level2" data-number="31.3">
-<h2 data-number="31.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">31.3</span> Grammar</h2>
+<section id="distribution" class="level2" data-number="31.3">
+<h2 data-number="31.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">31.3</span> Distribution</h2>
+<p>The slope of each line is the difference between two averages. Averages are much steadier than single quiz scores, but they’re not perfectly steady, so a slope graph can show a small rise or fall even when nothing changed. Below we’ll move from the quizzes, to a picture, to the formula, and work out how big a slope needs to be before we take it seriously.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>COUNT IT:</strong></p>
+</div>
+<p>Start with Zack’s first five biology quizzes from the fall.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>bayside_quizzes <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(student <span class="sc">==</span> <span class="st">"Zack"</span>, semester <span class="sc">==</span> <span class="st">"Fall 1990"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subject, quiz, score) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["subject"],"name":[1],"type":["chr"],"align":["left"]},{"label":["quiz"],"name":[2],"type":["int"],"align":["right"]},{"label":["score"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Biology","2":"1","3":"79"},{"1":"Biology","2":"2","3":"79"},{"1":"Biology","2":"3","3":"55"},{"1":"Biology","2":"4","3":"68"},{"1":"Biology","2":"5","3":"65"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>Single quizzes bounce around by close to ten points. Below we compare each student’s fall and spring averages (<code>change</code>) with the change we built into the simulation (<code>true_change</code>).</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>slope_changes <span class="ot">&lt;-</span> bayside_quizzes <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(student, semester) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg =</span> <span class="fu">mean</span>(score), <span class="at">truth =</span> <span class="fu">first</span>(avg_score),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> semester, <span class="at">values_from =</span> <span class="fu">c</span>(avg, truth)) <span class="sc">|&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">change =</span> <span class="st">`</span><span class="at">avg_Spring 1991</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">avg_Fall 1990</span><span class="st">`</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">true_change =</span> <span class="st">`</span><span class="at">truth_Spring 1991</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">truth_Fall 1990</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(student, change, true_change)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>slope_changes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["student"],"name":[1],"type":["fct"],"align":["left"]},{"label":["change"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["true_change"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Zack","2":"6.45","3":"10"},{"1":"Kelly","2":"-4.45","3":"0"},{"1":"Slater","2":"6.35","3":"6"},{"1":"Jessie","2":"2.25","3":"0"},{"1":"Lisa","2":"-3.10","3":"-3"},{"1":"Screech","2":"0.70","3":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>Zack’s and Slater’s averages went up, just as they should. But Kelly’s average dropped by about 4.5 points, even though her true average didn’t change at all.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>DRAW IT:</strong></p>
+</div>
+<p>The graph below shows every quiz for Zack and Kelly as a faded point, with the slope graph lines drawn through their semester averages. Zack’s cloud of points shifts up in the spring. Kelly’s two clouds sit in about the same place, and her line slopes down only because the spring quizzes happened to land a little lower.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>zack_kelly <span class="ot">&lt;-</span> bayside_quizzes <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(student <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Zack"</span>, <span class="st">"Kelly"</span>))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(zack_kelly, <span class="fu">aes</span>(<span class="at">x =</span> semester, <span class="at">y =</span> score, <span class="at">color =</span> student)) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.08</span>, <span class="at">height =</span> <span class="dv">0</span>, <span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="fu">aes</span>(<span class="at">group =</span> student), <span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">"line"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">linewidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">"point"</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Quiz score"</span>, <span class="at">color =</span> <span class="st">"Student"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="slope_graphs_files/figure-html/draw_slope-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>NAME IT:</strong></p>
+</div>
+<p>Each quiz score is a draw from a <a href="https://en.wikipedia.org/wiki/Normal_distribution">normal distribution</a> centered on the student’s average for that semester (and capped at 100):</p>
+<p><span class="math display">\[
+\text{score} \sim \text{Normal}(\mu_{\text{student, semester}}, \; \sigma = 8)
+\]</span></p>
+<p>An average of <span class="math inline">\(n = 20\)</span> quizzes has a standard deviation of <span class="math inline">\(\sigma / \sqrt{n} = 8 / \sqrt{20} \approx 1.8\)</span> points (the <a href="https://en.wikipedia.org/wiki/Standard_error">standard error</a>). A slope is the difference between two of these averages, so its standard deviation is <span class="math inline">\(\sqrt{1.8^2 + 1.8^2} \approx 2.5\)</span> points. About 95% of slopes land within two standard deviations (about 5 points) of the true change. Kelly’s drop is inside that range, while Zack’s and Slater’s gains are large enough to stand out. Try changing <code>quiz = 1:10</code> to <code>quiz = 1:40</code> and the noise in every slope is cut in half.</p>
+</section>
+<section id="grammar" class="level2" data-number="31.4">
+<h2 data-number="31.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">31.4</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
 </div>
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map <code>year</code> to the <code>x</code>, <code>avg_bill_depth_mm</code> to <code>y</code>, and <code>island</code> to <code>group</code></p></li>
-<li><p>Add a <code>geom_line()</code> layer, mapping <code>island</code> to <code>color</code>, and setting the <code>size</code> to <code>2</code></p></li>
-<li><p>Add a <code>geom_point()</code> layer, mapping <code>color</code> to <code>island</code>, and setting <code>size</code> to <code>4</code></p></li>
-<li><p>We’ll adjust the <code>x</code> axis with <code>scale_x_continuous()</code>, manually setting the <code>breaks</code> and moving the <code>position</code> to the <code>"top"</code> of the graph</p></li>
+<li><p>Map <code>semester</code> to the <code>x</code>, <code>avg_score</code> to <code>y</code>, and <code>student</code> to <code>group</code></p></li>
+<li><p>Add a <code>geom_line()</code> layer, mapping <code>student</code> to <code>color</code>, and setting the <code>linewidth</code> to <code>2</code></p></li>
+<li><p>Add a <code>geom_point()</code> layer, mapping <code>color</code> to <code>student</code>, and setting <code>size</code> to <code>4</code></p></li>
+<li><p>We’ll move the <code>x</code> axis to the <code>"top"</code> of the graph with <code>scale_x_discrete()</code></p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>labs_slope <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Changes in Bill Depth of Palmer Penguins"</span>, </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"Years 2007 &amp; 2008"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Bill Depth (mm)"</span>, </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">"Island"</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ggp2_slope <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> peng_slope, </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> avg_bill_depth_mm, </span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">group =</span> island)) <span class="sc">+</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> island),</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">linewidth =</span> <span class="dv">2</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> island),</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">2007</span>, <span class="dv">2008</span>),</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">position =</span> <span class="st">"top"</span>)</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>ggp2_slope <span class="sc">+</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    labs_slope</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>labs_slope <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Bayside High quizzes"</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"Fall 1990 &amp; Spring 1991"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Semester"</span>, <span class="at">y =</span> <span class="st">"Average quiz score"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">"Student"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>ggp2_slope <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> bayside_slope,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> semester,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> avg_score,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">group =</span> student)) <span class="sc">+</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> student),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">linewidth =</span> <span class="dv">2</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> student),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">position =</span> <span class="st">"top"</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>ggp2_slope <span class="sc">+</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    labs_slope</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>GRAPH:</strong></p>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="slope_graphs_files/figure-html/create_graph_slope-1.png" style="width:100.0%;height:100.0%" class="figure-img"></p>
-</figure>
+<div class="cell quarto-layout-panel" data-layout-nrow="1">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="slope_graphs_files/figure-html/create_graph_slope-1.png" class="img-fluid"></p>
 </div>
 </div>
 </div>
 </section>
-<section id="more-info" class="level2" data-number="31.4">
-<h2 data-number="31.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">31.4</span> More info</h2>
+<section id="more-info" class="level2" data-number="31.5">
+<h2 data-number="31.5" class="anchored" data-anchor-id="more-info"><span class="header-section-number">31.5</span> More info</h2>
 <p>We can also use faceting with slope graphs to add a third categorical variable.</p>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-<p>We’ll be using the <code>penguins</code> dataset again, but group remove the missing values and group it by <code>year</code>, <code>island</code>, and <code>sex</code>.</p>
+<p>We’ll use the <code>bayside_quizzes</code> data again, but this time we group it by <code>semester</code>, <code>student</code>, and <code>subject</code>.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>peng_grp_slope <span class="ot">&lt;-</span> palmerpenguins<span class="sc">::</span>penguins <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(year, sex, island,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">contains</span>(<span class="st">"mm"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    tidyr<span class="sc">::</span><span class="fu">drop_na</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(year <span class="sc">!=</span> <span class="dv">2007</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">group_by</span>(year, sex, island) <span class="sc">|&gt;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="fu">across</span>(</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">.cols =</span> <span class="fu">contains</span>(<span class="st">"mm"</span>), </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">.fns =</span> mean, </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">na.rm =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">.names =</span> <span class="st">"avg_{.col}"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">ungroup</span>()</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; `summarise()` has regrouped the output.</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Summaries were computed grouped by year, sex,</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   and island.</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Output is grouped by year and sex.</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `summarise(.groups = "drop_last")` to</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   silence this message.</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `summarise(.by = c(year, sex, island))` for</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   per-operation grouping (`?dplyr::dplyr_by`)</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   instead.</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(peng_grp_slope)</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 12</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 6</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year                  &lt;int&gt; 2008, 2008, 2008, …</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ sex                   &lt;fct&gt; female, female, fe…</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ island                &lt;fct&gt; Biscoe, Dream, Tor…</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_bill_length_mm    &lt;dbl&gt; 42.78387, 41.42353…</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_bill_depth_mm     &lt;dbl&gt; 15.02903, 17.52941…</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_flipper_length_mm &lt;dbl&gt; 205.3226, 190.9412…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>bayside_grp_slope <span class="ot">&lt;-</span> bayside_quizzes <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(semester, student, subject) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">avg_score =</span> <span class="fu">mean</span>(score)) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(bayside_grp_slope)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 24</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ semester  &lt;chr&gt; "Fall 1990", "Fall 1990", "Fal…</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ student   &lt;fct&gt; Zack, Zack, Kelly, Kelly, Slat…</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ subject   &lt;chr&gt; "Biology", "History", "Biology…</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ avg_score &lt;dbl&gt; 69.4, 70.6, 86.6, 80.8, 70.9, …</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
@@ -769,56 +871,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map <code>year</code> to the <code>x</code>, <code>avg_bill_depth_mm</code> to <code>y</code>, and <code>island</code> to <code>group</code></p></li>
-<li><p>Add a <code>geom_line()</code> layer, mapping <code>island</code> to <code>color</code>, and setting the <code>size</code> to <code>2</code></p></li>
-<li><p>Add a <code>geom_point()</code> layer, mapping <code>color</code> to <code>island</code>, and setting <code>size</code> to <code>4</code></p></li>
-<li><p>We’ll adjust the <code>x</code> axis with <code>scale_x_continuous()</code>, manually setting the <code>breaks</code> and moving the <code>position</code> to the <code>"top"</code> of the graph</p></li>
-<li><p>We’ll duplicate the the <code>y</code> axis with <code>sec.axis</code>, setting <code>dup_axis()</code> to the same <code>name</code> of the previous <code>y</code> label.</p></li>
-<li><p>Finally, we facet the graph by <code>sex</code>, adjust the <code>size</code> of the text, and move the legend to the <code>"bottom"</code> of the graph.</p></li>
+<li><p>Map <code>semester</code> to the <code>x</code>, <code>avg_score</code> to <code>y</code>, and <code>student</code> to <code>group</code></p></li>
+<li><p>Add a <code>geom_line()</code> layer, mapping <code>student</code> to <code>color</code>, and setting the <code>linewidth</code> to <code>2</code></p></li>
+<li><p>Add a <code>geom_point()</code> layer, mapping <code>color</code> to <code>student</code>, and setting <code>size</code> to <code>4</code></p></li>
+<li><p>We’ll move the <code>x</code> axis to the <code>"top"</code> of the graph with <code>scale_x_discrete()</code></p></li>
+<li><p>We’ll duplicate the <code>y</code> axis with <code>sec.axis</code>, setting <code>dup_axis()</code> to the same <code>name</code> of the previous <code>y</code> label.</p></li>
+<li><p>Finally, we facet the graph by <code>subject</code>, adjust the <code>size</code> of the text, and move the legend to the <code>"bottom"</code> of the graph.</p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>labs_grp_slope <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Changes in Bill Depth of Palmer Penguins"</span>,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Years 2008 &amp; 2009"</span>,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">""</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Island"</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>ggp2_grp_slope <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> peng_grp_slope,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> avg_bill_depth_mm,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">group =</span> island)) <span class="sc">+</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> island),</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">linewidth =</span> <span class="dv">2</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> island),</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">2008</span>, <span class="dv">2009</span>),</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">position =</span> <span class="st">"top"</span>) <span class="sc">+</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Average Bill Depth (mm)"</span>,</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">sec.axis =</span> <span class="fu">dup_axis</span>(<span class="at">name =</span> <span class="st">"Average Bill Depth (mm)"</span>)) <span class="sc">+</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(. <span class="sc">~</span> sex,</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>))</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>ggp2_grp_slope <span class="sc">+</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    labs_grp_slope</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>labs_grp_slope <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Bayside High quizzes"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Fall 1990 &amp; Spring 1991, by subject"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Student"</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>ggp2_grp_slope <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> bayside_grp_slope,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> semester,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> avg_score,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">group =</span> student)) <span class="sc">+</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> student),</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">linewidth =</span> <span class="dv">2</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> student),</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_discrete</span>(<span class="at">position =</span> <span class="st">"top"</span>) <span class="sc">+</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Average quiz score"</span>,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">sec.axis =</span> <span class="fu">dup_axis</span>(<span class="at">name =</span> <span class="st">"Average quiz score"</span>)) <span class="sc">+</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(. <span class="sc">~</span> subject,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>))</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>ggp2_grp_slope <span class="sc">+</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    labs_grp_slope</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="slope_graphs_files/figure-html/create_graph_grp_slope-1.png" style="width:100.0%;height:100.0%" class="figure-img"></p>
+<p><img src="slope_graphs_files/figure-html/code_graph_grp_slope-1.png" class="img-fluid figure-img" width="576"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
+<p>Each subject average is built from only ten quizzes, so these slopes are noisier than the ones above (their standard deviation is about <span class="math inline">\(\sqrt{2} \times 8 / \sqrt{10} \approx 3.6\)</span> points). That’s why Jessie’s history line climbs while her biology line falls, even though her true average is the same in both semesters.</p>
 
 
 </section>

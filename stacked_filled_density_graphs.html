@@ -788,17 +788,18 @@ P(\text{modem } k \mid x) = \frac{\pi_k \, \text{Normal}(x; \, \mu_k, \sigma_k)}
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>labs_fill_density <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Dial up connections (simulated)"</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Share of sessions from each modem at every speed"</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Connection speed (kbps)"</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Modem"</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ggp2_fill_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> modem_sessions, </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> speed_kbps, </span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>           <span class="fu">after_stat</span>(count),</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> modem)) <span class="sc">+</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_density</span>(<span class="at">position =</span> <span class="st">"fill"</span>) </span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ggp2_fill_density <span class="sc">+</span> </span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  labs_fill_density</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Dial up connections"</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Share of sessions from each modem at every speed"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Connection speed (kbps)"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Modem"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ggp2_fill_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> modem_sessions, </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> speed_kbps, </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>           <span class="fu">after_stat</span>(count),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> modem)) <span class="sc">+</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_density</span>(<span class="at">position =</span> <span class="st">"fill"</span>) </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>ggp2_fill_density <span class="sc">+</span> </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  labs_fill_density</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>

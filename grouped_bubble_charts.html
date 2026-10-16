@@ -113,10 +113,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar floating slimcontent quarto-light">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -529,17 +558,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">38.1</span> Description</a></li>
   <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up"><span class="header-section-number">38.2</span> Set up</a></li>
-  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">38.3</span> Grammar</a></li>
-  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">38.4</span> More info</a>
+  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">38.3</span> Distribution</a></li>
+  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">38.4</span> Grammar</a></li>
+  <li><a href="#more-info" id="toc-more-info" class="nav-link" data-scroll-target="#more-info"><span class="header-section-number">38.5</span> More info</a>
   <ul>
-  <li><a href="#shape" id="toc-shape" class="nav-link" data-scroll-target="#shape"><span class="header-section-number">38.4.1</span> Shape</a></li>
-  <li><a href="#color" id="toc-color" class="nav-link" data-scroll-target="#color"><span class="header-section-number">38.4.2</span> Color</a></li>
+  <li><a href="#shape" id="toc-shape" class="nav-link" data-scroll-target="#shape"><span class="header-section-number">38.5.1</span> Shape</a></li>
+  <li><a href="#color" id="toc-color" class="nav-link" data-scroll-target="#color"><span class="header-section-number">38.5.2</span> Color</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/grouped_bubble_charts.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./relationships.html">RELATIONSHIPS</a></li><li class="breadcrumb-item"><a href="./grouped_bubble_charts.html"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Grouped bubble graph</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -603,7 +633,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Grouped bubble graphs use position, color, and size to display the relationships between four variables (three numerical/quantitative, one categorical).</p>
 <p>The position on the x and y axis captures the relationship between two numerical variables. The size and color of the points display a third numerical variable across the levels of a (fourth) categorical variable.</p>
 </section>
-<section id="set-up" class="level2 page-columns page-full" data-number="38.2">
+<section id="set-up" class="level2" data-number="38.2">
 <h2 data-number="38.2" class="anchored" data-anchor-id="set-up"><span class="header-section-number">38.2</span> Set up</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>PACKAGES:</strong></p>
@@ -613,56 +643,150 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"palmerpenguins"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># for data manipulation</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr) <span class="co"># for expand_grid()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure">
-<p><img src="www/lter_penguins.png" class="img-fluid figure-img" style="width:65.0%"></p>
-<figcaption>Artwork by Allison Horst</figcaption>
-</figure>
-</div>
-</div></div><p>The <code>penguins</code> data.</p>
+<p>Every episode of <em>Mighty Morphin Power Rangers</em> had the same rhythm: Rita Repulsa sent down a squad of Putties, and the Rangers kicked their way through them. We’ll simulate 24 fights for each of the five original Rangers with four variables:</p>
+<ul>
+<li><p><code>fight_minutes</code>: how long the fight lasted, drawn from a gamma distribution with <code>rgamma()</code></p></li>
+<li><p><code>putties_defeated</code>: a count from <code>rpois()</code>. Each Ranger has their own <code>putty_rate</code> (putties per minute), and the longer the fight, the more putties they defeat</p></li>
+<li><p><code>hits_taken</code>: another <code>rpois()</code> count, at 0.6 hits per minute for every Ranger</p></li>
+<li><p><code>ranger</code>: the Ranger, ordered red, blue, yellow, pink, and black so the theme colors match the suits</p></li>
+</ul>
+<p>Setting the seed with <code>set.seed()</code> means you’ll get the same 120 fights every time you run the code below.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> palmerpenguins<span class="sc">::</span>penguins</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 344</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 8</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ species           &lt;fct&gt; Adelie, Adelie, Adelie…</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ island            &lt;fct&gt; Torgersen, Torgersen, …</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, …</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, …</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193…</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, …</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ sex               &lt;fct&gt; male, female, female, …</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year              &lt;int&gt; 2007, 2007, 2007, 2007…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1993</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ranger_fights <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ranger =</span> <span class="fu">c</span>(<span class="st">"Red"</span>, <span class="st">"Blue"</span>, <span class="st">"Yellow"</span>, <span class="st">"Pink"</span>, <span class="st">"Black"</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">fight =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">24</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">ranger =</span> <span class="fu">factor</span>(ranger,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Red"</span>, <span class="st">"Blue"</span>, <span class="st">"Yellow"</span>, <span class="st">"Pink"</span>, <span class="st">"Black"</span>)),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">putty_rate =</span> <span class="fu">c</span>(<span class="at">Red =</span> <span class="fl">2.0</span>, <span class="at">Blue =</span> <span class="fl">1.2</span>, <span class="at">Yellow =</span> <span class="fl">1.6</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">Pink =</span> <span class="fl">1.4</span>, <span class="at">Black =</span> <span class="fl">1.8</span>)[<span class="fu">as.character</span>(ranger)],</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">fight_minutes =</span> <span class="fu">round</span>(<span class="fu">rgamma</span>(<span class="fu">n</span>(), <span class="at">shape =</span> <span class="dv">4</span>, <span class="at">rate =</span> <span class="dv">1</span>), <span class="dv">1</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">putties_defeated =</span> <span class="fu">rpois</span>(<span class="fu">n</span>(), <span class="at">lambda =</span> putty_rate <span class="sc">*</span> fight_minutes),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">hits_taken =</span> <span class="fu">rpois</span>(<span class="fu">n</span>(), <span class="at">lambda =</span> <span class="fl">0.6</span> <span class="sc">*</span> fight_minutes))</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(ranger_fights)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 120</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 6</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ ranger           &lt;fct&gt; Red, Red, Red, Red, Red…</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ fight            &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8,…</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ putty_rate       &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2,…</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ fight_minutes    &lt;dbl&gt; 2.6, 4.6, 3.6, 2.4, 4.1…</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ putties_defeated &lt;int&gt; 5, 8, 7, 4, 11, 13, 9, …</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ hits_taken       &lt;int&gt; 1, 2, 2, 3, 7, 1, 3, 4,…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
-<section id="grammar" class="level2" data-number="38.3">
-<h2 data-number="38.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">38.3</span> Grammar</h2>
+<section id="distribution" class="level2" data-number="38.3">
+<h2 data-number="38.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">38.3</span> Distribution</h2>
+<p>In this grouped bubble chart, the <code>y</code> variable is a count that piles up over time. Longer fights don’t just give more putties on average; they also give a wider range of possible counts, so each Ranger’s points fan out as they move to the right. Below we’ll move from the fights, to a picture, to the formula.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>COUNT IT:</strong></p>
+</div>
+<p>Start with the Red Ranger’s first five fights.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ranger_fights <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ranger <span class="sc">==</span> <span class="st">"Red"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(fight, fight_minutes, putties_defeated, hits_taken) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["fight"],"name":[1],"type":["int"],"align":["right"]},{"label":["fight_minutes"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["putties_defeated"],"name":[3],"type":["int"],"align":["right"]},{"label":["hits_taken"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"2.6","3":"5","4":"1"},{"1":"2","2":"4.6","3":"8","4":"2"},{"1":"3","2":"3.6","3":"7","4":"2"},{"1":"4","2":"2.4","3":"4","4":"3"},{"1":"5","2":"4.1","3":"11","4":"7"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>Below we divide each Ranger’s total putties by their total fight minutes to estimate their rate (<code>putties_per_min</code>), and compare it to the rate we built in (<code>putty_rate</code>).</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ranger_rates <span class="ot">&lt;-</span> ranger_fights <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ranger) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">putty_rate =</span> <span class="fu">first</span>(putty_rate),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">putties_per_min =</span> <span class="fu">sum</span>(putties_defeated) <span class="sc">/</span> <span class="fu">sum</span>(fight_minutes),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">hits_per_min =</span> <span class="fu">sum</span>(hits_taken) <span class="sc">/</span> <span class="fu">sum</span>(fight_minutes))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>ranger_rates</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["ranger"],"name":[1],"type":["fct"],"align":["left"]},{"label":["putty_rate"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["putties_per_min"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hits_per_min"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Red","2":"2.0","3":"1.976987","4":"0.7740586"},{"1":"Blue","2":"1.2","3":"1.381215","4":"0.6393054"},{"1":"Yellow","2":"1.6","3":"1.770956","4":"0.3778040"},{"1":"Pink","2":"1.4","3":"1.292705","4":"0.5540166"},{"1":"Black","2":"1.8","3":"1.938062","4":"0.6693307"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>Every putty estimate lands within a few tenths of the rate we built in. The hits per minute range from about 0.4 to 0.8 around the true rate of 0.6 (hits are rarer than putties, so their estimates bounce around more).</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>DRAW IT:</strong></p>
+</div>
+<p>The graph below shows the Red and Blue Rangers’ fights. Each line is the putty rate times the fight length, and each ribbon covers two standard deviations above and below the line. Both ribbons get wider as the fights get longer.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>red_blue <span class="ot">&lt;-</span> ranger_fights <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ranger <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Red"</span>, <span class="st">"Blue"</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(red_blue, <span class="fu">aes</span>(<span class="at">x =</span> fight_minutes, <span class="at">fill =</span> ranger, <span class="at">color =</span> ranger)) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> <span class="fu">pmax</span>(<span class="dv">0</span>, putty_rate <span class="sc">*</span> fight_minutes <span class="sc">-</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                                <span class="dv">2</span> <span class="sc">*</span> <span class="fu">sqrt</span>(putty_rate <span class="sc">*</span> fight_minutes)),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ymax =</span> putty_rate <span class="sc">*</span> fight_minutes <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                    <span class="dv">2</span> <span class="sc">*</span> <span class="fu">sqrt</span>(putty_rate <span class="sc">*</span> fight_minutes)),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> putty_rate <span class="sc">*</span> fight_minutes), <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> putties_defeated), <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Fight length (minutes)"</span>, <span class="at">y =</span> <span class="st">"Putties defeated"</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Ranger"</span>, <span class="at">fill =</span> <span class="st">"Ranger"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="grouped_bubble_charts_files/figure-html/draw_grp_bubble-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>NAME IT:</strong></p>
+</div>
+<p>The putties in each fight follow a <a href="https://en.wikipedia.org/wiki/Poisson_distribution">Poisson distribution</a> whose average is the Ranger’s rate (<span class="math inline">\(\lambda\)</span>) times the length of the fight (<span class="math inline">\(t\)</span>):</p>
+<p><span class="math display">\[
+\text{putties} \sim \text{Poisson}(\lambda_{\text{ranger}} \times t)
+\]</span></p>
+<p>A Poisson count has a variance equal to its mean, so its standard deviation is <span class="math inline">\(\sqrt{\lambda t}\)</span>. For the Red Ranger (<span class="math inline">\(\lambda = 2\)</span>), a 2 minute fight averages 4 putties give or take about 2, while an 8 minute fight averages 16 putties give or take about 4. The spread grows with the square root of the fight length, which is why the points fan out (and why the ribbons in <strong>DRAW IT</strong> get wider). The <code>hits_taken</code> that set the bubble sizes work the same way with <span class="math inline">\(\lambda = 0.6\)</span>, so bigger bubbles show up in longer fights for every Ranger. Try changing <code>rate = 1</code> to <code>rate = 4</code> in <code>rgamma()</code> and the fights get shorter, the points crowd to the left, and the fan almost disappears.</p>
+</section>
+<section id="grammar" class="level2" data-number="38.4">
+<h2 data-number="38.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">38.4</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
 </div>
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map <code>bill_length_mm</code> to the <code>x</code> axis and <code>flipper_length_mm</code> to the <code>y</code> axis</p></li>
+<li><p>Map <code>fight_minutes</code> to the <code>x</code> axis and <code>putties_defeated</code> to the <code>y</code> axis</p></li>
 <li><p>Inside <code>geom_point()</code></p>
 <ul>
-<li><p>map <code>body_mass_g</code> to <code>size</code> and <code>species</code> to <code>fill</code></p></li>
+<li><p>map <code>hits_taken</code> to <code>size</code> and <code>ranger</code> to <code>color</code></p></li>
 <li><p>set the <code>alpha</code> to <code>2/3</code></p></li>
 </ul></li>
 <li><p>In the <code>scale_size()</code></p>
@@ -674,24 +798,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>labs_grp_bubble <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Bill Length vs. Flipper Length"</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Bill Length (mm)"</span>, </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Flipper length (mm)"</span>, </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="st">"Body Mass"</span>, </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Species"</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> bill_length_mm, <span class="at">y =</span> flipper_length_mm)) <span class="sc">+</span> </span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">size =</span> body_mass_g, </span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> species), </span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>) <span class="sc">+</span> </span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(.<span class="dv">04</span>, <span class="dv">6</span>)) </span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble <span class="sc">+</span> </span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  labs_grp_bubble</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>labs_grp_bubble <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Power Rangers vs. the Putties"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Putties defeated by fight length"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Fight length (minutes)"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Putties defeated"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="st">"Hits taken"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"Ranger"</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Ranger"</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble <span class="ot">&lt;-</span> ranger_fights <span class="sc">|&gt;</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> fight_minutes, <span class="at">y =</span> putties_defeated)) <span class="sc">+</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">size =</span> hits_taken,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> ranger),</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(.<span class="dv">04</span>, <span class="dv">6</span>))</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble <span class="sc">+</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  labs_grp_bubble</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
@@ -706,58 +833,64 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="more-info" class="level2" data-number="38.4">
-<h2 data-number="38.4" class="anchored" data-anchor-id="more-info"><span class="header-section-number">38.4</span> More info</h2>
+<section id="more-info" class="level2" data-number="38.5">
+<h2 data-number="38.5" class="anchored" data-anchor-id="more-info"><span class="header-section-number">38.5</span> More info</h2>
 <p>We can change the <code>shape</code> of the points for more control of the <code>color</code> and <code>fill</code>.</p>
-<section id="shape" class="level3" data-number="38.4.1">
-<h3 data-number="38.4.1" class="anchored" data-anchor-id="shape"><span class="header-section-number">38.4.1</span> Shape</h3>
+<section id="shape" class="level3" data-number="38.5.1">
+<h3 data-number="38.5.1" class="anchored" data-anchor-id="shape"><span class="header-section-number">38.5.1</span> Shape</h3>
 <p>Inside <code>geom_point()</code>, we can set <code>shape</code> to <code>21</code>, and <code>color</code> to <code>"#000000"</code> to outline the points in black</p>
 <div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble_s21 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> bill_length_mm, <span class="at">y =</span> flipper_length_mm)) <span class="sc">+</span> </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">size =</span> body_mass_g, <span class="at">fill =</span> species), </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">color =</span> <span class="st">"#000000"</span>) <span class="sc">+</span> </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(.<span class="dv">04</span>, <span class="dv">6</span>)) </span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble_s21 <span class="sc">+</span> </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  labs_grp_bubble</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble_s21 <span class="ot">&lt;-</span> ranger_fights <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> fight_minutes, <span class="at">y =</span> putties_defeated)) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">size =</span> hits_taken, <span class="at">fill =</span> ranger),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">color =</span> <span class="st">"#000000"</span>) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(.<span class="dv">04</span>, <span class="dv">6</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble_s21 <span class="sc">+</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  labs_grp_bubble</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Ignoring unknown labels:</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; • colour : "Ranger"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="grouped_bubble_charts_files/figure-html/shape_21-1.png" class="img-fluid"></p>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="grouped_bubble_charts_files/figure-html/code_graph_grp_bubble_s21-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="color" class="level3" data-number="38.4.2">
-<h3 data-number="38.4.2" class="anchored" data-anchor-id="color"><span class="header-section-number">38.4.2</span> Color</h3>
-<p>Inside the <code>aes()</code> of <code>geom_point()</code>, we can set <code>shape</code> to <code>21</code>, and map <code>color</code> to <code>"species"</code> to outline the points in the same colors as <code>fill</code></p>
+<section id="color" class="level3" data-number="38.5.2">
+<h3 data-number="38.5.2" class="anchored" data-anchor-id="color"><span class="header-section-number">38.5.2</span> Color</h3>
+<p>Inside the <code>aes()</code> of <code>geom_point()</code>, we can set <code>shape</code> to <code>21</code>, and map <code>color</code> to <code>ranger</code> to outline the points in the same colors as <code>fill</code></p>
 <div style="font-size: 0.85em;">
+<div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble_s21_color <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> bill_length_mm, <span class="at">y =</span> flipper_length_mm)) <span class="sc">+</span> </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">size =</span> body_mass_g, </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> species, </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> species), </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">shape =</span> <span class="dv">21</span>) <span class="sc">+</span> </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(.<span class="dv">04</span>, <span class="dv">6</span>)) </span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble_s21_color <span class="sc">+</span> </span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  labs_grp_bubble</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble_s21_color <span class="ot">&lt;-</span> ranger_fights <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> fight_minutes, <span class="at">y =</span> putties_defeated)) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">size =</span> hits_taken,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> ranger,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> ranger),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha =</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">shape =</span> <span class="dv">21</span>) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(.<span class="dv">04</span>, <span class="dv">6</span>))</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>ggp2_grp_bubble_s21_color <span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  labs_grp_bubble</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-nrow="1">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="grouped_bubble_charts_files/figure-html/shape_21_color_aes-1.png" class="img-fluid"></p>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="grouped_bubble_charts_files/figure-html/code_graph_grp_bubble_s21_color-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
 </div>
 </div>
 </div>

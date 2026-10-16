@@ -766,16 +766,17 @@ X_m \sim \text{Normal}(\mu_m, \; 0.12\,\mu_m), \quad \mu = (25, 35, 45)
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>labs_ovrlp_freq_poly <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Super Soaker range (simulated)"</span>,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"200 shots from each model"</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Range (feet)"</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"Model"</span>)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>ggp2_ovrlp_freq_poly <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> soaker_shots,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> range_ft,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">group =</span> model)) <span class="sc">+</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_freqpoly</span>(<span class="fu">aes</span>(<span class="at">color =</span> model), <span class="at">linewidth =</span> <span class="dv">1</span>)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>ggp2_ovrlp_freq_poly <span class="sc">+</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  labs_ovrlp_freq_poly</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Super Soaker range"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"200 shots from each model"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Range (feet)"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"Model"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>ggp2_ovrlp_freq_poly <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> soaker_shots,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> range_ft,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">group =</span> model)) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_freqpoly</span>(<span class="fu">aes</span>(<span class="at">color =</span> model), <span class="at">linewidth =</span> <span class="dv">1</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>ggp2_ovrlp_freq_poly <span class="sc">+</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  labs_ovrlp_freq_poly</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>

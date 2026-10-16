@@ -113,10 +113,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar floating slimcontent quarto-light">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -529,12 +558,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">36.1</span> Description</a></li>
   <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up"><span class="header-section-number">36.2</span> Set up</a></li>
-  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">36.3</span> Grammar</a></li>
+  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">36.3</span> Distribution</a></li>
+  <li><a href="#grammar" id="toc-grammar" class="nav-link" data-scroll-target="#grammar"><span class="header-section-number">36.4</span> Grammar</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/grouped_scatter_plots.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./relationships.html">RELATIONSHIPS</a></li><li class="breadcrumb-item"><a href="./grouped_scatter_plots.html"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Grouped scatter plots</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -598,7 +628,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Grouped scatter-plots display the relationships between two continuous variables across a <em>third</em> categorical variable.</p>
 <p>The <code>x</code> and <code>y</code> position displays the relationship between the two continuous variables, and color is used to distinguish between the categorical levels.</p>
 </section>
-<section id="set-up" class="level2 page-columns page-full" data-number="36.2">
+<section id="set-up" class="level2" data-number="36.2">
 <h2 data-number="36.2" class="anchored" data-anchor-id="set-up"><span class="header-section-number">36.2</span> Set up</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>PACKAGES:</strong></p>
@@ -608,74 +638,161 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"palmerpenguins"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"faux"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(faux)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># for data manipulation</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<div class="quarto-figure quarto-figure-right">
-<figure class="figure">
-<p><img src="www/lter_penguins.png" class="img-fluid figure-img" style="width:65.0%"></p>
-<figcaption>Artwork by Allison Horst</figcaption>
-</figure>
-</div>
-</div></div><p>The <code>penguins</code> data.</p>
+<p>In the early 90s, every kid picked a side: Sega or Nintendo. We’ll simulate 120 Sega Genesis kids and 120 Super Nintendo kids, and record how many games each one owned (<code>games_owned</code>) and how many hours a week they played (<code>hours_per_week</code>). The two numbers go together, so we’ll draw them in pairs with <a href="https://debruine.github.io/faux/reference/rnorm_multi.html"><code>faux::rnorm_multi()</code></a>, which takes a mean (<code>mu</code>) and standard deviation (<code>sd</code>) for each variable and a correlation (<code>r</code>) between them. Genesis kids own a few more games, Super Nintendo kids play a few more hours, and the link between games and hours is stronger for the Genesis kids (a correlation of 0.6) than the Super Nintendo kids (a correlation of 0.3). Setting the seed with <code>set.seed()</code> means you’ll get the same 240 kids every time you run the code below.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> palmerpenguins<span class="sc">::</span>penguins</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 344</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 8</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ species           &lt;fct&gt; Adelie, Adelie, Adelie…</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ island            &lt;fct&gt; Torgersen, Torgersen, …</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, …</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, …</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193…</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, …</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ sex               &lt;fct&gt; male, female, female, …</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year              &lt;int&gt; 2007, 2007, 2007, 2007…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1991</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>genesis <span class="ot">&lt;-</span> faux<span class="sc">::</span><span class="fu">rnorm_multi</span>(<span class="at">n =</span> <span class="dv">120</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mu =</span> <span class="fu">c</span>(<span class="at">games =</span> <span class="dv">12</span>, <span class="at">hours =</span> <span class="dv">9</span>), <span class="at">sd =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">3</span>), <span class="at">r =</span> <span class="fl">0.6</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">console =</span> <span class="st">"Sega Genesis"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>snes <span class="ot">&lt;-</span> faux<span class="sc">::</span><span class="fu">rnorm_multi</span>(<span class="at">n =</span> <span class="dv">120</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mu =</span> <span class="fu">c</span>(<span class="at">games =</span> <span class="dv">10</span>, <span class="at">hours =</span> <span class="dv">11</span>), <span class="at">sd =</span> <span class="fu">c</span>(<span class="fl">3.5</span>, <span class="dv">3</span>), <span class="at">r =</span> <span class="fl">0.3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">console =</span> <span class="st">"Super Nintendo"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>console_kids <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(genesis, snes) <span class="sc">|&gt;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">kid_id =</span> <span class="fu">row_number</span>(),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">games_owned =</span> <span class="fu">pmax</span>(<span class="dv">1</span>, <span class="fu">round</span>(games)),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">hours_per_week =</span> <span class="fu">round</span>(<span class="fu">pmax</span>(<span class="dv">0</span>, hours), <span class="dv">1</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(kid_id, console, games_owned, hours_per_week)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(console_kids)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 240</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ kid_id         &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9…</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ console        &lt;chr&gt; "Sega Genesis", "Sega Gen…</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ games_owned    &lt;dbl&gt; 17, 22, 10, 8, 13, 11, 24…</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ hours_per_week &lt;dbl&gt; 10.0, 12.0, 5.5, 7.9, 10.…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
-<section id="grammar" class="level2" data-number="36.3">
-<h2 data-number="36.3" class="anchored" data-anchor-id="grammar"><span class="header-section-number">36.3</span> Grammar</h2>
+<section id="distribution" class="level2" data-number="36.3">
+<h2 data-number="36.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">36.3</span> Distribution</h2>
+<p>A grouped scatter plot puts two clouds of points on the same axes. To compare the groups, we compare three things about each cloud: its center, its spread in each direction, and its tilt. Below we’ll move from the kids, to a picture, to the formula.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>COUNT IT:</strong></p>
+</div>
+<p>Start with the first three kids on each side.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>console_kids <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(console) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["kid_id"],"name":[1],"type":["int"],"align":["right"]},{"label":["console"],"name":[2],"type":["chr"],"align":["left"]},{"label":["games_owned"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hours_per_week"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"Sega Genesis","3":"17","4":"10.0"},{"1":"2","2":"Sega Genesis","3":"22","4":"12.0"},{"1":"3","2":"Sega Genesis","3":"10","4":"5.5"},{"1":"121","2":"Super Nintendo","3":"11","4":"12.5"},{"1":"122","2":"Super Nintendo","3":"12","4":"14.3"},{"1":"123","2":"Super Nintendo","3":"14","4":"17.0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>Below we calculate the center (<code>mean_games</code> and <code>mean_hours</code>), the spread (<code>sd_games</code> and <code>sd_hours</code>), and the tilt (the correlation, <code>r</code>) for each console.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>console_stats <span class="ot">&lt;-</span> console_kids <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(console) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_games =</span> <span class="fu">mean</span>(games_owned),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean_hours =</span> <span class="fu">mean</span>(hours_per_week),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_games =</span> <span class="fu">sd</span>(games_owned),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_hours =</span> <span class="fu">sd</span>(hours_per_week),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">r =</span> <span class="fu">cor</span>(games_owned, hours_per_week))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>console_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["console"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mean_games"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mean_hours"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["sd_games"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["sd_hours"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["r"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"Sega Genesis","2":"11.73333","3":"8.776667","4":"4.693520","5":"3.261714","6":"0.6504437"},{"1":"Super Nintendo","2":"9.77500","3":"11.435000","4":"3.195224","5":"3.190523","6":"0.3392401"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<p>The Genesis kids own about 11.7 games on average and play about 8.8 hours a week, while the Super Nintendo kids own about 9.8 games and play about 11.4 hours. The correlation for the Genesis kids (0.65) is about twice the correlation for the Super Nintendo kids (0.34).</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>DRAW IT:</strong></p>
+</div>
+<p>The graph below adds an ellipse around each cloud with <code>stat_ellipse()</code>. Each ellipse is drawn to hold about 95% of its group’s points. The Genesis ellipse is longer and more tilted (a stronger correlation), and the Super Nintendo ellipse is rounder and sits higher on the <code>y</code> axis.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(console_kids, <span class="fu">aes</span>(<span class="at">x =</span> games_owned, <span class="at">y =</span> hours_per_week,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">color =</span> console)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ellipse</span>(<span class="at">level =</span> <span class="fl">0.95</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> console_stats,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> mean_games, <span class="at">y =</span> mean_hours),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">4</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">stroke =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Games owned"</span>, <span class="at">y =</span> <span class="st">"Hours played per week"</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Console"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="grouped_scatter_plots_files/figure-html/draw_grp_scatter-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>The <code>x</code> in the middle of each ellipse marks the group means from <strong>COUNT IT</strong>.</p>
+<div style="font-size: 1.10em; color: #1e83c8;">
+<p><strong>NAME IT:</strong></p>
+</div>
+<p>Each console’s pairs come from a <a href="https://en.wikipedia.org/wiki/Multivariate_normal_distribution">bivariate normal distribution</a>, which is described by a vector of means and a covariance matrix:</p>
+<p><span class="math display">\[
+\begin{pmatrix} \text{games} \\ \text{hours} \end{pmatrix} \sim \text{Normal}\left( \begin{pmatrix} \mu_g \\ \mu_h \end{pmatrix}, \; \begin{pmatrix} \sigma_g^2 &amp; r \sigma_g \sigma_h \\ r \sigma_g \sigma_h &amp; \sigma_h^2 \end{pmatrix} \right)
+\]</span></p>
+<p>The means set the center of each cloud, the standard deviations (<span class="math inline">\(\sigma_g\)</span> and <span class="math inline">\(\sigma_h\)</span>) set how wide and tall it is, and the correlation (<span class="math inline">\(r\)</span>) sets the tilt. When <span class="math inline">\(r = 0\)</span> the ellipse lines up with the axes, and as <span class="math inline">\(r\)</span> gets closer to 1 it stretches into a thin, tilted line. The ellipses in <strong>DRAW IT</strong> are just the outlines of these distributions. Try changing the Super Nintendo <code>r</code> to <code>0.9</code> in <code>rnorm_multi()</code> and its ellipse collapses toward a line.</p>
+</section>
+<section id="grammar" class="level2" data-number="36.4">
+<h2 data-number="36.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">36.4</span> Grammar</h2>
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>CODE:</strong></p>
 </div>
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map <code>bill_length_mm</code> to the <code>x</code> axis</p></li>
-<li><p>Map <code>flipper_length_mm</code> to the <code>y</code> axis</p></li>
-<li><p>Map <code>species</code> to <code>color</code> inside the <code>geom_point()</code></p></li>
+<li><p>Map <code>games_owned</code> to the <code>x</code> axis</p></li>
+<li><p>Map <code>hours_per_week</code> to the <code>y</code> axis</p></li>
+<li><p>Map <code>console</code> to <code>color</code> inside the <code>geom_point()</code></p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>labs_grp_scatter <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Bill Length vs. Flipper Length"</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Bill Length (mm)"</span>, </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Flipper length (mm)"</span>, </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"Species"</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ggp2_grp_scatter <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, </span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> flipper_length_mm)) <span class="sc">+</span> </span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> species)) </span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>ggp2_grp_scatter <span class="sc">+</span> </span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  labs_grp_scatter</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>labs_grp_scatter <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"The console wars"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Games owned vs. hours played per week"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Games owned"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Hours played per week"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"Console"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>ggp2_grp_scatter <span class="ot">&lt;-</span> console_kids <span class="sc">|&gt;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> games_owned,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> hours_per_week)) <span class="sc">+</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> console))</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>ggp2_grp_scatter <span class="sc">+</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  labs_grp_scatter</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
