@@ -44,10 +44,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b626d73c4c936ccc3cb08be7d45d1df6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c129a1e1362ed5a73ff0716f6bb86bc6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-ebdbe043da5b4c5708f294ed9bcd514f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-547bac0ef9796ef7f2f70ebb4c819a70.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-ebdbe043da5b4c5708f294ed9bcd514f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -81,7 +85,169 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -106,8 +272,9 @@ ul.task-list li input[type="checkbox"] {
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">ggplot2: field manual</a> 
-        <div class="sidebar-tools-main">
+        <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/mjfrigaard/fm-ggp2" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -487,11 +654,26 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="3">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#overlapping-histograms" id="toc-overlapping-histograms" class="nav-link active" data-scroll-target="#overlapping-histograms">Overlapping histograms</a></li>
+  <li><a href="#overlapping-frequency-polygons" id="toc-overlapping-frequency-polygons" class="nav-link" data-scroll-target="#overlapping-frequency-polygons">Overlapping frequency polygons</a></li>
+  <li><a href="#overlapping-dot-plots" id="toc-overlapping-dot-plots" class="nav-link" data-scroll-target="#overlapping-dot-plots">Overlapping dot plots</a></li>
+  <li><a href="#beeswarm-plots" id="toc-beeswarm-plots" class="nav-link" data-scroll-target="#beeswarm-plots">Beeswarm plots</a></li>
+  <li><a href="#overlapping-and-stacked-density-plots" id="toc-overlapping-and-stacked-density-plots" class="nav-link" data-scroll-target="#overlapping-and-stacked-density-plots">Overlapping and stacked density plots</a></li>
+  <li><a href="#ridgeline-plots" id="toc-ridgeline-plots" class="nav-link" data-scroll-target="#ridgeline-plots">Ridgeline plots</a></li>
+  <li><a href="#grouped-box-plots" id="toc-grouped-box-plots" class="nav-link" data-scroll-target="#grouped-box-plots">Grouped box plots</a></li>
+  <li><a href="#grouped-violin-plots" id="toc-grouped-violin-plots" class="nav-link" data-scroll-target="#grouped-violin-plots">Grouped violin plots</a></li>
+  <li><a href="#raincloud-plots" id="toc-raincloud-plots" class="nav-link" data-scroll-target="#raincloud-plots">Raincloud plots</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/distributions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
+
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -523,12 +705,142 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <p><strong>Distributions</strong>: these graphs display the shape of a variable’s values (good for assessing <a href="https://en.wikipedia.org/wiki/Normal_distribution">normalcy</a>, <a href="https://en.wikipedia.org/wiki/Skewness">skewness</a>, <a href="https://en.wikipedia.org/wiki/Kurtosis">kurtosis</a>, etc.)</p>
+<section id="overlapping-histograms" class="level2">
+<h2 class="anchored" data-anchor-id="overlapping-histograms">Overlapping histograms</h2>
+<p><a href="./overlapping_histograms.html">Overlapping histograms</a> draw a histogram for each group on the same axes. The bars are partially transparent so we can see where the groups overlap and where they separate. Overlapping histograms work well for comparing two or three groups, but get crowded with more. Color separates the groups, and a legend explains each one.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/part_overlapping_histograms-1.png" class="quarto-figure quarto-figure-center figure-img" style="width:60.0%;height:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="overlapping-frequency-polygons" class="level2">
+<h2 class="anchored" data-anchor-id="overlapping-frequency-polygons">Overlapping frequency polygons</h2>
+<p><a href="./overlapping_frequency_polygons.html">Overlapping frequency polygons</a> draw a line for each group’s counts across the bins of a numeric variable. Because they use lines instead of bars, frequency polygons can compare more groups than overlapping histograms without hiding each other. The shape of each line shows the center, spread, and skew of each group. Color separates the groups, and a legend explains each line.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/part_overlapping_frequency_polygons-1.png" class="quarto-figure quarto-figure-center figure-img" style="width:60.0%;height:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="overlapping-dot-plots" class="level2">
+<h2 class="anchored" data-anchor-id="overlapping-dot-plots">Overlapping dot plots</h2>
+<p><a href="./overlapping_dot_plots.html">Overlapping dot plots</a> stack a dot for every observation in each group on the same axis. Each dot is one value, so we can count the observations directly and see clusters, gaps, and outliers in each group. Dot plots work best with small to moderate datasets. Color separates the groups, and a legend explains each one.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/part_overlapping_dot_plots-1.png" class="quarto-figure quarto-figure-center figure-img" style="width:60.0%;height:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="beeswarm-plots" class="level2">
+<h2 class="anchored" data-anchor-id="beeswarm-plots">Beeswarm plots</h2>
+<p>A <a href="./beeswarm_plots.html">beeswarm plot</a> shows every observation as a point, arranged so the points don’t overlap. The points spread out sideways where values are crowded, so the width of the swarm shows where the values are concentrated. Beeswarm plots are a good way to compare the distributions of several groups while still seeing each data point. Each group gets its own swarm, usually along the <code>x</code> axis.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/part_beeswarm_plots-1.png" class="quarto-figure quarto-figure-center figure-img" style="width:60.0%;height:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="overlapping-and-stacked-density-plots" class="level2">
+<h2 class="anchored" data-anchor-id="overlapping-and-stacked-density-plots">Overlapping and stacked density plots</h2>
+<p><a href="./overlapping_stacked_density_plots.html">Overlapping and stacked density plots</a> draw a smooth density curve for each group. Overlapping densities use transparency to show where the groups share the same values, and stacked densities place each group on top of the others to show the total. Density plots smooth over the noise in histograms, which makes the overall shapes easier to compare. Color separates the groups, and a legend explains each curve.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/part_overlapping_stacked_density_plots-1.png" class="quarto-figure quarto-figure-center figure-img" style="width:60.0%;height:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="ridgeline-plots" class="level2">
+<h2 class="anchored" data-anchor-id="ridgeline-plots">Ridgeline plots</h2>
+<p>A <a href="./ridgeline_plots.html">ridgeline plot</a> stacks a density curve for each group in its own row, slightly overlapping the row above it. The rows share the same <code>x</code> axis, so we can compare the center, spread, and shape of many groups at once. Ridgeline plots are especially helpful when there are too many groups for overlapping densities. Each group’s name labels its row on the <code>y</code> axis.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/part_ridgeline_plots-1.png" class="quarto-figure quarto-figure-center figure-img" style="width:60.0%;height:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="grouped-box-plots" class="level2">
+<h2 class="anchored" data-anchor-id="grouped-box-plots">Grouped box plots</h2>
+<p><a href="./grouped_box_plots.html">Grouped box plots</a> draw a box plot for each group side by side. Each box shows the median and the middle half of the values, the whiskers show the rest of the range, and points beyond the whiskers show unusual values. Grouped box plots summarize many groups in very little space. The groups are placed along one axis and the numeric values along the other.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/part_grouped_box_plots-1.png" class="quarto-figure quarto-figure-center figure-img" style="width:60.0%;height:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="grouped-violin-plots" class="level2">
+<h2 class="anchored" data-anchor-id="grouped-violin-plots">Grouped violin plots</h2>
+<p><a href="./grouped_violin_plots.html">Grouped violin plots</a> draw a violin for each group side by side. Each violin is a mirrored density curve, so its width shows how common each value is in that group. Violins reveal shapes a box plot hides, such as two peaks in the same group. The groups are placed along one axis, and color often separates them.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/part_grouped_violin_plots-1.png" class="quarto-figure quarto-figure-center figure-img" style="width:60.0%;height:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="raincloud-plots" class="level2">
+<h2 class="anchored" data-anchor-id="raincloud-plots">Raincloud plots</h2>
+<p>A <a href="./raincloud_plots.html">raincloud plot</a> combines three views of the same data: a half density curve (the cloud), a box plot, and the individual points (the rain). Together they show the shape of the distribution, its summary statistics, and every observation. Raincloud plots are a good choice for comparing groups or repeated measurements when we don’t want to hide any of the data. Each group gets its own cloud and rain, and color separates them.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/part_raincloud_plots-1.png" class="quarto-figure quarto-figure-center figure-img" style="width:60.0%;height:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -986,7 +1298,7 @@ ul.task-list li input[type="checkbox"] {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/distributions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/distributions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

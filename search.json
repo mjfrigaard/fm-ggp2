@@ -925,7 +925,47 @@
     "href": "proportions.html",
     "title": "PROPORTIONS",
     "section": "",
-    "text": "This graph is largely complete and just needs final proof reading.\n\n\n\nProportions: These graphs display stratified counts, percentages, or part-to-whole relationships of values within variables (or between variables).",
+    "text": "Diverging bar graphs\nProportions: These graphs display stratified counts, percentages, or part-to-whole relationships of values within variables (or between variables).\nA diverging bar graph shows values that split in two directions from a center line, usually zero. Bars on one side represent one group or response (agree, positive, more), and bars on the other side represent the opposite. Diverging bars are common for survey responses on a scale, because they make it easy to see which way the balance tips for each category. Color separates the two sides, and a legend explains which side is which.",
+    "crumbs": [
+      "PROPORTIONS"
+    ]
+  },
+  {
+    "objectID": "proportions.html#stacked-and-filled-density-plots",
+    "href": "proportions.html#stacked-and-filled-density-plots",
+    "title": "PROPORTIONS",
+    "section": "Stacked and filled density plots",
+    "text": "Stacked and filled density plots\nStacked and filled density plots show how the share of each group changes across the range of a numeric variable. Each group gets its own smooth density curve, and the curves are stacked on top of each other. In a filled density plot, the stack is stretched so it always adds up to 100%, which shows each group’s proportion at every value on the x axis. Color separates the groups, and a legend explains each layer.",
+    "crumbs": [
+      "PROPORTIONS"
+    ]
+  },
+  {
+    "objectID": "proportions.html#mosaic-plots",
+    "href": "proportions.html#mosaic-plots",
+    "title": "PROPORTIONS",
+    "section": "Mosaic plots",
+    "text": "Mosaic plots\nA mosaic plot displays the counts of two or more categorical variables as a set of rectangles. The width of each column shows the share of the first variable, and the heights of the tiles inside each column show the share of the second variable within it. Because area represents the count, mosaic plots make it easy to see when two categorical variables are related. Color separates the levels of one variable, and a legend explains the colors.",
+    "crumbs": [
+      "PROPORTIONS"
+    ]
+  },
+  {
+    "objectID": "proportions.html#pie-charts",
+    "href": "proportions.html#pie-charts",
+    "title": "PROPORTIONS",
+    "section": "Pie charts",
+    "text": "Pie charts\nA pie chart divides a circle into slices, and each slice shows one category’s share of the whole. The angle (and area) of each slice is proportional to the category’s count or percentage. Pie charts work best with a few categories and simple fractions, such as one half or one quarter. Labels on the slices or a legend explain each category.",
+    "crumbs": [
+      "PROPORTIONS"
+    ]
+  },
+  {
+    "objectID": "proportions.html#treemaps",
+    "href": "proportions.html#treemaps",
+    "title": "PROPORTIONS",
+    "section": "Treemaps",
+    "text": "Treemaps\nA treemap displays a whole as a rectangle divided into smaller rectangles, one for each category. The area of each rectangle is proportional to its value, and categories can be nested inside larger groups. Treemaps are handy when there are too many categories for a pie chart, or when the data have a hierarchy. Color usually shows the larger groups, and labels inside the rectangles name each category.",
     "crumbs": [
       "PROPORTIONS"
     ]
@@ -1199,7 +1239,87 @@
     "href": "distributions.html",
     "title": "DISTRIBUTIONS",
     "section": "",
-    "text": "This graph is largely complete and just needs final proof reading.\n\n\n\nDistributions: these graphs display the shape of a variable’s values (good for assessing normalcy, skewness, kurtosis, etc.)",
+    "text": "Overlapping histograms\nDistributions: these graphs display the shape of a variable’s values (good for assessing normalcy, skewness, kurtosis, etc.)\nOverlapping histograms draw a histogram for each group on the same axes. The bars are partially transparent so we can see where the groups overlap and where they separate. Overlapping histograms work well for comparing two or three groups, but get crowded with more. Color separates the groups, and a legend explains each one.",
+    "crumbs": [
+      "DISTRIBUTIONS"
+    ]
+  },
+  {
+    "objectID": "distributions.html#overlapping-frequency-polygons",
+    "href": "distributions.html#overlapping-frequency-polygons",
+    "title": "DISTRIBUTIONS",
+    "section": "Overlapping frequency polygons",
+    "text": "Overlapping frequency polygons\nOverlapping frequency polygons draw a line for each group’s counts across the bins of a numeric variable. Because they use lines instead of bars, frequency polygons can compare more groups than overlapping histograms without hiding each other. The shape of each line shows the center, spread, and skew of each group. Color separates the groups, and a legend explains each line.",
+    "crumbs": [
+      "DISTRIBUTIONS"
+    ]
+  },
+  {
+    "objectID": "distributions.html#overlapping-dot-plots",
+    "href": "distributions.html#overlapping-dot-plots",
+    "title": "DISTRIBUTIONS",
+    "section": "Overlapping dot plots",
+    "text": "Overlapping dot plots\nOverlapping dot plots stack a dot for every observation in each group on the same axis. Each dot is one value, so we can count the observations directly and see clusters, gaps, and outliers in each group. Dot plots work best with small to moderate datasets. Color separates the groups, and a legend explains each one.",
+    "crumbs": [
+      "DISTRIBUTIONS"
+    ]
+  },
+  {
+    "objectID": "distributions.html#beeswarm-plots",
+    "href": "distributions.html#beeswarm-plots",
+    "title": "DISTRIBUTIONS",
+    "section": "Beeswarm plots",
+    "text": "Beeswarm plots\nA beeswarm plot shows every observation as a point, arranged so the points don’t overlap. The points spread out sideways where values are crowded, so the width of the swarm shows where the values are concentrated. Beeswarm plots are a good way to compare the distributions of several groups while still seeing each data point. Each group gets its own swarm, usually along the x axis.",
+    "crumbs": [
+      "DISTRIBUTIONS"
+    ]
+  },
+  {
+    "objectID": "distributions.html#overlapping-and-stacked-density-plots",
+    "href": "distributions.html#overlapping-and-stacked-density-plots",
+    "title": "DISTRIBUTIONS",
+    "section": "Overlapping and stacked density plots",
+    "text": "Overlapping and stacked density plots\nOverlapping and stacked density plots draw a smooth density curve for each group. Overlapping densities use transparency to show where the groups share the same values, and stacked densities place each group on top of the others to show the total. Density plots smooth over the noise in histograms, which makes the overall shapes easier to compare. Color separates the groups, and a legend explains each curve.",
+    "crumbs": [
+      "DISTRIBUTIONS"
+    ]
+  },
+  {
+    "objectID": "distributions.html#ridgeline-plots",
+    "href": "distributions.html#ridgeline-plots",
+    "title": "DISTRIBUTIONS",
+    "section": "Ridgeline plots",
+    "text": "Ridgeline plots\nA ridgeline plot stacks a density curve for each group in its own row, slightly overlapping the row above it. The rows share the same x axis, so we can compare the center, spread, and shape of many groups at once. Ridgeline plots are especially helpful when there are too many groups for overlapping densities. Each group’s name labels its row on the y axis.",
+    "crumbs": [
+      "DISTRIBUTIONS"
+    ]
+  },
+  {
+    "objectID": "distributions.html#grouped-box-plots",
+    "href": "distributions.html#grouped-box-plots",
+    "title": "DISTRIBUTIONS",
+    "section": "Grouped box plots",
+    "text": "Grouped box plots\nGrouped box plots draw a box plot for each group side by side. Each box shows the median and the middle half of the values, the whiskers show the rest of the range, and points beyond the whiskers show unusual values. Grouped box plots summarize many groups in very little space. The groups are placed along one axis and the numeric values along the other.",
+    "crumbs": [
+      "DISTRIBUTIONS"
+    ]
+  },
+  {
+    "objectID": "distributions.html#grouped-violin-plots",
+    "href": "distributions.html#grouped-violin-plots",
+    "title": "DISTRIBUTIONS",
+    "section": "Grouped violin plots",
+    "text": "Grouped violin plots\nGrouped violin plots draw a violin for each group side by side. Each violin is a mirrored density curve, so its width shows how common each value is in that group. Violins reveal shapes a box plot hides, such as two peaks in the same group. The groups are placed along one axis, and color often separates them.",
+    "crumbs": [
+      "DISTRIBUTIONS"
+    ]
+  },
+  {
+    "objectID": "distributions.html#raincloud-plots",
+    "href": "distributions.html#raincloud-plots",
+    "title": "DISTRIBUTIONS",
+    "section": "Raincloud plots",
+    "text": "Raincloud plots\nA raincloud plot combines three views of the same data: a half density curve (the cloud), a box plot, and the individual points (the rain). Together they show the shape of the distribution, its summary statistics, and every observation. Raincloud plots are a good choice for comparing groups or repeated measurements when we don’t want to hide any of the data. Each group gets its own cloud and rain, and color separates them.",
     "crumbs": [
       "DISTRIBUTIONS"
     ]
@@ -1671,7 +1791,67 @@
     "href": "dates_and_times.html",
     "title": "DATES & TIMES",
     "section": "",
-    "text": "This graph is largely complete and just needs final proof reading.\n\n\n\nDates & times: These graphs display changes in quantitative or categorical variables over a dimension of time (date-time, date, year, month, quarter, etc.).",
+    "text": "Line graphs\nDates & times: These graphs display changes in quantitative or categorical variables over a dimension of time (date-time, date, year, month, quarter, etc.).\nA line graph connects a numeric value at each point in time with a line. Time goes on the x axis and the value goes on the y axis, so the slope of the line shows how fast the value is rising or falling. Line graphs are the most common way to show a trend over time. Points can be added to show where each measurement was taken.",
+    "crumbs": [
+      "DATES & TIMES"
+    ]
+  },
+  {
+    "objectID": "dates_and_times.html#grouped-line-graphs",
+    "href": "dates_and_times.html#grouped-line-graphs",
+    "title": "DATES & TIMES",
+    "section": "Grouped line graphs",
+    "text": "Grouped line graphs\nGrouped line graphs draw a line over time for each group on the same axes. They make it easy to compare trends, and to see when one group passes another. Color, line type, and line width can separate the groups or highlight a few of them, and facets can split the groups into small multiples. A legend explains each line.",
+    "crumbs": [
+      "DATES & TIMES"
+    ]
+  },
+  {
+    "objectID": "dates_and_times.html#bump-charts",
+    "href": "dates_and_times.html#bump-charts",
+    "title": "DATES & TIMES",
+    "section": "Bump charts",
+    "text": "Bump charts\nA bump chart shows how the rank of each group changes over time. Time goes on the x axis and the rank goes on the y axis, with the top rank at the top. Smooth lines connect each group’s ranks, so we can follow who moves up and who moves down. Color separates the groups, and a legend or labels name each line.",
+    "crumbs": [
+      "DATES & TIMES"
+    ]
+  },
+  {
+    "objectID": "dates_and_times.html#slope-graphs",
+    "href": "dates_and_times.html#slope-graphs",
+    "title": "DATES & TIMES",
+    "section": "Slope graphs",
+    "text": "Slope graphs\nA slope graph compares the values of several groups at two points in time. Each group gets a point at each time, and a line connects the two points. The slope of each line shows whether the group went up or down, and how much. Slope graphs are a simple way to show before and after comparisons for many groups at once.",
+    "crumbs": [
+      "DATES & TIMES"
+    ]
+  },
+  {
+    "objectID": "dates_and_times.html#stream-plots",
+    "href": "dates_and_times.html#stream-plots",
+    "title": "DATES & TIMES",
+    "section": "Stream plots",
+    "text": "Stream plots\nA stream plot stacks the values of several groups over time into a flowing shape centered around a middle line. The thickness of each layer shows that group’s value at each point in time, and the total thickness shows the overall value. Stream plots are useful when groups rise and fall at different times. Color separates the layers, and a legend or labels name each one.",
+    "crumbs": [
+      "DATES & TIMES"
+    ]
+  },
+  {
+    "objectID": "dates_and_times.html#alluvial-charts",
+    "href": "dates_and_times.html#alluvial-charts",
+    "title": "DATES & TIMES",
+    "section": "Alluvial charts",
+    "text": "Alluvial charts\nAn alluvial chart shows how the members of a group move between categories over time. Each time point is a column of stacked categories, and bands flow between the columns to show how many members moved from one category to another. The width of each band is proportional to its count. Color usually follows each band’s starting category, and a legend explains the colors.",
+    "crumbs": [
+      "DATES & TIMES"
+    ]
+  },
+  {
+    "objectID": "dates_and_times.html#instance-charts",
+    "href": "dates_and_times.html#instance-charts",
+    "title": "DATES & TIMES",
+    "section": "Instance charts",
+    "text": "Instance charts\nAn instance chart marks each time a category appears with a small tick. Time goes on the x axis and the categories go on the y axis, so gaps in a row show when a category didn’t appear at all. Saturation or color can show how often each instance occurred. Instance charts are a good way to show the timing of events across many categories.",
     "crumbs": [
       "DATES & TIMES"
     ]
@@ -2044,7 +2224,77 @@
     "href": "relationships.html",
     "title": "RELATIONSHIPS",
     "section": "",
-    "text": "This graph is largely complete and just needs final proof reading.\n\n\n\nRelationships: these graphs show how the change of values in variable x affect the values in variable y (and possibly z)?",
+    "text": "Scatter plots\nRelationships: these graphs show how the change of values in variable x affect the values in variable y (and possibly z)?\nA scatter plot displays the relationship between two numeric variables, with one on the x axis and the other on the y axis. Each point is one observation, so the pattern of points shows whether the variables rise together, move in opposite directions, or aren’t related at all. Scatter plots also reveal clusters, outliers, and limits in the data. Transparency (alpha) helps when points overlap.",
+    "crumbs": [
+      "RELATIONSHIPS"
+    ]
+  },
+  {
+    "objectID": "relationships.html#grouped-scatter-plots",
+    "href": "relationships.html#grouped-scatter-plots",
+    "title": "RELATIONSHIPS",
+    "section": "Grouped scatter plots",
+    "text": "Grouped scatter plots\nGrouped scatter plots display the relationship between two numeric variables across the levels of a categorical variable. Each group gets its own color (or shape), so we can compare the center, spread, and direction of each group’s cloud of points. Grouped scatter plots show whether the relationship is the same for every group. A legend explains the colors.",
+    "crumbs": [
+      "RELATIONSHIPS"
+    ]
+  },
+  {
+    "objectID": "relationships.html#bubble-charts",
+    "href": "relationships.html#bubble-charts",
+    "title": "RELATIONSHIPS",
+    "section": "Bubble charts",
+    "text": "Bubble charts\nA bubble chart is a scatter plot with a third numeric variable mapped to the size of each point. The position of each bubble shows the first two variables, and its area shows the third. Bubble charts can display a lot of information at once, but overlapping bubbles may need transparency. A legend explains the bubble sizes.",
+    "crumbs": [
+      "RELATIONSHIPS"
+    ]
+  },
+  {
+    "objectID": "relationships.html#grouped-bubble-charts",
+    "href": "relationships.html#grouped-bubble-charts",
+    "title": "RELATIONSHIPS",
+    "section": "Grouped bubble charts",
+    "text": "Grouped bubble charts\nA grouped bubble chart adds a categorical variable to a bubble chart with color. Position shows two numeric variables, size shows a third, and color shows the group. Grouped bubble charts can compare several groups across three numeric variables in a single graph. Legends explain both the sizes and the colors.",
+    "crumbs": [
+      "RELATIONSHIPS"
+    ]
+  },
+  {
+    "objectID": "relationships.html#parallel-sets",
+    "href": "relationships.html#parallel-sets",
+    "title": "RELATIONSHIPS",
+    "section": "Parallel sets",
+    "text": "Parallel sets\nParallel sets display the counts of several categorical variables as vertical axes connected by bands. Each band shows how many observations share a combination of categories, and its width is proportional to the count. Parallel sets show whether categorical variables are related, because related variables split into bands in different ways. Color usually follows one of the variables.",
+    "crumbs": [
+      "RELATIONSHIPS"
+    ]
+  },
+  {
+    "objectID": "relationships.html#density-contours",
+    "href": "relationships.html#density-contours",
+    "title": "RELATIONSHIPS",
+    "section": "Density contours",
+    "text": "Density contours\nDensity contours draw lines around the areas where the points in a scatter plot are most crowded, like the lines on a topographic map. The innermost contours surround the peaks, and filled contours use color to show the height of the density. Density contours are helpful when there are too many points to see in a scatter plot. A legend explains the contour levels.",
+    "crumbs": [
+      "RELATIONSHIPS"
+    ]
+  },
+  {
+    "objectID": "relationships.html#d-histograms",
+    "href": "relationships.html#d-histograms",
+    "title": "RELATIONSHIPS",
+    "section": "2D histograms",
+    "text": "2D histograms\nA 2D histogram divides the area of a scatter plot into a grid of squares and colors each square by how many points fall inside it. It extends the histogram to two numeric variables, and it works well for very large datasets. The size of the squares (set with bins) controls how much detail we see. A color scale explains the counts.",
+    "crumbs": [
+      "RELATIONSHIPS"
+    ]
+  },
+  {
+    "objectID": "relationships.html#hexagon-bins",
+    "href": "relationships.html#hexagon-bins",
+    "title": "RELATIONSHIPS",
+    "section": "Hexagon bins",
+    "text": "Hexagon bins\nHexagon bins work like a 2D histogram, but divide the graph area into hexagons instead of squares. Each hexagon is colored by the number of points inside it, and hexagons fit together without the corners of a square grid. Hexagon bins are another good choice for large datasets with lots of overplotting. A color scale explains the counts.",
     "crumbs": [
       "RELATIONSHIPS"
     ]
@@ -2472,7 +2722,29 @@
     "href": "data.html",
     "title": "Appendix A — Data",
     "section": "",
-    "text": "WarningCaution\n\n\n\n\n\n\nThis section is still being developed. The contents are subject to change.\n\n\n\n\nThe data packages used are available to preview below.\n\n\nshow/hide\ndata_pkgs &lt;- c(\"palmerpenguins\", \n               \"fivethirtyeight\", \n               \"ggplot2movies\", \n               \"babynames\")\ninstall.packages(data_pkgs)\n\n\n\nA.0.1 palmerpenguins::penguins\nThe majority of the graphs in the manual are built using the palmerpenguins::penguins data.\n\n\n\n…so…many…PENGUINS!\n\n\n\n\nArtwork by Allison Horst\n\n\n\n\n\n\n\n\nNoteExpand to view the data in palmerpenguins::penguins\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\nSource: https://github.com/allisonhorst/palmerpenguins/\n\n\nA.0.2 fivethirtyeight\nUse the table below to view the datasets in this package.\n\n\n\n\n\n\n\n\n\n\n\n\n\nNoteExpand to view the data in the fivethirtyeight package\n\n\n\n\n\n\nTo view a table of available datasets in the fivethirtyeight package, view the Data Frame Name and Article Title columns in the datasets_master table\n\n\n\n\n\n  \n\n\n\n\n\n\n\nSource: https://github.com/fivethirtyeight/data\n\n\nA.0.3 ggplot2movies::movies\n\n\n\n\n\n\n\n\n\n\n\n\n\nNoteExpand to view a sample of the data in ggplot2movies::movies\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\nSource: https://www.imdb.com/\n\n\nA.0.4 babynames::babynames\n\n\n\n\n\n\n\n\n\n\n\n\n\nNoteExpand to view a sample of the data in babynames::babynames\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\nSource: http://www.ssa.gov/oact/babynames/limits.html\nWhy not manually create the graph datasets with data.frame() or tibble()/tribble()?\nIn my opinion, using manually generated data is great for reproducible examples, but they rarely look like data ‘caught in the wild.’ The data packages above are also well maintained and can be used to provide a variety of examples.",
+    "text": "A.1 Why simulated data?\nEvery graph in this book is built from simulated data. Each chapter creates its own dataset in a code chunk you can see and run, using base R’s random number functions (rnorm(), rpois(), rgamma(), sample(), and friends) or the faux package. None of the examples depend on a data package, and each dataset has a late 90s theme to match the chapter’s graph.\nI’ve found that simulated data solves two problems at once. First, it’s completely reproducible. Each chapter calls set.seed() (usually with a 90s year), so you’ll get the same values I did every time you run the code. Second, we know the truth behind every dataset. When we simulate 300 Pokémon starters with known probabilities, we can check how close the counts land, and that’s exactly what the Distribution section in each chapter does:\nReal data ‘caught in the wild’ has its place, but you can’t look up the distribution it came from. Simulated data keeps the graph, the numbers, and the formula in sync, so you can see why a graph looks the way it does. Try changing an argument (a mean, a probability, or a sample size) in any chapter and re-run the code to see how the graph responds.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Data</span>"
+    ]
+  },
+  {
+    "objectID": "data.html#why-simulated-data",
+    "href": "data.html#why-simulated-data",
+    "title": "Appendix A — Data",
+    "section": "",
+    "text": "COUNT IT: look at the first few rows and summarize the values\nDRAW IT: sketch the values in a simple picture that connects them to the chapter’s graph\nNAME IT: name the distribution behind the data and walk through its formula",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Data</span>"
+    ]
+  },
+  {
+    "objectID": "data.html#datasets-by-chapter",
+    "href": "data.html#datasets-by-chapter",
+    "title": "Appendix A — Data",
+    "section": "A.2 Datasets by chapter",
+    "text": "A.2 Datasets by chapter\nThe tables below list the dataset in each chapter, its 90s reference, the distribution it’s drawn from, and the seed passed to set.seed().\n\nA.2.1 Univariate\n\n\n\n\nChapter\nDataset\n90s reference\nDistribution\nSeed\n\n\n\n\nBar graphs\npokemon_starters\nPokémon starters\nMultinomial\n1998\n\n\nHistograms\naol_sessions\nAOL dial up sessions\nNormal\n1014\n\n\nFrequency polygons\nnapster_downloads\nNapster MP3 downloads\nGamma\n1999\n\n\nDot plots\nblockbuster_rentals\nBlockbuster Video rentals\nPoisson\n1993\n\n\nDensity plots\nspice_fans\nSpice World tour fans\nNormal mixture\n1998\n\n\nViolin plots\nbeanie_prices\nBeanie Babies prices\nLognormal\n1996\n\n\nBox plots\nmario_kart_laps\nMario Kart 64 lap times\nt\n64\n\n\n\n\n\n\nA.2.2 Amounts\n\n\n\n\nChapter\nDataset\n90s reference\nDistribution\nSeed\n\n\n\n\nGrouped bar graphs\njp_dinos\nJurassic Park paddocks\nNormal\n1993\n\n\nSummary bar graphs\nhappy_meals\nMcDonald’s Happy Meals\nPoisson\n1997\n\n\nOverlapping bar graphs\nfriends_episodes\nFriends episodes\nNormal\n1994\n\n\nHeatmaps\nfp_gags\nThe Fresh Prince of Bel-Air gags\nBinomial\n1990\n\n\nWaffle charts\npog_collection\nPogs collection\nMultinomial\n1993\n\n\nCleveland dot plots\nwalkman_tests\nSony Walkman battery tests\nNormal (faux)\n1979\n\n\n\n\n\n\nA.2.3 Proportions\n\n\n\n\nChapter\nDataset\n90s reference\nDistribution\nSeed\n\n\n\n\nDiverging bar graphs\nencyclopedia_survey\nEncarta vs. Britannica survey\nMultinomial\n1993\n\n\nStacked densities\nmodem_sessions\nNetscape modem sessions\nNormal and Bayes’ theorem\n1996\n\n\nMosaic plots\ntitanic_fans\nTitanic moviegoers\nMultinomial\n1997\n\n\nPie charts\ntrapper_keepers\nLisa Frank Trapper Keepers\nMultinomial\n1993\n\n\nTreemaps\ntoy_sales\nToys”R”Us 1998 sales\nPoisson\n1999\n\n\n\n\n\n\nA.2.4 Distributions\n\n\n\n\nChapter\nDataset\n90s reference\nDistribution\nSeed\n\n\n\n\nOverlapping histograms\ntamagotchi_pets\nTamagotchi lifespans\nWeibull\n1997\n\n\nOverlapping frequency polygons\nsoaker_shots\nSuper Soaker range\nNormal\n1990\n\n\nOverlapping dot plots\ngoosebumps_readers\nGoosebumps books read\nPoisson\n1992\n\n\nBeeswarm plots\ntetris_games\nTetris line clears\nNegative binomial\n1989\n\n\nOverlapping density plot\nfurby_chatter\nFurby chatter\nNormal\n1998\n\n\nRidgeline plots\ntrl_videos\nMTV TRL countdown\nGamma\n1998\n\n\nGrouped box plots\noregon_trail\nThe Oregon Trail\nLognormal\n1985\n\n\nGrouped violin plots\naim_buddies\nAOL Instant Messenger buddy lists\nPoisson and normal mixture\n1997\n\n\nRaincloud plots\nmagic_eye\nMagic Eye posters\nPaired lognormal (faux)\n1994\n\n\n\n\n\n\nA.2.5 Dates & times\n\n\n\n\nChapter\nDataset\n90s reference\nDistribution\nSeed\n\n\n\n\nLine graphs\nbatman_box\nBatman (1989) box office\nExponential decay, lognormal noise\n1989\n\n\nGrouped line graphs\nnick_ratings\nNickelodeon (SNICK) ratings\nNormal\n1992\n\n\nBump charts\nboy_bands\nBoy band radio spins\nPoisson\n1999\n\n\nSlope graphs\nbayside_quizzes\nSaved by the Bell quizzes\nNormal\n1989\n\n\nStream plots\nfad_sales\n90s fads (Hypercolor, slap bracelets)\nPoisson\n1991\n\n\nAlluvial charts\ny2k_households\nY2K prep surveys\nMarkov chain (multinomial)\n1999\n\n\nInstance chart\nhospital_names\nRugrats baby names\nPoisson\n1993\n\n\n\n\n\n\nA.2.6 Relationships\n\n\n\n\nChapter\nDataset\n90s reference\nDistribution\nSeed\n\n\n\n\nScatter plots\ndoom_pcs\nDoom frame rates\nNormal (censored)\n1993\n\n\nGrouped scatter plots\nconsole_kids\nSega vs. Nintendo\nBivariate normal (faux)\n1991\n\n\nBubble charts\nseinfeld_eps\nSeinfeld episodes\nGamma and lognormal\n1989\n\n\nGrouped bubble graph\nranger_fights\nPower Rangers vs. the Putties\nPoisson\n1993\n\n\nParallel sets\nbronson_alcott\nClueless cliques\nMultinomial\n1995\n\n\nDensity contours\nbopit_players\nBop It reaction times\nBivariate normal mixture (faux)\n1996\n\n\n2D histograms\ngeocities_pages\nGeoCities page loads\nLognormal and normal\n1997\n\n\nHexagon bins\nsurge_teens\nSurge soda and video games\nGamma and normal\n1996",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>A</span>  <span class='chapter-title'>Data</span>"
@@ -2483,7 +2755,29 @@
     "href": "extensions.html",
     "title": "Appendix B — Extensions",
     "section": "",
-    "text": "WarningCaution\n\n\n\n\n\n\nThis section is still being developed. The contents are subject to change.\n\n\n\n\nBelow are the graphs requiring additional packages/extensions:\n\n\n\n\nGraph\nPackage\nCode\n\n\n\n\nWaffle charts\nggwaffle\nremotes::install_github(\"liamgilbey/ggwaffle\")\n\n\nPie charts\nggpubr\nremotes::install_github(\"kassambara/ggpubr\")\n\n\nMosaic Plots\nggmosaic\nremotes::install_github(\"haleyjeppson/ggmosaic\")\n\n\nTreemaps\ntreemapify\nremotes::install_github(\"wilkox/treemapify\")\n\n\nBeeswarm Plots\nggbeeswarm\nremotes::install_github(\"eclarke/ggbeeswarm\")\n\n\nRidgeline Plots\nggridges\nremotes::install_github(\"wilkelab/ggridges\")\n\n\nRaincloud plots\nraincloudplots & ggdist\nremotes::install_github('jorvlan/raincloudplots')\nremotes::install_github('mjskay/ggdist')\n\n\nAlluvial charts\nggalluvial\nremotes::install_github(\"corybrunson/ggalluvial\")\n\n\nParallel Sets\nggforce\nremotes::install_github(\"thomasp85/ggforce\")\n\n\nBump charts\nggbump\nremotes::install_github(\"davidsjoberg/ggbump\")\n\n\nStream Plots\nggstream\nremotes::install_github(\"davidsjoberg/ggstream\")",
+    "text": "B.1 Graph extensions\nMost graphs in this book only need ggplot2 and dplyr, but some graph types live in extension packages. The tables below list the extensions (and the helper packages) each chapter uses. I’ve used pak for every install command because it handles packages on CRAN (pak::pak(\"ggridges\")) and GitHub (pak::pak(\"owner/repo\")) the same way.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Extensions</span>"
+    ]
+  },
+  {
+    "objectID": "extensions.html#graph-extensions",
+    "href": "extensions.html#graph-extensions",
+    "title": "Appendix B — Extensions",
+    "section": "",
+    "text": "Graph\nPackage\nInstall\n\n\n\n\nWaffle charts\nggwaffle\npak::pak(\"liamgilbey/ggwaffle\")\n\n\nMosaic plots\nggmosaic\npak::pak(\"haleyjeppson/ggmosaic\")\n\n\nPie charts\nggpubr\npak::pak(\"ggpubr\")\n\n\nTreemaps\ntreemapify\npak::pak(\"treemapify\")\n\n\nBeeswarm plots\nggbeeswarm\npak::pak(\"ggbeeswarm\")\n\n\nRidgeline plots\nggridges\npak::pak(\"ggridges\")\n\n\nRaincloud plots\nraincloudplots and ggdist\npak::pak(c(\"jorvlan/raincloudplots\", \"ggdist\"))\n\n\nBump charts\nggbump\npak::pak(\"davidsjoberg/ggbump\")\n\n\nStream plots\nggstream\npak::pak(\"davidsjoberg/ggstream\")\n\n\nAlluvial charts\nggalluvial\npak::pak(\"ggalluvial\")\n\n\nParallel sets\nggforce\npak::pak(\"ggforce\")\n\n\nHexagon bins\nhexbin (used by geom_hex())\npak::pak(\"hexbin\")",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Extensions</span>"
+    ]
+  },
+  {
+    "objectID": "extensions.html#helper-packages",
+    "href": "extensions.html#helper-packages",
+    "title": "Appendix B — Extensions",
+    "section": "B.2 Helper packages",
+    "text": "B.2 Helper packages\nThese packages don’t add new graph types, but a few chapters rely on them to simulate data, combine graphs, or choose colors.\n\n\n\n\nPackage\nWhat it’s used for\nChapters\nInstall\n\n\n\n\nfaux\nSimulating correlated variables (rnorm_multi()) and designs (sim_design())\nCleveland dot plots, raincloud plots, grouped scatter plots, density contours\npak::pak(\"faux\")\n\n\npatchwork\nCombining graphs into one figure\nMosaic plots, overlapping and stacked density plots, grouped line graphs\npak::pak(\"patchwork\")\n\n\ncolorspace\nSequential color palettes\n2D histograms, hexagon bins\npak::pak(\"colorspace\")\n\n\nfmggp2\nThe 90s themes and book helpers (see Appendix C)\nEvery chapter\npak::pak(\"mjfrigaard/fmggp2\")\n\n\n\n\nThe code below installs everything at once.\n\n\n\nshow/hide\npak::pak(c(\n  \"liamgilbey/ggwaffle\", \"haleyjeppson/ggmosaic\", \"ggpubr\", \"treemapify\",\n  \"ggbeeswarm\", \"ggridges\", \"jorvlan/raincloudplots\", \"ggdist\",\n  \"davidsjoberg/ggbump\", \"davidsjoberg/ggstream\", \"ggalluvial\", \"ggforce\", \"hexbin\",\n  \"faux\", \"patchwork\", \"colorspace\", \"mjfrigaard/fmggp2\"))",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>B</span>  <span class='chapter-title'>Extensions</span>"
@@ -2494,7 +2788,73 @@
     "href": "theme.html",
     "title": "Appendix C — Theme",
     "section": "",
-    "text": "WarningCaution\n\n\n\n\n\n\nThis section is still being developed. The contents are subject to change.\n\n\n\n\nThe theme used in the graphs is custom and uses combined elements from ggplot2::theme_minimal() and ggplot2::theme_void(). View it here.\n\n\nshow/hide theme_ggp2g.R\n# pkgs --------------------------------------------------------------------\nrequire(ggplot2)\nrequire(extrafont)\n#&gt; Loading required package: extrafont\n#&gt; Registering fonts with R\nrequire(showtext)\n#&gt; Loading required package: showtext\n#&gt; Loading required package: sysfonts\n#&gt; Loading required package: showtextdb\n#&gt; \n#&gt; Attaching package: 'showtextdb'\n#&gt; The following object is masked from 'package:extrafont':\n#&gt; \n#&gt;     font_install\nrequire(showtextdb)\nrequire(sysfonts)\nlibrary(extrafont)\nlibrary(palmerpenguins)\nlibrary(fs)\nlibrary(janitor)\n\n# theme_ggp2g -------------------------------------------------------------\n# this is a custom theme for the ggplot2 gallery\n# import fonts like the function in hrbrthemes \n# https://github.com/hrbrmstr/hrbrthemes/blob/3e8d9494a9e0026a3127f6a0df88208511cd0715/R/roboto-condensed.r#L208\n# First call the font_import() is called inside each setup chunk \n# extrafont::font_import(\n#     paths = \"assets/Ubuntu/\", \n#     prompt = FALSE)\n# we then add the font using font_add()\n# sysfonts::font_add(\n#     family =  \"Ubuntu\", \n#     regular = \"assets/Ubuntu/Ubuntu-Regular.ttf\")\n# finally we use showtext_auto() to use the font in the graph\n# showtext::showtext_auto()\n# \"If turned on, any newly opened graphics devices will use showtext to \n# draw text\"\ntheme_ggp2g &lt;- function(base_size = 11, base_family = \"Ubuntu\", \n                        base_line_size = base_size / 22, \n                        base_rect_size = base_size / 22) {\n    \n  half_line &lt;- base_size / 2\n  # most of this is borrowed from theme_minimal()/theme_void(), but with some\n  # adjustments to panel, margins, and legend see the original here:\n  # https://github.com/tidyverse/ggplot2/blob/d9f179b038f020158773fac54af9a84cf961b54b/R/theme-defaults.r#L459\n  thm &lt;- theme(\n    # RECTANGLE ----------------------------------------------------\n    rect =               element_blank(),\n    # TEXT ---------------------------------------------------------\n    text =               element_text(\n                            family = \"Ubuntu\",\n                            # face = \"plain\",\n                            colour = \"black\", \n                            size = base_size,\n                            lineheight = 0.9, \n                            hjust = 0.5, vjust = 0.5, \n                            angle = 0,\n                            margin = margin(), \n                            debug = FALSE),\n    ## AXES --------------------------------------------------------------\n    axis.text =          element_text(\n                            family = base_family, size = rel(0.65)),\n    axis.title.x =       element_text(vjust = -4.75),\n    axis.title.y =       element_text(vjust = 4.25, angle = 90),\n    axis.title =         element_text(size = rel(0.8)),\n    ### AXIS TICKS ----\n    ## remove all axis ticks\n    ## https://ggplot2-book.org/polishing.html#theme-axis\n    axis.ticks.length =  unit(0, \"pt\"),\n    axis.ticks.length.x = NULL,\n    axis.ticks.length.x.top = NULL,\n    axis.ticks.length.x.bottom = NULL,\n    axis.ticks.length.y = NULL,\n    axis.ticks.length.y.left = NULL,\n    axis.ticks.length.y.right = NULL,\n    ## STRIP ----\n    ## \n    strip.clip =         \"inherit\",\n    strip.text.x =         element_text(size = rel(0.7)),\n    # strip.text.x affects both facet_wrap() or facet_grid()\n    strip.text.y =         element_text(size = rel(0.7)),\n    # strip.text.y only affects facet_grid()\n    strip.switch.pad.grid = unit(half_line / 2, \"pt\"),\n    strip.switch.pad.wrap = unit(half_line / 2, \"pt\"),\n    strip.background = element_rect(fill = \"#d0d0d0\"),\n    ## PANEL ----\n    ## here we introduce thin, light gray lines for the graph area (with\n    ## vertical lines slightly larger than horizontal lines)\n    ## https://ggplot2-book.org/polishing.html#panel-elements\n    panel.ontop =        FALSE,\n    panel.spacing =      unit(half_line, \"pt\"),\n    panel.grid.major.x = element_line(color = \"#d0d0d0\", linewidth = 0.3),\n    panel.grid.major.y = element_line(color = \"#d0d0d0\", linewidth = 0.3),\n    panel.grid.minor.x = element_line(color = \"#d0d0d0\", linewidth = 0.1),\n    panel.grid.minor.y = element_line(color = \"#d0d0d0\", linewidth = 0.1),\n    ## TITLES ----\n    ### Title -----\n    # location of title\n    plot.title.position = \"panel\",\n    ## slightly larger text\n    plot.title =         element_text(\n                           size = rel(1.1),\n                           hjust = 0, vjust = 2,\n                           margin = margin(b = half_line)\n                         ),\n    ### subtitle -----\n    # slightly smaller text, italic \n    plot.subtitle =      element_text(\n                           size = rel(0.9),\n                           hjust = 0, vjust = 2,\n                           margin = margin(b = half_line)\n                         ),\n    ### caption -----\n    plot.caption =       element_text(\n                           size = rel(0.8),\n                           hjust = 1, vjust = 1,\n                           margin = margin(b = half_line)\n                         ),\n      \n    plot.caption.position = \"panel\",\n    ### tag -----\n    plot.tag =           element_text(\n                           size = rel(1.2),\n                           hjust = 0.5, vjust = 0.5\n                         ),\n    plot.tag.position =  'topleft',\n    ## LEGEND ----\n    ## https://ggplot2-book.org/polishing.html#legend-elements\n    # legend.direction =   \"\",\n    # legend.box.just =    \"\",\n    legend.box =         NULL,\n    legend.key.size =    unit(1.2, \"lines\"),\n        # the positioning is = c(horizontal, vertical)\n        # c(1, 0) = bottom right\n        # c(0.5, 0.5) = dead center\n        # c(0, 1) = top left\n        # https://ggplot2-book.org/scale-colour.html#legend-layout\n    # legend.position =    c(1, 0.5), # c(horizontal, vertical)\n    # legend.justification = c(-0.015, 0.0), # c(horizontal, vertical)\n    legend.text =        element_text(\n                            size = rel(0.60)),\n    legend.title =       element_text(\n                            size = rel(0.70), \n                            hjust = 0),\n    # legend.margin =      unit(c(1.5, 1.5, 1.5, 1.5), \"mm\"),\n    legend.margin =      margin(t = 2.5, r = 2.5, b = 2.5, l = 2.5),\n    ## PLOT MARGIN ----\n    ## https://ggplot2-book.org/polishing.html#plot-elements\n    plot.margin =        unit(x = c(1.5, 5.0, 1.5, 1.5), \"lines\"),\n    complete = TRUE\n )\n  return(thm)\n}",
+    "text": "C.1 Installing fmggp2\nEvery chapter in this book has its own late 90s ggplot2 theme to match its simulated data (Game Boy greens for the Pokémon starters, a Windows 98 dialog box for the AOL sessions, and so on). The themes and the small helpers the book uses live in the fmggp2 package, so every chapter loads the same tested code.\nInstall the development version of fmggp2 from GitHub:",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>C</span>  <span class='chapter-title'>Theme</span>"
+    ]
+  },
+  {
+    "objectID": "theme.html#installing-fmggp2",
+    "href": "theme.html#installing-fmggp2",
+    "title": "Appendix C — Theme",
+    "section": "",
+    "text": "show/hide\n# install.packages(\"pak\")\npak::pak(\"mjfrigaard/fmggp2\")",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>C</span>  <span class='chapter-title'>Theme</span>"
+    ]
+  },
+  {
+    "objectID": "theme.html#using-a-theme",
+    "href": "theme.html#using-a-theme",
+    "title": "Appendix C — Theme",
+    "section": "C.2 Using a theme",
+    "text": "C.2 Using a theme\nEach chapter sets its theme once in the setup chunk with ggplot2::theme_set(), so every graph in the chapter picks it up and we don’t have to add the theme to each plot:\n\n\n\nshow/hide\nggplot2::theme_set(fmggp2::theme_gameboy(base_size = 14))\n\n\n\nWe can also add a theme to a single graph like any other ggplot2 theme. Below we simulate a few home PCs from 1998 and add theme_win98():\n\n\n\nshow/hide\nset.seed(1998)\nhome_pcs &lt;- tibble(mhz = runif(60, min = 200, max = 450)) |&gt;\n  mutate(price = 600 + 3 * mhz + rnorm(60, mean = 0, sd = 150))\nggplot(home_pcs, aes(x = mhz, y = price)) +\n  geom_point() +\n  labs(title = \"Home PCs in 1998\", caption = \"Simulated data\",\n       x = \"Processor speed (MHz)\", y = \"Price (USD)\") +\n  fmggp2::theme_win98(base_size = 14)",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>C</span>  <span class='chapter-title'>Theme</span>"
+    ]
+  },
+  {
+    "objectID": "theme.html#what-the-themes-set",
+    "href": "theme.html#what-the-themes-set",
+    "title": "Appendix C — Theme",
+    "section": "C.3 What the themes set",
+    "text": "C.3 What the themes set\nThe 90s themes are built on ggplot2::theme_bw() and use features from ggplot2 4.0, so a single theme can control much more than the background and fonts:\n\nColors: the plot background, the frame around the plot, the panel, and the grid lines all come from a palette sampled from the 90s reference.\nFonts: most themes pair Arial body text with a title display font that fits the reference (Impact for Blockbuster, Chalkduster for Friends, Comic Sans for GeoCities). A few use a single font throughout, like Tahoma for Windows 98.\nDiscrete palettes: palette.fill.discrete and palette.colour.discrete set the colors for categorical variables, so mapping a variable to fill or color uses the theme’s colors automatically.\nContinuous palettes: four themes (theme_freshprince(), theme_bopit(), theme_geocities(), and theme_surge()) also set palette.fill.continuous, which colors heatmaps, 2D histograms, and hexagon bins.\nDefault geoms: element_geom() sets the default fill, colour, and font for layers like geom_bar() and geom_point(), so a graph with no color mapping still matches the theme.\n\n\n\n\n\n\n\nTipOrdered factors\n\n\n\n\n\nOrdered factors use the viridis scale by default, which overrides the theme’s discrete palette. If a graph doesn’t pick up the theme colors, check whether the variable mapped to fill or color is an ordered factor (for example, the output of lubridate::wday(label = TRUE)). If it is, convert it with factor(x, ordered = FALSE).",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>C</span>  <span class='chapter-title'>Theme</span>"
+    ]
+  },
+  {
+    "objectID": "theme.html#fonts",
+    "href": "theme.html#fonts",
+    "title": "Appendix C — Theme",
+    "section": "C.4 Fonts",
+    "text": "C.4 Fonts\nThe display fonts are system fonts that ship with macOS. Each theme registers its fonts with sysfonts::font_add(). When a font file can’t be found (on Linux or Windows, for example), the theme falls back to \"sans\" so the graphs still render. You can also pass any font family you’ve registered yourself:\n\n\n\nshow/hide\nfmggp2::theme_win98(base_family = \"sans\")\nfmggp2::theme_batman(base_family = \"sans\", title_family = \"sans\")\n\n\n\nThe showtext package draws the registered fonts in the graphs, so each chapter calls showtext::showtext_auto() in its setup chunk. The themes vignette lists every theme’s fonts.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>C</span>  <span class='chapter-title'>Theme</span>"
+    ]
+  },
+  {
+    "objectID": "theme.html#themes-by-chapter",
+    "href": "theme.html#themes-by-chapter",
+    "title": "Appendix C — Theme",
+    "section": "C.5 Themes by chapter",
+    "text": "C.5 Themes by chapter\nThe tables below list the theme used in each chapter and the 90s reference it’s built from.\n\nC.5.1 Univariate\n\n\n\n\nChapter\nTheme\nReference\n\n\n\n\nBar graphs\ntheme_gameboy()\nOriginal Game Boy screen\n\n\nHistograms\ntheme_win98()\nWindows 98 desktop\n\n\nFrequency polygons\ntheme_napster()\n1999 Napster client\n\n\nDot plots\ntheme_blockbuster()\nBlockbuster Video\n\n\nDensity plots\ntheme_spice()\nSpice Girls era pop\n\n\nViolin plots\ntheme_beanie()\nBeanie Babies heart tag\n\n\nBox plots\ntheme_n64()\nNintendo 64\n\n\n\n\n\n\nC.5.2 Amounts\n\n\n\n\nChapter\nTheme\nReference\n\n\n\n\nGrouped bar graphs\ntheme_jurassic()\nJurassic Park (1993)\n\n\nSummary bar graphs\ntheme_happymeal()\nMcDonald’s Happy Meal box\n\n\nOverlapping bar graphs\ntheme_friends()\nFriends (Monica’s apartment)\n\n\nHeatmaps\ntheme_freshprince()\nThe Fresh Prince of Bel-Air\n\n\nWaffle charts\ntheme_pogs()\nPogs milk caps\n\n\nCleveland dot plots\ntheme_walkman()\nSony Walkman Sports\n\n\n\n\n\n\nC.5.3 Proportions\n\n\n\n\nChapter\nTheme\nReference\n\n\n\n\nDiverging bar graphs\ntheme_encarta()\nMicrosoft Encarta / Britannica\n\n\nStacked densities\ntheme_netscape()\nNetscape Navigator\n\n\nMosaic plots\ntheme_titanic()\nTitanic (1997)\n\n\nPie charts\ntheme_lisafrank()\nLisa Frank school supplies\n\n\nTreemaps\ntheme_toysrus()\nToys”R”Us\n\n\n\n\n\n\nC.5.4 Distributions\n\n\n\n\nChapter\nTheme\nReference\n\n\n\n\nOverlapping histograms\ntheme_tamagotchi()\nTamagotchi\n\n\nOverlapping frequency polygons\ntheme_supersoaker()\nSuper Soaker\n\n\nOverlapping dot plots\ntheme_goosebumps()\nGoosebumps books\n\n\nBeeswarm plots\ntheme_tetris()\nTetris\n\n\nOverlapping density plot\ntheme_furby()\nFurby\n\n\nRidgeline plots\ntheme_trl()\nMTV TRL\n\n\nGrouped box plots\ntheme_oregontrail()\nThe Oregon Trail\n\n\nGrouped violin plots\ntheme_aim()\nAOL Instant Messenger\n\n\nRaincloud plots\ntheme_magiceye()\nMagic Eye\n\n\n\n\n\n\nC.5.5 Dates & times\n\n\n\n\nChapter\nTheme\nReference\n\n\n\n\nLine graphs\ntheme_batman()\nBatman (1989)\n\n\nGrouped line graphs\ntheme_snick()\nSNICK\n\n\nBump charts\ntheme_boyband()\nBoy bands\n\n\nSlope graphs\ntheme_savedbythebell()\nSaved by the Bell\n\n\nStream plots\ntheme_hypercolor()\nHypercolor\n\n\nAlluvial charts\ntheme_y2k()\nY2K\n\n\nInstance chart\ntheme_rugrats()\nRugrats\n\n\n\n\n\n\nC.5.6 Relationships\n\n\n\n\nChapter\nTheme\nReference\n\n\n\n\nScatter plots\ntheme_doom()\nDoom\n\n\nGrouped scatter plots\ntheme_consolewars()\nConsole wars\n\n\nBubble charts\ntheme_seinfeld()\nSeinfeld\n\n\nGrouped bubble graph\ntheme_powerrangers()\nPower Rangers\n\n\nParallel sets\ntheme_clueless()\nClueless\n\n\nDensity contours\ntheme_bopit()\nBop It\n\n\n2D histograms\ntheme_geocities()\nGeoCities\n\n\nHexagon bins\ntheme_surge()\nSurge",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>C</span>  <span class='chapter-title'>Theme</span>"
+    ]
+  },
+  {
+    "objectID": "theme.html#the-original-book-theme",
+    "href": "theme.html#the-original-book-theme",
+    "title": "Appendix C — Theme",
+    "section": "C.6 The original book theme",
+    "text": "C.6 The original book theme\nThe pages outside the chapters (like this appendix) use fmggp2::theme_fmggp2(), the original custom theme for this book. It combines elements from ggplot2::theme_minimal() and ggplot2::theme_void() with the Ubuntu font, thin light gray grid lines, and no axis ticks. You can view the source code here.",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>C</span>  <span class='chapter-title'>Theme</span>"
