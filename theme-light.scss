@@ -1,0 +1,22 @@
+/*-- scss:defaults --*/
+// iMac G3 (1998-1999) flavors on a warm 'Bondi ice' page
+$fm-bondi:      #00708A;  // links (Bondi blue, darkened for contrast)
+$fm-grape:      #5A2D91;  // headings and section labels
+$fm-tangerine:  #E8731C;
+$fm-strawberry: #B4235A;  // inline code
+$fm-lime:       #5E9E2E;
+$fm-stripe:     linear-gradient(90deg, #0095B6, #6B3FA0, #E0457B, #F28C28, #7BC043);
+$fm-ink:        #22202E;
+$fm-muted:      #5C5870;
+$fm-surface:    #F3EFE6;  // code blocks and callouts
+
+$body-bg:                 #FBF9F4;
+$body-color:              $fm-ink;
+$primary:                 $fm-bondi;
+$link-color:              $fm-bondi;
+$headings-color:          $fm-grape;
+$code-color:              $fm-strawberry;
+$code-block-bg:           $fm-surface;
+$code-block-border-left:  #0095B6;
+$small-font-size:         .80rem;
+$code-font-size:          .85em;

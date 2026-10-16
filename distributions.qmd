@@ -18,6 +18,15 @@ showtext::showtext_auto()
 # set theme
 ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
+bare_theme <- theme(plot.title = element_blank(),
+                    plot.subtitle = element_blank(),
+                    plot.caption = element_blank(),
+                    axis.title = element_blank(),
+                    axis.text = element_blank(),
+                    axis.ticks = element_blank(),
+                    strip.text = element_blank(),
+                    strip.background = element_blank(),
+                    legend.position = "none")
 ```
 
 ```{r}
@@ -30,3 +39,443 @@ status("complete")
 ```
 
 **Distributions**: these graphs display the shape of a variable's values (good for assessing [normalcy](https://en.wikipedia.org/wiki/Normal_distribution), [skewness](https://en.wikipedia.org/wiki/Skewness), [kurtosis](https://en.wikipedia.org/wiki/Kurtosis), etc.)
+
+## Overlapping histograms
+
+[Overlapping histograms](overlapping_histograms.qmd) draw a histogram for each group on the same axes. The bars are partially transparent so we can see where the groups overlap and where they separate. Overlapping histograms work well for comparing two or three groups, but get crowded with more. Color separates the groups, and a legend explains each one.
+
+```{r}
+#| label: part_overlapping_histograms
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+set.seed(1997)
+tamagotchi_pets <- tibble(
+  pet_id = 1:450,
+  care = rep(c("Neglected", "Average", "Pampered"), each = 150)) |>
+  mutate(care = factor(care, levels = c("Neglected", "Average", "Pampered")),
+         lifespan_days = round(rweibull(n(), shape = 2.2,
+           scale = c(Neglected = 6, Average = 13,
+                     Pampered = 21)[as.character(care)]), 1))
+labs_ovrlp_hist <- labs(
+  title = "Tamagotchi lifespans",
+  caption = "Simulated data",
+  subtitle = "450 virtual pets and how they were cared for",
+  x = "Lifespan (days)",
+  fill = "Care")
+ggp2_ovrlp_hist <- ggplot(data = tamagotchi_pets,
+     aes(x = lifespan_days,
+         fill = care)) +
+     geom_histogram(alpha = 2/3, position = "identity", bins = 40)
+(
+  ggp2_ovrlp_hist +
+    labs_ovrlp_hist
+) +
+  fmggp2::theme_tamagotchi(base_size = 12) +
+  bare_theme
+```
+
+## Overlapping frequency polygons
+
+[Overlapping frequency polygons](overlapping_frequency_polygons.qmd) draw a line for each group's counts across the bins of a numeric variable. Because they use lines instead of bars, frequency polygons can compare more groups than overlapping histograms without hiding each other. The shape of each line shows the center, spread, and skew of each group. Color separates the groups, and a legend explains each line.
+
+```{r}
+#| label: part_overlapping_frequency_polygons
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+set.seed(1990)
+soaker_shots <- tibble(
+  shot_id = 1:600,
+  model = rep(c("SS 50", "SS 100", "CPS 2000"), each = 200)) |>
+  mutate(model = factor(model, levels = c("SS 50", "SS 100", "CPS 2000")),
+         avg_range = c(`SS 50` = 25, `SS 100` = 35,
+                       `CPS 2000` = 45)[as.character(model)],
+         range_ft = round(rnorm(n(), mean = avg_range,
+                                sd = 0.12 * avg_range), 1)) |>
+  select(shot_id, model, range_ft)
+labs_ovrlp_freq_poly <- labs(
+  title = "Super Soaker range",
+  caption = "Simulated data",
+  subtitle = "200 shots from each model",
+  x = "Range (feet)",
+  color = "Model")
+ggp2_ovrlp_freq_poly <- ggplot(data = soaker_shots,
+       aes(x = range_ft,
+           group = model)) +
+  geom_freqpoly(aes(color = model), linewidth = 1)
+(
+  ggp2_ovrlp_freq_poly +
+    labs_ovrlp_freq_poly
+) +
+  fmggp2::theme_supersoaker(base_size = 12) +
+  bare_theme
+```
+
+## Overlapping dot plots
+
+[Overlapping dot plots](overlapping_dot_plots.qmd) stack a dot for every observation in each group on the same axis. Each dot is one value, so we can count the observations directly and see clusters, gaps, and outliers in each group. Dot plots work best with small to moderate datasets. Color separates the groups, and a legend explains each one.
+
+```{r}
+#| label: part_overlapping_dot_plots
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+set.seed(1992)
+goosebumps_readers <- tibble(
+  student_id = 1:120,
+  grade = rep(c("3rd grade", "4th grade", "5th grade"), each = 40)) |>
+  mutate(grade = factor(grade,
+           levels = c("3rd grade", "4th grade", "5th grade")),
+         books_read = rpois(n(), lambda = c(`3rd grade` = 3, `4th grade` = 6,
+                                            `5th grade` = 9)[as.character(grade)]))
+labs_ovrlp_dotplot <- labs(
+  title = "Goosebumps books read",
+  caption = "Simulated data",
+  subtitle = "40 students in each grade, one school year",
+  x = "Books read",
+  y = "Count",
+  fill = "Grade")
+ggp2_ovrlp_dotplot <- ggplot(data = goosebumps_readers,
+    aes(x = books_read,
+        fill = factor(grade))) +
+  geom_dotplot(
+    method = "histodot",
+    binwidth = 1,
+    binpositions = "all",
+    stackgroups = TRUE)
+(
+  ggp2_ovrlp_dotplot +
+    labs_ovrlp_dotplot
+) +
+  fmggp2::theme_goosebumps(base_size = 12) +
+  bare_theme
+```
+
+## Beeswarm plots
+
+A [beeswarm plot](beeswarm_plots.qmd) shows every observation as a point, arranged so the points don't overlap. The points spread out sideways where values are crowded, so the width of the swarm shows where the values are concentrated. Beeswarm plots are a good way to compare the distributions of several groups while still seeing each data point. Each group gets its own swarm, usually along the `x` axis.
+
+```{r}
+#| label: part_beeswarm_plots
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggbeeswarm)
+library(ggplot2)
+library(dplyr)
+set.seed(1989)
+tetris_games <- tibble(
+  game_id = 1:240,
+  player = rep(c("Casual", "Regular", "Expert"), each = 80)) |>
+  mutate(player = factor(player, levels = c("Casual", "Regular", "Expert")),
+         lines_cleared = rnbinom(n(), size = 5,
+           mu = c(Casual = 25, Regular = 60,
+                  Expert = 120)[as.character(player)]))
+# ggp2_beeswarm ----
+labs_beeswarm <- labs(
+    title = "Tetris",
+    caption = "Simulated data",
+    subtitle = "Lines cleared in 80 games by each player",
+    x = "Player",
+    y = "Lines cleared")
+ggp2_beeswarm <-  ggplot(data = tetris_games,
+    aes(x = player,
+        y = lines_cleared,
+        color = player)) +
+    ggbeeswarm::geom_beeswarm(
+        alpha = 2 / 3,
+        size = 1.15,
+        cex = 1.5,
+        dodge.width = 1,
+        show.legend = FALSE) +
+    scale_x_discrete(expand = expansion(add = c(1, 1))) +
+    labs_beeswarm
+(
+  ggp2_beeswarm
+) +
+  fmggp2::theme_tetris(base_size = 12) +
+  bare_theme
+```
+
+## Overlapping and stacked density plots
+
+[Overlapping and stacked density plots](overlapping_stacked_density_plots.qmd) draw a smooth density curve for each group. Overlapping densities use transparency to show where the groups share the same values, and stacked densities place each group on top of the others to show the total. Density plots smooth over the noise in histograms, which makes the overall shapes easier to compare. Color separates the groups, and a legend explains each curve.
+
+```{r}
+#| label: part_overlapping_stacked_density_plots
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+library(patchwork)
+set.seed(1998)
+furby_chatter <- tibble(
+  hour_id = 1:300,
+  language = rep(c("Furbish", "English"), times = c(180, 120))) |>
+  mutate(language = factor(language, levels = c("Furbish", "English")),
+         words_per_hour = round(if_else(language == "Furbish",
+           rnorm(n(), mean = 45, sd = 8),
+           rnorm(n(), mean = 30, sd = 10))))
+labs_ovrlp_density <- labs(
+  subtitle = "position = 'identity'",
+  x = "Words per hour",
+  fill = "Language")
+ggp2_ovrlp_density <- ggplot(data = furby_chatter,
+       aes(x = words_per_hour,
+           fill = language)) +
+      geom_density(alpha = 1/3)
+
+ovrlp_density <- ggp2_ovrlp_density +
+  labs_ovrlp_density +
+    theme(legend.position = "bottom")
+
+labs_stack_density <- labs(
+  subtitle = "position = 'stack'",
+  x = "Words per hour",
+  fill = "Language")
+ggp2_stack_density <- ggplot(data = furby_chatter,
+       aes(x = words_per_hour,
+           after_stat(count),
+           fill = language)) +
+      geom_density(position = "stack",
+                   alpha = 1/3)
+stack_density <- ggp2_stack_density +
+  labs_stack_density +
+    theme(legend.position = "bottom")
+(
+  ovrlp_density + stack_density +
+      patchwork::plot_layout(ncol = 1)
+) &
+  fmggp2::theme_furby(base_size = 12) &
+  bare_theme
+```
+
+## Ridgeline plots
+
+A [ridgeline plot](ridgeline_plots.qmd) stacks a density curve for each group in its own row, slightly overlapping the row above it. The rows share the same `x` axis, so we can compare the center, spread, and shape of many groups at once. Ridgeline plots are especially helpful when there are too many groups for overlapping densities. Each group's name labels its row on the `y` axis.
+
+```{r}
+#| label: part_ridgeline_plots
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggridges)
+library(ggplot2)
+library(dplyr)
+set.seed(1998)
+trl_videos <- tibble(
+  video_id = 1:360,
+  genre = rep(c("Boy bands", "Pop divas", "R&B", "Rap", "Nu metal", "Rock"),
+              each = 60)) |>
+  mutate(genre = factor(genre, levels = c("Rock", "Nu metal", "Rap", "R&B",
+                                          "Pop divas", "Boy bands")),
+         avg_days = c(`Boy bands` = 40, `Pop divas` = 32, `R&B` = 26, Rap = 22,
+                      `Nu metal` = 18, Rock = 12)[as.character(genre)],
+         days_on_countdown = pmax(1, round(rgamma(n(), shape = 2.5,
+                                                  scale = avg_days / 2.5)))) |>
+  select(video_id, genre, days_on_countdown)
+labs_ridges <- labs(
+  title = "MTV TRL",
+  caption = "Simulated data",
+  subtitle = "Days each video stayed on the countdown",
+  x = "Days on the countdown",
+  y = "Genre", fill = "Genre")
+ggp2_ridges <- ggplot(data = trl_videos,
+       aes(x = days_on_countdown,
+           y = genre,
+        fill = genre)) +
+  ggridges::geom_density_ridges(alpha = 2/3,
+      show.legend = FALSE)
+(
+  ggp2_ridges +
+    labs_ridges
+) +
+  fmggp2::theme_trl(base_size = 12) +
+  bare_theme
+```
+
+## Grouped box plots
+
+[Grouped box plots](grouped_box_plots.qmd) draw a box plot for each group side by side. Each box shows the median and the middle half of the values, the whiskers show the rest of the range, and points beyond the whiskers show unusual values. Grouped box plots summarize many groups in very little space. The groups are placed along one axis and the numeric values along the other.
+
+```{r}
+#| label: part_grouped_box_plots
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+set.seed(1985)
+oregon_trail <- tibble(
+  party_id = 1:300,
+  profession = rep(c("Banker", "Carpenter", "Farmer"), each = 100)) |>
+  mutate(profession = factor(profession,
+           levels = c("Banker", "Carpenter", "Farmer")),
+         median_days = c(Banker = 140, Carpenter = 155,
+                         Farmer = 170)[as.character(profession)],
+         days_to_oregon = round(rlnorm(n(), meanlog = log(median_days),
+                                       sdlog = 0.2))) |>
+  select(party_id, profession, days_to_oregon)
+labs_grp_boxplots <- labs(
+  title = "The Oregon Trail",
+  caption = "Simulated data",
+  subtitle = "Days for 100 parties of each profession to reach Oregon",
+  x = "Profession", fill = "Profession",
+  y = "Days to reach Oregon")
+ggp2_grp_boxplots <- ggplot(data = oregon_trail,
+       aes(x = profession,
+           y = days_to_oregon,
+        fill = profession)) +
+  geom_boxplot(alpha = 2/3,
+      show.legend = FALSE)
+(
+  ggp2_grp_boxplots +
+    labs_grp_boxplots
+) +
+  fmggp2::theme_oregontrail(base_size = 12) +
+  bare_theme
+```
+
+## Grouped violin plots
+
+[Grouped violin plots](grouped_violin_plots.qmd) draw a violin for each group side by side. Each violin is a mirrored density curve, so its width shows how common each value is in that group. Violins reveal shapes a box plot hides, such as two peaks in the same group. The groups are placed along one axis, and color often separates them.
+
+```{r}
+#| label: part_grouped_violin_plots
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+set.seed(1997)
+aim_buddies <- tibble(
+  user_id = 1:450,
+  school = rep(c("Middle school", "High school", "College"), each = 150)) |>
+  mutate(school = factor(school,
+           levels = c("Middle school", "High school", "College")),
+         buddies = case_when(
+           school == "Middle school" ~ rpois(n(), lambda = 20),
+           school == "High school" ~ round(rlnorm(n(), meanlog = log(45),
+                                                  sdlog = 0.45)),
+           TRUE ~ round(if_else(runif(n()) < 0.7,
+                                rnorm(n(), mean = 60, sd = 10),
+                                rnorm(n(), mean = 150, sd = 20)))))
+labs_grp_violin <- labs(
+  title = "AOL Instant Messenger",
+  caption = "Simulated data",
+  subtitle = "Buddy list sizes for 150 users at each level of school",
+  x = "School", fill = "School",
+  y = "Buddies")
+ggp2_grp_violin <- ggplot(data = aim_buddies,
+       aes(x = school,
+           y = buddies,
+        fill = school)) +
+  geom_violin(alpha = 2/3,
+      show.legend = FALSE)
+(
+  ggp2_grp_violin +
+    labs_grp_violin
+) +
+  fmggp2::theme_aim(base_size = 12) +
+  bare_theme
+```
+
+## Raincloud plots
+
+A [raincloud plot](raincloud_plots.qmd) combines three views of the same data: a half density curve (the cloud), a box plot, and the individual points (the rain). Together they show the shape of the distribution, its summary statistics, and every observation. Raincloud plots are a good choice for comparing groups or repeated measurements when we don't want to hide any of the data. Each group gets its own cloud and rain, and color separates them.
+
+```{r}
+#| label: part_raincloud_plots
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(raincloudplots)
+library(ggdist)
+library(ggplot2)
+library(dplyr)
+set.seed(1994)
+magic_eye_posters <- tibble(
+  viewer_id = 1:240,
+  poster = rep(c("Dolphins", "Space shuttle", "Dinosaur"), each = 80)) |>
+  mutate(poster = factor(poster,
+           levels = c("Dolphins", "Space shuttle", "Dinosaur")),
+         seconds = round(rlnorm(n(), sdlog = 0.5,
+           meanlog = log(c(Dolphins = 15, `Space shuttle` = 30,
+                           Dinosaur = 60)[as.character(poster)])), 1))
+labs_raincloud_2 <- ggplot2::labs(
+    title = "Magic Eye",
+    caption = "Simulated data",
+    x = "Seconds to see the hidden image",
+    y = "Poster")
+(
+  ggplot(magic_eye_posters,
+      aes(x = seconds, y = poster)) +
+    geom_boxplot(aes(fill = poster),
+      notch = TRUE,
+      notchwidth = 0.9,
+      width = .15,
+      outlier.shape = NA) +
+    ggdist::stat_halfeye(aes(fill = poster),
+      adjust = 0.6, # shape = adjust * density estimator
+      .width = 0, # can use probabilities or 0
+      point_colour = NA, # removes the point in center
+      orientation = "horizontal", # like the box plot
+      height = 0.5, # height of curve
+      justification = -0.3) + # shift vertically above box
+      geom_point(aes(fill = poster),
+          shape = 21,
+          color = "#ffffff",
+          alpha = 1/3, size = 1.8,
+      position = position_jitter(
+        seed = 321,
+        height = .07)) +
+      theme(legend.position = "none") +
+      labs_raincloud_2
+) +
+  fmggp2::theme_magiceye(base_size = 12) +
+  bare_theme
+```

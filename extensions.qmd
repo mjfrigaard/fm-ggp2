@@ -18,68 +18,52 @@ ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
 ```
 
+Most graphs in this book only need `ggplot2` and `dplyr`, but some graph types live in extension packages. The tables below list the extensions (and the helper packages) each chapter uses. I've used [`pak`](https://pak.r-lib.org/) for every install command because it handles packages on CRAN (`pak::pak("ggridges")`) and GitHub (`pak::pak("owner/repo")`) the same way.
+
+## Graph extensions
+
+::: {style="font-size: 0.90rem;"}
+| Graph | Package | Install |
+|----|----|----|
+| [Waffle charts](waffle_charts.qmd) | [`ggwaffle`](https://liamgilbey.github.io/ggwaffle/) | `pak::pak("liamgilbey/ggwaffle")` |
+| [Mosaic plots](mosaic_plots.qmd) | [`ggmosaic`](https://haleyjeppson.github.io/ggmosaic/) | `pak::pak("haleyjeppson/ggmosaic")` |
+| [Pie charts](pie_charts.qmd) | [`ggpubr`](https://rpkgs.datanovia.com/ggpubr/) | `pak::pak("ggpubr")` |
+| [Treemaps](treemaps.qmd) | [`treemapify`](https://wilkox.org/treemapify/) | `pak::pak("treemapify")` |
+| [Beeswarm plots](beeswarm_plots.qmd) | [`ggbeeswarm`](https://github.com/eclarke/ggbeeswarm) | `pak::pak("ggbeeswarm")` |
+| [Ridgeline plots](ridgeline_plots.qmd) | [`ggridges`](https://wilkelab.org/ggridges/) | `pak::pak("ggridges")` |
+| [Raincloud plots](raincloud_plots.qmd) | [`raincloudplots`](https://github.com/jorvlan/raincloudplots) and [`ggdist`](https://mjskay.github.io/ggdist/) | `pak::pak(c("jorvlan/raincloudplots", "ggdist"))` |
+| [Bump charts](bump_charts.qmd) | [`ggbump`](https://github.com/davidsjoberg/ggbump) | `pak::pak("davidsjoberg/ggbump")` |
+| [Stream plots](stream_plots.qmd) | [`ggstream`](https://github.com/davidsjoberg/ggstream) | `pak::pak("davidsjoberg/ggstream")` |
+| [Alluvial charts](alluvial_charts.qmd) | [`ggalluvial`](https://corybrunson.github.io/ggalluvial/) | `pak::pak("ggalluvial")` |
+| [Parallel sets](parallel_sets.qmd) | [`ggforce`](https://ggforce.data-imaginist.com/) | `pak::pak("ggforce")` |
+| [Hexagon bins](hex_bins.qmd) | [`hexbin`](https://github.com/edzer/hexbin) (used by `geom_hex()`) | `pak::pak("hexbin")` |
+:::
+
+## Helper packages
+
+These packages don't add new graph types, but a few chapters rely on them to simulate data, combine graphs, or choose colors.
+
+::: {style="font-size: 0.90rem;"}
+| Package | What it's used for | Chapters | Install |
+|----|----|----|----|
+| [`faux`](https://debruine.github.io/faux/) | Simulating correlated variables (`rnorm_multi()`) and designs (`sim_design()`) | [Cleveland dot plots](cleveland_dot_plots.qmd), [raincloud plots](raincloud_plots.qmd), [grouped scatter plots](grouped_scatter_plots.qmd), [density contours](density_contours.qmd) | `pak::pak("faux")` |
+| [`patchwork`](https://patchwork.data-imaginist.com/) | Combining graphs into one figure | [Mosaic plots](mosaic_plots.qmd), [overlapping and stacked density plots](overlapping_stacked_density_plots.qmd), [grouped line graphs](grp_line_graphs.qmd) | `pak::pak("patchwork")` |
+| [`colorspace`](https://colorspace.r-forge.r-project.org/) | Sequential color palettes | [2D histograms](bins_2d.qmd), [hexagon bins](hex_bins.qmd) | `pak::pak("colorspace")` |
+| [`fmggp2`](https://mjfrigaard.github.io/fmggp2/) | The 90s themes and book helpers (see @sec-theme) | Every chapter | `pak::pak("mjfrigaard/fmggp2")` |
+:::
+
+The code below installs everything at once.
+
+::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: co_box_dev
-#| echo: false
-#| results: asis
-#| eval: true
-co_box(
-  color = "o", look = "minimal",
-  header = "Caution",
-  contents = "This section is still being developed. The contents are subject to change.",
-  fold = FALSE
-)
+#| label: install_all
+#| eval: false
+#| echo: true
+#| code-fold: show
+pak::pak(c(
+  "liamgilbey/ggwaffle", "haleyjeppson/ggmosaic", "ggpubr", "treemapify",
+  "ggbeeswarm", "ggridges", "jorvlan/raincloudplots", "ggdist",
+  "davidsjoberg/ggbump", "davidsjoberg/ggstream", "ggalluvial", "ggforce", "hexbin",
+  "faux", "patchwork", "colorspace", "mjfrigaard/fmggp2"))
 ```
-
-Below are the graphs requiring additional packages/extensions:
-
-::: {style="font-size: 0.95rem;"}
-+-----------------+------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------+
-| Graph           | Package                                                                                                                | Code                                              |
-+=================+========================================================================================================================+===================================================+
-| Waffle charts   | [`ggwaffle`](https://liamgilbey.github.io/ggwaffle/)                                                                   | ```                                               |
-|                 |                                                                                                                        | remotes::install_github("liamgilbey/ggwaffle")    |
-|                 |                                                                                                                        | ```                                               |
-+-----------------+------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------+
-| Pie charts      | [`ggpubr`](https://rpkgs.datanovia.com/ggpubr/)                                                                        | ```                                               |
-|                 |                                                                                                                        | remotes::install_github("kassambara/ggpubr")      |
-|                 |                                                                                                                        | ```                                               |
-+-----------------+------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------+
-| Mosaic Plots    | [`ggmosaic`](https://haleyjeppson.github.io/ggmosaic/)                                                                 | ```                                               |
-|                 |                                                                                                                        | remotes::install_github("haleyjeppson/ggmosaic")  |
-|                 |                                                                                                                        | ```                                               |
-+-----------------+------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------+
-| Treemaps        | [`treemapify`](https://wilkox.org/treemapify/)                                                                         | ```                                               |
-|                 |                                                                                                                        | remotes::install_github("wilkox/treemapify")      |
-|                 |                                                                                                                        | ```                                               |
-+-----------------+------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------+
-| Beeswarm Plots  | [`ggbeeswarm`](https://github.com/eclarke/ggbeeswarm)                                                                  | ```                                               |
-|                 |                                                                                                                        | remotes::install_github("eclarke/ggbeeswarm")     |
-|                 |                                                                                                                        | ```                                               |
-+-----------------+------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------+
-| Ridgeline Plots | [`ggridges`](https://wilkelab.org/ggridges/)                                                                           | ```                                               |
-|                 |                                                                                                                        | remotes::install_github("wilkelab/ggridges")      |
-|                 |                                                                                                                        | ```                                               |
-+-----------------+------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------+
-| Raincloud plots | [`raincloudplots`](https://github.com/jorvlan/raincloudplots) & [`ggdist`](https://mjskay.github.io/ggdist/reference/) | ```                                               |
-|                 |                                                                                                                        | remotes::install_github('jorvlan/raincloudplots') |
-|                 |                                                                                                                        | remotes::install_github('mjskay/ggdist')          |
-|                 |                                                                                                                        | ```                                               |
-+-----------------+------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------+
-| Alluvial charts | [`ggalluvial`](https://corybrunson.github.io/ggalluvial/)                                                              | ```                                               |
-|                 |                                                                                                                        | remotes::install_github("corybrunson/ggalluvial") |
-|                 |                                                                                                                        | ```                                               |
-+-----------------+------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------+
-| Parallel Sets   | [`ggforce`](https://ggforce.data-imaginist.com/)                                                                       | ```                                               |
-|                 |                                                                                                                        | remotes::install_github("thomasp85/ggforce")      |
-|                 |                                                                                                                        | ```                                               |
-+-----------------+------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------+
-| Bump charts     | [`ggbump`](https://github.com/davidsjoberg/ggbump)                                                                     | ```                                               |
-|                 |                                                                                                                        | remotes::install_github("davidsjoberg/ggbump")    |
-|                 |                                                                                                                        | ```                                               |
-+-----------------+------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------+
-| Stream Plots    | [`ggstream`](https://github.com/davidsjoberg/ggstream)                                                                 | ```                                               |
-|                 |                                                                                                                        | remotes::install_github("davidsjoberg/ggstream")  |
-|                 |                                                                                                                        | ```                                               |
-+-----------------+------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------+
 :::

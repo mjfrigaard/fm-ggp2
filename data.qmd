@@ -18,136 +18,110 @@ ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
 ```
 
-```{r}
-#| label: co_box_dev
-#| echo: false
-#| results: asis
-#| eval: true
-co_box(
-  color = "o", look = "minimal",
-  header = "Caution",
-  contents = "This section is still being developed. The contents are subject to change.",
-  fold = FALSE
-)
-```
+Every graph in this book is built from simulated data. Each chapter creates its own dataset in a code chunk you can see and run, using base R's random number functions (`rnorm()`, `rpois()`, `rgamma()`, `sample()`, and friends) or the [`faux` package](https://debruine.github.io/faux/). None of the examples depend on a data package, and each dataset has a late 90s theme to match the chapter's graph.
 
-The data packages used are available to preview below.
+## Why simulated data?
 
-```{r}
-#| eval: false
-#| echo: true
-#| code-fold: show
-data_pkgs <- c("palmerpenguins", 
-               "fivethirtyeight", 
-               "ggplot2movies", 
-               "babynames")
-install.packages(data_pkgs)
-```
+I've found that simulated data solves two problems at once. First, it's completely reproducible. Each chapter calls `set.seed()` (usually with a 90s year), so you'll get the same values I did every time you run the code. Second, we know the *truth* behind every dataset. When we simulate 300 Pokémon starters with known probabilities, we can check how close the counts land, and that's exactly what the **Distribution** section in each chapter does:
 
-### `palmerpenguins::penguins`
+  - **COUNT IT**: look at the first few rows and summarize the values
 
-The majority of the graphs in the manual are built using the `palmerpenguins::penguins` data.
+  - **DRAW IT**: sketch the values in a simple picture that connects them to the chapter's graph
 
-::: column-margin
-::: {style="font-size: 0.95em; color: #282b2d;"}
-***...so...many...PENGUINS!***
+  - **NAME IT**: name the distribution behind the data and walk through its formula
+
+Real data 'caught in the wild' has its place, but you can't look up the distribution it came from. Simulated data keeps the graph, the numbers, and the formula in sync, so you can see *why* a graph looks the way it does. Try changing an argument (a mean, a probability, or a sample size) in any chapter and re-run the code to see how the graph responds.
+
+## Datasets by chapter
+
+The tables below list the dataset in each chapter, its 90s reference, the distribution it's drawn from, and the seed passed to `set.seed()`.
+
+### Univariate
+
+::: {style="font-size: 0.90rem;"}
+
+| Chapter | Dataset | 90s reference | Distribution | Seed |
+|---|---|---|---|---|
+| [Bar graphs](bar_graphs.qmd) | `pokemon_starters` | Pokémon starters | Multinomial | `1998` |
+| [Histograms](histograms.qmd) | `aol_sessions` | AOL dial up sessions | Normal | `1014` |
+| [Frequency polygons](frequency_polygons.qmd) | `napster_downloads` | Napster MP3 downloads | Gamma | `1999` |
+| [Dot plots](dot_plots.qmd) | `blockbuster_rentals` | Blockbuster Video rentals | Poisson | `1993` |
+| [Density plots](density_plots.qmd) | `spice_fans` | Spice World tour fans | Normal mixture | `1998` |
+| [Violin plots](violin_plots.qmd) | `beanie_prices` | Beanie Babies prices | Lognormal | `1996` |
+| [Box plots](box_plots.qmd) | `mario_kart_laps` | Mario Kart 64 lap times | t | `64` |
 :::
 
-![Artwork by Allison Horst](www/lter_penguins.png){fig-align="center" width="50%" height="50%"}
+### Amounts
+
+::: {style="font-size: 0.90rem;"}
+
+| Chapter | Dataset | 90s reference | Distribution | Seed |
+|---|---|---|---|---|
+| [Grouped bar graphs](grp_bar_graphs.qmd) | `jp_dinos` | Jurassic Park paddocks | Normal | `1993` |
+| [Summary bar graphs](sum_bar_graphs.qmd) | `happy_meals` | McDonald's Happy Meals | Poisson | `1997` |
+| [Overlapping bar graphs](overlapping_bar_graphs.qmd) | `friends_episodes` | Friends episodes | Normal | `1994` |
+| [Heatmaps](heatmaps.qmd) | `fp_gags` | The Fresh Prince of Bel-Air gags | Binomial | `1990` |
+| [Waffle charts](waffle_charts.qmd) | `pog_collection` | Pogs collection | Multinomial | `1993` |
+| [Cleveland dot plots](cleveland_dot_plots.qmd) | `walkman_tests` | Sony Walkman battery tests | Normal (`faux`) | `1979` |
 :::
 
-::: {.callout-note collapse="true" icon="false"}
-## Expand to view the data in `palmerpenguins::penguins`
+### Proportions
 
-::: {style="font-size: 0.85em;"}
-```{r}
-#| label: paged_penguins
-#| eval: true
-#| echo: false
-rmarkdown::paged_table(palmerpenguins::penguins)
-```
-:::
-:::
+::: {style="font-size: 0.90rem;"}
 
-Source: <https://github.com/allisonhorst/palmerpenguins/>
-
-### `fivethirtyeight`
-
-Use the table below to view the datasets in this package.
-
-::: column-margin
-![](www/538.png){fig-align="center" width="30%" height="30%"}
+| Chapter | Dataset | 90s reference | Distribution | Seed |
+|---|---|---|---|---|
+| [Diverging bar graphs](diverging_bar_graphs.qmd) | `encyclopedia_survey` | Encarta vs. Britannica survey | Multinomial | `1993` |
+| [Stacked densities](stacked_filled_density_graphs.qmd) | `modem_sessions` | Netscape modem sessions | Normal and Bayes' theorem | `1996` |
+| [Mosaic plots](mosaic_plots.qmd) | `titanic_fans` | Titanic moviegoers | Multinomial | `1997` |
+| [Pie charts](pie_charts.qmd) | `trapper_keepers` | Lisa Frank Trapper Keepers | Multinomial | `1993` |
+| [Treemaps](treemaps.qmd) | `toy_sales` | Toys"R"Us 1998 sales | Poisson | `1999` |
 :::
 
-::: {.callout-note collapse="true" icon="false"}
-## Expand to view the data in the `fivethirtyeight` package
+### Distributions
 
-::: {style="font-size: 0.85em;"}
-*To view a table of available datasets in the `fivethirtyeight` package, view the `Data Frame Name` and `Article Title` columns in the `datasets_master` table*
+::: {style="font-size: 0.90rem;"}
+
+| Chapter | Dataset | 90s reference | Distribution | Seed |
+|---|---|---|---|---|
+| [Overlapping histograms](overlapping_histograms.qmd) | `tamagotchi_pets` | Tamagotchi lifespans | Weibull | `1997` |
+| [Overlapping frequency polygons](overlapping_frequency_polygons.qmd) | `soaker_shots` | Super Soaker range | Normal | `1990` |
+| [Overlapping dot plots](overlapping_dot_plots.qmd) | `goosebumps_readers` | Goosebumps books read | Poisson | `1992` |
+| [Beeswarm plots](beeswarm_plots.qmd) | `tetris_games` | Tetris line clears | Negative binomial | `1989` |
+| [Overlapping density plot](overlapping_stacked_density_plots.qmd) | `furby_chatter` | Furby chatter | Normal | `1998` |
+| [Ridgeline plots](ridgeline_plots.qmd) | `trl_videos` | MTV TRL countdown | Gamma | `1998` |
+| [Grouped box plots](grouped_box_plots.qmd) | `oregon_trail` | The Oregon Trail | Lognormal | `1985` |
+| [Grouped violin plots](grouped_violin_plots.qmd) | `aim_buddies` | AOL Instant Messenger buddy lists | Poisson and normal mixture | `1997` |
+| [Raincloud plots](raincloud_plots.qmd) | `magic_eye` | Magic Eye posters | Paired lognormal (`faux`) | `1994` |
 :::
 
-::: {style="font-size: 0.80em;"}
-```{r}
-#| label: fivethirtyeight_pkg
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-library(fivethirtyeight)
-rmarkdown::paged_table(fivethirtyeight::datasets_master |> 
-    select(`Data Frame Name`, `Article Title`))
-```
-:::
-:::
+### Dates & times
 
-Source: <https://github.com/fivethirtyeight/data>
+::: {style="font-size: 0.90rem;"}
 
-### `ggplot2movies::movies`
-
-::: column-margin
-![](www/imdb.png){fig-align="center" width="30%" height="30%"}
+| Chapter | Dataset | 90s reference | Distribution | Seed |
+|---|---|---|---|---|
+| [Line graphs](line_graphs.qmd) | `batman_box` | Batman (1989) box office | Exponential decay, lognormal noise | `1989` |
+| [Grouped line graphs](grp_line_graphs.qmd) | `nick_ratings` | Nickelodeon (SNICK) ratings | Normal | `1992` |
+| [Bump charts](bump_charts.qmd) | `boy_bands` | Boy band radio spins | Poisson | `1999` |
+| [Slope graphs](slope_graphs.qmd) | `bayside_quizzes` | Saved by the Bell quizzes | Normal | `1989` |
+| [Stream plots](stream_plots.qmd) | `fad_sales` | 90s fads (Hypercolor, slap bracelets) | Poisson | `1991` |
+| [Alluvial charts](alluvial_charts.qmd) | `y2k_households` | Y2K prep surveys | Markov chain (multinomial) | `1999` |
+| [Instance chart](instance_chart.qmd) | `hospital_names` | Rugrats baby names | Poisson | `1993` |
 :::
 
-::: {.callout-note collapse="true" icon="false"}
-## Expand to view *a sample* of the data in `ggplot2movies::movies`
+### Relationships
 
-::: {style="font-size: 0.85em;"}
-```{r}
-#| label: paged_ggplot2movies
-#| eval: true
-#| echo: false
-rmarkdown::paged_table(x = 
-    dplyr::slice_sample(ggplot2movies::movies, 
-      n = 1000, replace = FALSE))
-```
+::: {style="font-size: 0.90rem;"}
+
+| Chapter | Dataset | 90s reference | Distribution | Seed |
+|---|---|---|---|---|
+| [Scatter plots](scatter_plot.qmd) | `doom_pcs` | Doom frame rates | Normal (censored) | `1993` |
+| [Grouped scatter plots](grouped_scatter_plots.qmd) | `console_kids` | Sega vs. Nintendo | Bivariate normal (`faux`) | `1991` |
+| [Bubble charts](bubble_charts.qmd) | `seinfeld_eps` | Seinfeld episodes | Gamma and lognormal | `1989` |
+| [Grouped bubble graph](grouped_bubble_charts.qmd) | `ranger_fights` | Power Rangers vs. the Putties | Poisson | `1993` |
+| [Parallel sets](parallel_sets.qmd) | `bronson_alcott` | Clueless cliques | Multinomial | `1995` |
+| [Density contours](density_contours.qmd) | `bopit_players` | Bop It reaction times | Bivariate normal mixture (`faux`) | `1996` |
+| [2D histograms](bins_2d.qmd) | `geocities_pages` | GeoCities page loads | Lognormal and normal | `1997` |
+| [Hexagon bins](hex_bins.qmd) | `surge_teens` | Surge soda and video games | Gamma and normal | `1996` |
 :::
-:::
-
-Source: <https://www.imdb.com/>
-
-### `babynames::babynames`
-
-::: column-margin
-![](www/ssa.png){fig-align="center" width="40%" height="40%"}
-:::
-
-::: {.callout-note collapse="true" icon="false"}
-## Expand to view *a sample* of the data in `babynames::babynames`
-
-::: {style="font-size: 0.85em;"}
-```{r}
-#| label: paged_babynames
-#| eval: true
-#| echo: false
-rmarkdown::paged_table(x = 
-    dplyr::slice_sample(babynames::babynames, 
-      n = 1000, replace = FALSE))
-```
-:::
-:::
-
-Source: <http://www.ssa.gov/oact/babynames/limits.html>
-
-***Why not manually create the graph datasets with `data.frame()` or `tibble()`/`tribble()`?***
-
-In my opinion, using manually generated data is great for reproducible examples, but they rarely look like data 'caught in the wild.' The data packages above are also well maintained and can be used to provide a variety of examples.

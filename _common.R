@@ -29,10 +29,6 @@ sysfonts::font_add(
 # add theme ----
 # the original book theme now lives in fmggp2 as theme_fmggp2()
 theme_ggp2g <- fmggp2::theme_fmggp2
-# attached for chapters not yet converted to simulated data
-library(palmerpenguins)
-library(fs)
-library(janitor)
 
 # book helpers ----
 library(fmggp2) # %nin%, status(), co_box(), and the 90s themes

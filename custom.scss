@@ -1,13 +1,51 @@
 /*-- scss:defaults --*/
-/*-- https://github.com/twbs/bootstrap/blob/main/scss/_variables.scss -- */
-/*-- https://github.com/twbs/bootstrap/blob/cdcb503b88a6d3ddcc870022a740b996af0034d3/scss/_variables.scss#L1729 -- */
-$small-font-size:             .80rem !default;
-$code-font-size:              .85em !default;
-$primary:                     #5f2042 !default;
+// colors live in theme-light.scss and theme-dark.scss
 
 /*-- scss:rules --*/
 
+// a thin iMac flavors stripe across the top of every page
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: $fm-stripe;
+  z-index: 2000;
+}
 
 code {
-  color: #02577A;
+  color: $fm-strawberry;
+}
+
+::selection {
+  background: $fm-tangerine;
+  color: #FFFFFF;
+}
+
+// the chapters use inline colors chosen for a white page, so we remap
+// them here to work in both light and dark mode
+[style*="color: #1e83c8"],
+[style*="color: #5f2042"] {
+  color: $fm-grape !important;
+}
+
+[style*="color: #02577A"] {
+  color: $fm-bondi !important;
+}
+
+[style*="color: #282b2d"] {
+  color: $fm-ink !important;
+}
+
+[style*="color: #E74A2F"] {
+  color: $fm-tangerine !important;
+}
+
+// keep the graphs exactly as the fmggp2 themes drew them
+.cell-output-display img,
+figure img {
+  background: transparent;
+  filter: none;
 }

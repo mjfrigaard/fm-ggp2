@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -39,10 +74,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ae917dcede4016e6d9f0c87fd7de4472.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-3dd65e00657b6d9022c40063cd6a194b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-f210b8a2f4f1f23d9cba045d64a1412b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-3dd65e00657b6d9022c40063cd6a194b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -76,7 +115,169 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -101,8 +302,9 @@ ul.task-list li input[type="checkbox"] {
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">ggplot2: field manual</a> 
-        <div class="sidebar-tools-main">
+        <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/mjfrigaard/fm-ggp2" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -482,11 +684,19 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="3">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#graph-extensions" id="toc-graph-extensions" class="nav-link active" data-scroll-target="#graph-extensions"><span class="header-section-number">B.1</span> Graph extensions</a></li>
+  <li><a href="#helper-packages" id="toc-helper-packages" class="nav-link" data-scroll-target="#helper-packages"><span class="header-section-number">B.2</span> Helper packages</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/extensions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
+
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./data.html">Appendices</a></li><li class="breadcrumb-item"><a href="./extensions.html"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Extensions</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -507,100 +717,157 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="callout callout-style-simple callout-warning no-icon callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span><span style="font-weight: bold; font-size: 1.10em;">Caution</span>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<div style="font-size: 1.05em; color: #282b2d;">
-<p>This section is still being developed. The contents are subject to change.</p>
-</div>
-</div>
-</div>
-</div>
-<p>Below are the graphs requiring additional packages/extensions:</p>
-<div style="font-size: 0.95rem;">
+<p>Most graphs in this book only need <code>ggplot2</code> and <code>dplyr</code>, but some graph types live in extension packages. The tables below list the extensions (and the helper packages) each chapter uses. I’ve used <a href="https://pak.r-lib.org/"><code>pak</code></a> for every install command because it handles packages on CRAN (<code>pak::pak("ggridges")</code>) and GitHub (<code>pak::pak("owner/repo")</code>) the same way.</p>
+<section id="graph-extensions" class="level2" data-number="B.1">
+<h2 data-number="B.1" class="anchored" data-anchor-id="graph-extensions"><span class="header-section-number">B.1</span> Graph extensions</h2>
+<div style="font-size: 0.90rem;">
 <table class="caption-top table">
 <thead>
 <tr class="header">
 <th>Graph</th>
 <th>Package</th>
-<th>Code</th>
+<th>Install</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Waffle charts</td>
+<td><a href="./waffle_charts.html">Waffle charts</a></td>
 <td><a href="https://liamgilbey.github.io/ggwaffle/"><code>ggwaffle</code></a></td>
-<td><pre><code>remotes::install_github("liamgilbey/ggwaffle")</code></pre></td>
+<td><code>pak::pak("liamgilbey/ggwaffle")</code></td>
 </tr>
 <tr class="even">
-<td>Pie charts</td>
-<td><a href="https://rpkgs.datanovia.com/ggpubr/"><code>ggpubr</code></a></td>
-<td><pre><code>remotes::install_github("kassambara/ggpubr")</code></pre></td>
-</tr>
-<tr class="odd">
-<td>Mosaic Plots</td>
+<td><a href="./mosaic_plots.html">Mosaic plots</a></td>
 <td><a href="https://haleyjeppson.github.io/ggmosaic/"><code>ggmosaic</code></a></td>
-<td><pre><code>remotes::install_github("haleyjeppson/ggmosaic")</code></pre></td>
+<td><code>pak::pak("haleyjeppson/ggmosaic")</code></td>
+</tr>
+<tr class="odd">
+<td><a href="./pie_charts.html">Pie charts</a></td>
+<td><a href="https://rpkgs.datanovia.com/ggpubr/"><code>ggpubr</code></a></td>
+<td><code>pak::pak("ggpubr")</code></td>
 </tr>
 <tr class="even">
-<td>Treemaps</td>
+<td><a href="./treemaps.html">Treemaps</a></td>
 <td><a href="https://wilkox.org/treemapify/"><code>treemapify</code></a></td>
-<td><pre><code>remotes::install_github("wilkox/treemapify")</code></pre></td>
+<td><code>pak::pak("treemapify")</code></td>
 </tr>
 <tr class="odd">
-<td>Beeswarm Plots</td>
+<td><a href="./beeswarm_plots.html">Beeswarm plots</a></td>
 <td><a href="https://github.com/eclarke/ggbeeswarm"><code>ggbeeswarm</code></a></td>
-<td><pre><code>remotes::install_github("eclarke/ggbeeswarm")</code></pre></td>
+<td><code>pak::pak("ggbeeswarm")</code></td>
 </tr>
 <tr class="even">
-<td>Ridgeline Plots</td>
+<td><a href="./ridgeline_plots.html">Ridgeline plots</a></td>
 <td><a href="https://wilkelab.org/ggridges/"><code>ggridges</code></a></td>
-<td><pre><code>remotes::install_github("wilkelab/ggridges")</code></pre></td>
+<td><code>pak::pak("ggridges")</code></td>
 </tr>
 <tr class="odd">
-<td>Raincloud plots</td>
-<td><a href="https://github.com/jorvlan/raincloudplots"><code>raincloudplots</code></a> &amp; <a href="https://mjskay.github.io/ggdist/reference/"><code>ggdist</code></a></td>
-<td><pre><code>remotes::install_github('jorvlan/raincloudplots')
-remotes::install_github('mjskay/ggdist')</code></pre></td>
+<td><a href="./raincloud_plots.html">Raincloud plots</a></td>
+<td><a href="https://github.com/jorvlan/raincloudplots"><code>raincloudplots</code></a> and <a href="https://mjskay.github.io/ggdist/"><code>ggdist</code></a></td>
+<td><code>pak::pak(c("jorvlan/raincloudplots", "ggdist"))</code></td>
 </tr>
 <tr class="even">
-<td>Alluvial charts</td>
-<td><a href="https://corybrunson.github.io/ggalluvial/"><code>ggalluvial</code></a></td>
-<td><pre><code>remotes::install_github("corybrunson/ggalluvial")</code></pre></td>
-</tr>
-<tr class="odd">
-<td>Parallel Sets</td>
-<td><a href="https://ggforce.data-imaginist.com/"><code>ggforce</code></a></td>
-<td><pre><code>remotes::install_github("thomasp85/ggforce")</code></pre></td>
-</tr>
-<tr class="even">
-<td>Bump charts</td>
+<td><a href="./bump_charts.html">Bump charts</a></td>
 <td><a href="https://github.com/davidsjoberg/ggbump"><code>ggbump</code></a></td>
-<td><pre><code>remotes::install_github("davidsjoberg/ggbump")</code></pre></td>
+<td><code>pak::pak("davidsjoberg/ggbump")</code></td>
 </tr>
 <tr class="odd">
-<td>Stream Plots</td>
+<td><a href="./stream_plots.html">Stream plots</a></td>
 <td><a href="https://github.com/davidsjoberg/ggstream"><code>ggstream</code></a></td>
-<td><pre><code>remotes::install_github("davidsjoberg/ggstream")</code></pre></td>
+<td><code>pak::pak("davidsjoberg/ggstream")</code></td>
+</tr>
+<tr class="even">
+<td><a href="./alluvial_charts.html">Alluvial charts</a></td>
+<td><a href="https://corybrunson.github.io/ggalluvial/"><code>ggalluvial</code></a></td>
+<td><code>pak::pak("ggalluvial")</code></td>
+</tr>
+<tr class="odd">
+<td><a href="./parallel_sets.html">Parallel sets</a></td>
+<td><a href="https://ggforce.data-imaginist.com/"><code>ggforce</code></a></td>
+<td><code>pak::pak("ggforce")</code></td>
+</tr>
+<tr class="even">
+<td><a href="./hex_bins.html">Hexagon bins</a></td>
+<td><a href="https://github.com/edzer/hexbin"><code>hexbin</code></a> (used by <code>geom_hex()</code>)</td>
+<td><code>pak::pak("hexbin")</code></td>
 </tr>
 </tbody>
 </table>
 </div>
+</section>
+<section id="helper-packages" class="level2" data-number="B.2">
+<h2 data-number="B.2" class="anchored" data-anchor-id="helper-packages"><span class="header-section-number">B.2</span> Helper packages</h2>
+<p>These packages don’t add new graph types, but a few chapters rely on them to simulate data, combine graphs, or choose colors.</p>
+<div style="font-size: 0.90rem;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Package</th>
+<th>What it’s used for</th>
+<th>Chapters</th>
+<th>Install</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://debruine.github.io/faux/"><code>faux</code></a></td>
+<td>Simulating correlated variables (<code>rnorm_multi()</code>) and designs (<code>sim_design()</code>)</td>
+<td><a href="./cleveland_dot_plots.html">Cleveland dot plots</a>, <a href="./raincloud_plots.html">raincloud plots</a>, <a href="./grouped_scatter_plots.html">grouped scatter plots</a>, <a href="./density_contours.html">density contours</a></td>
+<td><code>pak::pak("faux")</code></td>
+</tr>
+<tr class="even">
+<td><a href="https://patchwork.data-imaginist.com/"><code>patchwork</code></a></td>
+<td>Combining graphs into one figure</td>
+<td><a href="./mosaic_plots.html">Mosaic plots</a>, <a href="./overlapping_stacked_density_plots.html">overlapping and stacked density plots</a>, <a href="./grp_line_graphs.html">grouped line graphs</a></td>
+<td><code>pak::pak("patchwork")</code></td>
+</tr>
+<tr class="odd">
+<td><a href="https://colorspace.r-forge.r-project.org/"><code>colorspace</code></a></td>
+<td>Sequential color palettes</td>
+<td><a href="./bins_2d.html">2D histograms</a>, <a href="./hex_bins.html">hexagon bins</a></td>
+<td><code>pak::pak("colorspace")</code></td>
+</tr>
+<tr class="even">
+<td><a href="https://mjfrigaard.github.io/fmggp2/"><code>fmggp2</code></a></td>
+<td>The 90s themes and book helpers (see <a href="theme.html" class="quarto-xref"><span>Appendix C</span></a>)</td>
+<td>Every chapter</td>
+<td><code>pak::pak("mjfrigaard/fmggp2")</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The code below installs everything at once.</p>
+<div style="font-size: 0.85em;">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>show/hide</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="fu">c</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"liamgilbey/ggwaffle"</span>, <span class="st">"haleyjeppson/ggmosaic"</span>, <span class="st">"ggpubr"</span>, <span class="st">"treemapify"</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ggbeeswarm"</span>, <span class="st">"ggridges"</span>, <span class="st">"jorvlan/raincloudplots"</span>, <span class="st">"ggdist"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"davidsjoberg/ggbump"</span>, <span class="st">"davidsjoberg/ggstream"</span>, <span class="st">"ggalluvial"</span>, <span class="st">"ggforce"</span>, <span class="st">"hexbin"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"faux"</span>, <span class="st">"patchwork"</span>, <span class="st">"colorspace"</span>, <span class="st">"mjfrigaard/fmggp2"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -1058,7 +1325,7 @@ remotes::install_github('mjskay/ggdist')</code></pre></td>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/extensions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/mjfrigaard/fm-ggp2/edit/main/extensions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mjfrigaard/fm-ggp2/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

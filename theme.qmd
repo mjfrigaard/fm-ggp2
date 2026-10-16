@@ -18,170 +18,193 @@ ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
 ```
 
+Every chapter in this book has its own late 90s `ggplot2` theme to match its simulated data (Game Boy greens for the Pokémon starters, a Windows 98 dialog box for the AOL sessions, and so on). The themes and the small helpers the book uses live in the [`fmggp2` package](https://mjfrigaard.github.io/fmggp2/), so every chapter loads the same tested code.
+
+## Installing `fmggp2`
+
+Install the development version of `fmggp2` from GitHub:
+
+::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: co_box_dev
-#| echo: false
-#| results: asis
+#| label: install_fmggp2
+#| eval: false
+#| echo: true
+#| code-fold: show
+# install.packages("pak")
+pak::pak("mjfrigaard/fmggp2")
+```
+:::
+
+## Using a theme
+
+Each chapter sets its theme once in the setup chunk with `ggplot2::theme_set()`, so every graph in the chapter picks it up and we don't have to add the theme to each plot:
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: theme_set_example
+#| eval: false
+#| echo: true
+#| code-fold: show
+ggplot2::theme_set(fmggp2::theme_gameboy(base_size = 14))
+```
+:::
+
+We can also add a theme to a single graph like any other `ggplot2` theme. Below we simulate a few home PCs from 1998 and add `theme_win98()`:
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: theme_example
 #| eval: true
-co_box(
-  color = "o", look = "minimal",
-  header = "Caution",
-  contents = "This section is still being developed. The contents are subject to change.",
-  fold = FALSE
-)
+#| echo: true
+#| code-fold: show
+set.seed(1998)
+home_pcs <- tibble(mhz = runif(60, min = 200, max = 450)) |>
+  mutate(price = 600 + 3 * mhz + rnorm(60, mean = 0, sd = 150))
+ggplot(home_pcs, aes(x = mhz, y = price)) +
+  geom_point() +
+  labs(title = "Home PCs in 1998", caption = "Simulated data",
+       x = "Processor speed (MHz)", y = "Price (USD)") +
+  fmggp2::theme_win98(base_size = 14)
 ```
+:::
 
+## What the themes set
 
-The theme used in the graphs is custom and uses combined elements from `ggplot2::theme_minimal()` and `ggplot2::theme_void()`. View it [here](https://github.com/mjfrigaard/fmggp2/blob/main/R/theme_fmggp2.R).
+The 90s themes are built on `ggplot2::theme_bw()` and use features from `ggplot2` 4.0, so a single theme can control much more than the background and fonts:
 
+  - **Colors**: the plot background, the frame around the plot, the panel, and the grid lines all come from a palette sampled from the 90s reference.
 
+  - **Fonts**: most themes pair Arial body text with a title display font that fits the reference (Impact for Blockbuster, Chalkduster for Friends, Comic Sans for GeoCities). A few use a single font throughout, like Tahoma for Windows 98.
+
+  - **Discrete palettes**: `palette.fill.discrete` and `palette.colour.discrete` set the colors for categorical variables, so mapping a variable to `fill` or `color` uses the theme's colors automatically.
+
+  - **Continuous palettes**: four themes (`theme_freshprince()`, `theme_bopit()`, `theme_geocities()`, and `theme_surge()`) also set `palette.fill.continuous`, which colors heatmaps, 2D histograms, and hexagon bins.
+
+  - **Default geoms**: `element_geom()` sets the default `fill`, `colour`, and font for layers like `geom_bar()` and `geom_point()`, so a graph with no color mapping still matches the theme.
+
+::: {.callout-tip collapse="false" icon="false"}
+## Ordered factors
+
+Ordered factors use the viridis scale by default, which overrides the theme's discrete palette. If a graph doesn't pick up the theme colors, check whether the variable mapped to `fill` or `color` is an ordered factor (for example, the output of `lubridate::wday(label = TRUE)`). If it is, convert it with `factor(x, ordered = FALSE)`.
+:::
+
+## Fonts
+
+The display fonts are system fonts that ship with macOS. Each theme registers its fonts with `sysfonts::font_add()`. When a font file can't be found (on Linux or Windows, for example), the theme falls back to `"sans"` so the graphs still render. You can also pass any font family you've registered yourself:
+
+::: {style="font-size: 0.85em;"}
 ```{r}
-#| code-fold: show 
-#| code-summary: 'show/hide theme_ggp2g.R'
-# pkgs --------------------------------------------------------------------
-require(ggplot2)
-require(extrafont)
-require(showtext)
-require(showtextdb)
-require(sysfonts)
-library(extrafont)
-library(palmerpenguins)
-library(fs)
-library(janitor)
-
-# theme_ggp2g -------------------------------------------------------------
-# this is a custom theme for the ggplot2 gallery
-# import fonts like the function in hrbrthemes 
-# https://github.com/hrbrmstr/hrbrthemes/blob/3e8d9494a9e0026a3127f6a0df88208511cd0715/R/roboto-condensed.r#L208
-# First call the font_import() is called inside each setup chunk 
-# extrafont::font_import(
-#     paths = "assets/Ubuntu/", 
-#     prompt = FALSE)
-# we then add the font using font_add()
-# sysfonts::font_add(
-#     family =  "Ubuntu", 
-#     regular = "assets/Ubuntu/Ubuntu-Regular.ttf")
-# finally we use showtext_auto() to use the font in the graph
-# showtext::showtext_auto()
-# "If turned on, any newly opened graphics devices will use showtext to 
-# draw text"
-theme_ggp2g <- function(base_size = 11, base_family = "Ubuntu", 
-                        base_line_size = base_size / 22, 
-                        base_rect_size = base_size / 22) {
-    
-  half_line <- base_size / 2
-  # most of this is borrowed from theme_minimal()/theme_void(), but with some
-  # adjustments to panel, margins, and legend see the original here:
-  # https://github.com/tidyverse/ggplot2/blob/d9f179b038f020158773fac54af9a84cf961b54b/R/theme-defaults.r#L459
-  thm <- theme(
-    # RECTANGLE ----------------------------------------------------
-    rect =               element_blank(),
-    # TEXT ---------------------------------------------------------
-    text =               element_text(
-                            family = "Ubuntu",
-                            # face = "plain",
-                            colour = "black", 
-                            size = base_size,
-                            lineheight = 0.9, 
-                            hjust = 0.5, vjust = 0.5, 
-                            angle = 0,
-                            margin = margin(), 
-                            debug = FALSE),
-    ## AXES --------------------------------------------------------------
-    axis.text =          element_text(
-                            family = base_family, size = rel(0.65)),
-    axis.title.x =       element_text(vjust = -4.75),
-    axis.title.y =       element_text(vjust = 4.25, angle = 90),
-    axis.title =         element_text(size = rel(0.8)),
-    ### AXIS TICKS ----
-    ## remove all axis ticks
-    ## https://ggplot2-book.org/polishing.html#theme-axis
-    axis.ticks.length =  unit(0, "pt"),
-    axis.ticks.length.x = NULL,
-    axis.ticks.length.x.top = NULL,
-    axis.ticks.length.x.bottom = NULL,
-    axis.ticks.length.y = NULL,
-    axis.ticks.length.y.left = NULL,
-    axis.ticks.length.y.right = NULL,
-    ## STRIP ----
-    ## 
-    strip.clip =         "inherit",
-    strip.text.x =         element_text(size = rel(0.7)),
-    # strip.text.x affects both facet_wrap() or facet_grid()
-    strip.text.y =         element_text(size = rel(0.7)),
-    # strip.text.y only affects facet_grid()
-    strip.switch.pad.grid = unit(half_line / 2, "pt"),
-    strip.switch.pad.wrap = unit(half_line / 2, "pt"),
-    strip.background = element_rect(fill = "#d0d0d0"),
-    ## PANEL ----
-    ## here we introduce thin, light gray lines for the graph area (with
-    ## vertical lines slightly larger than horizontal lines)
-    ## https://ggplot2-book.org/polishing.html#panel-elements
-    panel.ontop =        FALSE,
-    panel.spacing =      unit(half_line, "pt"),
-    panel.grid.major.x = element_line(color = "#d0d0d0", linewidth = 0.3),
-    panel.grid.major.y = element_line(color = "#d0d0d0", linewidth = 0.3),
-    panel.grid.minor.x = element_line(color = "#d0d0d0", linewidth = 0.1),
-    panel.grid.minor.y = element_line(color = "#d0d0d0", linewidth = 0.1),
-    ## TITLES ----
-    ### Title -----
-    # location of title
-    plot.title.position = "panel",
-    ## slightly larger text
-    plot.title =         element_text(
-                           size = rel(1.1),
-                           hjust = 0, vjust = 2,
-                           margin = margin(b = half_line)
-                         ),
-    ### subtitle -----
-    # slightly smaller text, italic 
-    plot.subtitle =      element_text(
-                           size = rel(0.9),
-                           hjust = 0, vjust = 2,
-                           margin = margin(b = half_line)
-                         ),
-    ### caption -----
-    plot.caption =       element_text(
-                           size = rel(0.8),
-                           hjust = 1, vjust = 1,
-                           margin = margin(b = half_line)
-                         ),
-      
-    plot.caption.position = "panel",
-    ### tag -----
-    plot.tag =           element_text(
-                           size = rel(1.2),
-                           hjust = 0.5, vjust = 0.5
-                         ),
-    plot.tag.position =  'topleft',
-    ## LEGEND ----
-    ## https://ggplot2-book.org/polishing.html#legend-elements
-    # legend.direction =   "",
-    # legend.box.just =    "",
-    legend.box =         NULL,
-    legend.key.size =    unit(1.2, "lines"),
-        # the positioning is = c(horizontal, vertical)
-        # c(1, 0) = bottom right
-        # c(0.5, 0.5) = dead center
-        # c(0, 1) = top left
-        # https://ggplot2-book.org/scale-colour.html#legend-layout
-    # legend.position =    c(1, 0.5), # c(horizontal, vertical)
-    # legend.justification = c(-0.015, 0.0), # c(horizontal, vertical)
-    legend.text =        element_text(
-                            size = rel(0.60)),
-    legend.title =       element_text(
-                            size = rel(0.70), 
-                            hjust = 0),
-    # legend.margin =      unit(c(1.5, 1.5, 1.5, 1.5), "mm"),
-    legend.margin =      margin(t = 2.5, r = 2.5, b = 2.5, l = 2.5),
-    ## PLOT MARGIN ----
-    ## https://ggplot2-book.org/polishing.html#plot-elements
-    plot.margin =        unit(x = c(1.5, 5.0, 1.5, 1.5), "lines"),
-    complete = TRUE
- )
-  return(thm)
-}
-
-
+#| label: theme_fonts
+#| eval: false
+#| echo: true
+#| code-fold: show
+fmggp2::theme_win98(base_family = "sans")
+fmggp2::theme_batman(base_family = "sans", title_family = "sans")
 ```
+:::
 
+The `showtext` package draws the registered fonts in the graphs, so each chapter calls `showtext::showtext_auto()` in its setup chunk. The [themes vignette](https://mjfrigaard.github.io/fmggp2/articles/themes.html) lists every theme's fonts.
+
+## Themes by chapter
+
+The tables below list the theme used in each chapter and the 90s reference it's built from.
+
+### Univariate
+
+::: {style="font-size: 0.90rem;"}
+
+| Chapter | Theme | Reference |
+|---|---|---|
+| [Bar graphs](bar_graphs.qmd) | `theme_gameboy()` | Original Game Boy screen |
+| [Histograms](histograms.qmd) | `theme_win98()` | Windows 98 desktop |
+| [Frequency polygons](frequency_polygons.qmd) | `theme_napster()` | 1999 Napster client |
+| [Dot plots](dot_plots.qmd) | `theme_blockbuster()` | Blockbuster Video |
+| [Density plots](density_plots.qmd) | `theme_spice()` | Spice Girls era pop |
+| [Violin plots](violin_plots.qmd) | `theme_beanie()` | Beanie Babies heart tag |
+| [Box plots](box_plots.qmd) | `theme_n64()` | Nintendo 64 |
+
+:::
+
+### Amounts
+
+::: {style="font-size: 0.90rem;"}
+
+| Chapter | Theme | Reference |
+|---|---|---|
+| [Grouped bar graphs](grp_bar_graphs.qmd) | `theme_jurassic()` | Jurassic Park (1993) |
+| [Summary bar graphs](sum_bar_graphs.qmd) | `theme_happymeal()` | McDonald’s Happy Meal box |
+| [Overlapping bar graphs](overlapping_bar_graphs.qmd) | `theme_friends()` | Friends (Monica’s apartment) |
+| [Heatmaps](heatmaps.qmd) | `theme_freshprince()` | The Fresh Prince of Bel-Air |
+| [Waffle charts](waffle_charts.qmd) | `theme_pogs()` | Pogs milk caps |
+| [Cleveland dot plots](cleveland_dot_plots.qmd) | `theme_walkman()` | Sony Walkman Sports |
+
+:::
+
+### Proportions
+
+::: {style="font-size: 0.90rem;"}
+
+| Chapter | Theme | Reference |
+|---|---|---|
+| [Diverging bar graphs](diverging_bar_graphs.qmd) | `theme_encarta()` | Microsoft Encarta / Britannica |
+| [Stacked densities](stacked_filled_density_graphs.qmd) | `theme_netscape()` | Netscape Navigator |
+| [Mosaic plots](mosaic_plots.qmd) | `theme_titanic()` | Titanic (1997) |
+| [Pie charts](pie_charts.qmd) | `theme_lisafrank()` | Lisa Frank school supplies |
+| [Treemaps](treemaps.qmd) | `theme_toysrus()` | Toys”R”Us |
+
+:::
+
+### Distributions
+
+::: {style="font-size: 0.90rem;"}
+
+| Chapter | Theme | Reference |
+|---|---|---|
+| [Overlapping histograms](overlapping_histograms.qmd) | `theme_tamagotchi()` | Tamagotchi |
+| [Overlapping frequency polygons](overlapping_frequency_polygons.qmd) | `theme_supersoaker()` | Super Soaker |
+| [Overlapping dot plots](overlapping_dot_plots.qmd) | `theme_goosebumps()` | Goosebumps books |
+| [Beeswarm plots](beeswarm_plots.qmd) | `theme_tetris()` | Tetris |
+| [Overlapping density plot](overlapping_stacked_density_plots.qmd) | `theme_furby()` | Furby |
+| [Ridgeline plots](ridgeline_plots.qmd) | `theme_trl()` | MTV TRL |
+| [Grouped box plots](grouped_box_plots.qmd) | `theme_oregontrail()` | The Oregon Trail |
+| [Grouped violin plots](grouped_violin_plots.qmd) | `theme_aim()` | AOL Instant Messenger |
+| [Raincloud plots](raincloud_plots.qmd) | `theme_magiceye()` | Magic Eye |
+
+:::
+
+### Dates & times
+
+::: {style="font-size: 0.90rem;"}
+
+| Chapter | Theme | Reference |
+|---|---|---|
+| [Line graphs](line_graphs.qmd) | `theme_batman()` | Batman (1989) |
+| [Grouped line graphs](grp_line_graphs.qmd) | `theme_snick()` | SNICK |
+| [Bump charts](bump_charts.qmd) | `theme_boyband()` | Boy bands |
+| [Slope graphs](slope_graphs.qmd) | `theme_savedbythebell()` | Saved by the Bell |
+| [Stream plots](stream_plots.qmd) | `theme_hypercolor()` | Hypercolor |
+| [Alluvial charts](alluvial_charts.qmd) | `theme_y2k()` | Y2K |
+| [Instance chart](instance_chart.qmd) | `theme_rugrats()` | Rugrats |
+
+:::
+
+### Relationships
+
+::: {style="font-size: 0.90rem;"}
+
+| Chapter | Theme | Reference |
+|---|---|---|
+| [Scatter plots](scatter_plot.qmd) | `theme_doom()` | Doom |
+| [Grouped scatter plots](grouped_scatter_plots.qmd) | `theme_consolewars()` | Console wars |
+| [Bubble charts](bubble_charts.qmd) | `theme_seinfeld()` | Seinfeld |
+| [Grouped bubble graph](grouped_bubble_charts.qmd) | `theme_powerrangers()` | Power Rangers |
+| [Parallel sets](parallel_sets.qmd) | `theme_clueless()` | Clueless |
+| [Density contours](density_contours.qmd) | `theme_bopit()` | Bop It |
+| [2D histograms](bins_2d.qmd) | `theme_geocities()` | GeoCities |
+| [Hexagon bins](hex_bins.qmd) | `theme_surge()` | Surge |
+
+:::
+
+## The original book theme
+
+The pages outside the chapters (like this appendix) use `fmggp2::theme_fmggp2()`, the original custom theme for this book. It combines elements from `ggplot2::theme_minimal()` and `ggplot2::theme_void()` with the Ubuntu font, thin light gray grid lines, and no axis ticks. You can view the source code [here](https://github.com/mjfrigaard/fmggp2/blob/main/R/theme_fmggp2.R).

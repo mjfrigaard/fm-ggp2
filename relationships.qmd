@@ -18,6 +18,15 @@ showtext::showtext_auto()
 # set theme
 ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
+bare_theme <- theme(plot.title = element_blank(),
+                    plot.subtitle = element_blank(),
+                    plot.caption = element_blank(),
+                    axis.title = element_blank(),
+                    axis.text = element_blank(),
+                    axis.ticks = element_blank(),
+                    strip.text = element_blank(),
+                    strip.background = element_blank(),
+                    legend.position = "none")
 ```
 
 ```{r}
@@ -29,4 +38,439 @@ ggplot2::theme_set(theme_ggp2g(
 status("complete")
 ```
 
-**Relationships**: these graphs show how the change of values in variable `x` affect the values in variable `y` (and possibly `z`)? 
+**Relationships**: these graphs show how the change of values in variable `x` affect the values in variable `y` (and possibly `z`)?
+
+## Scatter plots
+
+A [scatter plot](scatter_plot.qmd) displays the relationship between two numeric variables, with one on the `x` axis and the other on the `y` axis. Each point is one observation, so the pattern of points shows whether the variables rise together, move in opposite directions, or aren't related at all. Scatter plots also reveal clusters, outliers, and limits in the data. Transparency (`alpha`) helps when points overlap.
+
+```{r}
+#| label: part_scatter_plot
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+set.seed(1993)
+doom_pcs <- tibble(
+  pc_id = 1:200,
+  cpu_mhz = round(runif(200, min = 25, max = 100)),
+  fps = round(pmin(35, 0.45 * cpu_mhz +
+                     rnorm(200, mean = 0, sd = 3)), 1))
+labs_scatter <- labs(
+  title = "Doom frame rates",
+  subtitle = "Frames per second by processor speed",
+  caption = "Simulated data",
+  x = "CPU speed (MHz)", y = "Frames per second")
+ggp2_scatter <- doom_pcs |>
+  ggplot(
+    aes(x = cpu_mhz,
+      y = fps)) +
+  geom_point()
+
+(
+  ggp2_scatter +
+    labs_scatter
+) +
+  fmggp2::theme_doom(base_size = 12) +
+  bare_theme
+```
+
+## Grouped scatter plots
+
+[Grouped scatter plots](grouped_scatter_plots.qmd) display the relationship between two numeric variables across the levels of a categorical variable. Each group gets its own color (or shape), so we can compare the center, spread, and direction of each group's cloud of points. Grouped scatter plots show whether the relationship is the same for every group. A legend explains the colors.
+
+```{r}
+#| label: part_grouped_scatter_plots
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+library(faux)
+set.seed(1991)
+genesis <- faux::rnorm_multi(n = 120,
+    mu = c(games = 12, hours = 9), sd = c(4, 3), r = 0.6) |>
+  mutate(console = "Sega Genesis")
+snes <- faux::rnorm_multi(n = 120,
+    mu = c(games = 10, hours = 11), sd = c(3.5, 3), r = 0.3) |>
+  mutate(console = "Super Nintendo")
+console_kids <- bind_rows(genesis, snes) |>
+  mutate(kid_id = row_number(),
+         games_owned = pmax(1, round(games)),
+         hours_per_week = round(pmax(0, hours), 1)) |>
+  select(kid_id, console, games_owned, hours_per_week)
+labs_grp_scatter <- labs(
+  title = "The console wars",
+  subtitle = "Games owned vs. hours played per week",
+  caption = "Simulated data",
+  x = "Games owned",
+  y = "Hours played per week",
+  color = "Console")
+ggp2_grp_scatter <- console_kids |>
+  ggplot(
+    aes(x = games_owned,
+        y = hours_per_week)) +
+  geom_point(aes(color = console))
+
+(
+  ggp2_grp_scatter +
+    labs_grp_scatter
+) +
+  fmggp2::theme_consolewars(base_size = 12) +
+  bare_theme
+```
+
+## Bubble charts
+
+A [bubble chart](bubble_charts.qmd) is a scatter plot with a third numeric variable mapped to the size of each point. The position of each bubble shows the first two variables, and its area shows the third. Bubble charts can display a lot of information at once, but overlapping bubbles may need transparency. A legend explains the bubble sizes.
+
+```{r}
+#| label: part_bubble_charts
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+set.seed(1989)
+seinfeld_eps <- tibble(
+  episode = 1:180,
+  season = rep(1:9, each = 20)) |>
+  mutate(
+    kramer_minutes = round(rgamma(n(), shape = 6, rate = 1.5), 1),
+    laughs_per_min = round(2 + 0.3 * kramer_minutes +
+                             rnorm(n(), mean = 0, sd = 0.5), 1),
+    viewers = round(exp(rnorm(n(), mean = log(10 + 3 * (season - 1)),
+                              sd = 0.15)), 1))
+labs_bubble <- labs(
+  title = "Seinfeld episodes",
+  subtitle = "Kramer's screen time vs. laughs per minute",
+  caption = "Simulated data",
+  x = "Kramer screen time (minutes)", y = "Laughs per minute",
+  size = "Viewers (millions)")
+
+ggp2_bubble <- seinfeld_eps |>
+  ggplot(
+    aes(x = kramer_minutes, y = laughs_per_min)) +
+  geom_point(aes(size = viewers), alpha = 1/3) +
+  scale_size(range = c(.1, 10),
+             name = "Viewers (millions)") +
+  theme(legend.position = "bottom")
+
+(
+  ggp2_bubble +
+    labs_bubble
+) +
+  fmggp2::theme_seinfeld(base_size = 12) +
+  bare_theme
+```
+
+## Grouped bubble charts
+
+A [grouped bubble chart](grouped_bubble_charts.qmd) adds a categorical variable to a bubble chart with color. Position shows two numeric variables, size shows a third, and color shows the group. Grouped bubble charts can compare several groups across three numeric variables in a single graph. Legends explain both the sizes and the colors.
+
+```{r}
+#| label: part_grouped_bubble_charts
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+set.seed(1993)
+ranger_fights <- expand_grid(
+  ranger = c("Red", "Blue", "Yellow", "Pink", "Black"),
+  fight = 1:24) |>
+  mutate(
+    ranger = factor(ranger,
+      levels = c("Red", "Blue", "Yellow", "Pink", "Black")),
+    putty_rate = c(Red = 2.0, Blue = 1.2, Yellow = 1.6,
+                   Pink = 1.4, Black = 1.8)[as.character(ranger)],
+    fight_minutes = round(rgamma(n(), shape = 4, rate = 1), 1),
+    putties_defeated = rpois(n(), lambda = putty_rate * fight_minutes),
+    hits_taken = rpois(n(), lambda = 0.6 * fight_minutes))
+labs_grp_bubble <- labs(
+  title = "Power Rangers vs. the Putties",
+  subtitle = "Putties defeated by fight length",
+  caption = "Simulated data",
+  x = "Fight length (minutes)",
+  y = "Putties defeated",
+  size = "Hits taken",
+  fill = "Ranger")
+
+ggp2_grp_bubble <- ranger_fights |>
+  ggplot(aes(
+    x = fight_minutes, y = putties_defeated)) +
+  geom_point(
+    aes(size = hits_taken, fill = ranger),
+        alpha = 2/3, shape = 21, color = "#000000") +
+  scale_size(range = c(.04, 6))
+
+(
+  ggp2_grp_bubble +
+    labs_grp_bubble
+) +
+  fmggp2::theme_powerrangers(base_size = 12) +
+  bare_theme
+```
+
+## Parallel sets
+
+[Parallel sets](parallel_sets.qmd) display the counts of several categorical variables as vertical axes connected by bands. Each band shows how many observations share a combination of categories, and its width is proportional to the count. Parallel sets show whether categorical variables are related, because related variables split into bands in different ways. Color usually follows one of the variables.
+
+```{r}
+#| label: part_parallel_sets
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(ggforce)
+library(dplyr)
+style_probs <- list(
+  Popular = c(Plaid = 0.6, Preppy = 0.3, Grunge = 0.1),
+  Skaters = c(Plaid = 0.05, Preppy = 0.15, Grunge = 0.8),
+  Drama = c(Plaid = 0.3, Preppy = 0.3, Grunge = 0.4))
+set.seed(1995)
+bronson_alcott <- tibble(
+  student_id = 1:300,
+  clique = sample(c("Popular", "Skaters", "Drama"), size = 300,
+                  replace = TRUE, prob = c(0.3, 0.4, 0.3))) |>
+  mutate(
+    style = vapply(clique, function(cl) {
+      sample(names(style_probs[[cl]]), size = 1, prob = style_probs[[cl]])
+    }, character(1), USE.NAMES = FALSE),
+    driving_test = sample(c("Passed", "Failed"), size = 300,
+                          replace = TRUE, prob = c(0.7, 0.3)))
+clueless_wide <- bronson_alcott |>
+  count(clique, style, driving_test) |>
+  rename(value = n)
+para_set_clueless <- ggforce::gather_set_data(
+                            data = clueless_wide,
+                            x = 1:3) |>
+  mutate(x = factor(x, levels = c("clique", "style", "driving_test")))
+labs_psets <- labs(
+        title = "Bronson Alcott High",
+        subtitle = "Cliques, styles, and driving tests",
+        caption = "Simulated data",
+        y = "Students", fill = "Driving test")
+
+ggp2_psets <- ggplot(data = para_set_clueless,
+    mapping = aes(x = x,
+        id = id,
+        split = y,
+        value = value)) +
+  geom_parallel_sets(aes(fill = driving_test),
+        alpha = 0.3,
+        axis.width = 0.07)
+
+ggp2_psets_axes <- ggp2_psets +
+  geom_parallel_sets_axes(
+        axis.width = 0.07)
+
+ggp2_psets_labs <- ggp2_psets_axes +
+  geom_parallel_sets_labels(
+        size = 2.0,
+        color = '#ffffff') +
+  scale_x_discrete(
+        labels = c(clique = "Clique", style = "Style",
+                   driving_test = "Driving test")) +
+  theme(axis.title.x = element_blank())
+
+(
+  ggp2_psets_labs +
+      labs_psets
+) +
+  fmggp2::theme_clueless(base_size = 12) +
+  bare_theme
+```
+
+## Density contours
+
+[Density contours](density_contours.qmd) draw lines around the areas where the points in a scatter plot are most crowded, like the lines on a topographic map. The innermost contours surround the peaks, and filled contours use color to show the height of the density. Density contours are helpful when there are too many points to see in a scatter plot. A legend explains the contour levels.
+
+```{r}
+#| label: part_density_contours
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+library(faux)
+make_group <- function(group, n, mu, sd, r) {
+  faux::rnorm_multi(n = n, mu = c(bop_ms = mu[1], twist_ms = mu[2]),
+                    sd = sd, r = r) |>
+    mutate(age_group = group)
+}
+set.seed(1996)
+bopit_players <- bind_rows(
+  make_group("Teens", 150, mu = c(350, 400), sd = c(30, 35), r = 0.6),
+  make_group("Kids", 150, mu = c(480, 560), sd = c(40, 45), r = 0.7),
+  make_group("Parents", 150, mu = c(630, 720), sd = c(50, 60), r = 0.5)) |>
+  mutate(player_id = row_number(),
+         age_group = factor(age_group, levels = c("Teens", "Kids", "Parents")),
+         across(c(bop_ms, twist_ms), round)) |>
+  select(player_id, age_group, bop_ms, twist_ms)
+# x limits
+x_min <- min(bopit_players$bop_ms) - 50
+x_max <- max(bopit_players$bop_ms) + 50
+# y limits
+y_min <- min(bopit_players$twist_ms) - 50
+y_max <- max(bopit_players$twist_ms) + 50
+labs_dnsty_2d <- labs(
+  title = "Bop It reaction times",
+  subtitle = "Milliseconds to respond to each command",
+  caption = "Simulated data",
+  x = "'Bop it!' (ms)",
+  y = "'Twist it!' (ms)"
+)
+ggp2_dnsty_2d_fill <- ggplot(
+  data = bopit_players,
+  mapping = aes(
+    x = bop_ms,
+    fill = after_stat(level),
+    y = twist_ms
+  )
+) +
+  # expand limits
+  expand_limits(
+    x = c(x_min, x_max),
+    y = c(y_min, y_max)
+  ) +
+  # stat polygon
+  stat_density_2d(
+    geom = "polygon",
+    color = "#23123F",
+    linewidth = 0.15
+  ) +
+  # gradient
+  scale_fill_gradient(
+    low = "#5B2A9A",
+    high = "#FFD400",
+    guide = "none"
+  )
+(
+  ggp2_dnsty_2d_fill +
+    labs_dnsty_2d
+) +
+  fmggp2::theme_bopit(base_size = 12) +
+  bare_theme
+```
+
+## 2D histograms
+
+A [2D histogram](bins_2d.qmd) divides the area of a scatter plot into a grid of squares and colors each square by how many points fall inside it. It extends the histogram to two numeric variables, and it works well for very large datasets. The size of the squares (set with `bins`) controls how much detail we see. A color scale explains the counts.
+
+```{r}
+#| label: part_bins_2d
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+set.seed(1997)
+geocities_pages <- tibble(
+  page_id = 1:5000,
+  modem = sample(c("28.8k", "56k"), size = 5000, replace = TRUE),
+  page_kb = round(rlnorm(5000, meanlog = log(60), sdlog = 0.45), 1)) |>
+  mutate(
+    kbps = if_else(modem == "28.8k", 24, 44),
+    load_sec = round(2 + page_kb * 8 / kbps +
+                       rnorm(n(), mean = 0, sd = 1.5), 1)) |>
+  select(-kbps)
+
+labs_2dhist <- labs(
+    title = "GeoCities page loads",
+    subtitle = "Page size vs. seconds to load on a dial-up modem",
+    caption = "Simulated data",
+    x = "Page size (KB)",
+    y = "Seconds to load")
+
+ggp2_base <- ggplot(data = geocities_pages,
+    mapping = aes(x = page_kb,
+                  y = load_sec))
+
+(
+  ggp2_base +
+       geom_bin2d(bins = 30) +
+       labs_2dhist
+) +
+  fmggp2::theme_geocities(base_size = 12) +
+  bare_theme
+```
+
+## Hexagon bins
+
+[Hexagon bins](hex_bins.qmd) work like a 2D histogram, but divide the graph area into hexagons instead of squares. Each hexagon is colored by the number of points inside it, and hexagons fit together without the corners of a square grid. Hexagon bins are another good choice for large datasets with lots of overplotting. A color scale explains the counts.
+
+```{r}
+#| label: part_hex_bins
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+set.seed(1996)
+surge_teens <- tibble(
+  teen_id = 1:3000,
+  school = sample(c("Middle school", "High school", "College"),
+                  size = 3000, replace = TRUE, prob = c(0.3, 0.4, 0.3)),
+  console = sample(c("Nintendo 64", "PlayStation"),
+                   size = 3000, replace = TRUE)) |>
+  mutate(
+    avg_cans = c(`Middle school` = 2, `High school` = 4,
+                 College = 6)[school],
+    cans_per_week = round(rgamma(n(), shape = 2,
+                                 rate = 2 / avg_cans), 1),
+    game_hours = round(pmax(0, 3 + 1.5 * cans_per_week +
+                              if_else(console == "PlayStation", 2, 0) +
+                              rnorm(n(), mean = 0, sd = 3)), 1)) |>
+  select(-avg_cans)
+labs_hex <- labs(
+    title = "Surge soda and video games",
+    subtitle = "Cans per week vs. hours of video games per week",
+    caption = "Simulated data",
+    x = "Cans of Surge per week",
+    y = "Gaming hours per week")
+ggp2_hex_b15 <- ggplot(data = surge_teens,
+    aes(x = cans_per_week, y = game_hours)) +
+    geom_hex(bins = 15)
+
+(
+  ggp2_hex_b15 +
+      labs_hex
+) +
+  fmggp2::theme_surge(base_size = 12) +
+  bare_theme
+```

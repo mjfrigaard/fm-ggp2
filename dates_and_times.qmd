@@ -18,6 +18,15 @@ showtext::showtext_auto()
 # set theme
 ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
+bare_theme <- theme(plot.title = element_blank(),
+                    plot.subtitle = element_blank(),
+                    plot.caption = element_blank(),
+                    axis.title = element_blank(),
+                    axis.text = element_blank(),
+                    axis.ticks = element_blank(),
+                    strip.text = element_blank(),
+                    strip.background = element_blank(),
+                    legend.position = "none")
 ```
 
 ```{r}
@@ -29,4 +38,422 @@ ggplot2::theme_set(theme_ggp2g(
 status("complete")
 ```
 
-**Dates & times**: These graphs display changes in quantitative or categorical variables over a dimension of time (date-time, date, year, month, quarter, etc.).      
+**Dates & times**: These graphs display changes in quantitative or categorical variables over a dimension of time (date-time, date, year, month, quarter, etc.).
+
+## Line graphs
+
+A [line graph](line_graphs.qmd) connects a numeric value at each point in time with a line. Time goes on the `x` axis and the value goes on the `y` axis, so the slope of the line shows how fast the value is rising or falling. Line graphs are the most common way to show a trend over time. Points can be added to show where each measurement was taken.
+
+```{r}
+#| label: part_line_graphs
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+set.seed(1989)
+batman_box <- tibble(
+  week = 1:26,
+  week_of = as.Date("1989-06-23") + 7 * (week - 1),
+  gross = round(55 * exp(-0.25 * (week - 1)) *
+                  exp(rnorm(26, mean = 0, sd = 0.12)), 2))
+labs_line <- labs(title = "Batman",
+                caption = "Simulated data",
+                subtitle = "Weekly box office, summer and fall 1989",
+                y = "Weekly gross ($ millions)",
+                x = "Week of")
+ggp2_line <- ggplot(data = batman_box,
+    mapping = aes(x = week_of, y = gross)) +
+    geom_line(color = "#F9BB2C", linewidth = 1)
+(
+  ggp2_line +
+      labs_line
+) +
+  fmggp2::theme_batman(base_size = 12) +
+  bare_theme
+```
+
+## Grouped line graphs
+
+[Grouped line graphs](grp_line_graphs.qmd) draw a line over time for each group on the same axes. They make it easy to compare trends, and to see when one group passes another. Color, line type, and line width can separate the groups or highlight a few of them, and facets can split the groups into small multiples. A legend explains each line.
+
+```{r}
+#| label: part_grp_line_graphs
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+library(patchwork)
+set.seed(1992)
+nick_ratings <- tibble(
+  date = seq(as.Date("1993-01-01"), as.Date("1999-12-31"), by = "day")) |>
+  mutate(
+    year = year(date),
+    month = month(date),
+    day_of_week = factor(wday(date, label = TRUE), ordered = FALSE),
+    day_category = if_else(day_of_week %in% c("Sat", "Sun"),
+                           "Weekend", "Weekday"),
+    yr_mnth = floor_date(date, unit = "month"),
+    yr_qtr = factor(paste0(year, "/0", quarter(date)), ordered = TRUE),
+    night_avg = c(Sun = 3.0, Mon = 2.4, Tue = 2.3, Wed = 2.3,
+                  Thu = 2.4, Fri = 2.8, Sat = 4.2)[as.character(day_of_week)],
+    trend = 0.25 * (year - 1993) - 0.04 * (year - 1993)^2,
+    summer = 0.3 * sin(2 * pi * (month - 4) / 12),
+    rating = round(rnorm(n(), mean = night_avg + trend + summer,
+                         sd = 0.35), 2)) |>
+  select(-night_avg, -trend, -summer)
+# basic_line ----
+avg_rating_day_cat_yr <- nick_ratings |>
+    group_by(year, day_category) |>
+    summarise(avg_rating = mean(rating)) |>
+    ungroup()
+basic_line <- ggplot(data = avg_rating_day_cat_yr,
+       mapping = aes(x = year, y = avg_rating, group = day_category)) +
+    geom_line(aes(color = day_category), linewidth = 1)
+# grp_line ----
+avg_rating_dow_qtr <- nick_ratings |>
+    filter(year >= 1996 & year <= 1997) |>
+    group_by(yr_qtr, day_of_week) |>
+    summarise(avg_rating = mean(rating)) |>
+    ungroup()
+grp_line <- ggplot(data = avg_rating_dow_qtr,
+       mapping = aes(x = yr_qtr, y = avg_rating, group = day_of_week)) +
+    geom_line(aes(color = day_of_week), linewidth = 1)
+# pal_line ----
+avg_rating_dow_mnth <- nick_ratings |>
+    filter(year >= 1996 & year <= 1997) |>
+    group_by(yr_mnth, day_of_week) |>
+    summarise(avg_rating = mean(rating)) |>
+    ungroup()
+pal_line <- ggplot(data = avg_rating_dow_mnth,
+       mapping = aes(x = yr_mnth, y = avg_rating, group = day_of_week,
+                     color = day_of_week)) +
+    geom_line(data = filter(avg_rating_dow_mnth,
+                  day_of_week %in% c("Mon", "Thu", "Fri")),
+              alpha = 1 / 4, linewidth = 0.85) +
+    geom_line(data = filter(avg_rating_dow_mnth,
+                  day_of_week %in% c("Sat", "Sun")),
+              alpha = 1 / 2, linewidth = 0.75, linetype = "longdash") +
+    geom_line(data = filter(avg_rating_dow_mnth,
+                  day_of_week %in% c("Tue", "Wed")),
+              linewidth = 1.25)
+# facet_line ----
+facet_line <- ggplot(data = filter(nick_ratings, date >= as.Date("1998-07-01")),
+       mapping = aes(x = date, y = rating, group = day_of_week)) +
+    geom_line(aes(color = day_of_week)) +
+    facet_grid(day_of_week ~ day_category)
+# final graphs ----
+mini_theme <- theme(axis.text = element_blank(),
+                    axis.title = element_blank(),
+                    strip.text = element_blank(),
+                    legend.position = "none",
+                    plot.background = element_rect(linewidth = 2))
+(
+  basic_line + grp_line + pal_line + facet_line +
+      patchwork::plot_layout(nrow = 2) &
+      mini_theme
+) &
+  fmggp2::theme_snick(base_size = 12) &
+  bare_theme
+```
+
+## Bump charts
+
+A [bump chart](bump_charts.qmd) shows how the rank of each group changes over time. Time goes on the `x` axis and the rank goes on the `y` axis, with the top rank at the top. Smooth lines connect each group's ranks, so we can follow who moves up and who moves down. Color separates the groups, and a legend or labels name each line.
+
+```{r}
+#| label: part_bump_charts
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggbump)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+set.seed(1999)
+boy_bands <- expand_grid(
+  week = 1:12,
+  band = c("Backstreet Boys", "*NSYNC", "98 Degrees",
+           "Boyz II Men", "LFO", "Hanson")) |>
+  mutate(
+    band = factor(band, levels = unique(band)),
+    week_of = as.Date("1999-06-05") + 7 * (week - 1),
+    avg_spins = case_when(
+      band == "Backstreet Boys" ~ 420 - 8 * (week - 1),
+      band == "*NSYNC" ~ 300 + 15 * (week - 1),
+      band == "98 Degrees" ~ 330,
+      band == "Boyz II Men" ~ 360 - 5 * (week - 1),
+      band == "LFO" ~ 200 + 20 * (week - 1),
+      band == "Hanson" ~ 280 - 10 * (week - 1)),
+    spins = rpois(n(), lambda = avg_spins)) |>
+  group_by(week) |>
+  mutate(rank = rank(-spins, ties.method = "random")) |>
+  ungroup()
+labs_bump <- labs(title = "Boy band radio spins",
+  caption = "Simulated data",
+  subtitle = "Weekly rank, summer 1999",
+  x = "Week of", y = "Rank",
+  color = "Band")
+ggp2_bump <- ggplot(boy_bands,
+    aes(x = week_of,
+      y = rank,
+      color = band)) +
+    ggbump::geom_bump(linewidth = 2) +
+    scale_y_reverse(breaks = 1:6) +
+    theme(legend.position = "bottom")
+
+(
+  ggp2_bump +
+    labs_bump
+) +
+  fmggp2::theme_boyband(base_size = 12) +
+  bare_theme
+```
+
+## Slope graphs
+
+A [slope graph](slope_graphs.qmd) compares the values of several groups at two points in time. Each group gets a point at each time, and a line connects the two points. The slope of each line shows whether the group went up or down, and how much. Slope graphs are a simple way to show before and after comparisons for many groups at once.
+
+```{r}
+#| label: part_slope_graphs
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+set.seed(1989)
+bayside_quizzes <- expand_grid(
+  student = c("Zack", "Kelly", "Slater", "Jessie", "Lisa", "Screech"),
+  semester = c("Fall 1990", "Spring 1991"),
+  subject = c("Biology", "History"),
+  quiz = 1:10) |>
+  mutate(
+    student = factor(student, levels = unique(student)),
+    avg_score = case_when(
+      student == "Zack" ~ if_else(semester == "Fall 1990", 70, 80),
+      student == "Kelly" ~ 82,
+      student == "Slater" ~ if_else(semester == "Fall 1990", 72, 78),
+      student == "Jessie" ~ 91,
+      student == "Lisa" ~ if_else(semester == "Fall 1990", 84, 81),
+      student == "Screech" ~ if_else(semester == "Fall 1990", 93, 95)),
+    score = round(pmin(100, rnorm(n(), mean = avg_score, sd = 8))))
+bayside_slope <- bayside_quizzes |>
+  group_by(semester, student) |>
+  summarise(avg_score = mean(score)) |>
+  ungroup()
+labs_slope <- labs(
+        title = "Bayside High quizzes",
+        caption = "Simulated data",
+        subtitle = "Fall 1990 & Spring 1991",
+        x = "Semester", y = "Average quiz score",
+        color = "Student")
+
+ggp2_slope <- ggplot(data = bayside_slope,
+    mapping = aes(x = semester,
+                  y = avg_score,
+              group = student)) +
+  geom_line(aes(color = student), linewidth = 2,
+      show.legend = FALSE) +
+  geom_point(aes(color = student), size = 4) +
+  scale_x_discrete(position = "top")
+
+(
+  ggp2_slope +
+      labs_slope
+) +
+  fmggp2::theme_savedbythebell(base_size = 12) +
+  bare_theme
+```
+
+## Stream plots
+
+A [stream plot](stream_plots.qmd) stacks the values of several groups over time into a flowing shape centered around a middle line. The thickness of each layer shows that group's value at each point in time, and the total thickness shows the overall value. Stream plots are useful when groups rise and fall at different times. Color separates the layers, and a legend or labels name each one.
+
+```{r}
+#| label: part_stream_plots
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggstream)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+fads <- tibble(
+  fad = c("Slap bracelets", "Hypercolor", "Koosh balls", "Scrunchies"),
+  peak = c(1990.8, 1991.5, 1992.5, 1994),
+  spread = c(0.4, 0.6, 1.5, 2.2),
+  total = c(3000, 4000, 5000, 9000))
+set.seed(1991)
+fad_sales <- expand_grid(
+  month = seq(as.Date("1990-01-01"), as.Date("1999-12-01"), by = "month"),
+  fads) |>
+  mutate(
+    fad = factor(fad, levels = fads$fad),
+    t = lubridate::year(month) + (lubridate::month(month) - 1) / 12,
+    avg_sales = total / 12 * dnorm(t, mean = peak, sd = spread),
+    sales = rpois(n(), lambda = avg_sales)) |>
+  select(month, fad, avg_sales, sales)
+labs_stream <- labs(
+    title = "90s fads",
+    caption = "Simulated data",
+    subtitle =
+        paste0("Monthly sales between ",
+            format(min(fad_sales$month), "%Y"),
+            " and ",
+            format(max(fad_sales$month), "%Y")),
+    x = "Month",
+    y = "Sales (thousands)",
+    fill = "Fad")
+ggp2_stream <- ggplot(data = fad_sales,
+    mapping = aes(x = month,
+                  y = sales,
+                  fill = fad)) +
+    ggstream::geom_stream()
+(
+  ggp2_stream +
+      labs_stream +
+      theme(legend.position = "bottom")
+) +
+  fmggp2::theme_hypercolor(base_size = 12) +
+  bare_theme
+```
+
+## Alluvial charts
+
+An [alluvial chart](alluvial_charts.qmd) shows how the members of a group move between categories over time. Each time point is a column of stacked categories, and bands flow between the columns to show how many members moved from one category to another. The width of each band is proportional to its count. Color usually follows each band's starting category, and a legend explains the colors.
+
+```{r}
+#| label: part_alluvial_charts
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggalluvial)
+library(ggplot2)
+library(dplyr)
+prep_levels <- c("Not worried", "Some supplies", "Bunker ready")
+move_probs <- matrix(c(0.70, 0.25, 0.05,
+                       0.15, 0.65, 0.20,
+                       0.05, 0.15, 0.80),
+                     nrow = 3, byrow = TRUE,
+                     dimnames = list(prep_levels, prep_levels))
+next_survey <- function(prep) {
+  vapply(prep, function(p) {
+    sample(prep_levels, size = 1, prob = move_probs[p, ])
+  }, character(1), USE.NAMES = FALSE)
+}
+set.seed(1999)
+y2k_households <- tibble(
+  household_id = 1:300,
+  jan_1999 = sample(prep_levels, size = 300, replace = TRUE,
+                    prob = c(0.6, 0.3, 0.1))) |>
+  mutate(jul_1999 = next_survey(jan_1999),
+         dec_1999 = next_survey(jul_1999)) |>
+  mutate(across(-household_id, function(x) factor(x, levels = prep_levels)))
+y2k_wide <- y2k_households |>
+  count(jan_1999, jul_1999, dec_1999, name = "freq")
+labs_alluvial <- labs(title = "Y2K prep",
+    caption = "Simulated data",
+    subtitle = "300 households surveyed three times in 1999")
+labs_alluvial_y <- ylab("Households")
+labs_alluvial_fill <- labs(fill = "January")
+
+ggp2_alluvial_w <- ggplot(data = y2k_wide,
+  aes(axis1 = jan_1999, axis2 = jul_1999,
+      axis3 = dec_1999, y = freq)) +
+  scale_x_discrete(
+    limits = c("Jan 1999", "Jul 1999", "Dec 1999"),
+    expand = c(0.1, 0.07)) +
+  geom_alluvium(aes(fill = jan_1999)) +
+  geom_stratum() +
+  geom_text(stat = "stratum",
+    aes(label = after_stat(stratum)),
+      size = 3)
+
+(
+  ggp2_alluvial_w +
+    theme(legend.position = "bottom") +
+    labs_alluvial +
+    labs_alluvial_y +
+    labs_alluvial_fill
+) +
+  fmggp2::theme_y2k(base_size = 12) +
+  bare_theme
+```
+
+## Instance charts
+
+An [instance chart](instance_chart.qmd) marks each time a category appears with a small tick. Time goes on the `x` axis and the categories go on the `y` axis, so gaps in a row show when a category didn't appear at all. Saturation or color can show how often each instance occurred. Instance charts are a good way to show the timing of events across many categories.
+
+```{r}
+#| label: part_instance_chart
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+rugrats_names <- tibble(
+  name = c("Tommy", "Chuckie", "Angelica", "Phil",
+           "Lil", "Susie", "Dil", "Kimi"),
+  before = c(4, 0.3, 1, 1.5, 0.2, 1, 0.05, 0.05),
+  after = c(8, 1.5, 4, 1.5, 0.8, 1.5, 2, 3),
+  debut = c(1991, 1991, 1991, 1991, 1991, 1992, 1998, 2001))
+set.seed(1993)
+hospital_names <- expand_grid(year = 1980:2005, rugrats_names) |>
+  mutate(name = factor(name, levels = rugrats_names$name),
+         avg_n = if_else(year < debut, before, after),
+         n = rpois(n(), lambda = avg_n)) |>
+  select(year, name, debut, avg_n, n)
+rugrats_babies <- hospital_names |>
+  filter(n > 0)
+labs_inst_rugrats <- labs(
+  title = "Rugrats baby names",
+  caption = "Simulated data",
+  subtitle = "Babies named at one hospital, 1980 - 2005",
+  x = "Year", y = "Name")
+ggp2_inst_rugrats <- ggplot(data = rugrats_babies,
+    mapping = aes(x = year,
+                  y = name,
+                  color = name)) +
+  geom_point(aes(alpha = n),
+    shape = 124, size = 5,
+    show.legend = FALSE) +
+  scale_alpha_continuous(range = c(0.35, 1))
+(
+  ggp2_inst_rugrats +
+    labs_inst_rugrats
+) +
+  fmggp2::theme_rugrats(base_size = 12) +
+  bare_theme
+```

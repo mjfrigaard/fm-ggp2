@@ -18,6 +18,15 @@ showtext::showtext_auto()
 # set theme
 ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
+bare_theme <- theme(plot.title = element_blank(),
+                    plot.subtitle = element_blank(),
+                    plot.caption = element_blank(),
+                    axis.title = element_blank(),
+                    axis.text = element_blank(),
+                    axis.ticks = element_blank(),
+                    strip.text = element_blank(),
+                    strip.background = element_blank(),
+                    legend.position = "none")
 ```
 
 ```{r}
@@ -31,3 +40,289 @@ status("complete")
 
 
 **Proportions**: These graphs display stratified counts, percentages, or part-to-whole relationships of values within variables (or between variables).
+
+## Diverging bar graphs
+
+A [diverging bar graph](diverging_bar_graphs.qmd) shows values that split in two directions from a center line, usually zero. Bars on one side represent one group or response (agree, positive, more), and bars on the other side represent the opposite. Diverging bars are common for survey responses on a scale, because they make it easy to see which way the balance tips for each category. Color separates the two sides, and a legend explains which side is which.
+
+```{r}
+#| label: part_diverging_bar_graphs
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+set.seed(1993)
+encyclopedia_survey <- tibble(year = 1993:1999) |>
+  mutate(p_encarta = 0.8 * plogis(-2 + 0.6 * (year - 1993)),
+         p_britannica = 0.8 - p_encarta) |>
+  tidyr::uncount(400, .id = "household") |>
+  mutate(u = runif(n()),
+         choice = case_when(u < p_encarta ~ "Encarta",
+                            u < p_encarta + p_britannica ~ "Britannica",
+                            TRUE ~ "Other")) |>
+  select(year, household, choice)
+encarta_diverg <- encyclopedia_survey |>
+  filter(choice != "Other") |>
+  count(year, choice) |>
+  mutate(share = n / 400,
+         share = if_else(choice == "Britannica", -share, share),
+         choice = factor(choice, levels = c("Encarta", "Britannica")),
+         year = factor(year))
+labs_geom_bar_diverg <- labs(
+  title = "Encarta vs. Britannica",
+  caption = "Simulated data",
+  subtitle = "Encyclopedia households used most each year",
+  x = "Year",
+  y = "Share of households",
+  fill = "Encyclopedia")
+ggp2_bars_diverg <- ggplot(
+  data = encarta_diverg,
+    aes(x = year, y = share)) +
+  geom_bar(aes(fill = choice),
+    stat = "identity", width = .5) +
+  scale_y_continuous(limits = c(-1, 1),
+    labels = scales::percent)
+
+(
+  ggp2_bars_diverg +
+    labs_geom_bar_diverg
+) +
+  fmggp2::theme_encarta(base_size = 12) +
+  bare_theme
+```
+
+## Stacked and filled density plots
+
+[Stacked and filled density plots](stacked_filled_density_graphs.qmd) show how the share of each group changes across the range of a numeric variable. Each group gets its own smooth density curve, and the curves are stacked on top of each other. In a filled density plot, the stack is stretched so it always adds up to 100%, which shows each group's proportion at every value on the `x` axis. Color separates the groups, and a legend explains each layer.
+
+```{r}
+#| label: part_stacked_filled_density_graphs
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(dplyr)
+set.seed(1996)
+modem_sessions <- tibble(
+  session_id = 1:600,
+  modem = sample(c("14.4k", "28.8k", "56k"), 600, replace = TRUE,
+    prob = c(0.25, 0.45, 0.30)),
+  speed_kbps = round(case_when(
+    modem == "14.4k" ~ rnorm(600, mean = 13, sd = 1.2),
+    modem == "28.8k" ~ rnorm(600, mean = 26, sd = 2.5),
+    TRUE ~ rnorm(600, mean = 44, sd = 5)), 1)) |>
+  mutate(modem = factor(modem, levels = c("14.4k", "28.8k", "56k")))
+labs_fill_density <- labs(
+  title = "Dial up connections",
+  caption = "Simulated data",
+  subtitle = "Share of sessions from each modem at every speed",
+  x = "Connection speed (kbps)",
+  fill = "Modem")
+ggp2_fill_density <- ggplot(data = modem_sessions, 
+       aes(x = speed_kbps, 
+           after_stat(count),
+          fill = modem)) +
+      geom_density(position = "fill") 
+(
+  ggp2_fill_density +
+    labs_fill_density
+) +
+  fmggp2::theme_netscape(base_size = 12) +
+  bare_theme
+```
+
+## Mosaic plots
+
+A [mosaic plot](mosaic_plots.qmd) displays the counts of two or more categorical variables as a set of rectangles. The width of each column shows the share of the first variable, and the heights of the tiles inside each column show the share of the second variable within it. Because area represents the count, mosaic plots make it easy to see when two categorical variables are related. Color separates the levels of one variable, and a legend explains the colors.
+
+```{r}
+#| label: part_mosaic_plots
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggmosaic)
+library(ggplot2)
+library(dplyr)
+set.seed(1997)
+titanic_fans <- tibble(
+  fan_id = 1:500,
+  age_group = sample(c("Teen", "Adult"), 500, replace = TRUE,
+    prob = c(0.4, 0.6))) |>
+  mutate(
+    viewings = if_else(age_group == "Teen",
+      sample(c("Once", "Twice", "3+ times"), n(), replace = TRUE,
+        prob = c(0.35, 0.35, 0.30)),
+      sample(c("Once", "Twice", "3+ times"), n(), replace = TRUE,
+        prob = c(0.70, 0.22, 0.08))),
+    soundtrack = if_else(
+      runif(n()) < c(Once = 0.25, Twice = 0.50, `3+ times` = 0.80)[viewings],
+      "Yes", "No"),
+    age_group = factor(age_group, levels = c("Teen", "Adult")),
+    viewings = factor(viewings, levels = c("Once", "Twice", "3+ times")),
+    soundtrack = factor(soundtrack, levels = c("No", "Yes")))
+labs_mosaic <- labs(
+      title = "Titanic",
+      caption = "Simulated data",
+      subtitle = "500 moviegoers in 1998",
+      fill = "Age group")
+ggp2_mosaic <- ggplot(data = titanic_fans) +
+   ggmosaic::geom_mosaic(mapping =
+          aes(x = product(viewings, age_group),
+              fill = age_group)) +
+    scale_x_productlist("Age group") +
+    scale_y_productlist("Times seen in theaters") +
+    theme(legend.position = "bottom",
+          panel.grid.major = element_blank())
+(
+  ggp2_mosaic +
+      labs_mosaic
+) +
+  fmggp2::theme_titanic(base_size = 12) +
+  bare_theme
+```
+
+## Pie charts
+
+A [pie chart](pie_charts.qmd) divides a circle into slices, and each slice shows one category's share of the whole. The angle (and area) of each slice is proportional to the category's count or percentage. Pie charts work best with a few categories and simple fractions, such as one half or one quarter. Labels on the slices or a legend explain each category.
+
+```{r}
+#| label: part_pie_charts
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-asp: 1
+#| dev.args: !expr list(bg = "#AC3CFE")
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(ggplot2)
+library(ggpubr)
+library(dplyr)
+set.seed(1993)
+trapper_keepers <- tibble(
+  keeper_id = 1:200,
+  design = sample(c("Rainbow leopards", "Unicorns", "Dolphins", "Pandas"),
+    size = 200, replace = TRUE, prob = c(1/2, 1/4, 1/8, 1/8)))
+keeper_pie <- trapper_keepers |>
+  count(design, name = "cnt") |>
+  mutate(
+    perc = cnt / sum(cnt),
+    design = factor(design,
+      levels = c("Rainbow leopards", "Unicorns", "Dolphins", "Pandas"))) |>
+  arrange(design)
+pie_labels <- paste0(round(100 * keeper_pie$perc), "%")
+pie_theme <- fmggp2::theme_lisafrank(base_size = 14) +
+  theme(axis.text = element_blank(), axis.title = element_blank(),
+        axis.ticks = element_blank(), panel.grid.major = element_blank(),
+        legend.position = "bottom")
+labs_pie <- labs(
+  title = "Trapper Keepers",
+  caption = "Simulated data",
+  subtitle = "Lisa Frank designs sold",
+  fill = NULL)
+ggp2_pie <- ggpubr::ggpie(keeper_pie,
+          x = "perc", label = pie_labels,
+          lab.pos = "in", lab.font = "#3D0066",
+          fill = "design", color = "white") +
+    pie_theme
+
+(
+  ggp2_pie +
+    labs_pie
+) +
+  fmggp2::theme_lisafrank(base_size = 12) +
+  bare_theme +
+  theme(panel.grid.major = element_blank())
+```
+
+## Treemaps
+
+A [treemap](treemaps.qmd) displays a whole as a rectangle divided into smaller rectangles, one for each category. The area of each rectangle is proportional to its value, and categories can be nested inside larger groups. Treemaps are handy when there are too many categories for a pie chart, or when the data have a hierarchy. Color usually shows the larger groups, and labels inside the rectangles name each category.
+
+```{r}
+#| label: part_treemaps
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+#| out-height: '60%'
+#| out-width: '60%'
+#| fig-align: center
+library(treemapify)
+library(ggplot2)
+library(dplyr)
+set.seed(1999)
+toy_sales <- tibble(
+  department = c("Electronic pets", "Electronic pets", "Plush", "Plush",
+                 "Video games", "Video games"),
+  toy = c("Furby", "Tamagotchi", "Beanie Babies", "Tickle Me Elmo",
+          "Game Boy Color", "Nintendo 64"),
+  yearly_rate = c(1800, 900, 2400, 700, 1200, 1000),
+  holiday_share = c(0.80, 0.40, 0.35, 0.60, 0.55, 0.50)) |>
+  tidyr::expand_grid(season = c("Holiday", "Rest of year")) |>
+  mutate(lambda = yearly_rate *
+           if_else(season == "Holiday", holiday_share, 1 - holiday_share),
+         units = rpois(n(), lambda = lambda)) |>
+  select(department, toy, season, lambda, units)
+labs_treemap <- labs(
+  title = "Toys\"R\"Us 1998",
+    caption = "Simulated data",
+    fill = "Season")
+ggp2_treemap <- ggplot(toy_sales,
+       aes(area = units,
+           fill = season,
+           label = season,
+           subgroup = department,
+           subgroup2 = toy)) +
+       treemapify::geom_treemap() +
+       treemapify::geom_treemap_text(
+           place = "bottomright",
+           color = "#FFFFFF",
+           min.size = 0,
+           alpha = 0.90,
+           fontface = "italic",
+           family = "sans")
+ggp2_tm_subgroup <- ggp2_treemap +
+    treemapify::geom_treemap_subgroup2_border(
+           color = "#0057B8",
+           size = 4.0) +
+       treemapify::geom_treemap_subgroup2_text(
+           place = "center",
+           alpha = 0.75,
+           color = "#FFFFFF",
+           min.size = 0,
+           family = "sans")
+ggp2_tm_subgroup2 <- ggp2_tm_subgroup +
+       treemapify::geom_treemap_subgroup_border(
+           color = "#FFD200",
+           size = 4) +
+       treemapify::geom_treemap_subgroup_text(
+           place = "topleft",
+           alpha = 0.65,
+           grow = TRUE,
+           color = "#FFFFFF",
+           min.size = 0,
+           family = "mono",
+           fontface = "bold")
+
+(
+  ggp2_tm_subgroup2 +
+    labs_treemap
+) +
+  fmggp2::theme_toysrus(base_size = 12) +
+  bare_theme
+```

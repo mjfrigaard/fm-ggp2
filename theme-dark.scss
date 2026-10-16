@@ -1,0 +1,22 @@
+/*-- scss:defaults --*/
+// iMac G3 (1998-1999) flavors after dark: a deep grape night
+$fm-bondi:      #4FD1EC;  // links
+$fm-grape:      #C3A6FF;  // headings and section labels
+$fm-tangerine:  #FFA552;
+$fm-strawberry: #FF7FAE;  // inline code
+$fm-lime:       #A6E36B;
+$fm-stripe:     linear-gradient(90deg, #0095B6, #6B3FA0, #E0457B, #F28C28, #7BC043);
+$fm-ink:        #E9E6F2;
+$fm-muted:      #ABA6C2;
+$fm-surface:    #211D30;  // code blocks and callouts
+
+$body-bg:                 #15131F;
+$body-color:              $fm-ink;
+$primary:                 $fm-bondi;
+$link-color:              $fm-bondi;
+$headings-color:          $fm-grape;
+$code-color:              $fm-strawberry;
+$code-block-bg:           $fm-surface;
+$code-block-border-left:  #F28C28;
+$small-font-size:         .80rem;
+$code-font-size:          .85em;

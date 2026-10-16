@@ -81,7 +81,9 @@ book:
 
 format:
   html:
-    theme: [flatly, custom.scss]
+    theme:
+      light: [flatly, theme-light.scss, custom.scss]
+      dark: [darkly, theme-dark.scss, custom.scss]
     highlight-style: arrow
     toc: true
     toc-depth: 5
@@ -89,8 +91,6 @@ format:
     toc-expand: 3
     toc-title: Contents
     code-link: false
-    code-block-bg: "#f8f8f8"
-    code-block-border-left: "#99bbc9"
     code-annotations: hover
     number-sections: true
     callout-appearance: simple
