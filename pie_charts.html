@@ -814,50 +814,49 @@ window.Quarto = {
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-<p>Every 90s school year started with a new Trapper Keeper, and the Lisa Frank designs (rainbow leopards, unicorns, dolphins, and pandas in neon colors) were the ones everyone wanted. We’ll simulate the designs of 200 Trapper Keepers sold at a school supply store with <code>sample()</code>. The probabilities are simple fractions on purpose: one half, one quarter, one eighth, and one eighth. Then we count each design (<code>cnt</code>) and convert the counts to proportions (<code>perc</code>). Setting the seed with <code>set.seed()</code> means you’ll get the same 200 Trapper Keepers every time you run the code below.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Koosh_ball">Koosh ball</a> was a ball of rubber filaments that was easy to catch and impossible to bounce, and by the 90s it came in more styles than anyone needed. We’ll simulate the styles of 200 Koosh balls sold at a toy store (tri color, rainbow, neon, and glow in the dark) with <code>sample()</code>. The probabilities are simple fractions on purpose: one half, one quarter, one eighth, and one eighth. Then we count each style (<code>cnt</code>) and convert the counts to proportions (<code>perc</code>). Setting the seed with <code>set.seed()</code> means you’ll get the same 200 Koosh balls every time you run the code below.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1993</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>trapper_keepers <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">keeper_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">design =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Rainbow leopards"</span>, <span class="st">"Unicorns"</span>, <span class="st">"Dolphins"</span>, <span class="st">"Pandas"</span>),</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>koosh_balls <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ball_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">style =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Tri color"</span>, <span class="st">"Rainbow"</span>, <span class="st">"Neon"</span>, <span class="st">"Glow"</span>),</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">200</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>)))</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>keeper_pie <span class="ot">&lt;-</span> trapper_keepers <span class="sc">|&gt;</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(design, <span class="at">name =</span> <span class="st">"cnt"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>koosh_pie <span class="ot">&lt;-</span> koosh_balls <span class="sc">|&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(style, <span class="at">name =</span> <span class="st">"cnt"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">perc =</span> cnt <span class="sc">/</span> <span class="fu">sum</span>(cnt),</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">design =</span> <span class="fu">factor</span>(design,</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Rainbow leopards"</span>, <span class="st">"Unicorns"</span>, <span class="st">"Dolphins"</span>, <span class="st">"Pandas"</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(design)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(keeper_pie)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">factor</span>(style,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Tri color"</span>, <span class="st">"Rainbow"</span>, <span class="st">"Neon"</span>, <span class="st">"Glow"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(style)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(koosh_pie)</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 4</span></span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ design &lt;fct&gt; Rainbow leopards, Unicorns, Dolph…</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ cnt    &lt;int&gt; 98, 49, 23, 30</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ perc   &lt;dbl&gt; 0.490, 0.245, 0.115, 0.150</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ style &lt;fct&gt; Tri color, Rainbow, Neon, Glow</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ cnt   &lt;int&gt; 98, 49, 23, 30</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ perc  &lt;dbl&gt; 0.490, 0.245, 0.115, 0.150</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
 <section id="distribution" class="level2" data-number="17.3">
 <h2 data-number="17.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">17.3</span> Distribution</h2>
-<p>A pie chart is a whole cut into slices, so it only makes sense when the slices add up to one thing (here, 200 Trapper Keepers). Pie charts are easiest to read when the slices are simple fractions, and because we chose those fractions in <code>sample()</code>, we know what each slice should look like. Below we’ll move from the Trapper Keepers, to a picture, to the formula.</p>
+<p>A pie chart is a whole cut into slices, so it only makes sense when the slices add up to one thing (here, 200 Koosh balls). Pie charts are easiest to read when the slices are simple fractions, and because we chose those fractions in <code>sample()</code>, we know what each slice should look like. Below we’ll move from the Koosh balls, to a picture, to the formula.</p>
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>COUNT IT:</strong></p>
 </div>
-<p>Start with the first ten Trapper Keepers.</p>
+<p>Start with the first ten Koosh balls.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trapper_keepers<span class="sc">$</span>design, <span class="dv">10</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "Rainbow leopards" "Rainbow leopards"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [3] "Rainbow leopards" "Unicorns"        </span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] "Unicorns"         "Unicorns"        </span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] "Rainbow leopards" "Rainbow leopards"</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] "Pandas"           "Rainbow leopards"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(koosh_balls<span class="sc">$</span>style, <span class="dv">10</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "Tri color" "Tri color" "Tri color"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [4] "Rainbow"   "Rainbow"   "Rainbow"  </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] "Tri color" "Tri color" "Glow"     </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10] "Tri color"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
@@ -866,13 +865,13 @@ window.Quarto = {
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>keeper_pie <span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>koosh_pie <span class="sc">|&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">expected =</span> <span class="dv">200</span> <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["design"],"name":[1],"type":["fct"],"align":["left"]},{"label":["cnt"],"name":[2],"type":["int"],"align":["right"]},{"label":["perc"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["expected"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Rainbow leopards","2":"98","3":"0.490","4":"100"},{"1":"Unicorns","2":"49","3":"0.245","4":"50"},{"1":"Dolphins","2":"23","3":"0.115","4":"25"},{"1":"Pandas","2":"30","3":"0.150","4":"25"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["style"],"name":[1],"type":["fct"],"align":["left"]},{"label":["cnt"],"name":[2],"type":["int"],"align":["right"]},{"label":["perc"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["expected"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Tri color","2":"98","3":"0.490","4":"100"},{"1":"Rainbow","2":"49","3":"0.245","4":"50"},{"1":"Neon","2":"23","3":"0.115","4":"25"},{"1":"Glow","2":"30","3":"0.150","4":"25"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -881,17 +880,17 @@ window.Quarto = {
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>DRAW IT:</strong></p>
 </div>
-<p>A bar model lays the 200 Trapper Keepers out in a line. Rainbow leopards fill about half the bar, unicorns about a quarter, and dolphins and pandas split the last quarter.</p>
+<p>A bar model lays the 200 Koosh balls out in a line. Tri color balls fill about half the bar, rainbow balls about a quarter, and neon and glow balls split the last quarter.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> keeper_pie, <span class="fu">aes</span>(<span class="at">x =</span> cnt, <span class="at">y =</span> <span class="st">"200 Trapper Keepers"</span>,</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> design)) <span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> koosh_pie, <span class="fu">aes</span>(<span class="at">x =</span> cnt, <span class="at">y =</span> <span class="st">"200 Koosh balls"</span>,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> style)) <span class="sc">+</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">reverse =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> cnt), <span class="at">color =</span> <span class="st">"#3D0066"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> cnt), <span class="at">color =</span> <span class="st">"#FFFFFF"</span>,</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">reverse =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Trapper Keepers"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="st">"Design"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Koosh balls"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="st">"Style"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -902,23 +901,23 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>A pie chart bends the same bar into a circle. Below, the pie on the left uses the exact fractions from <code>sample()</code>, and the pie on the right uses our simulated counts. The leopard slice covers about half the circle in both, and the unicorn slice covers about a quarter.</p>
+<p>A pie chart bends the same bar into a circle. Below, the pie on the left uses the exact fractions from <code>sample()</code>, and the pie on the right uses our simulated counts. The tri color slice covers about half the circle in both, and the rainbow slice covers about a quarter.</p>
 <div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>expected_pie <span class="ot">&lt;-</span> keeper_pie <span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>expected_pie <span class="ot">&lt;-</span> koosh_pie <span class="sc">|&gt;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">perc =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>))</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ggpubr<span class="sc">::</span><span class="fu">ggpie</span>(expected_pie, <span class="at">x =</span> <span class="st">"perc"</span>,</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> expected_pie<span class="sc">$</span>perc, <span class="dv">1</span>), <span class="st">"%"</span>),</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">lab.pos =</span> <span class="st">"in"</span>, <span class="at">lab.font =</span> <span class="st">"#3D0066"</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"design"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">lab.pos =</span> <span class="st">"in"</span>, <span class="at">lab.font =</span> <span class="st">"#FFFFFF"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"style"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Expected"</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  pie_theme</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>ggpubr<span class="sc">::</span><span class="fu">ggpie</span>(keeper_pie, <span class="at">x =</span> <span class="st">"perc"</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> keeper_pie<span class="sc">$</span>perc, <span class="dv">1</span>), <span class="st">"%"</span>),</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">lab.pos =</span> <span class="st">"in"</span>, <span class="at">lab.font =</span> <span class="st">"#3D0066"</span>,</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"design"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>ggpubr<span class="sc">::</span><span class="fu">ggpie</span>(koosh_pie, <span class="at">x =</span> <span class="st">"perc"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> koosh_pie<span class="sc">$</span>perc, <span class="dv">1</span>), <span class="st">"%"</span>),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">lab.pos =</span> <span class="st">"in"</span>, <span class="at">lab.font =</span> <span class="st">"#FFFFFF"</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"style"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Simulated"</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  pie_theme</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -936,12 +935,12 @@ window.Quarto = {
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>NAME IT:</strong></p>
 </div>
-<p>Each Trapper Keeper is one draw from four designs, so the four counts follow a <a href="https://en.wikipedia.org/wiki/Multinomial_distribution">multinomial distribution</a>:</p>
+<p>Each Koosh ball is one draw from four styles, so the four counts follow a <a href="https://en.wikipedia.org/wiki/Multinomial_distribution">multinomial distribution</a>:</p>
 <p><span class="math display">\[
-(N_{\text{leopards}}, N_{\text{unicorns}}, N_{\text{dolphins}}, N_{\text{pandas}}) \sim \text{Multinomial}\left(200, \; \left(\tfrac{1}{2}, \tfrac{1}{4}, \tfrac{1}{8}, \tfrac{1}{8}\right)\right)
+(N_{\text{tri color}}, N_{\text{rainbow}}, N_{\text{neon}}, N_{\text{glow}}) \sim \text{Multinomial}\left(200, \; \left(\tfrac{1}{2}, \tfrac{1}{4}, \tfrac{1}{8}, \tfrac{1}{8}\right)\right)
 \]</span></p>
 <p>A slice’s angle is its share of the 360 degrees in the circle: <span class="math inline">\(\tfrac{1}{2}\)</span> is 180 degrees, <span class="math inline">\(\tfrac{1}{4}\)</span> is 90 degrees, and each <span class="math inline">\(\tfrac{1}{8}\)</span> is 45 degrees. Simple fractions like these line up with the “clock positions” our eyes already know (half past, quarter past), which is why pie charts work best with them.</p>
-<p>Each simulated share wobbles around its fraction by about <span class="math inline">\(\sqrt{p(1 - p) / 200}\)</span>: about 3.5 percentage points for the leopard slice and 2.3 points for the dolphin and panda slices. That’s why our slices are close to the expected ones but not exact. Try changing <code>size = 200</code> to <code>size = 20</code> in <code>sample()</code> and the slices drift much further from the simple fractions.</p>
+<p>Each simulated share wobbles around its fraction by about <span class="math inline">\(\sqrt{p(1 - p) / 200}\)</span>: about 3.5 percentage points for the tri color slice and 2.3 points for the neon and glow slices. That’s why our slices are close to the expected ones but not exact. Try changing <code>size = 200</code> to <code>size = 20</code> in <code>sample()</code> and the slices drift much further from the simple fractions.</p>
 </section>
 <section id="grammar" class="level2" data-number="17.4">
 <h2 data-number="17.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">17.4</span> Grammar</h2>
@@ -957,28 +956,28 @@ window.Quarto = {
 <li><p>Assign <code>pie_labels</code> to <code>label</code></p></li>
 <li><p>Assign <code>"in"</code> to <code>lab.pos</code></p></li>
 <li><p>Assign a dark color to <code>lab.font</code> and <code>"white"</code> to <code>color</code></p></li>
-<li><p>Assign <code>"design"</code> to <code>fill</code></p></li>
+<li><p>Assign <code>"style"</code> to <code>fill</code></p></li>
 <li><p>Add <code>pie_theme</code> (which also moves the legend to the bottom)</p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pie_labels <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> keeper_pie<span class="sc">$</span>perc), <span class="st">"%"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pie_theme <span class="ot">&lt;-</span> fmggp2<span class="sc">::</span><span class="fu">theme_lisafrank</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pie_labels <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> koosh_pie<span class="sc">$</span>perc), <span class="st">"%"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pie_theme <span class="ot">&lt;-</span> fmggp2<span class="sc">::</span><span class="fu">theme_koosh</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_blank</span>(), <span class="at">axis.title =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(), <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>labs_pie <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Trapper Keepers"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Koosh balls"</span>,</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Lisa Frank designs sold"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Styles sold at one toy store"</span>,</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="cn">NULL</span>)</span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>ggp2_pie <span class="ot">&lt;-</span> ggpubr<span class="sc">::</span><span class="fu">ggpie</span>(keeper_pie,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>ggp2_pie <span class="ot">&lt;-</span> ggpubr<span class="sc">::</span><span class="fu">ggpie</span>(koosh_pie,</span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">x =</span> <span class="st">"perc"</span>, <span class="at">label =</span> pie_labels,</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">lab.pos =</span> <span class="st">"in"</span>, <span class="at">lab.font =</span> <span class="st">"#3D0066"</span>,</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> <span class="st">"design"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">lab.pos =</span> <span class="st">"in"</span>, <span class="at">lab.font =</span> <span class="st">"#FFFFFF"</span>,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> <span class="st">"style"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    pie_theme</span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>ggp2_pie <span class="sc">+</span></span>

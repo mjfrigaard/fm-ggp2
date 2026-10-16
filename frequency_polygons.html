@@ -797,48 +797,48 @@ window.Quarto = {
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-<p>We’ll simulate 300 MP3 downloads from <a href="https://en.wikipedia.org/wiki/Napster">Napster</a> over a 56k dial up modem with <code>rgamma()</code>, rounding each download time to a tenth of a minute. Setting the seed with <code>set.seed()</code> means you’ll get the same 300 downloads every time you run the code below.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Talkboy">Talkboy</a> was the handheld cassette recorder Kevin used in <em>Home Alone 2</em> (1992), and Tiger Electronics sold the real thing that Christmas. We’ll simulate 300 messages recorded on a Talkboy with <code>rgamma()</code>, rounding each message length to a tenth of a second. Setting the seed with <code>set.seed()</code> means you’ll get the same 300 messages every time you run the code below.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1999</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>napster_downloads <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">download_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">300</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">minutes =</span> <span class="fu">round</span>(<span class="fu">rgamma</span>(<span class="at">n =</span> <span class="dv">300</span>, <span class="at">shape =</span> <span class="dv">4</span>, <span class="at">rate =</span> <span class="fl">0.5</span>), <span class="dv">1</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>talkboy_clips <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">clip_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">300</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">seconds =</span> <span class="fu">round</span>(<span class="fu">rgamma</span>(<span class="at">n =</span> <span class="dv">300</span>, <span class="at">shape =</span> <span class="dv">4</span>, <span class="at">rate =</span> <span class="fl">0.5</span>), <span class="dv">1</span>)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(napster_downloads)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(talkboy_clips)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 300</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 2</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ download_id &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 1…</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ minutes     &lt;dbl&gt; 10.0, 6.9, 7.2, 9.0, 11.5, 1…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ clip_id &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1…</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ seconds &lt;dbl&gt; 10.0, 6.9, 7.2, 9.0, 11.5, 10.7,…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
 <section id="distribution" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">3.3</span> Distribution</h2>
-<p>If you downloaded music in 1999, you already know the shape of this distribution. Most songs finished in a few minutes, but every so often a download crawled along for 15 or 20. Those slow downloads stretch the right side of the distribution into a long tail, which makes it <a href="https://en.wikipedia.org/wiki/Skewness">right skewed</a>. Below we’ll move from the numbers, to a picture, to the formula.</p>
+<p>If you ever handed a kid a tape recorder, you already know the shape of this distribution. Most messages last a few seconds, but every so often someone rambles on for 15 or 20. Those long messages stretch the right side of the distribution into a long tail, which makes it <a href="https://en.wikipedia.org/wiki/Skewness">right skewed</a>. Below we’ll move from the numbers, to a picture, to the formula.</p>
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>COUNT IT:</strong></p>
 </div>
-<p>Start with the first ten downloads.</p>
+<p>Start with the first ten messages.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(napster_downloads<span class="sc">$</span>minutes, <span class="dv">10</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(talkboy_clips<span class="sc">$</span>seconds, <span class="dv">10</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] 10.0  6.9  7.2  9.0 11.5 10.7  5.2  3.4 14.5</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10] 11.1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
-<p>Most of these finish in under 12 minutes, but one (14.5) takes much longer. Slow downloads like this pull the mean up, while the median (the middle download) barely moves. Comparing the two is a quick way to check for skew.</p>
+<p>Most of these are under 12 seconds, but one (14.5) runs much longer. Long messages like this pull the mean up, while the median (the middle message) barely moves. Comparing the two is a quick way to check for skew.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>napster_downloads <span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>talkboy_clips <span class="sc">|&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(minutes),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">median =</span> <span class="fu">median</span>(minutes))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(seconds),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">median =</span> <span class="fu">median</span>(seconds))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div data-pagedtable="false">
@@ -849,23 +849,23 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>The mean is larger than the median, so more than half of the downloads finish faster than the mean. We can count them by splitting the downloads at 8 minutes.</p>
+<p>The mean is larger than the median, so more than half of the messages are shorter than the mean. We can count them by splitting the messages at 8 seconds.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>napster_split <span class="ot">&lt;-</span> napster_downloads <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">speed =</span> <span class="fu">if_else</span>(minutes <span class="sc">&lt;</span> <span class="dv">8</span>,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"under 8 minutes"</span>, <span class="st">"8 minutes or more"</span>),</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>talkboy_split <span class="ot">&lt;-</span> talkboy_clips <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">speed =</span> <span class="fu">if_else</span>(seconds <span class="sc">&lt;</span> <span class="dv">8</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"under 8 seconds"</span>, <span class="st">"8 seconds or more"</span>),</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">speed =</span> <span class="fu">factor</span>(speed,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"under 8 minutes"</span>, <span class="st">"8 minutes or more"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"under 8 seconds"</span>, <span class="st">"8 seconds or more"</span>))) <span class="sc">|&gt;</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(speed)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>napster_split</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>talkboy_split</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["speed"],"name":[1],"type":["fct"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"under 8 minutes","2":"164"},{"1":"8 minutes or more","2":"136"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["speed"],"name":[1],"type":["fct"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"under 8 seconds","2":"164"},{"1":"8 seconds or more","2":"136"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -874,19 +874,19 @@ window.Quarto = {
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>DRAW IT:</strong></p>
 </div>
-<p>A bar model shows the split as two parts of one whole. If the distribution were symmetric, the two parts would be about the same size. Here the fast downloads take up the bigger part of the bar.</p>
+<p>A bar model shows the split as two parts of one whole. If the distribution were symmetric, the two parts would be about the same size. Here the short messages take up the bigger part of the bar.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> napster_split,</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> <span class="st">"300 downloads"</span>, <span class="at">fill =</span> speed)) <span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> talkboy_split,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> <span class="st">"300 messages"</span>, <span class="at">fill =</span> speed)) <span class="sc">+</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">reverse =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> n), <span class="at">color =</span> <span class="st">"black"</span>,</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">reverse =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of downloads"</span>, <span class="at">y =</span> <span class="cn">NULL</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Download time"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of messages"</span>, <span class="at">y =</span> <span class="cn">NULL</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Message length"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -902,14 +902,14 @@ window.Quarto = {
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> napster_downloads,</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> minutes)) <span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> talkboy_clips,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> seconds)) <span class="sc">+</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_freqpoly</span>() <span class="sc">+</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">median</span>(napster_downloads<span class="sc">$</span>minutes),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">median</span>(talkboy_clips<span class="sc">$</span>seconds),</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(napster_downloads<span class="sc">$</span>minutes),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(talkboy_clips<span class="sc">$</span>seconds),</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Download time (minutes)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Message length (seconds)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -927,8 +927,8 @@ window.Quarto = {
 <p><span class="math display">\[
 X \sim \text{Gamma}(k = 4, \lambda = 0.5)
 \]</span></p>
-<p>The <a href="https://en.wikipedia.org/wiki/Gamma_distribution">gamma distribution</a> has two parameters. The shape (<span class="math inline">\(k\)</span>) controls how lopsided the polygon is, and the rate (<span class="math inline">\(\lambda\)</span>) controls how far it stretches along the <code>x</code> axis. From these two numbers we can calculate the mean (<span class="math inline">\(k / \lambda = 8\)</span> minutes), the peak (<span class="math inline">\((k - 1) / \lambda = 6\)</span> minutes), and the standard deviation (<span class="math inline">\(\sqrt{k} / \lambda = 4\)</span> minutes). The peak comes before the mean, which is what right skew looks like in a formula.</p>
-<p>Our simulated downloads come close: the mean is 8.1 minutes and the standard deviation is 3.8 minutes. Try raising <code>shape</code> in <code>rgamma()</code> and the polygon becomes more symmetric. A gamma distribution with a large shape looks a lot like the normal distribution from <a href="histograms.html" class="quarto-xref"><span>Chapter 2</span></a>.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Gamma_distribution">gamma distribution</a> has two parameters. The shape (<span class="math inline">\(k\)</span>) controls how lopsided the polygon is, and the rate (<span class="math inline">\(\lambda\)</span>) controls how far it stretches along the <code>x</code> axis. From these two numbers we can calculate the mean (<span class="math inline">\(k / \lambda = 8\)</span> seconds), the peak (<span class="math inline">\((k - 1) / \lambda = 6\)</span> seconds), and the standard deviation (<span class="math inline">\(\sqrt{k} / \lambda = 4\)</span> seconds). The peak comes before the mean, which is what right skew looks like in a formula.</p>
+<p>Our simulated messages come close: the mean is 8.1 seconds and the standard deviation is 3.8 seconds. Try raising <code>shape</code> in <code>rgamma()</code> and the polygon becomes more symmetric. A gamma distribution with a large shape looks a lot like the normal distribution from <a href="histograms.html" class="quarto-xref"><span>Chapter 2</span></a>.</p>
 </section>
 <section id="grammar" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">3.4</span> Grammar</h2>
@@ -938,18 +938,18 @@ X \sim \text{Gamma}(k = 4, \lambda = 0.5)
 <ol type="1">
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map <code>minutes</code> to the <code>x</code> axis</p></li>
+<li><p>Map <code>seconds</code> to the <code>x</code> axis</p></li>
 <li><p>Add the <code>geom_freqpoly()</code> layer</p></li>
 </ol>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>labs_freqpoly <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Napster MP3 downloads"</span>,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Talkboy"</span>,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Download time over a 56k modem"</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Download time (minutes)"</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>ggp2_freqpoly <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> napster_downloads,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">x =</span> minutes)) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Length of 300 recorded messages"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Message length (seconds)"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>ggp2_freqpoly <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> talkboy_clips,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">x =</span> seconds)) <span class="sc">+</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_freqpoly</span>()</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>ggp2_freqpoly <span class="sc">+</span></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  labs_freqpoly</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -969,15 +969,15 @@ X \sim \text{Gamma}(k = 4, \lambda = 0.5)
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ggp2_freqpoly_bins45 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> napster_downloads,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">aes</span>(<span class="at">x =</span> minutes)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ggp2_freqpoly_bins45 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> talkboy_clips,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">aes</span>(<span class="at">x =</span> seconds)) <span class="sc">+</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>     <span class="fu">geom_freqpoly</span>(<span class="at">bins =</span> <span class="dv">45</span>)</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>ggp2_freqpoly_bins45 <span class="sc">+</span></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  labs_freqpoly</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>ggp2_freqpoly_bins15 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> napster_downloads,</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>     <span class="fu">aes</span>(<span class="at">x =</span> minutes)) <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>ggp2_freqpoly_bins15 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> talkboy_clips,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>     <span class="fu">aes</span>(<span class="at">x =</span> seconds)) <span class="sc">+</span></span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>     <span class="fu">geom_freqpoly</span>(<span class="at">bins =</span> <span class="dv">15</span>)</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>ggp2_freqpoly_bins15 <span class="sc">+</span></span>

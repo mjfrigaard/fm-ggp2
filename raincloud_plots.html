@@ -843,28 +843,28 @@ window.Quarto = {
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-<p>Magic Eye stereogram posters hid a 3D picture inside a pattern of colorful noise, and in the 90s they hung in every mall. The trick was learning to relax your eyes, so most people found the hidden image much faster the second time. We’ll simulate how many seconds it took 100 viewers to see the image on their first and second tries.</p>
-<p><code>faux::rnorm_multi()</code> draws two correlated columns from a normal distribution: the log of the first try (centered on 40 seconds) and the log of the second try (centered on 20 seconds), with a correlation (<code>r</code>) of 0.7, so viewers who are slow the first time tend to be slow the second time too. <code>exp()</code> turns the logs back into seconds. Setting the seed with <code>set.seed()</code> means you’ll get the same 100 viewers every time you run the code below.</p>
-<p>The <code>raincloudplots</code> package has a <code>data_1x1()</code> function we can use to build the dataset for a 1x1 repeated measure graph (<code>magic_eye_1x1</code>). This function takes two array arguments (<code>array_1</code> and <code>array_2</code>), which we create from the <code>first_try</code> and <code>second_try</code> columns. The <code>jit_distance</code> and <code>jit_seed</code> refer to the points in the plot.</p>
+<p>Tiger’s <a href="https://en.wikipedia.org/wiki/R-Zone">R-Zone</a> (1995) was a game console you wore on your head: a cartridge projected red LCD graphics onto a small visor in front of one eye. The games were simple, so most players cleared the first level much faster on their second try (if their eyes held out). We’ll simulate how many seconds it took 100 players to clear the first level on their first and second tries.</p>
+<p><code>faux::rnorm_multi()</code> draws two correlated columns from a normal distribution: the log of the first try (centered on 40 seconds) and the log of the second try (centered on 20 seconds), with a correlation (<code>r</code>) of 0.7, so players who are slow the first time tend to be slow the second time too. <code>exp()</code> turns the logs back into seconds. Setting the seed with <code>set.seed()</code> means you’ll get the same 100 players every time you run the code below.</p>
+<p>The <code>raincloudplots</code> package has a <code>data_1x1()</code> function we can use to build the dataset for a 1x1 repeated measure graph (<code>rzone_1x1</code>). This function takes two array arguments (<code>array_1</code> and <code>array_2</code>), which we create from the <code>first_try</code> and <code>second_try</code> columns. The <code>jit_distance</code> and <code>jit_seed</code> refer to the points in the plot.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1993</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>magic_eye <span class="ot">&lt;-</span> faux<span class="sc">::</span><span class="fu">rnorm_multi</span>(<span class="at">n =</span> <span class="dv">100</span>,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>rzone_tries <span class="ot">&lt;-</span> faux<span class="sc">::</span><span class="fu">rnorm_multi</span>(<span class="at">n =</span> <span class="dv">100</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mu =</span> <span class="fu">c</span>(<span class="fu">log</span>(<span class="dv">40</span>), <span class="fu">log</span>(<span class="dv">20</span>)), <span class="at">sd =</span> <span class="fl">0.5</span>, <span class="at">r =</span> <span class="fl">0.7</span>,</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">varnames =</span> <span class="fu">c</span>(<span class="st">"log_first"</span>, <span class="st">"log_second"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">viewer_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">player_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">first_try =</span> <span class="fu">round</span>(<span class="fu">exp</span>(log_first), <span class="dv">1</span>),</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">second_try =</span> <span class="fu">round</span>(<span class="fu">exp</span>(log_second), <span class="dv">1</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(viewer_id, first_try, second_try)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>magic_eye_1x1 <span class="ot">&lt;-</span> raincloudplots<span class="sc">::</span><span class="fu">data_1x1</span>(</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">array_1 =</span> magic_eye<span class="sc">$</span>first_try,</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">array_2 =</span> magic_eye<span class="sc">$</span>second_try,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(player_id, first_try, second_try)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>rzone_1x1 <span class="ot">&lt;-</span> raincloudplots<span class="sc">::</span><span class="fu">data_1x1</span>(</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">array_1 =</span> rzone_tries<span class="sc">$</span>first_try,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">array_2 =</span> rzone_tries<span class="sc">$</span>second_try,</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">jit_distance =</span> <span class="fl">0.2</span>, <span class="co"># distance between points</span></span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">jit_seed =</span> <span class="dv">2736</span>) <span class="co"># used in set.seed()</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(magic_eye_1x1)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(rzone_1x1)</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 200</span></span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ y_axis &lt;dbl&gt; 37.1, 36.8, 19.1, 29.1, 64.5, 56.…</span></span>
@@ -877,32 +877,32 @@ window.Quarto = {
 </section>
 <section id="distribution" class="level2" data-number="27.3">
 <h2 data-number="27.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">27.3</span> Distribution</h2>
-<p>A raincloud plot shows a whole distribution three ways at once (the cloud, the box, and the rain). The Magic Eye data adds a twist: the two groups are the <em>same</em> 100 viewers measured twice, so each first try has a partner second try. Comparing the two clouds only tells part of the story; the pairs tell the rest. Below we’ll move from the viewers, to a picture, to the formula.</p>
+<p>A raincloud plot shows a whole distribution three ways at once (the cloud, the box, and the rain). The R-Zone data adds a twist: the two groups are the <em>same</em> 100 players measured twice, so each first try has a partner second try. Comparing the two clouds only tells part of the story; the pairs tell the rest. Below we’ll move from the players, to a picture, to the formula.</p>
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>COUNT IT:</strong></p>
 </div>
-<p>Start with the first five viewers.</p>
+<p>Start with the first five players.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(magic_eye, <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(rzone_tries, <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["viewer_id"],"name":[1],"type":["int"],"align":["right"]},{"label":["first_try"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["second_try"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"37.1","3":"13.6"},{"1":"2","2":"36.8","3":"15.4"},{"1":"3","2":"19.1","3":"43.6"},{"1":"4","2":"29.1","3":"15.1"},{"1":"5","2":"64.5","3":"35.9"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["player_id"],"name":[1],"type":["int"],"align":["right"]},{"label":["first_try"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["second_try"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"37.1","3":"13.6"},{"1":"2","2":"36.8","3":"15.4"},{"1":"3","2":"19.1","3":"43.6"},{"1":"4","2":"29.1","3":"15.1"},{"1":"5","2":"64.5","3":"35.9"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
 </div>
 </div>
-<p>Four of these five viewers saw the image much faster on their second try, but viewer 3 took more than twice as long. The summary below compares the two tries for all 100 viewers. The median drops by about half, almost every viewer was faster the second time, and the correlation shows that slow first tries go with slow second tries.</p>
+<p>Four of these five players cleared the level much faster on their second try, but player 3 took more than twice as long. The summary below compares the two tries for all 100 players. The median drops by about half, almost every player was faster the second time, and the correlation shows that slow first tries go with slow second tries.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>magic_eye <span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rzone_tries <span class="sc">|&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_first =</span> <span class="fu">median</span>(first_try),</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">median_second =</span> <span class="fu">median</span>(second_try),</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">share_faster =</span> <span class="fu">mean</span>(second_try <span class="sc">&lt;</span> first_try),</span>
@@ -920,12 +920,12 @@ window.Quarto = {
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>DRAW IT:</strong></p>
 </div>
-<p>The graph below plots each viewer’s two tries against each other on log scales. The solid line is “no change” (second try = first try), and the dashed line is “twice as fast” (second try = half the first try). The points cluster around the dashed line, and they fall along a band rather than a blob because of the correlation.</p>
+<p>The graph below plots each player’s two tries against each other on log scales. The solid line is “no change” (second try = first try), and the dashed line is “twice as fast” (second try = half the first try). The points cluster around the dashed line, and they fall along a band rather than a blob because of the correlation.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(magic_eye, <span class="fu">aes</span>(<span class="at">x =</span> first_try, <span class="at">y =</span> second_try)) <span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rzone_tries, <span class="fu">aes</span>(<span class="at">x =</span> first_try, <span class="at">y =</span> second_try)) <span class="sc">+</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"#F2F0FF"</span>) <span class="sc">+</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="fu">log10</span>(<span class="fl">0.5</span>), <span class="at">linetype =</span> <span class="st">"dashed"</span>,</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"#14D8C4"</span>) <span class="sc">+</span></span>
@@ -952,7 +952,7 @@ window.Quarto = {
 <p><span class="math display">\[
 \begin{pmatrix} \log(\text{first}) \\ \log(\text{second}) \end{pmatrix} \sim \text{Normal}\left(\begin{pmatrix} \log 40 \\ \log 20 \end{pmatrix}, \; \sigma = 0.5, \; \rho = 0.7\right)
 \]</span></p>
-<p>The difference between the two logs is the log of the speed up, <span class="math inline">\(\log(\text{second} / \text{first})\)</span>. It’s centered on <span class="math inline">\(\log(20 / 40) = \log(0.5)\)</span> (twice as fast), and its standard deviation is <span class="math inline">\(\sigma\sqrt{2(1 - \rho)} = 0.5\sqrt{0.6} \approx 0.39\)</span>. The correlation shrinks that spread: if the two tries were independent (<span class="math inline">\(\rho = 0\)</span>), the spread would be <span class="math inline">\(0.5\sqrt{2} \approx 0.71\)</span>, and many more viewers would have been slower the second time. That’s why paired data (and raincloud plots that connect the pairs) can show a difference that two separate clouds hide. Try changing <code>r</code> to <code>0</code> in <code>rnorm_multi()</code> and the band of points spreads into a cloud.</p>
+<p>The difference between the two logs is the log of the speed up, <span class="math inline">\(\log(\text{second} / \text{first})\)</span>. It’s centered on <span class="math inline">\(\log(20 / 40) = \log(0.5)\)</span> (twice as fast), and its standard deviation is <span class="math inline">\(\sigma\sqrt{2(1 - \rho)} = 0.5\sqrt{0.6} \approx 0.39\)</span>. The correlation shrinks that spread: if the two tries were independent (<span class="math inline">\(\rho = 0\)</span>), the spread would be <span class="math inline">\(0.5\sqrt{2} \approx 0.71\)</span>, and many more players would have been slower the second time. That’s why paired data (and raincloud plots that connect the pairs) can show a difference that two separate clouds hide. Try changing <code>r</code> to <code>0</code> in <code>rnorm_multi()</code> and the band of points spreads into a cloud.</p>
 </section>
 <section id="grammar-raincloudplots" class="level2" data-number="27.4">
 <h2 data-number="27.4" class="anchored" data-anchor-id="grammar-raincloudplots"><span class="header-section-number">27.4</span> Grammar (<code>raincloudplots</code>)</h2>
@@ -960,7 +960,7 @@ window.Quarto = {
 <p><strong>CODE:</strong></p>
 </div>
 <p>Create labels with <code>labs()</code></p>
-<p>Use the <code>raincloudplots::raincloud_1x1()</code> to build the plot, assigning <code>magic_eye_1x1</code> to <code>data_1x1</code></p>
+<p>Use the <code>raincloudplots::raincloud_1x1()</code> to build the plot, assigning <code>rzone_1x1</code> to <code>data_1x1</code></p>
 <ul>
 <li><p>assign <code>colors</code> and <code>fills</code></p></li>
 <li><p>set the size (of the points) and alpha (for opacity)</p></li>
@@ -970,7 +970,7 @@ window.Quarto = {
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ggp2_raincloud <span class="ot">&lt;-</span> raincloudplots<span class="sc">::</span><span class="fu">raincloud_1x1</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data_1x1 =</span> magic_eye_1x1,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data_1x1 =</span> rzone_1x1,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">colors =</span> (<span class="fu">c</span>(<span class="st">'#FF2E93'</span>, <span class="st">'#14D8C4'</span>)),</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fills =</span> (<span class="fu">c</span>(<span class="st">'#FF2E93'</span>, <span class="st">'#14D8C4'</span>)),</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">0.8</span>,</span>
@@ -983,11 +983,11 @@ window.Quarto = {
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3</span>))</span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>ggp2_raincloud_x <span class="sc">+</span></span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">labs</span>(</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Magic Eye"</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Tiger R-Zone"</span>,</span>
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"100 viewers, two tries each"</span>,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"100 players, two tries each"</span>,</span>
 <span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Seconds to see the hidden image"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Seconds to clear the first level"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
@@ -1007,25 +1007,25 @@ window.Quarto = {
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-<p>We’ll simulate first tries for 80 viewers on each of three Magic Eye posters (<code>magic_eye_posters</code>). Each poster gets its own typical time (15, 30, or 60 seconds), and <code>rlnorm()</code> draws each viewer’s time.</p>
+<p>We’ll simulate first tries for 80 players on each of three kinds of R-Zone games (<code>rzone_games</code>). Each kind of game gets its own typical time (15, 30, or 60 seconds), and <code>rlnorm()</code> draws each player’s time.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1994</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>magic_eye_posters <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">viewer_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">240</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">poster =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"Dolphins"</span>, <span class="st">"Space shuttle"</span>, <span class="st">"Dinosaur"</span>), <span class="at">each =</span> <span class="dv">80</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">poster =</span> <span class="fu">factor</span>(poster,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Dolphins"</span>, <span class="st">"Space shuttle"</span>, <span class="st">"Dinosaur"</span>)),</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>rzone_games <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">player_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">240</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">game =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"Racing"</span>, <span class="st">"Fighting"</span>, <span class="st">"Shooter"</span>), <span class="at">each =</span> <span class="dv">80</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">game =</span> <span class="fu">factor</span>(game,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Racing"</span>, <span class="st">"Fighting"</span>, <span class="st">"Shooter"</span>)),</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">seconds =</span> <span class="fu">round</span>(<span class="fu">rlnorm</span>(<span class="fu">n</span>(), <span class="at">sdlog =</span> <span class="fl">0.5</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">meanlog =</span> <span class="fu">log</span>(<span class="fu">c</span>(<span class="at">Dolphins =</span> <span class="dv">15</span>, <span class="st">`</span><span class="at">Space shuttle</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">30</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Dinosaur =</span> <span class="dv">60</span>)[<span class="fu">as.character</span>(poster)])), <span class="dv">1</span>))</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(magic_eye_posters)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">meanlog =</span> <span class="fu">log</span>(<span class="fu">c</span>(<span class="at">Racing =</span> <span class="dv">15</span>, <span class="at">Fighting =</span> <span class="dv">30</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                           <span class="at">Shooter =</span> <span class="dv">60</span>)[<span class="fu">as.character</span>(game)])), <span class="dv">1</span>))</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(rzone_games)</span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 240</span></span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ viewer_id &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,…</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ poster    &lt;fct&gt; Dolphins, Dolphins, Dolphins, …</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ player_id &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,…</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ game      &lt;fct&gt; Racing, Racing, Racing, Racing…</span></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ seconds   &lt;dbl&gt; 7.9, 17.3, 35.1, 30.2, 15.8, 7…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
@@ -1041,13 +1041,13 @@ window.Quarto = {
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>labs_raincloud_2 <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span><span class="fu">labs</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Magic Eye"</span>,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Tiger R-Zone"</span>,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Seconds to see the hidden image"</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Poster"</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>ggp2_box <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(magic_eye_posters,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> seconds, <span class="at">y =</span> poster)) <span class="sc">+</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">fill =</span> poster),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Seconds to clear the first level"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Game"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>ggp2_box <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(rzone_games,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> seconds, <span class="at">y =</span> game)) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">fill =</span> game),</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">notch =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">notchwidth =</span> <span class="fl">0.9</span>,</span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="fl">0.15</span>,</span>
@@ -1067,12 +1067,12 @@ window.Quarto = {
 </section>
 <section id="density" class="level3" data-number="27.5.2">
 <h3 data-number="27.5.2" class="anchored" data-anchor-id="density"><span class="header-section-number">27.5.2</span> Density</h3>
-<p>We then add a horizontal density curve with <code>ggdist::stat_halfeye()</code>, mapping <code>poster</code> to <code>fill</code>, and adjusting the size and shape of the density curve and shifting it slightly above the box plot.</p>
+<p>We then add a horizontal density curve with <code>ggdist::stat_halfeye()</code>, mapping <code>game</code> to <code>fill</code>, and adjusting the size and shape of the density curve and shifting it slightly above the box plot.</p>
 <div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ggp2_stat_halfeye <span class="ot">&lt;-</span> ggp2_box <span class="sc">+</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  ggdist<span class="sc">::</span><span class="fu">stat_halfeye</span>(<span class="fu">aes</span>(<span class="at">fill =</span> poster),</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  ggdist<span class="sc">::</span><span class="fu">stat_halfeye</span>(<span class="fu">aes</span>(<span class="at">fill =</span> game),</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">adjust =</span> <span class="fl">0.6</span>, <span class="co"># shape = adjust * density estimator</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">.width =</span> <span class="dv">0</span>, <span class="co"># can use probabilities or 0</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">point_colour =</span> <span class="cn">NA</span>, <span class="co"># removes the point in center</span></span>
@@ -1095,7 +1095,7 @@ window.Quarto = {
 </section>
 <section id="points" class="level3" data-number="27.5.3">
 <h3 data-number="27.5.3" class="anchored" data-anchor-id="points"><span class="header-section-number">27.5.3</span> Points</h3>
-<p>The final layer is a <code>geom_point()</code>, mapping <code>fill</code> to <code>poster</code> and setting <code>position</code> to <code>position_jitter()</code>. Additional adjustments to the points include:</p>
+<p>The final layer is a <code>geom_point()</code>, mapping <code>fill</code> to <code>game</code> and setting <code>position</code> to <code>position_jitter()</code>. Additional adjustments to the points include:</p>
 <ul>
 <li><p>Using <code>shape = 21</code>, we can <code>color</code> the outside of the point (white makes it appear to glow).</p></li>
 <li><p>Manually set the <code>height</code>, which refers to the vertical area for the points</p></li>
@@ -1104,7 +1104,7 @@ window.Quarto = {
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ggp2_jitter <span class="ot">&lt;-</span> ggp2_stat_halfeye <span class="sc">+</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill =</span> poster),</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill =</span> game),</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">position =</span> <span class="fu">position_jitter</span>(</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">seed =</span> <span class="dv">321</span>,</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">height =</span> .<span class="dv">07</span>),</span>

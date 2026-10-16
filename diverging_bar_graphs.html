@@ -814,7 +814,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>For example, we can use the length of the bar from the reference line to compare Britannica’s share across all years (i.e., comparing the brown bars to each other).</p>
+<p>For example, we can use the length of the bar from the reference line to compare Orbitz’s share across all weeks (i.e., comparing the magenta bars to each other).</p>
 </section>
 <section id="vertical-bars" class="level3" data-number="14.1.2">
 <h3 data-number="14.1.2" class="anchored" data-anchor-id="vertical-bars"><span class="header-section-number">14.1.2</span> Vertical bars</h3>
@@ -827,7 +827,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>We can also compare Encarta vs.&nbsp;Britannica within each year (i.e., compare the blue vs.&nbsp;brown bars to each other within each year).</p>
+<p>We can also compare Surge vs.&nbsp;Orbitz within each week (i.e., compare the gold vs.&nbsp;magenta bars to each other within each week).</p>
 </section>
 </section>
 <section id="set-up" class="level2" data-number="14.2">
@@ -849,34 +849,34 @@ window.Quarto = {
 <div style="font-size: 1.15em; color: #1e83c8;">
 <p><strong>DATA:</strong></p>
 </div>
-<p>In the 90s, the family encyclopedia moved from a shelf of hardcover volumes to a single CD-ROM. Microsoft’s <em>Encarta</em> (1993) was cheap and came bundled with new PCs, and the <em>Encyclopedia Britannica</em> lost ground every year. We’ll simulate a yearly survey of 400 households from 1993 to 1999 asking which encyclopedia they used most: Encarta, Britannica, or something else (<code>Other</code>).</p>
-<p>Encarta’s chance of being picked grows each year (<code>p_encarta</code>), Britannica gets what’s left of 80% (<code>p_britannica</code>), and <code>Other</code> stays at 20%. For each household, <code>runif()</code> draws a number between 0 and 1, and <code>case_when()</code> turns that number into a choice using the year’s probabilities. Then we keep Encarta and Britannica, calculate each one’s share of the 400 households, and make Britannica’s share negative so it points down. Setting the seed with <code>set.seed()</code> means you’ll get the same 2,800 households every time you run the code below.</p>
+<p><a href="https://en.wikipedia.org/wiki/Orbitz_(drink)">Orbitz</a> hit shelves in 1997 with colorful gel balls floating in a clear, fruity drink. Kids bought it once to see the balls, and then most of them went back to <a href="https://en.wikipedia.org/wiki/Surge_(drink)">Surge</a>. We’ll simulate a weekly lunchroom survey of 400 kids over the seven weeks after Orbitz arrived, asking which drink they bought that week: Surge, Orbitz, or something else (<code>Other</code>).</p>
+<p>Surge’s chance of being picked grows each week as the novelty wears off (<code>p_surge</code>), Orbitz gets what’s left of 80% (<code>p_orbitz</code>), and <code>Other</code> stays at 20%. For each kid, <code>runif()</code> draws a number between 0 and 1, and <code>case_when()</code> turns that number into a choice using the week’s probabilities. Then we keep Surge and Orbitz, calculate each one’s share of the 400 kids, and make Orbitz’s share negative so it points down. Setting the seed with <code>set.seed()</code> means you’ll get the same 2,800 answers every time you run the code below.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1993</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>encyclopedia_survey <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">year =</span> <span class="dv">1993</span><span class="sc">:</span><span class="dv">1999</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p_encarta =</span> <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">plogis</span>(<span class="sc">-</span><span class="dv">2</span> <span class="sc">+</span> <span class="fl">0.6</span> <span class="sc">*</span> (year <span class="sc">-</span> <span class="dv">1993</span>)),</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">p_britannica =</span> <span class="fl">0.8</span> <span class="sc">-</span> p_encarta) <span class="sc">|&gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">uncount</span>(<span class="dv">400</span>, <span class="at">.id =</span> <span class="st">"household"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>lunchroom_survey <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">week =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p_surge =</span> <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">plogis</span>(<span class="sc">-</span><span class="dv">2</span> <span class="sc">+</span> <span class="fl">0.6</span> <span class="sc">*</span> (week <span class="sc">-</span> <span class="dv">1</span>)),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">p_orbitz =</span> <span class="fl">0.8</span> <span class="sc">-</span> p_surge) <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">uncount</span>(<span class="dv">400</span>, <span class="at">.id =</span> <span class="st">"kid"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">u =</span> <span class="fu">runif</span>(<span class="fu">n</span>()),</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">choice =</span> <span class="fu">case_when</span>(u <span class="sc">&lt;</span> p_encarta <span class="sc">~</span> <span class="st">"Encarta"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                            u <span class="sc">&lt;</span> p_encarta <span class="sc">+</span> p_britannica <span class="sc">~</span> <span class="st">"Britannica"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">choice =</span> <span class="fu">case_when</span>(u <span class="sc">&lt;</span> p_surge <span class="sc">~</span> <span class="st">"Surge"</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                            u <span class="sc">&lt;</span> p_surge <span class="sc">+</span> p_orbitz <span class="sc">~</span> <span class="st">"Orbitz"</span>,</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                            <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Other"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, household, choice)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>encarta_diverg <span class="ot">&lt;-</span> encyclopedia_survey <span class="sc">|&gt;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(week, kid, choice)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>orbitz_diverg <span class="ot">&lt;-</span> lunchroom_survey <span class="sc">|&gt;</span></span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(choice <span class="sc">!=</span> <span class="st">"Other"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(year, choice) <span class="sc">|&gt;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(week, choice) <span class="sc">|&gt;</span></span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">share =</span> n <span class="sc">/</span> <span class="dv">400</span>,</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">share =</span> <span class="fu">if_else</span>(choice <span class="sc">==</span> <span class="st">"Britannica"</span>, <span class="sc">-</span>share, share),</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">choice =</span> <span class="fu">factor</span>(choice, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Encarta"</span>, <span class="st">"Britannica"</span>)),</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">year =</span> <span class="fu">factor</span>(year))</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(encarta_diverg)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">share =</span> <span class="fu">if_else</span>(choice <span class="sc">==</span> <span class="st">"Orbitz"</span>, <span class="sc">-</span>share, share),</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">choice =</span> <span class="fu">factor</span>(choice, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Surge"</span>, <span class="st">"Orbitz"</span>)),</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">week =</span> <span class="fu">factor</span>(week))</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(orbitz_diverg)</span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 14</span></span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year   &lt;fct&gt; 1993, 1993, 1994, 1994, 1995, 199…</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ choice &lt;fct&gt; Britannica, Encarta, Britannica, …</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ week   &lt;fct&gt; 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, …</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ choice &lt;fct&gt; Orbitz, Surge, Orbitz, Surge, Orb…</span></span>
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ n      &lt;int&gt; 275, 30, 244, 65, 219, 94, 181, 1…</span></span>
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ share  &lt;dbl&gt; -0.6875, 0.0750, -0.6100, 0.1625,…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -885,36 +885,34 @@ window.Quarto = {
 </section>
 <section id="distribution" class="level2" data-number="14.3">
 <h2 data-number="14.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">14.3</span> Distribution</h2>
-<p>A diverging bar graph puts two shares back to back, so the question it answers is “how do these two groups trade places?” Here, every household picks exactly one encyclopedia each year, so a gain for Encarta has to come from somewhere. Below we’ll move from the households, to a picture, to the formula.</p>
+<p>A diverging bar graph puts two shares back to back, so the question it answers is “how do these two groups trade places?” Here, every kid picks exactly one drink each week, so a gain for Surge has to come from somewhere. Below we’ll move from the households, to a picture, to the formula.</p>
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>COUNT IT:</strong></p>
 </div>
-<p>Start with the first ten households surveyed in 1993.</p>
+<p>Start with the first ten kids surveyed in week 1.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(encyclopedia_survey<span class="sc">$</span>choice, <span class="dv">10</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "Britannica" "Encarta"    "Britannica"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [4] "Britannica" "Britannica" "Britannica"</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] "Britannica" "Britannica" "Other"     </span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10] "Encarta"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(lunchroom_survey<span class="sc">$</span>choice, <span class="dv">10</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "Orbitz" "Surge"  "Orbitz" "Orbitz" "Orbitz"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [6] "Orbitz" "Orbitz" "Orbitz" "Other"  "Surge"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
-<p>Seven of these ten households used Britannica, two used Encarta, and one used something else. Counting every household in every year shows the trade: Britannica’s count falls each year while Encarta’s climbs, and <code>Other</code> stays between about 60 and 100.</p>
+<p>Seven of these ten kids bought Orbitz, two bought Surge, and one bought something else. Counting every kid in every week shows the trade: Orbitz’s count falls each week while Surge’s climbs, and <code>Other</code> stays between about 60 and 100.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>encyclopedia_survey <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(year, choice) <span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>lunchroom_survey <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(week, choice) <span class="sc">|&gt;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">names_from =</span> choice, <span class="at">values_from =</span> n)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["year"],"name":[1],"type":["int"],"align":["right"]},{"label":["Britannica"],"name":[2],"type":["int"],"align":["right"]},{"label":["Encarta"],"name":[3],"type":["int"],"align":["right"]},{"label":["Other"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"1993","2":"275","3":"30","4":"95"},{"1":"1994","2":"244","3":"65","4":"91"},{"1":"1995","2":"219","3":"94","4":"87"},{"1":"1996","2":"181","3":"149","4":"70"},{"1":"1997","2":"128","3":"193","4":"79"},{"1":"1998","2":"99","3":"237","4":"64"},{"1":"1999","2":"59","3":"254","4":"87"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["week"],"name":[1],"type":["int"],"align":["right"]},{"label":["Orbitz"],"name":[2],"type":["int"],"align":["right"]},{"label":["Other"],"name":[3],"type":["int"],"align":["right"]},{"label":["Surge"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"275","3":"95","4":"30"},{"1":"2","2":"244","3":"91","4":"65"},{"1":"3","2":"219","3":"87","4":"94"},{"1":"4","2":"181","3":"70","4":"149"},{"1":"5","2":"128","3":"79","4":"193"},{"1":"6","2":"99","3":"64","4":"237"},{"1":"7","2":"59","3":"87","4":"254"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -923,18 +921,18 @@ window.Quarto = {
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>DRAW IT:</strong></p>
 </div>
-<p>A bar model shows each year’s 400 households as one bar split three ways. Reading down the years, the Encarta part grows, the Britannica part shrinks, and the <code>Other</code> part barely moves.</p>
+<p>A bar model shows each week’s 400 kids as one bar split three ways. Reading down the weeks, the Surge part grows, the Orbitz part shrinks, and the <code>Other</code> part barely moves.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>encyclopedia_survey <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(year, choice) <span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>lunchroom_survey <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(week, choice) <span class="sc">|&gt;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">choice =</span> <span class="fu">factor</span>(choice,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Encarta"</span>, <span class="st">"Britannica"</span>, <span class="st">"Other"</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> <span class="fu">factor</span>(year), <span class="at">fill =</span> choice)) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Surge"</span>, <span class="st">"Orbitz"</span>, <span class="st">"Other"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> <span class="fu">factor</span>(week), <span class="at">fill =</span> choice)) <span class="sc">+</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">reverse =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Households"</span>, <span class="at">y =</span> <span class="st">"Year"</span>, <span class="at">fill =</span> <span class="st">"Encyclopedia"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Kids"</span>, <span class="at">y =</span> <span class="st">"Week"</span>, <span class="at">fill =</span> <span class="st">"Drink"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -945,23 +943,23 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>The diverging bar graph below takes the Encarta and Britannica parts of each bar and points them in opposite directions from zero. The points mark the shares we built into the simulation. The two bars are the same length somewhere between 1996 and 1997, which is where the two encyclopedias traded places.</p>
+<p>The diverging bar graph below takes the Surge and Orbitz parts of each bar and points them in opposite directions from zero. The points mark the shares we built into the simulation. The two bars are the same length somewhere between weeks 4 and 5, which is where the two drinks traded places.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>expected_shares <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">year =</span> <span class="dv">1993</span><span class="sc">:</span><span class="dv">1999</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Encarta =</span> <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">plogis</span>(<span class="sc">-</span><span class="dv">2</span> <span class="sc">+</span> <span class="fl">0.6</span> <span class="sc">*</span> (year <span class="sc">-</span> <span class="dv">1993</span>)),</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">Britannica =</span> <span class="sc">-</span>(<span class="fl">0.8</span> <span class="sc">-</span> Encarta),</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">year =</span> <span class="fu">factor</span>(year)) <span class="sc">|&gt;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span>year, <span class="at">names_to =</span> <span class="st">"choice"</span>, <span class="at">values_to =</span> <span class="st">"share"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>expected_shares <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">week =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Surge =</span> <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">plogis</span>(<span class="sc">-</span><span class="dv">2</span> <span class="sc">+</span> <span class="fl">0.6</span> <span class="sc">*</span> (week <span class="sc">-</span> <span class="dv">1</span>)),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">Orbitz =</span> <span class="sc">-</span>(<span class="fl">0.8</span> <span class="sc">-</span> Surge),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">week =</span> <span class="fu">factor</span>(week)) <span class="sc">|&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span>week, <span class="at">names_to =</span> <span class="st">"choice"</span>, <span class="at">values_to =</span> <span class="st">"share"</span>)</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> encarta_diverg, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> share)) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> orbitz_diverg, <span class="fu">aes</span>(<span class="at">x =</span> week, <span class="at">y =</span> share)) <span class="sc">+</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">fill =</span> choice), <span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> expected_shares, <span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Share of households"</span>, <span class="at">fill =</span> <span class="st">"Encyclopedia"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Week"</span>, <span class="at">y =</span> <span class="st">"Share of kids"</span>, <span class="at">fill =</span> <span class="st">"Drink"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -975,14 +973,14 @@ window.Quarto = {
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>NAME IT:</strong></p>
 </div>
-<p>Each household’s answer is a single draw from three choices, so each year’s counts follow a <a href="https://en.wikipedia.org/wiki/Multinomial_distribution">multinomial distribution</a>:</p>
+<p>Each kid’s answer is a single draw from three choices, so each week’s counts follow a <a href="https://en.wikipedia.org/wiki/Multinomial_distribution">multinomial distribution</a>:</p>
 <p><span class="math display">\[
-(N_{\text{Encarta}}, N_{\text{Britannica}}, N_{\text{Other}}) \sim \text{Multinomial}\left(400, \; (p_t, \; 0.8 - p_t, \; 0.2)\right)
+(N_{\text{Surge}}, N_{\text{Orbitz}}, N_{\text{Other}}) \sim \text{Multinomial}\left(400, \; (p_t, \; 0.8 - p_t, \; 0.2)\right)
 \]</span></p>
 <p><span class="math display">\[
-p_t = 0.8 \times \text{logistic}\left(-2 + 0.6\,(t - 1993)\right)
+p_t = 0.8 \times \text{logistic}\left(-2 + 0.6\,(t - 1)\right)
 \]</span></p>
-<p>The logistic function (<code>plogis()</code>) gives Encarta’s share an S shaped climb: slow at first, fastest in the middle, then leveling off. Encarta and Britannica split the same 80%, so their bars are the same length when <span class="math inline">\(p_t = 0.4\)</span>. That happens when <span class="math inline">\(-2 + 0.6\,(t - 1993) = 0\)</span>, or <span class="math inline">\(t \approx 1996.3\)</span>.</p>
+<p>The logistic function (<code>plogis()</code>) gives Surge’s share an S shaped climb: slow at first, fastest in the middle, then leveling off. Surge and Orbitz split the same 80%, so their bars are the same length when <span class="math inline">\(p_t = 0.4\)</span>. That happens when <span class="math inline">\(-2 + 0.6\,(t - 1) = 0\)</span>, or <span class="math inline">\(t \approx 4.3\)</span>.</p>
 <p>Each simulated share wobbles around its point by about <span class="math inline">\(\sqrt{p(1 - p) / 400}\)</span>, which is never more than 2.5 percentage points. That’s why the bars land so close to the points. Try changing the <code>0.6</code> in <code>plogis()</code> and the crossover moves earlier (larger values) or later (smaller values).</p>
 </section>
 <section id="grammar" class="level2" data-number="14.4">
@@ -993,7 +991,7 @@ p_t = 0.8 \times \text{logistic}\left(-2 + 0.6\,(t - 1993)\right)
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map the <code>year</code> to the <code>x</code> and <code>share</code> to the <code>y</code></p></li>
+<li><p>Map the <code>week</code> to the <code>x</code> and <code>share</code> to the <code>y</code></p></li>
 <li><p>Inside<code>geom_bar()</code></p>
 <ul>
 <li><p>map <code>choice</code> to <code>fill</code></p></li>
@@ -1006,15 +1004,15 @@ p_t = 0.8 \times \text{logistic}\left(-2 + 0.6\,(t - 1993)\right)
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>labs_geom_bar_diverg <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Encarta vs. Britannica"</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Orbitz vs. Surge"</span>,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Encyclopedia households used most each year"</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Year"</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Share of households"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Encyclopedia"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Drink 400 kids bought each week in 1997"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Week"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Share of kids"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Drink"</span>)</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>ggp2_bars_diverg <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> encarta_diverg,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> share)) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> orbitz_diverg,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> week, <span class="at">y =</span> share)) <span class="sc">+</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">fill =</span> choice),</span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>),</span>
@@ -1044,7 +1042,7 @@ p_t = 0.8 \times \text{logistic}\left(-2 + 0.6\,(t - 1993)\right)
 <p><br></p>
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
-<li><p>Map the <code>share</code> to the <code>x</code> and <code>year</code> to the <code>y</code></p></li>
+<li><p>Map the <code>share</code> to the <code>x</code> and <code>week</code> to the <code>y</code></p></li>
 <li><p><em>Inside</em> <code>geom_bar()</code></p>
 <ul>
 <li><p>map <code>choice</code> to <code>fill</code></p></li>
@@ -1056,15 +1054,15 @@ p_t = 0.8 \times \text{logistic}\left(-2 + 0.6\,(t - 1993)\right)
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>labs_geom_bar_diverg_vert <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Encarta vs. Britannica"</span>,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Orbitz vs. Surge"</span>,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Encyclopedia households used most each year"</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Share of households"</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Year"</span>,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Encyclopedia"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Drink 400 kids bought each week in 1997"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Share of kids"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Week"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Drink"</span>)</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>ggp2_bar_diverg_vert <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> encarta_diverg,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">x =</span> share, <span class="at">y =</span> year)) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> orbitz_diverg,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">x =</span> share, <span class="at">y =</span> week)) <span class="sc">+</span></span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(</span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">fill =</span> choice),</span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>

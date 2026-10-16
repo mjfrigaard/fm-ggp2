@@ -733,7 +733,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Every chapter in this book has its own late 90s <code>ggplot2</code> theme to match its simulated data (Game Boy greens for the Pokémon starters, a Windows 98 dialog box for the AOL sessions, and so on). The themes and the small helpers the book uses live in the <a href="https://mjfrigaard.github.io/fmggp2/"><code>fmggp2</code> package</a>, so every chapter loads the same tested code.</p>
+<p>Every chapter in this book has its own late 90s <code>ggplot2</code> theme to match its simulated data (Game Boy greens for the Pokémon starters, silver comic book cans for OK Soda, and so on). The themes and the small helpers the book uses live in the <a href="https://mjfrigaard.github.io/fmggp2/"><code>fmggp2</code> package</a>, so every chapter loads the same tested code.</p>
 <section id="installing-fmggp2" class="level2" data-number="C.1">
 <h2 data-number="C.1" class="anchored" data-anchor-id="installing-fmggp2"><span class="header-section-number">C.1</span> Installing <code>fmggp2</code></h2>
 <p>Install the development version of <code>fmggp2</code> from GitHub:</p>
@@ -758,7 +758,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 </div>
-<p>We can also add a theme to a single graph like any other <code>ggplot2</code> theme. Below we simulate a few home PCs from 1998 and add <code>theme_win98()</code>:</p>
+<p>We can also add a theme to a single graph like any other <code>ggplot2</code> theme. Below we simulate a few home PCs from 1998 and add <code>theme_netscape()</code>:</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
@@ -770,7 +770,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Home PCs in 1998"</span>, <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Processor speed (MHz)"</span>, <span class="at">y =</span> <span class="st">"Price (USD)"</span>) <span class="sc">+</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  fmggp2<span class="sc">::</span><span class="fu">theme_win98</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  fmggp2<span class="sc">::</span><span class="fu">theme_netscape</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -787,7 +787,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The 90s themes are built on <code>ggplot2::theme_bw()</code> and use features from <code>ggplot2</code> 4.0, so a single theme can control much more than the background and fonts:</p>
 <ul>
 <li><p><strong>Colors</strong>: the plot background, the frame around the plot, the panel, and the grid lines all come from a palette sampled from the 90s reference.</p></li>
-<li><p><strong>Fonts</strong>: most themes pair Arial body text with a title display font that fits the reference (Impact for Blockbuster, Chalkduster for Friends, Comic Sans for GeoCities). A few use a single font throughout, like Tahoma for Windows 98.</p></li>
+<li><p><strong>Fonts</strong>: most themes pair Arial body text with a title display font that fits the reference (Impact for Blockbuster, Chalkduster for Friends, Comic Sans for GeoCities). <code>theme_beanie()</code> uses a single font throughout (Comic Sans).</p></li>
 <li><p><strong>Discrete palettes</strong>: <code>palette.fill.discrete</code> and <code>palette.colour.discrete</code> set the colors for categorical variables, so mapping a variable to <code>fill</code> or <code>color</code> uses the theme’s colors automatically.</p></li>
 <li><p><strong>Continuous palettes</strong>: four themes (<code>theme_freshprince()</code>, <code>theme_bopit()</code>, <code>theme_geocities()</code>, and <code>theme_surge()</code>) also set <code>palette.fill.continuous</code>, which colors heatmaps, 2D histograms, and hexagon bins.</p></li>
 <li><p><strong>Default geoms</strong>: <code>element_geom()</code> sets the default <code>fill</code>, <code>colour</code>, and font for layers like <code>geom_bar()</code> and <code>geom_point()</code>, so a graph with no color mapping still matches the theme.</p></li>
@@ -816,7 +816,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fmggp2<span class="sc">::</span><span class="fu">theme_win98</span>(<span class="at">base_family =</span> <span class="st">"sans"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fmggp2<span class="sc">::</span><span class="fu">theme_oksoda</span>(<span class="at">base_family =</span> <span class="st">"sans"</span>, <span class="at">title_family =</span> <span class="st">"sans"</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fmggp2<span class="sc">::</span><span class="fu">theme_batman</span>(<span class="at">base_family =</span> <span class="st">"sans"</span>, <span class="at">title_family =</span> <span class="st">"sans"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
@@ -845,13 +845,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td><a href="./histograms.html">Histograms</a></td>
-<td><code>theme_win98()</code></td>
-<td>Windows 98 desktop</td>
+<td><code>theme_oksoda()</code></td>
+<td>OK Soda cans</td>
 </tr>
 <tr class="odd">
 <td><a href="./frequency_polygons.html">Frequency polygons</a></td>
-<td><code>theme_napster()</code></td>
-<td>1999 Napster client</td>
+<td><code>theme_talkboy()</code></td>
+<td>Talkboy cassette recorder</td>
 </tr>
 <tr class="even">
 <td><a href="./dot_plots.html">Dot plots</a></td>
@@ -860,8 +860,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><a href="./density_plots.html">Density plots</a></td>
-<td><code>theme_spice()</code></td>
-<td>Spice Girls era pop</td>
+<td><code>theme_crystalpepsi()</code></td>
+<td>Crystal Pepsi</td>
 </tr>
 <tr class="even">
 <td><a href="./violin_plots.html">Violin plots</a></td>
@@ -937,8 +937,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td><a href="./diverging_bar_graphs.html">Diverging bar graphs</a></td>
-<td><code>theme_encarta()</code></td>
-<td>Microsoft Encarta / Britannica</td>
+<td><code>theme_orbitz()</code></td>
+<td>Orbitz drink</td>
 </tr>
 <tr class="even">
 <td><a href="./stacked_filled_density_graphs.html">Stacked densities</a></td>
@@ -952,8 +952,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td><a href="./pie_charts.html">Pie charts</a></td>
-<td><code>theme_lisafrank()</code></td>
-<td>Lisa Frank school supplies</td>
+<td><code>theme_koosh()</code></td>
+<td>Koosh ball</td>
 </tr>
 <tr class="odd">
 <td><a href="./treemaps.html">Treemaps</a></td>
@@ -1003,8 +1003,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td><a href="./ridgeline_plots.html">Ridgeline plots</a></td>
-<td><code>theme_trl()</code></td>
-<td>MTV TRL</td>
+<td><code>theme_squeezit()</code></td>
+<td>Squeezit drinks</td>
 </tr>
 <tr class="odd">
 <td><a href="./grouped_box_plots.html">Grouped box plots</a></td>
@@ -1018,8 +1018,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><a href="./raincloud_plots.html">Raincloud plots</a></td>
-<td><code>theme_magiceye()</code></td>
-<td>Magic Eye</td>
+<td><code>theme_rzone()</code></td>
+<td>Tiger R-Zone</td>
 </tr>
 </tbody>
 </table>
@@ -1069,8 +1069,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><a href="./instance_chart.html">Instance chart</a></td>
-<td><code>theme_rugrats()</code></td>
-<td>Rugrats</td>
+<td><code>theme_gushers()</code></td>
+<td>Fruit Gushers</td>
 </tr>
 </tbody>
 </table>
