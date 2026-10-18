@@ -21,6 +21,12 @@ ggplot2::theme_set(fmggp2::theme_gameboy(
 ```
 
 
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_gameboy()`
+
+Graphs in this chapter use `fmggp2::theme_gameboy()`, modeled on the original Game Boy screen: the four shade green palette, a dark green frame, and the pixel font Press Start 2P (bundled with the package).
+:::
+
 :::: {.callout-note collapse="false" icon=false}
 
 ::: {style="font-size: 1.25em; color: #02577A;"}

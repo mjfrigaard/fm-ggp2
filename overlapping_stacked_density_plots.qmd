@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_furby(
+ggplot2::theme_set(fmggp2::theme_pager(
     base_size = 15))
 ```
 
@@ -48,20 +48,20 @@ library(ggplot2)
 library(dplyr)
 library(patchwork)
 set.seed(1998)
-furby_chatter <- tibble(
-  hour_id = 1:300,
-  language = rep(c("Furbish", "English"), times = c(180, 120))) |>
-  mutate(language = factor(language, levels = c("Furbish", "English")),
-         words_per_hour = round(if_else(language == "Furbish",
+pager_messages <- tibble(
+  msg_id = 1:300,
+  model = rep(c("RIM 950", "PageWriter"), times = c(180, 120))) |>
+  mutate(model = factor(model, levels = c("RIM 950", "PageWriter")),
+         msg_length = round(if_else(model == "RIM 950",
            rnorm(n(), mean = 45, sd = 8),
            rnorm(n(), mean = 30, sd = 10))))
 labs_ovrlp_density <- labs(
   subtitle = "position = 'identity'",
-  x = "Words per hour",
-  fill = "Language")
-ggp2_ovrlp_density <- ggplot(data = furby_chatter,
-       aes(x = words_per_hour,
-           fill = language)) +
+  x = "Message length (characters)",
+  fill = "Pager model")
+ggp2_ovrlp_density <- ggplot(data = pager_messages,
+       aes(x = msg_length,
+           fill = model)) +
       geom_density(alpha = 1/3)
 
 ovrlp_density <- ggp2_ovrlp_density +
@@ -70,12 +70,12 @@ ovrlp_density <- ggp2_ovrlp_density +
 
 labs_stack_density <- labs(
   subtitle = "position = 'stack'",
-  x = "Words per hour",
-  fill = "Language")
-ggp2_stack_density <- ggplot(data = furby_chatter,
-       aes(x = words_per_hour,
+  x = "Message length (characters)",
+  fill = "Pager model")
+ggp2_stack_density <- ggplot(data = pager_messages,
+       aes(x = msg_length,
            after_stat(count),
-           fill = language)) +
+           fill = model)) +
       geom_density(position = "stack",
                    alpha = 1/3)
 stack_density <- ggp2_stack_density +
@@ -137,7 +137,7 @@ library(dplyr) # for tibble() and data manipulation
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Furby was the must have toy of 1998. Out of the box it spoke "Furbish," and the longer you played with it, the more English it seemed to learn. We'll simulate 300 hours of Furby chatter: 180 hours spent mostly in Furbish and 120 hours mostly in English. Each language gets its own normal distribution of words per hour (`rnorm()`), and Furbish hours are both chattier and more consistent. Setting the seed with `set.seed()` means you'll get the same 300 hours every time you run the code below.
+In 1998, Research In Motion (RIM) released the Inter@ctive Pager 950, a two way pager with a tiny keyboard you typed on with your thumbs (and the ancestor of the BlackBerry). Its main rival was the Motorola PageWriter. We'll simulate 300 messages: 180 sent from a RIM 950 and 120 sent from a PageWriter. Each pager model gets its own normal distribution of message lengths in characters (`rnorm()`), and RIM 950 messages are both longer and more consistent. Setting the seed with `set.seed()` means you'll get the same 300 messages every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -147,26 +147,26 @@ Furby was the must have toy of 1998. Out of the box it spoke "Furbish," and the 
 #| eval: true
 #| echo: true
 set.seed(1998)
-furby_chatter <- tibble(
-  hour_id = 1:300,
-  language = rep(c("Furbish", "English"), times = c(180, 120))) |>
-  mutate(language = factor(language, levels = c("Furbish", "English")),
-         words_per_hour = round(if_else(language == "Furbish",
+pager_messages <- tibble(
+  msg_id = 1:300,
+  model = rep(c("RIM 950", "PageWriter"), times = c(180, 120))) |>
+  mutate(model = factor(model, levels = c("RIM 950", "PageWriter")),
+         msg_length = round(if_else(model == "RIM 950",
            rnorm(n(), mean = 45, sd = 8),
            rnorm(n(), mean = 30, sd = 10))))
-dplyr::glimpse(furby_chatter)
+dplyr::glimpse(pager_messages)
 ```
 :::
 
 ## Distribution
 
-Overlapping and stacked density plots can tell two different stories about the same data. By default, each group's curve covers an area of 1, which hides the fact that one group might be much bigger than the other. Our two languages aren't the same size (180 hours vs. 120), so the choice matters here. Below we'll move from the hours, to a picture, to the formula.
+Overlapping and stacked density plots can tell two different stories about the same data. By default, each group's curve covers an area of 1, which hides the fact that one group might be much bigger than the other. Our two pager models aren't the same size (180 messages vs. 120), so the choice matters here. Below we'll move from the messages, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the first five hours (all in Furbish).
+Start with the first five messages (all sent from a RIM 950).
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -174,11 +174,11 @@ Start with the first five hours (all in Furbish).
 #| code-fold: show
 #| eval: true
 #| echo: true
-head(furby_chatter, 5)
+head(pager_messages, 5)
 ```
 :::
 
-These five hours range from 23 to 57 words. The summary below compares the two languages: Furbish has more hours, more words per hour on average, and a smaller standard deviation.
+These five messages range from 23 to 57 characters. The summary below compares the two pager models: the RIM 950 has more messages, longer messages on average, and a smaller standard deviation.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -186,10 +186,10 @@ These five hours range from 23 to 57 words. The summary below compares the two l
 #| code-fold: show
 #| eval: true
 #| echo: true
-furby_chatter |> 
-  group_by(language) |> 
-  summarise(hours = n(), mean = mean(words_per_hour), 
-            sd = sd(words_per_hour))
+pager_messages |> 
+  group_by(model) |> 
+  summarise(messages = n(), mean = mean(msg_length), 
+            sd = sd(msg_length))
 ```
 :::
 
@@ -197,7 +197,7 @@ furby_chatter |>
 **DRAW IT:**
 :::
 
-A bar model shows the two groups as parts of all 300 hours. Furbish takes up 60% of the bar and English takes up 40%.
+A bar model shows the two groups as parts of all 300 messages. The RIM 950 takes up 60% of the bar and the PageWriter takes up 40%.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -206,17 +206,17 @@ A bar model shows the two groups as parts of all 300 hours. Furbish takes up 60%
 #| eval: true
 #| echo: true
 #| fig-asp: 0.45
-furby_chatter |> 
-  count(language) |> 
-  ggplot(aes(x = n, y = "300 hours", fill = language)) + 
+pager_messages |> 
+  count(model) |> 
+  ggplot(aes(x = n, y = "300 messages", fill = model)) + 
   geom_col(position = position_stack(reverse = TRUE)) + 
-  geom_text(aes(label = n), color = "#2D1B4E", 
+  geom_text(aes(label = n), color = "#C3D7D9", 
     position = position_stack(vjust = 0.5, reverse = TRUE)) + 
-  labs(x = "Hours", y = NULL, fill = "Language")
+  labs(x = "Messages", y = NULL, fill = "Pager model")
 ```
 :::
 
-The two graphs below show why the bar model matters. On the left, the default densities each cover an area of 1, so the English curve looks almost as big as the Furbish curve. On the right, `after_stat(count)` scales each curve by its number of hours, so the Furbish curve is 1.5 times the size of the English curve, just like the bar model.
+The two graphs below show why the bar model matters. On the left, the default densities each cover an area of 1, so the PageWriter curve looks almost as big as the RIM 950 curve. On the right, `after_stat(count)` scales each curve by its number of messages, so the RIM 950 curve is 1.5 times the size of the PageWriter curve, just like the bar model.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -225,17 +225,17 @@ The two graphs below show why the bar model matters. On the left, the default de
 #| eval: true
 #| echo: true
 #| layout-ncol: 2
-ggplot(furby_chatter, aes(x = words_per_hour, fill = language)) + 
+ggplot(pager_messages, aes(x = msg_length, fill = model)) + 
   geom_density(alpha = 1/2) + 
-  labs(title = "Area of 1 each", x = "Words per hour", 
-    fill = "Language") + 
+  labs(title = "Area of 1 each", x = "Message length (characters)", 
+    fill = "Pager model") + 
   theme(legend.position = "bottom")
 
-ggplot(furby_chatter, aes(x = words_per_hour, after_stat(count), 
-    fill = language)) + 
+ggplot(pager_messages, aes(x = msg_length, after_stat(count), 
+    fill = model)) + 
   geom_density(alpha = 1/2) + 
-  labs(title = "Scaled by hours", x = "Words per hour", y = "count",
-    fill = "Language") + 
+  labs(title = "Scaled by messages", x = "Message length (characters)", y = "count",
+    fill = "Pager model") + 
   theme(legend.position = "bottom")
 ```
 :::
@@ -244,13 +244,13 @@ ggplot(furby_chatter, aes(x = words_per_hour, after_stat(count),
 **NAME IT:**
 :::
 
-Each language has its own [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution), and the two are mixed in proportion to their number of hours:
+Each pager model has its own [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution), and the two are mixed in proportion to their number of messages:
 
 $$
 f(x) = 0.6 \cdot \text{Normal}(x;\, 45, 8) + 0.4 \cdot \text{Normal}(x;\, 30, 10)
 $$
 
-`geom_density()` estimates each group's curve so that its area is 1 (each $\text{Normal}$ term on its own). `after_stat(count)` multiplies each curve by its group size, so the two curves have areas of 180 and 120. Stacking those count curves (`position = "stack"`) adds them together into $300 \times f(x)$, the curve for all 300 hours. Try making the two groups the same size in `rep()` and the two graphs above will look almost identical.
+`geom_density()` estimates each group's curve so that its area is 1 (each $\text{Normal}$ term on its own). `after_stat(count)` multiplies each curve by its group size, so the two curves have areas of 180 and 120. Stacking those count curves (`position = "stack"`) adds them together into $300 \times f(x)$, the curve for all 300 messages. Try making the two groups the same size in `rep()` and the two graphs above will look almost identical.
 
 
 ## Grammar
@@ -265,7 +265,7 @@ $$
 
   -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Map the `words_per_hour` to the `x` and `language` to `fill`
+  -   Map the `msg_length` to the `x` and `model` to `fill`
 
   -   Add the `geom_density()`
 
@@ -282,13 +282,13 @@ $$
 #| out-height: '100%'
 #| out-width: '100%'
 labs_ovrlp_density <- labs(
-  title = "Furby chatter",
+  title = "Two way pager messages",
   caption = "Simulated data",
-  x = "Words per hour",
-  fill = "Language")
-ggp2_ovrlp_density <- ggplot(data = furby_chatter,
-       aes(x = words_per_hour,
-           fill = language)) +
+  x = "Message length (characters)",
+  fill = "Pager model")
+ggp2_ovrlp_density <- ggplot(data = pager_messages,
+       aes(x = msg_length,
+           fill = model)) +
       geom_density(alpha = 1/3)
 ggp2_ovrlp_density +
   labs_ovrlp_density
@@ -318,13 +318,13 @@ Make density area slightly transparent to handle over-plotting.
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_ovrlp_density <- labs(
-  title = "Furby chatter",
+  title = "Two way pager messages",
   caption = "Simulated data",
-  x = "Words per hour",
-  fill = "Language")
-ggp2_ovrlp_density <- ggplot(data = furby_chatter,
-       aes(x = words_per_hour,
-           fill = language)) +
+  x = "Message length (characters)",
+  fill = "Pager model")
+ggp2_ovrlp_density <- ggplot(data = pager_messages,
+       aes(x = msg_length,
+           fill = model)) +
       geom_density(alpha = 1/3)
 ggp2_ovrlp_density +
   labs_ovrlp_density
@@ -349,13 +349,13 @@ If we change the `position` to `"stack"` we can see the smoothed estimates are '
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_stack_density <- labs(
-    title = "Furby chatter",
+    title = "Two way pager messages",
     caption = "Simulated data",
-    x = "Words per hour",
-    fill = "Language")
-ggp2_stack_density <- ggplot(data = furby_chatter,
-    mapping = aes(x = words_per_hour,
-               fill = language)) +
+    x = "Message length (characters)",
+    fill = "Pager model")
+ggp2_stack_density <- ggplot(data = pager_messages,
+    mapping = aes(x = msg_length,
+               fill = model)) +
     geom_density(position = "stack",
                  alpha = 1 / 3)
 ggp2_stack_density +
@@ -383,14 +383,14 @@ If we include `after_stat(count)` as one of our mapped aesthetics, the mapping i
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_after_stat_density <- labs(
-  title = "Furby chatter",
+  title = "Two way pager messages",
   caption = "Simulated data",
-  x = "Words per hour",
-  fill = "Language")
-ggp2_after_stat_density <- ggplot(data = furby_chatter,
-       aes(x = words_per_hour,
+  x = "Message length (characters)",
+  fill = "Pager model")
+ggp2_after_stat_density <- ggplot(data = pager_messages,
+       aes(x = msg_length,
            after_stat(count),
-           fill = language)) +
+           fill = model)) +
       geom_density(position = "stack",
                    alpha = 1/3)
 ggp2_after_stat_density +
@@ -417,14 +417,14 @@ Using `after_stat(count)` with `position = "fill"` creates in a conditional dens
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_fill_density <- labs(
-  title = "Furby chatter",
+  title = "Two way pager messages",
   caption = "Simulated data",
-  x = "Words per hour",
-  fill = "Language")
-ggp2_fill_density <- ggplot(data = furby_chatter,
-       aes(x = words_per_hour,
+  x = "Message length (characters)",
+  fill = "Pager model")
+ggp2_fill_density <- ggplot(data = pager_messages,
+       aes(x = msg_length,
            after_stat(count),
-           fill = language)) +
+           fill = model)) +
       geom_density(position = "fill",
                    alpha = 1/3)
 ggp2_fill_density +

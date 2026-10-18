@@ -74,7 +74,7 @@ The 90s themes are built on `ggplot2::theme_bw()` and use features from `ggplot2
 
   - **Colors**: the plot background, the frame around the plot, the panel, and the grid lines all come from a palette sampled from the 90s reference.
 
-  - **Fonts**: most themes pair Arial body text with a title display font that fits the reference (Impact for Blockbuster, Chalkduster for Friends, Comic Sans for GeoCities). `theme_beanie()` uses a single font throughout (Comic Sans).
+  - **Fonts**: most themes pair Arial body text with a title display font that fits the reference (Impact for Blockbuster, Gill Sans for NetWare, Comic Sans for GeoCities).
 
   - **Discrete palettes**: `palette.fill.discrete` and `palette.colour.discrete` set the colors for categorical variables, so mapping a variable to `fill` or `color` uses the theme's colors automatically.
 
@@ -120,7 +120,7 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 | [Frequency polygons](frequency_polygons.qmd) | `theme_talkboy()` | Talkboy cassette recorder |
 | [Dot plots](dot_plots.qmd) | `theme_blockbuster()` | Blockbuster Video |
 | [Density plots](density_plots.qmd) | `theme_crystalpepsi()` | Crystal Pepsi |
-| [Violin plots](violin_plots.qmd) | `theme_beanie()` | Beanie Babies heart tag |
+| [Violin plots](violin_plots.qmd) | `theme_microdrive()` | IBM Microdrive |
 | [Box plots](box_plots.qmd) | `theme_n64()` | Nintendo 64 |
 
 :::
@@ -133,7 +133,7 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 |---|---|---|
 | [Grouped bar graphs](grp_bar_graphs.qmd) | `theme_jurassic()` | Jurassic Park (1993) |
 | [Summary bar graphs](sum_bar_graphs.qmd) | `theme_happymeal()` | McDonald’s Happy Meal box |
-| [Overlapping bar graphs](overlapping_bar_graphs.qmd) | `theme_friends()` | Friends (Monica’s apartment) |
+| [Overlapping bar graphs](overlapping_bar_graphs.qmd) | `theme_netware()` | Novell NetWare |
 | [Heatmaps](heatmaps.qmd) | `theme_freshprince()` | The Fresh Prince of Bel-Air |
 | [Waffle charts](waffle_charts.qmd) | `theme_pogs()` | Pogs milk caps |
 | [Cleveland dot plots](cleveland_dot_plots.qmd) | `theme_walkman()` | Sony Walkman Sports |
@@ -150,7 +150,7 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 | [Stacked densities](stacked_filled_density_graphs.qmd) | `theme_netscape()` | Netscape Navigator |
 | [Mosaic plots](mosaic_plots.qmd) | `theme_titanic()` | Titanic (1997) |
 | [Pie charts](pie_charts.qmd) | `theme_koosh()` | Koosh ball |
-| [Treemaps](treemaps.qmd) | `theme_toysrus()` | Toys”R”Us |
+| [Treemaps](treemaps.qmd) | `theme_j2me()` | J2ME phone games |
 
 :::
 
@@ -164,7 +164,7 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 | [Overlapping frequency polygons](overlapping_frequency_polygons.qmd) | `theme_supersoaker()` | Super Soaker |
 | [Overlapping dot plots](overlapping_dot_plots.qmd) | `theme_goosebumps()` | Goosebumps books |
 | [Beeswarm plots](beeswarm_plots.qmd) | `theme_tetris()` | Tetris |
-| [Overlapping density plot](overlapping_stacked_density_plots.qmd) | `theme_furby()` | Furby |
+| [Overlapping density plot](overlapping_stacked_density_plots.qmd) | `theme_pager()` | Two way pagers |
 | [Ridgeline plots](ridgeline_plots.qmd) | `theme_squeezit()` | Squeezit drinks |
 | [Grouped box plots](grouped_box_plots.qmd) | `theme_oregontrail()` | The Oregon Trail |
 | [Grouped violin plots](grouped_violin_plots.qmd) | `theme_aim()` | AOL Instant Messenger |
@@ -180,7 +180,7 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 |---|---|---|
 | [Line graphs](line_graphs.qmd) | `theme_batman()` | Batman (1989) |
 | [Grouped line graphs](grp_line_graphs.qmd) | `theme_snick()` | SNICK |
-| [Bump charts](bump_charts.qmd) | `theme_boyband()` | Boy bands |
+| [Bump charts](bump_charts.qmd) | `theme_visor()` | Handspring Visor |
 | [Slope graphs](slope_graphs.qmd) | `theme_savedbythebell()` | Saved by the Bell |
 | [Stream plots](stream_plots.qmd) | `theme_hypercolor()` | Hypercolor |
 | [Alluvial charts](alluvial_charts.qmd) | `theme_y2k()` | Y2K |
@@ -198,7 +198,7 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 | [Grouped scatter plots](grouped_scatter_plots.qmd) | `theme_consolewars()` | Console wars |
 | [Bubble charts](bubble_charts.qmd) | `theme_seinfeld()` | Seinfeld |
 | [Grouped bubble graph](grouped_bubble_charts.qmd) | `theme_powerrangers()` | Power Rangers |
-| [Parallel sets](parallel_sets.qmd) | `theme_clueless()` | Clueless |
+| [Parallel sets](parallel_sets.qmd) | `theme_cuseeme()` | CU-SeeMe |
 | [Density contours](density_contours.qmd) | `theme_bopit()` | Bop It |
 | [2D histograms](bins_2d.qmd) | `theme_geocities()` | GeoCities |
 | [Hexagon bins](hex_bins.qmd) | `theme_surge()` | Surge |

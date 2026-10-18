@@ -237,20 +237,20 @@ library(ggplot2)
 library(dplyr)
 library(patchwork)
 set.seed(1998)
-furby_chatter <- tibble(
-  hour_id = 1:300,
-  language = rep(c("Furbish", "English"), times = c(180, 120))) |>
-  mutate(language = factor(language, levels = c("Furbish", "English")),
-         words_per_hour = round(if_else(language == "Furbish",
+pager_messages <- tibble(
+  msg_id = 1:300,
+  model = rep(c("RIM 950", "PageWriter"), times = c(180, 120))) |>
+  mutate(model = factor(model, levels = c("RIM 950", "PageWriter")),
+         msg_length = round(if_else(model == "RIM 950",
            rnorm(n(), mean = 45, sd = 8),
            rnorm(n(), mean = 30, sd = 10))))
 labs_ovrlp_density <- labs(
   subtitle = "position = 'identity'",
-  x = "Words per hour",
-  fill = "Language")
-ggp2_ovrlp_density <- ggplot(data = furby_chatter,
-       aes(x = words_per_hour,
-           fill = language)) +
+  x = "Message length (characters)",
+  fill = "Pager model")
+ggp2_ovrlp_density <- ggplot(data = pager_messages,
+       aes(x = msg_length,
+           fill = model)) +
       geom_density(alpha = 1/3)
 
 ovrlp_density <- ggp2_ovrlp_density +
@@ -259,12 +259,12 @@ ovrlp_density <- ggp2_ovrlp_density +
 
 labs_stack_density <- labs(
   subtitle = "position = 'stack'",
-  x = "Words per hour",
-  fill = "Language")
-ggp2_stack_density <- ggplot(data = furby_chatter,
-       aes(x = words_per_hour,
+  x = "Message length (characters)",
+  fill = "Pager model")
+ggp2_stack_density <- ggplot(data = pager_messages,
+       aes(x = msg_length,
            after_stat(count),
-           fill = language)) +
+           fill = model)) +
       geom_density(position = "stack",
                    alpha = 1/3)
 stack_density <- ggp2_stack_density +
@@ -274,7 +274,7 @@ stack_density <- ggp2_stack_density +
   ovrlp_density + stack_density +
       patchwork::plot_layout(ncol = 1)
 ) &
-  fmggp2::theme_furby(base_size = 12) &
+  fmggp2::theme_pager(base_size = 12) &
   bare_theme
 ```
 

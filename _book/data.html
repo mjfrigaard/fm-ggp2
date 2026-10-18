@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.9.30">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Appendix A — Data – ggplot2: field manual</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -34,19 +37,18 @@ ul.task-list li input[type="checkbox"] {
 <link href="./hex_bins.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-b6a8276bf55561bdbc268162d41bd1f7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-a8da12e74b29c2e7b17644f84b91567b.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-b6a8276bf55561bdbc268162d41bd1f7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-3dd65e00657b6d9022c40063cd6a194b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-f210b8a2f4f1f23d9cba045d64a1412b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-3dd65e00657b6d9022c40063cd6a194b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-86ccf492976a043c1e8b30e1c1514486.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-044314211b435048848f0d5bf1946879.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-86ccf492976a043c1e8b30e1c1514486.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -755,10 +757,10 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td><a href="./violin_plots.html">Violin plots</a></td>
-<td><code>beanie_prices</code></td>
-<td>Beanie Babies prices</td>
+<td><code>microdrive_photos</code></td>
+<td>IBM Microdrive photo sizes</td>
 <td>Lognormal</td>
-<td><code>1996</code></td>
+<td><code>1999</code></td>
 </tr>
 <tr class="odd">
 <td><a href="./box_plots.html">Box plots</a></td>
@@ -801,10 +803,10 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td><a href="./overlapping_bar_graphs.html">Overlapping bar graphs</a></td>
-<td><code>friends_episodes</code></td>
-<td>Friends episodes</td>
+<td><code>netware_offices</code></td>
+<td>NetWare office workstations</td>
 <td>Normal</td>
-<td><code>1994</code></td>
+<td><code>1990</code></td>
 </tr>
 <tr class="even">
 <td><a href="./heatmaps.html">Heatmaps</a></td>
@@ -875,10 +877,10 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td><a href="./treemaps.html">Treemaps</a></td>
-<td><code>toy_sales</code></td>
-<td>Toys”R”Us 1998 sales</td>
+<td><code>j2me_downloads</code></td>
+<td>J2ME game downloads</td>
 <td>Poisson</td>
-<td><code>1999</code></td>
+<td><code>2003</code></td>
 </tr>
 </tbody>
 </table>
@@ -928,8 +930,8 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td><a href="./overlapping_stacked_density_plots.html">Overlapping density plot</a></td>
-<td><code>furby_chatter</code></td>
-<td>Furby chatter</td>
+<td><code>pager_messages</code></td>
+<td>Two way pager messages</td>
 <td>Normal</td>
 <td><code>1998</code></td>
 </tr>
@@ -995,10 +997,10 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td><a href="./bump_charts.html">Bump charts</a></td>
-<td><code>boy_bands</code></td>
-<td>Boy band radio spins</td>
+<td><code>springboard_sales</code></td>
+<td>Springboard module sales</td>
 <td>Poisson</td>
-<td><code>1999</code></td>
+<td><code>2000</code></td>
 </tr>
 <tr class="even">
 <td><a href="./slope_graphs.html">Slope graphs</a></td>
@@ -1076,8 +1078,8 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td><a href="./parallel_sets.html">Parallel sets</a></td>
-<td><code>bronson_alcott</code></td>
-<td>Clueless cliques</td>
+<td><code>cuseeme_calls</code></td>
+<td>CU-SeeMe calls</td>
 <td>Multinomial</td>
 <td><code>1995</code></td>
 </tr>

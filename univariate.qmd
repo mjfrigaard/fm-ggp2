@@ -244,26 +244,26 @@ ggp2_density <- ggplot(data = crystal_tasters,
 #| fig-align: center
 library(ggplot2)
 library(dplyr)
-set.seed(1996)
-beanie_prices <- tibble(
-  listing_id = 1:300,
-  price = round(rlnorm(n = 300, meanlog = log(15), sdlog = 0.8), 2)
+set.seed(1999)
+microdrive_photos <- tibble(
+  photo_id = 1:300,
+  size_mb = round(rlnorm(n = 300, meanlog = log(0.75), sdlog = 0.8), 2)
 )
 labs_violin <- labs(
-  title = "Beanie Babies resale prices",
+  title = "IBM Microdrive photo file sizes",
   caption = "Simulated data",
-  subtitle = "300 listings from 1998",
+  subtitle = "300 photos saved to a 340MB card in 1999",
   x = "",
-  y = "Price (USD)")
-ggp2_violin <- ggplot(data = beanie_prices,
+  y = "File size (MB)")
+ggp2_violin <- ggplot(data = microdrive_photos,
        aes(x = '', 
-           y = price)) +
+           y = size_mb)) +
        geom_violin() 
 (
   ggp2_violin +
     labs_violin
 ) +
-  fmggp2::theme_beanie(base_size = 12) +
+  fmggp2::theme_microdrive(base_size = 12) +
   bare_theme
 ```
 

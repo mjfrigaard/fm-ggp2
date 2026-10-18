@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_boyband(
+ggplot2::theme_set(fmggp2::theme_visor(
     base_size = 13))
 ```
 
@@ -46,36 +46,38 @@ library(ggbump)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
-set.seed(1999)
-boy_bands <- expand_grid(
+set.seed(2000)
+springboard_sales <- expand_grid(
   week = 1:12,
-  band = c("Backstreet Boys", "*NSYNC", "98 Degrees",
-           "Boyz II Men", "LFO", "Hanson")) |>
+  module = c("Modem", "VisorPhone", "Games",
+             "MP3 Player", "GPS", "Camera")) |>
   mutate(
-    band = factor(band, levels = unique(band)),
-    week_of = as.Date("1999-06-05") + 7 * (week - 1),
-    avg_spins = case_when(
-      band == "Backstreet Boys" ~ 420 - 8 * (week - 1),
-      band == "*NSYNC" ~ 300 + 15 * (week - 1),
-      band == "98 Degrees" ~ 330,
-      band == "Boyz II Men" ~ 360 - 5 * (week - 1),
-      band == "LFO" ~ 200 + 20 * (week - 1),
-      band == "Hanson" ~ 280 - 10 * (week - 1)),
-    spins = rpois(n(), lambda = avg_spins)) |>
+    module = factor(module, levels = unique(module)),
+    week_of = as.Date("2000-11-04") + 7 * (week - 1),
+    avg_sales = case_when(
+      module == "Modem" ~ 420 - 8 * (week - 1),
+      module == "VisorPhone" ~ 300 + 15 * (week - 1),
+      module == "Games" ~ 330,
+      module == "MP3 Player" ~ 360 - 5 * (week - 1),
+      module == "GPS" ~ 200 + 20 * (week - 1),
+      module == "Camera" ~ 280 - 10 * (week - 1)),
+    sales = rpois(n(), lambda = avg_sales)) |>
   group_by(week) |>
-  mutate(rank = rank(-spins, ties.method = "random")) |>
+  mutate(rank = rank(-sales, ties.method = "random")) |>
   ungroup()
-labs_bump <- labs(title = "Boy band radio spins",
+labs_bump <- labs(title = "Springboard module sales",
   caption = "Simulated data",
-  subtitle = "Weekly rank, summer 1999",
+  subtitle = "Weekly rank, winter 2000 to 2001",
   x = "Week of", y = "Rank",
-  color = "Band")
-ggp2_bump <- ggplot(boy_bands,
+  color = "Module")
+ggp2_bump <- ggplot(springboard_sales,
     aes(x = week_of,
       y = rank,
-      color = band)) +
+      color = module)) +
     ggbump::geom_bump(linewidth = 2) +
     scale_y_reverse(breaks = 1:6) +
+    scale_color_manual(values = c("#50ADA0", "#21786B", "#808284",
+                                  "#3E3F3A", "#B4BBAF", "#5CB8AC")) +
     theme(legend.position = "bottom")
 
 ggp2_bump +
@@ -142,7 +144,7 @@ library(tidyr) # for expand_grid()
 :::
 
 ::: {style="font-size: 0.95rem;"}
-The summer of 1999 belonged to boy bands. The Backstreet Boys had *Millennium*, \*NSYNC was a few months away from *No Strings Attached*, and LFO's *Summer Girls* was on every pool deck radio. We'll simulate 12 weeks of radio spins (the number of times a song was played across a panel of stations) for six boy bands. Each band gets a weekly average (`avg_spins`) that rises, falls, or holds steady, and `rpois()` draws each week's actual spins around that average. Then we rank the bands within each week (`rank`), with `1` for the most spins. Setting the seed with `set.seed()` means you'll get the same 72 band weeks every time you run the code below.
+Handspring launched the Visor in 1999, and the Springboard expansion slot on its back turned the handheld into whatever module you slid in. By the end of 2000 there was a modem, a games cartridge, an MP3 player, a GPS receiver, a camera, and the new VisorPhone (which turned the Visor into a cell phone). We'll simulate 12 weeks of module sales (the number of units sold across a panel of retailers) for six Springboard modules. Each module gets a weekly average (`avg_sales`) that rises, falls, or holds steady, and `rpois()` draws each week's actual sales around that average. Then we rank the modules within each week (`rank`), with `1` for the most units sold. Setting the seed with `set.seed()` means you'll get the same 72 module weeks every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -151,32 +153,32 @@ The summer of 1999 belonged to boy bands. The Backstreet Boys had *Millennium*, 
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1999)
-boy_bands <- expand_grid(
+set.seed(2000)
+springboard_sales <- expand_grid(
   week = 1:12,
-  band = c("Backstreet Boys", "*NSYNC", "98 Degrees",
-           "Boyz II Men", "LFO", "Hanson")) |>
+  module = c("Modem", "VisorPhone", "Games",
+             "MP3 Player", "GPS", "Camera")) |>
   mutate(
-    band = factor(band, levels = unique(band)),
-    week_of = as.Date("1999-06-05") + 7 * (week - 1),
-    avg_spins = case_when(
-      band == "Backstreet Boys" ~ 420 - 8 * (week - 1),
-      band == "*NSYNC" ~ 300 + 15 * (week - 1),
-      band == "98 Degrees" ~ 330,
-      band == "Boyz II Men" ~ 360 - 5 * (week - 1),
-      band == "LFO" ~ 200 + 20 * (week - 1),
-      band == "Hanson" ~ 280 - 10 * (week - 1)),
-    spins = rpois(n(), lambda = avg_spins)) |>
+    module = factor(module, levels = unique(module)),
+    week_of = as.Date("2000-11-04") + 7 * (week - 1),
+    avg_sales = case_when(
+      module == "Modem" ~ 420 - 8 * (week - 1),
+      module == "VisorPhone" ~ 300 + 15 * (week - 1),
+      module == "Games" ~ 330,
+      module == "MP3 Player" ~ 360 - 5 * (week - 1),
+      module == "GPS" ~ 200 + 20 * (week - 1),
+      module == "Camera" ~ 280 - 10 * (week - 1)),
+    sales = rpois(n(), lambda = avg_sales)) |>
   group_by(week) |>
-  mutate(rank = rank(-spins, ties.method = "random")) |>
+  mutate(rank = rank(-sales, ties.method = "random")) |>
   ungroup()
-glimpse(boy_bands)
+glimpse(springboard_sales)
 ```
 :::
 
 ## Distribution
 
-A bump chart throws away the raw numbers and keeps only the order. That makes it easy to see who passed whom, but it also hides *how close* the race was. When two bands have similar spins, random week to week noise can swap their ranks even though nothing real changed. Below we'll move from the spins, to a picture, to the formula.
+A bump chart throws away the raw numbers and keeps only the order. That makes it easy to see who passed whom, but it also hides *how close* the race was. When two modules have similar sales, random week to week noise can swap their ranks even though nothing real changed. Below we'll move from the sales, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -190,14 +192,14 @@ Start with the first week.
 #| code-fold: show
 #| eval: true
 #| echo: true
-boy_bands |>
+springboard_sales |>
   filter(week == 1) |>
-  select(band, avg_spins, spins, rank) |>
+  select(module, avg_sales, sales, rank) |>
   arrange(rank)
 ```
 :::
 
-Every band landed within a few dozen spins of its average, and the ranks match the order of the averages. Below we count how many times each band changed rank from one week to the next.
+Every module landed within a few dozen units of its average, and the ranks match the order of the averages. Below we count how many times each module changed rank from one week to the next.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -205,21 +207,21 @@ Every band landed within a few dozen spins of its average, and the ranks match t
 #| code-fold: show
 #| eval: true
 #| echo: true
-rank_changes <- boy_bands |>
-  group_by(band) |>
+rank_changes <- springboard_sales |>
+  group_by(module) |>
   summarise(rank_changes = sum(rank != lag(rank), na.rm = TRUE),
             first_rank = first(rank), last_rank = last(rank))
 rank_changes
 ```
 :::
 
-\*NSYNC and LFO climb because their averages climb, and the Backstreet Boys and Hanson slide because theirs slide. But 98 Degrees changes rank `r rank_changes$rank_changes[rank_changes$band == "98 Degrees"]` times even though its average never changes.
+The VisorPhone and GPS climb because their averages climb, and the Modem and Camera slide because theirs slide. But Games changes rank `r rank_changes$rank_changes[rank_changes$module == "Games"]` times even though its average never changes.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-The graph below plots the raw spins for 98 Degrees and Boyz II Men. The ribbon around each line covers the average plus or minus two standard deviations (more on that below). Wherever the two ribbons overlap, either band could come out ahead in a given week.
+The graph below plots the raw sales for Games and the MP3 Player. The ribbon around each line covers the average plus or minus two standard deviations (more on that below). Wherever the two ribbons overlap, either module could come out ahead in a given week.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -227,39 +229,39 @@ The graph below plots the raw spins for 98 Degrees and Boyz II Men. The ribbon a
 #| code-fold: show
 #| eval: true
 #| echo: true
-two_bands <- boy_bands |>
-  filter(band %in% c("98 Degrees", "Boyz II Men"))
-ggplot(two_bands, aes(x = week_of, color = band, fill = band)) +
-  geom_ribbon(aes(ymin = avg_spins - 2 * sqrt(avg_spins),
-                  ymax = avg_spins + 2 * sqrt(avg_spins)),
+two_modules <- springboard_sales |>
+  filter(module %in% c("Games", "MP3 Player"))
+ggplot(two_modules, aes(x = week_of, color = module, fill = module)) +
+  geom_ribbon(aes(ymin = avg_sales - 2 * sqrt(avg_sales),
+                  ymax = avg_sales + 2 * sqrt(avg_sales)),
               alpha = 1 / 4, color = NA) +
-  geom_line(aes(y = spins), linewidth = 1) +
-  geom_point(aes(y = spins), size = 2) +
-  scale_color_manual(values = c("98 Degrees" = "#F2C14E", "Boyz II Men" = "#B79CFF"),
+  geom_line(aes(y = sales), linewidth = 1) +
+  geom_point(aes(y = sales), size = 2) +
+  scale_color_manual(values = c("Games" = "#808284", "MP3 Player" = "#21786B"),
                      aesthetics = c("color", "fill")) +
-  labs(x = "Week of", y = "Spins", color = "Band", fill = "Band")
+  labs(x = "Week of", y = "Units sold", color = "Module", fill = "Module")
 ```
 :::
 
-The ribbons overlap for the whole summer, which is why these two bands trade places in the bump chart.
+The ribbons overlap for all 12 weeks, which is why these two modules trade places in the bump chart.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **NAME IT:**
 :::
 
-Each band's weekly spins follow a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) with its own average for that week ($\lambda$):
+Each module's weekly sales follow a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) with its own average for that week ($\lambda$):
 
 $$
-\text{spins}_{b,w} \sim \text{Poisson}(\lambda_{b,w})
+\text{sales}_{m,w} \sim \text{Poisson}(\lambda_{m,w})
 $$
 
-A Poisson count has a standard deviation of $\sqrt{\lambda}$, so a band averaging 330 spins wobbles by about $\sqrt{330} \approx 18$ spins a week (that's the ribbon width above). The gap between two bands is approximately normal, with a mean of $\lambda_1 - \lambda_2$ and a standard deviation of $\sqrt{\lambda_1 + \lambda_2}$. In week one, Boyz II Men averages 360 spins and 98 Degrees averages 330, so the chance that 98 Degrees comes out ahead anyway is:
+A Poisson count has a standard deviation of $\sqrt{\lambda}$, so a module averaging 330 units wobbles by about $\sqrt{330} \approx 18$ units a week (that's the ribbon width above). The gap between two modules is approximately normal, with a mean of $\lambda_1 - \lambda_2$ and a standard deviation of $\sqrt{\lambda_1 + \lambda_2}$. In week one, the MP3 Player averages 360 units and Games averages 330, so the chance that Games comes out ahead anyway is:
 
 $$
 P(\text{swap}) \approx \Phi\left(\frac{-(360 - 330)}{\sqrt{360 + 330}}\right) \approx `r round(pnorm(-30 / sqrt(690)), 2)`
 $$
 
-By week seven, both bands average 330 spins and the chance is a coin flip (0.5). Rank charts are great for showing who's on top, but small gaps between ranks are often just Poisson noise. Try making the averages twice as far apart in `case_when()` and the bump chart gets a lot calmer.
+By week seven, both modules average 330 units and the chance is a coin flip (0.5). Rank charts are great for showing who's on top, but small gaps between ranks are often just Poisson noise. Try making the averages twice as far apart in `case_when()` and the bump chart gets a lot calmer.
 
 ## Grammar
 
@@ -269,11 +271,13 @@ By week seven, both bands average 330 spins and the chance is a coin flip (0.5).
 
   - Create labels with `labs()`
 
-  - Map `week_of` to the `x`, `rank` to the `y`, and `band` to `color`
+  - Map `week_of` to the `x`, `rank` to the `y`, and `module` to `color`
 
   - Add `ggbump::geom_bump()` and set `linewidth` to `2`
 
   - Flip the `y` axis with `scale_y_reverse()` so rank `1` is on top
+
+  - Set six line colors with `scale_color_manual()` (the theme's discrete palette only has four)
 
   - Move legend to bottom with `theme(legend.position = "bottom")`
 
@@ -287,17 +291,19 @@ By week seven, both bands average 330 spins and the chance is a coin flip (0.5).
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-labs_bump <- labs(title = "Boy band radio spins",
+labs_bump <- labs(title = "Springboard module sales",
   caption = "Simulated data",
-  subtitle = "Weekly rank, summer 1999",
+  subtitle = "Weekly rank, winter 2000 to 2001",
   x = "Week of", y = "Rank",
-  color = "Band")
-ggp2_bump <- ggplot(boy_bands,
+  color = "Module")
+ggp2_bump <- ggplot(springboard_sales,
     aes(x = week_of,
       y = rank,
-      color = band)) +
+      color = module)) +
     ggbump::geom_bump(linewidth = 2) +
     scale_y_reverse(breaks = 1:6) +
+    scale_color_manual(values = c("#50ADA0", "#21786B", "#808284",
+                                  "#3E3F3A", "#B4BBAF", "#5CB8AC")) +
     theme(legend.position = "bottom")
 
 ggp2_bump +
@@ -320,17 +326,19 @@ ggp2_bump +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-labs_bump <- labs(title = "Boy band radio spins",
+labs_bump <- labs(title = "Springboard module sales",
   caption = "Simulated data",
-  subtitle = "Weekly rank, summer 1999",
+  subtitle = "Weekly rank, winter 2000 to 2001",
   x = "Week of", y = "Rank",
-  color = "Band")
-ggp2_bump <- ggplot(boy_bands,
+  color = "Module")
+ggp2_bump <- ggplot(springboard_sales,
     aes(x = week_of,
       y = rank,
-      color = band)) +
+      color = module)) +
     ggbump::geom_bump(linewidth = 2) +
     scale_y_reverse(breaks = 1:6) +
+    scale_color_manual(values = c("#50ADA0", "#21786B", "#808284",
+                                  "#3E3F3A", "#B4BBAF", "#5CB8AC")) +
     theme(legend.position = "bottom")
 
 ggp2_bump +

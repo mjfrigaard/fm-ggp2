@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.9.30">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Appendix C — Theme – ggplot2: field manual</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -68,19 +71,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="./extensions.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-b6a8276bf55561bdbc268162d41bd1f7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-a8da12e74b29c2e7b17644f84b91567b.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-b6a8276bf55561bdbc268162d41bd1f7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-3dd65e00657b6d9022c40063cd6a194b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-f210b8a2f4f1f23d9cba045d64a1412b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-3dd65e00657b6d9022c40063cd6a194b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-86ccf492976a043c1e8b30e1c1514486.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-044314211b435048848f0d5bf1946879.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-86ccf492976a043c1e8b30e1c1514486.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -782,7 +784,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The 90s themes are built on <code>ggplot2::theme_bw()</code> and use features from <code>ggplot2</code> 4.0, so a single theme can control much more than the background and fonts:</p>
 <ul>
 <li><p><strong>Colors</strong>: the plot background, the frame around the plot, the panel, and the grid lines all come from a palette sampled from the 90s reference.</p></li>
-<li><p><strong>Fonts</strong>: most themes pair Arial body text with a title display font that fits the reference (Impact for Blockbuster, Chalkduster for Friends, Comic Sans for GeoCities). <code>theme_beanie()</code> uses a single font throughout (Comic Sans).</p></li>
+<li><p><strong>Fonts</strong>: most themes pair Arial body text with a title display font that fits the reference (Impact for Blockbuster, Gill Sans for NetWare, Comic Sans for GeoCities).</p></li>
 <li><p><strong>Discrete palettes</strong>: <code>palette.fill.discrete</code> and <code>palette.colour.discrete</code> set the colors for categorical variables, so mapping a variable to <code>fill</code> or <code>color</code> uses the theme’s colors automatically.</p></li>
 <li><p><strong>Continuous palettes</strong>: four themes (<code>theme_freshprince()</code>, <code>theme_bopit()</code>, <code>theme_geocities()</code>, and <code>theme_surge()</code>) also set <code>palette.fill.continuous</code>, which colors heatmaps, 2D histograms, and hexagon bins.</p></li>
 <li><p><strong>Default geoms</strong>: <code>element_geom()</code> sets the default <code>fill</code>, <code>colour</code>, and font for layers like <code>geom_bar()</code> and <code>geom_point()</code>, so a graph with no color mapping still matches the theme.</p></li>
@@ -860,8 +862,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td><a href="./violin_plots.html">Violin plots</a></td>
-<td><code>theme_beanie()</code></td>
-<td>Beanie Babies heart tag</td>
+<td><code>theme_microdrive()</code></td>
+<td>IBM Microdrive</td>
 </tr>
 <tr class="odd">
 <td><a href="./box_plots.html">Box plots</a></td>
@@ -896,8 +898,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><a href="./overlapping_bar_graphs.html">Overlapping bar graphs</a></td>
-<td><code>theme_friends()</code></td>
-<td>Friends (Monica’s apartment)</td>
+<td><code>theme_netware()</code></td>
+<td>Novell NetWare</td>
 </tr>
 <tr class="even">
 <td><a href="./heatmaps.html">Heatmaps</a></td>
@@ -952,8 +954,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><a href="./treemaps.html">Treemaps</a></td>
-<td><code>theme_toysrus()</code></td>
-<td>Toys”R”Us</td>
+<td><code>theme_j2me()</code></td>
+<td>J2ME phone games</td>
 </tr>
 </tbody>
 </table>
@@ -993,8 +995,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><a href="./overlapping_stacked_density_plots.html">Overlapping density plot</a></td>
-<td><code>theme_furby()</code></td>
-<td>Furby</td>
+<td><code>theme_pager()</code></td>
+<td>Two way pagers</td>
 </tr>
 <tr class="even">
 <td><a href="./ridgeline_plots.html">Ridgeline plots</a></td>
@@ -1044,8 +1046,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><a href="./bump_charts.html">Bump charts</a></td>
-<td><code>theme_boyband()</code></td>
-<td>Boy bands</td>
+<td><code>theme_visor()</code></td>
+<td>Handspring Visor</td>
 </tr>
 <tr class="even">
 <td><a href="./slope_graphs.html">Slope graphs</a></td>
@@ -1105,8 +1107,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><a href="./parallel_sets.html">Parallel sets</a></td>
-<td><code>theme_clueless()</code></td>
-<td>Clueless</td>
+<td><code>theme_cuseeme()</code></td>
+<td>CU-SeeMe</td>
 </tr>
 <tr class="even">
 <td><a href="./density_contours.html">Density contours</a></td>

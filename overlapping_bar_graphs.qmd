@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_friends(
+ggplot2::theme_set(fmggp2::theme_netware(
     base_size = 15))
 ```
 
@@ -45,23 +45,23 @@ ggplot2::theme_set(fmggp2::theme_friends(
 #| fig-align: right
 library(ggplot2)
 library(dplyr)
-set.seed(1994)
-friends_episodes <- tibble(
-  season = c("Season 1", "Season 3", "Season 5"),
-  mean_viewers = c(22, 27, 24)) |>
-  tidyr::uncount(24, .id = "episode") |>
-  mutate(viewers_m = round(rnorm(n(), mean = mean_viewers, sd = 2.5)),
-         audience = if_else(viewers_m >= 25, "25M or more", "Under 25M")) |>
-  select(season, episode, viewers_m, audience)
+set.seed(1990)
+netware_offices <- tibble(
+  year = c("1990", "1994", "1998"),
+  mean_nodes = c(22, 24, 27)) |>
+  tidyr::uncount(24, .id = "office") |>
+  mutate(nodes = round(rnorm(n(), mean = mean_nodes, sd = 2.5)),
+         lan_size = if_else(nodes >= 25, "25 or more", "Under 25")) |>
+  select(year, office, nodes, lan_size)
 labs_bar_ovrlp <- labs(
-  title = "Friends",
+  title = "Novell NetWare",
   caption = "Simulated data",
-  subtitle = "Viewers per episode in three seasons",
-  x = "Viewers (millions)",
-  y = "Episodes",
-  fill = "Season")
-ggp2_bar_ovrlp <- ggplot(data = friends_episodes,
-          aes(x = viewers_m, fill = season)) +
+  subtitle = "Workstations per office LAN in three years",
+  x = "Workstations",
+  y = "Offices",
+  fill = "Year")
+ggp2_bar_ovrlp <- ggplot(data = netware_offices,
+          aes(x = nodes, fill = year)) +
                 geom_bar() 
 ggp2_bar_ovrlp + 
   labs_bar_ovrlp
@@ -106,7 +106,7 @@ library(tidyr) # for uncount()
 :::
 
 ::: {style="font-size: 0.95rem;"}
-*Friends* drew a huge audience every Thursday night in the 90s, but some seasons drew more than others. We'll simulate the number of viewers (in millions) for the 24 episodes in seasons 1, 3, and 5. Each season gets its own average audience (`mean_viewers`), `tidyr::uncount()` creates one row per episode, and `rnorm()` draws each episode's audience, rounded to the nearest million. We'll also flag whether each episode drew 25 million viewers or more (`audience`). Setting the seed with `set.seed()` means you'll get the same 72 episodes every time you run the code below.
+Novell NetWare was the most popular network operating system of the early 90s, and office LANs grew as more desks got a PC and a network card. We'll simulate the number of workstations on the LAN for 24 offices in 1990, 1994, and 1998. Each year gets its own average LAN size (`mean_nodes`), `tidyr::uncount()` creates one row per office, and `rnorm()` draws each office's workstation count, rounded to a whole workstation. We'll also flag whether each office ran 25 workstations or more (`lan_size`). Setting the seed with `set.seed()` means you'll get the same 72 offices every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -115,27 +115,27 @@ library(tidyr) # for uncount()
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1994)
-friends_episodes <- tibble(
-  season = c("Season 1", "Season 3", "Season 5"),
-  mean_viewers = c(22, 27, 24)) |>
-  tidyr::uncount(24, .id = "episode") |>
-  mutate(viewers_m = round(rnorm(n(), mean = mean_viewers, sd = 2.5)),
-         audience = if_else(viewers_m >= 25, "25M or more", "Under 25M")) |>
-  select(season, episode, viewers_m, audience)
-glimpse(friends_episodes)
+set.seed(1990)
+netware_offices <- tibble(
+  year = c("1990", "1994", "1998"),
+  mean_nodes = c(22, 24, 27)) |>
+  tidyr::uncount(24, .id = "office") |>
+  mutate(nodes = round(rnorm(n(), mean = mean_nodes, sd = 2.5)),
+         lan_size = if_else(nodes >= 25, "25 or more", "Under 25")) |>
+  select(year, office, nodes, lan_size)
+glimpse(netware_offices)
 ```
 :::
 
 ## Distribution
 
-Overlapping bars only overlap when groups share values. Three seasons with very different audiences would sit side by side with no stacking at all, and three seasons with the same audience would stack into a single pile. How much the bars overlap depends on how far apart the seasons' averages are compared to how much episodes vary within a season. Below we'll move from the episodes, to a picture, to the formula.
+Overlapping bars only overlap when groups share values. Three years with very different LAN sizes would sit side by side with no stacking at all, and three years with the same LAN size would stack into a single pile. How much the bars overlap depends on how far apart the years' averages are compared to how much offices vary within a year. Below we'll move from the offices, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the first six episodes of season 1.
+Start with the first six offices from 1990.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -143,11 +143,11 @@ Start with the first six episodes of season 1.
 #| code-fold: show
 #| eval: true
 #| echo: true
-head(friends_episodes, 6)
+head(netware_offices, 6)
 ```
 :::
 
-These episodes drew between 19 and 26 million viewers. The summary below shows each season's mean, standard deviation, and range.
+These offices ran between 20 and 26 workstations. The summary below shows each year's mean, standard deviation, and range.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -155,23 +155,23 @@ These episodes drew between 19 and 26 million viewers. The summary below shows e
 #| code-fold: show
 #| eval: true
 #| echo: true
-friends_episodes |> 
-  group_by(season) |> 
+netware_offices |> 
+  group_by(year) |> 
   summarise(
-    mean = mean(viewers_m), 
-    sd = sd(viewers_m), 
-    min = min(viewers_m), 
-    max = max(viewers_m))
+    mean = mean(nodes), 
+    sd = sd(nodes), 
+    min = min(nodes), 
+    max = max(nodes))
 ```
 :::
 
-Each season's range covers 6 or 7 million viewers, but the means are only 2 to 4 million apart. So the ranges overlap, which is what puts more than one color in the same bar.
+Each year's range covers 8 to 11 workstations, but the means are only about 2 to 5 workstations apart. So the ranges overlap, which is what puts more than one color in the same bar.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-The overlapping bar graph below stacks the episodes from all three seasons at each audience size. The dashed lines mark the average audience we gave each season in `rnorm()`. Season 1 sits mostly on the left, season 3 mostly on the right, and season 5 lands in the middle, sharing bars with both.
+The overlapping bar graph below stacks the offices from all three years at each LAN size. The dashed lines mark the average LAN size we gave each year in `rnorm()`. The 1990 offices sit mostly on the left, the 1998 offices mostly on the right, and the 1994 offices land in the middle, sharing bars with both.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -179,13 +179,13 @@ The overlapping bar graph below stacks the episodes from all three seasons at ea
 #| code-fold: show
 #| eval: true
 #| echo: true
-ggplot(data = friends_episodes, 
-    aes(x = viewers_m, fill = season)) + 
+ggplot(data = netware_offices, 
+    aes(x = nodes, fill = year)) + 
   geom_bar() + 
-  geom_vline(xintercept = c(22, 27, 24), 
-    color = c("#E2231A", "#F2C230", "#3C78D8"), 
+  geom_vline(xintercept = c(22, 24, 27), 
+    color = c("#69100A", "#A91E28", "#B3575A"), 
     linetype = "dashed", linewidth = 1) + 
-  labs(x = "Viewers (millions)", y = "Episodes", fill = "Season")
+  labs(x = "Workstations", y = "Offices", fill = "Year")
 ```
 :::
 
@@ -193,19 +193,19 @@ ggplot(data = friends_episodes,
 **NAME IT:**
 :::
 
-Each season's audience comes from its own [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) with a shared standard deviation:
+Each year's LAN size comes from its own [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) with a shared standard deviation:
 
 $$
-X_{s} \sim \text{Normal}(\mu_s, \sigma = 2.5), \quad \mu_1 = 22, \; \mu_3 = 27, \; \mu_5 = 24
+X_{y} \sim \text{Normal}(\mu_y, \sigma = 2.5), \quad \mu_{1990} = 22, \; \mu_{1994} = 24, \; \mu_{1998} = 27
 $$
 
-The overlap depends on the distance between two means measured in standard deviations. Season 1 and season 3 are $(27 - 22) / 2.5 = 2$ standard deviations apart, and season 3 and season 5 are only $(27 - 24) / 2.5 = 1.2$ apart. One way to put a number on that overlap is to pick a random episode from each season and ask how often the "weaker" season wins:
+The overlap depends on the distance between two means measured in standard deviations. The 1990 and 1998 means are $(27 - 22) / 2.5 = 2$ standard deviations apart, and the 1994 and 1998 means are only $(27 - 24) / 2.5 = 1.2$ apart. One way to put a number on that overlap is to pick a random office from each year and ask how often the "smaller" year wins:
 
 $$
-P(X_5 > X_3) = \Phi\left(\frac{24 - 27}{2.5\sqrt{2}}\right) \approx 0.20
+P(X_{1994} > X_{1998}) = \Phi\left(\frac{24 - 27}{2.5\sqrt{2}}\right) \approx 0.20
 $$
 
-So a season 5 episode beats a season 3 episode about 20% of the time, while a season 1 episode beats a season 3 episode only about 8% of the time. Try moving the three means in `mean_viewers` closer together and the bars stack into a single colorful pile.
+So a 1994 office runs more workstations than a 1998 office about 20% of the time, while a 1990 office does so only about 8% of the time. Try moving the three means in `mean_nodes` closer together and the bars stack into a single colorful pile.
 
 
 ## Grammar
@@ -219,7 +219,7 @@ So a season 5 episode beats a season 3 episode about 20% of the time, while a se
 
   -  Initialize the graph with `ggplot()` and provide `data`
 
-  -  Map `viewers_m` to the `x` and `season` to `fill`
+  -  Map `nodes` to the `x` and `year` to `fill`
 
   -  Add the `geom_bar()` layer
 
@@ -234,14 +234,14 @@ So a season 5 episode beats a season 3 episode about 20% of the time, while a se
 #| out-height: '100%'
 #| out-width: '100%'
 labs_bar_ovrlp <- labs(
-  title = "Friends",
+  title = "Novell NetWare",
   caption = "Simulated data",
-  subtitle = "Viewers per episode in three seasons",
-  x = "Viewers (millions)",
-  y = "Episodes",
-  fill = "Season")
-ggp2_bar_ovrlp <- ggplot(data = friends_episodes,
-          aes(x = viewers_m, fill = season)) +
+  subtitle = "Workstations per office LAN in three years",
+  x = "Workstations",
+  y = "Offices",
+  fill = "Year")
+ggp2_bar_ovrlp <- ggplot(data = netware_offices,
+          aes(x = nodes, fill = year)) +
                 geom_bar() 
 ggp2_bar_ovrlp + 
   labs_bar_ovrlp
@@ -262,14 +262,14 @@ ggp2_bar_ovrlp +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_bar_ovrlp <- labs(
-  title = "Friends",
+  title = "Novell NetWare",
   caption = "Simulated data",
-  subtitle = "Viewers per episode in three seasons",
-  x = "Viewers (millions)",
-  y = "Episodes",
-  fill = "Season")
-ggp2_bar_ovrlp <- ggplot(data = friends_episodes,
-          aes(x = viewers_m, fill = season)) +
+  subtitle = "Workstations per office LAN in three years",
+  x = "Workstations",
+  y = "Offices",
+  fill = "Year")
+ggp2_bar_ovrlp <- ggplot(data = netware_offices,
+          aes(x = nodes, fill = year)) +
                 geom_bar() 
 ggp2_bar_ovrlp + 
   labs_bar_ovrlp
@@ -285,40 +285,40 @@ ggp2_bar_ovrlp +
 
 <br>
 
-To build an overlapping bar graph with `geom_col()`, we need to create a column with the counts for `viewers_m` and `season` in the dataset. 
+To build an overlapping bar graph with `geom_col()`, we need to create a column with the counts for `nodes` and `year` in the dataset. 
 
-  -  Create the `friends_col` data:
+  -  Create the `netware_col` data:
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: friends_col
+#| label: netware_col
 #| eval: true
 #| echo: true
-friends_col <- friends_episodes |>
-    count(season, viewers_m, name = "Episodes")
+netware_col <- netware_offices |>
+    count(year, nodes, name = "Offices")
 ```
 :::
 
 
-  -  Map the counts to the `y` axis, `viewers_m` to the `x` axis, and `season` to `fill`
+  -  Map the counts to the `y` axis, `nodes` to the `x` axis, and `year` to `fill`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: data_code_bar_friends_col
+#| label: data_code_bar_netware_col
 #| eval: true
 #| echo: true
 #| layout-nrow: 1
 labs_col_ovrlp <- labs(
-  title = "Friends",
+  title = "Novell NetWare",
   caption = "Simulated data",
   subtitle = "built with 'geom_col()'",
-  x = "Viewers (millions)",
-  y = "Episodes",
-  fill = "Season")
-ggp2_col_ovrlp <- ggplot(data = friends_col, 
-    mapping = aes(y = Episodes, 
-        x = viewers_m, 
-        fill = season)) + 
+  x = "Workstations",
+  y = "Offices",
+  fill = "Year")
+ggp2_col_ovrlp <- ggplot(data = netware_col, 
+    mapping = aes(y = Offices, 
+        x = nodes, 
+        fill = year)) + 
     geom_col()
 ggp2_col_ovrlp + 
     labs_col_ovrlp
@@ -352,17 +352,17 @@ ggp2_col_ovrlp +
 :::
 
 ::: {style="font-size: 0.95rem;"}
-We'll use the `audience` column, which splits episodes into those with 25 million viewers or more and those with fewer.
+We'll use the `lan_size` column, which splits offices into those with 25 workstations or more and those with fewer.
 :::
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: friends_dodge
+#| label: netware_dodge
 #| eval: true
 #| echo: true 
 #| warning: false
 #| message: false
-count(friends_episodes, audience, season)
+count(netware_offices, lan_size, year)
 ```
 :::
 
@@ -370,7 +370,7 @@ count(friends_episodes, audience, season)
 
   -  Initialize the graph with `ggplot()` and provide `data`
 
-  -  Map `audience` to the `x` and `season` to `group` and `fill` 
+  -  Map `lan_size` to the `x` and `year` to `group` and `fill` 
 
   -  Inside the `geom_bar()` function, set `position` to `"dodge"`
 
@@ -385,16 +385,16 @@ count(friends_episodes, audience, season)
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_bar_dodge <- labs(
-  title = "Friends",
+  title = "Novell NetWare",
   caption = "Simulated data",
   subtitle = "position = 'dodge'",
-  x = "Audience",
-  y = "Episodes",
-  fill = "Season")
-ggp2_bar_dodge <- ggplot(data = friends_episodes,
-                    aes(x = audience, 
-                        group = season, 
-                        fill = season)) +
+  x = "LAN size",
+  y = "Offices",
+  fill = "Year")
+ggp2_bar_dodge <- ggplot(data = netware_offices,
+                    aes(x = lan_size, 
+                        group = year, 
+                        fill = year)) +
                     geom_bar(
                         position = "dodge")
 ggp2_bar_dodge +
@@ -410,7 +410,7 @@ ggp2_bar_dodge +
 
   -  Initialize the graph with `ggplot()` and provide `data`
 
-  -  Map `audience` to `x` and `season` to `fill`
+  -  Map `lan_size` to `x` and `year` to `fill`
 
   -  Inside `geom_bar()`, set `position` to `"dodge2"`
 
@@ -435,15 +435,15 @@ ggp2_bar_dodge +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_bar_dodge2 <- labs(
-  title = "Friends",
+  title = "Novell NetWare",
   caption = "Simulated data",
   subtitle = "position = 'dodge2'",
-  x = "Audience",
-  y = "Episodes",
-  fill = "Season")
-ggp2_bar_dodge2 <- ggplot(data = friends_episodes,
-                    aes(x = audience, 
-                        fill = season)) +
+  x = "LAN size",
+  y = "Offices",
+  fill = "Year")
+ggp2_bar_dodge2 <- ggplot(data = netware_offices,
+                    aes(x = lan_size, 
+                        fill = year)) +
                     geom_bar(
                         position = "dodge2")
 ggp2_bar_dodge2 +

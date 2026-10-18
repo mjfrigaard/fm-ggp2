@@ -184,43 +184,45 @@ library(ggbump)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
-set.seed(1999)
-boy_bands <- expand_grid(
+set.seed(2000)
+springboard_sales <- expand_grid(
   week = 1:12,
-  band = c("Backstreet Boys", "*NSYNC", "98 Degrees",
-           "Boyz II Men", "LFO", "Hanson")) |>
+  module = c("Modem", "VisorPhone", "Games",
+             "MP3 Player", "GPS", "Camera")) |>
   mutate(
-    band = factor(band, levels = unique(band)),
-    week_of = as.Date("1999-06-05") + 7 * (week - 1),
-    avg_spins = case_when(
-      band == "Backstreet Boys" ~ 420 - 8 * (week - 1),
-      band == "*NSYNC" ~ 300 + 15 * (week - 1),
-      band == "98 Degrees" ~ 330,
-      band == "Boyz II Men" ~ 360 - 5 * (week - 1),
-      band == "LFO" ~ 200 + 20 * (week - 1),
-      band == "Hanson" ~ 280 - 10 * (week - 1)),
-    spins = rpois(n(), lambda = avg_spins)) |>
+    module = factor(module, levels = unique(module)),
+    week_of = as.Date("2000-11-04") + 7 * (week - 1),
+    avg_sales = case_when(
+      module == "Modem" ~ 420 - 8 * (week - 1),
+      module == "VisorPhone" ~ 300 + 15 * (week - 1),
+      module == "Games" ~ 330,
+      module == "MP3 Player" ~ 360 - 5 * (week - 1),
+      module == "GPS" ~ 200 + 20 * (week - 1),
+      module == "Camera" ~ 280 - 10 * (week - 1)),
+    sales = rpois(n(), lambda = avg_sales)) |>
   group_by(week) |>
-  mutate(rank = rank(-spins, ties.method = "random")) |>
+  mutate(rank = rank(-sales, ties.method = "random")) |>
   ungroup()
-labs_bump <- labs(title = "Boy band radio spins",
+labs_bump <- labs(title = "Springboard module sales",
   caption = "Simulated data",
-  subtitle = "Weekly rank, summer 1999",
+  subtitle = "Weekly rank, winter 2000 to 2001",
   x = "Week of", y = "Rank",
-  color = "Band")
-ggp2_bump <- ggplot(boy_bands,
+  color = "Module")
+ggp2_bump <- ggplot(springboard_sales,
     aes(x = week_of,
       y = rank,
-      color = band)) +
+      color = module)) +
     ggbump::geom_bump(linewidth = 2) +
     scale_y_reverse(breaks = 1:6) +
+    scale_color_manual(values = c("#50ADA0", "#21786B", "#808284",
+                                  "#3E3F3A", "#B4BBAF", "#5CB8AC")) +
     theme(legend.position = "bottom")
 
 (
   ggp2_bump +
     labs_bump
 ) +
-  fmggp2::theme_boyband(base_size = 12) +
+  fmggp2::theme_visor(base_size = 12) +
   bare_theme
 ```
 

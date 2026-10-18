@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.9.30">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>23&nbsp; Overlapping density plot – ggplot2: field manual</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -69,19 +72,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="./beeswarm_plots.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-b6a8276bf55561bdbc268162d41bd1f7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-a8da12e74b29c2e7b17644f84b91567b.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-b6a8276bf55561bdbc268162d41bd1f7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-3dd65e00657b6d9022c40063cd6a194b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-f210b8a2f4f1f23d9cba045d64a1412b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-3dd65e00657b6d9022c40063cd6a194b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-86ccf492976a043c1e8b30e1c1514486.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-044314211b435048848f0d5bf1946879.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-86ccf492976a043c1e8b30e1c1514486.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -113,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -818,66 +820,66 @@ window.Quarto = {
 <p><strong>DATA:</strong></p>
 </div>
 <div style="font-size: 0.95rem;">
-<p>Furby was the must have toy of 1998. Out of the box it spoke “Furbish,” and the longer you played with it, the more English it seemed to learn. We’ll simulate 300 hours of Furby chatter: 180 hours spent mostly in Furbish and 120 hours mostly in English. Each language gets its own normal distribution of words per hour (<code>rnorm()</code>), and Furbish hours are both chattier and more consistent. Setting the seed with <code>set.seed()</code> means you’ll get the same 300 hours every time you run the code below.</p>
+<p>In 1998, Research In Motion (RIM) released the Inter@ctive Pager 950, a two way pager with a tiny keyboard you typed on with your thumbs (and the ancestor of the BlackBerry). Its main rival was the Motorola PageWriter. We’ll simulate 300 messages: 180 sent from a RIM 950 and 120 sent from a PageWriter. Each pager model gets its own normal distribution of message lengths in characters (<code>rnorm()</code>), and RIM 950 messages are both longer and more consistent. Setting the seed with <code>set.seed()</code> means you’ll get the same 300 messages every time you run the code below.</p>
 </div>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1998</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>furby_chatter <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">hour_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">300</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">language =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"Furbish"</span>, <span class="st">"English"</span>), <span class="at">times =</span> <span class="fu">c</span>(<span class="dv">180</span>, <span class="dv">120</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">language =</span> <span class="fu">factor</span>(language, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Furbish"</span>, <span class="st">"English"</span>)),</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">words_per_hour =</span> <span class="fu">round</span>(<span class="fu">if_else</span>(language <span class="sc">==</span> <span class="st">"Furbish"</span>,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pager_messages <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">msg_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">300</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"RIM 950"</span>, <span class="st">"PageWriter"</span>), <span class="at">times =</span> <span class="fu">c</span>(<span class="dv">180</span>, <span class="dv">120</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="fu">factor</span>(model, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"RIM 950"</span>, <span class="st">"PageWriter"</span>)),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">msg_length =</span> <span class="fu">round</span>(<span class="fu">if_else</span>(model <span class="sc">==</span> <span class="st">"RIM 950"</span>,</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>           <span class="fu">rnorm</span>(<span class="fu">n</span>(), <span class="at">mean =</span> <span class="dv">45</span>, <span class="at">sd =</span> <span class="dv">8</span>),</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>           <span class="fu">rnorm</span>(<span class="fu">n</span>(), <span class="at">mean =</span> <span class="dv">30</span>, <span class="at">sd =</span> <span class="dv">10</span>))))</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(furby_chatter)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(pager_messages)</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 300</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 3</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ hour_id        &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9…</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ language       &lt;fct&gt; Furbish, Furbish, Furbish…</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ words_per_hour &lt;dbl&gt; 31, 32, 57, 23, 56, 40, 4…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ msg_id     &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10…</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ model      &lt;fct&gt; RIM 950, RIM 950, RIM 950, RI…</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ msg_length &lt;dbl&gt; 31, 32, 57, 23, 56, 40, 43, 4…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
 <section id="distribution" class="level2" data-number="23.3">
 <h2 data-number="23.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">23.3</span> Distribution</h2>
-<p>Overlapping and stacked density plots can tell two different stories about the same data. By default, each group’s curve covers an area of 1, which hides the fact that one group might be much bigger than the other. Our two languages aren’t the same size (180 hours vs.&nbsp;120), so the choice matters here. Below we’ll move from the hours, to a picture, to the formula.</p>
+<p>Overlapping and stacked density plots can tell two different stories about the same data. By default, each group’s curve covers an area of 1, which hides the fact that one group might be much bigger than the other. Our two pager models aren’t the same size (180 messages vs.&nbsp;120), so the choice matters here. Below we’ll move from the messages, to a picture, to the formula.</p>
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>COUNT IT:</strong></p>
 </div>
-<p>Start with the first five hours (all in Furbish).</p>
+<p>Start with the first five messages (all sent from a RIM 950).</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(furby_chatter, <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pager_messages, <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["hour_id"],"name":[1],"type":["int"],"align":["right"]},{"label":["language"],"name":[2],"type":["fct"],"align":["left"]},{"label":["words_per_hour"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"Furbish","3":"31"},{"1":"2","2":"Furbish","3":"32"},{"1":"3","2":"Furbish","3":"57"},{"1":"4","2":"Furbish","3":"23"},{"1":"5","2":"Furbish","3":"56"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["msg_id"],"name":[1],"type":["int"],"align":["right"]},{"label":["model"],"name":[2],"type":["fct"],"align":["left"]},{"label":["msg_length"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"RIM 950","3":"31"},{"1":"2","2":"RIM 950","3":"32"},{"1":"3","2":"RIM 950","3":"57"},{"1":"4","2":"RIM 950","3":"23"},{"1":"5","2":"RIM 950","3":"56"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
 </div>
 </div>
-<p>These five hours range from 23 to 57 words. The summary below compares the two languages: Furbish has more hours, more words per hour on average, and a smaller standard deviation.</p>
+<p>These five messages range from 23 to 57 characters. The summary below compares the two pager models: the RIM 950 has more messages, longer messages on average, and a smaller standard deviation.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>furby_chatter <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(language) <span class="sc">|&gt;</span> </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">hours =</span> <span class="fu">n</span>(), <span class="at">mean =</span> <span class="fu">mean</span>(words_per_hour), </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> <span class="fu">sd</span>(words_per_hour))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pager_messages <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(model) <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">messages =</span> <span class="fu">n</span>(), <span class="at">mean =</span> <span class="fu">mean</span>(msg_length), </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> <span class="fu">sd</span>(msg_length))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["language"],"name":[1],"type":["fct"],"align":["left"]},{"label":["hours"],"name":[2],"type":["int"],"align":["right"]},{"label":["mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Furbish","2":"180","3":"45.67778","4":"8.058207"},{"1":"English","2":"120","3":"29.67500","4":"10.188280"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["model"],"name":[1],"type":["fct"],"align":["left"]},{"label":["messages"],"name":[2],"type":["int"],"align":["right"]},{"label":["mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"RIM 950","2":"180","3":"45.67778","4":"8.058207"},{"1":"PageWriter","2":"120","3":"29.67500","4":"10.188280"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -886,18 +888,18 @@ window.Quarto = {
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>DRAW IT:</strong></p>
 </div>
-<p>A bar model shows the two groups as parts of all 300 hours. Furbish takes up 60% of the bar and English takes up 40%.</p>
+<p>A bar model shows the two groups as parts of all 300 messages. The RIM 950 takes up 60% of the bar and the PageWriter takes up 40%.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>furby_chatter <span class="sc">|&gt;</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(language) <span class="sc">|&gt;</span> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> <span class="st">"300 hours"</span>, <span class="at">fill =</span> language)) <span class="sc">+</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pager_messages <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(model) <span class="sc">|&gt;</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> <span class="st">"300 messages"</span>, <span class="at">fill =</span> model)) <span class="sc">+</span> </span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">reverse =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span> </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> n), <span class="at">color =</span> <span class="st">"#2D1B4E"</span>, </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> n), <span class="at">color =</span> <span class="st">"#C3D7D9"</span>, </span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">reverse =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span> </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Hours"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="st">"Language"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Messages"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="st">"Pager model"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -908,21 +910,21 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>The two graphs below show why the bar model matters. On the left, the default densities each cover an area of 1, so the English curve looks almost as big as the Furbish curve. On the right, <code>after_stat(count)</code> scales each curve by its number of hours, so the Furbish curve is 1.5 times the size of the English curve, just like the bar model.</p>
+<p>The two graphs below show why the bar model matters. On the left, the default densities each cover an area of 1, so the PageWriter curve looks almost as big as the RIM 950 curve. On the right, <code>after_stat(count)</code> scales each curve by its number of messages, so the RIM 950 curve is 1.5 times the size of the PageWriter curve, just like the bar model.</p>
 <div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(furby_chatter, <span class="fu">aes</span>(<span class="at">x =</span> words_per_hour, <span class="at">fill =</span> language)) <span class="sc">+</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pager_messages, <span class="fu">aes</span>(<span class="at">x =</span> msg_length, <span class="at">fill =</span> model)) <span class="sc">+</span> </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>) <span class="sc">+</span> </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Area of 1 each"</span>, <span class="at">x =</span> <span class="st">"Words per hour"</span>, </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Language"</span>) <span class="sc">+</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Area of 1 each"</span>, <span class="at">x =</span> <span class="st">"Message length (characters)"</span>, </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Pager model"</span>) <span class="sc">+</span> </span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(furby_chatter, <span class="fu">aes</span>(<span class="at">x =</span> words_per_hour, <span class="fu">after_stat</span>(count), </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> language)) <span class="sc">+</span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pager_messages, <span class="fu">aes</span>(<span class="at">x =</span> msg_length, <span class="fu">after_stat</span>(count), </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> model)) <span class="sc">+</span> </span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>) <span class="sc">+</span> </span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Scaled by hours"</span>, <span class="at">x =</span> <span class="st">"Words per hour"</span>, <span class="at">y =</span> <span class="st">"count"</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Language"</span>) <span class="sc">+</span> </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Scaled by messages"</span>, <span class="at">x =</span> <span class="st">"Message length (characters)"</span>, <span class="at">y =</span> <span class="st">"count"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Pager model"</span>) <span class="sc">+</span> </span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell quarto-layout-panel" data-layout-ncol="2">
@@ -939,11 +941,11 @@ window.Quarto = {
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>NAME IT:</strong></p>
 </div>
-<p>Each language has its own <a href="https://en.wikipedia.org/wiki/Normal_distribution">normal distribution</a>, and the two are mixed in proportion to their number of hours:</p>
+<p>Each pager model has its own <a href="https://en.wikipedia.org/wiki/Normal_distribution">normal distribution</a>, and the two are mixed in proportion to their number of messages:</p>
 <p><span class="math display">\[
 f(x) = 0.6 \cdot \text{Normal}(x;\, 45, 8) + 0.4 \cdot \text{Normal}(x;\, 30, 10)
 \]</span></p>
-<p><code>geom_density()</code> estimates each group’s curve so that its area is 1 (each <span class="math inline">\(\text{Normal}\)</span> term on its own). <code>after_stat(count)</code> multiplies each curve by its group size, so the two curves have areas of 180 and 120. Stacking those count curves (<code>position = "stack"</code>) adds them together into <span class="math inline">\(300 \times f(x)\)</span>, the curve for all 300 hours. Try making the two groups the same size in <code>rep()</code> and the two graphs above will look almost identical.</p>
+<p><code>geom_density()</code> estimates each group’s curve so that its area is 1 (each <span class="math inline">\(\text{Normal}\)</span> term on its own). <code>after_stat(count)</code> multiplies each curve by its group size, so the two curves have areas of 180 and 120. Stacking those count curves (<code>position = "stack"</code>) adds them together into <span class="math inline">\(300 \times f(x)\)</span>, the curve for all 300 messages. Try making the two groups the same size in <code>rep()</code> and the two graphs above will look almost identical.</p>
 </section>
 <section id="grammar" class="level2 page-columns page-full" data-number="23.4">
 <h2 data-number="23.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">23.4</span> Grammar</h2>
@@ -953,7 +955,7 @@ f(x) = 0.6 \cdot \text{Normal}(x;\, 45, 8) + 0.4 \cdot \text{Normal}(x;\, 30, 10
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map the <code>words_per_hour</code> to the <code>x</code> and <code>language</code> to <code>fill</code></p></li>
+<li><p>Map the <code>msg_length</code> to the <code>x</code> and <code>model</code> to <code>fill</code></p></li>
 <li><p>Add the <code>geom_density()</code></p></li>
 <li><p>Set the <code>alpha</code> to <code>1/3</code> (to handle the overlapping areas)</p></li>
 </ul>
@@ -962,13 +964,13 @@ f(x) = 0.6 \cdot \text{Normal}(x;\, 45, 8) + 0.4 \cdot \text{Normal}(x;\, 30, 10
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>labs_ovrlp_density <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Furby chatter"</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Two way pager messages"</span>,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Words per hour"</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Language"</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ggp2_ovrlp_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> furby_chatter,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> words_per_hour,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> language)) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Message length (characters)"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Pager model"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ggp2_ovrlp_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> pager_messages,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> msg_length,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> model)) <span class="sc">+</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>ggp2_ovrlp_density <span class="sc">+</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  labs_ovrlp_density</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1000,13 +1002,13 @@ f(x) = 0.6 \cdot \text{Normal}(x;\, 45, 8) + 0.4 \cdot \text{Normal}(x;\, 30, 10
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>labs_stack_density <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Furby chatter"</span>,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Two way pager messages"</span>,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Words per hour"</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Language"</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>ggp2_stack_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> furby_chatter,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> words_per_hour,</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill =</span> language)) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Message length (characters)"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Pager model"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>ggp2_stack_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> pager_messages,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> msg_length,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill =</span> model)) <span class="sc">+</span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_density</span>(<span class="at">position =</span> <span class="st">"stack"</span>,</span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">alpha =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span>)</span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>ggp2_stack_density <span class="sc">+</span></span>
@@ -1031,14 +1033,14 @@ f(x) = 0.6 \cdot \text{Normal}(x;\, 45, 8) + 0.4 \cdot \text{Normal}(x;\, 30, 10
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>labs_after_stat_density <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Furby chatter"</span>,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Two way pager messages"</span>,</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Words per hour"</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Language"</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>ggp2_after_stat_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> furby_chatter,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> words_per_hour,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Message length (characters)"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Pager model"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>ggp2_after_stat_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> pager_messages,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> msg_length,</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>           <span class="fu">after_stat</span>(count),</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> language)) <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> model)) <span class="sc">+</span></span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_density</span>(<span class="at">position =</span> <span class="st">"stack"</span>,</span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>ggp2_after_stat_density <span class="sc">+</span></span>
@@ -1061,14 +1063,14 @@ f(x) = 0.6 \cdot \text{Normal}(x;\, 45, 8) + 0.4 \cdot \text{Normal}(x;\, 30, 10
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>labs_fill_density <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Furby chatter"</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Two way pager messages"</span>,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Words per hour"</span>,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Language"</span>)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>ggp2_fill_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> furby_chatter,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> words_per_hour,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Message length (characters)"</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Pager model"</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>ggp2_fill_density <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> pager_messages,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> msg_length,</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>           <span class="fu">after_stat</span>(count),</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> language)) <span class="sc">+</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> model)) <span class="sc">+</span></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_density</span>(<span class="at">position =</span> <span class="st">"fill"</span>,</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>)</span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>ggp2_fill_density <span class="sc">+</span></span>

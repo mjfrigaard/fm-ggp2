@@ -151,29 +151,29 @@ When displaying multiple variables on a graph, you can use overlapping bar graph
 #| fig-align: center
 library(ggplot2)
 library(dplyr)
-set.seed(1994)
-friends_episodes <- tibble(
-  season = c("Season 1", "Season 3", "Season 5"),
-  mean_viewers = c(22, 27, 24)) |>
-  tidyr::uncount(24, .id = "episode") |>
-  mutate(viewers_m = round(rnorm(n(), mean = mean_viewers, sd = 2.5)),
-         audience = if_else(viewers_m >= 25, "25M or more", "Under 25M")) |>
-  select(season, episode, viewers_m, audience)
+set.seed(1990)
+netware_offices <- tibble(
+  year = c("1990", "1994", "1998"),
+  mean_nodes = c(22, 24, 27)) |>
+  tidyr::uncount(24, .id = "office") |>
+  mutate(nodes = round(rnorm(n(), mean = mean_nodes, sd = 2.5)),
+         lan_size = if_else(nodes >= 25, "25 or more", "Under 25")) |>
+  select(year, office, nodes, lan_size)
 labs_bar_ovrlp <- labs(
-  title = "Friends",
+  title = "Novell NetWare",
   caption = "Simulated data",
-  subtitle = "Viewers per episode in three seasons",
-  x = "Viewers (millions)",
-  y = "Episodes",
-  fill = "Season")
-ggp2_bar_ovrlp <- ggplot(data = friends_episodes,
-          aes(x = viewers_m, fill = season)) +
+  subtitle = "Workstations per office LAN in three years",
+  x = "Workstations",
+  y = "Offices",
+  fill = "Year")
+ggp2_bar_ovrlp <- ggplot(data = netware_offices,
+          aes(x = nodes, fill = year)) +
                 geom_bar() 
 (
   ggp2_bar_ovrlp +
     labs_bar_ovrlp
 ) +
-  fmggp2::theme_friends(base_size = 12) +
+  fmggp2::theme_netware(base_size = 12) +
   bare_theme
 ```
 

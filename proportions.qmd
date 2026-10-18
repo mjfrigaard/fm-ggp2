@@ -265,29 +265,29 @@ A [treemap](treemaps.qmd) displays a whole as a rectangle divided into smaller r
 library(treemapify)
 library(ggplot2)
 library(dplyr)
-set.seed(1999)
-toy_sales <- tibble(
-  department = c("Electronic pets", "Electronic pets", "Plush", "Plush",
-                 "Video games", "Video games"),
-  toy = c("Furby", "Tamagotchi", "Beanie Babies", "Tickle Me Elmo",
-          "Game Boy Color", "Nintendo 64"),
+set.seed(2003)
+j2me_downloads <- tibble(
+  genre = c("Puzzle", "Puzzle", "Racing", "Racing",
+            "Sports", "Sports"),
+  title = c("Block Drop", "Gem Swap", "Street Rally", "Moto Sprint",
+            "Pocket Soccer", "Pro Bowling"),
   yearly_rate = c(1800, 900, 2400, 700, 1200, 1000),
-  holiday_share = c(0.80, 0.40, 0.35, 0.60, 0.55, 0.50)) |>
-  tidyr::expand_grid(season = c("Holiday", "Rest of year")) |>
+  deck_share = c(0.80, 0.40, 0.35, 0.60, 0.55, 0.50)) |>
+  tidyr::expand_grid(channel = c("Carrier deck", "Direct")) |>
   mutate(lambda = yearly_rate *
-           if_else(season == "Holiday", holiday_share, 1 - holiday_share),
-         units = rpois(n(), lambda = lambda)) |>
-  select(department, toy, season, lambda, units)
+           if_else(channel == "Carrier deck", deck_share, 1 - deck_share),
+         downloads = rpois(n(), lambda = lambda)) |>
+  select(genre, title, channel, lambda, downloads)
 labs_treemap <- labs(
-  title = "Toys\"R\"Us 1998",
+  title = "J2ME downloads 2005",
     caption = "Simulated data",
-    fill = "Season")
-ggp2_treemap <- ggplot(toy_sales,
-       aes(area = units,
-           fill = season,
-           label = season,
-           subgroup = department,
-           subgroup2 = toy)) +
+    fill = "Channel")
+ggp2_treemap <- ggplot(j2me_downloads,
+       aes(area = downloads,
+           fill = channel,
+           label = channel,
+           subgroup = genre,
+           subgroup2 = title)) +
        treemapify::geom_treemap() +
        treemapify::geom_treemap_text(
            place = "bottomright",
@@ -298,7 +298,7 @@ ggp2_treemap <- ggplot(toy_sales,
            family = "sans")
 ggp2_tm_subgroup <- ggp2_treemap +
     treemapify::geom_treemap_subgroup2_border(
-           color = "#0057B8",
+           color = "#15110E",
            size = 4.0) +
        treemapify::geom_treemap_subgroup2_text(
            place = "center",
@@ -308,7 +308,7 @@ ggp2_tm_subgroup <- ggp2_treemap +
            family = "sans")
 ggp2_tm_subgroup2 <- ggp2_tm_subgroup +
        treemapify::geom_treemap_subgroup_border(
-           color = "#FFD200",
+           color = "#9A9791",
            size = 4) +
        treemapify::geom_treemap_subgroup_text(
            place = "topleft",
@@ -323,6 +323,6 @@ ggp2_tm_subgroup2 <- ggp2_tm_subgroup +
   ggp2_tm_subgroup2 +
     labs_treemap
 ) +
-  fmggp2::theme_toysrus(base_size = 12) +
+  fmggp2::theme_j2me(base_size = 12) +
   bare_theme
 ```

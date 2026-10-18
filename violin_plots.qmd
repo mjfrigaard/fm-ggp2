@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_beanie(
+ggplot2::theme_set(fmggp2::theme_microdrive(
     base_size = 15))
 ```
 
@@ -28,6 +28,12 @@ ggplot2::theme_set(fmggp2::theme_beanie(
 # polishing, restructuring, drafting, complete
 status("complete")
 ```
+
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_microdrive()`
+
+Graphs in this chapter use `fmggp2::theme_microdrive()`, built from IBM and Hitachi Microdrive cards on a tan desk: a black frame, a red title, IBM blue, red, navy, and Hitachi sky blue marks, and a Times New Roman title.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 
@@ -52,20 +58,20 @@ status("complete")
 #| fig-align: right
 library(ggplot2)
 library(dplyr)
-set.seed(1996)
-beanie_prices <- tibble(
-  listing_id = 1:300,
-  price = round(rlnorm(n = 300, meanlog = log(15), sdlog = 0.8), 2)
+set.seed(1999)
+microdrive_photos <- tibble(
+  photo_id = 1:300,
+  size_mb = round(rlnorm(n = 300, meanlog = log(0.75), sdlog = 0.8), 2)
 )
 labs_violin <- labs(
-  title = "Beanie Babies resale prices",
+  title = "IBM Microdrive photo file sizes",
   caption = "Simulated data",
-  subtitle = "300 listings from 1998",
+  subtitle = "300 photos saved to a 340MB card in 1999",
   x = "",
-  y = "Price (USD)")
-ggp2_violin <- ggplot(data = beanie_prices,
+  y = "File size (MB)")
+ggp2_violin <- ggplot(data = microdrive_photos,
        aes(x = '', 
-           y = price)) +
+           y = size_mb)) +
        geom_violin() 
 ggp2_violin + 
   labs_violin
@@ -116,7 +122,7 @@ library(dplyr) # for tibble() and data manipulation
 :::
 
 ::: {style="font-size: 0.95rem;"}
-In 1998, Beanie Babies were selling for wildly different prices: most went for a few dollars over retail, but a rare few sold for hundreds. We'll simulate 300 resale listings with `rlnorm()`, rounding each price to the nearest cent. Setting the seed with `set.seed()` means you'll get the same 300 prices every time you run the code below.
+In 1999, IBM's 340MB Microdrive squeezed a tiny spinning hard disk into a CompactFlash Type II card, giving digital camera owners room for hundreds of photos. The photo files varied a lot in size: most JPEGs came in under a megabyte, but detailed scenes and high quality settings produced a few much larger files. We'll simulate 300 photo files with `rlnorm()`, rounding each size to the nearest hundredth of a megabyte. Setting the seed with `set.seed()` means you'll get the same 300 file sizes every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -125,24 +131,24 @@ In 1998, Beanie Babies were selling for wildly different prices: most went for a
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1996)
-beanie_prices <- tibble(
-  listing_id = 1:300,
-  price = round(rlnorm(n = 300, meanlog = log(15), sdlog = 0.8), 2)
+set.seed(1999)
+microdrive_photos <- tibble(
+  photo_id = 1:300,
+  size_mb = round(rlnorm(n = 300, meanlog = log(0.75), sdlog = 0.8), 2)
 )
-glimpse(beanie_prices)
+glimpse(microdrive_photos)
 ```
 :::
 
 ## Distribution
 
-Prices are a classic example of data that can't go below zero but can stretch a long way above it. That gives the violin a wide base and a long, thin neck. The trick to understanding this shape is the logarithm: on a log scale, these prices turn into the familiar bell curve from @sec-histograms. Below we'll move from the prices, to a picture, to the formula.
+File sizes are a classic example of data that can't go below zero but can stretch a long way above it. That gives the violin a wide base and a long, thin neck. The trick to understanding this shape is the logarithm: on a log scale, these file sizes turn into the familiar bell curve from @sec-histograms. Below we'll move from the file sizes, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the first ten listings.
+Start with the first ten photos.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -150,11 +156,11 @@ Start with the first ten listings.
 #| code-fold: show
 #| eval: true
 #| echo: true
-head(beanie_prices$price, 10)
+head(microdrive_photos$size_mb, 10)
 ```
 :::
 
-Most of these sell for under \$30, but one listing is over \$100. A few expensive listings like this pull the mean well above the median. Taking the log of each price shrinks the gap.
+Most of these are under 1.5 MB, but three are near or above 2 MB. A few large files like these pull the mean well above the median. Taking the log of each file size shrinks the gap.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -162,22 +168,22 @@ Most of these sell for under \$30, but one listing is over \$100. A few expensiv
 #| code-fold: show
 #| eval: true
 #| echo: true
-beanie_prices |> 
+microdrive_photos |> 
   summarise(
-    mean = mean(price), 
-    median = median(price),
-    mean_log = mean(log(price)),
-    median_log = median(log(price)))
+    mean = mean(size_mb), 
+    median = median(size_mb),
+    mean_log = mean(log(size_mb)),
+    median_log = median(log(size_mb)))
 ```
 :::
 
-On the dollar scale, the mean is about \$`r round(mean(beanie_prices$price) - median(beanie_prices$price))` higher than the median. On the log scale, the mean and median are almost identical, which is what we'd expect from a symmetric distribution.
+On the megabyte scale, the mean is about `r round(mean(microdrive_photos$size_mb) - median(microdrive_photos$size_mb), 2)` MB higher than the median. On the log scale, the mean and median are almost identical, which is what we'd expect from a symmetric distribution.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-A bar model splits the listings at \$15 (we'll see why in a moment). The two parts are close to equal, so \$15 sits near the middle of the prices.
+A bar model splits the photos at 0.75 MB (we'll see why in a moment). The two parts are close to equal, so 0.75 MB sits near the middle of the file sizes.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -186,19 +192,19 @@ A bar model splits the listings at \$15 (we'll see why in a moment). The two par
 #| eval: true
 #| echo: true
 #| fig-asp: 0.45
-beanie_prices |> 
-  mutate(range = factor(if_else(price < 15, "under $15", "$15 or more"),
-    levels = c("under $15", "$15 or more"))) |> 
+microdrive_photos |> 
+  mutate(range = factor(if_else(size_mb < 0.75, "under 0.75 MB", "0.75 MB or more"),
+    levels = c("under 0.75 MB", "0.75 MB or more"))) |> 
   count(range) |> 
-  ggplot(aes(x = n, y = "300 listings", fill = range)) + 
+  ggplot(aes(x = n, y = "300 photos", fill = range)) + 
   geom_col(position = position_stack(reverse = TRUE)) + 
   geom_text(aes(label = n), color = "white", 
     position = position_stack(vjust = 0.5, reverse = TRUE)) + 
-  labs(x = "Number of listings", y = NULL, fill = "Price")
+  labs(x = "Number of photos", y = NULL, fill = "File size")
 ```
 :::
 
-Below are two violins of the same 300 prices. The first uses dollars, so most of the area is squashed near the bottom and the neck stretches up past \$100. The second puts the `y` axis on a log scale with `scale_y_log10()`, which turns the same prices into a symmetric shape centered near \$15.
+Below are two violins of the same 300 file sizes. The first uses megabytes, so most of the area is squashed near the bottom and the neck stretches up past 5 MB. The second puts the `y` axis on a log scale with `scale_y_log10()`, which turns the same file sizes into a symmetric shape centered near 0.75 MB.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -207,16 +213,16 @@ Below are two violins of the same 300 prices. The first uses dollars, so most of
 #| eval: true
 #| echo: true
 #| layout-ncol: 2
-ggplot(data = beanie_prices, aes(x = "", y = price)) + 
+ggplot(data = microdrive_photos, aes(x = "", y = size_mb)) + 
   geom_violin() + 
-  geom_hline(yintercept = 15, linetype = "dashed") + 
-  labs(title = "Dollar scale", x = NULL, y = "Price (USD)")
+  geom_hline(yintercept = 0.75, linetype = "dashed") + 
+  labs(title = "Megabyte scale", x = NULL, y = "File size (MB)")
 
-ggplot(data = beanie_prices, aes(x = "", y = price)) + 
+ggplot(data = microdrive_photos, aes(x = "", y = size_mb)) + 
   geom_violin() + 
-  geom_hline(yintercept = 15, linetype = "dashed") + 
+  geom_hline(yintercept = 0.75, linetype = "dashed") + 
   scale_y_log10() + 
-  labs(title = "Log scale", x = NULL, y = "Price (USD, log scale)")
+  labs(title = "Log scale", x = NULL, y = "File size (MB, log scale)")
 ```
 :::
 
@@ -224,15 +230,15 @@ ggplot(data = beanie_prices, aes(x = "", y = price)) +
 **NAME IT:**
 :::
 
-The `rlnorm()` call that created the data draws from a [log normal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution). A price is log normal when its logarithm is normal:
+The `rlnorm()` call that created the data draws from a [log normal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution). A file size is log normal when its logarithm is normal:
 
 $$
-\log(X) \sim \text{Normal}(\mu = \log(15), \sigma = 0.8)
+\log(X) \sim \text{Normal}(\mu = \log(0.75), \sigma = 0.8)
 $$
 
-The two parameters describe the log scale, not the dollar scale. Back on the dollar scale, the median is $e^{\mu} = 15$ dollars, which is why the bar model split the listings at \$15. The mean is larger, $e^{\mu + \sigma^2 / 2} = 15 \times e^{0.32} \approx 20.66$ dollars, because the long right tail pulls it up. The bigger $\sigma$ gets, the longer the violin's neck and the further the mean drifts from the median.
+The two parameters describe the log scale, not the megabyte scale. Back on the megabyte scale, the median is $e^{\mu} = 0.75$ MB, which is why the bar model split the photos at 0.75 MB. The mean is larger, $e^{\mu + \sigma^2 / 2} = 0.75 \times e^{0.32} \approx 1.03$ MB, because the long right tail pulls it up. The bigger $\sigma$ gets, the longer the violin's neck and the further the mean drifts from the median.
 
-Our simulated listings come close: the median is \$`r round(median(beanie_prices$price), 2)` and the mean is \$`r round(mean(beanie_prices$price), 2)`.
+Our simulated photos come close: the median is `r round(median(microdrive_photos$size_mb), 2)` MB and the mean is `r round(mean(microdrive_photos$size_mb), 2)` MB.
 
 
 ## Grammar 
@@ -249,7 +255,7 @@ Initialize the graph with `ggplot()` and provide `data`
 
   - Place an empty string (`""`) in the `x` argument
 
-Map an empty string (`""`) to the `x` and `price` to the `y`
+Map an empty string (`""`) to the `x` and `size_mb` to the `y`
 
 Add `geom_violin()`
 
@@ -264,14 +270,14 @@ Add `geom_violin()`
 #| warning: false
 #| message: false
 labs_violin <- labs(
-  title = "Beanie Babies resale prices",
+  title = "IBM Microdrive photo file sizes",
   caption = "Simulated data",
-  subtitle = "300 listings from 1998",
+  subtitle = "300 photos saved to a 340MB card in 1999",
   x = "",
-  y = "Price (USD)")
-ggp2_violin <- ggplot(data = beanie_prices,
+  y = "File size (MB)")
+ggp2_violin <- ggplot(data = microdrive_photos,
        aes(x = '', 
-           y = price)) +
+           y = size_mb)) +
        geom_violin() 
 ggp2_violin + 
   labs_violin
@@ -294,14 +300,14 @@ ggp2_violin +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_violin <- labs(
-  title = "Beanie Babies resale prices",
+  title = "IBM Microdrive photo file sizes",
   caption = "Simulated data",
-  subtitle = "300 listings from 1998",
+  subtitle = "300 photos saved to a 340MB card in 1999",
   x = "",
-  y = "Price (USD)")
-ggp2_violin <- ggplot(data = beanie_prices,
+  y = "File size (MB)")
+ggp2_violin <- ggplot(data = microdrive_photos,
        aes(x = '', 
-           y = price)) +
+           y = size_mb)) +
        geom_violin() 
 ggp2_violin + 
   labs_violin

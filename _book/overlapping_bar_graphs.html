@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.9.30">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>10&nbsp; Overlapping bar graphs – ggplot2: field manual</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -69,19 +72,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="./sum_bar_graphs.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-b6a8276bf55561bdbc268162d41bd1f7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-a8da12e74b29c2e7b17644f84b91567b.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-b6a8276bf55561bdbc268162d41bd1f7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-3dd65e00657b6d9022c40063cd6a194b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-f210b8a2f4f1f23d9cba045d64a1412b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-3dd65e00657b6d9022c40063cd6a194b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-86ccf492976a043c1e8b30e1c1514486.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-044314211b435048848f0d5bf1946879.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-86ccf492976a043c1e8b30e1c1514486.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -113,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -807,91 +809,91 @@ window.Quarto = {
 <p><strong>DATA:</strong></p>
 </div>
 <div style="font-size: 0.95rem;">
-<p><em>Friends</em> drew a huge audience every Thursday night in the 90s, but some seasons drew more than others. We’ll simulate the number of viewers (in millions) for the 24 episodes in seasons 1, 3, and 5. Each season gets its own average audience (<code>mean_viewers</code>), <code>tidyr::uncount()</code> creates one row per episode, and <code>rnorm()</code> draws each episode’s audience, rounded to the nearest million. We’ll also flag whether each episode drew 25 million viewers or more (<code>audience</code>). Setting the seed with <code>set.seed()</code> means you’ll get the same 72 episodes every time you run the code below.</p>
+<p>Novell NetWare was the most popular network operating system of the early 90s, and office LANs grew as more desks got a PC and a network card. We’ll simulate the number of workstations on the LAN for 24 offices in 1990, 1994, and 1998. Each year gets its own average LAN size (<code>mean_nodes</code>), <code>tidyr::uncount()</code> creates one row per office, and <code>rnorm()</code> draws each office’s workstation count, rounded to a whole workstation. We’ll also flag whether each office ran 25 workstations or more (<code>lan_size</code>). Setting the seed with <code>set.seed()</code> means you’ll get the same 72 offices every time you run the code below.</p>
 </div>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1994</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>friends_episodes <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">season =</span> <span class="fu">c</span>(<span class="st">"Season 1"</span>, <span class="st">"Season 3"</span>, <span class="st">"Season 5"</span>),</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_viewers =</span> <span class="fu">c</span>(<span class="dv">22</span>, <span class="dv">27</span>, <span class="dv">24</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">uncount</span>(<span class="dv">24</span>, <span class="at">.id =</span> <span class="st">"episode"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">viewers_m =</span> <span class="fu">round</span>(<span class="fu">rnorm</span>(<span class="fu">n</span>(), <span class="at">mean =</span> mean_viewers, <span class="at">sd =</span> <span class="fl">2.5</span>)),</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">audience =</span> <span class="fu">if_else</span>(viewers_m <span class="sc">&gt;=</span> <span class="dv">25</span>, <span class="st">"25M or more"</span>, <span class="st">"Under 25M"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(season, episode, viewers_m, audience)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(friends_episodes)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1990</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>netware_offices <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">year =</span> <span class="fu">c</span>(<span class="st">"1990"</span>, <span class="st">"1994"</span>, <span class="st">"1998"</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_nodes =</span> <span class="fu">c</span>(<span class="dv">22</span>, <span class="dv">24</span>, <span class="dv">27</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">uncount</span>(<span class="dv">24</span>, <span class="at">.id =</span> <span class="st">"office"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nodes =</span> <span class="fu">round</span>(<span class="fu">rnorm</span>(<span class="fu">n</span>(), <span class="at">mean =</span> mean_nodes, <span class="at">sd =</span> <span class="fl">2.5</span>)),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">lan_size =</span> <span class="fu">if_else</span>(nodes <span class="sc">&gt;=</span> <span class="dv">25</span>, <span class="st">"25 or more"</span>, <span class="st">"Under 25"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, office, nodes, lan_size)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(netware_offices)</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 72</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ season    &lt;chr&gt; "Season 1", "Season 1", "Seaso…</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ episode   &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,…</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ viewers_m &lt;dbl&gt; 19, 23, 26, 25, 22, 19, 24, 22…</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ audience  &lt;chr&gt; "Under 25M", "Under 25M", "25M…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ year     &lt;chr&gt; "1990", "1990", "1990", "1990",…</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ office   &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, …</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ nodes    &lt;dbl&gt; 20, 23, 20, 22, 21, 26, 22, 22,…</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ lan_size &lt;chr&gt; "Under 25", "Under 25", "Under …</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
 <section id="distribution" class="level2" data-number="10.3">
 <h2 data-number="10.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">10.3</span> Distribution</h2>
-<p>Overlapping bars only overlap when groups share values. Three seasons with very different audiences would sit side by side with no stacking at all, and three seasons with the same audience would stack into a single pile. How much the bars overlap depends on how far apart the seasons’ averages are compared to how much episodes vary within a season. Below we’ll move from the episodes, to a picture, to the formula.</p>
+<p>Overlapping bars only overlap when groups share values. Three years with very different LAN sizes would sit side by side with no stacking at all, and three years with the same LAN size would stack into a single pile. How much the bars overlap depends on how far apart the years’ averages are compared to how much offices vary within a year. Below we’ll move from the offices, to a picture, to the formula.</p>
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>COUNT IT:</strong></p>
 </div>
-<p>Start with the first six episodes of season 1.</p>
+<p>Start with the first six offices from 1990.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(friends_episodes, <span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(netware_offices, <span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["season"],"name":[1],"type":["chr"],"align":["left"]},{"label":["episode"],"name":[2],"type":["int"],"align":["right"]},{"label":["viewers_m"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["audience"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Season 1","2":"1","3":"19","4":"Under 25M"},{"1":"Season 1","2":"2","3":"23","4":"Under 25M"},{"1":"Season 1","2":"3","3":"26","4":"25M or more"},{"1":"Season 1","2":"4","3":"25","4":"25M or more"},{"1":"Season 1","2":"5","3":"22","4":"Under 25M"},{"1":"Season 1","2":"6","3":"19","4":"Under 25M"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["year"],"name":[1],"type":["chr"],"align":["left"]},{"label":["office"],"name":[2],"type":["int"],"align":["right"]},{"label":["nodes"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["lan_size"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"1990","2":"1","3":"20","4":"Under 25"},{"1":"1990","2":"2","3":"23","4":"Under 25"},{"1":"1990","2":"3","3":"20","4":"Under 25"},{"1":"1990","2":"4","3":"22","4":"Under 25"},{"1":"1990","2":"5","3":"21","4":"Under 25"},{"1":"1990","2":"6","3":"26","4":"25 or more"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
 </div>
 </div>
-<p>These episodes drew between 19 and 26 million viewers. The summary below shows each season’s mean, standard deviation, and range.</p>
+<p>These offices ran between 20 and 26 workstations. The summary below shows each year’s mean, standard deviation, and range.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>friends_episodes <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(season) <span class="sc">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>netware_offices <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">|&gt;</span> </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(viewers_m), </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(viewers_m), </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">min =</span> <span class="fu">min</span>(viewers_m), </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">max =</span> <span class="fu">max</span>(viewers_m))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(nodes), </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(nodes), </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">min =</span> <span class="fu">min</span>(nodes), </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">max =</span> <span class="fu">max</span>(nodes))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["season"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mean"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["min"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["max"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"Season 1","2":"22.29167","3":"2.074256","4":"19","5":"26"},{"1":"Season 3","2":"26.45833","3":"2.105462","4":"23","5":"30"},{"1":"Season 5","2":"24.33333","3":"1.880487","4":"21","5":"27"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["year"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mean"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["min"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["max"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"1990","2":"21.37500","3":"2.122601","4":"18","5":"26"},{"1":"1994","2":"23.04167","3":"2.475606","4":"17","5":"27"},{"1":"1998","2":"26.41667","3":"2.448010","4":"22","5":"33"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
 </div>
 </div>
-<p>Each season’s range covers 6 or 7 million viewers, but the means are only 2 to 4 million apart. So the ranges overlap, which is what puts more than one color in the same bar.</p>
+<p>Each year’s range covers 8 to 11 workstations, but the means are only about 2 to 5 workstations apart. So the ranges overlap, which is what puts more than one color in the same bar.</p>
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>DRAW IT:</strong></p>
 </div>
-<p>The overlapping bar graph below stacks the episodes from all three seasons at each audience size. The dashed lines mark the average audience we gave each season in <code>rnorm()</code>. Season 1 sits mostly on the left, season 3 mostly on the right, and season 5 lands in the middle, sharing bars with both.</p>
+<p>The overlapping bar graph below stacks the offices from all three years at each LAN size. The dashed lines mark the average LAN size we gave each year in <code>rnorm()</code>. The 1990 offices sit mostly on the left, the 1998 offices mostly on the right, and the 1994 offices land in the middle, sharing bars with both.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> friends_episodes, </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> viewers_m, <span class="at">fill =</span> season)) <span class="sc">+</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> netware_offices, </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> nodes, <span class="at">fill =</span> year)) <span class="sc">+</span> </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span> </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="dv">22</span>, <span class="dv">27</span>, <span class="dv">24</span>), </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"#E2231A"</span>, <span class="st">"#F2C230"</span>, <span class="st">"#3C78D8"</span>), </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="dv">22</span>, <span class="dv">24</span>, <span class="dv">27</span>), </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"#69100A"</span>, <span class="st">"#A91E28"</span>, <span class="st">"#B3575A"</span>), </span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Viewers (millions)"</span>, <span class="at">y =</span> <span class="st">"Episodes"</span>, <span class="at">fill =</span> <span class="st">"Season"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Workstations"</span>, <span class="at">y =</span> <span class="st">"Offices"</span>, <span class="at">fill =</span> <span class="st">"Year"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -905,15 +907,15 @@ window.Quarto = {
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>NAME IT:</strong></p>
 </div>
-<p>Each season’s audience comes from its own <a href="https://en.wikipedia.org/wiki/Normal_distribution">normal distribution</a> with a shared standard deviation:</p>
+<p>Each year’s LAN size comes from its own <a href="https://en.wikipedia.org/wiki/Normal_distribution">normal distribution</a> with a shared standard deviation:</p>
 <p><span class="math display">\[
-X_{s} \sim \text{Normal}(\mu_s, \sigma = 2.5), \quad \mu_1 = 22, \; \mu_3 = 27, \; \mu_5 = 24
+X_{y} \sim \text{Normal}(\mu_y, \sigma = 2.5), \quad \mu_{1990} = 22, \; \mu_{1994} = 24, \; \mu_{1998} = 27
 \]</span></p>
-<p>The overlap depends on the distance between two means measured in standard deviations. Season 1 and season 3 are <span class="math inline">\((27 - 22) / 2.5 = 2\)</span> standard deviations apart, and season 3 and season 5 are only <span class="math inline">\((27 - 24) / 2.5 = 1.2\)</span> apart. One way to put a number on that overlap is to pick a random episode from each season and ask how often the “weaker” season wins:</p>
+<p>The overlap depends on the distance between two means measured in standard deviations. The 1990 and 1998 means are <span class="math inline">\((27 - 22) / 2.5 = 2\)</span> standard deviations apart, and the 1994 and 1998 means are only <span class="math inline">\((27 - 24) / 2.5 = 1.2\)</span> apart. One way to put a number on that overlap is to pick a random office from each year and ask how often the “smaller” year wins:</p>
 <p><span class="math display">\[
-P(X_5 &gt; X_3) = \Phi\left(\frac{24 - 27}{2.5\sqrt{2}}\right) \approx 0.20
+P(X_{1994} &gt; X_{1998}) = \Phi\left(\frac{24 - 27}{2.5\sqrt{2}}\right) \approx 0.20
 \]</span></p>
-<p>So a season 5 episode beats a season 3 episode about 20% of the time, while a season 1 episode beats a season 3 episode only about 8% of the time. Try moving the three means in <code>mean_viewers</code> closer together and the bars stack into a single colorful pile.</p>
+<p>So a 1994 office runs more workstations than a 1998 office about 20% of the time, while a 1990 office does so only about 8% of the time. Try moving the three means in <code>mean_nodes</code> closer together and the bars stack into a single colorful pile.</p>
 </section>
 <section id="grammar" class="level2" data-number="10.4">
 <h2 data-number="10.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">10.4</span> Grammar</h2>
@@ -923,7 +925,7 @@ P(X_5 &gt; X_3) = \Phi\left(\frac{24 - 27}{2.5\sqrt{2}}\right) \approx 0.20
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map <code>viewers_m</code> to the <code>x</code> and <code>season</code> to <code>fill</code></p></li>
+<li><p>Map <code>nodes</code> to the <code>x</code> and <code>year</code> to <code>fill</code></p></li>
 <li><p>Add the <code>geom_bar()</code> layer</p></li>
 </ul>
 <div style="font-size: 0.85em;">
@@ -931,14 +933,14 @@ P(X_5 &gt; X_3) = \Phi\left(\frac{24 - 27}{2.5\sqrt{2}}\right) \approx 0.20
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>labs_bar_ovrlp <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Friends"</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Novell NetWare"</span>,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Viewers per episode in three seasons"</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Viewers (millions)"</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Episodes"</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Season"</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>ggp2_bar_ovrlp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> friends_episodes,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>          <span class="fu">aes</span>(<span class="at">x =</span> viewers_m, <span class="at">fill =</span> season)) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Workstations per office LAN in three years"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Workstations"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Offices"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Year"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>ggp2_bar_ovrlp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> netware_offices,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>          <span class="fu">aes</span>(<span class="at">x =</span> nodes, <span class="at">fill =</span> year)) <span class="sc">+</span></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                <span class="fu">geom_bar</span>() </span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>ggp2_bar_ovrlp <span class="sc">+</span> </span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  labs_bar_ovrlp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -965,36 +967,36 @@ P(X_5 &gt; X_3) = \Phi\left(\frac{24 - 27}{2.5\sqrt{2}}\right) \approx 0.20
 <section id="geom_col" class="level3" data-number="10.5.1">
 <h3 data-number="10.5.1" class="anchored" data-anchor-id="geom_col"><span class="header-section-number">10.5.1</span> <code>geom_col()</code></h3>
 <p><br></p>
-<p>To build an overlapping bar graph with <code>geom_col()</code>, we need to create a column with the counts for <code>viewers_m</code> and <code>season</code> in the dataset.</p>
+<p>To build an overlapping bar graph with <code>geom_col()</code>, we need to create a column with the counts for <code>nodes</code> and <code>year</code> in the dataset.</p>
 <ul>
-<li>Create the <code>friends_col</code> data:</li>
+<li>Create the <code>netware_col</code> data:</li>
 </ul>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>friends_col <span class="ot">&lt;-</span> friends_episodes <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(season, viewers_m, <span class="at">name =</span> <span class="st">"Episodes"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>netware_col <span class="ot">&lt;-</span> netware_offices <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(year, nodes, <span class="at">name =</span> <span class="st">"Offices"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 <ul>
-<li>Map the counts to the <code>y</code> axis, <code>viewers_m</code> to the <code>x</code> axis, and <code>season</code> to <code>fill</code></li>
+<li>Map the counts to the <code>y</code> axis, <code>nodes</code> to the <code>x</code> axis, and <code>year</code> to <code>fill</code></li>
 </ul>
 <div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>labs_col_ovrlp <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Friends"</span>,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Novell NetWare"</span>,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"built with 'geom_col()'"</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Viewers (millions)"</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Episodes"</span>,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Season"</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>ggp2_col_ovrlp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> friends_col, </span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> Episodes, </span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> viewers_m, </span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> season)) <span class="sc">+</span> </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Workstations"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Offices"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Year"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>ggp2_col_ovrlp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> netware_col, </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> Offices, </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> nodes, </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> year)) <span class="sc">+</span> </span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_col</span>()</span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>ggp2_col_ovrlp <span class="sc">+</span> </span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    labs_col_ovrlp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1002,7 +1004,7 @@ P(X_5 &gt; X_3) = \Phi\left(\frac{24 - 27}{2.5\sqrt{2}}\right) \approx 0.20
 <div class="cell quarto-layout-panel" data-layout-nrow="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img src="overlapping_bar_graphs_files/figure-html/data_code_bar_friends_col-1.png" class="img-fluid" width="576"></p>
+<p><img src="overlapping_bar_graphs_files/figure-html/data_code_bar_netware_col-1.png" class="img-fluid" width="576"></p>
 </div>
 </div>
 </div>
@@ -1029,18 +1031,18 @@ P(X_5 &gt; X_3) = \Phi\left(\frac{24 - 27}{2.5\sqrt{2}}\right) \approx 0.20
 <li><p><em><code>"dodge"</code> requires the grouping variable to be be specified in the global or <code>⁠geom_</code>⁠ layer</em></p></li>
 </ul>
 </div></div><div style="font-size: 0.95rem;">
-<p>We’ll use the <code>audience</code> column, which splits episodes into those with 25 million viewers or more and those with fewer.</p>
+<p>We’ll use the <code>lan_size</code> column, which splits offices into those with 25 workstations or more and those with fewer.</p>
 </div>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(friends_episodes, audience, season)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(netware_offices, lan_size, year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["audience"],"name":[1],"type":["chr"],"align":["left"]},{"label":["season"],"name":[2],"type":["chr"],"align":["left"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"25M or more","2":"Season 1","3":"3"},{"1":"25M or more","2":"Season 3","3":"19"},{"1":"25M or more","2":"Season 5","3":"14"},{"1":"Under 25M","2":"Season 1","3":"21"},{"1":"Under 25M","2":"Season 3","3":"5"},{"1":"Under 25M","2":"Season 5","3":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["lan_size"],"name":[1],"type":["chr"],"align":["left"]},{"label":["year"],"name":[2],"type":["chr"],"align":["left"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"25 or more","2":"1990","3":"2"},{"1":"25 or more","2":"1994","3":"7"},{"1":"25 or more","2":"1998","3":"20"},{"1":"Under 25","2":"1990","3":"22"},{"1":"Under 25","2":"1994","3":"17"},{"1":"Under 25","2":"1998","3":"4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -1049,23 +1051,23 @@ P(X_5 &gt; X_3) = \Phi\left(\frac{24 - 27}{2.5\sqrt{2}}\right) \approx 0.20
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map <code>audience</code> to the <code>x</code> and <code>season</code> to <code>group</code> and <code>fill</code></p></li>
+<li><p>Map <code>lan_size</code> to the <code>x</code> and <code>year</code> to <code>group</code> and <code>fill</code></p></li>
 <li><p>Inside the <code>geom_bar()</code> function, set <code>position</code> to <code>"dodge"</code></p></li>
 </ul>
 <div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>labs_bar_dodge <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Friends"</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Novell NetWare"</span>,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"position = 'dodge'"</span>,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Audience"</span>,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Episodes"</span>,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Season"</span>)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>ggp2_bar_dodge <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> friends_episodes,</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">aes</span>(<span class="at">x =</span> audience, </span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">group =</span> season, </span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">fill =</span> season)) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"LAN size"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Offices"</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Year"</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>ggp2_bar_dodge <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> netware_offices,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">aes</span>(<span class="at">x =</span> lan_size, </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">group =</span> year, </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">fill =</span> year)) <span class="sc">+</span></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">geom_bar</span>(</span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>                        <span class="at">position =</span> <span class="st">"dodge"</span>)</span>
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>ggp2_bar_dodge <span class="sc">+</span></span>
@@ -1086,7 +1088,7 @@ P(X_5 &gt; X_3) = \Phi\left(\frac{24 - 27}{2.5\sqrt{2}}\right) \approx 0.20
 <ul>
 <li><p>Create labels with <code>labs()</code></p></li>
 <li><p>Initialize the graph with <code>ggplot()</code> and provide <code>data</code></p></li>
-<li><p>Map <code>audience</code> to <code>x</code> and <code>season</code> to <code>fill</code></p></li>
+<li><p>Map <code>lan_size</code> to <code>x</code> and <code>year</code> to <code>fill</code></p></li>
 <li><p>Inside <code>geom_bar()</code>, set <code>position</code> to <code>"dodge2"</code></p></li>
 </ul>
 
@@ -1100,15 +1102,15 @@ P(X_5 &gt; X_3) = \Phi\left(\frac{24 - 27}{2.5\sqrt{2}}\right) \approx 0.20
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>labs_bar_dodge2 <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Friends"</span>,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Novell NetWare"</span>,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"position = 'dodge2'"</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Audience"</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Episodes"</span>,</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Season"</span>)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>ggp2_bar_dodge2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> friends_episodes,</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">aes</span>(<span class="at">x =</span> audience, </span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">fill =</span> season)) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"LAN size"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Offices"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="st">"Year"</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>ggp2_bar_dodge2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> netware_offices,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">aes</span>(<span class="at">x =</span> lan_size, </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">fill =</span> year)) <span class="sc">+</span></span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">geom_bar</span>(</span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>                        <span class="at">position =</span> <span class="st">"dodge2"</span>)</span>
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>ggp2_bar_dodge2 <span class="sc">+</span></span>

@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.9.30">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>6&nbsp; Violin plots – ggplot2: field manual</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -69,19 +72,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="./density_plots.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-b6a8276bf55561bdbc268162d41bd1f7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-a8da12e74b29c2e7b17644f84b91567b.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-b6a8276bf55561bdbc268162d41bd1f7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-3dd65e00657b6d9022c40063cd6a194b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-f210b8a2f4f1f23d9cba045d64a1412b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-3dd65e00657b6d9022c40063cd6a194b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-86ccf492976a043c1e8b30e1c1514486.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-044314211b435048848f0d5bf1946879.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-86ccf492976a043c1e8b30e1c1514486.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -113,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -758,6 +760,22 @@ window.Quarto = {
 </div>
 </div>
 </div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Theme: <code>theme_microdrive()</code>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Graphs in this chapter use <code>fmggp2::theme_microdrive()</code>, built from IBM and Hitachi Microdrive cards on a tan desk: a black frame, a red title, IBM blue, red, navy, and Hitachi sky blue marks, and a Times New Roman title.</p>
+</div>
+</div>
+</div>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -817,82 +835,82 @@ window.Quarto = {
 <p><strong>DATA:</strong></p>
 </div>
 <div style="font-size: 0.95rem;">
-<p>In 1998, Beanie Babies were selling for wildly different prices: most went for a few dollars over retail, but a rare few sold for hundreds. We’ll simulate 300 resale listings with <code>rlnorm()</code>, rounding each price to the nearest cent. Setting the seed with <code>set.seed()</code> means you’ll get the same 300 prices every time you run the code below.</p>
+<p>In 1999, IBM’s 340MB Microdrive squeezed a tiny spinning hard disk into a CompactFlash Type II card, giving digital camera owners room for hundreds of photos. The photo files varied a lot in size: most JPEGs came in under a megabyte, but detailed scenes and high quality settings produced a few much larger files. We’ll simulate 300 photo files with <code>rlnorm()</code>, rounding each size to the nearest hundredth of a megabyte. Setting the seed with <code>set.seed()</code> means you’ll get the same 300 file sizes every time you run the code below.</p>
 </div>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1996</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>beanie_prices <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">listing_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">300</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">price =</span> <span class="fu">round</span>(<span class="fu">rlnorm</span>(<span class="at">n =</span> <span class="dv">300</span>, <span class="at">meanlog =</span> <span class="fu">log</span>(<span class="dv">15</span>), <span class="at">sdlog =</span> <span class="fl">0.8</span>), <span class="dv">2</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1999</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>microdrive_photos <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">photo_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">300</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">size_mb =</span> <span class="fu">round</span>(<span class="fu">rlnorm</span>(<span class="at">n =</span> <span class="dv">300</span>, <span class="at">meanlog =</span> <span class="fu">log</span>(<span class="fl">0.75</span>), <span class="at">sdlog =</span> <span class="fl">0.8</span>), <span class="dv">2</span>)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(beanie_prices)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(microdrive_photos)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 300</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 2</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ listing_id &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10…</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ price      &lt;dbl&gt; 23.37, 4.84, 16.12, 44.66, 4.…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ photo_id &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, …</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ size_mb  &lt;dbl&gt; 1.35, 0.73, 1.96, 2.43, 0.83, 1…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
 </section>
 <section id="distribution" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="distribution"><span class="header-section-number">6.3</span> Distribution</h2>
-<p>Prices are a classic example of data that can’t go below zero but can stretch a long way above it. That gives the violin a wide base and a long, thin neck. The trick to understanding this shape is the logarithm: on a log scale, these prices turn into the familiar bell curve from <a href="histograms.html" class="quarto-xref"><span>Chapter 2</span></a>. Below we’ll move from the prices, to a picture, to the formula.</p>
+<p>File sizes are a classic example of data that can’t go below zero but can stretch a long way above it. That gives the violin a wide base and a long, thin neck. The trick to understanding this shape is the logarithm: on a log scale, these file sizes turn into the familiar bell curve from <a href="histograms.html" class="quarto-xref"><span>Chapter 2</span></a>. Below we’ll move from the file sizes, to a picture, to the formula.</p>
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>COUNT IT:</strong></p>
 </div>
-<p>Start with the first ten listings.</p>
+<p>Start with the first ten photos.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(beanie_prices<span class="sc">$</span>price, <span class="dv">10</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1]  23.37   4.84  16.12  44.66   4.49   8.73</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] 106.41  27.19  12.47  36.61</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(microdrive_photos<span class="sc">$</span>size_mb, <span class="dv">10</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] 1.35 0.73 1.96 2.43 0.83 1.14 0.48 0.29 0.30</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10] 1.90</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </div>
-<p>Most of these sell for under $30, but one listing is over $100. A few expensive listings like this pull the mean well above the median. Taking the log of each price shrinks the gap.</p>
+<p>Most of these are under 1.5 MB, but three are near or above 2 MB. A few large files like these pull the mean well above the median. Taking the log of each file size shrinks the gap.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>beanie_prices <span class="sc">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>microdrive_photos <span class="sc">|&gt;</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(price), </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">median =</span> <span class="fu">median</span>(price),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_log =</span> <span class="fu">mean</span>(<span class="fu">log</span>(price)),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_log =</span> <span class="fu">median</span>(<span class="fu">log</span>(price)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(size_mb), </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">median =</span> <span class="fu">median</span>(size_mb),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_log =</span> <span class="fu">mean</span>(<span class="fu">log</span>(size_mb)),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_log =</span> <span class="fu">median</span>(<span class="fu">log</span>(size_mb)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["mean"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["median"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mean_log"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["median_log"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"21.8942","2":"16.265","3":"2.79069","4":"2.788991"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["mean"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["median"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mean_log"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["median_log"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"1.073","2":"0.81","3":"-0.2011873","4":"-0.210721"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
 </div>
 </div>
-<p>On the dollar scale, the mean is about $6 higher than the median. On the log scale, the mean and median are almost identical, which is what we’d expect from a symmetric distribution.</p>
+<p>On the megabyte scale, the mean is about 0.26 MB higher than the median. On the log scale, the mean and median are almost identical, which is what we’d expect from a symmetric distribution.</p>
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>DRAW IT:</strong></p>
 </div>
-<p>A bar model splits the listings at $15 (we’ll see why in a moment). The two parts are close to equal, so $15 sits near the middle of the prices.</p>
+<p>A bar model splits the photos at 0.75 MB (we’ll see why in a moment). The two parts are close to equal, so 0.75 MB sits near the middle of the file sizes.</p>
 <div style="font-size: 0.85em;">
 <div class="cell">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>beanie_prices <span class="sc">|&gt;</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">range =</span> <span class="fu">factor</span>(<span class="fu">if_else</span>(price <span class="sc">&lt;</span> <span class="dv">15</span>, <span class="st">"under $15"</span>, <span class="st">"$15 or more"</span>),</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"under $15"</span>, <span class="st">"$15 or more"</span>))) <span class="sc">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>microdrive_photos <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">range =</span> <span class="fu">factor</span>(<span class="fu">if_else</span>(size_mb <span class="sc">&lt;</span> <span class="fl">0.75</span>, <span class="st">"under 0.75 MB"</span>, <span class="st">"0.75 MB or more"</span>),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"under 0.75 MB"</span>, <span class="st">"0.75 MB or more"</span>))) <span class="sc">|&gt;</span> </span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(range) <span class="sc">|&gt;</span> </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> <span class="st">"300 listings"</span>, <span class="at">fill =</span> range)) <span class="sc">+</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> <span class="st">"300 photos"</span>, <span class="at">fill =</span> range)) <span class="sc">+</span> </span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">reverse =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span> </span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> n), <span class="at">color =</span> <span class="st">"white"</span>, </span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">reverse =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span> </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of listings"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="st">"Price"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of photos"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="st">"File size"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -903,20 +921,20 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Below are two violins of the same 300 prices. The first uses dollars, so most of the area is squashed near the bottom and the neck stretches up past $100. The second puts the <code>y</code> axis on a log scale with <code>scale_y_log10()</code>, which turns the same prices into a symmetric shape centered near $15.</p>
+<p>Below are two violins of the same 300 file sizes. The first uses megabytes, so most of the area is squashed near the bottom and the neck stretches up past 5 MB. The second puts the <code>y</code> axis on a log scale with <code>scale_y_log10()</code>, which turns the same file sizes into a symmetric shape centered near 0.75 MB.</p>
 <div style="font-size: 0.85em;">
 <details open="" class="code-fold">
 <summary>show/hide</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> beanie_prices, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> price)) <span class="sc">+</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> microdrive_photos, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> size_mb)) <span class="sc">+</span> </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>() <span class="sc">+</span> </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">15</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Dollar scale"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Price (USD)"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">0.75</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Megabyte scale"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"File size (MB)"</span>)</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> beanie_prices, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> price)) <span class="sc">+</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> microdrive_photos, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> size_mb)) <span class="sc">+</span> </span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>() <span class="sc">+</span> </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">15</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">0.75</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span> </span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Log scale"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Price (USD, log scale)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Log scale"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"File size (MB, log scale)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
@@ -932,12 +950,12 @@ window.Quarto = {
 <div style="font-size: 1.10em; color: #1e83c8;">
 <p><strong>NAME IT:</strong></p>
 </div>
-<p>The <code>rlnorm()</code> call that created the data draws from a <a href="https://en.wikipedia.org/wiki/Log-normal_distribution">log normal distribution</a>. A price is log normal when its logarithm is normal:</p>
+<p>The <code>rlnorm()</code> call that created the data draws from a <a href="https://en.wikipedia.org/wiki/Log-normal_distribution">log normal distribution</a>. A file size is log normal when its logarithm is normal:</p>
 <p><span class="math display">\[
-\log(X) \sim \text{Normal}(\mu = \log(15), \sigma = 0.8)
+\log(X) \sim \text{Normal}(\mu = \log(0.75), \sigma = 0.8)
 \]</span></p>
-<p>The two parameters describe the log scale, not the dollar scale. Back on the dollar scale, the median is <span class="math inline">\(e^{\mu} = 15\)</span> dollars, which is why the bar model split the listings at $15. The mean is larger, <span class="math inline">\(e^{\mu + \sigma^2 / 2} = 15 \times e^{0.32} \approx 20.66\)</span> dollars, because the long right tail pulls it up. The bigger <span class="math inline">\(\sigma\)</span> gets, the longer the violin’s neck and the further the mean drifts from the median.</p>
-<p>Our simulated listings come close: the median is $16.26 and the mean is $21.89.</p>
+<p>The two parameters describe the log scale, not the megabyte scale. Back on the megabyte scale, the median is <span class="math inline">\(e^{\mu} = 0.75\)</span> MB, which is why the bar model split the photos at 0.75 MB. The mean is larger, <span class="math inline">\(e^{\mu + \sigma^2 / 2} = 0.75 \times e^{0.32} \approx 1.03\)</span> MB, because the long right tail pulls it up. The bigger <span class="math inline">\(\sigma\)</span> gets, the longer the violin’s neck and the further the mean drifts from the median.</p>
+<p>Our simulated photos come close: the median is 0.81 MB and the mean is 1.07 MB.</p>
 </section>
 <section id="grammar" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="grammar"><span class="header-section-number">6.4</span> Grammar</h2>
@@ -950,7 +968,7 @@ window.Quarto = {
 <ul>
 <li>Place an empty string (<code>""</code>) in the <code>x</code> argument</li>
 </ul>
-<p>Map an empty string (<code>""</code>) to the <code>x</code> and <code>price</code> to the <code>y</code></p>
+<p>Map an empty string (<code>""</code>) to the <code>x</code> and <code>size_mb</code> to the <code>y</code></p>
 <p>Add <code>geom_violin()</code></p>
 </div>
 <div style="font-size: 0.85em;">
@@ -958,14 +976,14 @@ window.Quarto = {
 <details open="" class="code-fold">
 <summary>show/hide</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>labs_violin <span class="ot">&lt;-</span> <span class="fu">labs</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Beanie Babies resale prices"</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"IBM Microdrive photo file sizes"</span>,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Simulated data"</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"300 listings from 1998"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"300 photos saved to a 340MB card in 1999"</span>,</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">""</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"Price (USD)"</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ggp2_violin <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> beanie_prices,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="st">"File size (MB)"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ggp2_violin <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> microdrive_photos,</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">''</span>, </span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> price)) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> size_mb)) <span class="sc">+</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_violin</span>() </span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ggp2_violin <span class="sc">+</span> </span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  labs_violin</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_clueless(
+ggplot2::theme_set(fmggp2::theme_cuseeme(
     base_size = 12))
 # pak::pak("thomasp85/ggforce")
 library(ggforce)
@@ -47,40 +47,40 @@ status("complete")
 library(ggplot2)
 library(ggforce)
 library(dplyr)
-style_probs <- list(
-  Popular = c(Plaid = 0.6, Preppy = 0.3, Grunge = 0.1),
-  Skaters = c(Plaid = 0.05, Preppy = 0.15, Grunge = 0.8),
-  Drama = c(Plaid = 0.3, Preppy = 0.3, Grunge = 0.4))
+video_probs <- list(
+  `28.8k modem` = c(Clear = 0.05, Choppy = 0.65, Dropped = 0.3),
+  ISDN = c(Clear = 0.3, Choppy = 0.5, Dropped = 0.2),
+  T1 = c(Clear = 0.7, Choppy = 0.25, Dropped = 0.05))
 set.seed(1995)
-bronson_alcott <- tibble(
-  student_id = 1:300,
-  clique = sample(c("Popular", "Skaters", "Drama"), size = 300,
-                  replace = TRUE, prob = c(0.3, 0.4, 0.3))) |>
+cuseeme_calls <- tibble(
+  call_id = 1:300,
+  connection = sample(c("28.8k modem", "ISDN", "T1"), size = 300,
+                  replace = TRUE, prob = c(0.4, 0.3, 0.3))) |>
   mutate(
-    style = vapply(clique, function(cl) {
-      sample(names(style_probs[[cl]]), size = 1, prob = style_probs[[cl]])
+    video = vapply(connection, function(cn) {
+      sample(names(video_probs[[cn]]), size = 1, prob = video_probs[[cn]])
     }, character(1), USE.NAMES = FALSE),
-    driving_test = sample(c("Passed", "Failed"), size = 300,
+    call_type = sample(c("One to one", "Reflector"), size = 300,
                           replace = TRUE, prob = c(0.7, 0.3)))
-clueless_wide <- bronson_alcott |>
-  count(clique, style, driving_test) |>
+cuseeme_wide <- cuseeme_calls |>
+  count(connection, video, call_type) |>
   rename(value = n)
-para_set_clueless <- ggforce::gather_set_data(
-                            data = clueless_wide,
+para_set_cuseeme <- ggforce::gather_set_data(
+                            data = cuseeme_wide,
                             x = 1:3) |>
-  mutate(x = factor(x, levels = c("clique", "style", "driving_test")))
+  mutate(x = factor(x, levels = c("connection", "video", "call_type")))
 labs_psets <- labs(
-        title = "Bronson Alcott High",
-        subtitle = "Cliques, styles, and driving tests",
+        title = "CU-SeeMe calls",
+        subtitle = "Connections, video, and call types",
         caption = "Simulated data",
-        y = "Students", fill = "Driving test")
+        y = "Calls", fill = "Call type")
 
-ggp2_psets <- ggplot(data = para_set_clueless,
+ggp2_psets <- ggplot(data = para_set_cuseeme,
     mapping = aes(x = x,
         id = id,
         split = y,
         value = value)) +
-  geom_parallel_sets(aes(fill = driving_test),
+  geom_parallel_sets(aes(fill = call_type),
         alpha = 0.3,
         axis.width = 0.07)
 
@@ -93,8 +93,8 @@ ggp2_psets_labs <- ggp2_psets_axes +
         size = 2.0,
         color = '#ffffff') +
   scale_x_discrete(
-        labels = c(clique = "Clique", style = "Style",
-                   driving_test = "Driving test")) +
+        labels = c(connection = "Connection", video = "Video",
+                   call_type = "Call type")) +
   theme(axis.title.x = element_blank())
 
 ggp2_psets_labs +
@@ -155,15 +155,15 @@ library(dplyr) # for tibble() and data manipulation
 **DATA:**
 :::
 
-In *Clueless* (1995), Cher Horowitz gives Tai (and the audience) a tour of the cliques at Bronson Alcott High. We'll simulate 300 students with three categorical variables:
+CU-SeeMe was a video conferencing program developed at Cornell University starting in 1992. Early versions sent grayscale video over the internet, and groups could meet through a reflector (a server that passed each video stream to everyone in the conference). We'll simulate 300 CU-SeeMe calls with three categorical variables:
 
-  - `clique`: `"Popular"`, `"Skaters"`, or `"Drama"`, drawn with `sample()`
+  - `connection`: `"28.8k modem"`, `"ISDN"`, or `"T1"`, drawn with `sample()`
 
-  - `style`: `"Plaid"`, `"Preppy"`, or `"Grunge"`. Each clique has its own chances in `style_probs` (the popular kids mostly wear plaid, and the skaters mostly wear grunge), so a student's style depends on their clique
+  - `video`: `"Clear"`, `"Choppy"`, or `"Dropped"`. Each connection has its own chances in `video_probs` (the T1 lines mostly get clear video, and the modems mostly get choppy video), so a call's video depends on its connection
 
-  - `driving_test`: `"Passed"` or `"Failed"`. Every student has the same 70% chance of passing, no matter their clique or style (Cher failed hers, so nobody's safe)
+  - `call_type`: `"One to one"` or `"Reflector"`. Every call has the same 70% chance of being one to one, no matter its connection or video (a fast line didn't make anyone more likely to join a group conference)
 
-Setting the seed with `set.seed()` means you'll get the same 300 students every time you run the code below.
+Setting the seed with `set.seed()` means you'll get the same 300 calls every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -171,26 +171,26 @@ Setting the seed with `set.seed()` means you'll get the same 300 students every 
 #| code-fold: show
 #| eval: true
 #| echo: true
-style_probs <- list(
-  Popular = c(Plaid = 0.6, Preppy = 0.3, Grunge = 0.1),
-  Skaters = c(Plaid = 0.05, Preppy = 0.15, Grunge = 0.8),
-  Drama = c(Plaid = 0.3, Preppy = 0.3, Grunge = 0.4))
+video_probs <- list(
+  `28.8k modem` = c(Clear = 0.05, Choppy = 0.65, Dropped = 0.3),
+  ISDN = c(Clear = 0.3, Choppy = 0.5, Dropped = 0.2),
+  T1 = c(Clear = 0.7, Choppy = 0.25, Dropped = 0.05))
 set.seed(1995)
-bronson_alcott <- tibble(
-  student_id = 1:300,
-  clique = sample(c("Popular", "Skaters", "Drama"), size = 300,
-                  replace = TRUE, prob = c(0.3, 0.4, 0.3))) |>
+cuseeme_calls <- tibble(
+  call_id = 1:300,
+  connection = sample(c("28.8k modem", "ISDN", "T1"), size = 300,
+                  replace = TRUE, prob = c(0.4, 0.3, 0.3))) |>
   mutate(
-    style = vapply(clique, function(cl) {
-      sample(names(style_probs[[cl]]), size = 1, prob = style_probs[[cl]])
+    video = vapply(connection, function(cn) {
+      sample(names(video_probs[[cn]]), size = 1, prob = video_probs[[cn]])
     }, character(1), USE.NAMES = FALSE),
-    driving_test = sample(c("Passed", "Failed"), size = 300,
+    call_type = sample(c("One to one", "Reflector"), size = 300,
                           replace = TRUE, prob = c(0.7, 0.3)))
-glimpse(bronson_alcott)
+glimpse(cuseeme_calls)
 ```
 :::
 
-Next we count the categorical variables (`clique`, `style`, `driving_test`) with `count()` and rename its `n` column to `value`.
+Next we count the categorical variables (`connection`, `video`, `call_type`) with `count()` and rename its `n` column to `value`.
 
   - `ggforce` has a special [`gather_set_data()`](https://ggforce.data-imaginist.com/reference/gather_set_data.html) function that *changes tidy data into a tidy(er) format*
 
@@ -202,26 +202,26 @@ Next we count the categorical variables (`clique`, `style`, `driving_test`) with
 #| code-fold: show
 #| eval: true
 #| echo: true
-clueless_wide <- bronson_alcott |>
-  count(clique, style, driving_test) |>
+cuseeme_wide <- cuseeme_calls |>
+  count(connection, video, call_type) |>
   rename(value = n)
-para_set_clueless <- ggforce::gather_set_data(
-                            data = clueless_wide,
+para_set_cuseeme <- ggforce::gather_set_data(
+                            data = cuseeme_wide,
                             x = 1:3) |>
-  mutate(x = factor(x, levels = c("clique", "style", "driving_test")))
-glimpse(para_set_clueless)
+  mutate(x = factor(x, levels = c("connection", "video", "call_type")))
+glimpse(para_set_cuseeme)
 ```
 :::
 
 ## Distribution
 
-Parallel sets are good at showing whether two categorical variables are *related*. When one variable depends on another, the bands leaving each category split up in different ways. When they're unrelated, every category splits up the same way. Our data has one of each, so below we'll move from the students, to a picture, to the formula.
+Parallel sets are good at showing whether two categorical variables are *related*. When one variable depends on another, the bands leaving each category split up in different ways. When they're unrelated, every category splits up the same way. Our data has one of each, so below we'll move from the calls, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the first five students.
+Start with the first five calls.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -229,11 +229,11 @@ Start with the first five students.
 #| code-fold: show
 #| eval: true
 #| echo: true
-head(bronson_alcott, 5)
+head(cuseeme_calls, 5)
 ```
 :::
 
-Below we use `prop.table()` to turn two cross tables into row percentages. Each row adds up to one, so we can compare how each clique splits.
+Below we use `prop.table()` to turn two cross tables into row percentages. Each row adds up to one, so we can compare how each connection splits.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -241,22 +241,22 @@ Below we use `prop.table()` to turn two cross tables into row percentages. Each 
 #| code-fold: show
 #| eval: true
 #| echo: true
-clique_style <- prop.table(table(bronson_alcott$clique,
-                                 bronson_alcott$style), margin = 1)
-round(clique_style, 2)
-clique_test <- prop.table(table(bronson_alcott$clique,
-                                bronson_alcott$driving_test), margin = 1)
-round(clique_test, 2)
+connection_video <- prop.table(table(cuseeme_calls$connection,
+                                 cuseeme_calls$video), margin = 1)
+round(connection_video, 2)
+connection_type <- prop.table(table(cuseeme_calls$connection,
+                                cuseeme_calls$call_type), margin = 1)
+round(connection_type, 2)
 ```
 :::
 
-The style rows look very different from clique to clique (`r round(100 * clique_style["Skaters", "Grunge"])`% of the skaters wear grunge, but only `r round(100 * clique_style["Popular", "Grunge"])`% of the popular kids do). The driving test rows look almost the same for every clique (about 70% passed).
+The video rows look very different from connection to connection (`r round(100 * connection_video["28.8k modem", "Choppy"])`% of the modem calls had choppy video, but only `r round(100 * connection_video["T1", "Choppy"])`% of the T1 calls did). The call type rows look almost the same for every connection (about 70% were one to one).
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-The two graphs below draw each pair of variables as parallel sets, with the bands colored by clique. On the left, the clique bands spread across the styles in very different ways. On the right, every clique splits into passed and failed in about the same proportion.
+The two graphs below draw each pair of variables as parallel sets, with the bands colored by connection. On the left, the connection bands spread across the video outcomes in very different ways. On the right, every connection splits into one to one and reflector calls in about the same proportion.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -266,20 +266,20 @@ The two graphs below draw each pair of variables as parallel sets, with the band
 #| echo: true
 #| layout-ncol: 2
 two_sets <- function(var) {
-  bronson_alcott |>
-    count(clique, .data[[var]]) |>
+  cuseeme_calls |>
+    count(connection, .data[[var]]) |>
     rename(value = n) |>
     ggforce::gather_set_data(x = 1:2) |>
-    mutate(x = factor(x, levels = c("clique", var))) |>
+    mutate(x = factor(x, levels = c("connection", var))) |>
     ggplot(aes(x = x, id = id, split = y, value = value)) +
-    geom_parallel_sets(aes(fill = clique), alpha = 0.5, axis.width = 0.1) +
+    geom_parallel_sets(aes(fill = connection), alpha = 0.5, axis.width = 0.1) +
     geom_parallel_sets_axes(axis.width = 0.1) +
     geom_parallel_sets_labels(size = 3, color = "#ffffff") +
-    labs(x = NULL, y = "Students", fill = "Clique") +
+    labs(x = NULL, y = "Calls", fill = "Connection") +
     theme(legend.position = "bottom")
 }
-two_sets("style")
-two_sets("driving_test")
+two_sets("video")
+two_sets("call_type")
 ```
 :::
 
@@ -287,13 +287,13 @@ two_sets("driving_test")
 **NAME IT:**
 :::
 
-Each student's style comes from a [categorical distribution](https://en.wikipedia.org/wiki/Categorical_distribution) with probabilities that depend on their clique, so the styles within each clique follow a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
+Each call's video comes from a [categorical distribution](https://en.wikipedia.org/wiki/Categorical_distribution) with probabilities that depend on its connection, so the video outcomes within each connection follow a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
 
 $$
-(N_{\text{plaid}}, N_{\text{preppy}}, N_{\text{grunge}}) \mid \text{clique} \sim \text{Multinomial}\left(n_{\text{clique}}, \; P(\text{style} \mid \text{clique})\right)
+(N_{\text{clear}}, N_{\text{choppy}}, N_{\text{dropped}}) \mid \text{connection} \sim \text{Multinomial}\left(n_{\text{connection}}, \; P(\text{video} \mid \text{connection})\right)
 $$
 
-The driving test is [independent](https://en.wikipedia.org/wiki/Independence_(probability_theory)) of the clique, which means $P(\text{passed} \mid \text{clique}) = P(\text{passed}) = 0.7$ for every clique. When two variables are independent, the count we'd expect in each pair of categories is the row total times the column share. For example, there are `r sum(bronson_alcott$clique == "Skaters")` skaters, so we'd expect about $`r sum(bronson_alcott$clique == "Skaters")` \times 0.7 \approx `r round(sum(bronson_alcott$clique == "Skaters") * 0.7)`$ of them to pass (and `r sum(bronson_alcott$clique == "Skaters" & bronson_alcott$driving_test == "Passed")` did). Bands that split in the same proportions everywhere are the picture of independence, and bands that split differently are the picture of a relationship. Try giving every clique the same `style_probs` and the left graph in **DRAW IT** will look like the right one.
+The call type is [independent](https://en.wikipedia.org/wiki/Independence_(probability_theory)) of the connection, which means $P(\text{one to one} \mid \text{connection}) = P(\text{one to one}) = 0.7$ for every connection. When two variables are independent, the count we'd expect in each pair of categories is the row total times the column share. For example, there are `r sum(cuseeme_calls$connection == "28.8k modem")` modem calls, so we'd expect about $`r sum(cuseeme_calls$connection == "28.8k modem")` \times 0.7 \approx `r round(sum(cuseeme_calls$connection == "28.8k modem") * 0.7)`$ of them to be one to one (and `r sum(cuseeme_calls$connection == "28.8k modem" & cuseeme_calls$call_type == "One to one")` were). Bands that split in the same proportions everywhere are the picture of independence, and bands that split differently are the picture of a relationship. Try giving every connection the same `video_probs` and the left graph in **DRAW IT** will look like the right one.
 
 ## Grammar
 
@@ -307,13 +307,13 @@ The driving test is [independent](https://en.wikipedia.org/wiki/Independence_(pr
 
   - Map `x` to `x`, `id` to `id`, `y` to `split`, and `value` to `value`
 
-  - In the `geom_parallel_sets()` function, map `driving_test` to `fill` and manually set the `alpha` (opacity) and the `axis.width`
+  - In the `geom_parallel_sets()` function, map `call_type` to `fill` and manually set the `alpha` (opacity) and the `axis.width`
 
   - In the `geom_parallel_sets_axes()` function, set the `axis.width` to the same value as the `geom_parallel_sets()` above
 
   - For labeling, adjust the `size` manually and set the `color` to something that stands out against the black vertical axes
 
-  - Manually label the `x` axis with `scale_x_discrete()`, setting the `labels` to the variable names in the `clueless_wide` dataset
+  - Manually label the `x` axis with `scale_x_discrete()`, setting the `labels` to the variable names in the `cuseeme_wide` dataset
 
   - Finally, remove the `x` title with `axis.title.x = element_blank()`
 
@@ -328,17 +328,17 @@ The driving test is [independent](https://en.wikipedia.org/wiki/Independence_(pr
 #| out-height: '100%'
 #| out-width: '100%'
 labs_psets <- labs(
-        title = "Bronson Alcott High",
-        subtitle = "Cliques, styles, and driving tests",
+        title = "CU-SeeMe calls",
+        subtitle = "Connections, video, and call types",
         caption = "Simulated data",
-        y = "Students", fill = "Driving test")
+        y = "Calls", fill = "Call type")
 
-ggp2_psets <- ggplot(data = para_set_clueless,
+ggp2_psets <- ggplot(data = para_set_cuseeme,
     mapping = aes(x = x,
         id = id,
         split = y,
         value = value)) +
-  geom_parallel_sets(aes(fill = driving_test),
+  geom_parallel_sets(aes(fill = call_type),
         alpha = 0.3,
         axis.width = 0.07)
 
@@ -351,8 +351,8 @@ ggp2_psets_labs <- ggp2_psets_axes +
         size = 2.0,
         color = '#ffffff') +
   scale_x_discrete(
-        labels = c(clique = "Clique", style = "Style",
-                   driving_test = "Driving test")) +
+        labels = c(connection = "Connection", video = "Video",
+                   call_type = "Call type")) +
   theme(axis.title.x = element_blank())
 
 ggp2_psets_labs +
@@ -376,17 +376,17 @@ ggp2_psets_labs +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_psets <- labs(
-        title = "Bronson Alcott High",
-        subtitle = "Cliques, styles, and driving tests",
+        title = "CU-SeeMe calls",
+        subtitle = "Connections, video, and call types",
         caption = "Simulated data",
-        y = "Students", fill = "Driving test")
+        y = "Calls", fill = "Call type")
 
-ggp2_psets <- ggplot(data = para_set_clueless,
+ggp2_psets <- ggplot(data = para_set_cuseeme,
     mapping = aes(x = x,
         id = id,
         split = y,
         value = value)) +
-  geom_parallel_sets(aes(fill = driving_test),
+  geom_parallel_sets(aes(fill = call_type),
         alpha = 0.3,
         axis.width = 0.07)
 
@@ -399,8 +399,8 @@ ggp2_psets_labs <- ggp2_psets_axes +
         size = 2.0,
         color = '#ffffff') +
   scale_x_discrete(
-        labels = c(clique = "Clique", style = "Style",
-                   driving_test = "Driving test")) +
+        labels = c(connection = "Connection", video = "Video",
+                   call_type = "Call type")) +
   theme(axis.title.x = element_blank())
 
 ggp2_psets_labs +
@@ -431,8 +431,8 @@ ggp2_psets_axes +
       nudge_x = 0.1,
       hjust = 0) +
   scale_x_discrete(
-        labels = c(clique = "Clique", style = "Style",
-                   driving_test = "Driving test"),
+        labels = c(connection = "Connection", video = "Video",
+                   call_type = "Call type"),
         expand = expansion(add = c(0.1, 0.4))) +
   theme(axis.title.x = element_blank()) +
     labs_psets
