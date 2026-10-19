@@ -20,14 +20,11 @@ ggplot2::theme_set(fmggp2::theme_bopit(
     base_size = 13))
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_bopit()`
+
+Graphs in this chapter use `fmggp2::theme_bopit()`, built from the Bop It toy: a deep purple background, a yellow frame and title, yellow, blue, green, orange, and pink marks, a purple to yellow continuous scale, and a Rockwell title.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 

@@ -20,15 +20,11 @@ ggplot2::theme_set(fmggp2::theme_orbitz(
     base_size = 14))
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_orbitz()`
 
+Graphs in this chapter use `fmggp2::theme_orbitz()`, built from Orbitz, the 1997 drink with floating balls: a black background, a gold frame, gold and magenta ball marks, sand, maroon, and amber accents, and a Marker Felt title.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 

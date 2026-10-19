@@ -29,15 +29,6 @@ bare_theme <- theme(plot.title = element_blank(),
                     legend.position = "none")
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
-
 These graphs display counts or simple summary statistics of one or two columns in a dataset.      
 
 ## Grouped bar graphs

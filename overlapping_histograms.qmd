@@ -20,14 +20,11 @@ ggplot2::theme_set(fmggp2::theme_tamagotchi(
     base_size = 15))
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_tamagotchi()`
+
+Graphs in this chapter use `fmggp2::theme_tamagotchi()`, modeled on a Tamagotchi: a lilac egg shell, a gray green LCD screen plot area, pink, teal, and yellow shell colors, and a Futura title.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 

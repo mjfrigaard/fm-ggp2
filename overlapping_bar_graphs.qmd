@@ -20,6 +20,12 @@ ggplot2::theme_set(fmggp2::theme_netware(
     base_size = 15))
 ```
 
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_netware()`
+
+Graphs in this chapter use `fmggp2::theme_netware()`, built from Novell NetWare 2.0 boxes: a NetWare red background with white text, a maroon frame, maroon, red, rose, and blush marks, and a Gill Sans title.
+:::
+
 :::: {.callout-note collapse="false" icon=false}
 
 <br>

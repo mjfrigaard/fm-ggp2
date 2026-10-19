@@ -22,14 +22,11 @@ ggplot2::theme_set(fmggp2::theme_cuseeme(
 library(ggforce)
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_cuseeme()`
+
+Graphs in this chapter use `fmggp2::theme_cuseeme()`, built from the CU-SeeMe phone book window: a dithered gray background, a black frame, a white panel, black, magenta, and gray marks, and a magenta Tahoma title.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 

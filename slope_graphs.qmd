@@ -20,14 +20,11 @@ ggplot2::theme_set(fmggp2::theme_savedbythebell(
     base_size = 14))
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_savedbythebell()`
+
+Graphs in this chapter use `fmggp2::theme_savedbythebell()`, built from the Saved by the Bell logo: a black background with a royal blue frame, a yellow title, a white classroom panel, sky blue, pink, yellow, orange, royal blue, and navy marks, and a SignPainter title.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 

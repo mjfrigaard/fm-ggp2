@@ -21,15 +21,11 @@ ggplot2::theme_set(fmggp2::theme_jurassic(
     base_size = 15))
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polishing, restructuring, drafting, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_jurassic()`
 
+Graphs in this chapter use `fmggp2::theme_jurassic()`, modeled on the Jurassic Park (1993) Post Office souvenir stamp sheet: a black sheet with a logo red frame, a dark jungle plot area, stamp yellow titles, red, yellow, sunset orange, cream, and tan marks, and a Herculanum title.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 

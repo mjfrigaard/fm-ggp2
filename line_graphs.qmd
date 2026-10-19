@@ -20,14 +20,11 @@ ggplot2::theme_set(fmggp2::theme_batman(
     base_size = 14))
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_batman()`
+
+Graphs in this chapter use `fmggp2::theme_batman()`, using its default `"movie"` palette from Batman (1989): a black background, a gold bat signal frame and title, a dark brown plot area, silver text, orange, gold, steel, rust, and pale gold marks, and a DIN Condensed title.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 

@@ -21,14 +21,11 @@ ggplot2::theme_set(fmggp2::theme_geocities(
     base_size = 14))
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_geocities()`
+
+Graphs in this chapter use `fmggp2::theme_geocities()`, built from a GeoCities home page: a black background, a web gray frame, a dark navy panel, lime green text, a yellow Comic Sans title, web safe marks, and a blue to yellow continuous scale.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 

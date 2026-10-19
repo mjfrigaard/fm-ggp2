@@ -20,14 +20,11 @@ ggplot2::theme_set(fmggp2::theme_gushers(
     base_size = 14))
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_gushers()`
+
+Graphs in this chapter use `fmggp2::theme_gushers()`, built from Fruit Gushers: a white plate background, a red frame and title, red, green, teal, orange, and pink fruit snack marks, and a Chalkboard title.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 

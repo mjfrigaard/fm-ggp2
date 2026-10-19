@@ -20,6 +20,12 @@ ggplot2::theme_set(fmggp2::theme_walkman(
     base_size = 15))
 ```
 
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_walkman()`
+
+Graphs in this chapter use `fmggp2::theme_walkman()`, modeled on the Sony Sports Walkman: a sports yellow body with a blue button frame, a silver plot area, a charcoal title and text, blue, charcoal, orange, gold, and silver marks, and a DIN Condensed title.
+:::
+
 :::: {.callout-note collapse="false" icon=false}
 
 <br>

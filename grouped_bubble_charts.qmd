@@ -20,14 +20,11 @@ ggplot2::theme_set(fmggp2::theme_powerrangers(
     base_size = 14))
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_powerrangers()`
+
+Graphs in this chapter use `fmggp2::theme_powerrangers()`, built from the Mighty Morphin Power Rangers: a light gray background, a lightning gold frame, a red Copperplate title, and red, blue, yellow, pink, black, and green Ranger marks.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 

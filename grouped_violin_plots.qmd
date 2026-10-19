@@ -20,14 +20,11 @@ ggplot2::theme_set(fmggp2::theme_aim(
     base_size = 15))
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_aim()`
+
+Graphs in this chapter use `fmggp2::theme_aim()`, modeled on the AOL Instant Messenger sign on window: a gray window, an AOL blue frame and title, a white chat panel, blue, sky, running man yellow, and slate marks, and an Arial Rounded title.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 

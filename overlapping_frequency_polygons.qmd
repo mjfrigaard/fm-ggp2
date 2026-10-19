@@ -20,16 +20,11 @@ ggplot2::theme_set(fmggp2::theme_supersoaker(
     base_size = 15))
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_supersoaker()`
 
-
+Graphs in this chapter use `fmggp2::theme_supersoaker()`, modeled on a Super Soaker: neon orange plastic, a water blue plot area, neon green, purple, and blue marks, and an Arial Black title.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 

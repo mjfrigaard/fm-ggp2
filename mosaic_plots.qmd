@@ -22,14 +22,11 @@ ggplot2::theme_set(fmggp2::theme_titanic(
     base_size = 12))
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_titanic()`
+
+Graphs in this chapter use `fmggp2::theme_titanic()`, modeled on Titanic (1997), using the Vallejo Titanic Colors paint set: a hull black background, a yellow hull stripe frame and title, a canvas plot area with deck planking grid lines, antifouling red, faded yellow, stone, and wood deck marks, and a Big Caslon title.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 

@@ -21,14 +21,11 @@ ggplot2::theme_set(fmggp2::theme_squeezit(
 # pak::pak("wilkelab/ggridges")
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_squeezit()`
+
+Graphs in this chapter use `fmggp2::theme_squeezit()`, built from Squeezit drink bottles on gravel: a gravel background, a red frame and title, red, orange, green, pink, blue, and gold bottle marks, and a Skia title.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 

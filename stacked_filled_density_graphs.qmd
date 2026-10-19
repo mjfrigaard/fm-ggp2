@@ -20,15 +20,11 @@ ggplot2::theme_set(fmggp2::theme_netscape(
     base_size = 15))
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_netscape()`
 
+Graphs in this chapter use `fmggp2::theme_netscape()`, modeled on the Netscape Navigator logo: a night sky background, a teal frame, a glowing teal title, and teal, aurora green, sea glass, and deep teal marks, and a Times New Roman title.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 

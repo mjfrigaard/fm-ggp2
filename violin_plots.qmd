@@ -20,15 +20,6 @@ ggplot2::theme_set(fmggp2::theme_microdrive(
     base_size = 15))
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polishing, restructuring, drafting, complete
-status("complete")
-```
-
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_microdrive()`
 

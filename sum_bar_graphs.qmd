@@ -20,6 +20,12 @@ ggplot2::theme_set(fmggp2::theme_happymeal(
     base_size = 15))
 ```
 
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_happymeal()`
+
+Graphs in this chapter use `fmggp2::theme_happymeal()`, modeled on a McDonald's Happy Meal box: red box, golden yellow marks, a cream plot area, and an Arial Rounded title.
+:::
+
 :::: {.callout-note collapse="false" icon=false}
 
 <br>

@@ -21,14 +21,11 @@ ggplot2::theme_set(fmggp2::theme_y2k(
 # pak::pak("corybrunson/ggalluvial")
 ```
 
-```{r}
-#| label: status
-#| results: "asis"
-#| echo: false
-# status ----
-# polish, dev, draft, complete
-status("complete")
-```
+::: {.callout-tip collapse="true" appearance="simple"}
+## Theme: `theme_y2k()`
+
+Graphs in this chapter use `fmggp2::theme_y2k()`, built from the Y2K countdown: a black terminal background, a red LED frame and title, red, amber, green, silver, and blue screen marks, and a PT Mono title.
+:::
 
 :::: {.callout-note collapse="false" icon=false}
 
