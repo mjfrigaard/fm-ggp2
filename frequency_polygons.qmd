@@ -102,7 +102,15 @@ library(dplyr) # for tibble() and data manipulation
 **DATA:**
 :::
 
-The [Talkboy](https://en.wikipedia.org/wiki/Talkboy) was the handheld cassette recorder Kevin used in *Home Alone 2* (1992), and Tiger Electronics sold the real thing that Christmas. We'll simulate 300 messages recorded on a Talkboy with `rgamma()`, rounding each message length to a tenth of a second. Setting the seed with `set.seed()` means you'll get the same 300 messages every time you run the code below.
+::: {.column-margin}
+
+![The Talkboy from *Home Alone 2* (from [`r/nostalgia`](https://www.reddit.com/r/nostalgia/comments/ebg2co/the_talkboy_recorder_from_home_alone/))](www/talkboy.jpg){fig-align="center" width="70%" height="70%"}
+
+:::
+
+The [Talkboy](https://en.wikipedia.org/wiki/Talkboy) was the handheld cassette recorder Kevin used in [*Home Alone 2* (1992)](https://www.imdb.com/title/tt0104431/), and Tiger Electronics sold the real thing that Christmas. 
+
+We'll simulate 300 messages recorded on a Talkboy with `rgamma()`, rounding each message length to a tenth of a second. Setting the seed with `set.seed()` means you'll get the same 300 messages every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -114,7 +122,10 @@ set.seed(1999) # same 300 clips every time the code runs
 talkboy_clips <- tibble(
   clip_id = 1:300, # 300 different recordings, one row each
   seconds = round(
-    rgamma(n = 300, shape = 4, rate = 0.5), # clip lengths average 8 seconds (with a long right tail)
+    rgamma(
+      n = 300, 
+     shape = 4, # clip lengths average 8 seconds (with a long right tail)
+     rate = 0.5), 
     1 # one decimal place
     )
 )
