@@ -193,18 +193,22 @@ The `raincloudplots` package has a `data_1x1()` function we can use to build the
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1993)
-rzone_tries <- faux::rnorm_multi(n = 100,
-    mu = c(log(40), log(20)), sd = 0.5, r = 0.7,
+set.seed(1993) # same 100 players every time the code runs
+rzone_tries <- faux::rnorm_multi(n = 100, # 100 different players
+    mu = c(log(40), log(20)), # first try averages 40 seconds, second try 20 (on the log scale)
+    sd = 0.5, # spread on the log scale
+    r = 0.7, # players who are slow the first time are slow the second time
     varnames = c("log_first", "log_second")) |>
   as_tibble() |>
-  mutate(player_id = 1:100,
-         first_try = round(exp(log_first), 1),
-         second_try = round(exp(log_second), 1)) |>
+  mutate(
+    player_id = 1:100, # one row per player
+    first_try = round(exp(log_first), 1), # back to seconds
+    second_try = round(exp(log_second), 1) # back to seconds
+    ) |>
   select(player_id, first_try, second_try)
 rzone_1x1 <- raincloudplots::data_1x1(
-  array_1 = rzone_tries$first_try,
-  array_2 = rzone_tries$second_try,
+  array_1 = rzone_tries$first_try, # first group of points
+  array_2 = rzone_tries$second_try, # second group of points
   jit_distance = 0.2, # distance between points
   jit_seed = 2736) # used in set.seed()
 glimpse(rzone_1x1)
@@ -380,15 +384,21 @@ We'll simulate first tries for 80 players on each of three kinds of R-Zone games
 #| label: data_code_ggdist
 #| eval: true
 #| echo: true
-set.seed(1994)
+set.seed(1994) # same 240 players every time the code runs
 rzone_games <- tibble(
-  player_id = 1:240,
-  game = rep(c("Racing", "Fighting", "Shooter"), each = 80)) |>
-  mutate(game = factor(game,
-           levels = c("Racing", "Fighting", "Shooter")),
-         seconds = round(rlnorm(n(), sdlog = 0.5,
-           meanlog = log(c(Racing = 15, Fighting = 30,
-                           Shooter = 60)[as.character(game)])), 1))
+  player_id = 1:240, # 240 different players, one row each
+  game = rep(c("Racing", "Fighting", "Shooter"), each = 80) # 80 players per game
+  ) |>
+  mutate(
+    game = factor(game,
+      levels = c("Racing", "Fighting", "Shooter")), # shortest to longest
+    seconds = round(
+      rlnorm(n(), sdlog = 0.5, # seconds to finish the first level (skewed right)
+        meanlog = log(c(Racing = 15, Fighting = 30, # typical seconds
+                        Shooter = 60)[as.character(game)])), # (looked up for each game)
+      1 # one decimal place
+      )
+    )
 glimpse(rzone_games)
 ```
 :::

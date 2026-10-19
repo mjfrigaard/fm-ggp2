@@ -133,22 +133,34 @@ Setting the seed with `set.seed()` means you'll get the same 3,000 students ever
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1996)
+set.seed(1996) # same 3,000 teens every time the code runs
 surge_teens <- tibble(
-  teen_id = 1:3000,
-  school = sample(c("Middle school", "High school", "College"),
-                  size = 3000, replace = TRUE, prob = c(0.3, 0.4, 0.3)),
-  console = sample(c("Nintendo 64", "PlayStation"),
-                   size = 3000, replace = TRUE)) |>
+  teen_id = 1:3000, # 3,000 different teens, one row each
+  school = sample(
+    c("Middle school", "High school", "College"), # school level
+    size = 3000, replace = TRUE, # one level for each teen
+    prob = c(0.3, 0.4, 0.3) # high school is the largest group
+    ),
+  console = sample(
+    c("Nintendo 64", "PlayStation"), # each teen's console
+    size = 3000, replace = TRUE # equal chance of either
+    )
+  ) |>
   mutate(
-    avg_cans = c(`Middle school` = 2, `High school` = 4,
-                 College = 6)[school],
-    cans_per_week = round(rgamma(n(), shape = 2,
-                                 rate = 2 / avg_cans), 1),
-    game_hours = round(pmax(0, 3 + 1.5 * cans_per_week +
-                              if_else(console == "PlayStation", 2, 0) +
-                              rnorm(n(), mean = 0, sd = 3)), 1)) |>
-  select(-avg_cans)
+    avg_cans = c(`Middle school` = 2, `High school` = 4, # average cans of Surge per week
+                 College = 6)[school], # (looked up for each school level)
+    cans_per_week = round(
+      rgamma(n(), shape = 2, rate = 2 / avg_cans), # cans per week (skewed right)
+      1 # one decimal place
+      ),
+    game_hours = round(
+      pmax(0, 3 + 1.5 * cans_per_week + # more Surge, more gaming
+             if_else(console == "PlayStation", 2, 0) + # PlayStation owners play 2 hours more
+             rnorm(n(), mean = 0, sd = 3)), # random noise (no negative hours)
+      1 # one decimal place
+      )
+    ) |>
+  select(-avg_cans) # drop the helper column
 glimpse(surge_teens)
 ```
 :::

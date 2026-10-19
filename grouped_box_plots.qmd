@@ -134,16 +134,21 @@ In *The Oregon Trail*, you picked a profession before you set out, and it decide
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1985)
+set.seed(1985) # same 300 parties every time the code runs
 oregon_trail <- tibble(
-  party_id = 1:300,
-  profession = rep(c("Banker", "Carpenter", "Farmer"), each = 100)) |>
-  mutate(profession = factor(profession,
-           levels = c("Banker", "Carpenter", "Farmer")),
-         median_days = c(Banker = 140, Carpenter = 155,
-                         Farmer = 170)[as.character(profession)],
-         days_to_oregon = round(rlnorm(n(), meanlog = log(median_days),
-                                       sdlog = 0.2))) |>
+  party_id = 1:300, # 300 different wagon parties, one row each
+  profession = rep(c("Banker", "Carpenter", "Farmer"), each = 100) # 100 parties per profession
+  ) |>
+  mutate(
+    profession = factor(profession,
+      levels = c("Banker", "Carpenter", "Farmer")), # fastest to slowest
+    median_days = c(Banker = 140, Carpenter = 155, # typical days on the trail
+                    Farmer = 170)[as.character(profession)], # (looked up for each profession)
+    days_to_oregon = round(
+      rlnorm(n(), meanlog = log(median_days), # trips cluster near the median
+             sdlog = 0.2) # with a longer tail of slow trips
+      )
+    ) |>
   select(party_id, profession, days_to_oregon)
 glimpse(oregon_trail)
 ```

@@ -135,16 +135,28 @@ Setting the seed with `set.seed()` means you'll get the same 5,000 page loads ev
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1997)
+set.seed(1997) # same 5,000 pages every time the code runs
 geocities_pages <- tibble(
-  page_id = 1:5000,
-  modem = sample(c("28.8k", "56k"), size = 5000, replace = TRUE),
-  page_kb = round(rlnorm(5000, meanlog = log(60), sdlog = 0.45), 1)) |>
+  page_id = 1:5000, # 5,000 different GeoCities home pages
+  modem = sample(
+    c("28.8k", "56k"), # modem used to load each page
+    size = 5000, # one modem for each page
+    replace = TRUE # modems repeat (with equal probability)
+    ),
+  page_kb = round(
+    rlnorm(5000, meanlog = log(60), sdlog = 0.45), # page sizes (most near 60 KB, a few much larger)
+    1 # one decimal place
+    )
+  ) |>
   mutate(
-    kbps = if_else(modem == "28.8k", 24, 44),
-    load_sec = round(2 + page_kb * 8 / kbps +
-                       rnorm(n(), mean = 0, sd = 1.5), 1)) |>
-  select(-kbps)
+    kbps = if_else(modem == "28.8k", 24, 44), # real world modem speeds (kilobits per second)
+    load_sec = round(
+      2 + page_kb * 8 / kbps + # 2 second wait plus kilobits divided by speed
+        rnorm(n(), mean = 0, sd = 1.5), # random network noise
+      1 # one decimal place
+      )
+    ) |>
+  select(-kbps) # drop the helper column
 glimpse(geocities_pages)
 ```
 :::

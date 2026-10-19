@@ -138,14 +138,19 @@ Tetris came bundled with every Game Boy, and by the 90s everyone had a high scor
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1989)
+set.seed(1989) # same 240 games every time the code runs
 tetris_games <- tibble(
-  game_id = 1:240,
-  player = rep(c("Casual", "Regular", "Expert"), each = 80)) |>
-  mutate(player = factor(player, levels = c("Casual", "Regular", "Expert")),
-         lines_cleared = rnbinom(n(), size = 5,
-           mu = c(Casual = 25, Regular = 60,
-                  Expert = 120)[as.character(player)]))
+  game_id = 1:240, # 240 different games of Tetris, one row each
+  player = rep(c("Casual", "Regular", "Expert"), each = 80) # 80 games for each player type
+  ) |>
+  mutate(
+    player = factor(player, levels = c("Casual", "Regular", "Expert")), # least to most skilled
+    lines_cleared = rnbinom(n(),
+      size = 5, # small size spreads the counts out
+      mu = c(Casual = 25, Regular = 60, # average lines cleared
+             Expert = 120)[as.character(player)] # (looked up for each player type)
+      )
+    )
 glimpse(tetris_games)
 ```
 :::

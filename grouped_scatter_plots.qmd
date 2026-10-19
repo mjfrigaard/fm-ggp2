@@ -129,17 +129,25 @@ In the early 90s, every kid picked a side: Sega or Nintendo. We'll simulate 120 
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1991)
-genesis <- faux::rnorm_multi(n = 120,
-    mu = c(games = 12, hours = 9), sd = c(4, 3), r = 0.6) |>
+set.seed(1991) # same 240 kids every time the code runs
+genesis <- faux::rnorm_multi(n = 120, # 120 Sega Genesis owners
+    mu = c(games = 12, hours = 9), # average games owned and hours played per week
+    sd = c(4, 3), # spread of each column
+    r = 0.6 # more games goes with more hours (strong)
+    ) |>
   mutate(console = "Sega Genesis")
-snes <- faux::rnorm_multi(n = 120,
-    mu = c(games = 10, hours = 11), sd = c(3.5, 3), r = 0.3) |>
+snes <- faux::rnorm_multi(n = 120, # 120 Super Nintendo owners
+    mu = c(games = 10, hours = 11), # fewer games, more hours
+    sd = c(3.5, 3), # spread of each column
+    r = 0.3 # more games goes with more hours (weak)
+    ) |>
   mutate(console = "Super Nintendo")
-console_kids <- bind_rows(genesis, snes) |>
-  mutate(kid_id = row_number(),
-         games_owned = pmax(1, round(games)),
-         hours_per_week = round(pmax(0, hours), 1)) |>
+console_kids <- bind_rows(genesis, snes) |> # stack both consoles
+  mutate(
+    kid_id = row_number(), # one row per kid
+    games_owned = pmax(1, round(games)), # whole games (everyone owns at least one)
+    hours_per_week = round(pmax(0, hours), 1) # no negative hours
+    ) |>
   select(kid_id, console, games_owned, hours_per_week)
 glimpse(console_kids)
 ```

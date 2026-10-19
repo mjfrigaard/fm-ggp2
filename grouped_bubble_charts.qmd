@@ -142,18 +142,20 @@ Setting the seed with `set.seed()` means you'll get the same 120 fights every ti
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1993)
+set.seed(1993) # same 120 fights every time the code runs
 ranger_fights <- expand_grid(
-  ranger = c("Red", "Blue", "Yellow", "Pink", "Black"),
-  fight = 1:24) |>
+  ranger = c("Red", "Blue", "Yellow", "Pink", "Black"), # five Rangers
+  fight = 1:24 # 24 fights for each Ranger
+  ) |>
   mutate(
     ranger = factor(ranger,
-      levels = c("Red", "Blue", "Yellow", "Pink", "Black")),
-    putty_rate = c(Red = 2.0, Blue = 1.2, Yellow = 1.6,
-                   Pink = 1.4, Black = 1.8)[as.character(ranger)],
-    fight_minutes = round(rgamma(n(), shape = 4, rate = 1), 1),
-    putties_defeated = rpois(n(), lambda = putty_rate * fight_minutes),
-    hits_taken = rpois(n(), lambda = 0.6 * fight_minutes))
+      levels = c("Red", "Blue", "Yellow", "Pink", "Black")), # keep the order above
+    putty_rate = c(Red = 2.0, Blue = 1.2, Yellow = 1.6, # Putties defeated per minute
+                   Pink = 1.4, Black = 1.8)[as.character(ranger)], # (looked up for each Ranger)
+    fight_minutes = round(rgamma(n(), shape = 4, rate = 1), 1), # fights last about 4 minutes
+    putties_defeated = rpois(n(), lambda = putty_rate * fight_minutes), # longer fights, more Putties
+    hits_taken = rpois(n(), lambda = 0.6 * fight_minutes) # longer fights, more hits
+    )
 glimpse(ranger_fights)
 ```
 :::

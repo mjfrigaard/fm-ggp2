@@ -35,9 +35,9 @@ co_box(
 
 > “*making infinite use of finite means*” - Wilhelm von Humboldt
 
-Grammar is often defined as the system of rules for any given language and includes word meanings, internal structures, and word arrangement. Syntax is the form, structure and order for constructing statements. `ggplot2`'s syntax is built on the grammar & syntax of R. In R, objects are like nouns, and functions are like verbs (i.e., functions 'do things' to objects).
+Grammar is often defined as the system of rules for any given language and includes word meanings, internal structures, and word arrangement. Syntax is the form, structure and order used to construct statements. `ggplot2`'s syntax is built on the grammar & syntax of R. In R, objects are like nouns, and functions are like verbs (i.e., functions "do things" to objects).
 
-The `ggplot2` syntax is comprised of layers, which we can use as templates to build increasing customize and complex graphs.
+`ggplot2` syntax is built on layers, which we can use as templates to build increasingly customized and complex graphs.
 
 ### The Data Layer
 
@@ -211,7 +211,7 @@ Some graphs can justifiably belong to more than one category, and wherever this 
 
 ## Assumptions
 
-I've made an effort to write the graph code so it can be read and understood *without* having to execute it.[^intro-1] However, the examples assume the reader has already answered the question, “*what kind of data do I have?*”[^skimr-inspectdf]
+I’ve tried to write code so it can be read and understood without executing it.[^intro-1] However, the examples assume readers can investigate R objects and answer questions related to their structure.[^skimr-inspectdf]
 
 [^skimr-inspectdf]: If not, I highly recommend the [`skimr`](https://docs.ropensci.org/skimr/) and [`inspectdf`](https://alastairrushworth.github.io/inspectdf/) packages for getting to know your data better.
 

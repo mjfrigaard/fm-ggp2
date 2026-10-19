@@ -114,10 +114,13 @@ Most Mario Kart 64 laps on Luigi Raceway take about the same time, but every so 
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(64)
+set.seed(64) # same 200 laps every time the code runs
 mario_kart_laps <- tibble(
-  lap_id = 1:200,
-  seconds = round(45 + 2 * rt(n = 200, df = 3), 2)
+  lap_id = 1:200, # 200 different laps, one row each
+  seconds = round(
+    45 + 2 * rt(n = 200, df = 3), # lap times centered at 45 seconds (heavy tails create outliers)
+    2 # two decimal places
+    )
 )
 glimpse(mario_kart_laps)
 ```

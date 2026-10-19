@@ -115,12 +115,16 @@ Tim Burton's *Batman* opened on June 23, 1989, and the bat signal was everywhere
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1989)
+set.seed(1989) # same 26 weeks every time the code runs
 batman_box <- tibble(
-  week = 1:26,
-  week_of = as.Date("1989-06-23") + 7 * (week - 1),
-  gross = round(55 * exp(-0.25 * (week - 1)) *
-                  exp(rnorm(26, mean = 0, sd = 0.12)), 2))
+  week = 1:26, # 26 weeks in theaters, one row each
+  week_of = as.Date("1989-06-23") + 7 * (week - 1), # first day of each week (opening was June 23)
+  gross = round(
+    55 * exp(-0.25 * (week - 1)) * # $55 million first week, falling about 22% each week
+      exp(rnorm(26, mean = 0, sd = 0.12)), # random week to week noise
+    2 # two decimal places
+    )
+  )
 glimpse(batman_box)
 ```
 :::

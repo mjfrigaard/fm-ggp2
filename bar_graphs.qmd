@@ -13,6 +13,8 @@ library(kableExtra)
 library(extrafont)
 library(sysfonts)
 source("_common.R")
+# wider canvas so the pixel font fits
+knitr::opts_chunk$set(fig.width = 9)
 # use font
 showtext::showtext_auto()
 # set theme
@@ -51,20 +53,20 @@ Graphs in this chapter use `fmggp2::theme_gameboy()`, modeled on the original Ga
 library(ggplot2)
 library(dplyr)
 set.seed(1998)
-pokemon_starters <- tibble(
+alleyway_games <- tibble(
   player_id = 1:300,
-  starter = sample(c("Bulbasaur", "Charmander", "Squirtle"),
+  stage = sample(c("Stage 1", "Stage 2", "Stage 3"),
     size = 300, replace = TRUE, prob = c(0.30, 0.42, 0.28))
 )
 labs_bar <- labs(
-  title = "Pokemon Red and Blue",
+  title = "Alleyway",
   caption = "Simulated data",
-  subtitle = "Starter chosen by 300 players",
-  x = "Starter", y = "Count",
-  fill = "Starter")
-ggp2_bar <- ggplot(data = pokemon_starters,
-       aes(x = starter)) +
-    geom_bar(aes(fill = starter),
+  subtitle = "Last stage reached by 300 players",
+  x = "Stage", y = "Count",
+  fill = "Stage")
+ggp2_bar <- ggplot(data = alleyway_games,
+       aes(x = stage)) +
+    geom_bar(aes(fill = stage),
         show.legend = FALSE)
 ggp2_bar +
   labs_bar
@@ -106,7 +108,19 @@ library(dplyr) # for tibble() and data manipulation
 **DATA:**
 :::
 
-In 1998, every *Pokémon Red and Blue* player started the game by choosing one of three starters: Bulbasaur, Charmander, or Squirtle. We'll simulate the choices of 300 players with `sample()`, giving each starter its own probability of being picked. Setting the seed with `set.seed()` means you'll get the same 300 choices every time you run the code below.
+::: {.column-margin}
+
+![Alleyway box art](https://upload.wikimedia.org/wikipedia/en/d/de/Alleyway_boxart.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled){fig-align="center" width="50%" height="50%"}
+
+:::
+
+
+*Alleyway* was one of the launch games for the Game Boy in 1989. Mario--represented a horizontal, pill-shaped bar--steers a paddle along the bottom of the screen and bounces a ball into rows of bricks, and a game ends when the last ball is lost. 
+
+![Alleyway](https://upload.wikimedia.org/wikipedia/en/e/e8/Alleyway.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled){fig-align="center" width="80%" height="80%"}
+
+
+We'll simulate the last stage reached by 300 players with `sample()`, giving each of the first three stages its own probability. Setting the seed with `set.seed()` means you'll get the same 300 games every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -114,13 +128,17 @@ In 1998, every *Pokémon Red and Blue* player started the game by choosing one o
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1998)
-pokemon_starters <- tibble(
-  player_id = 1:300,
-  starter = sample(c("Bulbasaur", "Charmander", "Squirtle"),
-    size = 300, replace = TRUE, prob = c(0.30, 0.42, 0.28))
+set.seed(1998) # same 300 games every time the code runs
+alleyway_games <- tibble(
+  player_id = 1:300, # 300 different players, one row (and one game) each
+  stage = sample(
+    c("Stage 1", "Stage 2", "Stage 3"), # stages where the last ball can be lost
+    size = 300, # one stage for each player
+    replace = TRUE, # stages can repeat across players
+    prob = c(0.30, 0.42, 0.28) # probabilities for each stage (Stage 2 is most likely)
+    )
 )
-glimpse(pokemon_starters)
+glimpse(alleyway_games)
 ```
 :::
 
@@ -140,11 +158,11 @@ Start with the first ten players.
 #| code-fold: show
 #| eval: true
 #| echo: true
-head(pokemon_starters$starter, 10)
+head(alleyway_games$stage, 10)
 ```
 :::
 
-Six of these ten players chose Charmander. Ten choices is too few to trust, so we count all 300 and compare each count to the count we'd expect: the number of players (300) times the probability we gave each starter.
+Six of these ten players lost their last ball in Stage 2. Ten games is too few to trust, so we count all 300 and compare each count to the count we'd expect: the number of players (300) times the probability we gave each stage.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -152,10 +170,10 @@ Six of these ten players chose Charmander. Ten choices is too few to trust, so w
 #| code-fold: show
 #| eval: true
 #| echo: true
-starter_counts <- pokemon_starters |>
-  count(starter) |>
+stage_counts <- alleyway_games |>
+  count(stage) |>
   mutate(expected = 300 * c(0.30, 0.42, 0.28))
-starter_counts
+stage_counts
 ```
 :::
 
@@ -163,7 +181,7 @@ starter_counts
 **DRAW IT:**
 :::
 
-A bar model shows the three counts as parts of one whole. The full bar is all 300 players, and Charmander takes up the biggest part.
+A bar model shows the three counts as parts of one whole. The full bar is all 300 players, and Stage 2 takes up the biggest part.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -172,12 +190,20 @@ A bar model shows the three counts as parts of one whole. The full bar is all 30
 #| eval: true
 #| echo: true
 #| fig-asp: 0.45
-ggplot(data = starter_counts,
-    aes(x = n, y = "300 players", fill = starter)) +
+ggplot(data = stage_counts,
+    aes(x = n, y = "300 players", fill = stage)) +
+  
   geom_col(position = position_stack(reverse = TRUE)) +
-  geom_text(aes(label = n), color = c("#9BBC0F", "#9BBC0F", "#0F380F"),
-    position = position_stack(vjust = 0.5, reverse = TRUE)) +
-  labs(x = "Number of players", y = NULL, fill = "Starter")
+  
+  geom_text(
+    aes(label = n), 
+    color = c("#9BBC0F", "#9BBC0F", "#0F380F"),
+    position = position_stack(vjust = 0.5, reverse = TRUE)
+    ) +
+  labs(
+    x = "Number of players", 
+    y = NULL, 
+    fill = "Stage")
 ```
 :::
 
@@ -191,13 +217,18 @@ A bar graph takes the same three parts, stands each one upright, and puts them s
 #| echo: true
 #| warning: false
 #| message: false
-ggplot(data = pokemon_starters,
-    aes(x = starter)) +
-  geom_bar(aes(fill = starter), show.legend = FALSE) +
-  geom_errorbar(data = starter_counts,
-    aes(y = expected, ymin = expected, ymax = expected),
-    linetype = "dashed", width = 0.9) +
-  labs(x = "Starter", y = "Count")
+ggplot(data = alleyway_games,
+    aes(x = stage)) +
+  geom_bar(aes(fill = stage), show.legend = FALSE) +
+  geom_errorbar(
+    data = stage_counts,
+    aes(
+      y = expected, 
+      ymin = expected, 
+      ymax = expected),
+    linetype = "dashed", 
+    width = 0.9) +
+  labs(x = "Stage", y = "Count")
 ```
 :::
 
@@ -205,15 +236,15 @@ ggplot(data = pokemon_starters,
 **NAME IT:**
 :::
 
-Each player's choice is like rolling an uneven three sided die. Counting the results of 300 rolls gives a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
+Each game is like rolling an uneven three sided die. Counting the results of 300 rolls gives a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
 
 $$
-(N_{\text{Bulbasaur}}, N_{\text{Charmander}}, N_{\text{Squirtle}}) \sim \text{Multinomial}(n = 300, \; p = (0.30, 0.42, 0.28))
+(N_{\text{Stage 1}}, N_{\text{Stage 2}}, N_{\text{Stage 3}}) \sim \text{Multinomial}(n = 300, \; p = (0.30, 0.42, 0.28))
 $$
 
-The expected height of each bar is $n \times p$: $300 \times 0.30 = 90$ for Bulbasaur, $300 \times 0.42 = 126$ for Charmander, and $300 \times 0.28 = 84$ for Squirtle. The three probabilities add to 1, so the three bars always add to 300. If one bar comes out taller than expected, another has to come out shorter.
+The expected height of each bar is $n \times p$: $300 \times 0.30 = 90$ for Stage 1, $300 \times 0.42 = 126$ for Stage 2, and $300 \times 0.28 = 84$ for Stage 3. The three probabilities add to 1, so the three bars always add to 300. If one bar comes out taller than expected, another has to come out shorter.
 
-Our simulated players show exactly that trade off: Bulbasaur came in `r 90 - sum(pokemon_starters$starter == "Bulbasaur")` below its expected count, and Squirtle came in `r sum(pokemon_starters$starter == "Squirtle") - 84` above. Change the number in `set.seed()` and the bars move around their dashed lines, but they always add to 300.
+Our simulated players show exactly that trade off: Stage 1 came in `r 90 - sum(alleyway_games$stage == "Stage 1")` below its expected count, and Stage 3 came in `r sum(alleyway_games$stage == "Stage 3") - 84` above. Change the number in `set.seed()` and the bars move around their dashed lines, but they always add to 300.
 
 ## Grammar
 
@@ -225,9 +256,9 @@ Our simulated players show exactly that trade off: Bulbasaur came in `r 90 - sum
 
 2. Initialize the graph with `ggplot()` and provide `data`
 
-3. Map `starter` to the `x` axis
+3. Map `stage` to the `x` axis
 
-4. Map `starter` to the `fill` aesthetic inside the `aes()` of `geom_bar()`
+4. Map `stage` to the `fill` aesthetic inside the `aes()` of `geom_bar()`
 
 5. Remove the legend with `show.legend = FALSE`
 
@@ -242,14 +273,14 @@ Our simulated players show exactly that trade off: Bulbasaur came in `r 90 - sum
 #| out-height: '100%'
 #| out-width: '100%'
 labs_bar <- labs(
-  title = "Pokemon Red and Blue",
+  title = "Alleyway",
   caption = "Simulated data",
-  subtitle = "Starter chosen by 300 players",
-  x = "Starter", y = "Count",
-  fill = "Starter")
-ggp2_bar <- ggplot(data = pokemon_starters,
-       aes(x = starter)) +
-    geom_bar(aes(fill = starter),
+  subtitle = "Last stage reached by 300 players",
+  x = "Stage", y = "Count",
+  fill = "Stage")
+ggp2_bar <- ggplot(data = alleyway_games,
+       aes(x = stage)) +
+    geom_bar(aes(fill = stage),
         show.legend = FALSE)
 ggp2_bar +
   labs_bar
@@ -272,14 +303,14 @@ ggp2_bar +
 #| out-width: '100%'
 #| layout-nrow: 1
 labs_bar <- labs(
-  title = "Pokemon Red and Blue",
+  title = "Alleyway",
   caption = "Simulated data",
-  subtitle = "Starter chosen by 300 players",
-  x = "Starter", y = "Count",
-  fill = "Starter")
-ggp2_bar <- ggplot(data = pokemon_starters,
-       aes(x = starter)) +
-    geom_bar(aes(fill = starter),
+  subtitle = "Last stage reached by 300 players",
+  x = "Stage", y = "Count",
+  fill = "Stage")
+ggp2_bar <- ggplot(data = alleyway_games,
+       aes(x = stage)) +
+    geom_bar(aes(fill = stage),
         show.legend = FALSE)
 ggp2_bar +
   labs_bar
@@ -321,17 +352,17 @@ The link between `geom_`**geom_name**`(stat = "`**stat_name**`")` and `stat_`**s
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-ggp2_geom_bar <- ggplot(data = pokemon_starters,
-       aes(x = starter)) +
-    geom_bar(aes(fill = starter),
+ggp2_geom_bar <- ggplot(data = alleyway_games,
+       aes(x = stage)) +
+    geom_bar(aes(fill = stage),
         stat = "count") +
     labs(title = "geom_bar(stat = 'count')")
 ggp2_geom_bar
 
 
-ggp2_stat_count <- ggplot(data = pokemon_starters,
-       aes(x = starter)) +
-    stat_count(aes(fill = starter),
+ggp2_stat_count <- ggplot(data = alleyway_games,
+       aes(x = stage)) +
+    stat_count(aes(fill = stage),
         geom = "bar") +
     labs(title = "stat_count(geom = 'bar')")
 ggp2_stat_count
@@ -358,12 +389,12 @@ To create a bar graph with `geom_col()`, the `count` variable needs to be comput
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-pokemon_starters |>
+alleyway_games |>
     # create column of counts
-    dplyr::count(starter, name = "count") |>
+    dplyr::count(stage, name = "count") |>
     # map into x and y
-    ggplot(mapping = aes(x = starter, y = count)) +
-    geom_col(aes(fill = starter),
+    ggplot(mapping = aes(x = stage, y = count)) +
+    geom_col(aes(fill = stage),
         show.legend = FALSE) +
     labs_bar +
     labs(caption = "*geom_col()")

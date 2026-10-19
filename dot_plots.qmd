@@ -113,10 +113,10 @@ In the late 90s, most Friday nights started at Blockbuster Video. We'll simulate
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1993)
+set.seed(1993) # same 60 households every time the code runs
 blockbuster_rentals <- tibble(
-  household_id = 1:60,
-  rentals = rpois(n = 60, lambda = 3)
+  household_id = 1:60, # 60 different households, one row each
+  rentals = rpois(n = 60, lambda = 3) # weekly rentals (about 3 on average)
 )
 glimpse(blockbuster_rentals)
 ```

@@ -150,25 +150,35 @@ In January, most households aren't worried (we draw these with `sample()`). Afte
 #| code-fold: show
 #| eval: true
 #| echo: true
-prep_levels <- c("Not worried", "Some supplies", "Bunker ready")
-move_probs <- matrix(c(0.70, 0.25, 0.05,
-                       0.15, 0.65, 0.20,
-                       0.05, 0.15, 0.80),
-                     nrow = 3, byrow = TRUE,
-                     dimnames = list(prep_levels, prep_levels))
-next_survey <- function(prep) {
+prep_levels <- c("Not worried", "Some supplies", "Bunker ready") # three levels of Y2K preparation
+move_probs <- matrix(
+  c(0.70, 0.25, 0.05, # from 'Not worried'
+    0.15, 0.65, 0.20, # from 'Some supplies'
+    0.05, 0.15, 0.80), # from 'Bunker ready'
+  nrow = 3, byrow = TRUE, # rows are where a household starts
+  dimnames = list(prep_levels, prep_levels) # columns are where it ends up
+  )
+next_survey <- function(prep) { # moves each household to its next level
   vapply(prep, function(p) {
-    sample(prep_levels, size = 1, prob = move_probs[p, ])
+    sample(prep_levels, size = 1, prob = move_probs[p, ]) # use the row for its current level
   }, character(1), USE.NAMES = FALSE)
 }
-set.seed(1999)
+set.seed(1999) # same 300 households every time the code runs
 y2k_households <- tibble(
-  household_id = 1:300,
-  jan_1999 = sample(prep_levels, size = 300, replace = TRUE,
-                    prob = c(0.6, 0.3, 0.1))) |>
-  mutate(jul_1999 = next_survey(jan_1999),
-         dec_1999 = next_survey(jul_1999)) |>
-  mutate(across(-household_id, function(x) factor(x, levels = prep_levels)))
+  household_id = 1:300, # 300 different households, one row each
+  jan_1999 = sample(prep_levels,
+    size = 300, # one starting level for each household
+    replace = TRUE, # levels repeat across households
+    prob = c(0.6, 0.3, 0.1) # most households start out 'Not worried'
+    )
+  ) |>
+  mutate(
+    jul_1999 = next_survey(jan_1999), # second survey builds on the first
+    dec_1999 = next_survey(jul_1999) # third survey builds on the second
+    ) |>
+  mutate(
+    across(-household_id, function(x) factor(x, levels = prep_levels)) # keep the level order
+    )
 glimpse(y2k_households)
 ```
 :::
@@ -182,7 +192,9 @@ Below we count every combination of the three answers (as `y2k_wide`). Each row 
 #| eval: true
 #| echo: true
 y2k_wide <- y2k_households |>
-  count(jan_1999, jul_1999, dec_1999, name = "freq")
+  count(jan_1999, jul_1999, dec_1999, # every path through the three surveys
+    name = "freq" # number of households on each path
+    )
 glimpse(y2k_wide)
 ```
 :::
@@ -383,10 +395,13 @@ Below we create `y2k_lodes` from the `y2k_wide` data using the `to_lodes_form()`
 #| eval: true
 #| echo: true
 y2k_lodes <- y2k_wide |>
-  rename(`Jan 1999` = jan_1999, `Jul 1999` = jul_1999,
+  rename(`Jan 1999` = jan_1999, `Jul 1999` = jul_1999, # readable axis labels
          `Dec 1999` = dec_1999, Households = freq) |>
-  mutate(January = `Jan 1999`) |>
-  ggalluvial::to_lodes_form(key = "Survey", axes = 1:3)
+  mutate(January = `Jan 1999`) |> # keep each household's starting level for fill
+  ggalluvial::to_lodes_form(
+    key = "Survey", # new column holding the survey names
+    axes = 1:3 # the three survey columns become the axes
+    )
 glimpse(y2k_lodes)
 ```
 :::
@@ -441,12 +456,18 @@ If you'd like to arrange the date or time variable across the `x`, you can use t
 #| eval: true
 #| echo: true
 y2k_long <- y2k_households |>
-  tidyr::pivot_longer(cols = -household_id,
-                      names_to = "survey", values_to = "prep") |>
-  mutate(survey = factor(survey,
-                         levels = c("jan_1999", "jul_1999", "dec_1999"),
-                         labels = c("Jan 1999", "Jul 1999", "Dec 1999")),
-         household_id = factor(household_id))
+  tidyr::pivot_longer(
+    cols = -household_id, # stack the three survey columns
+    names_to = "survey", # which survey each row comes from
+    values_to = "prep" # the household's level in that survey
+    ) |>
+  mutate(
+    survey = factor(survey,
+      levels = c("jan_1999", "jul_1999", "dec_1999"), # surveys in time order
+      labels = c("Jan 1999", "Jul 1999", "Dec 1999") # readable labels
+      ),
+    household_id = factor(household_id) # each household is a category
+    )
 glimpse(y2k_long)
 ```
 :::

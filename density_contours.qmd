@@ -159,19 +159,25 @@ library(dplyr) # for data manipulation
 #| code-fold: show
 #| eval: true
 #| echo: true
-make_group <- function(group, n, mu, sd, r) {
-  faux::rnorm_multi(n = n, mu = c(bop_ms = mu[1], twist_ms = mu[2]),
-                    sd = sd, r = r) |>
+make_group <- function(group, n, mu, sd, r) { # simulates one age group
+  faux::rnorm_multi(n = n,
+    mu = c(bop_ms = mu[1], twist_ms = mu[2]), # average reaction times (milliseconds)
+    sd = sd, # spread of each reaction time
+    r = r # correlation between bop and twist times
+    ) |>
     mutate(age_group = group)
 }
-set.seed(1996)
+set.seed(1996) # same 450 players every time the code runs
 bopit_players <- bind_rows(
-  make_group("Teens", 150, mu = c(350, 400), sd = c(30, 35), r = 0.6),
-  make_group("Kids", 150, mu = c(480, 560), sd = c(40, 45), r = 0.7),
-  make_group("Parents", 150, mu = c(630, 720), sd = c(50, 60), r = 0.5)) |>
-  mutate(player_id = row_number(),
-         age_group = factor(age_group, levels = c("Teens", "Kids", "Parents")),
-         across(c(bop_ms, twist_ms), round)) |>
+  make_group("Teens", 150, mu = c(350, 400), sd = c(30, 35), r = 0.6), # fastest group
+  make_group("Kids", 150, mu = c(480, 560), sd = c(40, 45), r = 0.7), # in the middle
+  make_group("Parents", 150, mu = c(630, 720), sd = c(50, 60), r = 0.5) # slowest group
+  ) |>
+  mutate(
+    player_id = row_number(), # one row per player
+    age_group = factor(age_group, levels = c("Teens", "Kids", "Parents")), # fastest to slowest
+    across(c(bop_ms, twist_ms), round) # whole milliseconds
+    ) |>
   select(player_id, age_group, bop_ms, twist_ms)
 glimpse(bopit_players)
 ```

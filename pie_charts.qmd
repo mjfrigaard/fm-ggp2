@@ -131,17 +131,22 @@ The [Koosh ball](https://en.wikipedia.org/wiki/Koosh_ball) was a ball of rubber 
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1993)
+set.seed(1993) # same 200 Koosh balls every time the code runs
 koosh_balls <- tibble(
-  ball_id = 1:200,
-  style = sample(c("Tri color", "Rainbow", "Neon", "Glow"),
-    size = 200, replace = TRUE, prob = c(1/2, 1/4, 1/8, 1/8)))
+  ball_id = 1:200, # 200 different Koosh balls, one row each
+  style = sample(
+    c("Tri color", "Rainbow", "Neon", "Glow"), # four styles
+    size = 200, replace = TRUE, # one style for each ball
+    prob = c(1/2, 1/4, 1/8, 1/8) # half are Tri color
+    )
+  )
 koosh_pie <- koosh_balls |>
-  count(style, name = "cnt") |>
+  count(style, name = "cnt") |> # balls of each style
   mutate(
-    perc = cnt / sum(cnt),
+    perc = cnt / sum(cnt), # share of all 200 balls
     style = factor(style,
-      levels = c("Tri color", "Rainbow", "Neon", "Glow"))) |>
+      levels = c("Tri color", "Rainbow", "Neon", "Glow")) # most to least common
+    ) |>
   arrange(style)
 glimpse(koosh_pie)
 ```

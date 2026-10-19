@@ -198,23 +198,31 @@ Surge's chance of being picked grows each week as the novelty wears off (`p_surg
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1993)
-lunchroom_survey <- tibble(week = 1:7) |>
-  mutate(p_surge = 0.8 * plogis(-2 + 0.6 * (week - 1)),
-         p_orbitz = 0.8 - p_surge) |>
-  tidyr::uncount(400, .id = "kid") |>
-  mutate(u = runif(n()),
-         choice = case_when(u < p_surge ~ "Surge",
-                            u < p_surge + p_orbitz ~ "Orbitz",
-                            TRUE ~ "Other")) |>
+set.seed(1993) # same survey answers every time the code runs
+lunchroom_survey <- tibble(week = 1:7) |> # seven weeks of surveys
+  mutate(
+    p_surge = 0.8 * plogis(-2 + 0.6 * (week - 1)), # Surge's share climbs each week
+    p_orbitz = 0.8 - p_surge # Orbitz gets the rest of the 80% (the other 20% pick something else)
+    ) |>
+  tidyr::uncount(400, .id = "kid") |> # 400 kids answer each week
+  mutate(
+    u = runif(n()), # a random number between 0 and 1 for each kid
+    choice = case_when(
+      u < p_surge ~ "Surge", # below Surge's share
+      u < p_surge + p_orbitz ~ "Orbitz", # inside Orbitz's share
+      TRUE ~ "Other" # everything else
+      )
+    ) |>
   select(week, kid, choice)
 orbitz_diverg <- lunchroom_survey |>
-  filter(choice != "Other") |>
-  count(week, choice) |>
-  mutate(share = n / 400,
-         share = if_else(choice == "Orbitz", -share, share),
-         choice = factor(choice, levels = c("Surge", "Orbitz")),
-         week = factor(week))
+  filter(choice != "Other") |> # keep only the two drinks
+  count(week, choice) |> # kids picking each drink each week
+  mutate(
+    share = n / 400, # share of all 400 kids
+    share = if_else(choice == "Orbitz", -share, share), # Orbitz bars point down
+    choice = factor(choice, levels = c("Surge", "Orbitz")),
+    week = factor(week) # each week is a category
+    )
 glimpse(orbitz_diverg)
 ```
 :::

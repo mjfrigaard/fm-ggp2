@@ -18,7 +18,7 @@ ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
 ```
 
-Every chapter in this book has its own late 90s `ggplot2` theme to match its simulated data (Game Boy greens for the Pokémon starters, silver comic book cans for OK Soda, and so on). The themes and the small helpers the book uses live in the [`fmggp2` package](https://mjfrigaard.github.io/fmggp2/), so every chapter loads the same tested code.
+Every chapter in this book has its own late 90s `ggplot2` theme to match its simulated data (Game Boy greens for Alleyway, silver comic book cans for OK Soda, and so on). The themes and the small helpers the book uses live in the [`fmggp2` package](https://mjfrigaard.github.io/fmggp2/), so every chapter loads the same tested code.
 
 ## Installing `fmggp2`
 

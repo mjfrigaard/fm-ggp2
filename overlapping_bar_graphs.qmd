@@ -121,13 +121,16 @@ Novell NetWare was the most popular network operating system of the early 90s, a
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1990)
+set.seed(1990) # same 72 offices every time the code runs
 netware_offices <- tibble(
-  year = c("1990", "1994", "1998"),
-  mean_nodes = c(22, 24, 27)) |>
-  tidyr::uncount(24, .id = "office") |>
-  mutate(nodes = round(rnorm(n(), mean = mean_nodes, sd = 2.5)),
-         lan_size = if_else(nodes >= 25, "25 or more", "Under 25")) |>
+  year = c("1990", "1994", "1998"), # three survey years
+  mean_nodes = c(22, 24, 27) # average workstations per office (networks grow over time)
+  ) |>
+  tidyr::uncount(24, .id = "office") |> # 24 offices in each year
+  mutate(
+    nodes = round(rnorm(n(), mean = mean_nodes, sd = 2.5)), # each office's workstation count
+    lan_size = if_else(nodes >= 25, "25 or more", "Under 25") # sort offices into two sizes
+    ) |>
   select(year, office, nodes, lan_size)
 glimpse(netware_offices)
 ```

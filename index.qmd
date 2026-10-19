@@ -20,7 +20,7 @@ ggplot2::theme_set(theme_ggp2g(
 
 Welcome to the `ggplot2` field manual! 
 
-I created this book as a sort of online 'quick reference' to help me answer questions like:[^tidytuesday-twitter-callout]  
+I created this book as a sort of online 'quick reference' to help me answer questions like:[^tidytuesday-callout]  
 
   - "*What graph should I use?*"  
   
@@ -28,13 +28,38 @@ I created this book as a sort of online 'quick reference' to help me answer ques
 
   - "*Can (or should) I build that graph?*"
 
-[^tidytuesday-twitter-callout]: *Most of these questions come from [#TidyTuesday](https://twitter.com/search?lang=en&q=%23tidytuesday)*
+[^tidytuesday-callout]: *Most of these questions come from [#TidyTuesday](https://github.com/rfordatascience/tidytuesday)*
 
 ## What's new in this edition
 
-I've rebuilt the examples in this manual around simulated data. Earlier versions borrowed datasets from packages like `palmerpenguins`, `fivethirtyeight`, and `ggplot2movies`. Those are great datasets, but each one meant another package to install, and the shape of the data was whatever the real world handed us. Now every chapter creates its own data with a few lines of R code, using base R functions (like `rnorm()`, `rpois()`, and `sample()`) or user written packages (like [`faux`](https://debruine.github.io/faux/)).
+Previous versions of this book used datasets from data packages, and a single, consistent plot theme. I've rebuilt the examples in this manual around simulated data, and each section has its own theme. 
 
-Simulating the data unlocks something real data can't: we know the distribution behind every graph before we draw it. Each chapter uses that to connect the numbers to the picture in a new **Distribution** section, so you'll see *why* a histogram is bell shaped or *why* a box plot shows so many outliers, not just how to build it.
+### Why simulated data? 
+
+Earlier versions borrowed datasets from packages like `palmerpenguins`, `fivethirtyeight`, and `ggplot2movies`. Those are great example datasets, but each one meant another package to install, and the shape of the data was whatever the real world handed us. 
+
+I've built many data visualizations since writing the first edition of this book, and found myself asking questions like, "*What **should** this graph be showing?* Or *what if the data were collected under slightly different conditions?*?
+
+Simulating the data gave me control over the distribution and structure, something I couldn't do with real datasets. Building the distributions also forced me to think about each graph differently before I started drawing it. I highly recommend reviewing the code I used in each chapter to create the data. It’s usually only a few lines of code; most of it uses base R (like `rnorm()`, `rpois()`, and `sample()`) or a handful of user-written packages (like [`faux`](https://debruine.github.io/faux/)).
+
+The simulated data connects the numbers to the picture in a new **Distribution** section, so you’ll see why a histogram is shaped like a bell and why a box plot shows so many outliers, not just how to build it.
+
+```{r}
+#| label: co_box_dev
+#| echo: false
+#| results: asis
+#| eval: true
+co_box(
+  color = "r", look = "default", hsize = "1.15", size = "1.05", fold = FALSE,
+  header = "Who actually wrote this",
+  contents = "Given the landscape of LLMs and AI slop, I now feel it’s important to clarify the authorship of anything I write. It seems strange to include this note, but if I were reading a book/blog post/article, I’d want to know.
+
+I used LLMs (only Claude from Anthropic) to research specific distribution topics and help write code to generate the simulated data. I’d typically write a ‘first draft’ of a code example, then ask Claude how to improve it. Sometimes I agreed with the suggestions (and included them). Other times I revised the code myself.
+
+I wrote all of the narrative, description, and code explanations, so the thoughts in the book are my own. Hopefully, the typos and/or grammatical errors serve as a signature of authenticity."
+)
+```
+
 
 I also wanted the examples to be fun to read, so every dataset is a late 90s throwback. You'll find Talkboy messages, Blockbuster rentals, Pokémon starters, and Mario Kart 64 lap times, and each one is drawn with a matching theme (Windows 98, the original Game Boy, the Nintendo 64, and more). The themes live in the [`fmggp2`](https://mjfrigaard.github.io/fmggp2/) package, which also holds the helpers used throughout the book.
 
@@ -55,8 +80,6 @@ flowchart TB
     style connect fill:#FFFFFF,color:#000000,stroke:#333
     style gg fill:#000080,color:#FFFFFF,rx:5,ry:5
 ```
-
-I'm converting the book one part at a time, starting with the Univariate and Amounts graphs. Chapters that haven't been converted yet still use the original datasets and theme.
 
 ## Getting started
 

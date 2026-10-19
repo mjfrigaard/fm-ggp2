@@ -47,20 +47,20 @@ A [bar graph](bar_graphs.qmd) displays and compares data in different categories
 library(ggplot2)
 library(dplyr)
 set.seed(1998)
-pokemon_starters <- tibble(
+alleyway_games <- tibble(
   player_id = 1:300,
-  starter = sample(c("Bulbasaur", "Charmander", "Squirtle"),
+  stage = sample(c("Stage 1", "Stage 2", "Stage 3"),
     size = 300, replace = TRUE, prob = c(0.30, 0.42, 0.28))
 )
 labs_bar <- labs(
-  title = "Pokemon Red and Blue",
+  title = "Alleyway",
   caption = "Simulated data",
-  subtitle = "Starter chosen by 300 players",
-  x = "Starter", y = "Count",
-  fill = "Starter")
-ggp2_bar <- ggplot(data = pokemon_starters,
-       aes(x = starter)) +
-    geom_bar(aes(fill = starter),
+  subtitle = "Last stage reached by 300 players",
+  x = "Stage", y = "Count",
+  fill = "Stage")
+ggp2_bar <- ggplot(data = alleyway_games,
+       aes(x = stage)) +
+    geom_bar(aes(fill = stage),
         show.legend = FALSE)
 (
   ggp2_bar +

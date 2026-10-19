@@ -144,19 +144,22 @@ The 90s were a decade of fads that showed up overnight and vanished just as fast
 #| eval: true
 #| echo: true
 fads <- tibble(
-  fad = c("Slap bracelets", "Hypercolor", "Koosh balls", "Scrunchies"),
-  peak = c(1990.8, 1991.5, 1992.5, 1994),
-  spread = c(0.4, 0.6, 1.5, 2.2),
-  total = c(3000, 4000, 5000, 9000))
-set.seed(1991)
+  fad = c("Slap bracelets", "Hypercolor", "Koosh balls", "Scrunchies"), # four early 90s fads
+  peak = c(1990.8, 1991.5, 1992.5, 1994), # when each fad peaked
+  spread = c(0.4, 0.6, 1.5, 2.2), # how long each fad lasted (in years)
+  total = c(3000, 4000, 5000, 9000) # total sales over the decade
+  )
+set.seed(1991) # same monthly sales every time the code runs
 fad_sales <- expand_grid(
-  month = seq(as.Date("1990-01-01"), as.Date("1999-12-01"), by = "month"),
-  fads) |>
+  month = seq(as.Date("1990-01-01"), as.Date("1999-12-01"), by = "month"), # 120 months
+  fads # every fad in every month
+  ) |>
   mutate(
-    fad = factor(fad, levels = fads$fad),
-    t = lubridate::year(month) + (lubridate::month(month) - 1) / 12,
-    avg_sales = total / 12 * dnorm(t, mean = peak, sd = spread),
-    sales = rpois(n(), lambda = avg_sales)) |>
+    fad = factor(fad, levels = fads$fad), # keep the order above
+    t = lubridate::year(month) + (lubridate::month(month) - 1) / 12, # month as a decimal year
+    avg_sales = total / 12 * dnorm(t, mean = peak, sd = spread), # bell shaped rise and fall
+    sales = rpois(n(), lambda = avg_sales) # monthly sales around the curve
+    ) |>
   select(month, fad, avg_sales, sales)
 glimpse(fad_sales)
 ```

@@ -114,10 +114,12 @@ OK Soda was Coca-Cola's 1993 soda for Gen X, sold in gray comic book cans with s
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1014)
+set.seed(1014) # same 300 stores every time the code runs
 ok_soda_sales <- tibble(
-  store_id = 1:300,
-  cans = round(rnorm(n = 300, mean = 45, sd = 12))
+  store_id = 1:300, # 300 different stores, one row each
+  cans = round(
+    rnorm(n = 300, mean = 45, sd = 12) # cans sold in one day (centered on 45)
+    )
 )
 glimpse(ok_soda_sales)
 ```

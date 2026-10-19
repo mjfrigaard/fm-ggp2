@@ -126,18 +126,21 @@ McDonald's ran a different Happy Meal toy promotion every few weeks in the late 
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1997)
+set.seed(1997) # same 28 days of sales every time the code runs
 happy_meals <- tibble(
-  promotion = c("Teenie Beanie Babies", "Furby", 
+  promotion = c("Teenie Beanie Babies", "Furby", # four Happy Meal promotions
                 "Hot Wheels", "Inspector Gadget"),
-  lambda = c(420, 310, 220, 180)) |>
-  tidyr::uncount(28, .id = "day") |>
-  mutate(promotion = factor(promotion, levels = unique(promotion)),
-         sold = rpois(n(), lambda = lambda)) |>
+  lambda = c(420, 310, 220, 180) # average Happy Meals sold per day
+  ) |>
+  tidyr::uncount(28, .id = "day") |> # 28 days of each promotion
+  mutate(
+    promotion = factor(promotion, levels = unique(promotion)), # keep the order above
+    sold = rpois(n(), lambda = lambda) # daily sales around each average
+    ) |>
   select(promotion, day, sold)
-hm_sum_col <- happy_meals |> 
-  group_by(promotion) |> 
-  summarise(avg_sold = mean(sold)) |> 
+hm_sum_col <- happy_meals |>
+  group_by(promotion) |> # one group per promotion
+  summarise(avg_sold = mean(sold)) |> # average daily sales
   ungroup()
 dplyr::glimpse(hm_sum_col)
 ```

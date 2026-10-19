@@ -139,16 +139,19 @@ Fruit Gushers arrived in 1991: fruit snacks with a liquid center, sold with comm
 #| eval: true
 #| echo: true
 snack_flavors <- tibble(
-  flavor = c("Strawberry", "Lime", "Blue raspberry", "Orange",
+  flavor = c("Strawberry", "Lime", "Blue raspberry", "Orange", # eight Gushers flavors
            "Watermelon", "Berry punch", "Sour apple", "Mystery"),
-  before = c(4, 0.3, 1, 1.5, 0.2, 1, 0.05, 0.05),
-  after = c(8, 1.5, 4, 1.5, 0.8, 1.5, 2, 3),
-  debut = c(1991, 1991, 1991, 1991, 1991, 1992, 1998, 2001))
-set.seed(1993)
-lunch_trades <- expand_grid(year = 1980:2005, snack_flavors) |>
-  mutate(flavor = factor(flavor, levels = snack_flavors$flavor),
-         avg_n = if_else(year < debut, before, after),
-         n = rpois(n(), lambda = avg_n)) |>
+  before = c(4, 0.3, 1, 1.5, 0.2, 1, 0.05, 0.05), # average yearly trades before the debut
+  after = c(8, 1.5, 4, 1.5, 0.8, 1.5, 2, 3), # average yearly trades after the debut
+  debut = c(1991, 1991, 1991, 1991, 1991, 1992, 1998, 2001) # pretend debut year for each flavor
+  )
+set.seed(1993) # same trades every time the code runs
+lunch_trades <- expand_grid(year = 1980:2005, snack_flavors) |> # every flavor in every year
+  mutate(
+    flavor = factor(flavor, levels = snack_flavors$flavor), # keep the order above
+    avg_n = if_else(year < debut, before, after), # pick the average for that year
+    n = rpois(n(), lambda = avg_n) # number of trades that year
+    ) |>
   select(year, flavor, debut, avg_n, n)
 glimpse(lunch_trades)
 ```
@@ -163,7 +166,7 @@ An instance chart only shows the years a flavor was traded, so we'll filter out 
 #| eval: true
 #| echo: true
 gushers_trades <- lunch_trades |>
-  filter(n > 0)
+  filter(n > 0) # keep only the years with at least one trade
 glimpse(gushers_trades)
 ```
 :::
@@ -340,9 +343,11 @@ ggp2_inst_gushers +
 #| eval: true
 #| echo: true
 gushers_trades_range <- gushers_trades |>
-  mutate(n_range = ggplot2::cut_interval(x = n, length = 3))
+  mutate(
+    n_range = ggplot2::cut_interval(x = n, length = 3) # group trade counts into bins 3 wide
+    )
 gushers_trades_range |>
-  count(n_range)
+  count(n_range) # rows in each bin
 ```
 :::
 
@@ -393,14 +398,17 @@ To demonstrate facets, we'll create two other variables: `year_range` and `group
 #| eval: true
 #| echo: true
 gushers_trades_fct <- gushers_trades |>
-  mutate(year_grp = ggplot2::cut_number(year, n = 3, labels = FALSE)) |>
+  mutate(
+    year_grp = ggplot2::cut_number(year, n = 3, labels = FALSE) # three groups of years with similar counts
+    ) |>
   group_by(year_grp) |>
-  mutate(year_range = paste(min(year), "-", max(year))) |>
+  mutate(year_range = paste(min(year), "-", max(year))) |> # label each group with its years
   ungroup() |>
   mutate(
-    year_range = factor(year_range, levels = unique(year_range[order(year)])),
-    group = if_else(flavor %in% c("Blue raspberry", "Berry punch"), "Berry blends", "Single fruit"),
-    group = factor(group, levels = c("Single fruit", "Berry blends")))
+    year_range = factor(year_range, levels = unique(year_range[order(year)])), # earliest to latest
+    group = if_else(flavor %in% c("Blue raspberry", "Berry punch"), "Berry blends", "Single fruit"), # two flavor groups
+    group = factor(group, levels = c("Single fruit", "Berry blends"))
+    )
 ```
 :::
 

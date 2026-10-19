@@ -131,16 +131,27 @@ Setting the seed with `set.seed()` means you'll get the same 180 episodes every 
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1989)
+set.seed(1989) # same 180 episodes every time the code runs
 seinfeld_eps <- tibble(
-  episode = 1:180,
-  season = rep(1:9, each = 20)) |>
+  episode = 1:180, # 180 episodes, one row each
+  season = rep(1:9, each = 20) # nine seasons with 20 episodes each
+  ) |>
   mutate(
-    kramer_minutes = round(rgamma(n(), shape = 6, rate = 1.5), 1),
-    laughs_per_min = round(2 + 0.3 * kramer_minutes +
-                             rnorm(n(), mean = 0, sd = 0.5), 1),
-    viewers = round(exp(rnorm(n(), mean = log(10 + 3 * (season - 1)),
-                              sd = 0.15)), 1))
+    kramer_minutes = round(
+      rgamma(n(), shape = 6, rate = 1.5), # Kramer's screen time (centered near 4 minutes)
+      1 # one decimal place
+      ),
+    laughs_per_min = round(
+      2 + 0.3 * kramer_minutes + # more Kramer means more laughs
+        rnorm(n(), mean = 0, sd = 0.5), # random episode to episode noise
+      1 # one decimal place
+      ),
+    viewers = round(
+      exp(rnorm(n(), mean = log(10 + 3 * (season - 1)), # audience (millions) grows each season
+                sd = 0.15)), # random episode to episode noise
+      1 # one decimal place
+      )
+    )
 glimpse(seinfeld_eps)
 ```
 :::

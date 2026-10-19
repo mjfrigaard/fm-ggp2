@@ -136,21 +136,34 @@ In the 90s, a Sony Walkman went everywhere, and the batteries never seemed to la
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1979)
+set.seed(1979) # same battery tests every time the code runs
 walkman_tests <- faux::sim_design(
-  between = list(model = c("WM2", "Sports", "MegaBass"),
-                 battery = c("Alkaline", "Rechargeable")),
-  n = 20,
-  mu = c(WM2_Alkaline = 10, WM2_Rechargeable = 7,
-         Sports_Alkaline = 16, Sports_Rechargeable = 12,
+  between = list(
+    model = c("WM2", "Sports", "MegaBass"), # three Walkman models
+    battery = c("Alkaline", "Rechargeable") # two battery types
+    ),
+  n = 20, # 20 tests for each model and battery combination
+  mu = c(WM2_Alkaline = 10, WM2_Rechargeable = 7, # average hours of play
+         Sports_Alkaline = 16, Sports_Rechargeable = 12, # (alkaline always lasts longer)
          MegaBass_Alkaline = 22, MegaBass_Rechargeable = 17),
-  sd = 2, dv = "hours", long = TRUE, plot = FALSE) |>
+  sd = 2, # tests vary about 2 hours around each average
+  dv = "hours", # name of the measured column
+  long = TRUE, # one row per test
+  plot = FALSE # skip the design plot
+  ) |>
   as_tibble() |>
-  mutate(model = factor(model, levels = c("WM2", "Sports", "MegaBass"),
-    labels = c("WM-2", "WM-F45 Sports", "WM-EX194 Mega Bass")))
+  mutate(
+    model = factor(model,
+      levels = c("WM2", "Sports", "MegaBass"), # oldest to newest model
+      labels = c("WM-2", "WM-F45 Sports", "WM-EX194 Mega Bass") # full model names
+      )
+    )
 walkman_clev_dots <- walkman_tests |>
-  group_by(battery, model) |>
-  summarise(med_hours = median(hours), .groups = "drop")
+  group_by(battery, model) |> # one group for each model and battery
+  summarise(
+    med_hours = median(hours), # median battery life in each group
+    .groups = "drop" # return an ungrouped tibble
+    )
 glimpse(walkman_clev_dots)
 ```
 :::
@@ -328,26 +341,33 @@ Cleveland dot plots are also helpful when comparing multiple differences on a co
 #| label: data_code_clev_dots2
 #| eval: true
 #| echo: true
-set.seed(1980)
+set.seed(1980) # same rewind tests every time the code runs
 walkman_rewind <- faux::sim_design(
-  between = list(model = c("WM2", "Sports", "MegaBass"),
-                 battery = c("Alkaline", "Rechargeable")),
-  n = 20,
-  mu = c(WM2_Alkaline = 110, WM2_Rechargeable = 125,
-         Sports_Alkaline = 95, Sports_Rechargeable = 105,
+  between = list(
+    model = c("WM2", "Sports", "MegaBass"), # same three Walkman models
+    battery = c("Alkaline", "Rechargeable") # same two battery types
+    ),
+  n = 20, # 20 tests for each model and battery combination
+  mu = c(WM2_Alkaline = 110, WM2_Rechargeable = 125, # average seconds to rewind a tape
+         Sports_Alkaline = 95, Sports_Rechargeable = 105, # (rechargeable is always slower)
          MegaBass_Alkaline = 80, MegaBass_Rechargeable = 90),
-  sd = 8, dv = "rewind_seconds", long = TRUE, plot = FALSE) |>
+  sd = 8, # tests vary about 8 seconds around each average
+  dv = "rewind_seconds", # name of the measured column
+  long = TRUE, # one row per test
+  plot = FALSE # skip the design plot
+  ) |>
   as_tibble()
-walkman_clev_dots2 <- walkman_tests |> 
-    dplyr::mutate(rewind_seconds = walkman_rewind$rewind_seconds) |> 
-    dplyr::group_by(battery, model) |>
+walkman_clev_dots2 <- walkman_tests |>
+    dplyr::mutate(rewind_seconds = walkman_rewind$rewind_seconds) |> # add rewind times to the battery tests
+    dplyr::group_by(battery, model) |> # one group for each model and battery
     dplyr::summarise(
-        `Median battery life (hours)` = median(hours),
-        `Median rewind time (seconds)` = median(rewind_seconds)) |>
-    dplyr::ungroup() |> 
-    tidyr::pivot_longer(cols = starts_with("Med"), 
-        names_to = "median_measure", 
-        values_to = "median_value") |> 
+        `Median battery life (hours)` = median(hours), # first measure
+        `Median rewind time (seconds)` = median(rewind_seconds)) |> # second measure
+    dplyr::ungroup() |>
+    tidyr::pivot_longer(
+        cols = starts_with("Med"), # stack both median columns
+        names_to = "median_measure", # which measure each row holds
+        values_to = "median_value") |> # the median for that measure
     dplyr::mutate(median_measure = factor(median_measure))
 glimpse(walkman_clev_dots2)
 ```

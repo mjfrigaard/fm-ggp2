@@ -130,17 +130,21 @@ Squeezit was General Mills' fruit drink in a squeezable plastic bottle shaped li
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1998)
+set.seed(1998) # same 360 bottles every time the code runs
 squeezit_drinks <- tibble(
-  bottle_id = 1:360,
+  bottle_id = 1:360, # 360 different bottles, one row each
   flavor = rep(c("Tropical", "Blue raspberry", "Strawberry", "Green punch", "Orange", "Cherry"),
-              each = 60)) |>
-  mutate(flavor = factor(flavor, levels = c("Cherry", "Orange", "Green punch", "Strawberry",
-                                          "Blue raspberry", "Tropical")),
-         avg_seconds = c(Tropical = 40, `Blue raspberry` = 32, Strawberry = 26, `Green punch` = 22,
-                      Orange = 18, Cherry = 12)[as.character(flavor)],
-         seconds_to_finish = pmax(1, round(rgamma(n(), shape = 2.5,
-                                                  scale = avg_seconds / 2.5)))) |>
+              each = 60) # 60 bottles of each flavor
+  ) |>
+  mutate(
+    flavor = factor(flavor, levels = c("Cherry", "Orange", "Green punch", "Strawberry",
+                                       "Blue raspberry", "Tropical")), # fastest to slowest
+    avg_seconds = c(Tropical = 40, `Blue raspberry` = 32, Strawberry = 26, `Green punch` = 22,
+                    Orange = 18, Cherry = 12)[as.character(flavor)], # average seconds to finish a bottle
+    seconds_to_finish = pmax(1, # at least one second
+      round(rgamma(n(), shape = 2.5,
+                   scale = avg_seconds / 2.5))) # skewed right around each average
+    ) |>
   select(bottle_id, flavor, seconds_to_finish)
 glimpse(squeezit_drinks)
 ```

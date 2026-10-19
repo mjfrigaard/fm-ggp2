@@ -129,19 +129,22 @@ In *Jurassic Park* (1993), every species lives in its own paddock. We'll simulat
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1993)
+set.seed(1993) # same dinosaur weights every time the code runs
 jp_dinos <- tibble(
-  species = c("Brachiosaurus", "Triceratops", "Tyrannosaurus",
+  species = c("Brachiosaurus", "Triceratops", "Tyrannosaurus", # five species in the park
               "Gallimimus", "Velociraptor"),
-  n = c(3, 5, 2, 20, 8),
-  mean_tons = c(40, 9, 8, 0.45, 0.15),
-  sd_tons = c(5, 1.2, 1, 0.08, 0.03)) |>
-  tidyr::uncount(n) |>
-  mutate(weight_tons = round(rnorm(n(), mean = mean_tons, sd = sd_tons), 2)) |>
+  n = c(3, 5, 2, 20, 8), # number of animals of each species
+  mean_tons = c(40, 9, 8, 0.45, 0.15), # average weight (tons)
+  sd_tons = c(5, 1.2, 1, 0.08, 0.03) # spread of each species' weights
+  ) |>
+  tidyr::uncount(n) |> # one row per animal
+  mutate(
+    weight_tons = round(rnorm(n(), mean = mean_tons, sd = sd_tons), 2) # each animal's weight
+    ) |>
   select(species, weight_tons)
 jp_paddocks <- jp_dinos |>
-  group_by(species) |>
-  summarise(total_tons = sum(weight_tons)) |>
+  group_by(species) |> # one group per species
+  summarise(total_tons = sum(weight_tons)) |> # total weight in each paddock
   ungroup()
 glimpse(jp_paddocks)
 ```

@@ -122,10 +122,13 @@ In 1999, IBM's 340MB Microdrive squeezed a tiny spinning hard disk into a Compac
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1999)
+set.seed(1999) # same 300 photos every time the code runs
 microdrive_photos <- tibble(
-  photo_id = 1:300,
-  size_mb = round(rlnorm(n = 300, meanlog = log(0.75), sdlog = 0.8), 2)
+  photo_id = 1:300, # 300 different photos, one row each
+  size_mb = round(
+    rlnorm(n = 300, meanlog = log(0.75), sdlog = 0.8), # file sizes (most near 0.75 MB, a few much larger)
+    2 # two decimal places
+    )
 )
 glimpse(microdrive_photos)
 ```

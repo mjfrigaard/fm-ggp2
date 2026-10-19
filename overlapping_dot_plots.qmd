@@ -128,14 +128,19 @@ R.L. Stine's *Goosebumps* books were everywhere in the mid 90s, and older kids t
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1992)
+set.seed(1992) # same 120 students every time the code runs
 goosebumps_readers <- tibble(
-  student_id = 1:120,
-  grade = rep(c("3rd grade", "4th grade", "5th grade"), each = 40)) |>
-  mutate(grade = factor(grade,
-           levels = c("3rd grade", "4th grade", "5th grade")),
-         books_read = rpois(n(), lambda = c(`3rd grade` = 3, `4th grade` = 6,
-                                            `5th grade` = 9)[as.character(grade)]))
+  student_id = 1:120, # 120 different students, one row each
+  grade = rep(c("3rd grade", "4th grade", "5th grade"), each = 40) # 40 students per grade
+  ) |>
+  mutate(
+    grade = factor(grade,
+      levels = c("3rd grade", "4th grade", "5th grade")), # youngest to oldest
+    books_read = rpois(n(),
+      lambda = c(`3rd grade` = 3, `4th grade` = 6, # average books read
+                 `5th grade` = 9)[as.character(grade)] # (looked up for each grade)
+      )
+    )
 dplyr::glimpse(goosebumps_readers)
 ```
 :::

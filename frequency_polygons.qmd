@@ -110,10 +110,13 @@ The [Talkboy](https://en.wikipedia.org/wiki/Talkboy) was the handheld cassette r
 #| code-fold: false
 #| eval: true
 #| echo: true
-set.seed(1999)
+set.seed(1999) # same 300 clips every time the code runs
 talkboy_clips <- tibble(
-  clip_id = 1:300,
-  seconds = round(rgamma(n = 300, shape = 4, rate = 0.5), 1)
+  clip_id = 1:300, # 300 different recordings, one row each
+  seconds = round(
+    rgamma(n = 300, shape = 4, rate = 0.5), # clip lengths average 8 seconds (with a long right tail)
+    1 # one decimal place
+    )
 )
 glimpse(talkboy_clips)
 ```

@@ -147,22 +147,25 @@ Mr. Belding's Bayside High gave us six students with very different relationship
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1989)
+set.seed(1989) # same quiz scores every time the code runs
 bayside_quizzes <- expand_grid(
-  student = c("Zack", "Kelly", "Slater", "Jessie", "Lisa", "Screech"),
-  semester = c("Fall 1990", "Spring 1991"),
-  subject = c("Biology", "History"),
-  quiz = 1:10) |>
+  student = c("Zack", "Kelly", "Slater", "Jessie", "Lisa", "Screech"), # six Bayside students
+  semester = c("Fall 1990", "Spring 1991"), # two semesters
+  subject = c("Biology", "History"), # two subjects
+  quiz = 1:10 # ten quizzes in each subject
+  ) |>
   mutate(
-    student = factor(student, levels = unique(student)),
-    avg_score = case_when(
-      student == "Zack" ~ if_else(semester == "Fall 1990", 70, 80),
-      student == "Kelly" ~ 82,
-      student == "Slater" ~ if_else(semester == "Fall 1990", 72, 78),
-      student == "Jessie" ~ 91,
-      student == "Lisa" ~ if_else(semester == "Fall 1990", 84, 81),
-      student == "Screech" ~ if_else(semester == "Fall 1990", 93, 95)),
-    score = round(pmin(100, rnorm(n(), mean = avg_score, sd = 8))))
+    student = factor(student, levels = unique(student)), # keep the order above
+    avg_score = case_when( # each student's average score
+      student == "Zack" ~ if_else(semester == "Fall 1990", 70, 80), # improves
+      student == "Kelly" ~ 82, # holds steady
+      student == "Slater" ~ if_else(semester == "Fall 1990", 72, 78), # improves
+      student == "Jessie" ~ 91, # holds steady
+      student == "Lisa" ~ if_else(semester == "Fall 1990", 84, 81), # slips a little
+      student == "Screech" ~ if_else(semester == "Fall 1990", 93, 95) # improves a little
+      ),
+    score = round(pmin(100, rnorm(n(), mean = avg_score, sd = 8))) # no score above 100
+    )
 glimpse(bayside_quizzes)
 ```
 :::
@@ -177,8 +180,8 @@ A slope graph needs one value per student per semester, so we'll average the 20 
 #| echo: true
 #| message: false
 bayside_slope <- bayside_quizzes |>
-  group_by(semester, student) |>
-  summarise(avg_score = mean(score)) |>
+  group_by(semester, student) |> # one group per student per semester
+  summarise(avg_score = mean(score)) |> # average across both subjects
   ungroup()
 glimpse(bayside_slope)
 ```
@@ -368,8 +371,8 @@ We'll use the `bayside_quizzes` data again, but this time we group it by `semest
 #| echo: true
 #| message: false
 bayside_grp_slope <- bayside_quizzes |>
-    group_by(semester, student, subject) |>
-    summarise(avg_score = mean(score)) |>
+    group_by(semester, student, subject) |> # one group per student, semester, and subject
+    summarise(avg_score = mean(score)) |> # average across the ten quizzes
     ungroup()
 glimpse(bayside_grp_slope)
 ```

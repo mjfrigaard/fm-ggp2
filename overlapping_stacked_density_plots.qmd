@@ -141,14 +141,20 @@ In 1998, Research In Motion (RIM) released the Inter@ctive Pager 950, a two way 
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1998)
+set.seed(1998) # same 300 messages every time the code runs
 pager_messages <- tibble(
-  msg_id = 1:300,
-  model = rep(c("RIM 950", "PageWriter"), times = c(180, 120))) |>
-  mutate(model = factor(model, levels = c("RIM 950", "PageWriter")),
-         msg_length = round(if_else(model == "RIM 950",
-           rnorm(n(), mean = 45, sd = 8),
-           rnorm(n(), mean = 30, sd = 10))))
+  msg_id = 1:300, # 300 different messages, one row each
+  model = rep(c("RIM 950", "PageWriter"), times = c(180, 120)) # 180 from the RIM, 120 from the PageWriter
+  ) |>
+  mutate(
+    model = factor(model, levels = c("RIM 950", "PageWriter")),
+    msg_length = round(
+      if_else(model == "RIM 950",
+        rnorm(n(), mean = 45, sd = 8), # RIM messages run longer (about 45 characters)
+        rnorm(n(), mean = 30, sd = 10) # PageWriter messages run shorter (about 30)
+        )
+      )
+    )
 dplyr::glimpse(pager_messages)
 ```
 :::

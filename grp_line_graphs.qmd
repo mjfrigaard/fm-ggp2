@@ -179,24 +179,29 @@ We'll also create the date variables we need for grouping:
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1992)
+set.seed(1992) # same daily ratings every time the code runs
 nick_ratings <- tibble(
-  date = seq(as.Date("1993-01-01"), as.Date("1999-12-31"), by = "day")) |>
+  date = seq(as.Date("1993-01-01"), as.Date("1999-12-31"), by = "day") # every day from 1993 to 1999
+  ) |>
   mutate(
     year = year(date),
     month = month(date),
-    day_of_week = factor(wday(date, label = TRUE), ordered = FALSE),
+    day_of_week = factor(wday(date, label = TRUE), ordered = FALSE), # Sun through Sat
     day_category = if_else(day_of_week %in% c("Sat", "Sun"),
                            "Weekend", "Weekday"),
-    yr_mnth = floor_date(date, unit = "month"),
-    yr_qtr = factor(paste0(year, "/0", quarter(date)), ordered = TRUE),
-    night_avg = c(Sun = 3.0, Mon = 2.4, Tue = 2.3, Wed = 2.3,
-                  Thu = 2.4, Fri = 2.8, Sat = 4.2)[as.character(day_of_week)],
-    trend = 0.25 * (year - 1993) - 0.04 * (year - 1993)^2,
-    summer = 0.3 * sin(2 * pi * (month - 4) / 12),
-    rating = round(rnorm(n(), mean = night_avg + trend + summer,
-                         sd = 0.35), 2)) |>
-  select(-night_avg, -trend, -summer)
+    yr_mnth = floor_date(date, unit = "month"), # first day of each month
+    yr_qtr = factor(paste0(year, "/0", quarter(date)), ordered = TRUE), # year and quarter
+    night_avg = c(Sun = 3.0, Mon = 2.4, Tue = 2.3, Wed = 2.3, # average rating for each night
+                  Thu = 2.4, Fri = 2.8, Sat = 4.2)[as.character(day_of_week)], # (Saturday is SNICK night)
+    trend = 0.25 * (year - 1993) - 0.04 * (year - 1993)^2, # ratings rise, then level off
+    summer = 0.3 * sin(2 * pi * (month - 4) / 12), # summer bump when school is out
+    rating = round(
+      rnorm(n(), mean = night_avg + trend + summer, # add the three parts together
+            sd = 0.35), # plus random night to night noise
+      2 # two decimal places
+      )
+    ) |>
+  select(-night_avg, -trend, -summer) # drop the helper columns
 glimpse(nick_ratings)
 ```
 :::
@@ -216,8 +221,8 @@ We'll use these data in the *More info* section for more line graphs, but for no
 #| eval: true
 #| echo: true
 avg_rating_day_cat_yr <- nick_ratings |>
-    group_by(year, day_category) |>
-    summarise(avg_rating = mean(rating)) |>
+    group_by(year, day_category) |> # one group per year for weekdays and weekends
+    summarise(avg_rating = mean(rating)) |> # average rating in each group
     ungroup()
 glimpse(avg_rating_day_cat_yr)
 ```

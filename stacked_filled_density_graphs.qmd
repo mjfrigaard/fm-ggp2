@@ -117,16 +117,24 @@ In 1996, most people opened Netscape Navigator over a dial up modem, and the mod
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1996)
+set.seed(1996) # same 600 sessions every time the code runs
 modem_sessions <- tibble(
-  session_id = 1:600,
-  modem = sample(c("14.4k", "28.8k", "56k"), 600, replace = TRUE,
-    prob = c(0.25, 0.45, 0.30)),
-  speed_kbps = round(case_when(
-    modem == "14.4k" ~ rnorm(600, mean = 13, sd = 1.2),
-    modem == "28.8k" ~ rnorm(600, mean = 26, sd = 2.5),
-    TRUE ~ rnorm(600, mean = 44, sd = 5)), 1)) |>
-  mutate(modem = factor(modem, levels = c("14.4k", "28.8k", "56k")))
+  session_id = 1:600, # 600 different dial up sessions, one row each
+  modem = sample(
+    c("14.4k", "28.8k", "56k"), 600, # one modem for each session
+    replace = TRUE,
+    prob = c(0.25, 0.45, 0.30) # 28.8k is the most common
+    ),
+  speed_kbps = round(
+    case_when( # real speeds fall short of each modem's rating
+      modem == "14.4k" ~ rnorm(600, mean = 13, sd = 1.2),
+      modem == "28.8k" ~ rnorm(600, mean = 26, sd = 2.5),
+      TRUE ~ rnorm(600, mean = 44, sd = 5) # 56k modems vary the most
+      ),
+    1 # one decimal place
+    )
+  ) |>
+  mutate(modem = factor(modem, levels = c("14.4k", "28.8k", "56k"))) # slowest to fastest
 dplyr::glimpse(modem_sessions)
 ```
 :::

@@ -150,24 +150,29 @@ Handspring launched the Visor in 1999, and the Springboard expansion slot on its
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(2000)
+set.seed(2000) # same 12 weeks of sales every time the code runs
 springboard_sales <- expand_grid(
-  week = 1:12,
-  module = c("Modem", "VisorPhone", "Games",
-             "MP3 Player", "GPS", "Camera")) |>
+  week = 1:12, # 12 weeks of sales
+  module = c("Modem", "VisorPhone", "Games", # six Springboard modules
+             "MP3 Player", "GPS", "Camera") # (every module appears in every week)
+  ) |>
   mutate(
-    module = factor(module, levels = unique(module)),
-    week_of = as.Date("2000-11-04") + 7 * (week - 1),
-    avg_sales = case_when(
-      module == "Modem" ~ 420 - 8 * (week - 1),
-      module == "VisorPhone" ~ 300 + 15 * (week - 1),
-      module == "Games" ~ 330,
-      module == "MP3 Player" ~ 360 - 5 * (week - 1),
-      module == "GPS" ~ 200 + 20 * (week - 1),
-      module == "Camera" ~ 280 - 10 * (week - 1)),
-    sales = rpois(n(), lambda = avg_sales)) |>
-  group_by(week) |>
-  mutate(rank = rank(-sales, ties.method = "random")) |>
+    module = factor(module, levels = unique(module)), # keep modules in the order above
+    week_of = as.Date("2000-11-04") + 7 * (week - 1), # first day of each week
+    avg_sales = case_when( # average weekly sales for each module
+      module == "Modem" ~ 420 - 8 * (week - 1), # starts on top, then slowly falls
+      module == "VisorPhone" ~ 300 + 15 * (week - 1), # climbs each week
+      module == "Games" ~ 330, # holds steady
+      module == "MP3 Player" ~ 360 - 5 * (week - 1), # slowly falls
+      module == "GPS" ~ 200 + 20 * (week - 1), # starts last, climbs fastest
+      module == "Camera" ~ 280 - 10 * (week - 1) # falls each week
+      ),
+    sales = rpois(n(), lambda = avg_sales) # weekly sales counts around each average
+    ) |>
+  group_by(week) |> # rank the modules within each week
+  mutate(
+    rank = rank(-sales, ties.method = "random") # 1 = best seller (ties broken at random)
+    ) |>
   ungroup()
 glimpse(springboard_sales)
 ```

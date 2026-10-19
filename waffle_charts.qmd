@@ -130,13 +130,18 @@ Waffle charts require a special data transformation with `ggwaffle::waffle_iron(
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1993)
+set.seed(1993) # same 100 pogs every time the code runs
 pog_collection <- tibble(
-  pog_id = 1:100,
-  type = sample(c("Milk caps", "Printed pogs", "Holographic", "Slammers"),
-    size = 100, replace = TRUE, prob = c(0.45, 0.30, 0.15, 0.10)))
+  pog_id = 1:100, # 100 different pogs, one row each
+  type = sample(
+    c("Milk caps", "Printed pogs", "Holographic", "Slammers"), # four kinds of pogs
+    size = 100, replace = TRUE, # one kind for each pog
+    prob = c(0.45, 0.30, 0.15, 0.10) # milk caps are the most common
+    )
+  )
 waffle_pogs <- ggwaffle::waffle_iron(pog_collection,
-                      aes_d(group = type), rows = 10)
+                      aes_d(group = type), # one square per pog, grouped by kind
+                      rows = 10) # a 10 by 10 grid
 
 glimpse(waffle_pogs)
 ```

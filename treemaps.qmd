@@ -161,18 +161,21 @@ In the early to mid 2000s, most mobile phone games were small J2ME (Java ME) app
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(2003)
+set.seed(2003) # same downloads every time the code runs
 j2me_downloads <- tibble(
-  genre = c("Puzzle", "Puzzle", "Racing", "Racing",
+  genre = c("Puzzle", "Puzzle", "Racing", "Racing", # three genres, two games each
             "Sports", "Sports"),
-  title = c("Block Drop", "Gem Swap", "Street Rally", "Moto Sprint",
+  title = c("Block Drop", "Gem Swap", "Street Rally", "Moto Sprint", # six games
             "Pocket Soccer", "Pro Bowling"),
-  yearly_rate = c(1800, 900, 2400, 700, 1200, 1000),
-  deck_share = c(0.80, 0.40, 0.35, 0.60, 0.55, 0.50)) |>
-  tidyr::expand_grid(channel = c("Carrier deck", "Direct")) |>
-  mutate(lambda = yearly_rate *
-           if_else(channel == "Carrier deck", deck_share, 1 - deck_share),
-         downloads = rpois(n(), lambda = lambda)) |>
+  yearly_rate = c(1800, 900, 2400, 700, 1200, 1000), # average downloads per year
+  deck_share = c(0.80, 0.40, 0.35, 0.60, 0.55, 0.50) # share sold through the carrier's menu
+  ) |>
+  tidyr::expand_grid(channel = c("Carrier deck", "Direct")) |> # each game in both channels
+  mutate(
+    lambda = yearly_rate *
+      if_else(channel == "Carrier deck", deck_share, 1 - deck_share), # average downloads in each channel
+    downloads = rpois(n(), lambda = lambda) # download counts around each average
+    ) |>
   select(genre, title, channel, lambda, downloads)
 glimpse(j2me_downloads)
 ```

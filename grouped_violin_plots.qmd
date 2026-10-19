@@ -129,19 +129,23 @@ In the late 90s, your AOL Instant Messenger (AIM) buddy list was a status symbol
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1997)
+set.seed(1997) # same 450 users every time the code runs
 aim_buddies <- tibble(
-  user_id = 1:450,
-  school = rep(c("Middle school", "High school", "College"), each = 150)) |>
-  mutate(school = factor(school,
-           levels = c("Middle school", "High school", "College")),
-         buddies = case_when(
-           school == "Middle school" ~ rpois(n(), lambda = 20),
-           school == "High school" ~ round(rlnorm(n(), meanlog = log(45),
-                                                  sdlog = 0.45)),
-           TRUE ~ round(if_else(runif(n()) < 0.7,
-                                rnorm(n(), mean = 60, sd = 10),
-                                rnorm(n(), mean = 150, sd = 20)))))
+  user_id = 1:450, # 450 different AIM users, one row each
+  school = rep(c("Middle school", "High school", "College"), each = 150) # 150 users per level
+  ) |>
+  mutate(
+    school = factor(school,
+      levels = c("Middle school", "High school", "College")), # youngest to oldest
+    buddies = case_when( # size of each buddy list
+      school == "Middle school" ~ rpois(n(), lambda = 20), # short, tight lists
+      school == "High school" ~ round(rlnorm(n(), meanlog = log(45),
+                                             sdlog = 0.45)), # longer lists with a right tail
+      TRUE ~ round(if_else(runif(n()) < 0.7, # college has two kinds of users
+                           rnorm(n(), mean = 60, sd = 10), # most keep about 60 buddies
+                           rnorm(n(), mean = 150, sd = 20))) # some keep about 150
+      )
+    )
 glimpse(aim_buddies)
 ```
 :::

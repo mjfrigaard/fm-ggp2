@@ -121,15 +121,21 @@ Every summer in the early 90s, backyard water fights were won by whoever had the
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1990)
+set.seed(1990) # same 600 shots every time the code runs
 soaker_shots <- tibble(
-  shot_id = 1:600,
-  model = rep(c("SS 50", "SS 100", "CPS 2000"), each = 200)) |>
-  mutate(model = factor(model, levels = c("SS 50", "SS 100", "CPS 2000")),
-         avg_range = c(`SS 50` = 25, `SS 100` = 35,
-                       `CPS 2000` = 45)[as.character(model)],
-         range_ft = round(rnorm(n(), mean = avg_range,
-                                sd = 0.12 * avg_range), 1)) |>
+  shot_id = 1:600, # 600 different shots, one row each
+  model = rep(c("SS 50", "SS 100", "CPS 2000"), each = 200) # 200 shots per model
+  ) |>
+  mutate(
+    model = factor(model, levels = c("SS 50", "SS 100", "CPS 2000")), # shortest to longest range
+    avg_range = c(`SS 50` = 25, `SS 100` = 35, # average range in feet
+                  `CPS 2000` = 45)[as.character(model)], # (looked up for each model)
+    range_ft = round(
+      rnorm(n(), mean = avg_range,
+            sd = 0.12 * avg_range), # bigger soakers spread out more
+      1 # one decimal place
+      )
+    ) |>
   select(shot_id, model, range_ft)
 glimpse(soaker_shots)
 ```

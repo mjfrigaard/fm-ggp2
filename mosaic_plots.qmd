@@ -139,23 +139,29 @@ library(dplyr) # for tibble() and data manipulation
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1997)
+set.seed(1997) # same 500 fans every time the code runs
 titanic_fans <- tibble(
-  fan_id = 1:500,
-  age_group = sample(c("Teen", "Adult"), 500, replace = TRUE,
-    prob = c(0.4, 0.6))) |>
+  fan_id = 1:500, # 500 different fans, one row each
+  age_group = sample(
+    c("Teen", "Adult"), 500, # each fan is a teen or an adult
+    replace = TRUE, # groups repeat across fans
+    prob = c(0.4, 0.6) # a few more adults than teens
+    )
+  ) |>
   mutate(
     viewings = if_else(age_group == "Teen",
       sample(c("Once", "Twice", "3+ times"), n(), replace = TRUE,
-        prob = c(0.35, 0.35, 0.30)),
+        prob = c(0.35, 0.35, 0.30)), # teens go back to the theater more often
       sample(c("Once", "Twice", "3+ times"), n(), replace = TRUE,
-        prob = c(0.70, 0.22, 0.08))),
+        prob = c(0.70, 0.22, 0.08)) # most adults see it once
+      ),
     soundtrack = if_else(
-      runif(n()) < c(Once = 0.25, Twice = 0.50, `3+ times` = 0.80)[viewings],
+      runif(n()) < c(Once = 0.25, Twice = 0.50, `3+ times` = 0.80)[viewings], # more viewings, more likely to buy
       "Yes", "No"),
     age_group = factor(age_group, levels = c("Teen", "Adult")),
-    viewings = factor(viewings, levels = c("Once", "Twice", "3+ times")),
-    soundtrack = factor(soundtrack, levels = c("No", "Yes")))
+    viewings = factor(viewings, levels = c("Once", "Twice", "3+ times")), # fewest to most viewings
+    soundtrack = factor(soundtrack, levels = c("No", "Yes"))
+    )
 glimpse(titanic_fans)
 ```
 :::

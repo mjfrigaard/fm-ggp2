@@ -116,12 +116,16 @@ When *Doom* came out in December 1993, the first question every PC owner asked w
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1993)
+set.seed(1993) # same 200 PCs every time the code runs
 doom_pcs <- tibble(
-  pc_id = 1:200,
-  cpu_mhz = round(runif(200, min = 25, max = 100)),
-  fps = round(pmin(35, 0.45 * cpu_mhz +
-                     rnorm(200, mean = 0, sd = 3)), 1))
+  pc_id = 1:200, # 200 different PCs, one row each
+  cpu_mhz = round(runif(200, min = 25, max = 100)), # processor speeds spread evenly from 25 to 100 MHz
+  fps = round(
+    pmin(35, 0.45 * cpu_mhz + # faster processors, more frames (Doom caps out at 35)
+           rnorm(200, mean = 0, sd = 3)), # random PC to PC noise
+    1 # one decimal place
+    )
+  )
 glimpse(doom_pcs)
 ```
 :::

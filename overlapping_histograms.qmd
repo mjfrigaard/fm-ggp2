@@ -119,14 +119,20 @@ In 1997, kids everywhere were feeding, cleaning, and playing with Tamagotchis, a
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1997)
+set.seed(1997) # same 450 pets every time the code runs
 tamagotchi_pets <- tibble(
-  pet_id = 1:450,
-  care = rep(c("Neglected", "Average", "Pampered"), each = 150)) |>
-  mutate(care = factor(care, levels = c("Neglected", "Average", "Pampered")),
-         lifespan_days = round(rweibull(n(), shape = 2.2,
-           scale = c(Neglected = 6, Average = 13,
-                     Pampered = 21)[as.character(care)]), 1))
+  pet_id = 1:450, # 450 different pets, one row each
+  care = rep(c("Neglected", "Average", "Pampered"), each = 150) # 150 pets for each level of care
+  ) |>
+  mutate(
+    care = factor(care, levels = c("Neglected", "Average", "Pampered")), # least to most care
+    lifespan_days = round(
+      rweibull(n(), shape = 2.2, # lifespans pile up in the middle
+        scale = c(Neglected = 6, Average = 13, # typical lifespan in days
+                  Pampered = 21)[as.character(care)]), # (looked up for each level of care)
+      1 # one decimal place
+      )
+    )
 glimpse(tamagotchi_pets)
 ```
 :::

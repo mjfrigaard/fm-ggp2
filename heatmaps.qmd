@@ -129,19 +129,22 @@ library(tidyr) # for expand_grid()
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1990)
+set.seed(1990) # same episodes every time the code runs
 fp_gags <- tibble(
-  gag = c("Will flirts", "Phil yells at Will", "Geoffrey zinger",
+  gag = c("Will flirts", "Phil yells at Will", "Geoffrey zinger", # six running gags
           "Jazz thrown out", "Hilary goes shopping", "Carlton dance"),
-  base = c(1.5, 1.2, 0.8, -0.4, -0.2, -2.2),
-  trend = c(-0.3, -0.1, 0, 0.2, 0, 0.5))
+  base = c(1.5, 1.2, 0.8, -0.4, -0.2, -2.2), # how common each gag is (higher is more common)
+  trend = c(-0.3, -0.1, 0, 0.2, 0, 0.5) # change per season (positive gags grow)
+  )
 fp_episodes <- fp_gags |>
-  tidyr::expand_grid(season = 1:6, episode = 1:24) |>
-  mutate(p = plogis(base + trend * (season - 3.5)),
-         present = rbinom(n(), size = 1, prob = p))
+  tidyr::expand_grid(season = 1:6, episode = 1:24) |> # every gag in every episode
+  mutate(
+    p = plogis(base + trend * (season - 3.5)), # chance the gag shows up in that episode
+    present = rbinom(n(), size = 1, prob = p) # 1 = the gag happened, 0 = it didn't
+    )
 fp_heatmap <- fp_episodes |>
-  group_by(season, gag) |>
-  summarise(occurrences = sum(present), .groups = "drop")
+  group_by(season, gag) |> # one group per gag per season
+  summarise(occurrences = sum(present), .groups = "drop") # episodes with the gag
 glimpse(fp_heatmap)
 ```
 :::
