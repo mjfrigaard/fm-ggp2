@@ -41,7 +41,6 @@ Graphs in this chapter use `fmggp2::theme_pager()`, built from a RIM 950 two-way
 #| fig-align: right
 library(ggplot2)
 library(dplyr)
-library(patchwork)
 set.seed(1998)
 pager_messages <- tibble(
   msg_id = 1:300,
@@ -51,33 +50,16 @@ pager_messages <- tibble(
            rnorm(n(), mean = 45, sd = 8),
            rnorm(n(), mean = 30, sd = 10))))
 labs_ovrlp_density <- labs(
-  subtitle = "position = 'identity'",
+  title = "Two way pager messages",
+  caption = "Simulated data",
   x = "Message length (characters)",
   fill = "Pager model")
 ggp2_ovrlp_density <- ggplot(data = pager_messages,
        aes(x = msg_length,
            fill = model)) +
       geom_density(alpha = 1/3)
-
-ovrlp_density <- ggp2_ovrlp_density +
-  labs_ovrlp_density +
-    theme(legend.position = "bottom")
-
-labs_stack_density <- labs(
-  subtitle = "position = 'stack'",
-  x = "Message length (characters)",
-  fill = "Pager model")
-ggp2_stack_density <- ggplot(data = pager_messages,
-       aes(x = msg_length,
-           after_stat(count),
-           fill = model)) +
-      geom_density(position = "stack",
-                   alpha = 1/3)
-stack_density <- ggp2_stack_density +
-  labs_stack_density +
-    theme(legend.position = "bottom")
-ovrlp_density + stack_density +
-    patchwork::plot_layout(ncol = 1)
+ggp2_ovrlp_density +
+  labs_ovrlp_density
 ```
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
