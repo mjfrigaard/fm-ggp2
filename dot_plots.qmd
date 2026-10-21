@@ -105,7 +105,15 @@ library(dplyr) # for tibble() and data manipulation
 **DATA:**
 :::
 
-In the late 90s, most Friday nights started at Blockbuster Video. We'll simulate how many movies 60 households rented in one week with `rpois()`, which generates whole number counts (0, 1, 2, and so on). Setting the seed with `set.seed()` means you'll get the same 60 households every time you run the code below.
+In the late 90s, most Friday nights started at [Blockbuster Video](https://en.wikipedia.org/wiki/Blockbuster_(retailer)). 
+
+::: {.column-margin}
+
+![Blockbuster Video membership card (source: Wikipedia)](https://upload.wikimedia.org/wikipedia/commons/5/56/Blockbuster_membership_card.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled){fig-align="center" width="50%" height="50%"}
+
+:::
+
+We'll simulate how many movies 60 households rented in one week with `rpois()`, which generates whole number counts (0, 1, 2, and so on). Setting the seed with `set.seed()` means you'll get the same 60 households every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -124,7 +132,11 @@ glimpse(blockbuster_rentals)
 
 ## Distribution
 
-Rentals are counts: a household rents 0, 1, 2, or more movies, but never 2.5. Dot plots are a good fit for counts like these because each dot is one household, so the graph is just the data stacked into piles. Because we picked the rental rate in `rpois()`, we know what the piles should look like before we draw them. Below we'll move from the counts, to a picture, to the formula.
+Rentals are counts: a household rents 0, 1, 2, or more movies, but never 2.5. Dot plots are a good fit for counts like these because each dot is one household, so the graph is just the data stacked into piles. 
+
+![A Blockbuster store in Durham, North Carolina (source: Wikipedia)](https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/2008-09-24_Blockbuster_in_Durham.jpg/3840px-2008-09-24_Blockbuster_in_Durham.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail){fig-align="center" width="80%" height="80%"}
+
+Because we picked the rental rate in `rpois()`, we know what the piles should look like before we draw them. Below we'll move from the counts, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
