@@ -62,7 +62,7 @@ labs_dotplot <- labs(
 ggp2_dotplot <- ggplot(data = blockbuster_rentals,
       aes(x = rentals)) + 
     geom_dotplot(binwidth = 1, dotsize = 0.2) + 
-    scale_x_continuous(breaks = 0:8) 
+    scale_y_continuous(NULL, breaks = NULL)
 ggp2_dotplot + 
   labs_dotplot
 ```
@@ -287,7 +287,30 @@ ggp2_dotplot +
 ```
 
 
-A downside of using dot plots is the lack of interpretability of the `y` axis.[^dot-y-axis]
+A downside of using dot plots is the lack of interpretability of the `y` axis.[^dot-y-axis] The axis is labeled `count`, but its numbers run from 0 to 1, even though the tallest pile in our graph holds 15 households.
+
+These numbers don't line up with the piles because `geom_dotplot()` doesn't stack dots by counting them. It sizes each dot to fit the `binwidth` on the `x` axis (one rental), then stacks the dots on top of each other until the pile runs out. The height of a pile depends on how many dots it holds *and* how big each dot is, so changing `dotsize` makes every pile taller or shorter without changing the data. The `y` axis isn't measuring anything; it's just leftover space for the dots to sit in.
+
+The number of households is still in the graph, but we read it by counting the dots in each pile, not by looking across to the axis. Because the axis can mislead readers, it's common to hide it with `scale_y_continuous(NULL, breaks = NULL)`.
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+#| layout-nrow: 1
+labs_dotplot <- labs(
+  title = "Blockbuster Video",
+  caption = "Simulated data",
+  subtitle = "Rentals per household in one week",
+  x = "Number of rentals")
+ggp2_dotplot <- ggplot(data = blockbuster_rentals,
+      aes(x = rentals)) + 
+    geom_dotplot(binwidth = 1, dotsize = 0.2) + 
+    scale_y_continuous(NULL, breaks = NULL)
+ggp2_dotplot + 
+  labs_dotplot
+```
 
 [^dot-y-axis]: Read more in the [function reference.](https://ggplot2.tidyverse.org/reference/geom_dotplot.html#details) 
 

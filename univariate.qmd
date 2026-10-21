@@ -216,7 +216,7 @@ ggp2_density <- ggplot(data = crystal_tasters,
   ggp2_density +
     labs_density
 ) +
-  fmggp2::theme_crystalpepsi(base_size = 12) +
+  fmggp2::theme_wired(base_size = 12) +
   bare_theme
 ```
 
