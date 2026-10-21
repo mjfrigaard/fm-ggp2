@@ -194,22 +194,22 @@ A [density plot](density_plots.qmd) displays the distribution of data in a smoot
 #| fig-align: center
 library(ggplot2)
 library(dplyr)
-set.seed(1998)
-crystal_tasters <- tibble(
-  taster_id = 1:400,
-  group = sample(c("kid", "parent"), size = 400, replace = TRUE,
+set.seed(1993)
+wired_stories <- tibble(
+  story_id = 1:400,
+  format = sample(c("news", "feature"), size = 400, replace = TRUE,
     prob = c(0.65, 0.35)),
-  age = round(if_else(group == "kid", 
-    rnorm(400, mean = 11, sd = 2.5), 
-    rnorm(400, mean = 37, sd = 6)))
+  minutes = round(if_else(format == "news", 
+    rnorm(400, mean = 6, sd = 1.5), 
+    rnorm(400, mean = 30, sd = 7)))
 )
 labs_density <- labs(
-  title = "Crystal Pepsi",
+  title = "WIRED",
   caption = "Simulated data",
-  subtitle = "Ages of 400 people at a 1992 mall taste test",
-  x = "Age (years)")
-ggp2_density <- ggplot(data = crystal_tasters,
-        aes(x = age)) +
+  subtitle = "Reading times of 400 WIRED stories",
+  x = "Reading time (minutes)")
+ggp2_density <- ggplot(data = wired_stories,
+        aes(x = minutes)) +
       geom_density()
 
 (

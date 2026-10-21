@@ -50,22 +50,22 @@ Graphs in this chapter use `fmggp2::theme_wired()`, built from the WIRED (US) No
 #| fig-align: right
 library(ggplot2)
 library(dplyr)
-set.seed(1998)
-crystal_tasters <- tibble(
-  taster_id = 1:400,
-  group = sample(c("kid", "parent"), size = 400, replace = TRUE,
+set.seed(1993)
+wired_stories <- tibble(
+  story_id = 1:400,
+  format = sample(c("news", "feature"), size = 400, replace = TRUE,
     prob = c(0.65, 0.35)),
-  age = round(if_else(group == "kid", 
-    rnorm(400, mean = 11, sd = 2.5), 
-    rnorm(400, mean = 37, sd = 6)))
+  minutes = round(if_else(format == "news", 
+    rnorm(400, mean = 6, sd = 1.5), 
+    rnorm(400, mean = 30, sd = 7)))
 )
 labs_density <- labs(
-  title = "Crystal Pepsi",
+  title = "WIRED",
   caption = "Simulated data",
-  subtitle = "Ages of 400 people at a 1992 mall taste test",
-  x = "Age (years)")
-ggp2_density <- ggplot(data = crystal_tasters,
-        aes(x = age)) +
+  subtitle = "Reading times of 400 WIRED stories",
+  x = "Reading time (minutes)")
+ggp2_density <- ggplot(data = wired_stories,
+        aes(x = minutes)) +
       geom_density()
 
 ggp2_density +
@@ -112,7 +112,7 @@ library(dplyr) # for tibble() and data manipulation
 :::
 
 ::: {style="font-size: 0.95rem;"}
-[Crystal Pepsi](https://en.wikipedia.org/wiki/Crystal_Pepsi) was a clear cola that Pepsi launched in 1992 and pulled in 1994. Picture a mall taste test table in 1992: kids lining up for a free sample of see through soda, and the parents who brought them to the mall. We'll simulate the ages of 400 tasters in two steps. First, `sample()` decides whether each taster is a kid or a parent. Then `rnorm()` draws an age from that group's own normal distribution. Setting the seed with `set.seed()` means you'll get the same 400 fans every time you run the code below.
+[WIRED](https://en.wikipedia.org/wiki/Wired_(magazine)) has covered technology and culture since its first issue in 1993. Picture a month of WIRED stories: lots of short news posts, plus long features like the ones in the magazine's Big Interview issue. We'll simulate the reading times of 400 stories in two steps. First, `sample()` decides whether each story is a news post or a feature. Then `rnorm()` draws a reading time from that format's own normal distribution. Setting the seed with `set.seed()` means you'll get the same 400 stories every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -121,35 +121,35 @@ library(dplyr) # for tibble() and data manipulation
 #| code-fold: show
 #| eval: true
 #| echo: true
-set.seed(1998) # same 400 tasters every time the code runs
-crystal_tasters <- tibble(
-  taster_id = 1:400, # 400 different tasters, one row each
-  group = sample(
-    c("kid", "parent"), # each taster is a kid or a parent
-    size = 400, # one group for each taster
-    replace = TRUE, # groups repeat across tasters
-    prob = c(0.65, 0.35) # about two thirds are kids
+set.seed(1993) # same 400 stories every time the code runs
+wired_stories <- tibble(
+  story_id = 1:400, # 400 different stories, one row each
+  format = sample(
+    c("news", "feature"), # each story is a news post or a feature
+    size = 400, # one format for each story
+    replace = TRUE, # formats repeat across stories
+    prob = c(0.65, 0.35) # about two thirds are news posts
     ),
-  age = round(
-    if_else(group == "kid",
-      rnorm(400, mean = 11, sd = 2.5), # kids' ages center on 11
-      rnorm(400, mean = 37, sd = 6) # parents' ages center on 37
+  minutes = round(
+    if_else(format == "news",
+      rnorm(400, mean = 6, sd = 1.5), # news posts center on 6 minutes
+      rnorm(400, mean = 30, sd = 7) # features center on 30 minutes
       )
     )
 )
-glimpse(crystal_tasters)
+glimpse(wired_stories)
 ```
 :::
 
 ## Distribution
 
-Every distribution we've seen so far has a single peak. Real data doesn't always cooperate, and the taste test crowd is a good example: it has two peaks, one for kids and one for parents. Density plots are good at showing this kind of shape, but summary statistics can hide it completely. Below we'll move from the ages, to a picture, to the formula.
+Every distribution we've seen so far has a single peak. Real data doesn't always cooperate, and the WIRED stories are a good example: they have two peaks, one for news posts and one for features. Density plots are good at showing this kind of shape, but summary statistics can hide it completely. Below we'll move from the reading times, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the first ten tasters.
+Start with the first ten stories.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -157,11 +157,11 @@ Start with the first ten tasters.
 #| code-fold: show
 #| eval: true
 #| echo: true
-head(crystal_tasters, 10)
+head(wired_stories, 10)
 ```
 :::
 
-The ages fall into two clumps: kids between 7 and 15, and parents between 34 and 40. Nobody in this first ten is in their twenties. Now look at what the mean and median say about all 400 tasters.
+The reading times fall into two clumps: news posts between 3 and 8 minutes, and features at 17 and 43 minutes. Nothing in this first ten takes between 9 and 16 minutes. Now look at what the mean and median say about all 400 stories.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -169,21 +169,21 @@ The ages fall into two clumps: kids between 7 and 15, and parents between 34 and
 #| code-fold: show
 #| eval: true
 #| echo: true
-crystal_tasters |> 
+wired_stories |> 
   summarise(
-    mean = mean(age), 
-    median = median(age), 
-    tasters_age_18_to_25 = sum(age >= 18 & age <= 25))
+    mean = mean(minutes), 
+    median = median(minutes), 
+    stories_12_to_18_min = sum(minutes >= 12 & minutes <= 18))
 ```
 :::
 
-The mean age is about 20, but only `r sum(crystal_tasters$age >= 18 & crystal_tasters$age <= 25)` of the 400 tasters are between 18 and 25. The mean describes almost nobody in line.
+The mean reading time is about 15 minutes, but only `r sum(wired_stories$minutes >= 12 & wired_stories$minutes <= 18)` of the 400 stories take between 12 and 18 minutes to read. The mean describes almost none of the stories.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-A bar model shows the crowd as two parts of one whole. Kids make up about two thirds of the bar.
+A bar model shows the stories as two parts of one whole. News posts make up about two thirds of the bar.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -192,17 +192,17 @@ A bar model shows the crowd as two parts of one whole. Kids make up about two th
 #| eval: true
 #| echo: true
 #| fig-asp: 0.45
-crystal_tasters |> 
-  count(group) |> 
-  ggplot(aes(x = n, y = "400 tasters", fill = group)) + 
+wired_stories |> 
+  count(format) |> 
+  ggplot(aes(x = n, y = "400 stories", fill = format)) + 
   geom_col(position = position_stack(reverse = TRUE)) + 
   geom_text(aes(label = n), color = "white", 
     position = position_stack(vjust = 0.5, reverse = TRUE)) + 
-  labs(x = "Number of tasters", y = NULL, fill = "Group")
+  labs(x = "Number of stories", y = NULL, fill = "Format")
 ```
 :::
 
-The density plot below draws each group's ages as its own curve. The kid curve is tall and narrow (most kids are close to 11), and the parent curve is short and wide (parents' ages vary more). The dashed line marks the mean age, which falls in the valley between the two peaks.
+The density plot below draws each format's reading times as its own curve. The news curve is tall and narrow (most news posts take close to 6 minutes), and the feature curve is short and wide (feature lengths vary more). The dashed line marks the mean reading time, which falls in the valley between the two peaks.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -212,29 +212,29 @@ The density plot below draws each group's ages as its own curve. The kid curve i
 #| echo: true
 #| warning: false
 #| message: false
-ggplot(data = crystal_tasters, 
-    aes(x = age)) + 
-  geom_density(aes(y = after_stat(count), fill = group), 
+ggplot(data = wired_stories, 
+    aes(x = minutes)) + 
+  geom_density(aes(y = after_stat(count), fill = format), 
     alpha = 0.6, color = NA) + 
   geom_density(aes(y = after_stat(count)), fill = NA) + 
-  geom_vline(xintercept = mean(crystal_tasters$age), linetype = "dashed") + 
-  labs(x = "Age (years)", y = "Tasters per year of age", fill = "Group")
+  geom_vline(xintercept = mean(wired_stories$minutes), linetype = "dashed") + 
+  labs(x = "Reading time (minutes)", y = "Stories per minute", fill = "Format")
 ```
 :::
 
-The solid line is what `geom_density()` draws for all 400 tasters together. It finds the same two peaks, but it uses one amount of smoothing (the bandwidth) for the whole crowd, so the narrow kid peak comes out lower and wider than the kid curve. You can adjust the smoothing with the `adjust` argument (e.g., `geom_density(adjust = 0.5)`).
+The solid line is what `geom_density()` draws for all 400 stories together. It finds the same two peaks, but it uses one amount of smoothing (the bandwidth) for every story, so the narrow news peak comes out lower and wider than the news curve. You can adjust the smoothing with the `adjust` argument (e.g., `geom_density(adjust = 0.5)`).
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **NAME IT:**
 :::
 
-Our two step simulation creates a [mixture distribution](https://en.wikipedia.org/wiki/Mixture_distribution). Each taster's age comes from one of two normal distributions, chosen with probabilities 0.65 and 0.35:
+Our two step simulation creates a [mixture distribution](https://en.wikipedia.org/wiki/Mixture_distribution). Each story's reading time comes from one of two normal distributions, chosen with probabilities 0.65 and 0.35:
 
 $$
-f(x) = 0.65 \cdot \text{Normal}(x;\, 11, 2.5) + 0.35 \cdot \text{Normal}(x;\, 37, 6)
+f(x) = 0.65 \cdot \text{Normal}(x;\, 6, 1.5) + 0.35 \cdot \text{Normal}(x;\, 30, 7)
 $$
 
-The weights (0.65 and 0.35) set how much area each peak gets, the means (11 and 37) set where the peaks sit, and the standard deviations (2.5 and 6) set how wide they are. The mean of the mixture is the weighted average of the two means: $0.65 \times 11 + 0.35 \times 37 = 20.1$ years. That's why the mean lands in the valley. 
+The weights (0.65 and 0.35) set how much area each peak gets, the means (6 and 30) set where the peaks sit, and the standard deviations (1.5 and 7) set how wide they are. The mean of the mixture is the weighted average of the two means: $0.65 \times 6 + 0.35 \times 30 = 14.4$ minutes. That's why the mean lands in the valley. 
 
 Try moving the two means closer together in `rnorm()`. Once the peaks overlap enough, the valley disappears and the curve looks like it has a single peak, even though the data still comes from two groups.
 
@@ -251,7 +251,7 @@ Create labels with `labs()`
 
 Initialize the graph with `ggplot()` and provide `data`
 
-Map `age` to the `x` axis
+Map `minutes` to the `x` axis
 
 Add the `geom_density()` layer
 
@@ -266,12 +266,12 @@ Add the `geom_density()` layer
 #| warning: false
 #| message: false
 labs_density <- labs(
-  title = "Crystal Pepsi",
+  title = "WIRED",
   caption = "Simulated data",
-  subtitle = "Ages of 400 people at a 1992 mall taste test",
-  x = "Age (years)")
-ggp2_density <- ggplot(data = crystal_tasters,
-        aes(x = age)) +
+  subtitle = "Reading times of 400 WIRED stories",
+  x = "Reading time (minutes)")
+ggp2_density <- ggplot(data = wired_stories,
+        aes(x = minutes)) +
       geom_density()
 
 ggp2_density +
@@ -293,12 +293,12 @@ ggp2_density +
 #| message: false
 #| layout-nrow: 1
 labs_density <- labs(
-  title = "Crystal Pepsi",
+  title = "WIRED",
   caption = "Simulated data",
-  subtitle = "Ages of 400 people at a 1992 mall taste test",
-  x = "Age (years)")
-ggp2_density <- ggplot(data = crystal_tasters,
-        aes(x = age)) +
+  subtitle = "Reading times of 400 WIRED stories",
+  x = "Reading time (minutes)")
+ggp2_density <- ggplot(data = wired_stories,
+        aes(x = minutes)) +
       geom_density()
 
 ggp2_density +
