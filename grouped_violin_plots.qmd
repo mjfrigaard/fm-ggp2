@@ -86,7 +86,7 @@ ggp2_grp_violin +
 
 ## Description
 
-A ‘violin plot’ is a variation of a density or ridgeline plot,  where the distribution is plotted symmetrically, creating a two-sided, smoothed distribution.
+A [violin plot](violin_plots.qmd) shows where numbers fall, and where they fall most often. Like a [density plot](density_plots.qmd) or a [ridgeline plot](ridgeline_plots.qmd), it shows the numbers with a line instead of bars.[^violin] A violin plot turns that line on its side and shows it two times, once on each side of a middle line, so the two sides match.[^mirror] Grouped violin plots put one violin for each group next to each other, so we can compare where the numbers fall from one group to the next.[^groups]
 
 ## Set up
 
@@ -95,7 +95,7 @@ A ‘violin plot’ is a variation of a density or ridgeline plot,  where the di
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Install packages.
+Bring in the code we'll use.[^packages]
 :::
 
 
@@ -120,7 +120,7 @@ library(dplyr) # for tibble() and data manipulation
 :::
 
 ::: {style="font-size: 0.95rem;"}
-In the late 90s, your AOL Instant Messenger (AIM) buddy list was a status symbol. We'll simulate buddy list sizes for 150 users at each level of school, and each level gets a different *kind* of distribution. Middle schoolers' lists are counts from `rpois()`. High schoolers' lists come from `rlnorm()`, so a few popular kids have much longer lists. College students are a mix of two groups (`runif()` decides which): most have about 60 buddies, and about 30% are heavy users with about 150. Setting the seed with `set.seed()` means you'll get the same 450 users every time you run the code below.
+AOL Instant Messenger (AIM) let people send short notes to each other on the computer. Each user kept a list of friends, called a buddy list. In the late 90s, a long buddy list showed that a lot of people at school knew you.[^status] We'll make up[^simulate] the number of buddies for 150 users at each level of school, and each level gets a different *kind* of rule.[^dist] Lists in middle school come from `rpois()`.[^poisson] Lists in high school come from `rlnorm()`, so a few kids that everyone knows have much longer lists.[^lognormal] College students come from two groups (`runif()` decides which):[^mixture] most have about 60 buddies, and about 30% use AIM a lot and have about 150. Starting with `set.seed()`[^seed] means you'll get the same 450 users every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -152,13 +152,13 @@ glimpse(aim_buddies)
 
 ## Distribution
 
-Violin plots are at their best when groups differ in *shape*, not just in center and spread. Summary numbers (and box plots built from them) can make three very different distributions look alike. Below we'll move from the users, to a picture, to the formula.
+Violin plots work best when groups have different *forms*, not only a different middle and a different amount of space between their numbers.[^shape] A few numbers that stand for all of them[^summary] can make three very different groups look the same. A [box plot](box_plots.qmd) puts a box around the middle half of the numbers, and it is made from those few numbers, so it can miss the difference too.[^box-plot] Below we'll move from the users, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the first eight users (all middle schoolers).
+Start with the first eight users (all in middle school).
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -170,7 +170,7 @@ head(aim_buddies$buddies, 8)
 ```
 :::
 
-These middle schoolers have between 11 and 25 buddies. The summary below shows each group's mean, median, and standard deviation. For middle schoolers the mean and median match, for high schoolers the mean is a little higher, and for college students the mean is almost 20 buddies higher than the median. The numbers hint that something is different about the college group, but they don't tell us what.
+These users have between 11 and 25 buddies. The median is the middle number when you put all the numbers in order. The numbers below show each group's mean, median, and how far its numbers usually fall from the mean (`sd`).[^sd] In middle school the mean and median are close, in high school the mean is a little higher, and in college the mean is almost 20 buddies higher than the median. The numbers show that something is different about the college group, but not what.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -189,7 +189,7 @@ aim_buddies |>
 **DRAW IT:**
 :::
 
-The graph below draws a narrow box plot inside each violin. The middle school violin is a short, symmetric diamond. The high school violin has a wide base and a tail that stretches up. The college violin has *two* bulges, one near 60 buddies and one near 150, with almost nobody in between. The college box plot hides that gap completely: it looks like one long, lopsided box.
+The graph below puts a small box plot inside each violin. The middle school violin is short, and its top half and lower half almost match.[^diamond] The high school violin is wide near its lower end, with a long part above that is not very wide.[^tail] The college violin has *two* wide parts, one near 60 buddies and one near 150, with almost no one in between.[^bimodal] The college box plot does not show that open space: it looks like one long box with its middle line close to its lower end.[^lopsided]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -208,7 +208,7 @@ ggplot(aim_buddies, aes(x = school, y = buddies, fill = school)) +
 **NAME IT:**
 :::
 
-Each level of school has its own distribution:
+Each level of school has its own rule:[^dist-each]
 
 $$
 \begin{aligned}
@@ -218,7 +218,7 @@ $$
 \end{aligned}
 $$
 
-The [Poisson](https://en.wikipedia.org/wiki/Poisson_distribution) gives a narrow, nearly symmetric violin because its standard deviation is only $\sqrt{20} \approx 4.5$. The [log normal](https://en.wikipedia.org/wiki/Log-normal_distribution) gives the long upper tail. The [mixture](https://en.wikipedia.org/wiki/Mixture_distribution) gives two peaks, and its mean ($0.7 \times 60 + 0.3 \times 150 = 87$) lands in the empty space between them. A box plot only knows about quartiles, so it can't show a gap like that. Try moving the two college means closer together in `rnorm()` and the two bulges merge into one.
+The [rule for how many times a thing happens](https://en.wikipedia.org/wiki/Poisson_distribution)[^poisson-name] gives a short violin with a top half and lower half that almost match, because its numbers usually fall only $\sqrt{20} \approx 4.5$ buddies from the mean.[^sd-pois] The [rule behind `rlnorm()`](https://en.wikipedia.org/wiki/Log-normal_distribution)[^lognormal-name] gives the long part at the top. The [rule that puts two groups together](https://en.wikipedia.org/wiki/Mixture_distribution)[^mixture-name] gives two high points,[^peaks] and its mean ($0.7 \times 60 + 0.3 \times 150 = 87$) lands in the open space between them. A box plot only knows where the numbers cut the group into four parts of the same size,[^quartiles] so it can't show open space like that. Try moving the two college means closer together in `rnorm()` and the two wide parts will join into one.
 
 
 ## Grammar
@@ -227,15 +227,15 @@ The [Poisson](https://en.wikipedia.org/wiki/Poisson_distribution) gives a narrow
 **CODE:**
 :::
 
-  -   Create labels with `labs()`
+  -   Make the words around the graph[^labels] with `labs()`
 
-  -   Initialize the graph with `ggplot()` and provide `data`
+  -   Start the graph with `ggplot()` and give it `data`
 
-  -   Map `school` to the `x`, `buddies` to the `y`, and `school` to `fill`
+  -   Put `school` on the `x` axis and `buddies` on the `y` axis, and give each `school` its own color with `fill`
 
-  -   Set `alpha` to `2/3`
+  -   Set `alpha` to `2/3` (so we can see through the violins)
 
-  -   Remove the legend with `show.legend = FALSE`
+  -   Take away the color key[^legend] with `show.legend = FALSE`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -271,7 +271,7 @@ ggp2_grp_violin +
 :::
 
 
-Violin plots can allow us to compare the 'center' and 'spread' of continuous variables across categorical groups.
+Violin plots let us compare where the middle of a number column is, and how far from each other its numbers are, from group to group.[^center-spread]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -305,11 +305,11 @@ ggp2_grp_violin +
 ### Quartiles
 
 ::: {.column-margin}
-Change the shape of the line with [`linetype` and `linewidth`](https://ggplot2.tidyverse.org/reference/geom_violin.html#aesthetics).
+Change the look of the line with [`linetype` and `linewidth`](https://ggplot2.tidyverse.org/reference/geom_violin.html#aesthetics).
 :::
 
 
-We can include lines for the 25th, 50th, and 75th quartiles using the `draw_quantiles` argument.
+We can add lines where the numbers cut each group into four parts of the same size[^quartile-lines] with the `quantiles` setting,[^argument] and show them with `quantile.linetype = 1`.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -326,7 +326,8 @@ ggplot(data = aim_buddies,
            y = buddies,
         fill = school)) +
   geom_violin(
-      draw_quantiles = c(0.25, 0.5, 0.75),
+      quantiles = c(0.25, 0.5, 0.75),
+      quantile.linetype = 1,
       alpha = 1/2,
       linewidth = 0.5,
       show.legend = FALSE)
@@ -336,7 +337,7 @@ ggplot(data = aim_buddies,
 ### Kernel
 
 
-The [`kernel` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments) let's us change the "*kernel density estimate*" used to create the violin shape. The possible [kernel density estimates](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/density.html) are `"gaussian"`, `"epanechnikov"`, `"rectangular"`, `"triangular"`, `"biweight"`, `"cosine"`, and `"optcosine"`
+The [`kernel` setting](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments) lets us change the "*kernel density estimate*" used to make the form of the violin. The [ones we can pick](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/density.html)[^kde] are `"gaussian"`, `"epanechnikov"`, `"rectangular"`, `"triangular"`, `"biweight"`, `"cosine"`, and `"optcosine"`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -355,14 +356,16 @@ ggplot(data = aim_buddies,
   geom_violin(alpha = 1/2,
       linewidth = 0.5,
       kernel = "rectangular",
-      show.legend = FALSE)
+      show.legend = FALSE) +
+  labs_grp_violin +
+  labs(caption = "kernel = rectangular")
 ```
 :::
 
 ### Bandwidth
 
 
-We can directly adjust the shape of the violin with the [`bw` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments), which is the *standard deviation of the smoothing kernel.* The [`trim` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments) *trim(s) the tails of the violins to the range of the data.*
+We can change the form of the violin with the [`bw` setting](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments), which is the *standard deviation of the smoothing kernel.* The [`trim` setting](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments) *trim(s) the tails of the violins to the range of the data.*
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -400,3 +403,69 @@ grp_violin_bw20 +
     labs(caption = "bw = 20")
 ```
 :::
+
+[^violin]: A variation of a density or ridgeline plot: a smoothed distribution.
+
+[^mirror]: The distribution is plotted symmetrically, creating a two sided, smoothed distribution.
+
+[^groups]: The groups of a categorical variable.
+
+[^packages]: Install and load the packages.
+
+[^status]: An AIM buddy list was a status symbol.
+
+[^simulate]: Simulate.
+
+[^dist]: Distribution.
+
+[^poisson]: `rpois()` draws counts from a Poisson distribution.
+
+[^lognormal]: `rlnorm()` draws from a log normal distribution, so a few popular kids have much longer lists.
+
+[^mixture]: A mix (mixture) of two normal distributions.
+
+[^seed]: Setting the random seed.
+
+[^shape]: When groups differ in *shape*, not just in center and spread.
+
+[^summary]: Summary statistics.
+
+[^box-plot]: Box plots are built from summary statistics.
+
+[^formula]: The formula.
+
+[^sd]: The standard deviation.
+
+[^diamond]: A short, symmetric diamond.
+
+[^tail]: A wide base and a tail that stretches up.
+
+[^bimodal]: Two bulges (two modes).
+
+[^lopsided]: One long, lopsided box: the median sits near the bottom of the box.
+
+[^dist-each]: Its own distribution.
+
+[^poisson-name]: The Poisson distribution.
+
+[^sd-pois]: The standard deviation of a Poisson distribution is $\sqrt{\lambda}$.
+
+[^lognormal-name]: The log normal distribution.
+
+[^mixture-name]: The mixture distribution.
+
+[^peaks]: Two peaks.
+
+[^quartiles]: A box plot only knows about quartiles.
+
+[^labels]: Labels.
+
+[^legend]: The legend.
+
+[^center-spread]: Compare the 'center' and 'spread' of continuous variables across categorical groups.
+
+[^quartile-lines]: The 25th, 50th, and 75th percentiles (the first, second, and third quartiles).
+
+[^argument]: An argument.
+
+[^kde]: The possible kernel density estimates.

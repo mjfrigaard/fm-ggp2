@@ -79,6 +79,7 @@ ggplot(rzone_games,
         alpha = 1/3, size = 1.8,
     position = position_jitter(
       seed = 321,
+      width = 0,
       height = .07)) +
     theme(legend.position = "none") +
     labs_raincloud_2
@@ -107,13 +108,14 @@ rzone_1x1 <- raincloudplots::data_1x1(
   array_2 = rzone_tries$second_try,
   jit_distance = 0.2, # distance between points
   jit_seed = 2736) # used in set.seed()
-ggp2_raincloud <- raincloud_1x1(
+ggp2_raincloud <- raincloud_1x1_repmes(
     data_1x1 = rzone_1x1,
     colors = (c('#FF2E93', '#14D8C4')),
     fills = (c('#FF2E93', '#14D8C4')),
+    line_color = "#F2F0FF",
+    line_alpha = 0.3,
     size = 0.8,
-    alpha = 3/4,
-    ort = 'h'
+    alpha = 3/4
 )
 ggp2_raincloud_x <- ggp2_raincloud +
     scale_x_continuous(
@@ -143,9 +145,9 @@ ggp2_raincloud_x +
 
 ## Description
 
-Raincloud plots are a combination of density graph, a box plot, and a beeswarm (or jitter) plot, and are used to compare distributions of quantitative/numerical variables across the levels of a categorical (or discrete) grouping variable.
+A raincloud plot shows where numbers fall in three ways at once.[^raincloud] The cloud is a line that is high where many numbers fall and low where few do, like a [density plot](density_plots.qmd). The box is a [box plot](box_plots.qmd). The rain is one point for each number, moved a little to the side so the points don't all fall on top of each other.[^rain] We can put rainclouds next to each other to compare where the numbers fall in each group.[^groups]
 
-We can use the [`raincloudplots` package](https://github.com/jorvlan/raincloudplots) to create raincloud plots, or they can be built using the [`ggdist` package](https://mjskay.github.io/ggdist/) and geoms from `ggplot2`.
+We can make raincloud plots with the [`raincloudplots` code](https://github.com/jorvlan/raincloudplots),[^pkg] or build them with the [`ggdist` code](https://mjskay.github.io/ggdist/) and the `geom_*()` parts of `ggplot2`.[^geoms]
 
 ## Set up
 
@@ -154,7 +156,7 @@ We can use the [`raincloudplots` package](https://github.com/jorvlan/raincloudpl
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Install packages.
+Bring in the code we'll use.[^packages]
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -181,11 +183,11 @@ library(dplyr) # for tibble() and data manipulation
 **DATA:**
 :::
 
-Tiger's [R-Zone](https://en.wikipedia.org/wiki/R-Zone) (1995) was a game console you wore on your head: a cartridge projected red LCD graphics onto a small visor in front of one eye. The games were simple, so most players cleared the first level much faster on their second try (if their eyes held out). We'll simulate how many seconds it took 100 players to clear the first level on their first and second tries.
+Tiger's [R-Zone](https://en.wikipedia.org/wiki/R-Zone) (1995) was a game you wore on your head.[^console] A small card you put into it[^cartridge] showed the game in red, close in front of one eye.[^visor] The games were simple, so most players got through the first level much faster on their second try (if their eyes held out). We'll make up[^simulate] how many seconds it took 100 players to get through the first level on their first and second tries.
 
-`faux::rnorm_multi()` draws two correlated columns from a normal distribution: the log of the first try (centered on 40 seconds) and the log of the second try (centered on 20 seconds), with a correlation (`r`) of 0.7, so players who are slow the first time tend to be slow the second time too. `exp()` turns the logs back into seconds. Setting the seed with `set.seed()` means you'll get the same 100 players every time you run the code below.
+A log scale puts 0.1, 1, and 10 at even steps, so it shows how many times bigger one number is than another.[^log] A hill is a line that is high in the middle and low on both sides. `faux::rnorm_multi()` picks two columns of numbers from a hill, and the two columns go up and down together:[^mvn] the log of the first try (with its middle at 40 seconds) and the log of the second try (with its middle at 20 seconds). `r` sets how much the two tries move together (0.7),[^cor] so players who take a long time the first time often take a long time the second time too. `exp()` turns the logs back into seconds. Starting with `set.seed()`[^seed] means you'll get the same 100 players every time you run the code below.
 
-The `raincloudplots` package has a `data_1x1()` function we can use to build the dataset for a 1x1 repeated measure graph (`rzone_1x1`). This function takes two array arguments (`array_1` and `array_2`), which we create from the `first_try` and `second_try` columns. The `jit_distance` and `jit_seed` refer to the points in the plot.
+`data_1x1()` from `raincloudplots` builds the data (`rzone_1x1`) for a graph of one group at two times, like the same players on two tries.[^repeated] We give it two lists of numbers (`array_1` and `array_2`),[^arrays] which we make from the `first_try` and `second_try` columns. `jit_distance` and `jit_seed` are for the points in the graph.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -217,7 +219,7 @@ glimpse(rzone_1x1)
 
 ## Distribution
 
-A raincloud plot shows a whole distribution three ways at once (the cloud, the box, and the rain). The R-Zone data adds a twist: the two groups are the *same* 100 players measured twice, so each first try has a partner second try. Comparing the two clouds only tells part of the story; the pairs tell the rest. Below we'll move from the players, to a picture, to the formula.
+A raincloud plot shows where all the numbers fall in three ways at once (the cloud, the box, and the rain).[^whole] The R-Zone data adds something new: the two groups are the *same* 100 players, each with two tries, so each first try goes with a second try from the same player.[^paired] Comparing the two clouds only tells part of the story; the two tries from each player tell the rest. Below we'll move from the players, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -235,7 +237,7 @@ head(rzone_tries, 5)
 ```
 :::
 
-Four of these five players cleared the level much faster on their second try, but player 3 took more than twice as long. The summary below compares the two tries for all 100 players. The median drops by about half, almost every player was faster the second time, and the correlation shows that slow first tries go with slow second tries.
+Four of these five players got through the level much faster on their second try, but player 3 took more than two times as long. The numbers below compare the two tries for all 100 players.[^summary] The median is the middle number when you put all the numbers in order. The median drops by about half, almost every player was faster the second time, and `correlation` shows that long first tries go with long second tries.[^cor-summary]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -255,7 +257,7 @@ rzone_tries |>
 **DRAW IT:**
 :::
 
-The graph below plots each player's two tries against each other on log scales. The solid line is "no change" (second try = first try), and the dashed line is "twice as fast" (second try = half the first try). The points cluster around the dashed line, and they fall along a band rather than a blob because of the correlation.
+The graph below puts each player's first try on the `x` axis and second try on the `y` axis, both on log scales. The line with no breaks in it[^solid] is "no change" (second try = first try), and the line made of short marks[^dashed] is "two times as fast" (second try = half the first try). The points come together around the line made of short marks, and they fall along a band instead of a round cloud because the two tries move together.[^band]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -263,16 +265,22 @@ The graph below plots each player's two tries against each other on log scales. 
 #| code-fold: show
 #| eval: true
 #| echo: true
+guide_lines <- tibble(
+  line = c("No change", "Two times as fast"),
+  intercept = c(0, log10(0.5)))
 ggplot(rzone_tries, aes(x = first_try, y = second_try)) +
-  geom_abline(slope = 1, intercept = 0, color = "#F2F0FF") +
-  geom_abline(slope = 1, intercept = log10(0.5), linetype = "dashed",
-    color = "#14D8C4") +
+  geom_abline(data = guide_lines,
+    aes(slope = 1, intercept = intercept, color = line, linetype = line)) +
   geom_point(shape = 21, fill = "#FF2E93", color = "#ffffff",
     size = 2.2, alpha = 0.8) +
   scale_x_log10() +
   scale_y_log10() +
-  labs(x = "First try (seconds, log scale)",
-       y = "Second try (seconds, log scale)")
+  scale_color_manual(values = c("#F2F0FF", "#14D8C4")) +
+  scale_linetype_manual(values = c("solid", "dashed")) +
+  labs(x = "First try (seconds, log10 scale)",
+       y = "Second try (seconds, log10 scale)",
+       color = NULL, linetype = NULL) +
+  theme(legend.position = "top")
 ```
 :::
 
@@ -280,13 +288,13 @@ ggplot(rzone_tries, aes(x = first_try, y = second_try)) +
 **NAME IT:**
 :::
 
-The two log times come from a [bivariate normal distribution](https://en.wikipedia.org/wiki/Multivariate_normal_distribution), which makes each try [log normal](https://en.wikipedia.org/wiki/Log-normal_distribution) on the seconds scale:
+The logs of the two tries come from [a hill with two numbers that move together](https://en.wikipedia.org/wiki/Multivariate_normal_distribution),[^bvn] which makes each try in seconds come from [a hill on the log scale](https://en.wikipedia.org/wiki/Log-normal_distribution):[^lognormal]
 
 $$
 \begin{pmatrix} \log(\text{first}) \\ \log(\text{second}) \end{pmatrix} \sim \text{Normal}\left(\begin{pmatrix} \log 40 \\ \log 20 \end{pmatrix}, \; \sigma = 0.5, \; \rho = 0.7\right)
 $$
 
-The difference between the two logs is the log of the speed up, $\log(\text{second} / \text{first})$. It's centered on $\log(20 / 40) = \log(0.5)$ (twice as fast), and its standard deviation is $\sigma\sqrt{2(1 - \rho)} = 0.5\sqrt{0.6} \approx 0.39$. The correlation shrinks that spread: if the two tries were independent ($\rho = 0$), the spread would be $0.5\sqrt{2} \approx 0.71$, and many more players would have been slower the second time. That's why paired data (and raincloud plots that connect the pairs) can show a difference that two separate clouds hide. Try changing `r` to `0` in `rnorm_multi()` and the band of points spreads into a cloud.
+The difference between the two logs is the log of how much faster the second try was, $\log(\text{second} / \text{first})$.[^speedup] Its middle is at $\log(20 / 40) = \log(0.5)$ (two times as fast), and how far it usually falls from that middle is $\sigma\sqrt{2(1 - \rho)} = 0.5\sqrt{0.6} \approx 0.39$.[^sd] Because the two tries move together, that number gets smaller: if the two tries had nothing to do with each other ($\rho = 0$),[^independent] it would be $0.5\sqrt{2} \approx 0.71$, and many more players would have taken longer the second time. That's why data with two tries from each player[^paired-data] (and raincloud plots that join each player's two tries with a line) can show a difference that we can't see in two clouds on their own. Try changing `r` to `0` in `rnorm_multi()`, and the band of points opens up into a cloud.
 
 
 ## Grammar (`raincloudplots`)
@@ -295,13 +303,15 @@ The difference between the two logs is the log of the speed up, $\log(\text{seco
 **CODE:**
 :::
 
-Create labels with `labs()`
+Make the words around the graph[^labels] with `labs()`
 
-Use the `raincloudplots::raincloud_1x1()` to build the plot, assigning `rzone_1x1` to `data_1x1`
+Build the graph with `raincloudplots::raincloud_1x1_repmes()`, and give `rzone_1x1` to `data_1x1`
 
-  - assign `colors` and `fills`
+  - set `colors` and `fills`
 
-  - set the size (of the points) and alpha (for opacity)
+  - set `line_color` and `line_alpha` for the lines that join each player's two tries
+
+  - set the `size` of the points and `alpha` (how much we can see through them)[^alpha]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -313,13 +323,14 @@ Use the `raincloudplots::raincloud_1x1()` to build the plot, assigning `rzone_1x
 #| message: false
 #| out-height: '100%'
 #| out-width: '100%'
-ggp2_raincloud <- raincloudplots::raincloud_1x1(
+ggp2_raincloud <- raincloudplots::raincloud_1x1_repmes(
     data_1x1 = rzone_1x1,
     colors = (c('#FF2E93', '#14D8C4')),
     fills = (c('#FF2E93', '#14D8C4')),
+    line_color = "#F2F0FF",
+    line_alpha = 0.3,
     size = 0.8,
-    alpha = 3/4,
-    ort = 'h')
+    alpha = 3/4)
 ggp2_raincloud_x <- ggp2_raincloud +
     ggplot2::scale_x_continuous(
         breaks = c(1, 2),
@@ -350,13 +361,14 @@ ggp2_raincloud_x +
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-ggp2_raincloud <- raincloudplots::raincloud_1x1(
+ggp2_raincloud <- raincloudplots::raincloud_1x1_repmes(
     data_1x1 = rzone_1x1,
     colors = (c('#FF2E93', '#14D8C4')),
     fills = (c('#FF2E93', '#14D8C4')),
+    line_color = "#F2F0FF",
+    line_alpha = 0.3,
     size = 0.8,
-    alpha = 3/4,
-    ort = 'h')
+    alpha = 3/4)
 ggp2_raincloud_x <- ggp2_raincloud +
     ggplot2::scale_x_continuous(
         breaks = c(1, 2),
@@ -377,7 +389,7 @@ ggp2_raincloud_x +
 **DATA:**
 :::
 
-We'll simulate first tries for 80 players on each of three kinds of R-Zone games (`rzone_games`). Each kind of game gets its own typical time (15, 30, or 60 seconds), and `rlnorm()` draws each player's time.
+We'll make up first tries for 80 players on each of three kinds of R-Zone games (`rzone_games`). Each kind of game gets its own middle time (15, 30, or 60 seconds),[^typical] and `rlnorm()` picks each player's time from a hill on the log scale.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -405,11 +417,11 @@ glimpse(rzone_games)
 
 ### Box-plot
 
-  -   Create labels with `labs()`
+  -   Make the words around the graph with `labs()`
 
-  -   Initialize the graph with `ggplot()` and provide `data`
+  -   Start the graph with `ggplot()` and give it `data`
 
-  -   For the first layer, we create a box plot with `geom_boxplot()`, but include notches and remove the outliers.
+  -   For the first part of the graph,[^layer] make a box plot with `geom_boxplot()`, but make each box less wide around the median[^notch] and don't show the points for numbers that are far from the rest.[^outliers] The part that is less wide shows about where the median would fall if we could see every player of that game.[^notch-ci] The rain we add below still shows the far points.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -441,7 +453,7 @@ ggp2_box +
 
 ### Density
 
-We then add a horizontal density curve with `ggdist::stat_halfeye()`, mapping `game` to `fill`, and adjusting the size and shape of the density curve and shifting it slightly above the box plot.
+Next we add the cloud with `ggdist::stat_halfeye()`, so it runs along the `x` axis like the box.[^halfeye] We give each `game` its own color with `fill`, change how big the cloud is and its form,[^adjust] and move it a little above the box plot.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -470,11 +482,11 @@ ggp2_stat_halfeye +
 
 ### Points
 
-The final layer is a `geom_point()`, mapping `fill` to `game` and setting `position` to `position_jitter()`. Additional adjustments to the points include:
+The last part of the graph is `geom_point()`.[^last-layer] We give each `game` its own color with `fill`, and set `position` to `position_jitter()`.[^jitter] We also change the points in two more ways:
 
-- Using `shape = 21`, we can `color` the outside of the point (white makes it appear to glow).
+- With `shape = 21`, we can `color` the outside of each point (white makes it look like it gives off light).
 
-- Manually set the `height`, which refers to the vertical area for the points
+- Set the `height` by hand, which is how far up and down the points can move, and set `width = 0` so each point stays at its number of seconds. The points move up and down a little so they don't cover each other.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -490,6 +502,7 @@ ggp2_jitter <- ggp2_stat_halfeye +
     geom_point(aes(fill = game),
         position = position_jitter(
           seed = 321,
+          width = 0,
           height = .07),
             shape = 21,
             color = "#ffffff",
@@ -505,11 +518,11 @@ ggp2_jitter +
 
 ### Point shape
 
-Cédric Scherer covered raincloud plots in [this great write-up](https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/) for [#TidyTuesday](https://github.com/rfordatascience/tidytuesday).
+Cédric Scherer makes graphs and writes about how to make them. #TidyTuesday puts out a new set of data each week for people to make graphs with. Cédric wrote about raincloud plots in [this great piece](https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/) for [#TidyTuesday](https://github.com/rfordatascience/tidytuesday).
 
-Cédric also covers some alternative methods for plotting the points (I particularly like using bands instead of points when displaying the rainclouds vertically).
+Cédric also shows other ways to put the points in the graph (I really like using bands instead of points when the rainclouds stand up and down).[^bands]
 
-We can switch to this layout by applying `ggplot2::coord_flip()` to the `ggp2_stat_halfeye` layer, then adding `geom_point()` with `shape` set to `95`
+We can change to this form by adding `ggplot2::coord_flip()` to `ggp2_stat_halfeye`, which turns the graph on its side,[^flip] then adding `geom_point()` with `shape` set to `95`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -534,7 +547,7 @@ ggplot2::geom_point(
 
 ### #TidyTuesday example
 
-The code to re-create the #TidyTuesday graph is contained in this [gist.](https://gist.github.com/z3tt/8b2a06d05e8fae308abbf027ce357f01)
+The code to make the #TidyTuesday graph again is [here.](https://gist.github.com/z3tt/8b2a06d05e8fae308abbf027ce357f01)[^gist]
 
 ![](www/rainclouds_gist.png){fig-align="center" width="85%"}
 
@@ -553,3 +566,91 @@ The code to re-create the #TidyTuesday graph is contained in this [gist.](https:
 3. RainCloudPlots package on GitHub. [3](https://github.com/RainCloudPlots/RainCloudPlots)
 
 :::
+
+[^raincloud]: A combination of a density graph (the cloud), a box plot (the box), and a beeswarm or jitter plot (the rain).
+
+[^rain]: The points are jittered.
+
+[^groups]: Compare the distributions of a numeric variable across the levels of a categorical (or discrete) grouping variable.
+
+[^pkg]: The `raincloudplots` package.
+
+[^geoms]: The `ggdist` package and geoms from `ggplot2`.
+
+[^packages]: Install and load the packages.
+
+[^console]: A game console.
+
+[^cartridge]: A cartridge.
+
+[^visor]: The cartridge projected red LCD graphics onto a small visor.
+
+[^simulate]: Simulate.
+
+[^log]: A logarithmic (log) scale.
+
+[^mvn]: `faux::rnorm_multi()` draws two correlated columns from a normal distribution.
+
+[^cor]: The correlation (`r`).
+
+[^seed]: Setting the random seed.
+
+[^repeated]: A 1x1 repeated measures graph.
+
+[^arrays]: Two array arguments.
+
+[^whole]: A whole distribution.
+
+[^paired]: The two groups are the same 100 players measured twice, so each first try has a partner (paired) second try.
+
+[^formula]: The formula.
+
+[^summary]: The summary.
+
+[^cor-summary]: The correlation of the log times.
+
+[^solid]: The solid line.
+
+[^dashed]: The dashed line.
+
+[^band]: Because of the correlation.
+
+[^bvn]: A bivariate normal distribution.
+
+[^lognormal]: Each try is log normal on the seconds scale.
+
+[^speedup]: The log of the speed up.
+
+[^sd]: The standard deviation of the log difference.
+
+[^independent]: Independent.
+
+[^paired-data]: Paired data.
+
+[^labels]: Labels.
+
+[^alpha]: `alpha` sets opacity.
+
+[^typical]: A typical (median) time.
+
+[^layer]: The first layer.
+
+[^notch]: Notches.
+
+[^outliers]: Hide the outliers in the box plot layer (`outlier.shape = NA`). The jittered points added later still draw them.
+
+[^notch-ci]: The notch is roughly a 95% confidence interval around the median. If the notches of two boxes don't overlap, their medians likely differ.
+
+[^halfeye]: A horizontal density curve.
+
+[^adjust]: The size (`height`) and shape (`adjust`) of the density curve.
+
+[^last-layer]: The final layer.
+
+[^jitter]: `position_jitter()` moves each point a small random distance so the points don't cover each other.
+
+[^bands]: Bands are short lines (`shape = 95`) in place of points, shown when the rainclouds are vertical.
+
+[^flip]: `coord_flip()` swaps the `x` and `y` axes, so the rainclouds are vertical.
+
+[^gist]: A GitHub gist.

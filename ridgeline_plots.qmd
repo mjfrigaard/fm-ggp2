@@ -65,7 +65,7 @@ ggp2_ridges <- ggplot(data = squeezit_drinks,
        aes(x = seconds_to_finish,
            y = flavor,
         fill = flavor)) +
-  ggridges::geom_density_ridges(alpha = 2/3,
+  ggridges::geom_density_ridges(alpha = 2/3, from = 0,
       show.legend = FALSE)
 ggp2_ridges +
   labs_ridges
@@ -87,7 +87,7 @@ ggp2_ridges +
 
 ## Description
 
-If we want to plot density curves but retain the interpretability of the axes, consider comparing multiple distributions using the [`ggridges` package](https://wilkelab.org/ggridges/).
+A [density plot](density_plots.qmd) shows where numbers fall, using a line instead of bars. A ridgeline plot shows one density line for each group,[^groups] each at its own place up the `y` axis, so we can compare many lines and still read the numbers on the axes.[^axes] We'll make them with code from [`ggridges`](https://wilkelab.org/ggridges/).[^ggridges]
 
 ## Set up
 
@@ -96,7 +96,7 @@ If we want to plot density curves but retain the interpretability of the axes, c
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Install packages.
+Bring in the code we'll use.[^packages]
 :::
 
 
@@ -121,7 +121,7 @@ library(dplyr) # for tibble() and data manipulation
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Squeezit was General Mills' fruit drink in a squeezable plastic bottle shaped like a little character, and every flavor came in a different color. We'll simulate how many seconds it took kids to squeeze out 60 bottles of each of six flavors. Each flavor gets its own average (`avg_seconds`), and `rgamma()` draws each bottle's time from a gamma distribution with the same shape (2.5) for every flavor. Setting the seed with `set.seed()` means you'll get the same 360 bottles every time you run the code below.
+Squeezit was a sweet drink from General Mills that came in a small bottle you could press with your hand, made to look like a little person, and every flavor came in its own color. We'll make up[^simulate] how many seconds it took kids to press all the drink out of 60 bottles of each of six flavors. Each flavor gets its own mean (`avg_seconds`).[^avg] A hill is a line that is high in the middle and low on both sides. `rgamma()` picks each bottle's time from a hill with a long side to the right.[^gamma] The form of that hill is the same (2.5) for every flavor.[^shape] Starting with `set.seed()`[^seed] means you'll get the same 360 bottles every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -152,7 +152,7 @@ glimpse(squeezit_drinks)
 
 ## Distribution
 
-Ridgeline plots stack one density curve per group, which makes them good for comparing many groups at once. All six flavors here share the same *kind* of distribution: most bottles are empty fairly quickly, and a few take a long time. What changes from flavor to flavor is the scale. Below we'll move from the bottles, to a picture, to the formula.
+Ridgeline plots put one density line above the next for each group, which makes them good for comparing many groups at once. All six flavors here come from the same *kind* of rule:[^dist] most bottles have nothing left in them after a short time, and a few take a long time. What changes from flavor to flavor is how far the hill reaches along the `x` axis.[^scale] Below we'll move from the bottles, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -170,7 +170,7 @@ head(squeezit_drinks, 5)
 ```
 :::
 
-These five bottles took anywhere from 11 to 55 seconds. The summary below shows that the mean is above the median for every flavor (a sign of right skew), and that the standard deviation grows with the mean. The ratio of the two (`cv`) stays between about 0.5 and 0.7 for every flavor.
+These five bottles took between 11 and 55 seconds. The median is the middle number when you put all the numbers in order. The numbers below[^summary] show that the mean is higher than the median for every flavor (a sign of a long side to the right),[^skew] and that how far bottles usually fall from the mean (`sd`)[^sd] grows with the mean. `sd` as a part of the mean (`cv`)[^cv] stays between about 0.54 and 0.72 for every flavor.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -190,7 +190,7 @@ squeezit_drinks |>
 **DRAW IT:**
 :::
 
-The ridgeline plot below adds a line at each flavor's median (`quantile_lines = TRUE` with `quantiles = 2`). Every ridge has a hump on the left and a tail on the right. Moving up from cherry to tropical, the humps slide right and the tails get longer, but the overall shape stays the same (the extra bumps, like the one in the tropical ridge, are noise from having only 60 bottles per flavor).
+The ridgeline plot below adds a line at each flavor's median (`quantile_lines = TRUE` with `quantiles = 2`).[^quantile] Every hill has its high point[^peak] on the left and a long side to the right. Moving up from cherry to tropical, the high points move right and the long sides get longer in general (strawberry's reaches farthest), but the form stays the same (the extra small high points, like the one in the tropical hill, come from chance, because we have only 60 bottles of each flavor).[^noise] Since no bottle can take less than 0 seconds, `from = 0` starts each hill at 0.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -201,7 +201,7 @@ The ridgeline plot below adds a line at each flavor's median (`quantile_lines = 
 #| message: false
 ggplot(squeezit_drinks, aes(x = seconds_to_finish, y = flavor, fill = flavor)) + 
   ggridges::geom_density_ridges(alpha = 2/3, quantile_lines = TRUE, 
-    quantiles = 2, color = "#F5F5F5", show.legend = FALSE) + 
+    quantiles = 2, color = "#F5F5F5", from = 0, show.legend = FALSE) + 
   labs(x = "Seconds to finish", y = NULL)
 ```
 :::
@@ -210,13 +210,13 @@ ggplot(squeezit_drinks, aes(x = seconds_to_finish, y = flavor, fill = flavor)) +
 **NAME IT:**
 :::
 
-Each flavor's runs come from a [gamma distribution](https://en.wikipedia.org/wiki/Gamma_distribution) with a shared shape ($k$) and its own scale ($\theta$):
+Each flavor's bottles come from a [hill with a long side to the right](https://en.wikipedia.org/wiki/Gamma_distribution)[^gamma-dist] that has the same number for its form ($k$) and its own number for how far it reaches ($\theta$):[^params]
 
 $$
 X_{\text{flavor}} \sim \text{Gamma}(k = 2.5, \; \theta_{\text{flavor}}), \quad \theta = \frac{\text{avg seconds}}{2.5}
 $$
 
-The mean of a gamma distribution is $k\theta$ and its standard deviation is $\sqrt{k}\,\theta$, so their ratio is $1 / \sqrt{k} = 1 / \sqrt{2.5} \approx 0.63$ no matter the flavor. That's why the `cv` column stays near 0.63 and why the ridges all have the same shape: changing $\theta$ stretches a ridge along the `x` axis without changing its shape. This is the same distribution we used for the Talkboy messages in @sec-freq-poly. Try giving one flavor a larger `shape` in `rgamma()` and its ridge becomes more symmetric.
+The mean of this hill is $k\theta$ and how far numbers usually fall from the mean is $\sqrt{k}\,\theta$, so the second as a part of the first is $1 / \sqrt{k} = 1 / \sqrt{2.5} \approx 0.63$ no matter the flavor.[^ratio] That's why every `cv` number is close to 0.63 (chance moves them from 0.54 to 0.72) and why the hills all have the same form: changing $\theta$ makes a hill reach farther or less far along the `x` axis without changing its form. The Talkboy messages in @sec-freq-poly came from the same kind of rule, but with a different form number (`shape = 4`). Try giving one flavor a larger `shape` in `rgamma()`, and its hill will come closer to being the same on both sides.[^symmetric]
 
 
 ## Grammar
@@ -225,17 +225,17 @@ The mean of a gamma distribution is $k\theta$ and its standard deviation is $\sq
 **CODE:**
 :::
 
-  -   Create labels with `labs()`
+  -   Make the words around the graph[^labels] with `labs()`
 
-  -   Initialize the graph with `ggplot()` and provide `data`
+  -   Start the graph with `ggplot()` and give it `data`
 
-  -   Map `seconds_to_finish` to the `x` axis
+  -   Put `seconds_to_finish` on the `x` axis
 
-  -   Map `flavor` to the `y` axis and `fill`
+  -   Put `flavor` on the `y` axis, and give each `flavor` its own color with `fill`
 
-  -   Add the `ggridges::geom_density_ridges()` layer (with `alpha` set to `2/3`)
+  -   Add `ggridges::geom_density_ridges()` on top[^layer] (with `alpha` set to `2/3`, and `from = 0` so no hill starts below 0 seconds)
 
-  -   Remove the legend with `show.legend = FALSE`
+  -   Take away the key[^legend] with `show.legend = FALSE`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -257,7 +257,7 @@ ggp2_ridges <- ggplot(data = squeezit_drinks,
        aes(x = seconds_to_finish,
            y = flavor,
         fill = flavor)) +
-  ggridges::geom_density_ridges(alpha = 2/3,
+  ggridges::geom_density_ridges(alpha = 2/3, from = 0,
       show.legend = FALSE)
 ggp2_ridges +
   labs_ridges
@@ -270,7 +270,7 @@ ggp2_ridges +
 **GRAPH:**
 :::
 
-Ridgeline plots are excellent for comparing continuous distributions across groups.
+Ridgeline plots are very good for comparing where numbers fall[^continuous] from one group to the next.
 
 ```{r}
 #| label: create_graph_ridges
@@ -291,9 +291,62 @@ ggp2_ridges <- ggplot(data = squeezit_drinks,
        aes(x = seconds_to_finish,
            y = flavor,
         fill = flavor)) +
-  ggridges::geom_density_ridges(alpha = 2/3,
+  ggridges::geom_density_ridges(alpha = 2/3, from = 0,
       show.legend = FALSE)
 ggp2_ridges +
   labs_ridges
 ```
 
+[^groups]: The levels of a categorical variable.
+
+[^axes]: Unlike overlapping density plots, each group's curve keeps its own baseline, so the axes stay easy to interpret.
+
+[^ggridges]: The `ggridges` package.
+
+[^packages]: Install and load the packages.
+
+[^simulate]: Simulate.
+
+[^avg]: The average number of seconds to finish a bottle.
+
+[^gamma]: `rgamma()` draws values from a right skewed gamma distribution with `scale = avg_seconds / 2.5`.
+
+[^shape]: The same `shape` (2.5) for every flavor.
+
+[^seed]: Setting the random seed.
+
+[^dist]: The same kind of distribution.
+
+[^scale]: The scale.
+
+[^formula]: The formula.
+
+[^summary]: Summary statistics.
+
+[^skew]: Right skew.
+
+[^sd]: The standard deviation.
+
+[^cv]: The [coefficient of variation](https://en.wikipedia.org/wiki/Coefficient_of_variation), the ratio of the standard deviation to the mean.
+
+[^quantile]: A quantile line. `quantiles = 2` splits each curve into two halves at the median.
+
+[^peak]: A peak, or mode.
+
+[^noise]: Random noise from a small sample.
+
+[^gamma-dist]: A gamma distribution with a shared shape and its own scale.
+
+[^params]: The shape ($k$) and scale ($\theta$) parameters.
+
+[^ratio]: The ratio of the standard deviation to the mean.
+
+[^symmetric]: More symmetric.
+
+[^labels]: Labels.
+
+[^layer]: Add the `ggridges::geom_density_ridges()` layer.
+
+[^legend]: The legend.
+
+[^continuous]: Continuous distributions.

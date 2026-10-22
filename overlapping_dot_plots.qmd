@@ -54,16 +54,17 @@ labs_ovrlp_dotplot <- labs(
   caption = "Simulated data",
   subtitle = "40 students in each grade, one school year",
   x = "Books read",
-  y = "Count",
   fill = "Grade")
 ggp2_ovrlp_dotplot <- ggplot(data = goosebumps_readers,
     aes(x = books_read,
-        fill = factor(grade))) +
+        fill = grade)) +
   geom_dotplot(
     method = "histodot",
     binwidth = 1,
+    dotsize = 0.4,
     binpositions = "all",
-    stackgroups = TRUE)
+    stackgroups = TRUE) +
+  scale_y_continuous(NULL, breaks = NULL)
 ggp2_ovrlp_dotplot +
   labs_ovrlp_dotplot
 ```
@@ -77,16 +78,16 @@ ggp2_ovrlp_dotplot +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a numeric (continuous) variable**
+**✅ a numeric (count) variable**
 :::
 
 ::::
 
 ## Description
 
-Overlapping dot plots display distributions of a continuous variable across the levels of a categorical variable.
+A [dot plot](dot_plots.qmd) shows each number in the data as a dot along one axis. Overlapping dot plots put the dots for every group in the same graph, so we can compare the form the numbers take from one group to the next.[^dist-shape]
 
-To adjust the dot plot display to look similar to a histogram or frequency polygon, change the `method` and `binposition` arguments.
+A [histogram](histograms.qmd) cuts the `x` axis into boxes and shows how many numbers fall in each box, and a [frequency polygon](frequency_polygons.qmd) shows where numbers fall, using points joined by straight lines. `method` picks the boxes the dots go in: `"histodot"` uses boxes that are all the same size, like a histogram, and `"dotdensity"` (used if we don't pick one) moves each box to where its dots fall. `binpositions` lines up the boxes for all the groups.[^arguments]
 
 ## Set up
 
@@ -96,7 +97,7 @@ To adjust the dot plot display to look similar to a histogram or frequency polyg
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Install packages.
+Bring in the code we'll use.[^packages]
 :::
 
 
@@ -119,7 +120,7 @@ library(dplyr) # for tibble() and data manipulation
 :::
 
 ::: {style="font-size: 0.95rem;"}
-R.L. Stine's *Goosebumps* books were everywhere in the mid 90s, and older kids tended to tear through more of them. We'll simulate how many Goosebumps books 40 students in each of three grades read in one school year. `rpois()` draws each student's count from a Poisson distribution with a different average (`lambda`) for each grade: 3, 6, and 9 books. Setting the seed with `set.seed()` means you'll get the same 120 students every time you run the code below.
+*Goosebumps* was a set of books by R.L. Stine, written to make kids feel fear. In the middle of the 1990s, these books were all over, and older kids often read more of them, and fast. A grade is one year of school, and kids in the same grade are about the same age. We'll make up[^simulate] how many Goosebumps books 40 students in each of three grades read in one school year. `rpois()` picks each student's number from a [rule made for how many times something happens](https://en.wikipedia.org/wiki/Poisson_distribution),[^poisson] with a different mean (`lambda`) for each grade: 3, 6, and 9 books. Starting with `set.seed()`[^seed] means you'll get the same 120 students every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -147,7 +148,7 @@ dplyr::glimpse(goosebumps_readers)
 
 ## Distribution
 
-Dot plots are a natural fit for small counts: every student gets one dot, and every number of books gets its own stack. With three grades stacked together, we can see two things change from grade to grade: where the stacks are centered, and how far they spread out. Below we'll move from the students, to a picture, to the formula.
+A pile is a set of dots, one on top of the next. Dot plots work well for small whole numbers:[^counts] every student gets one dot, and every number of books gets its own pile. With the dots for all three grades in the same piles, we can see two things change from grade to grade: where the middle of the piles is, and how far the piles run out to each side.[^spread] Below we'll move from the students, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -165,7 +166,7 @@ head(goosebumps_readers$books_read, 10)
 ```
 :::
 
-These 3rd graders read between two and five books. The summary below compares each grade's mean and variance. For counts like these, the variance grows along with the mean, so the older students' counts are more spread out.
+These 3rd graders read between two and five books. The variance is a number for how far the numbers fall from the mean. The numbers below[^summary] compare the mean and variance for each grade. For whole numbers like these, the variance gets bigger as the mean gets bigger, so the numbers for the older students fall farther from each other.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -184,7 +185,7 @@ goosebumps_readers |>
 **DRAW IT:**
 :::
 
-The graph below gives each grade its own row of dot stacks (with `facet_wrap()`), and the dashed lines mark the average we gave each grade in `rpois()`. The 3rd grade stacks are tall and bunched together near three books, and the 5th grade stacks are short and spread from three books to well past a dozen.
+The graph below gives each grade its own small graph,[^facets] one above the next (with `facet_wrap()`), and the broken lines[^dashed] mark the mean we gave each grade in `rpois()`. The 3rd grade piles are high and close together near three books, and the 5th grade piles are low and run from three books to well past 12.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -209,13 +210,13 @@ ggplot(goosebumps_readers, aes(x = books_read, fill = grade)) +
 **NAME IT:**
 :::
 
-Each grade's counts come from a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution):
+Each grade's numbers come from a [rule made for how many times something happens](https://en.wikipedia.org/wiki/Poisson_distribution):[^poisson-name]
 
 $$
 X_{\text{grade}} \sim \text{Poisson}(\lambda_{\text{grade}}), \quad \lambda = (3, 6, 9)
 $$
 
-For a Poisson distribution, the variance equals the mean ($\lambda$), so the standard deviation is $\sqrt{\lambda}$: about 1.7 books for 3rd graders and 3 books for 5th graders. Tripling the average book count only spreads the stacks out by $\sqrt{3} \approx 1.7$ times, which is why the 5th grade stacks are wider but not three times wider. When we stack the three grades into one dot plot, the middle grade overlaps both of its neighbors. Try giving the three grades averages that are closer together in `rpois()` and the colors will mix into the same stacks.
+For this rule, the variance is the same as the mean ($\lambda$), so how far the numbers usually fall from the mean[^sd] is $\sqrt{\lambda}$: about 1.7 books for 3rd graders and 3 books for 5th graders. By the rule, making the mean three times bigger only makes the piles $\sqrt{3} \approx 1.7$ times wider. In our made up students the number is a little bigger (1.4 books for 3rd graders and 3.3 books for 5th graders, about 2.3 times wider), but the 5th grade piles are still not three times wider. When we pile the three grades into one dot plot, the middle grade shares numbers with the grades on both sides of it.[^overlap] All three colors already share the piles at 3, 4, 5, and 7 books. Try giving the three grades means that are closer together in `rpois()`, and more piles will hold all three colors.
 
 
 ## Grammar
@@ -230,15 +231,17 @@ For a Poisson distribution, the variance equals the mean ($\lambda$), so the sta
 **CODE:**
 :::
 
-  -   Create labels with `labs()`
+  -   Make the words around the graph[^labels] with `labs()`
 
-  -   Initialize the graph with `ggplot()` and provide `data`
+  -   Start the graph with `ggplot()` and give it `data`
 
-  -   Map `books_read` to `x`
+  -   Put `books_read` on the `x` axis
 
-  -   Map `grade` to `fill` (*inside* `factor()`)
+  -   Give each `grade` its own color with `fill`
 
-  -   Inside `geom_dotplot`, set `method` to `"histodot"`, `binwidth` to `1` (one stack per count), `binpositions` to `"all"`, and `stackgroups` to `TRUE` (so the grades stack on top of each other instead of overplotting)
+  -   Inside `geom_dotplot`, set `method` to `"histodot"`, `binwidth` to `1` (one pile for each number of books), `dotsize` to `0.4` (so the highest pile fits), `binpositions` to `"all"`, and `stackgroups` to `TRUE` (so each grade's dots go on top of the last grade's dots instead of covering them)[^stackgroups]
+
+  -   Take away the numbers on the `y` axis with `scale_y_continuous(NULL, breaks = NULL)`, because they run from 0 to 1 and do not stand for a number of students
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -255,16 +258,17 @@ labs_ovrlp_dotplot <- labs(
   caption = "Simulated data",
   subtitle = "40 students in each grade, one school year",
   x = "Books read",
-  y = "Count",
   fill = "Grade")
 ggp2_ovrlp_dotplot <- ggplot(data = goosebumps_readers,
     aes(x = books_read,
-        fill = factor(grade))) +
+        fill = grade)) +
   geom_dotplot(
     method = "histodot",
     binwidth = 1,
+    dotsize = 0.4,
     binpositions = "all",
-    stackgroups = TRUE)
+    stackgroups = TRUE) +
+  scale_y_continuous(NULL, breaks = NULL)
 ggp2_ovrlp_dotplot +
   labs_ovrlp_dotplot
 ```
@@ -290,17 +294,51 @@ labs_ovrlp_dotplot <- labs(
   caption = "Simulated data",
   subtitle = "40 students in each grade, one school year",
   x = "Books read",
-  y = "Count",
   fill = "Grade")
 ggp2_ovrlp_dotplot <- ggplot(data = goosebumps_readers,
     aes(x = books_read,
-        fill = factor(grade))) +
+        fill = grade)) +
   geom_dotplot(
     method = "histodot",
     binwidth = 1,
+    dotsize = 0.4,
     binpositions = "all",
-    stackgroups = TRUE)
+    stackgroups = TRUE) +
+  scale_y_continuous(NULL, breaks = NULL)
 ggp2_ovrlp_dotplot +
   labs_ovrlp_dotplot
 ```
 
+[^dist-shape]: Overlapping dot plots display the distribution of a numeric variable across the levels of a categorical variable.
+
+[^arguments]: The `method` and `binpositions` arguments. With `"histodot"`, the bins have a fixed width; with `"dotdensity"`, the bin centers follow the data.
+
+[^packages]: Install and load the packages.
+
+[^simulate]: Simulate.
+
+[^poisson]: A Poisson distribution, a common model for counts.
+
+[^seed]: Setting the random seed.
+
+[^counts]: Small counts.
+
+[^spread]: Where the stacks are centered, and how spread out they are.
+
+[^formula]: The formula.
+
+[^summary]: Summary statistics: the mean, variance, minimum, and maximum for each grade.
+
+[^facets]: A facet.
+
+[^dashed]: Dashed lines.
+
+[^poisson-name]: A Poisson distribution.
+
+[^sd]: The standard deviation.
+
+[^overlap]: The middle grade overlaps both of its neighbors.
+
+[^labels]: Labels.
+
+[^stackgroups]: With `stackgroups = TRUE`, the groups stack on top of each other instead of overplotting.

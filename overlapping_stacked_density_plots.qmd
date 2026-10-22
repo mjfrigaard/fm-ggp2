@@ -57,7 +57,7 @@ labs_ovrlp_density <- labs(
 ggp2_ovrlp_density <- ggplot(data = pager_messages,
        aes(x = msg_length,
            fill = model)) +
-      geom_density(alpha = 1/3)
+      geom_density(alpha = 1/3, bounds = c(0, Inf))
 ggp2_ovrlp_density +
   labs_ovrlp_density
 ```
@@ -78,9 +78,9 @@ ggp2_ovrlp_density +
 
 ## Description
 
-Density plots are [*smoothed version(s) of  histogram(s)*](https://ggplot2.tidyverse.org/reference/geom_density.html). They can are great for comparing the distributions of a continuous variable across the levels of a categorical variable.
+A [density plot](density_plots.qmd) shows where numbers fall, using a line instead of bars. Density plots are [*smoothed version(s) of  histogram(s)*](https://ggplot2.tidyverse.org/reference/geom_density.html). An overlapping density plot puts one of these lines for each group in the same graph, so we can compare the form the numbers take[^dist-shape] from one group to the next.[^groups]
 
-`geom_density()` creates a kernel density estimate. The default `position` argument is `"identity"`, which takes the data as is. However, we can change `position` to `"stack"` to display overlapping distributions.
+A hill is a line that is high in the middle and low on both sides. `geom_density()` puts a small hill over each number and adds the hills together into one line.[^kde] Unless we change it,[^default] `position` is `"identity"`, which leaves the numbers as they are, so each group's line starts at 0 and the lines cover each other. We can change `position` to `"stack"` so the lines no longer cover each other. A stacked density plot puts each group's line on top of the one below it.
 
 ## Set up
 
@@ -89,7 +89,7 @@ Density plots are [*smoothed version(s) of  histogram(s)*](https://ggplot2.tidyv
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Install packages.
+Bring in the code we'll use.[^packages]
 :::
 
 
@@ -114,7 +114,7 @@ library(dplyr) # for tibble() and data manipulation
 :::
 
 ::: {style="font-size: 0.95rem;"}
-In 1998, Research In Motion (RIM) released the Inter@ctive Pager 950, a two way pager with a tiny keyboard you typed on with your thumbs (and the ancestor of the BlackBerry). Its main rival was the Motorola PageWriter. We'll simulate 300 messages: 180 sent from a RIM 950 and 120 sent from a PageWriter. Each pager model gets its own normal distribution of message lengths in characters (`rnorm()`), and RIM 950 messages are both longer and more consistent. Setting the seed with `set.seed()` means you'll get the same 300 messages every time you run the code below.
+A pager is a small box you keep with you that gets short written messages. In 1998, Research In Motion (RIM) put out the Inter@ctive Pager 950, a pager that could send messages and not just get them,[^two-way] with very small keys to write on. It came before the BlackBerry, which the same people made later.[^blackberry] The pager it was up against most was the Motorola PageWriter.[^rival] We'll make up[^simulate] 300 messages: 180 sent from a RIM 950 and 120 sent from a PageWriter. `rnorm()` picks how many letters long[^characters] each message is from the hill that goes with its kind of pager,[^normal] and RIM 950 messages are both longer and closer to each other in how long they are.[^consistent] Starting with `set.seed()`[^seed] means you'll get the same 300 messages every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -143,7 +143,7 @@ dplyr::glimpse(pager_messages)
 
 ## Distribution
 
-Overlapping and stacked density plots can tell two different stories about the same data. By default, each group's curve covers an area of 1, which hides the fact that one group might be much bigger than the other. Our two pager models aren't the same size (180 messages vs. 120), so the choice matters here. Below we'll move from the messages, to a picture, to the formula.
+Overlapping and stacked density plots can tell two different stories about the same data. Unless we change it, the area under each group's line adds up to one,[^area-one] which keeps us from seeing that one group might have many more numbers than the other. Our two kinds of pager don't have the same number of messages (180 and 120), so the choice matters here. Below we'll move from the messages, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -161,7 +161,7 @@ head(pager_messages, 5)
 ```
 :::
 
-These five messages range from 23 to 57 characters. The summary below compares the two pager models: the RIM 950 has more messages, longer messages on average, and a smaller standard deviation.
+These five messages run from 23 to 57 letters long. The numbers below[^summary] compare the two kinds of pager: the RIM 950 has more messages, a higher mean (longer messages), and messages that are closer to each other in how long they are (a smaller `sd`).[^sd]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -199,7 +199,7 @@ pager_messages |>
 ```
 :::
 
-The two graphs below show why the bar model matters. On the left, the default densities each cover an area of 1, so the PageWriter curve looks almost as big as the RIM 950 curve. On the right, `after_stat(count)` scales each curve by its number of messages, so the RIM 950 curve is 1.5 times the size of the PageWriter curve, just like the bar model.
+The two graphs below show why the bar model matters. On the left, `geom_density()` is left as it is, so the area under each line adds up to one and the PageWriter area looks almost as big as the RIM 950 area. On the right, `after_stat(count)` makes each area grow with its number of messages,[^after-stat] so the RIM 950 area is 1.5 times as big as the PageWriter area, just like the bar model.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -209,14 +209,14 @@ The two graphs below show why the bar model matters. On the left, the default de
 #| echo: true
 #| layout-ncol: 2
 ggplot(pager_messages, aes(x = msg_length, fill = model)) + 
-  geom_density(alpha = 1/2) + 
+  geom_density(alpha = 1/2, bounds = c(0, Inf)) + 
   labs(title = "Area of 1 each", x = "Message length (characters)", 
     fill = "Pager model") + 
   theme(legend.position = "bottom")
 
 ggplot(pager_messages, aes(x = msg_length, after_stat(count), 
     fill = model)) + 
-  geom_density(alpha = 1/2) + 
+  geom_density(alpha = 1/2, bounds = c(0, Inf)) + 
   labs(title = "Scaled by messages", x = "Message length (characters)", y = "count",
     fill = "Pager model") + 
   theme(legend.position = "bottom")
@@ -227,13 +227,13 @@ ggplot(pager_messages, aes(x = msg_length, after_stat(count),
 **NAME IT:**
 :::
 
-Each pager model has its own [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution), and the two are mixed in proportion to their number of messages:
+Each kind of pager has its own [hill](https://en.wikipedia.org/wiki/Normal_distribution),[^normal-dist] and the two hills are put together, with each one given its share of the messages:[^mixture]
 
 $$
 f(x) = 0.6 \cdot \text{Normal}(x;\, 45, 8) + 0.4 \cdot \text{Normal}(x;\, 30, 10)
 $$
 
-`geom_density()` estimates each group's curve so that its area is 1 (each $\text{Normal}$ term on its own). `after_stat(count)` multiplies each curve by its group size, so the two curves have areas of 180 and 120. Stacking those count curves (`position = "stack"`) adds them together into $300 \times f(x)$, the curve for all 300 messages. Try making the two groups the same size in `rep()` and the two graphs above will look almost identical.
+`geom_density()` works out a line for each group[^estimate] so that the area under it adds up to one (each $\text{Normal}$ part on its own). `after_stat(count)` times each line by the number of messages in its group,[^multiply] so the areas under the two lines are 180 and 120. Putting those two lines on top of each other (`position = "stack"`) adds them together into $300 \times f(x)$, the line for all 300 messages. Try giving the two groups the same number of messages in `rep()`, and the two graphs above will look almost the same.
 
 
 ## Grammar
@@ -244,15 +244,17 @@ $$
 
 
 
-  -   Create labels with `labs()`
+  -   Make the words around the graph[^labels] with `labs()`
 
-  -   Initialize the graph with `ggplot()` and provide `data`
+  -   Start the graph with `ggplot()` and give it `data`
 
-  -   Map the `msg_length` to the `x` and `model` to `fill`
+  -   Put `msg_length` on the `x` axis, and give each `model` its own color with `fill`
 
-  -   Add the `geom_density()`
+  -   Add `geom_density()` on top[^layer]
 
-  -   Set the `alpha` to `1/3` (to handle the overlapping areas)
+  -   Set `alpha` to `1/3` (so we can see through the areas where they cover each other)[^alpha]
+
+  -   Set `bounds` to `c(0, Inf)` (a message can't be less than 0 letters long)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -272,7 +274,7 @@ labs_ovrlp_density <- labs(
 ggp2_ovrlp_density <- ggplot(data = pager_messages,
        aes(x = msg_length,
            fill = model)) +
-      geom_density(alpha = 1/3)
+      geom_density(alpha = 1/3, bounds = c(0, Inf))
 ggp2_ovrlp_density +
   labs_ovrlp_density
 ```
@@ -285,11 +287,11 @@ ggp2_ovrlp_density +
 :::
 
 ::: {.column-margin}
-*A downside of density plots is the lack of interpretability of the `y` axis*
+*One problem with a density plot is that the numbers on the `y` axis are hard to read*[^density-y]
 :::
 
 
-Make density area slightly transparent to handle over-plotting.
+Make the areas easy to see through, so one doesn't cover up the other.[^overplot]
 
 ```{r}
 #| label: create_graph_ovrlp_density
@@ -308,18 +310,18 @@ labs_ovrlp_density <- labs(
 ggp2_ovrlp_density <- ggplot(data = pager_messages,
        aes(x = msg_length,
            fill = model)) +
-      geom_density(alpha = 1/3)
+      geom_density(alpha = 1/3, bounds = c(0, Inf))
 ggp2_ovrlp_density +
   labs_ovrlp_density
 ```
 
 ## More info
 
-`ggplot2` has multiple options for overlapping density plots, so which one to use will depend on how you'd like to display the relative distributions in your data. We'll cover three options below:
+`ggplot2` has more than one way to show density plots for groups, so which one to use turns on how you'd like to show the groups next to each other.[^relative-dist] We'll cover three ways below:
 
 ### `"stack"`
 
-If we change the `position` to `"stack"` we can see the smoothed estimates are 'stacked' on top each other (and the `y` axis shifts slightly).
+If we change `position` to `"stack"`, each group's line[^smoothed] is put on top of the one below it (and the numbers on the `y` axis change a little).
 
 ::: {style="font-size: 0.85em;"}
 
@@ -340,6 +342,7 @@ ggp2_stack_density <- ggplot(data = pager_messages,
     mapping = aes(x = msg_length,
                fill = model)) +
     geom_density(position = "stack",
+                 bounds = c(0, Inf),
                  alpha = 1 / 3)
 ggp2_stack_density +
     labs_stack_density
@@ -347,13 +350,13 @@ ggp2_stack_density +
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Setting `position` to `'stack'` [loses marginal densities](https://ggplot2.tidyverse.org/reference/geom_density.html#ref-examples)
+Setting `position` to `'stack'` means [the top line no longer shows where all the numbers fall](https://ggplot2.tidyverse.org/reference/geom_density.html#ref-examples).[^marginal]
 :::
 
 ### `after_stat(count)`
 
 
-If we include `after_stat(count)` as one of our mapped aesthetics, the mapping is postponed until after statistical transformation, and uses the [*`density * n` instead of the default density*](https://ggplot2.tidyverse.org/reference/geom_density.html#computed-variables).
+If we add `after_stat(count)` to `aes()`,[^map-after] `ggplot2` waits to use it until after the new numbers are worked out,[^stat] and uses the [*`density * n` instead of the default density*](https://ggplot2.tidyverse.org/reference/geom_density.html#computed-variables).
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -375,6 +378,7 @@ ggp2_after_stat_density <- ggplot(data = pager_messages,
            after_stat(count),
            fill = model)) +
       geom_density(position = "stack",
+                   bounds = c(0, Inf),
                    alpha = 1/3)
 ggp2_after_stat_density +
   labs_after_stat_density
@@ -382,12 +386,12 @@ ggp2_after_stat_density +
 :::
 
 
-Adding [`after_stat(count)`](https://ggplot2.tidyverse.org/reference/geom_density.html#computed-variables) *'preserves marginal densities.'*, which result in more a interpretable `y` axis (depending on the audience)
+Adding [`after_stat(count)`](https://ggplot2.tidyverse.org/reference/geom_density.html#computed-variables) *'preserves marginal densities.'*, which makes the numbers on the `y` axis easier to read (for some readers).
 
 ### `"fill"`
 
 
-Using `after_stat(count)` with `position = "fill"` creates in a conditional density estimate.
+Using `after_stat(count)` with `position = "fill"` shows each group's share at every number.[^conditional]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -403,12 +407,14 @@ labs_fill_density <- labs(
   title = "Two way pager messages",
   caption = "Simulated data",
   x = "Message length (characters)",
+  y = "Share",
   fill = "Pager model")
 ggp2_fill_density <- ggplot(data = pager_messages,
        aes(x = msg_length,
            after_stat(count),
            fill = model)) +
       geom_density(position = "fill",
+                   bounds = c(0, Inf),
                    alpha = 1/3)
 ggp2_fill_density +
   labs_fill_density
@@ -416,5 +422,72 @@ ggp2_fill_density +
 :::
 
 
-This results in a `y` axis ranging from 0-1, and the area filled with the relative proportional values.
+This gives a `y` axis that runs from 0 to 1, and each colored area shows that group's share at that number.[^proportional]
 
+[^default]: By default.
+
+[^dist-shape]: The shape of the variable's distribution.
+
+[^groups]: The levels of a categorical variable.
+
+[^kde]: A kernel density estimate.
+
+[^packages]: Install and load the packages.
+
+[^two-way]: A two way pager.
+
+[^blackberry]: The Inter@ctive Pager 950 was the ancestor of the BlackBerry.
+
+[^rival]: Its main rival.
+
+[^simulate]: Simulate.
+
+[^characters]: Message length in characters.
+
+[^normal]: `rnorm()` draws each message length from that model's own normal distribution, with its own mean and standard deviation.
+
+[^consistent]: More consistent (a smaller standard deviation).
+
+[^seed]: Setting the random seed.
+
+[^area-one]: Each group's density curve covers an area of 1.
+
+[^formula]: The formula.
+
+[^summary]: Summary statistics.
+
+[^sd]: The standard deviation.
+
+[^after-stat]: `after_stat(count)` scales each curve by its number of messages (density × n).
+
+[^normal-dist]: A normal distribution.
+
+[^mixture]: A mixture of the two normal distributions, weighted by each model's proportion of the messages (0.6 and 0.4).
+
+[^estimate]: Estimates each group's density curve.
+
+[^multiply]: Multiplies each curve by its group size.
+
+[^labels]: Labels.
+
+[^layer]: Add the `geom_density()` layer.
+
+[^alpha]: To handle the overlapping areas.
+
+[^density-y]: The lack of interpretability of the `y` axis.
+
+[^overplot]: Make the density areas mostly transparent (`alpha = 1/3`) to handle overplotting.
+
+[^relative-dist]: The relative distributions in your data.
+
+[^smoothed]: The smoothed density estimates.
+
+[^marginal]: Stacking the default densities loses marginal densities: the top line is the sum of the group densities, not the density of all the messages.
+
+[^map-after]: Map `after_stat(count)` to `y` as one of the aesthetics.
+
+[^stat]: The mapping is postponed until after the statistical transformation.
+
+[^conditional]: A conditional density estimate.
+
+[^proportional]: The area is filled with the relative proportional values.
