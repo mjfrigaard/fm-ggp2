@@ -62,7 +62,7 @@ labs_histogram <- labs(
   x = "Cans sold")
 ggp2_hist <- ggplot(data = ok_soda_sales,
      aes(x = cans)) + 
-     geom_histogram() 
+     geom_histogram(binwidth = 3, center = 45) 
 ggp2_hist + 
   labs_histogram
 ```
@@ -246,7 +246,7 @@ The small difference between the rule and our stores comes from chance alone.[^s
 
 4. Add `geom_histogram()` on top[^layer]
 
-5. Change the number of boxes (`bins`) to fit the data
+5. Make each box 3 cans wide (`binwidth`), with one box in the middle at 45 cans (`center`)[^binwidth]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -264,7 +264,7 @@ labs_histogram <- labs(
 
 ggp2_hist <- ggplot(data = ok_soda_sales,
      aes(x = cans)) + 
-     geom_histogram() 
+     geom_histogram(binwidth = 3, center = 45) 
 
 ggp2_hist + 
   labs_histogram
@@ -291,7 +291,7 @@ labs_histogram <- labs(
 
 ggp2_hist <- ggplot(data = ok_soda_sales,
      aes(x = cans)) + 
-     geom_histogram() 
+     geom_histogram(binwidth = 3, center = 45) 
 
 ggp2_hist + 
   labs_histogram
@@ -299,7 +299,7 @@ ggp2_hist +
 
 
 
-Unless we pick another number, there are `30` boxes,[^bins-default] but ['you should always override this value, exploring multiple widths to find the best to illustrate the stories in your data.'](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
+We set `binwidth` because, unless we pick a number, there are `30` boxes,[^bins-default] and ['you should always override this value, exploring multiple widths to find the best to illustrate the stories in your data.'](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
 
 
 ```{r}
@@ -371,3 +371,5 @@ ggp2_hist_bins15 +
 [^layer]: Add the `geom_histogram()` layer.
 
 [^bins-default]: The default number of bins is 30.
+
+[^binwidth]: The bin width. With `binwidth = 3` and `center = 45`, each bin holds three whole numbers of cans (for example, 44, 45, and 46), so no value falls on a bin edge.

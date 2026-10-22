@@ -72,7 +72,7 @@ ggp2_violin +
 
 ## Description
 
-A violin plot shows where numbers fall, and where they fall most often.[^violin] Like a density plot, it shows the numbers with a line instead of bars.[^density] A violin plot turns that line on its side and shows it two times, once on each side of a middle line, so the two sides match.[^mirror] It looks a little like a box plot,[^box-plot] but with the line on each side instead of a box. We can put violins next to each other to compare where the numbers fall in each group.[^groups]
+A violin plot shows where numbers fall, and where they fall most often.[^violin] Like a density plot, it shows the numbers with a line instead of bars.[^density] A violin plot turns that line on its side and shows it two times, once on each side of a middle line, so the two sides match.[^mirror] It looks a little like a [box plot](box_plots.qmd), a graph we'll make next that puts a box around the middle half of the numbers.[^box-plot] A violin plot has the line on each side in place of the box. We can put violins next to each other to compare where the numbers fall in each group.[^groups]
 
 ::: {.column-margin}
 
@@ -247,7 +247,7 @@ Make the words around the graph[^labels] with `labs()`
 
 Start the graph with `ggplot()` and give it `data`
 
-  - Put `""` (text with no letters) in `x`[^empty-string]
+  - Put `""` (text with no letters) in `x`, so every photo gets the same `x` value: all 300 file sizes make one violin, and no name shows under it on the `x` axis[^empty-string]
 
 Join `""` to `x` and `size_mb` to `y`[^map]
 
@@ -353,7 +353,7 @@ ggp2_violin +
 
 [^labels]: The labels (title, subtitle, caption, and axis titles).
 
-[^empty-string]: An empty string (`""`).
+[^empty-string]: An empty string (`""`). Mapping one constant value to `x` makes a discrete scale with a single level, so `geom_violin()` draws one group and the tick label for that level is blank.
 
 [^map]: Map an empty string to `x` and `size_mb` to `y` in `aes()`.
 

@@ -86,7 +86,7 @@ ggp2_sum_col +
 
 A summary bar graph has one bar for each group, where each bar is as high as one number that stands for that group,[^statistic] such as the mean. The groups go across the graph, and the numbers go up the side.[^axes] Each bar can also have a line that runs above and below its top, to show how much the numbers move around or how sure we can be about the bar.[^error-bars]
 
-In `ggplot2`, we can make summary bar graphs with `geom_bar()`.
+In `ggplot2`, we can make summary bar graphs with `geom_col()`.
 
 ## Set up
 
@@ -222,7 +222,7 @@ $$
 \bar{X} \approx \text{Normal}\left(\lambda, \; \sqrt{\lambda / n}\right)
 $$
 
-With $n = 28$ days, the Teenie Beanie Babies mean should land within about $2 \times \sqrt{420 / 28} \approx 7.7$ Happy Meals of 420. Our mean is `r round(hm_stats$mean[1], 1)`. That's why we can trust the bars here: the differences between toys (100 or more Happy Meals a day) are much larger than the lines on the bars. Try cutting the 28 in `tidyr::uncount()` down to 3 days and watch the lines grow.
+With $n = 28$ days, the Teenie Beanie Babies mean should land within about $2 \times \sqrt{420 / 28} \approx 7.7$ Happy Meals of 420. Our mean is `r round(hm_stats$mean[1], 1)`. That's why we can trust the bars here: the differences between toys (about 50 or more Happy Meals a day) are much larger than the lines on the bars. Try cutting the 28 in `tidyr::uncount()` down to 3 days and watch the lines grow.
 
 
 ## Grammar

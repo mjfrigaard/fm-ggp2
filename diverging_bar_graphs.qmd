@@ -97,7 +97,7 @@ A diverging bar graph shows two groups as bars that start at the same line and p
 
 In most bar graphs, every bar starts at the same line and goes the same way.[^standard] In a diverging bar graph, numbers above 0 go one way from a center line, and numbers below 0 go the other way.[^baseline] We use the color of each bar, how long it is, and where it is to compare the numbers across groups (and within each group).[^levels]
 
-### Horizontal bars
+### Vertical bars
 
 ```{r}
 #| label: diverg
@@ -126,7 +126,7 @@ ggp2_bars_diverg +
 
 Orbitz was a drink with small balls of many colors in it. For example, we can use how long each bar is from the center line to compare the share for Orbitz across all weeks (that is, compare the bars below the line to each other).[^magenta]
 
-### Vertical bars
+### Horizontal bars
 
 ```{r}
 #| label: diverg_vert
@@ -154,7 +154,7 @@ ggp2_bar_diverg_vert +
   labs_geom_bar_diverg_vert
 ```
 
-Surge was another drink that kids bought in the same years. We can also compare Surge and Orbitz within each week (that is, compare the gold bar above the line and the bar below it within each week).[^gold-magenta]
+Surge was another drink that kids bought in the same years. We can also compare Surge and Orbitz within each week (that is, compare the gold bar to the right of the line and the bar to the left of it within each week).[^gold-magenta]
 
 ## Set up
 
@@ -229,7 +229,7 @@ glimpse(orbitz_diverg)
 
 ## Distribution
 
-A diverging bar graph puts two shares back to back, so the question it answers is "how do these two groups trade places?" Here, every kid picks just one drink each week, so anything Surge wins has to come from some other place. Below we'll move from the homes, to a graph, to the rule behind it.[^formula]
+A diverging bar graph puts two shares back to back, so the question it answers is "how do these two groups trade places?" Here, every kid picks just one drink each week, so anything Surge wins has to come from some other place. Below we'll move from the kids, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -265,7 +265,7 @@ lunchroom_survey |>
 **DRAW IT:**
 :::
 
-A bar model shows the 400 kids in each week as one bar cut into three parts.[^bar-model] As we read down the weeks, the Surge part grows, the Orbitz part gets smaller, and the `Other` part moves very little.
+A bar model shows the 400 kids in each week as one bar cut into three parts.[^bar-model] As we read up from week 1, the Surge part grows, the Orbitz part gets smaller, and the `Other` part moves very little.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -337,7 +337,7 @@ Each share we made up moves around its point by about $\sqrt{p(1 - p) / 400}$,[^
 
   - Put `week` across the graph (`x`) and `share` up the side (`y`)[^map]
 
-  - Inside` geom_bar()`
+  - Inside `geom_bar()`
 
     - join `choice` to `fill` so each drink gets its own color[^fill]
 

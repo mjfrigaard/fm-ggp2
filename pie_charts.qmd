@@ -248,7 +248,7 @@ $$
 
 How wide a piece opens at the middle of the pie[^angle] is its share of the 360 degrees around the pie: $\tfrac{1}{2}$ is 180 degrees, $\tfrac{1}{4}$ is 90 degrees, and each $\tfrac{1}{8}$ is 45 degrees. Simple parts like these line up with places our eyes already know from the face of a watch (half past the hour, 15 minutes past),[^clock] which is why pie charts work best with them.
 
-Each share we made up moves around its chance by about $\sqrt{p(1 - p) / 200}$:[^se] about 3.5 percent of the balls for the tri color piece and 2.3 percent for the neon and glow pieces.[^points] That's why our pieces are close to the ones we expect but not the same. Try changing `size = 200` to `size = 20` in `sample()` and the pieces move much farther from the simple parts.
+Each share we made up moves around its chance by about $\sqrt{p(1 - p) / 200}$:[^se] about 3.5 percent of the balls for the tri color piece and 2.3 percent for the neon and glow pieces.[^points] That's why our pieces are close to the ones we expect but not the same. Try changing 200 to 20 in both `ball_id = 1:200` and `size = 200`, and the pieces move much farther from the simple parts.
 
 
 ## Grammar
@@ -271,7 +271,7 @@ Each share we made up moves around its chance by about $\sqrt{p(1 - p) / 200}$:[
 
   -   Give `"in"` to `lab.pos`
 
-  -   Give a dark color to `lab.font` and `"white"` to `color`
+  -   Give white (`"#FFFFFF"`) to `lab.font` and `"white"` to `color`
 
   -   Give `"style"` to `fill`
 

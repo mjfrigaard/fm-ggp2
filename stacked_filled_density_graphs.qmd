@@ -74,6 +74,10 @@ ggp2_fill_density +
 **✅ a categorical variable**      
 :::
 
+::: {style="font-size: 1.05em; color: #282b2d;"}
+**✅ a numeric (continuous) variable**
+:::
+
 ::::
 
 ## Description 
@@ -192,7 +196,7 @@ modem_sessions |>
 **DRAW IT:**
 :::
 
-Below are two graphs of the same 600 sessions. The first puts the hill for each modem on top of the one below it,[^stack] so how much of the graph each color covers from the low end to the top shows the number of sessions at that speed.[^count-density] The second uses `position = "fill"`, which makes the colors reach 100% at every speed and turns the numbers of sessions into shares.[^fill-position] The broken line at 33 kbps stands where the two modems cover each other, and there the filled graph is part 28.8k and part 56k.
+Below are two graphs of the same 600 sessions. The first puts the hill for each modem on top of the one below it,[^stack] so how high each color stands at a speed shows about how many sessions fall in a 1 kbps wide space there.[^count-density] The second uses `position = "fill"`, which makes the colors reach 100% at every speed and turns the numbers of sessions into shares.[^fill-position] The broken line at 33 kbps stands where the two modems cover each other, and there the filled graph is part 28.8k and part 56k.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -204,7 +208,7 @@ Below are two graphs of the same 600 sessions. The first puts the hill for each 
 ggplot(modem_sessions, aes(x = speed_kbps, after_stat(count), fill = modem)) + 
   geom_density(position = "stack") + 
   geom_vline(xintercept = 33, linetype = "dashed") + 
-  labs(title = "Stacked counts", x = "Speed (kbps)", y = "Sessions", 
+  labs(title = "Stacked counts", x = "Speed (kbps)", y = "Sessions per kbps", 
     fill = "Modem")
 
 ggplot(modem_sessions, aes(x = speed_kbps, after_stat(count), fill = modem)) + 
@@ -337,7 +341,7 @@ ggp2_fill_density +
 
 [^stack]: Stacks the count densities with `position = "stack"`.
 
-[^count-density]: The count density, `after_stat(count)`, which is the density multiplied by the number of sessions in the group.
+[^count-density]: The count density, `after_stat(count)`, which is the density multiplied by the number of sessions in the group. Its units are sessions per kbps, and the area under each hill equals the number of sessions in that group.
 
 [^fill-position]: `position = "fill"` scales every vertical slice to 100% and turns the counts into proportions.
 

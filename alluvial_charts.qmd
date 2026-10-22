@@ -68,7 +68,6 @@ labs_alluvial <- labs(title = "Y2K prep",
     caption = "Simulated data",
     subtitle = "300 households surveyed three times in 1999")
 labs_alluvial_y <- ylab("Households")
-labs_alluvial_fill <- labs(fill = "January")
 
 ggp2_alluvial_w <- ggplot(data = y2k_wide,
   aes(axis1 = jan_1999, axis2 = jul_1999,
@@ -83,10 +82,9 @@ ggp2_alluvial_w <- ggplot(data = y2k_wide,
       size = 3)
 
 ggp2_alluvial_w +
-  theme(legend.position = "bottom") +
+  theme(legend.position = "none") +
   labs_alluvial +
-  labs_alluvial_y +
-  labs_alluvial_fill
+  labs_alluvial_y
 ```
 
 ::: {style="font-size: 1.10em; color: #02577A;"}
@@ -105,9 +103,9 @@ ggp2_alluvial_w +
 
 ## Description
 
-An alluvial graph displays the changes in composition or flow over time or across multiple categories.
+An alluvial chart shows how the parts of a whole change,[^composition] or how things move from group to group, over time or from one way of sorting them to the next.[^categories]
 
-We can build alluvial charts in `ggplot2` with the [`ggalluvial` package:](https://corybrunson.github.io/ggalluvial/).
+We can make alluvial charts in `ggplot2` with code from [`ggalluvial`](https://corybrunson.github.io/ggalluvial/).[^ggalluvial]
 
 See also: [parallel sets](parallel_sets.qmd)
 
@@ -117,7 +115,7 @@ See also: [parallel sets](parallel_sets.qmd)
 **PACKAGES:**
 :::
 
-Install packages.
+Bring in the code we'll use.[^packages]
 
 
 ::: {style="font-size: 0.85em;"}
@@ -140,9 +138,9 @@ library(dplyr) # for data manipulation
 **DATA:**
 :::
 
-As 1999 went on, the news filled up with warnings about the Y2K bug: computers that stored years with two digits might think January 1, 2000 was January 1, 1900, and nobody was quite sure what would break. We'll simulate 300 households surveyed three times in 1999 (January, July, and December) about how prepared they were: `"Not worried"`, `"Some supplies"` (extra batteries and bottled water), or `"Bunker ready"`.
+Y2K is a short way to say the year 2000, and January, July, and December are months of the year. As 1999 went on, the news was full of talk about the Y2K problem:[^y2k-bug] computers that kept only the last two numbers of each year[^digits] could think January 1, 2000 was January 1, 1900, and nobody was quite sure what would break. We'll make up[^simulate] 300 homes[^households] and ask each one three times in 1999 (January, July, and December) how ready they were:[^surveyed] `"Not worried"`, `"Some supplies"` (extra water and other things they could need),[^supplies] or `"Bunker ready"`. A bunker is a strong room under the ground where people go to be safe.
 
-In January, most households aren't worried (we draw these with `sample()`). After that, each household's next answer depends only on its last answer. The `move_probs` matrix holds those chances: each row is where a household is now, and each column is where it might be at the next survey. For example, a household that isn't worried has a 70% chance of staying that way, a 25% chance of picking up some supplies, and a 5% chance of going all the way to the bunker. The `next_survey()` function uses `sample()` to draw each household's next answer from its row. Setting the seed with `set.seed()` means you'll get the same 300 households every time you run the code below.
+In January, more than half of the homes are `"Not worried"` (we pick these with `sample()`). After that, each home's next answer turns only on its last answer. The `move_probs` table[^matrix] holds those chances: each row is where a home is now, and each column is where it could be the next time we ask. For example, a home that is `"Not worried"` has a 70% chance of staying that way, a 25% chance of moving to `"Some supplies"`, and a 5% chance of going all the way to `"Bunker ready"`. `next_survey()` uses `sample()` to pick each home's next answer from its row. Starting with `set.seed()`[^seed] means you'll get the same 300 homes every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -183,7 +181,7 @@ glimpse(y2k_households)
 ```
 :::
 
-Below we count every combination of the three answers (as `y2k_wide`). Each row is a path through the three surveys, and `freq` is how many households took it.
+Below we find how many homes gave each set of three answers (as `y2k_wide`).[^combination] Each row is one way through the three times we ask, and `freq` is how many homes went that way.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -201,13 +199,13 @@ glimpse(y2k_wide)
 
 ## Distribution
 
-An alluvial chart shows how things move between categories. The width of each flow is a count, and the counts come from a chain of random moves: every household rolls the dice at every survey. Below we'll move from the households, to a picture, to the formula.
+An alluvial chart shows how things move from group to group. How wide each band is[^flow] tells us how many homes it holds, and those numbers come from a line of moves made by chance:[^chain] each home leaves its next answer up to chance every time we ask. Below we'll move from the homes, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the first five households.
+Start with the first five homes.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -219,7 +217,7 @@ head(y2k_households, 5)
 ```
 :::
 
-Some households stay put and some move. Below we cross January's answers (rows) with July's answers (columns) using `table()`.
+Some homes stay put and some move. Below we set January's answers (rows) against July's answers (columns) with `table()`.[^crosstab]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -233,13 +231,13 @@ jan_jul
 ```
 :::
 
-Of the `r sum(jan_jul["Not worried", ])` households that weren't worried in January, `r jan_jul["Not worried", "Not worried"]` still weren't worried in July. That's about `r round(100 * jan_jul["Not worried", "Not worried"] / sum(jan_jul["Not worried", ]))`%, close to the 70% in the first row of `move_probs`.
+Of the `r sum(jan_jul["Not worried", ])` homes that were `"Not worried"` in January, `r jan_jul["Not worried", "Not worried"]` were still `"Not worried"` in July. That's about `r round(100 * jan_jul["Not worried", "Not worried"] / sum(jan_jul["Not worried", ]))`%, close to the 70% in the first row of `move_probs`.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-The alluvial chart below draws the same table. Each of the nine cells in `jan_jul` becomes a flow from January to July, and the width of the flow is the count in that cell.
+The alluvial chart below shows the same table. Each box[^cells] in `jan_jul` that is not 0 becomes a band from January to July, and how wide the band is shows the number in that box. That's `r sum(jan_jul > 0)` of the 9 boxes, because no home went from `"Bunker ready"` to `"Not worried"`.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -255,24 +253,24 @@ y2k_households |>
   geom_alluvium(aes(fill = jan_1999)) +
   geom_stratum() +
   geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 3) +
-  labs(y = "Households", fill = "January") +
-  theme(legend.position = "bottom")
+  labs(y = "Households") +
+  theme(legend.position = "none")
 ```
 :::
 
-The widest flows are the ones that stay in the same category, which matches the large numbers on the diagonal of `move_probs`.
+The big numbers that run from the top left to the lower right of `move_probs`[^diagonal] make staying in the same group the most likely move, but how wide a band is also turns on how many homes start in that group. That's why the band from `"Not worried"` to `"Some supplies"` (`r jan_jul["Not worried", "Some supplies"]` homes) is wider than the band of homes that stay `"Bunker ready"` (`r jan_jul["Bunker ready", "Bunker ready"]` homes).
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **NAME IT:**
 :::
 
-A process where the next step depends only on the current step is a [Markov chain](https://en.wikipedia.org/wiki/Markov_chain). The households in each starting category split across the three categories according to a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution) (the same distribution we used for the Pokémon starters in @sec-bar-graphs), with probabilities from that category's row of `move_probs`:
+When each next step turns only on the step we're on now, we have [a line of steps that forgets the past](https://en.wikipedia.org/wiki/Markov_chain).[^markov] The homes that start in each group break up across the three groups by [a rule for how many land in each group](https://en.wikipedia.org/wiki/Multinomial_distribution)[^multinomial] (the same rule we used for the last Alleyway stage each player reached in @sec-bar-graphs), with the chances from that group's row of `move_probs`:
 
 $$
 (N_{\text{not}}, N_{\text{some}}, N_{\text{bunker}}) \mid \text{Not worried} \sim \text{Multinomial}\left(n_{\text{not}}, \; (0.70, 0.25, 0.05)\right)
 $$
 
-Multiplying January's counts by the matrix gives the counts we'd expect in July:
+Putting January's numbers through the table[^matrix-mult] gives the numbers we'd expect in July:
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -286,7 +284,7 @@ rbind(expected = round(expected_jul[1, ], 1),
 ```
 :::
 
-The observed July counts land close to the expected ones. Because the off diagonal chances of moving toward the bunker (0.25 and 0.20) are bigger than the chances of moving back (0.15 and 0.15), each survey pushes more households toward the right side of the matrix. Try changing the first row of `move_probs` to `c(0.95, 0.04, 0.01)` and most of the flows stay flat.
+The July numbers we got land close to the ones we expected.[^observed] Because the chances of moving closer to the bunker (0.25 and 0.20) are bigger than the chances of moving back (0.15 and 0.15),[^off-diagonal] each new answer moves more homes over to the right side of the table. Try changing the first row of `move_probs` to `c(0.95, 0.04, 0.01)` and far more homes stay in the same group.
 
 ## Grammar
 
@@ -296,13 +294,15 @@ The observed July counts land close to the expected ones. Because the off diagon
 
 
 
-  - Create labels with `labs()` and `ylab()`
+  - Make the words around the graph[^labels] with `labs()` and `ylab()`
 
-  - Add `scale_x_discrete()` with the `limits` set to `"Jan 1999"`, `"Jul 1999"` and `"Dec 1999"`, and `expand` to `0.1` and `0.07`
+  - Add `scale_x_discrete()` with `limits` set to `"Jan 1999"`, `"Jul 1999"` and `"Dec 1999"` (the names under the three axes), and `expand` set to `0.1` and `0.07` (room on each side)[^scale-x]
 
-  - Add `geom_alluvium()` with `fill` set to the `jan_1999` variable and `geom_stratum()`
+  - Add `geom_alluvium()` and give each `jan_1999` group its own color with `fill`, then add `geom_stratum()`[^stratum]
 
-  - Add `geom_text()`, with `stat` set to `stratum` and label set to `after_stat(stratum)` (*inside* `aes()`)
+  - Add `geom_text()`, with `stat` set to `stratum` and `label` set to `after_stat(stratum)` (*inside* `aes()`), to write the name of each group on its box
+
+  - Take away the key[^legend] with `theme(legend.position = "none")`, because the words on the boxes already name each group
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -318,7 +318,6 @@ labs_alluvial <- labs(title = "Y2K prep",
     caption = "Simulated data",
     subtitle = "300 households surveyed three times in 1999")
 labs_alluvial_y <- ylab("Households")
-labs_alluvial_fill <- labs(fill = "January")
 
 ggp2_alluvial_w <- ggplot(data = y2k_wide,
   aes(axis1 = jan_1999, axis2 = jul_1999,
@@ -333,10 +332,9 @@ ggp2_alluvial_w <- ggplot(data = y2k_wide,
       size = 3)
 
 ggp2_alluvial_w +
-  theme(legend.position = "bottom") +
+  theme(legend.position = "none") +
   labs_alluvial +
-  labs_alluvial_y +
-  labs_alluvial_fill
+  labs_alluvial_y
 ```
 :::
 
@@ -344,7 +342,7 @@ ggp2_alluvial_w +
 **GRAPH:**
 :::
 
-The `ggalluvial` functions can handle wide or long data.
+The code in `ggalluvial` can work with wide or long data.[^wide-long]
 
 ```{r}
 #| label: create_graph_alluvial
@@ -359,7 +357,6 @@ labs_alluvial <- labs(title = "Y2K prep",
     caption = "Simulated data",
     subtitle = "300 households surveyed three times in 1999")
 labs_alluvial_y <- ylab("Households")
-labs_alluvial_fill <- labs(fill = "January")
 
 ggp2_alluvial_w <- ggplot(data = y2k_wide,
   aes(axis1 = jan_1999, axis2 = jul_1999,
@@ -374,19 +371,18 @@ ggp2_alluvial_w <- ggplot(data = y2k_wide,
       size = 3)
 
 ggp2_alluvial_w +
-  theme(legend.position = "bottom") +
+  theme(legend.position = "none") +
   labs_alluvial +
-  labs_alluvial_y +
-  labs_alluvial_fill
+  labs_alluvial_y
 ```
 
 ## More info
 
-The `ggalluvial` package can also help reshape data with the `to_lodes_form()` function.
+`ggalluvial` can also help change the form of the data with `to_lodes_form()`.[^reshape]
 
 ### `to_lodes_form()`
 
-Below we create `y2k_lodes` from the `y2k_wide` data using the `to_lodes_form()` from the `ggalluvial` package. We'll keep a copy of each household's January answer (`January`) so we can still use it for `fill` after the reshaping.
+Below we make `y2k_lodes` from the `y2k_wide` data with `to_lodes_form()` from `ggalluvial`. We'll also keep each home's January answer in a new column (`January`) so we can still use it for `fill` after we change the form of the data.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -406,15 +402,17 @@ glimpse(y2k_lodes)
 ```
 :::
 
-Create labels with `labs()`
+Make the words around the graph[^labels] with `labs()`
 
-  - Map `Survey` to `x`, `Households` to `y`, `stratum` to `stratum`, `alluvium` to `alluvium`, and `label` to `stratum`.
+  - Put `Survey` on `x` and `Households` on `y`, and join `stratum` to `stratum`, `alluvium` to `alluvium`, and `label` to `stratum`.[^map]
 
-  - Add the `geom_alluvium()` and map `January` to `fill`
+  - Add `geom_alluvium()` and give each `January` group its own color with `fill`
 
-  - Add the `geom_stratum()` and set the `width` to `0.45`
+  - Add `geom_stratum()` and set `width` to `0.45`
 
-  - Add `geom_text()` and set `stat` to `"stratum"`
+  - Add `geom_text()`, set `stat` to `"stratum"`, and set `size` to `3.5`
+
+  - Take away the key with `theme(legend.position = "none")`, because the words on the boxes already name each group
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -435,19 +433,19 @@ ggp2_alluvial_lf <- ggplot(
         label = stratum)) +
     ggalluvial::geom_alluvium(aes(fill = January)) +
     ggalluvial::geom_stratum(width = 0.45) +
-    geom_text(stat = "stratum", size = 2.5)
+    geom_text(stat = "stratum", size = 3.5)
 
 ggp2_alluvial_lf +
     labs_alluvial +
-    theme(legend.position = "bottom")
+    theme(legend.position = "none")
 ```
 :::
 
 ### `geom_flow()`
 
-If you'd like to arrange the date or time variable across the `x`, you can use the `ggalluvial::geom_flow()` with `ggalluvial::geom_stratum()`.
+If you'd like to put the times[^date-var] across `x`, you can use `ggalluvial::geom_flow()` with `ggalluvial::geom_stratum()`.
 
-  - First create `y2k_long`, a long version of `y2k_households` with one row per household per survey (and `survey` as a factor in the order the surveys happened).
+  - First make `y2k_long`, a long form of `y2k_households` with one row for each home each time we ask (and `survey` set in the order we asked).[^factor]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -472,13 +470,13 @@ glimpse(y2k_long)
 ```
 :::
 
-  - Create labels with `labs()`
+  - Make the words around the graph[^labels] with `labs()`
 
-  - Initiate graph with `data`
+  - Start the graph with `ggplot()` and give it `data`
 
-  - Map the `survey` to the `x`, `prep` to `stratum`, `household_id` to `alluvium`, `prep` to `fill`, and `prep` to `label`.
+  - Put `survey` on `x`, and join `prep` to `stratum`, `household_id` to `alluvium`, `prep` to `fill`, and `prep` to `label`.[^map]
 
-  - Add the `geom_flow()`, with `stat` set to `"alluvium"` and `lode.guidance` set to `"frontback"` (with 300 households, each flow is only one household wide, so we leave the outline `color` off or it covers the fill)
+  - Add `geom_flow()`, with `stat` set to `"alluvium"` and `lode.guidance` set to `"frontback"` (with 300 homes, each band is only one home wide, so we leave the outside line `color` off, or it covers the `fill`)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -490,6 +488,7 @@ glimpse(y2k_long)
 labs_alluvial <- labs(
   title = "Y2K prep across three surveys",
   caption = "Simulated data",
+  x = "Survey", y = "Households",
   fill = "Prep")
 # add geom_flow()
 ggp2_alluvial_flow <- ggplot(data = y2k_long,
@@ -522,7 +521,7 @@ ggp2_alluvial_stratum +
 
 ### `legend.position`
 
-Move legend to bottom with `theme(legend.position = "bottom")`
+Move the key[^legend] under the graph with `theme(legend.position = "bottom")`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -535,3 +534,69 @@ ggp2_alluvial_stratum +
   theme(legend.position = "bottom")
 ```
 :::
+
+[^composition]: Changes in composition.
+
+[^categories]: Flow over time or across multiple categorical variables.
+
+[^ggalluvial]: The `ggalluvial` package.
+
+[^packages]: Install and load the packages.
+
+[^y2k-bug]: The Y2K bug (also called the millennium bug).
+
+[^digits]: Stored years with two digits (`99` for 1999).
+
+[^simulate]: Simulate.
+
+[^households]: Households.
+
+[^surveyed]: Surveyed three times about how prepared they were.
+
+[^supplies]: Extra batteries and bottled water.
+
+[^matrix]: The `move_probs` matrix of transition probabilities.
+
+[^seed]: Setting the random seed.
+
+[^combination]: Count every combination of the three answers.
+
+[^flow]: The width of each flow (alluvium).
+
+[^chain]: A chain of random moves (a Markov chain).
+
+[^formula]: The formula.
+
+[^crosstab]: A cross tabulation (contingency table).
+
+[^cells]: Cells.
+
+[^diagonal]: The diagonal of the matrix.
+
+[^markov]: A Markov chain.
+
+[^multinomial]: A multinomial distribution: the counts in each of $k$ categories across $n$ independent trials with fixed probabilities.
+
+[^matrix-mult]: Multiplying January's counts by the matrix (matrix multiplication with `%*%`).
+
+[^observed]: The observed July counts land close to the expected counts.
+
+[^off-diagonal]: The off diagonal probabilities.
+
+[^labels]: Labels.
+
+[^scale-x]: A discrete `x` scale with one limit for each axis and expansion on both sides.
+
+[^stratum]: Each stratum is a box for one category at one axis.
+
+[^wide-long]: Wide data has one column for each axis (`y2k_wide`); long (lodes) data has one row for each path at each axis (`y2k_lodes`).
+
+[^reshape]: Reshape the data from wide (alluvia) form to long (lodes) form.
+
+[^map]: Map these variables inside `aes()`.
+
+[^date-var]: The date or time variable.
+
+[^factor]: `survey` is a factor with its levels in time order.
+
+[^legend]: The legend.

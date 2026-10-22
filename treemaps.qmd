@@ -298,7 +298,7 @@ Under this rule, how far a count usually falls from its rate is $\sqrt{\lambda}$
 
       - `alpha`: how much the words cover what is behind them[^opacity]
 
-      - `fontface`: `itlalic`/`bond`
+      - `fontface`: `italic`/`bold`
 
       - `family`: `"sans"`/`"sansserif"`/`"mono"`
 
@@ -378,9 +378,9 @@ ggp2_treemap +
 
 `treemapify` has many choices for making treemaps.[^options] We cover a few of these below, but you should read the [long example that comes with it](https://cran.r-project.org/web/packages/treemapify/vignettes/introduction-to-treemapify.html).[^vignette]
 
-### Subgroup
+### Subgroup 2
 
-The deepest groups are the smallest ones inside, and the shallowest are the biggest ones that hold the others. `ggplot2` puts each part of the graph down in the order it's written,[^layer-order] so the makers of `treemapify` [say](https://cran.r-project.org/web/packages/treemapify/vignettes/introduction-to-treemapify.html) to add the groups inside groups[^subgroups] "*from deepest to shallowest*", with `subgroups2` first (ending on `subgroup`)
+The deepest groups are the smallest ones inside, and the shallowest are the biggest ones that hold the others. `ggplot2` puts each part of the graph down in the order it's written,[^layer-order] so the makers of `treemapify` [say](https://cran.r-project.org/web/packages/treemapify/vignettes/introduction-to-treemapify.html) to add the groups inside groups[^subgroups] "*from deepest to shallowest*", with `subgroup2` first (ending on `subgroup`)
 
 - Add `geom_treemap_subgroup2_border()`
 
@@ -396,7 +396,7 @@ The deepest groups are the smallest ones inside, and the shallowest are the bigg
 
   - `alpha`: how much the words cover what is behind them
 
-  - `fontface`: `itlalic`/`bond`
+  - `fontface`: `italic`/`bold`
 
   - `family`: `"sans"`/`"sansserif"`/`"mono"`
 
@@ -428,7 +428,7 @@ ggp2_tm_subgroup +
 ```
 :::
 
-### Subgroup 2
+### Subgroup
 
   - Add `geom_treemap_subgroup_border()`
 
@@ -444,7 +444,7 @@ ggp2_tm_subgroup +
 
     - `alpha`: how much the words cover what is behind them
 
-    - `fontface`: `itlalic`/`bond`
+    - `fontface`: `italic`/`bold`
 
     - `family`: `"sans"`/`"sansserif"`/`"mono"`
 

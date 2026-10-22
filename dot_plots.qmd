@@ -239,6 +239,8 @@ This is what `dpois()` works out. For $k = 3$, $P(X = 3) = 3^3 e^{-3} / 3! \appr
 
 5. Set `binwidth` to `1` (one pile for each number of movies)[^binwidth] and change the `dotsize`[^dotsize]
 
+6. Put a mark on the `x` axis at each whole number from 0 to 8 with `scale_x_continuous(breaks = 0:8)`[^breaks]
+
 ::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_dotplot
@@ -363,6 +365,8 @@ ggp2_dotplot +
 [^binwidth]: The bin width. With `binwidth = 1`, each bin holds one count.
 
 [^dotsize]: Adjust the `dotsize` argument, the dot diameter relative to `binwidth`.
+
+[^breaks]: Axis breaks: tick marks and labels at each integer from 0 to 8.
 
 [^y-scale]: `geom_dotplot()` does not stack dots in count units on the `y` axis.
 

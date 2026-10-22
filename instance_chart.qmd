@@ -93,12 +93,11 @@ ggp2_inst_gushers +
 
 ## Description
 
-An instance chart (or instance graph) displays frequencies (or 'instances') of different categorical values over time.
+An instance chart shows each time a group comes up as time goes on.[^instances]
 
-The time dimension is placed on the `x` and each
-separate categorical item is placed on the `y`-axis. The instances are typically represented using the vertical hashes from `geom_point()` (i.e., shape `124` or the 'pipe' `"|"`).
+Time goes on the `x` axis, and each group gets its own place on the `y` axis.[^categorical] Each time a group comes up, we most often show it with a short mark that stands straight up, using `geom_point()` with `shape` `124` (the `"|"` mark).[^ticks]
 
-Saturation and color are also used to represent different categorical levels and counts.
+Color and how much we can see through each mark[^saturation] also show the groups and how many times each one comes up.
 
 ## Set up
 
@@ -106,7 +105,7 @@ Saturation and color are also used to represent different categorical levels and
 **PACKAGES:**
 :::
 
-Install packages.
+Bring in the code we'll use.[^packages]
 
 
 ::: {style="font-size: 0.85em;"}
@@ -130,7 +129,7 @@ library(tidyr) # for expand_grid()
 **DATA:**
 :::
 
-Fruit Gushers arrived in 1991: fruit snacks with a liquid center, sold with commercials where a kid's head turned into a giant piece of fruit. Fruit snacks were already the currency of the lunch table, and a new Gushers flavor made its fruit worth more. We'll simulate how many packs of each flavor were traded at one lunch table every year from 1980 to 2005. Each flavor in `snack_flavors` has an average number of trades per year `before` its pretend Gushers `debut` and an average `after` it (berry punch shows up in 1992, sour apple in 1998, and mystery in 2001). `rpois()` draws each year's count (`n`) from the matching average. Setting the seed with `set.seed()` means you'll get the same `r nrow(lunch_trades)` flavor years every time you run the code below.
+Fruit Gushers are small, soft fruit snacks with juice inside, in many flavors, and they came out in 1991. To sell them, they showed a kid whose head turned into a big piece of fruit.[^ads] Fruit snacks were already the money[^currency] at the lunch table, where kids ate in the middle of the school day, and a new Gushers flavor made its fruit worth more. We'll make up[^simulate] how many times each flavor changed hands at one lunch table each year from 1980 to 2005.[^trades] Each flavor in `snack_flavors` has a mean number of trades each year `before` the year Gushers made it (`debut`, a year we made up) and a mean `after` it (berry punch comes in 1992, sour apple in 1998, and mystery in 2001).[^average] A count is how many times something happens. `rpois()` picks each year's count (`n`) using the mean that goes with that year.[^rpois] Starting with `set.seed()`[^seed] means you'll get the same `r nrow(lunch_trades)` flavor years every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -157,7 +156,7 @@ glimpse(lunch_trades)
 ```
 :::
 
-An instance chart only shows the years a flavor was traded, so we'll filter out the years with no trades and store the rest in `gushers_trades`.
+An instance chart only shows the years a flavor changed hands, so we'll take out the years with no trades[^filter] and keep the rest in `gushers_trades`.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -173,13 +172,13 @@ glimpse(gushers_trades)
 
 ## Distribution
 
-An instance chart is built from two things: whether a flavor shows up in a given year (the tick), and how many times it shows up (the shading). The empty spaces between the ticks matter just as much as the ticks, and the number of empty spaces depends on how popular the flavor is. Below we'll move from the counts, to a picture, to the formula.
+An instance chart comes from two things: whether a flavor shows up in a year (the mark), and how many times it shows up (how much we can see through it).[^shading] The open spaces between the marks matter just as much as the marks, and the number of open spaces turns on how much kids want the flavor.[^popular] Below we'll move from the counts, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with lime in the five years before and after Gushers arrived.
+Start with lime in the five years before and after Gushers came out.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -192,7 +191,7 @@ lunch_trades |>
 ```
 :::
 
-Before 1991, most years have no lime trades at all. Below we count the years with zero trades (`zero_years`) for each flavor, before and after its debut.
+Before 1991, most years have no lime trades at all. Below we count the years with no trades (`zero_years`) for each flavor, before and after the year it came out.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -211,13 +210,13 @@ zero_counts
 ```
 :::
 
-Lime went `r zero_counts$zero_years_before[zero_counts$flavor == "Lime"]` of `r zero_counts$years_before[zero_counts$flavor == "Lime"]` years without a trade before Gushers, and only `r zero_counts$zero_years_after[zero_counts$flavor == "Lime"]` of `r zero_counts$years_after[zero_counts$flavor == "Lime"]` years after it. Strawberry, the most popular flavor, never had a year without a trade.
+Lime went `r zero_counts$zero_years_before[zero_counts$flavor == "Lime"]` of `r zero_counts$years_before[zero_counts$flavor == "Lime"]` years without a trade before Gushers, and only `r zero_counts$zero_years_after[zero_counts$flavor == "Lime"]` of `r zero_counts$years_after[zero_counts$flavor == "Lime"]` years after it. Strawberry, the flavor kids wanted most, never had a year without a trade.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-The graph below draws lime's yearly counts as bars (including the zeros) and the same years as instance ticks across the bottom. Every gap in the ticks is a year with a bar of height zero.
+The graph below shows lime's count for each year as a bar (even the years with 0) and shows the same years as instance marks under the bars. Every open space in the marks is a year whose bar stops at 0.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -232,7 +231,8 @@ ggplot(lime, aes(x = year)) +
   geom_point(data = filter(lime, n > 0), aes(y = -0.5),
              shape = 124, size = 5, color = "#D01D27") +
   geom_vline(xintercept = 1990.5, linetype = "dashed") +
-  labs(x = "Year", y = "Lime trades")
+  annotate("text", x = 1990.3, y = max(lime$n), label = "Gushers come out", hjust = 1) +
+  labs(title = "Lime trades each year", x = "Year", y = "Lime trades")
 ```
 :::
 
@@ -240,13 +240,13 @@ ggplot(lime, aes(x = year)) +
 **NAME IT:**
 :::
 
-Each yearly count follows a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) with the average for that flavor and era:
+Each year's count comes from a [rule for counts](https://en.wikipedia.org/wiki/Poisson_distribution)[^poisson] that uses the mean for that flavor, before or after the year it came out:
 
 $$
 n_{\text{flavor, year}} \sim \text{Poisson}(\lambda), \quad P(n = 0) = e^{-\lambda}
 $$
 
-The chance of an empty year depends only on $\lambda$. Before Gushers, lime's average is 0.3 trades a year, so $P(n = 0) = e^{-0.3} \approx `r round(exp(-0.3), 2)`$, and we'd expect about $11 \times `r round(exp(-0.3), 2)` \approx `r round(11 * exp(-0.3), 1)`$ empty years out of 11. After Gushers, the average jumps to 1.5, so $P(n = 0) = e^{-1.5} \approx `r round(exp(-1.5), 2)`$ and we'd expect about `r round(15 * exp(-1.5), 1)` empty years out of 15. Strawberry averages 8 trades a year after Gushers, so an empty year has a chance of $e^{-8} \approx 0.0003$ (practically never). That's why rare flavors look like scattered ticks and popular flavors look like solid lines. Try changing lime's `after` value to `5` and its row fills in.
+The chance of a year with no trades turns only on $\lambda$, the mean. Before Gushers, lime's mean is 0.3 trades a year, so $P(n = 0) = e^{-0.3} \approx `r round(exp(-0.3), 2)`$, and we'd look for about $11 \times `r round(exp(-0.3), 2)` \approx `r round(11 * exp(-0.3), 1)`$ years with no trades out of 11.[^expect] After Gushers, the mean goes up to 1.5, so $P(n = 0) = e^{-1.5} \approx `r round(exp(-1.5), 2)`$ and we'd look for about `r round(15 * exp(-1.5), 1)` years with no trades out of 15. Strawberry's mean is 8 trades a year after Gushers, so a year with no trades has a chance of $e^{-8} \approx 0.0003$ (almost never). That's why flavors that kids don't often trade look like marks with spaces between them, and flavors they trade a lot look like lines with no breaks. Try changing lime's `after` number to `5`, and lime gets a mark in almost every year from 1991 on.
 
 ## Grammar
 
@@ -254,17 +254,17 @@ The chance of an empty year depends only on $\lambda$. Before Gushers, lime's av
 **CODE:**
 :::
 
-  - Create labels with `labs()`
+  - Make the words around the graph[^labels] with `labs()`
 
-  - Initialize the graph with `ggplot()` and provide `data`
+  - Start the graph with `ggplot()` and give it `data`
 
-  - Map `year` to `x`, `flavor` to `y`, and `color` to `flavor`
+  - Put `year` on the `x` axis and `flavor` on the `y` axis, and give each `flavor` its own `color`[^map]
 
-  - Add `geom_point()`, map `n` to `alpha`, and set the `shape` to `124` and `size` to `5`
+  - Add `geom_point()`, let `n` set how much we can see through each mark (`alpha`),[^alpha] and set the `shape` to `124` and `size` to `5`
 
-  - Most years have only a few trades, so we raise the lightest `alpha` with `scale_alpha_continuous(range = c(0.35, 1))` (otherwise the faint ticks disappear)
+  - Most years have only a few trades, so we make the lightest marks stronger with `scale_alpha_continuous(range = c(0.35, 1))` (if we don't, the lightest marks are hard to see)
 
-  - Remove the `color` legend with `guides()` (the flavors are already on the `y` axis)
+  - Take away the `color` key[^legend] with `guides()` (the flavors are already on the `y` axis)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -281,7 +281,8 @@ labs_inst_gushers <- labs(
   caption = "Simulated data",
   subtitle = "Fruit snack trades at one lunch table, 1980 - 2005",
   x = "Year",
-  y = "Flavor")
+  y = "Flavor",
+  alpha = "Trades per year")
 ggp2_inst_gushers <- ggplot(data = gushers_trades,
     mapping = aes(x = year,
                   y = flavor,
@@ -315,7 +316,8 @@ labs_inst_gushers <- labs(
   caption = "Simulated data",
   subtitle = "Fruit snack trades at one lunch table, 1980 - 2005",
   x = "Year",
-  y = "Flavor")
+  y = "Flavor",
+  alpha = "Trades per year")
 ggp2_inst_gushers <- ggplot(data = gushers_trades,
     mapping = aes(x = year,
                   y = flavor,
@@ -332,9 +334,9 @@ ggp2_inst_gushers +
 
 ## More info
 
-### Saturation with `cut_interval()`
+### Color with `cut_interval()`
 
-`ggplot2` has two great functions for splitting numerical variables into intervals or widths. We'll use `cut_interval()` to create an `n_range` variable, which splits the yearly counts (`n`) into intervals based on the `length` argument.
+`ggplot2` has three ways of cutting a column of numbers into groups: `cut_interval()`, `cut_number()`, and `cut_width()`.[^cut] We'll use `cut_interval()` to make an `n_range` column, which cuts the counts for each year (`n`) into groups that are each as wide as `length`.[^length]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -351,9 +353,9 @@ gushers_trades_range |>
 ```
 :::
 
-Below we can see the count ranges have been built with the [interval notation](https://ggplot2.tidyverse.org/reference/cut_interval.html): `"(a,b]"`
+Below we can see that each group of counts is written [with its lowest and highest numbers](https://ggplot2.tidyverse.org/reference/cut_interval.html):[^interval] `"(a,b]"`
 
-  - Most of the ticks fall in the lowest range, and every count above 9 belongs to strawberry after Gushers arrived.
+  - Most of the marks fall in the lowest group, and every count over 9 comes from strawberry after Gushers came out.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -367,8 +369,7 @@ labs_inst_gushers_range <- labs(
   subtitle = "Fruit snack trades at one lunch table, 1980 - 2005",
   x = "Year",
   y = "Flavor",
-  color = "Trades per year",
-  alpha = "Trades per year")
+  color = "Trades per year")
 ggp2_inst_gushers_range <- ggplot(data = gushers_trades_range,
     mapping = aes(x = year,
                   y = flavor,
@@ -376,7 +377,8 @@ ggp2_inst_gushers_range <- ggplot(data = gushers_trades_range,
   geom_point(aes(alpha = n),
                 shape = 124,
                 size = 4) +
-  scale_alpha_continuous(range = c(0.35, 1))
+  scale_alpha_continuous(range = c(0.35, 1)) +
+  guides(alpha = "none") # the color key already shows the trade counts
 ggp2_inst_gushers_range +
   labs_inst_gushers_range
 ```
@@ -385,11 +387,11 @@ ggp2_inst_gushers_range +
 
 ### Facets with `cut_number()`
 
-To demonstrate facets, we'll create two other variables: `year_range` and `group`:
+To show small graphs,[^facets] we'll make two more columns: `year_range` and `group`:
 
-  - `year_range` uses `ggplot2::cut_number()` to split the `year` into three groups with about the same number of ticks in each, then we build a label for each group from its first and last year
+  - `year_range` uses `ggplot2::cut_number()` to cut `year` into three groups with about the same number of marks in each, then we make a name for each group from its first and last year
 
-  - `group` is a factor variable with two levels: `"Single fruit"` and `"Berry blends"` (blue raspberry and berry punch)
+  - `group` is a column with two set values:[^factor] `"Single fruit"` and `"Berry blends"` (blue raspberry and berry punch)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -412,7 +414,7 @@ gushers_trades_fct <- gushers_trades |>
 ```
 :::
 
-Below we can see the total counts of flavors in the cross-table of `year_range` and `group`
+Below we can see how many flavor years with at least one trade fall in each `year_range` and `group`[^crosstab]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -427,11 +429,11 @@ gushers_trades_fct |>
 ```
 :::
 
-In the graph, we'll create labels using the `levels` from the `year_range` variable.
+In the graph, the words over each small graph show its years, so the words at the top[^subtitle] show the first and last year of all the trades.
 
-  - We can also change the `shape` used in `geom_point()` to the pipe operator (`"|"`)
+  - We can also change the `shape` in `geom_point()` to the straight up mark (`"|"`)[^pipe]
 
-  - With `scales = "free"`, each panel picks its own `x` breaks, so we set them every five years with `scale_x_continuous()`
+  - `facet_grid()` puts the flavor groups in rows and the year groups in columns. With `scales = "free"`, each row keeps only its own flavors, so the flavors line up across the row, and each column picks its own numbers along the `x` axis,[^breaks] so we set them every five years with `scale_x_continuous()`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -439,16 +441,11 @@ In the graph, we'll create labels using the `levels` from the `year_range` varia
 #| code-fold: show
 #| eval: true
 #| echo: true
-#| fig-asp: 1.4
-# create labels from factor levels
-st_lbls <- paste0(
-              levels(gushers_trades_fct$year_range),
-            collapse = ", ")
-
+#| fig-asp: 0.75
 labs_inst_gushers_facet <- labs(
   title = "Fruit Gushers",
   caption = "Simulated data",
-  subtitle = paste0("Time span: ", st_lbls),
+  subtitle = "Fruit snack trades at one lunch table, 1980 - 2005",
   x = "Year",
   y = "Flavor")
 
@@ -461,10 +458,71 @@ ggp2_inst_gushers_facet <- ggplot(gushers_trades_fct,
                  show.legend = FALSE) +
   scale_x_continuous(breaks = seq(1980, 2005, by = 5)) +
   scale_alpha_continuous(range = c(0.35, 1)) +
-  facet_wrap(year_range ~ group,
-             scales = "free",
-             ncol = 2)
+  facet_grid(group ~ year_range,
+             scales = "free")
 ggp2_inst_gushers_facet +
   labs_inst_gushers_facet
 ```
 :::
+
+[^instances]: An instance chart (or instance graph) displays frequencies (or "instances") of different categorical values over time.
+
+[^categorical]: Each separate categorical item.
+
+[^ticks]: Vertical hashes; shape `124` is the pipe character `"|"`.
+
+[^saturation]: Transparency (`alpha`).
+
+[^packages]: Install packages.
+
+[^ads]: Commercials.
+
+[^currency]: Currency.
+
+[^simulate]: Simulate.
+
+[^trades]: How many packs of each flavor were traded.
+
+[^average]: The average number of trades per year before and after each flavor's pretend Gushers `debut`.
+
+[^rpois]: `rpois()` draws each year's count from a Poisson distribution with the matching average (`lambda = avg_n`).
+
+[^seed]: Setting the seed.
+
+[^filter]: Filter out.
+
+[^shading]: Transparency (`alpha`).
+
+[^popular]: How popular the flavor is.
+
+[^formula]: The formula.
+
+[^poisson]: A Poisson distribution, with the average for that flavor and era.
+
+[^expect]: The expected number of empty years.
+
+[^labels]: Create labels.
+
+[^map]: Map `year` to `x`, `flavor` to `y`, and `color` to `flavor`.
+
+[^alpha]: Map `n` to `alpha` (transparency).
+
+[^legend]: Legend.
+
+[^cut]: Functions for splitting numerical variables into equal width intervals, groups with equal counts, or bins of a set width.
+
+[^length]: The `length` argument sets the width of each interval.
+
+[^interval]: Interval notation: `(` leaves `a` out of the interval and `]` keeps `b` in it.
+
+[^facets]: Facets.
+
+[^factor]: A factor variable with two levels.
+
+[^crosstab]: A cross table of `year_range` and `group`; each cell counts rows (flavor years with at least one trade), not trades.
+
+[^subtitle]: Labels (here, the subtitle).
+
+[^pipe]: The pipe operator.
+
+[^breaks]: Breaks.

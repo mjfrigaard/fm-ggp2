@@ -72,7 +72,7 @@ ggp2_freqpoly +
 
 ## Description
 
-A frequency polygon shows where numbers fall, using points joined by straight lines. It works like a bar graph that shows how many numbers fall in each box along the `x` axis,[^histogram] but people use it more often to compare more than one set of numbers. A key[^legend] often tells us which line goes with which set. A frequency polygon can show whether the line [looks the same on both sides](https://en.wikipedia.org/wiki/Normal_distribution)[^symmetry] or [reaches far out on one side](https://en.wikipedia.org/wiki/Skewness).[^skew]
+A frequency polygon shows where numbers fall, using points joined by straight lines. It works like a bar graph that shows how many numbers fall in each box along the `x` axis,[^histogram] but people use it more often to compare more than one set of numbers. A key[^legend] often tells us which line goes with which set. A frequency polygon can show whether the line [looks the same on both sides](https://en.wikipedia.org/wiki/Symmetric_probability_distribution)[^symmetry] or [reaches far out on one side](https://en.wikipedia.org/wiki/Skewness).[^skew]
 
 ## Set up
 
@@ -108,7 +108,7 @@ library(dplyr) # for tibble() and data manipulation
 
 :::
 
-The [Talkboy](https://en.wikipedia.org/wiki/Talkboy) was a small box you could hold in one hand that kept what you said and played it back.[^cassette] The boy in [*Home Alone 2* (1992)](https://www.imdb.com/title/tt0104431/) used one, and a company sold the real thing at the end of that year. 
+The [Talkboy](https://en.wikipedia.org/wiki/Talkboy) was a small box you could hold in one hand that kept what you said and played it back.[^cassette] The boy in [*Home Alone 2* (1992)](https://www.imdb.com/title/tt0104431/) used one. A company sold a real one that same year, and in 1993 it sold a better one that could also make your voice sound higher or lower.[^deluxe] 
 
 We'll make up[^simulate] 300 messages said into a Talkboy with `rgamma()`, and round how long each message lasts to one number after the point (like 6.9 seconds). Starting with `set.seed()`[^seed] means you'll get the same 300 messages every time you run the code below.
 
@@ -168,7 +168,7 @@ talkboy_clips |>
 ```
 :::
 
-The mean is larger than the median, so more than half of the messages are shorter than the mean. We can find how many there are by cutting the messages into two groups at 8 seconds.
+The mean is larger than the median, so more than half of the messages are shorter than the mean. We can find how many there are by cutting the messages into two groups at the mean (about `r round(mean(talkboy_clips$seconds), 1)` seconds).
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -177,10 +177,10 @@ The mean is larger than the median, so more than half of the messages are shorte
 #| eval: true
 #| echo: true
 talkboy_split <- talkboy_clips |>
-  mutate(speed = if_else(seconds < 8,
-    "under 8 seconds", "8 seconds or more"),
+  mutate(speed = if_else(seconds < mean(seconds),
+    "shorter than the mean", "the mean or longer"),
     speed = factor(speed,
-      levels = c("under 8 seconds", "8 seconds or more"))) |>
+      levels = c("shorter than the mean", "the mean or longer"))) |>
   count(speed)
 talkboy_split
 ```
@@ -339,13 +339,15 @@ ggp2_freqpoly_bins15 +
 
 [^legend]: A legend, used to tell apart the data sets.
 
-[^symmetry]: Symmetry. The link goes to the normal distribution, a common symmetric distribution.
+[^symmetry]: Symmetry: a symmetric distribution.
 
 [^skew]: Skewness.
 
 [^packages]: Install and load the packages.
 
 [^cassette]: A handheld cassette recorder.
+
+[^deluxe]: Tiger Electronics sold the first Talkboy in 1992 and the Deluxe Talkboy, with the voice changer from the film, in April 1993.
 
 [^simulate]: Simulate.
 

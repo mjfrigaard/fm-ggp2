@@ -397,7 +397,7 @@ alleyway_games |>
     geom_col(aes(fill = stage),
         show.legend = FALSE) +
     labs_bar +
-    labs(caption = "*geom_col()")
+    labs(caption = "geom_col()")
 
 
 # compare to geom_bar()

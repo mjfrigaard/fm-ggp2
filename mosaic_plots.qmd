@@ -130,7 +130,7 @@ library(dplyr) # for tibble() and data manipulation
 :::
 
 ::: {style="font-size: 0.95rem;"}
-*Titanic* was a movie from 1997 about a big ship that went down in the sea. A teen is a person between 13 and 19 years old, and an adult is a person who is no longer a teen. It played in movie houses for months, and lots of fans (most of all teens) went back to see it again and again. We'll make up[^simulate] 500 people who saw the movie, in three steps where each step builds on the one before. First, `sample()` picks whether each fan is a teen or an adult (`age_group`). Next, each age group gets its own chances of seeing the movie once, two times, or three or more times (`viewings`). The soundtrack is the music from the movie, sold on its own. Last, the more times a fan saw the movie, the more likely they were to buy the soundtrack (`soundtrack`). So `runif()` picks a number between 0 and 1 and checks whether it falls below the chance for the number of times that fan saw the movie.[^runif] Starting with `set.seed()`[^seed] means you'll get the same 500 fans every time you run the code below.
+*Titanic* was a movie from 1997 about a big ship that went down in the sea. A teen is a young person who is close to growing up, and an adult is a person who has grown up. It played in movie houses for months, and lots of fans (most of all teens) went back to see it again and again. We'll make up[^simulate] 500 people who saw the movie, in three steps where each step builds on the one before. First, `sample()` picks whether each fan is a teen or an adult (`age_group`). Next, each age group gets its own chances of seeing the movie once, two times, or three or more times (`viewings`). The soundtrack is the music from the movie, sold on its own. Last, the more times a fan saw the movie, the more likely they were to buy the soundtrack (`soundtrack`). So `runif()` picks a number between 0 and 1 and checks whether it falls below the chance for the number of times that fan saw the movie.[^runif] Starting with `set.seed()`[^seed] means you'll get the same 500 fans every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -434,7 +434,7 @@ Once again we can see how many fans fall where two groups meet in the table:[^cr
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-# build 2-variable mosiac plot
+# build 2-variable mosaic plot
 labs_mosaic_2var <- labs(
   title = "Titanic",
   caption = "Simulated data",
@@ -468,7 +468,7 @@ To look at `viewings` inside each group of another column,[^cond-var] we put `vi
 #| out-height: '100%'
 #| out-width: '100%'
 #| layout-nrow: 1
-# build conditional mosiac plot
+# build conditional mosaic plot
 labs_mosaic_cond <- labs(
   title = "Titanic",
   caption = "Simulated data",

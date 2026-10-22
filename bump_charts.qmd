@@ -72,10 +72,14 @@ ggp2_bump <- ggplot(springboard_sales,
       y = rank,
       color = module)) +
     ggbump::geom_bump(linewidth = 2) +
+    geom_text(data = filter(springboard_sales, week == 12),
+      aes(label = module), color = "#3E3F3A",
+      hjust = 0, nudge_x = 3) +
+    scale_x_date(expand = expansion(mult = c(0.05, 0.2))) +
     scale_y_reverse(breaks = 1:6) +
     scale_color_manual(values = c("#50ADA0", "#21786B", "#808284",
                                   "#3E3F3A", "#B4BBAF", "#5CB8AC")) +
-    theme(legend.position = "bottom")
+    theme(legend.position = "none")
 
 ggp2_bump +
   labs_bump
@@ -101,9 +105,9 @@ ggp2_bump +
 
 ## Description
 
-Bump charts show how numerical (ranked) values change over time for different categories (or groups). Differences are represented with connecting lines (along the `y` axis) that cover the full timescale (along the `x` axis).
+A bump chart shows how the order of groups changes over time.[^bump] Each group gets a line that goes up or down the `y` axis as its place in the order changes, and the lines run across all of the time on the `x` axis.[^bump-lines]
 
-We can build bump charts in `ggplot2` with the [`ggbump` package:](https://github.com/davidsjoberg/ggbump)
+We can make bump charts in `ggplot2` with [`ggbump`](https://github.com/davidsjoberg/ggbump).[^ggbump]
 
 ## Set up
 
@@ -113,7 +117,7 @@ We can build bump charts in `ggplot2` with the [`ggbump` package:](https://githu
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Install packages.
+Bring in the code we'll use.[^packages]
 :::
 
 
@@ -141,7 +145,7 @@ library(tidyr) # for expand_grid()
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Handspring launched the Visor in 1999, and the Springboard expansion slot on its back turned the handheld into whatever module you slid in. By the end of 2000 there was a modem, a games cartridge, an MP3 player, a GPS receiver, a camera, and the new VisorPhone (which turned the Visor into a cell phone). We'll simulate 12 weeks of module sales (the number of units sold across a panel of retailers) for six Springboard modules. Each module gets a weekly average (`avg_sales`) that rises, falls, or holds steady, and `rpois()` draws each week's actual sales around that average. Then we rank the modules within each week (`rank`), with `1` for the most units sold. Setting the seed with `set.seed()` means you'll get the same 72 module weeks every time you run the code below.
+Handspring was a company that made small computers you could hold in one hand. It started selling the Visor, its first one, in 1999. The Springboard was an open space in the back of the Visor, and the Visor became whatever part you put in that space.[^springboard] By the end of 2000 there were parts for going on the Internet, playing games, playing music, finding where you are, and taking pictures, and the new VisorPhone, which turned the Visor into a phone.[^modules] We'll make up[^simulate] 12 weeks of sales for six Springboard parts (how many of each part sold across a group of stores).[^units] Each part gets a mean for each week (`avg_sales`) that goes up, goes down, or stays the same, and `rpois()` picks each week's sales close to that mean.[^rpois] Then we put the parts in order within each week (`rank`), with `1` for the part that sold the most. Starting with `set.seed()`[^seed] means you'll get the same 72 rows every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -180,7 +184,7 @@ glimpse(springboard_sales)
 
 ## Distribution
 
-A bump chart throws away the raw numbers and keeps only the order. That makes it easy to see who passed whom, but it also hides *how close* the race was. When two modules have similar sales, random week to week noise can swap their ranks even though nothing real changed. Below we'll move from the sales, to a picture, to the formula.
+A bump chart leaves out the sales and keeps only the order. That makes it easy to see which part went past which, but it also doesn't show *how close* the race was. When two parts sell about the same number, chance alone can make them trade places from one week to the next, even though nothing real changed.[^noise] Below we'll move from the sales, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -201,7 +205,7 @@ springboard_sales |>
 ```
 :::
 
-Every module landed within a few dozen units of its average, and the ranks match the order of the averages. Below we count how many times each module changed rank from one week to the next.
+Every part sold close to its mean (no more than about 30 over or under), and the order of the parts is the same as the order of their means. Below we find how many times each part changed places from one week to the next.[^rank-changes]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -217,13 +221,13 @@ rank_changes
 ```
 :::
 
-The VisorPhone and GPS climb because their averages climb, and the Modem and Camera slide because theirs slide. But Games changes rank `r rank_changes$rank_changes[rank_changes$module == "Games"]` times even though its average never changes.
+The VisorPhone and GPS go up because their means go up, and the Modem and Camera go down because their means go down. But Games changes places `r rank_changes$rank_changes[rank_changes$module == "Games"]` times, even though its mean never changes.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-The graph below plots the raw sales for Games and the MP3 Player. The ribbon around each line covers the average plus or minus two standard deviations (more on that below). Wherever the two ribbons overlap, either module could come out ahead in a given week.
+The graph below shows the sales for Games and the MP3 Player. The band of color around each line reaches above and below the mean by two times how far sales usually fall from the mean (more on that below).[^ribbon] Where the two bands cover each other, either part could come out ahead in that week.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -241,29 +245,32 @@ ggplot(two_modules, aes(x = week_of, color = module, fill = module)) +
   geom_point(aes(y = sales), size = 2) +
   scale_color_manual(values = c("Games" = "#808284", "MP3 Player" = "#21786B"),
                      aesthetics = c("color", "fill")) +
-  labs(x = "Week of", y = "Units sold", color = "Module", fill = "Module")
+  labs(title = "Games and MP3 Player sales",
+       subtitle = "Bands show each week's mean plus or minus 2 SD",
+       caption = "Simulated data",
+       x = "Week of", y = "Units sold", color = "Module", fill = "Module")
 ```
 :::
 
-The ribbons overlap for all 12 weeks, which is why these two modules trade places in the bump chart.
+The bands cover each other in all 12 weeks, which is why these two parts change places in the bump chart.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **NAME IT:**
 :::
 
-Each module's weekly sales follow a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) with its own average for that week ($\lambda$):
+The sales for each part in each week come from [a rule for how many times something happens at a set rate](https://en.wikipedia.org/wiki/Poisson_distribution),[^poisson] with its own mean for that week ($\lambda$):
 
 $$
 \text{sales}_{m,w} \sim \text{Poisson}(\lambda_{m,w})
 $$
 
-A Poisson count has a standard deviation of $\sqrt{\lambda}$, so a module averaging 330 units wobbles by about $\sqrt{330} \approx 18$ units a week (that's the ribbon width above). The gap between two modules is approximately normal, with a mean of $\lambda_1 - \lambda_2$ and a standard deviation of $\sqrt{\lambda_1 + \lambda_2}$. In week one, the MP3 Player averages 360 units and Games averages 330, so the chance that Games comes out ahead anyway is:
+For the number of times something happens at a set rate, how far that number usually falls from the mean is $\sqrt{\lambda}$,[^sd] so the sales of a part with a mean of 330 move up and down by about $\sqrt{330} \approx 18$ a week (the bands above reach two times that, about 36, above and below the mean). A hill is a line that is high in the middle and low on both sides. The difference between the sales of two parts falls close to a hill,[^normal] with a mean of $\lambda_1 - \lambda_2$, and it usually falls $\sqrt{\lambda_1 + \lambda_2}$ from that mean.[^gap-sd] In week one, the mean for the MP3 Player is 360 and the mean for Games is 330, so the chance that Games comes out ahead anyway is:
 
 $$
 P(\text{swap}) \approx \Phi\left(\frac{-(360 - 330)}{\sqrt{360 + 330}}\right) \approx `r round(pnorm(-30 / sqrt(690)), 2)`
 $$
 
-By week seven, both modules average 330 units and the chance is a coin flip (0.5). Rank charts are great for showing who's on top, but small gaps between ranks are often just Poisson noise. Try making the averages twice as far apart in `case_when()` and the bump chart gets a lot calmer.
+By week seven, both parts have a mean of 330, and the chance is one in two (0.5). Charts of order are great for showing which part is on top, but when two parts are close, a change in their order is often just chance.[^poisson-noise] Try making the means two times as far from each other in `case_when()`, and the bump chart moves around a lot less.
 
 ## Grammar
 
@@ -271,17 +278,19 @@ By week seven, both modules average 330 units and the chance is a coin flip (0.5
 **CODE:**
 :::
 
-  - Create labels with `labs()`
+  - Make the words around the graph[^labels] with `labs()`
 
-  - Map `week_of` to the `x`, `rank` to the `y`, and `module` to `color`
+  - Put `week_of` on the `x` axis and `rank` on the `y` axis, and give each `module` its own color[^aes]
 
   - Add `ggbump::geom_bump()` and set `linewidth` to `2`
 
-  - Flip the `y` axis with `scale_y_reverse()` so rank `1` is on top
+  - Put the `y` axis the other way up with `scale_y_reverse()` so place `1` is on top[^reverse]
 
-  - Set six line colors with `scale_color_manual()` (the theme's discrete palette only has four)
+  - Pick six line colors with `scale_color_manual()` (the look only has four)[^palette]
 
-  - Move legend to bottom with `theme(legend.position = "bottom")`
+  - Write the name of each part at the end of its line with `geom_text()`, and make room for the names with `scale_x_date()`
+
+  - Take away the list of colors with `theme(legend.position = "none")`[^legend]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -303,10 +312,14 @@ ggp2_bump <- ggplot(springboard_sales,
       y = rank,
       color = module)) +
     ggbump::geom_bump(linewidth = 2) +
+    geom_text(data = filter(springboard_sales, week == 12),
+      aes(label = module), color = "#3E3F3A",
+      hjust = 0, nudge_x = 3) +
+    scale_x_date(expand = expansion(mult = c(0.05, 0.2))) +
     scale_y_reverse(breaks = 1:6) +
     scale_color_manual(values = c("#50ADA0", "#21786B", "#808284",
                                   "#3E3F3A", "#B4BBAF", "#5CB8AC")) +
-    theme(legend.position = "bottom")
+    theme(legend.position = "none")
 
 ggp2_bump +
   labs_bump
@@ -338,11 +351,63 @@ ggp2_bump <- ggplot(springboard_sales,
       y = rank,
       color = module)) +
     ggbump::geom_bump(linewidth = 2) +
+    geom_text(data = filter(springboard_sales, week == 12),
+      aes(label = module), color = "#3E3F3A",
+      hjust = 0, nudge_x = 3) +
+    scale_x_date(expand = expansion(mult = c(0.05, 0.2))) +
     scale_y_reverse(breaks = 1:6) +
     scale_color_manual(values = c("#50ADA0", "#21786B", "#808284",
                                   "#3E3F3A", "#B4BBAF", "#5CB8AC")) +
-    theme(legend.position = "bottom")
+    theme(legend.position = "none")
 
 ggp2_bump +
   labs_bump
 ```
+
+[^bump]: Bump charts show how numerical (ranked) values change over time for different categories (or groups).
+
+[^bump-lines]: Differences are represented with connecting lines (along the `y` axis) that cover the full timescale (along the `x` axis).
+
+[^ggbump]: The `ggbump` package.
+
+[^packages]: Install and load the packages.
+
+[^springboard]: The Springboard expansion slot on the back of the handheld turned it into whatever module you slid in.
+
+[^modules]: A modem, a games cartridge, an MP3 player, a GPS receiver, a camera, and the VisorPhone (which turned the Visor into a cell phone).
+
+[^simulate]: Simulate.
+
+[^units]: Module sales: the number of units sold across a panel of retailers.
+
+[^rpois]: `rpois()` draws each week's actual sales from a Poisson distribution with `lambda = avg_sales`.
+
+[^seed]: Setting the random seed. Each row is one module week (12 weeks × 6 modules).
+
+[^noise]: Random week to week noise can swap their ranks.
+
+[^formula]: The formula.
+
+[^rank-changes]: Rank changes: the weeks where a module's rank is different from the week before.
+
+[^ribbon]: The ribbon covers the average plus or minus two standard deviations ($\lambda \pm 2\sqrt{\lambda}$).
+
+[^poisson]: A Poisson distribution.
+
+[^sd]: A Poisson count has a standard deviation of $\sqrt{\lambda}$.
+
+[^normal]: The gap between two modules is approximately normal.
+
+[^gap-sd]: A standard deviation of $\sqrt{\lambda_1 + \lambda_2}$.
+
+[^poisson-noise]: Small gaps between ranks are often just Poisson noise.
+
+[^labels]: Labels.
+
+[^aes]: Map `week_of` to `x`, `rank` to `y`, and `module` to `color`.
+
+[^reverse]: Reverse the `y` scale so rank `1` is at the top.
+
+[^palette]: The theme's discrete palette only has four colors.
+
+[^legend]: The legend.
