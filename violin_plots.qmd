@@ -72,11 +72,11 @@ ggp2_violin +
 
 ## Description
 
-Violin plots show data distribution and probability density. They are like box plots but have a rotated kernel density plot on each side. We can use them to compare data distribution across categories.
+A violin plot shows where numbers fall, and where they fall most often.[^violin] Like a density plot, it shows the numbers with a line instead of bars.[^density] A violin plot turns that line on its side and shows it two times, once on each side of a middle line, so the two sides match.[^mirror] It looks a little like a box plot,[^box-plot] but with the line on each side instead of a box. We can put violins next to each other to compare where the numbers fall in each group.[^groups]
 
 ::: {.column-margin}
 
-The violin plot is essentially a mirrored density plot, in which a smoothed distribution is plotted symmetrically across the `x` or `y` axis, creating a Rorschach-like inkblot area for the distribution:
+A violin plot is a density plot with its line turned over to make a second side, so the two sides match across the `x` or `y` axis. That gives the numbers a form like a drop of color pressed between the two halves of a page:[^inkblot]
 
 ![source: Rorschach test, Wikipedia](https://upload.wikimedia.org/wikipedia/commons/7/70/Rorschach_blot_01.jpg){fig-align="right" width="80%"}
 :::
@@ -88,7 +88,7 @@ The violin plot is essentially a mirrored density plot, in which a smoothed dist
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Install packages.
+Bring in the code we'll use.[^packages]
 :::
 
 
@@ -113,7 +113,7 @@ library(dplyr) # for tibble() and data manipulation
 :::
 
 ::: {style="font-size: 0.95rem;"}
-In 1999, IBM's 340MB Microdrive squeezed a tiny spinning hard disk into a CompactFlash Type II card, giving digital camera owners room for hundreds of photos. The photo files varied a lot in size: most JPEGs came in under a megabyte, but detailed scenes and high quality settings produced a few much larger files. We'll simulate 300 photo files with `rlnorm()`, rounding each size to the nearest hundredth of a megabyte. Setting the seed with `set.seed()` means you'll get the same 300 file sizes every time you run the code below.
+The Microdrive is a small card that holds pictures, made by IBM. In 1999, IBM put a very small turning part that saves data inside the card,[^compactflash] so people could save a lot of pictures on one card. A file is one thing saved on a computer, such as one picture. A megabyte (MB) is about the space a computer needs to hold a million letters, and this card held 340 MB.[^mb] The picture files were very different sizes: most came in under one megabyte, but pictures with lots of small parts, or pictures saved at the best setting, made a few much larger files.[^jpeg] We'll make up[^simulate] 300 picture files with `rlnorm()`, and keep each size to two places after the point.[^round] Starting with `set.seed()`[^seed] means you'll get the same 300 file sizes every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -136,13 +136,13 @@ glimpse(microdrive_photos)
 
 ## Distribution
 
-File sizes are a classic example of data that can't go below zero but can stretch a long way above it. That gives the violin a wide base and a long, thin neck. The trick to understanding this shape is the logarithm: on a log scale, these file sizes turn into the familiar bell curve from @sec-histograms. Below we'll move from the file sizes, to a picture, to the formula.
+File sizes can't go below 0, but they can reach a long way above it. That puts the high point[^peak] near the lower end of the violin, where it is widest, and leaves a long part above it that is not very wide. A log scale puts 0.1, 1, and 10 at even steps, so it shows how many times bigger one number is than another.[^log] A hill is a line that is high in the middle and low on both sides. On a log scale, these file sizes take the same hill form we saw earlier in the book.[^normal] Below we'll move from the file sizes, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the first ten photos.
+Start with the first ten pictures.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -154,7 +154,7 @@ head(microdrive_photos$size_mb, 10)
 ```
 :::
 
-Most of these are under 1.5 MB, but three are near or above 2 MB. A few large files like these pull the mean well above the median. Taking the log of each file size shrinks the gap.
+Most of these are under 1.5 MB, but three are near or above 2 MB. The median is the middle number when you put all the numbers in order. A few large files like these move the mean far above the median. Taking the log of each file size[^log-each] brings the mean and median much closer together.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -171,13 +171,13 @@ microdrive_photos |>
 ```
 :::
 
-On the megabyte scale, the mean is about `r round(mean(microdrive_photos$size_mb) - median(microdrive_photos$size_mb), 2)` MB higher than the median. On the log scale, the mean and median are almost identical, which is what we'd expect from a symmetric distribution.
+In megabytes, the mean is about `r round(mean(microdrive_photos$size_mb) - median(microdrive_photos$size_mb), 2)` MB higher than the median. On the log scale, the mean and median are almost the same, which is what we'd expect when the two sides of a hill match.[^symmetric]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-A bar model splits the photos at 0.75 MB (we'll see why in a moment). The two parts are close to equal, so 0.75 MB sits near the middle of the file sizes.
+A bar model cuts the pictures into two parts at 0.75 MB (we'll see why in a moment). The two parts are close to the same size, so 0.75 MB is near the middle of the file sizes.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -198,7 +198,7 @@ microdrive_photos |>
 ```
 :::
 
-Below are two violins of the same 300 file sizes. The first uses megabytes, so most of the area is squashed near the bottom and the neck stretches up past 5 MB. The second puts the `y` axis on a log scale with `scale_y_log10()`, which turns the same file sizes into a symmetric shape centered near 0.75 MB.
+Below are two violins of the same 300 file sizes. The first uses megabytes, so most of the area is low on the axis, and the long top reaches up past 5 MB. The second puts the `y` axis on a log scale with `scale_y_log10()`, which turns the same file sizes into a form with two matching sides, centered near 0.75 MB.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -224,15 +224,15 @@ ggplot(data = microdrive_photos, aes(x = "", y = size_mb)) +
 **NAME IT:**
 :::
 
-The `rlnorm()` call that created the data draws from a [log normal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution). A file size is log normal when its logarithm is normal:
+The `rlnorm()` code that made the data picks each number from [a hill on the log scale](https://en.wikipedia.org/wiki/Log-normal_distribution).[^lognormal] A file size follows this rule when the log of the file size makes a hill:
 
 $$
 \log(X) \sim \text{Normal}(\mu = \log(0.75), \sigma = 0.8)
 $$
 
-The two parameters describe the log scale, not the megabyte scale. Back on the megabyte scale, the median is $e^{\mu} = 0.75$ MB, which is why the bar model split the photos at 0.75 MB. The mean is larger, $e^{\mu + \sigma^2 / 2} = 0.75 \times e^{0.32} \approx 1.03$ MB, because the long right tail pulls it up. The bigger $\sigma$ gets, the longer the violin's neck and the further the mean drifts from the median.
+The two numbers in the rule[^params] work on the log scale, not in megabytes. Back in megabytes, the median is $e^{\mu} = 0.75$ MB, which is why the bar model cut the pictures at 0.75 MB. The mean is larger, $e^{\mu + \sigma^2 / 2} = 0.75 \times e^{0.32} \approx 1.03$ MB, because the few very large files move it up.[^tail] The bigger $\sigma$ gets, the farther the violin reaches up and the farther the mean moves from the median.
 
-Our simulated photos come close: the median is `r round(median(microdrive_photos$size_mb), 2)` MB and the mean is `r round(mean(microdrive_photos$size_mb), 2)` MB.
+The pictures we made up come close: the median is `r round(median(microdrive_photos$size_mb), 2)` MB and the mean is `r round(mean(microdrive_photos$size_mb), 2)` MB.
 
 
 ## Grammar 
@@ -243,15 +243,15 @@ Our simulated photos come close: the median is `r round(median(microdrive_photos
 
 ::: {style="font-size: 0.95rem;"}
 
-Create labels with `labs()`
+Make the words around the graph[^labels] with `labs()`
 
-Initialize the graph with `ggplot()` and provide `data`
+Start the graph with `ggplot()` and give it `data`
 
-  - Place an empty string (`""`) in the `x` argument
+  - Put `""` (text with no letters) in `x`[^empty-string]
 
-Map an empty string (`""`) to the `x` and `size_mb` to the `y`
+Join `""` to `x` and `size_mb` to `y`[^map]
 
-Add `geom_violin()`
+Add `geom_violin()` on top[^layer]
 
 :::
 
@@ -307,3 +307,54 @@ ggp2_violin +
   labs_violin
 ```
 
+[^violin]: The distribution of the data and its probability density.
+
+[^density]: A density plot (@sec-density-plots) draws a kernel density estimate, a smoothed curve, instead of histogram bars.
+
+[^mirror]: A kernel density curve, rotated and mirrored on each side of the center line.
+
+[^box-plot]: A box plot (@sec-box-plots) summarizes the data with five values. A violin plot replaces the box with a mirrored density curve.
+
+[^groups]: Compare the distribution of a numeric variable across the levels of a categorical variable.
+
+[^inkblot]: A Rorschach inkblot, like the one below.
+
+[^packages]: Install and load the packages.
+
+[^compactflash]: A tiny spinning hard disk in a CompactFlash Type II card, giving digital camera owners room for hundreds of photos.
+
+[^mb]: Megabytes (MB). One megabyte is about one million bytes.
+
+[^jpeg]: Most JPEG files came in under a megabyte; detailed scenes and high quality settings produced a few much larger files.
+
+[^simulate]: Simulate.
+
+[^round]: `round(..., 2)` rounds each size to the nearest hundredth of a megabyte.
+
+[^seed]: Setting the random seed.
+
+[^peak]: The peak (mode) of the density. The long right tail stretches the top of the violin into a long, thin neck.
+
+[^log]: A logarithmic (log) scale. `scale_y_log10()` uses base 10.
+
+[^normal]: The normal (bell) curve from @sec-histograms.
+
+[^formula]: The formula.
+
+[^log-each]: The natural log, `log()`, as in the summary below.
+
+[^symmetric]: A symmetric distribution, where the mean and median are equal.
+
+[^lognormal]: A log normal distribution.
+
+[^params]: The parameters $\mu = \log(0.75)$ (`meanlog`) and $\sigma = 0.8$ (`sdlog`), which are the mean and standard deviation of the log file sizes.
+
+[^tail]: The long right tail of the distribution.
+
+[^labels]: The labels (title, subtitle, caption, and axis titles).
+
+[^empty-string]: An empty string (`""`).
+
+[^map]: Map an empty string to `x` and `size_mb` to `y` in `aes()`.
+
+[^layer]: Add the `geom_violin()` layer.

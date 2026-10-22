@@ -79,7 +79,7 @@ ggp2_ovrlp_hist +
 
 ## Description
 
-Overlapping histograms allow us to compare distributions across the groups of a categorical (or ordinal) variable.
+Overlapping histograms put one [histogram](histograms.qmd) for each group in the same graph, one on top of the other. This lets us compare the form the numbers take[^dist-shape] from one group to the next.[^groups]
 
 ## Set up
 
@@ -88,7 +88,7 @@ Overlapping histograms allow us to compare distributions across the groups of a 
 :::
 
 
-Install packages.
+Bring in the code we'll use.[^packages]
 
 
 ::: {style="font-size: 0.85em;"}
@@ -111,7 +111,7 @@ library(dplyr) # for tibble() and data manipulation
 **DATA:**
 :::
 
-In 1997, kids everywhere were feeding, cleaning, and playing with Tamagotchis, and how long a virtual pet lived depended on how well it was cared for. We'll simulate the lifespans of 450 pets, 150 for each level of care. `rweibull()` draws each lifespan from a Weibull distribution, and the `scale` for each level of care (6, 13, or 21 days) stretches the lifespans of better cared for pets. Setting the seed with `set.seed()` means you'll get the same 450 pets every time you run the code below.
+A pet is a dog or other small friend that people keep and care for. A Tamagotchi is a small computer you hold in your hand, with a pet inside it that is not real. In 1997, kids all over were giving food to, cleaning, and playing with their Tamagotchis, and how long a pet lived[^lifespan] turned on how well it was cared for. We'll make up[^simulate] 450 pets, 150 for each level of care. `rweibull()` picks how long each pet lives from a [rule made for how long things last](https://en.wikipedia.org/wiki/Weibull_distribution),[^weibull] and the `scale` for each level of care (6, 13, or 21 days) makes the lives of better cared for pets longer. Starting with `set.seed()`[^seed] means you'll get the same 450 pets every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -139,7 +139,7 @@ glimpse(tamagotchi_pets)
 
 ## Distribution
 
-Overlapping histograms compare the shape of one variable across groups. Here the groups have the same *kind* of shape (they all come from the same distribution), but each one is stretched by a different amount. Below we'll move from the pets, to a picture, to the formula.
+Overlapping histograms compare the form of one column from group to group. Here the groups all have the same *kind* of form (they all come from the same rule),[^same-dist] but each one is made wider by a different amount. Below we'll move from the pets, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -157,7 +157,7 @@ head(tamagotchi_pets, 5)
 ```
 :::
 
-None of these neglected pets made it past nine days. The summary below compares the three levels of care. Each mean is a little higher than its median, and the longest lived pet in each group lasted more than twice as long as the median.
+None of these neglected pets lived past 9 days. The numbers below compare the three levels of care.[^summary] The median is the middle number when you put all the numbers in order. Each mean is a little higher than its median, and the pet that lived longest in each group lived more than two times as long as the median.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -178,7 +178,7 @@ tamagotchi_pets |>
 **DRAW IT:**
 :::
 
-The histograms below are drawn on top of each other (`position = "identity"`), and the lines are the Weibull curves we drew the lifespans from, scaled to match the counts. Every group has the same lopsided hump with a tail to the right. Better care doesn't change the shape; it stretches the hump to the right and flattens it out.
+The histograms below are on top of each other (`position = "identity"`).[^identity] The lines show the rule we used to make up each group's lives, made big enough to match the bars.[^scaled] A hill is a line that is high in the middle and low on both sides. Every group makes the same hill, with one side that runs out farther to the right.[^skew] Better care doesn't change the form; it moves the hill to the right, makes it wider, and makes it lower.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -208,15 +208,15 @@ ggplot(data = tamagotchi_pets, aes(x = lifespan_days, fill = care)) +
 **NAME IT:**
 :::
 
-The [Weibull distribution](https://en.wikipedia.org/wiki/Weibull_distribution) is a common model for lifetimes. It has a shape ($k$) and a scale ($\lambda$):
+The [rule we used](https://en.wikipedia.org/wiki/Weibull_distribution)[^weibull-name] is often used for how long things last. It has two numbers in it:[^params] a `shape` ($k$) and a `scale` ($\lambda$):
 
 $$
 X \sim \text{Weibull}(k = 2.2, \; \lambda_{\text{care}}), \quad \lambda = (6, 13, 21)
 $$
 
-The chance that a pet is still alive after $t$ days is $e^{-(t/\lambda)^k}$. When the shape is greater than 1 (like our 2.2), the risk of a pet dying grows the longer it lives, which gives the histogram its hump and right tail. The scale stretches everything: the median lifespan is $\lambda (\ln 2)^{1/k}$, which is about 5, 11, and 18 days for our three groups. Our simulated medians are `r paste(round(tapply(tamagotchi_pets$lifespan_days, tamagotchi_pets$care, median), 1), collapse = ", ")` days. 
+The chance that a pet is still living after $t$ days is $e^{-(t/\lambda)^k}$. When `shape` is more than 1 (like our 2.2), the chance that a pet dies gets bigger the longer it lives,[^hazard] which gives the histogram its hill and its long side to the right. `scale` moves everything to the right and makes it wider: the median life is $\lambda (\ln 2)^{1/k}$, which is about 5, 11, and 18 days for our three groups. The medians of the pets we made up are `r paste(round(tapply(tamagotchi_pets$lifespan_days, tamagotchi_pets$care, median), 1), collapse = ", ")` days. 
 
-Try changing `shape` in `rweibull()`. A shape of 1 turns the hump into a steady decline (pets die at the same rate no matter their age), and a large shape makes every pet in a group die at about the same time.
+Try changing `shape` in `rweibull()`. A `shape` of 1 turns the hill into bars that only get shorter (a pet is as likely to die on any day, no matter how old it is),[^exponential] and a large `shape` makes every pet in a group die at about the same time.
 
 
 ## Grammar
@@ -226,13 +226,13 @@ Try changing `shape` in `rweibull()`. A shape of 1 turns the hump into a steady 
 :::
 
 
-  -   Create labels with `labs()`
+  -   Make the words around the graph[^labels] with `labs()`
 
-  -   Initialize the graph with `ggplot()` and provide `data`
+  -   Start the graph with `ggplot()` and give it `data`
 
-  -   Map `lifespan_days` to the `x` axis and `care` to `fill`
+  -   Put `lifespan_days` on the `x` axis, and give each level of `care` its own color with `fill`
 
-  -   Inside `geom_histogram()`, set `alpha` to `2/3`, `position` to `"identity"` (so the bars overlap instead of stacking), and `bins` to `40`
+  -   Inside `geom_histogram()`, set `alpha` to `2/3` (so we can see through the bars), `position` to `"identity"` (so each group's bars start at 0 and cover each other, instead of starting where the last group's bars end),[^stack] and `bins` to `40`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -262,14 +262,14 @@ ggp2_ovrlp_hist +
 
 
 ::: {.column-margin}
-Experiment with different `binwidth`s when comparing distributions across groups.
+Try different values of `binwidth` when you compare the form of the numbers across groups.
 :::
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **GRAPH:**
 :::
 
-Histograms work by dividing the variable provided to `x` [*into bins and counting the number of observations in each bin.*](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
+Histograms work by cutting the column we put on `x` [*into bins and counting the number of observations in each bin.*](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
 
 ::: {style="font-size: 0.95rem;"}
 ```{r}
@@ -295,3 +295,41 @@ ggp2_ovrlp_hist +
   labs_ovrlp_hist
 ```
 :::
+
+[^dist-shape]: The shape of the variable's distribution.
+
+[^groups]: The groups of a categorical (or ordinal) variable.
+
+[^packages]: Install and load the packages.
+
+[^lifespan]: Its lifespan.
+
+[^simulate]: Simulate.
+
+[^weibull]: A Weibull distribution, a common model for lifetimes.
+
+[^seed]: Setting the random seed.
+
+[^same-dist]: The same distribution (Weibull, with the same shape).
+
+[^formula]: The formula.
+
+[^summary]: Summary statistics: the mean, median, and maximum for each group.
+
+[^identity]: With `position = "identity"`, the histograms overlap instead of stacking.
+
+[^scaled]: The Weibull density curves, scaled to counts (150 pets × bin width × density).
+
+[^skew]: A lopsided (right skewed) hump with a tail to the right.
+
+[^weibull-name]: The Weibull distribution.
+
+[^params]: Its parameters.
+
+[^hazard]: The hazard (risk of dying) increases with age.
+
+[^exponential]: A shape of 1 is the exponential distribution: a steady decline with a constant hazard.
+
+[^labels]: Labels.
+
+[^stack]: The default for `geom_histogram()` is `position = "stack"`, which piles the groups on top of each other.

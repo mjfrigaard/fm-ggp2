@@ -71,11 +71,11 @@ ggp2_hist +
 
 ## Description 
 
-A histogram is a graph that displays numerical data spread over a time frame or interval. Each bar shows the frequency of data points within a specific range. Unlike bar graphs, histograms do not have gaps between the bars, indicating that data covers a continuous interval. The x-axis displays the variable range, while the y-axis represents observation frequency.
+A histogram cuts the `x` axis into boxes[^bins] and shows how many numbers fall in each box. Each bar stands over one box, and the bar is as high as the number of values in that box. Other bar graphs have space between the bars, but the bars in a histogram touch each other, because the numbers run on without a break from one box to the next.[^continuous] The `x` axis shows the numbers, and the `y` axis shows how many values fall in each box.[^frequency]
 
-Unlike a typical bar graph, histograms can be used to visually assess the '[normality](https://en.wikipedia.org/wiki/Normal_distribution)' (i.e. *are the bars symmetrical, with a single peak in the middle of the `x` axis?* Or *do the bars form multiple peaks?*) or '[skewness](https://en.wikipedia.org/wiki/Skewness)' (i.e., *is there a long 'tail' of bars with decreasing length on either end of the `x` axis?*) of a variable's distribution.
+A histogram also lets us see the form the numbers take,[^dist-shape] which most bar graphs can't do. A hill[^hill] is a line that is high in the middle and low on both sides. We can ask if the bars make [a hill that is the same on both sides](https://en.wikipedia.org/wiki/Normal_distribution)[^normality] (*are the bars high in the middle of the `x` axis and low on both sides, with one high point?*[^peak] Or *do the bars make more than one high point?*). We can also ask if one side of the hill [runs out much farther than the other](https://en.wikipedia.org/wiki/Skewness)[^skewness] (*is there a long line of bars that get shorter and shorter near one end of the `x` axis?*).
 
-In `ggplot2`, histograms can be built using [`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html).
+In `ggplot2`, we can make histograms with [`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html).
 
 ## Set up
 
@@ -83,7 +83,7 @@ In `ggplot2`, histograms can be built using [`geom_histogram()`](https://ggplot2
 **PACKAGES:**
 :::
 
-Install packages.
+Bring in the code we'll use.[^packages]
 
 
 ::: {style="font-size: 0.85em;"}
@@ -106,9 +106,9 @@ library(dplyr) # for tibble() and data manipulation
 **DATA:**
 :::
 
-OK Soda was Coca-Cola's 1993 soda for Gen X, sold in gray comic book cans with slogans like "Things are going to be OK." If you don't remember this, it's worth reading this article in [Mental Floss](https://www.mentalfloss.com/food/beverages/ok-soda-coca-cola-history) or watching these hilarious [commercials on YouTube](https://www.youtube.com/watch?v=U5_MuBQDy44&t=52s). 
+OK Soda was a sweet drink that Coca-Cola made in 1993 for young people. It came in cans with pictures on them like the ones in a funny book,[^comic] and words like "Things are going to be OK." If you don't remember it, it's worth reading [this story about it](https://www.mentalfloss.com/food/beverages/ok-soda-coca-cola-history) or watching these very funny [short shows made to sell it](https://www.youtube.com/watch?v=U5_MuBQDy44&t=52s).
 
-We'll simulate one day of sales at 300 test market stores with `rnorm()`, rounding each store's sales to a whole number of cans. Setting the seed with `set.seed()` means you'll get the same 300 values every time you run the code below.
+We'll make up[^simulate] one day of sales at 300 stores where OK Soda was tried out first,[^test-market] using `rnorm()`,[^normal] and round each store's sales to a whole number of cans. Starting with `set.seed()`[^seed] means you'll get the same 300 values every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -129,7 +129,7 @@ glimpse(ok_soda_sales)
 
 ## Distribution
 
-You don't have to be a math whiz or statistician to read a histogram, but it helps to know what shape to should expect. Because we generated `cans` ourselves, we already know the answer: every value came from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) with a mean of 45 cans and a standard deviation of 12 cans. Below we'll move from the numbers, to a picture, to the formula.
+You don't have to be very good with numbers[^stats] to read a histogram, but it helps to know what form to look for. Because we made up `cans`, we already know the answer: every value came from [one hill](https://en.wikipedia.org/wiki/Normal_distribution)[^normal-dist] with a mean of 45 cans, and a store usually falls about 12 cans from that mean.[^sd] Below we'll move from the numbers, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -147,15 +147,15 @@ head(ok_soda_sales$cans, 10)
 ```
 :::
 
-Most of these values land within 12 cans of 45, and a few (like 16 and 23) sit further out. If we sort all 300 stores into three ranges (below one standard deviation, within one standard deviation, and above one standard deviation), the middle range holds most of the stores.
+Most of these values land within 12 cans of 45, and a few (like 16 and 23) fall farther out. If we put all 300 stores into three groups (more than 12 cans below the mean, within 12 cans of the mean, and more than 12 cans above the mean),[^ranges] the middle group holds most of the stores.
 
-To find the edges of these ranges, we subtract and add one standard deviation to the mean:
+To find the ends of these groups, we take 12 cans away from the mean and add 12 cans to it:
 
-* Lower edge: $45 - 12 = 33$ cans
+* Low end: $45 - 12 = 33$ cans
 
-* Upper edge: $45 + 12 = 57$ cans
+* High end: $45 + 12 = 57$ cans
 
-A store with fewer than 33 cans is below one standard deviation, a store with 33 to 56 cans is within one standard deviation, and a store with 57 or more cans is above one standard deviation. In the code below, `cut()` uses these two edges as `breaks`, and `right = FALSE` puts a store with exactly 57 cans in the top range.
+A store that sold fewer than 33 cans is in the low group, a store that sold 33 to 56 cans is in the middle group, and a store that sold 57 or more cans is in the high group. In the code below, `cut()` uses these two ends as `breaks`, and `right = FALSE` puts a store with exactly 57 cans in the high group.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -177,7 +177,7 @@ ok_soda_ranges
 **DRAW IT:**
 :::
 
-A bar model shows these counts as parts of one whole. The full bar is all 300 stores, and the middle part takes up roughly two thirds of it.
+A bar model shows the three groups as parts of one whole. The full bar is all 300 stores, and the middle part takes up about two thirds of it.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -197,7 +197,7 @@ ggplot(data = ok_soda_ranges,
 ```
 :::
 
-A histogram is the same idea, cut into 30 thinner pieces and stood upright. The dashed lines below mark 33 and 57 cans, the edges of the middle part of the bar model.
+A histogram is the same idea, cut into 30 smaller pieces and stood on end. The broken lines below mark 33 and 57 cans, the ends of the middle part of the bar model.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -219,15 +219,15 @@ ggplot(data = ok_soda_sales,
 **NAME IT:**
 :::
 
-The `rnorm()` call that created the data is a single statement:
+The `rnorm()` step that made up the data comes down to one short rule:[^statement]
 
 $$
 X \sim \text{Normal}(\mu = 45, \sigma = 12)
 $$
 
-The mean ($\mu$) sets where the tallest bars sit on the `x` axis, and the standard deviation ($\sigma$) sets how far the bars spread out from it. For a normal distribution, roughly 68% of values fall within one $\sigma$ of $\mu$ and 95% fall within two. Our simulated stores come close: `r round(mean(ok_soda_sales$cans >= 33 & ok_soda_sales$cans < 57) * 100)`% are within one $\sigma$ and `r round(mean(ok_soda_sales$cans >= 21 & ok_soda_sales$cans < 69) * 100)`% are within two.
+The mean ($\mu$) sets where the highest bars stand on the `x` axis. The other number ($\sigma$) is how far a store usually falls from the mean, so it sets how far out the bars reach. For a hill like this, about 68% of values fall within one $\sigma$ of $\mu$, and 95% fall within two. Our made-up stores come close: `r round(mean(ok_soda_sales$cans >= 33 & ok_soda_sales$cans < 57) * 100)`% are within one $\sigma$ and `r round(mean(ok_soda_sales$cans >= 21 & ok_soda_sales$cans < 69) * 100)`% are within two.
 
-The small gap between the rule and our sample is just sampling variation. Change the number in `set.seed()` and the bars shift, but the bell shape stays centered near 45 cans.
+The small difference between the rule and our stores comes from chance alone.[^sampling] Change the number in `set.seed()` and the bars move, but the hill keeps its middle near 45 cans.
 
 
 ## Grammar 
@@ -238,15 +238,15 @@ The small gap between the rule and our sample is just sampling variation. Change
 
 
 
-1. Create labels with `labs()`
+1. Make the words around the graph[^labels] with `labs()`
 
-2. Initialize the graph with `ggplot()` and provide `data`
+2. Start the graph with `ggplot()` and give it `data`
 
-3. Assign `cans` to the `x`
+3. Put `cans` on the `x` axis
 
-4. Add the `geom_histogram()`
+4. Add `geom_histogram()` on top[^layer]
 
-5. Adjust the `bins` accordingly 
+5. Change the number of boxes (`bins`) to fit the data
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -299,7 +299,7 @@ ggp2_hist +
 
 
 
-The standard number of bins is `30`, but ['you should always override this value, exploring multiple widths to find the best to illustrate the stories in your data.'](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
+Unless we pick another number, there are `30` boxes,[^bins-default] but ['you should always override this value, exploring multiple widths to find the best to illustrate the stories in your data.'](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
 
 
 ```{r}
@@ -323,3 +323,51 @@ ggp2_hist_bins15 <- ggplot(data = ok_soda_sales,
 ggp2_hist_bins15 + 
   labs_histogram
 ```
+
+[^bins]: Bins. Each bin is an interval of values on the `x` axis.
+
+[^continuous]: The variable is continuous, so there are no gaps between the bins.
+
+[^frequency]: The frequency (count) of observations in each bin.
+
+[^dist-shape]: The shape of the variable's distribution.
+
+[^hill]: A bell shaped curve, like the normal distribution.
+
+[^normality]: Normality: a symmetric, bell shaped distribution.
+
+[^peak]: A peak, or mode. A distribution with more than one peak is multimodal.
+
+[^skewness]: Skewness: a long tail of decreasing bars on one end of the `x` axis.
+
+[^packages]: Install and load the packages.
+
+[^comic]: Comic book art.
+
+[^simulate]: Simulate.
+
+[^test-market]: Test market stores, where a new product is sold before a wider launch.
+
+[^normal]: `rnorm()` draws values from a normal distribution with `mean = 45` and `sd = 12`.
+
+[^seed]: Setting the random seed.
+
+[^stats]: A math whiz or statistician.
+
+[^normal-dist]: A normal distribution.
+
+[^sd]: A standard deviation of 12 cans.
+
+[^formula]: The formula.
+
+[^ranges]: Below, within, and above one standard deviation of the mean.
+
+[^statement]: A single statement.
+
+[^sampling]: Sampling variation.
+
+[^labels]: The labels (title, subtitle, caption, and axis titles).
+
+[^layer]: Add the `geom_histogram()` layer.
+
+[^bins-default]: The default number of bins is 30.

@@ -77,9 +77,9 @@ ggp2_bar_ovrlp +
 
 ## Description
 
-Overlapping bar graphs display multiple variables on the same graph. Bars overlap instead of being placed side by side. Bars are often made partially transparent to aid visibility. A legend is essential to distinguish between data.
+An overlapping bar graph shows more than one column of the data in one place.[^variables] The bars cover each other instead of standing side by side. The bars are often made so we can see through them a little,[^alpha] which helps us see the bars behind them. We need a key that tells us which color goes with which group.[^legend]
 
-In `ggplot2`, we can build overlapping bar graphs using the `fill` argument in `geom_bar()` or `geom_col()`
+In `ggplot2`, we can build overlapping bar graphs with `fill`,[^fill] the color inside each bar, in `geom_bar()` or `geom_col()`.
 
 ## Set up
 
@@ -88,7 +88,7 @@ In `ggplot2`, we can build overlapping bar graphs using the `fill` argument in `
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Install packages.
+Bring in the code we'll use.[^packages]
 :::
 
 
@@ -112,7 +112,7 @@ library(tidyr) # for uncount()
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Novell NetWare was the most popular network operating system of the early 90s, and office LANs grew as more desks got a PC and a network card. We'll simulate the number of workstations on the LAN for 24 offices in 1990, 1994, and 1998. Each year gets its own average LAN size (`mean_nodes`), `tidyr::uncount()` creates one row per office, and `rnorm()` draws each office's workstation count, rounded to a whole workstation. We'll also flag whether each office ran 25 workstations or more (`lan_size`). Setting the seed with `set.seed()` means you'll get the same 72 offices every time you run the code below.
+A LAN is a group of computers in one place that are joined so they can work together. NetWare, made by Novell, was the most used way to run a LAN[^nos] in the first few years after 1990. Office LANs grew as more people at work got a computer and a card that joins it to the LAN.[^nic] We'll make up[^simulate] the number of computers[^workstations] on the LAN for 24 offices in 1990, 1994, and 1998. Each year gets its own average LAN size (`mean_nodes`), `tidyr::uncount()` makes one row for each office, and `rnorm()` picks the number of computers in each office,[^rnorm] made into the closest whole number.[^round] We'll also mark whether each office ran 25 computers or more (`lan_size`). Starting with `set.seed()`[^seed] means you'll get the same 72 offices every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -138,7 +138,7 @@ glimpse(netware_offices)
 
 ## Distribution
 
-Overlapping bars only overlap when groups share values. Three years with very different LAN sizes would sit side by side with no stacking at all, and three years with the same LAN size would stack into a single pile. How much the bars overlap depends on how far apart the years' averages are compared to how much offices vary within a year. Below we'll move from the offices, to a picture, to the formula.
+The bars only cover each other when groups share numbers. Three years with very different LAN sizes would stand side by side, with no bar on top of another,[^stack] and three years with the same LAN size would all go on top of each other in the same bars. How much the bars cover each other comes from how far the years' means are from each other, compared with how different offices in the same year are from each other. Below we'll move from the offices, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -156,7 +156,7 @@ head(netware_offices, 6)
 ```
 :::
 
-These offices ran between 20 and 26 workstations. The summary below shows each year's mean, standard deviation, and range.
+These offices ran between 20 and 26 computers. The numbers below stand for all the offices in each year:[^summary] the mean, how far the offices usually fall from the mean,[^sd] and the smallest and largest numbers.[^range]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -174,13 +174,13 @@ netware_offices |>
 ```
 :::
 
-Each year's range covers 8 to 11 workstations, but the means are only about 2 to 5 workstations apart. So the ranges overlap, which is what puts more than one color in the same bar.
+In each year, the largest office has 8 to 11 more computers than the smallest, but the means are only about 2 to 5 computers from each other. So the years share many of the same numbers, which is what puts more than one color in the same bar.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-The overlapping bar graph below stacks the offices from all three years at each LAN size. The dashed lines mark the average LAN size we gave each year in `rnorm()`. The 1990 offices sit mostly on the left, the 1998 offices mostly on the right, and the 1994 offices land in the middle, sharing bars with both.
+The overlapping bar graph below puts the offices from all three years on top of each other at each LAN size. The broken lines mark the average LAN size we gave each year in `rnorm()`. Most of the 1990 offices are on the left, most of the 1998 offices are on the right, and the 1994 offices land in the middle, sharing bars with both.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -202,19 +202,19 @@ ggplot(data = netware_offices,
 **NAME IT:**
 :::
 
-Each year's LAN size comes from its own [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) with a shared standard deviation:
+A hill is a line that is high in the middle and low on both sides. Each year's LAN size comes from its own [hill](https://en.wikipedia.org/wiki/Normal_distribution),[^normal] and all three hills are just as wide as each other:[^shared-sd]
 
 $$
 X_{y} \sim \text{Normal}(\mu_y, \sigma = 2.5), \quad \mu_{1990} = 22, \; \mu_{1994} = 24, \; \mu_{1998} = 27
 $$
 
-The overlap depends on the distance between two means measured in standard deviations. The 1990 and 1998 means are $(27 - 22) / 2.5 = 2$ standard deviations apart, and the 1994 and 1998 means are only $(27 - 24) / 2.5 = 1.2$ apart. One way to put a number on that overlap is to pick a random office from each year and ask how often the "smaller" year wins:
+The 2.5 in the rule sets how wide each hill is,[^sigma] so we can say how far two means are from each other in steps of 2.5. The more steps between two means, the less the two years cover each other. The 1990 and 1998 means are $(27 - 22) / 2.5 = 2$ steps from each other, and the 1994 and 1998 means are only $(27 - 24) / 2.5 = 1.2$ steps from each other. One way to put a number on how much two years cover each other is to pick one office from each year by chance and ask how often the "smaller" year wins:[^superiority]
 
 $$
 P(X_{1994} > X_{1998}) = \Phi\left(\frac{24 - 27}{2.5\sqrt{2}}\right) \approx 0.20
 $$
 
-So a 1994 office runs more workstations than a 1998 office about 20% of the time, while a 1990 office does so only about 8% of the time. Try moving the three means in `mean_nodes` closer together and the bars stack into a single colorful pile.
+So a 1994 office runs more computers than a 1998 office about 20 times out of 100, while a 1990 office does so only about 8 times out of 100. Try moving the three means in `mean_nodes` closer together, and the three colors end up in the same few bars.
 
 
 ## Grammar
@@ -224,13 +224,13 @@ So a 1994 office runs more workstations than a 1998 office about 20% of the time
 **CODE:**
 :::
 
-  -  Create labels with `labs()`
+  -  Make the words around the graph[^labels] with `labs()`
 
-  -  Initialize the graph with `ggplot()` and provide `data`
+  -  Start the graph with `ggplot()` and give it `data`
 
-  -  Map `nodes` to the `x` and `year` to `fill`
+  -  Put `nodes` on `x` and use `year` for the `fill` color[^aes]
 
-  -  Add the `geom_bar()` layer
+  -  Add `geom_bar()` on top[^layer]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -288,15 +288,15 @@ ggp2_bar_ovrlp +
 
   -  Overlapping bar graphs can also be built with `geom_col()`.
 
-  -  `geom_bar()` has additional options for arranging overlapping bars. We can set the `position` argument to `"dodge"` or `"dodge2"`, depending on how we'd like the data displayed. 
+  -  `geom_bar()` has more ways to place overlapping bars. We can move the bars so they don't cover each other[^position] by setting `position` to `"dodge"` or `"dodge2"`, to show the data the way we want.
 
 ### `geom_col()`
 
 <br>
 
-To build an overlapping bar graph with `geom_col()`, we need to create a column with the counts for `nodes` and `year` in the dataset. 
+To build an overlapping bar graph with `geom_col()`, we need to make a column in the data that holds the number of offices with each `nodes` number in each `year`.[^count]
 
-  -  Create the `netware_col` data:
+  -  Make the `netware_col` data:
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -309,7 +309,7 @@ netware_col <- netware_offices |>
 :::
 
 
-  -  Map the counts to the `y` axis, `nodes` to the `x` axis, and `year` to `fill`
+  -  Put the number of offices on `y`, `nodes` on `x`, and use `year` for the `fill` color
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -354,14 +354,14 @@ ggp2_col_ovrlp +
 
 ::: {.column-margin}
 
-- *`position = "dodge"` preserves the vertical position of a geom while adjusting the horizontal position*
+- *`position = "dodge"` keeps how far up each bar goes and only moves it across[^dodge]*
 
-- *`"dodge"` requires the grouping variable to be be specified in the global or `⁠geom_`⁠ layer*
+- *`"dodge"` needs a column that puts the data into groups[^group] in `ggplot()` or in the `⁠geom_`⁠ layer*
 
 :::
 
 ::: {style="font-size: 0.95rem;"}
-We'll use the `lan_size` column, which splits offices into those with 25 workstations or more and those with fewer.
+We'll use the `lan_size` column, which puts offices into two groups: those with 25 computers or more and those with fewer.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -375,13 +375,13 @@ count(netware_offices, lan_size, year)
 ```
 :::
 
-  -  Create labels with `labs()`
+  -  Make the words around the graph with `labs()`
 
-  -  Initialize the graph with `ggplot()` and provide `data`
+  -  Start the graph with `ggplot()` and give it `data`
 
-  -  Map `lan_size` to the `x` and `year` to `group` and `fill` 
+  -  Put `lan_size` on `x`, and use `year` for `group` and the `fill` color
 
-  -  Inside the `geom_bar()` function, set `position` to `"dodge"`
+  -  Inside `geom_bar()`, set `position` to `"dodge"`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -415,21 +415,21 @@ ggp2_bar_dodge +
 
 <br>
 
-  -  Create labels with `labs()`
+  -  Make the words around the graph with `labs()`
 
-  -  Initialize the graph with `ggplot()` and provide `data`
+  -  Start the graph with `ggplot()` and give it `data`
 
-  -  Map `lan_size` to `x` and `year` to `fill`
+  -  Put `lan_size` on `x` and use `year` for the `fill` color
 
   -  Inside `geom_bar()`, set `position` to `"dodge2"`
 
 ::: {.column-margin}
 
-- *`"dodge2"` works without a grouping variable in a layer*
+- *`"dodge2"` works without a column that puts the data into groups in a layer*
 
-- *`"dodge2"` works with bars and rectangles*  
+- *`"dodge2"` works with bars and boxes[^rect]*  
 
-- *`"dodge2"` is useful for arranging graphs with variable widths.*
+- *`"dodge2"` is good for placing things that are not all as wide as each other.[^var-width]*
 
 :::
 
@@ -477,3 +477,63 @@ ggp2_bar_dodge +
 ggp2_bar_dodge2 +
   labs_bar_dodge2
 ```
+
+[^variables]: Overlapping bar graphs display multiple variables on the same graph.
+
+[^alpha]: Partially transparent, to aid visibility (the `alpha` aesthetic).
+
+[^legend]: A legend, which distinguishes the groups (here, the `fill` color for each `year`).
+
+[^fill]: The `fill` aesthetic, mapped to a categorical variable.
+
+[^packages]: Install and load the packages.
+
+[^nos]: The most popular network operating system (NOS) of the early 90s.
+
+[^nic]: A PC and a network interface card.
+
+[^simulate]: Simulate.
+
+[^workstations]: Workstations (`nodes`) on the office LAN.
+
+[^rnorm]: `rnorm()` draws each office's workstation count from a normal distribution.
+
+[^round]: Rounded to a whole workstation with `round()`.
+
+[^seed]: Setting the random seed.
+
+[^stack]: Stacking. By default `geom_bar()` uses `position = "stack"`, so the bars for each `fill` group are stacked on top of each other.
+
+[^formula]: The formula.
+
+[^summary]: Summary statistics.
+
+[^sd]: The standard deviation.
+
+[^range]: The minimum and maximum (the range).
+
+[^normal]: A normal distribution.
+
+[^shared-sd]: A shared standard deviation of 2.5.
+
+[^sigma]: The standard deviation, $\sigma$. The distance between two means is measured in standard deviations.
+
+[^superiority]: The probability that a randomly drawn office from the lower mean year has more workstations than one from the higher mean year, computed with the standard normal CDF $\Phi$.
+
+[^labels]: The labels (title, subtitle, caption, axis titles, and legend title).
+
+[^aes]: Map `nodes` to `x` and `year` to `fill` inside `aes()`.
+
+[^layer]: Add the `geom_bar()` layer.
+
+[^position]: Position adjustments, set with the `position` argument.
+
+[^count]: A column with the counts for each combination of `nodes` and `year` in the dataset, made with `count()`.
+
+[^dodge]: `position = "dodge"` preserves the vertical position of a geom while adjusting the horizontal position.
+
+[^group]: The grouping variable (the `group` aesthetic), specified in the global `ggplot()` mapping or in the `geom_` layer.
+
+[^rect]: Rectangles.
+
+[^var-width]: Geoms with variable widths.

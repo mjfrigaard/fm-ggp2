@@ -82,9 +82,9 @@ ggp2_waffle +
 
 ## Description 
 
-Waffle charts use small squares or icons to show how a whole thing is divided into parts, grouped into categories that fill a grid. They're useful for visualizing percentages or proportions from a total and can include a legend or labels to explain each category. Waffle chart legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability. 
+A square is a box that is as high as it is wide. A waffle chart is made of small squares (or small signs[^icons]) set in rows, like the top of a waffle. Each square stands for one part of a whole thing. Squares in the same group[^category] share a color and are kept together, so each group takes up one part of the waffle.[^grid] Waffle charts are good for showing what percent of the whole each group has,[^proportion] and a key[^legend] or the words around the graph[^labels] can tell us what each group is. Put the key above or below the waffle and set it out from left to right,[^horizontal] so the waffle keeps its form and is easier to read.
 
-We’ll build a waffle chart using the [`ggwaffle` package.](https://liamgilbey.github.io/ggwaffle/)
+We’ll build a waffle chart with the code in [`ggwaffle`.](https://liamgilbey.github.io/ggwaffle/)[^package]
 
 ## Set up
 
@@ -92,7 +92,7 @@ We’ll build a waffle chart using the [`ggwaffle` package.](https://liamgilbey.
 **PACKAGES:**
 :::
 
-Install packages.
+Bring in the code we'll use.[^packages]
 
 
 ::: {style="font-size: 0.85em;"}
@@ -120,9 +120,9 @@ library(dplyr) # for tibble() and data manipulation
 :::
 
 
-In the mid 90s, kids traded and battled with Pogs: cardboard milk caps, printed and holographic pogs, and heavy plastic "slammers" used to flip them. We'll simulate a collection of 100 pieces with `sample()`, giving each type its own chance of turning up.
+Pogs are small round pieces of paper board that kids traded and played games with around 1995. A collection has four kinds of pieces. Milk caps get their name from the paper board tops once used to close milk. Printed pogs have pictures on them. Holographic pogs change color as you turn them. Slammers are heavy pieces that kids brought down hard on the other pieces to turn them over. We'll make up[^simulate] a collection of 100 pieces with `sample()`, giving each kind its own chance of turning up.
 
-Waffle charts require a special data transformation with `ggwaffle::waffle_iron()`. Set the `group` argument in `ggwaffle::aes_d()` to the categorical variable you want to see the relative counts for, and set `rows = 10` so 100 pieces fill a 10 by 10 grid. Setting the seed with `set.seed()` means you'll get the same collection every time you run the code below.
+Before we can make a waffle chart, `ggwaffle::waffle_iron()` has to change the form of the data.[^transform] Set `group` in `ggwaffle::aes_d()`[^argument] to the column of groups you want to compare,[^categorical] and set `rows = 10` so the 100 pieces make 10 rows of 10. Starting with `set.seed()`[^seed] means you'll get the same collection every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -149,7 +149,7 @@ glimpse(waffle_pogs)
 
 ## Distribution
 
-A waffle chart is built for one special total: 100. When there are 100 squares, every square is one percent, so you can read a percentage just by counting squares. Below we'll move from the collection, to a picture, to the formula.
+A waffle chart works best with one special number of pieces: 100. When there are 100 squares, every square is one percent, so you can read the percent for a group just by seeing how many squares it has. Below we'll move from the collection, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -167,7 +167,7 @@ head(pog_collection$type, 10)
 ```
 :::
 
-Six of these ten are milk caps, three are printed pogs, and one is holographic. Counting all 100 pieces gives us counts that are also percentages. The `expected` column is what we'd get if the collection matched the probabilities in `sample()` exactly.
+Six of these ten are milk caps, three are printed pogs, and one is holographic. When we find how many of all 100 pieces are in each group, each number is also a percent. The `expected` column is what we'd get if the collection matched the chances[^probabilities] in `sample()` exactly.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -185,7 +185,7 @@ pog_collection |>
 **DRAW IT:**
 :::
 
-A bar model shows the collection as one bar of 100 pieces split into four parts.
+A bar model shows the collection as one bar of 100 pieces in four parts.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -204,7 +204,7 @@ pog_collection |>
 ```
 :::
 
-A waffle chart is the same bar folded into rows of 10. Each column of the waffle below is ten pieces, so the milk caps fill a little more than four columns and the slammers fill a little more than one.
+A waffle chart is the same bar, broken into parts of 10 squares that stand side by side. Each column of the waffle below is ten pieces, so the milk caps take up a little more than four columns and the slammers take up a little more than one.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -228,13 +228,13 @@ ggplot(data = waffle_pogs, aes(x = x, y = y, fill = group)) +
 **NAME IT:**
 :::
 
-Every piece in the collection is an independent draw from four types, so the four counts follow a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
+Every piece in the collection gets one of the four kinds by chance, and no piece changes what the others get.[^independent] So the four numbers follow a [rule for picking one of many kinds, again and again](https://en.wikipedia.org/wiki/Multinomial_distribution):[^multinomial]
 
 $$
 (N_{\text{milk}}, N_{\text{printed}}, N_{\text{holo}}, N_{\text{slam}}) \sim \text{Multinomial}(n = 100, \; p = (0.45, 0.30, 0.15, 0.10))
 $$
 
-With $n = 100$, the expected count for each type is its probability times 100, which is the same number as its percentage. The counts wobble around those expectations by about $\sqrt{100\,p\,(1 - p)}$ pieces: about 5 for milk caps and 3 for slammers. Our collection has `r sum(pog_collection$type == "Slammers")` slammers instead of the expected 10, a difference of a little more than one standard deviation. Change the number in `set.seed()` and the squares trade places, but they always add to 100.
+With $n = 100$, the number we expect[^expected] for each kind is its chance times 100, which is the same number as its percent. The real numbers move up and down around what we expect by about $\sqrt{100\,p\,(1 - p)}$ pieces:[^sd] about 5 for milk caps and 3 for slammers. Our collection has `r sum(pog_collection$type == "Slammers")` slammers instead of the 10 we expect, a difference a little bigger than the 3 pieces we just found for slammers.[^one-sd] Change the number in `set.seed()` and the squares trade places, but they always add to 100.
 
 
 ## Grammar
@@ -245,21 +245,21 @@ With $n = 100$, the expected count for each type is its probability times 100, w
 
 ::: {style="font-size: 0.95rem;"}
 
-  -   Create labels with `labs()`
+  -   Make the words around the graph with `labs()`
 
-  -   Initialize the graph with `ggplot()` and provide `data`
+  -   Start the graph with `ggplot()` and give it `data`
 
-  -   Map the `x` and `y` to the `x` and `y` axes
+  -   Join the `x` and `y` columns to how far across and how far up each square goes[^map-xy]
 
-  -   Map `group` to `fill`
+  -   Join `group` to the color inside each square[^fill]
 
   -   Add `ggwaffle::geom_waffle()`
 
   -   Keep the squares square with `coord_equal()`
 
-  -   Remove the axis text and grid lines, and move the legend to the top with `theme()`
+  -   Take away the numbers along the sides[^axis-text] and the lines behind the squares,[^grid-lines] and move the key to the top with `theme()`
 
-  -   Split the legend into two rows with `guides()` so it fits above the square waffle
+  -   Set the key out in two rows with `guides()` so it fits above the square waffle
 
 :::
 
@@ -328,3 +328,53 @@ ggp2_waffle +
   guides(fill = guide_legend(nrow = 2))
 ```
 
+
+[^icons]: Icons.
+
+[^category]: A category.
+
+[^grid]: A grid.
+
+[^proportion]: Percentages or proportions of a total.
+
+[^legend]: The legend.
+
+[^labels]: The labels (title, subtitle, caption, and axis titles).
+
+[^horizontal]: Legends positioned on the top or bottom and justified horizontally.
+
+[^package]: The `ggwaffle` package.
+
+[^packages]: Install and load the packages. `ggwaffle` is only on GitHub, so it's installed with `pak`.
+
+[^simulate]: Simulate.
+
+[^transform]: A special data transformation: `waffle_iron()` gives each piece an `x` and `y` position in the grid.
+
+[^argument]: The `group` argument.
+
+[^categorical]: The categorical variable you want to see the relative counts for.
+
+[^seed]: Setting the random seed.
+
+[^formula]: The formula.
+
+[^probabilities]: The probabilities in the `prob` argument.
+
+[^independent]: Each piece is an independent draw from the four types.
+
+[^multinomial]: A multinomial distribution.
+
+[^expected]: The expected count.
+
+[^sd]: The standard deviation of each count.
+
+[^one-sd]: A little more than one standard deviation.
+
+[^map-xy]: Map `x` and `y` to the `x` and `y` axes.
+
+[^fill]: Map `group` to the `fill` aesthetic.
+
+[^axis-text]: The axis text.
+
+[^grid-lines]: The panel grid lines.

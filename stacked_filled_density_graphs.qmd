@@ -78,7 +78,7 @@ ggp2_fill_density +
 
 ## Description 
 
-Density graphs are typically used to visualize the distribution of a single variable, but stacked density graphs are great for visualizing how proportions vary across numeric (continuous) variables.
+A stacked density graph shows where the numbers for each group fall, with the colored area for each group put on top of the one below it. A density graph most often shows where the numbers in just one column fall.[^single] Stacked density graphs are good at showing how each group's share of the whole[^proportions] changes from one end of a column of numbers to the other.[^continuous]
 
 ## Set up
 
@@ -86,7 +86,7 @@ Density graphs are typically used to visualize the distribution of a single vari
 **PACKAGES:**
 :::
 
-Install packages.
+Bring in the code we'll use.[^packages]
 
 
 ::: {style="font-size: 0.85em;"}
@@ -109,7 +109,7 @@ library(dplyr) # for tibble() and data manipulation
 **DATA:**
 :::
 
-In 1996, most people opened Netscape Navigator over a dial up modem, and the modem you owned set how fast the web loaded. We'll simulate 600 browsing sessions in two steps. First, `sample()` decides which modem each session used (14.4k, 28.8k, or 56k). Then `rnorm()` draws the connection speed from that modem's own normal distribution: no modem ever connects at its full rated speed, and phone line noise spreads the speeds out. Setting the seed with `set.seed()` means you'll get the same 600 sessions every time you run the code below.
+Netscape Navigator was one of the first ways to look at pages from all over the world on a home computer. A modem is a small box that lets a computer talk to other computers over a phone line. In 1996, most people opened Netscape Navigator over a modem, and the modem you owned set how fast the pages came in. A session is one time that someone uses a modem to get on line, from start to end. Each modem's name is the most data it can send in a second, where k stands for 1,000 small pieces of data, and kbps stands for 1,000 pieces each second.[^kbps] We'll make up[^simulate] 600 sessions in two steps. First, `sample()` picks which modem each session used (14.4k, 28.8k, or 56k). A hill is a line that is high in the middle and low on both sides. Then `rnorm()` picks the speed from the hill that goes with that modem.[^normal] No modem ever gets all the way to the speed in its name,[^rated] and problems on the phone line make the speeds move up and down. Starting with `set.seed()`[^seed] means you'll get the same 600 sessions every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -141,7 +141,7 @@ dplyr::glimpse(modem_sessions)
 
 ## Distribution
 
-A filled density graph answers a different question than a regular density plot. Instead of asking "how common is each speed?", it asks "at this speed, which modem is a session most likely using?" The answer depends on two things: how common each modem is, and how its speeds are spread out. Below we'll move from the sessions, to a picture, to the formula.
+A filled density graph shows each group's share at every number, so the colors always reach the top of the graph.[^filled] It answers a different question than a density graph. Instead of asking "how common is each speed?", it asks "at this speed, which modem is a session most likely using?" The answer turns on two things: how common each modem is, and how wide its hill is.[^spread] Below we'll move from the sessions, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -159,7 +159,7 @@ head(modem_sessions, 6)
 ```
 :::
 
-The 28.8k sessions connect in the mid to high 20s, and the 56k sessions connect around 40 to 45. Counting all 600 sessions shows how common each modem is overall.
+The 28.8k sessions get speeds from about 24 to 29, and the 56k sessions get speeds from about 40 to 45. Looking at all 600 sessions shows how common each modem is overall.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -173,7 +173,7 @@ modem_sessions |>
 ```
 :::
 
-Now zoom in on the sessions that connected between 30 and 36 kbps. This is the overlap zone: a fast 28.8k connection and a slow 56k connection both land here. The two modems split these sessions roughly in half.
+Now look closer at the sessions with speeds from 30 up to 36 kbps. This is where the two modems cover each other:[^overlap] a fast 28.8k session and a 56k session on the low end both land here. Each of the two modems has about half of these sessions.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -192,7 +192,7 @@ modem_sessions |>
 **DRAW IT:**
 :::
 
-Below are two views of the same 600 sessions. The first stacks the count densities, so the height of each color is the number of sessions at that speed. The second uses `position = "fill"`, which stretches every vertical slice to 100% and turns the counts into shares. The dashed line at 33 kbps sits in the overlap zone, where the filled graph splits between 28.8k and 56k.
+Below are two graphs of the same 600 sessions. The first puts the hill for each modem on top of the one below it,[^stack] so how much of the graph each color covers from the low end to the top shows the number of sessions at that speed.[^count-density] The second uses `position = "fill"`, which makes the colors reach 100% at every speed and turns the numbers of sessions into shares.[^fill-position] The broken line at 33 kbps stands where the two modems cover each other, and there the filled graph is part 28.8k and part 56k.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -219,19 +219,19 @@ ggplot(modem_sessions, aes(x = speed_kbps, after_stat(count), fill = modem)) +
 **NAME IT:**
 :::
 
-The speeds come from a [mixture](https://en.wikipedia.org/wiki/Mixture_distribution) of three normal distributions, one per modem $k$, each with its own share of the sessions ($\pi_k$):
+Our two steps [put three hills together into one line](https://en.wikipedia.org/wiki/Mixture_distribution),[^mixture] one hill for each modem $k$, and each hill gets its own share of the sessions ($\pi_k$):[^weights]
 
 $$
 f(x) = \sum_{k} \pi_k \, \text{Normal}(x; \, \mu_k, \sigma_k)
 $$
 
-with $\pi = (0.25, 0.45, 0.30)$, $\mu = (13, 26, 44)$, and $\sigma = (1.2, 2.5, 5)$. The filled density shows each modem's slice of that sum, which is [Bayes' theorem](https://en.wikipedia.org/wiki/Bayes%27_theorem) drawn as a picture:
+with $\pi = (0.25, 0.45, 0.30)$ setting how much area each hill gets, $\mu = (13, 26, 44)$ setting where each hill stands, and $\sigma = (1.2, 2.5, 5)$ setting how wide each hill is.[^params] The filled density graph shows each modem's part of that full line, which is [a rule that works out how likely each modem is once we know the speed](https://en.wikipedia.org/wiki/Bayes%27_theorem),[^bayes] shown as a graph:
 
 $$
 P(\text{modem } k \mid x) = \frac{\pi_k \, \text{Normal}(x; \, \mu_k, \sigma_k)}{f(x)}
 $$
 
-At 33 kbps, the 14.4k curve is essentially zero, so the share splits between the other two: $0.45 \times \text{Normal}(33; 26, 2.5)$ for 28.8k and $0.30 \times \text{Normal}(33; 44, 5)$ for 56k. That works out to about 40% for 28.8k and 60% for 56k, close to what we counted between 30 and 36 kbps. Try raising the 56k share in `sample()` and the 56k band at 33 kbps grows, even though no modem got faster.
+At 33 kbps, the 14.4k hill is so low that we can't see it, so the other two modems share the speed between them: $0.45 \times \text{Normal}(33; 26, 2.5)$ for 28.8k and $0.30 \times \text{Normal}(33; 44, 5)$ for 56k. That works out to about 40% for 28.8k and 60% for 56k, close to the shares the filled graph shows at the broken line. Try making the 56k share bigger in `sample()`, and the 56k color at 33 kbps grows, even though no modem got faster.
 
 
 ## Grammar
@@ -242,15 +242,15 @@ At 33 kbps, the 14.4k curve is essentially zero, so the share splits between the
 
 ::: {style="font-size: 0.95rem;"}
 
-  -   Create labels with `labs()`
+  -   Make the words around the graph[^labels] with `labs()`
 
-  -   Initialize the graph with `ggplot()` and provide `data`
+  -   Start the graph with `ggplot()` and give it `data`
 
-  -   Map the `speed_kbps` to the `x` and add  `after_stat(count)` 
+  -   Put `speed_kbps` on the `x` axis,[^map] and add `after_stat(count)` so each hill grows with the number of sessions in its group[^after-stat]
 
-  -   Map `modem` to `fill`  
+  -   Join `modem` to `fill` so each modem gets its own color[^fill-aes]
 
-  -   *Inside* the `geom_density()` function, set `position` to `"fill"`
+  -   *Inside* `geom_density()`, set `position` to `"fill"`[^position]
 
 :::
 
@@ -308,3 +308,53 @@ ggp2_fill_density <- ggplot(data = modem_sessions,
 ggp2_fill_density + 
   labs_fill_density
 ```
+
+[^single]: Density graphs are most often used to show the distribution of a single variable.
+
+[^proportions]: Proportions.
+
+[^continuous]: Across a numeric (continuous) variable.
+
+[^packages]: Install and load the packages.
+
+[^kbps]: The modem's rated speed in kilobits per second (kbps): 14.4, 28.8, or 56 kbps.
+
+[^simulate]: Simulate. Each session is one simulated browsing session.
+
+[^normal]: `rnorm()` draws the connection speed from that modem's own normal distribution, with its own mean and standard deviation.
+
+[^rated]: No modem ever connects at its full rated speed.
+
+[^seed]: Setting the random seed.
+
+[^filled]: `position = "fill"` scales the stacked densities so they sum to 1 at every value of `x`.
+
+[^spread]: Each modem's share of the sessions and the spread (standard deviation) of its speeds.
+
+[^formula]: The formula.
+
+[^overlap]: The overlap zone, where the two distributions overlap.
+
+[^stack]: Stacks the count densities with `position = "stack"`.
+
+[^count-density]: The count density, `after_stat(count)`, which is the density multiplied by the number of sessions in the group.
+
+[^fill-position]: `position = "fill"` scales every vertical slice to 100% and turns the counts into proportions.
+
+[^mixture]: A mixture of three normal distributions.
+
+[^weights]: The mixture weights $\pi_k$.
+
+[^params]: The weights, means, and standard deviations of the three normal distributions.
+
+[^bayes]: Bayes' theorem, which gives the posterior probability of each modem given the speed $x$.
+
+[^labels]: The labels (title, subtitle, caption, and axis titles).
+
+[^map]: Map `speed_kbps` to `x` in `aes()`.
+
+[^after-stat]: `after_stat(count)` maps the computed count density to `y`, so the filled shares include each modem's share of the sessions.
+
+[^fill-aes]: Map `modem` to the `fill` aesthetic.
+
+[^position]: The `position` argument (position adjustment).

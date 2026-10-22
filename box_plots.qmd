@@ -72,7 +72,7 @@ ggp2_boxplot +
 
 ## Description
 
-Box plots use five values to summarize data: minimum, first quartile, median, third quartile, and maximum. The plot looks like a box with a line in the middle. Whiskers go from the box to the minimum and maximum values. Unusual points are shown as dots outside the whiskers. Box plots help identify unusual points and compare different groups of data.
+A box plot shows where a set of numbers fall, using five numbers that stand for all of them.[^five] Put the numbers in order, and the five are the smallest number, the number with 25 out of 100 of the numbers below it, the middle number, the number with 75 out of 100 below it, and the largest number. The median is the middle number when you put all the numbers in order. The graph looks like a box with a line in the middle. Lines[^whiskers] go out from the box to the smallest and largest numbers that are not far from the rest. Numbers that are far from the rest[^outliers] show up as points past the ends of those lines. Box plots help us find numbers that are far from the rest and compare different groups of data.
 
 ## Set up
 
@@ -81,7 +81,7 @@ Box plots use five values to summarize data: minimum, first quartile, median, th
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Install packages.
+Bring in the code we'll use.[^packages]
 :::
 
 
@@ -105,7 +105,7 @@ library(dplyr) # for tibble() and data manipulation
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Most Mario Kart 64 laps on Luigi Raceway take about the same time, but every so often a player nails a mushroom boost (a very fast lap) or gets hit by a blue shell (a very slow one). We'll simulate 200 lap times with `rt()`, which draws from a distribution with more extreme values than the normal. Setting the seed with `set.seed()` means you'll get the same 200 laps every time you run the code below.
+Mario Kart 64 is a game where people drive small cars in a race around a track. Luigi Raceway is one of the tracks in the game, and a lap is one time around it. Most laps on Luigi Raceway take about the same time, but every so often a player goes much faster for a moment[^mushroom] (a very fast lap) or gets hit and has to stop[^shell] (a lap that takes much longer). We'll make up[^simulate] 200 lap times with `rt()`. A hill is a line that is high in the middle and low on both sides. `rt()` picks numbers from a rule that gives more very high and very low numbers than a hill does.[^heavy-tails] Starting with `set.seed()`[^seed] means you'll get the same 200 laps every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -128,7 +128,7 @@ glimpse(mario_kart_laps)
 
 ## Distribution
 
-A box plot doesn't draw every value. It draws five summary numbers and then flags the values that are unusually far from the middle. That makes it a good tool for data with extreme values, as long as you know how those five numbers and the outlier rule work. Below we'll move from the lap times, to a picture, to the formula.
+A box plot doesn't show every number. It shows five numbers that stand for all of them,[^summary] then marks the numbers that are much farther from the middle than the rest. That makes it a good way to look at data with very high and very low numbers, as long as you know how the five numbers and the rule for marking points work.[^outlier-rule] Below we'll move from the lap times, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -146,7 +146,7 @@ head(mario_kart_laps$seconds, 10)
 ```
 :::
 
-Most of these laps take between 42 and 49 seconds, but one (38.71) is much faster than the rest. The numbers behind a box plot are the quartiles: the 25th percentile (Q1), the median, and the 75th percentile (Q3). The distance between Q1 and Q3 is the interquartile range (IQR). Any value more than 1.5 IQRs past Q1 or Q3 (the "fences") is drawn as an outlier.
+Most of these laps take between 42 and 49 seconds, but one (38.71) is much faster than the rest. The box in a box plot comes from three numbers that cut the laps into four groups of the same size.[^quartiles] Q1 is the number with 25 out of 100 laps below it, and Q3 is the number with 75 out of 100 laps below it. The median is between them, with half of the laps below it. The space between Q1 and Q3 holds the middle half of the laps.[^iqr] A fence is a line 1.5 times that space below Q1 or above Q3.[^fence] Any lap past a fence shows up as its own point.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -167,13 +167,13 @@ lap_stats
 ```
 :::
 
-Half of all laps fall inside a window only `r round(lap_stats$iqr, 1)` seconds wide, yet `r lap_stats$outliers` laps land outside the fences. The lap at 38.71 seconds from the first ten is one of them: it's just below the lower fence.
+Half of all laps fall inside a space only `r round(lap_stats$iqr, 1)` seconds wide, yet `r lap_stats$outliers` laps land outside the fences. The lap at 38.71 seconds from the first ten is one of them: it's just below the lower fence.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-The box plot below labels each of those numbers. The box runs from Q1 to Q3, the line inside it is the median, the whiskers stop at the last lap inside the fences, and every lap past a fence is drawn as a point.
+The box plot below puts a name on each of those numbers. The box runs from Q1 to Q3, the line inside it is the median, the lines out from the box stop at the last lap inside the fences, and every lap past a fence is shown as a point.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -199,7 +199,7 @@ ggplot(data = mario_kart_laps, aes(x = "", y = seconds)) +
 ```
 :::
 
-A box plot hides the shape between the five numbers. The plots below show the same 200 laps four other ways, and every one of them shows a single peak near 45 seconds with a few laps scattered far out on both sides.
+A box plot doesn't show what happens between the five numbers. The graphs below show the same 200 laps four other ways, and every one of them shows one high point[^peak] near 45 seconds with a few laps far out on both sides.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -232,15 +232,15 @@ ggplot(mario_kart_laps, aes(x = seconds)) +
 **NAME IT:**
 :::
 
-The `rt()` call draws from [Student's t distribution](https://en.wikipedia.org/wiki/Student%27s_t-distribution), which is then shifted and stretched into lap times:
+`rt()` picks numbers from [a rule with more numbers far out on both sides than a hill](https://en.wikipedia.org/wiki/Student%27s_t-distribution),[^t-dist] and then we move those numbers and make them two times as far from each other to get lap times:
 
 $$
 X = 45 + 2T, \quad T \sim t(\nu = 3)
 $$
 
-The 45 sets the center (the median lap) and the 2 sets the spread. The degrees of freedom ($\nu$) control the tails: a small $\nu$ like 3 gives "heavy" tails with more extreme values than a normal distribution, and as $\nu$ grows the t distribution turns into the normal. 
+The 45 sets the middle (the median lap), and the 2 sets how far the laps move out from the middle.[^scale] The number $\nu$[^df] sets how many laps land far out on each side: a small $\nu$ like 3 gives more laps far out on both sides than a hill does,[^heavy] and as $\nu$ grows, the rule turns into the hill.[^normal]
 
-The outlier rule shows the difference. For a normal distribution, only about 0.7% of values land past the fences, so we'd expect about 1 outlier in 200 laps. For a t distribution with 3 degrees of freedom, about 5.5% land past the fences, or about 11 laps in 200. We got `r lap_stats$outliers`. Try `df = 30` in `rt()` and most of the outlier points disappear.
+The fences show the difference. For numbers from a hill, only about 0.7% land past the fences, so we'd expect about 1 lap in 200 to show up as its own point. For numbers from our rule with $\nu = 3$, about 5.5% land past the fences, or about 11 laps in 200. We got `r lap_stats$outliers`. Try `df = 30` in `rt()` and most of those points go away.
 
 
 ## Grammar
@@ -252,15 +252,15 @@ The outlier rule shows the difference. For a normal distribution, only about 0.7
 
 ::: {style="font-size: 0.95rem;"}
 
-Create labels with `labs()`
+Make the words around the graph[^labels] with `labs()`
 
-Initialize the graph with `ggplot()` and provide `data`
+Start the graph with `ggplot()` and give it `data`
 
-  - Assign a blank character string (`""`) to the `x` axis in `labs()`
+  - Give the `x` axis no name (`""`) in `labs()`[^blank]
 
-Map `seconds` to the `y` axis and an empty string (`""`) to the `x` axis
+Put `seconds` on the `y` axis and nothing (`""`) on the `x` axis[^map]
 
-Add the `geom_boxplot()` layer
+Add `geom_boxplot()` on top[^layer]
 
 :::
 
@@ -313,3 +313,53 @@ ggp2_boxplot <- ggplot(data = mario_kart_laps,
 ggp2_boxplot + 
   labs_boxplot
 ```
+
+[^five]: The five-number summary: minimum, first quartile (Q1), median, third quartile (Q3), and maximum.
+
+[^whiskers]: Whiskers. Each one stops at the last value within 1.5 × IQR of the box.
+
+[^outliers]: Outliers.
+
+[^packages]: Install and load the packages.
+
+[^mushroom]: A mushroom boost.
+
+[^shell]: A hit from a blue shell.
+
+[^simulate]: Simulate.
+
+[^heavy-tails]: `rt()` draws from a t distribution, which has heavier tails (more extreme values) than the normal distribution.
+
+[^seed]: Setting the random seed.
+
+[^summary]: Summary statistics (the five-number summary).
+
+[^outlier-rule]: The outlier rule: values more than 1.5 IQRs below Q1 or above Q3.
+
+[^formula]: The formula.
+
+[^quartiles]: The quartiles: the 25th percentile (Q1), the median (50th percentile), and the 75th percentile (Q3).
+
+[^iqr]: The interquartile range (IQR), Q3 minus Q1.
+
+[^fence]: The lower fence (Q1 minus 1.5 × IQR) and the upper fence (Q3 plus 1.5 × IQR). Values past the fences are drawn as outliers.
+
+[^peak]: A peak, or mode.
+
+[^t-dist]: Student's t distribution.
+
+[^scale]: The location (45) and scale (2) of the shifted and scaled t distribution.
+
+[^df]: The degrees of freedom.
+
+[^heavy]: Heavy tails, with more extreme values than a normal distribution.
+
+[^normal]: As $\nu$ grows, the t distribution approaches the normal distribution.
+
+[^labels]: The labels (title, subtitle, caption, and axis titles).
+
+[^blank]: Assign a blank character string (`""`) to the `x` axis title.
+
+[^map]: Map `seconds` to `y` and an empty string (`""`) to `x` in `aes()`.
+
+[^layer]: Add the `geom_boxplot()` layer.

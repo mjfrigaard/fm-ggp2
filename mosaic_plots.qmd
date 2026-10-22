@@ -90,11 +90,11 @@ ggp2_mosaic +
 
 ## Description
 
-A mosaic plot is similar to a stacked bar graph, but instead of only relying on height and color to display the relative amount for each value, mosaic plots also use width.
+A mosaic plot shows how many rows fall where two sets of groups meet, with boxes that change in how wide and how high they are. It works like a bar graph with its parts put one on top of the other,[^stacked] but that bar graph shows how big each part is with only how high it goes and its color. A mosaic plot also uses how wide each box is.[^width]
 
-Mosaic plot legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability.
+Put the key[^legend] of a mosaic plot above or below it, and run the key from left to right. That keeps the form of the mosaic plot and makes it easier to read.
 
-We can build mosaic plots using the [`ggmosaic` package.](https://haleyjeppson.github.io/ggmosaic/)
+We can make mosaic plots with [`ggmosaic`.](https://haleyjeppson.github.io/ggmosaic/)[^ggmosaic]
 
 ## Set up
 
@@ -103,7 +103,7 @@ We can build mosaic plots using the [`ggmosaic` package.](https://haleyjeppson.g
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Install packages.
+Bring in the code we'll use.[^packages]
 :::
 
 
@@ -130,7 +130,7 @@ library(dplyr) # for tibble() and data manipulation
 :::
 
 ::: {style="font-size: 0.95rem;"}
-*Titanic* (1997) stayed in theaters for months, and plenty of fans (especially teenagers) went back to see it again and again. We'll simulate 500 moviegoers in three linked steps. First, `sample()` decides each fan's `age_group`. Next, each age group gets its own chances of seeing the movie once, twice, or three or more times (`viewings`). Finally, the more times a fan saw the movie, the more likely they were to buy the soundtrack (`soundtrack`), so `runif()` draws a number between 0 and 1 and compares it to the chance for that fan's number of viewings. Setting the seed with `set.seed()` means you'll get the same 500 fans every time you run the code below.
+*Titanic* was a movie from 1997 about a big ship that went down in the sea. A teen is a person between 13 and 19 years old, and an adult is a person who is no longer a teen. It played in movie houses for months, and lots of fans (most of all teens) went back to see it again and again. We'll make up[^simulate] 500 people who saw the movie, in three steps where each step builds on the one before. First, `sample()` picks whether each fan is a teen or an adult (`age_group`). Next, each age group gets its own chances of seeing the movie once, two times, or three or more times (`viewings`). The soundtrack is the music from the movie, sold on its own. Last, the more times a fan saw the movie, the more likely they were to buy the soundtrack (`soundtrack`). So `runif()` picks a number between 0 and 1 and checks whether it falls below the chance for the number of times that fan saw the movie.[^runif] Starting with `set.seed()`[^seed] means you'll get the same 500 fans every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -168,7 +168,7 @@ glimpse(titanic_fans)
 
 ## Distribution
 
-A mosaic plot draws a two way table as a set of rectangles, and each rectangle's width and height are probabilities. Because we built the dependence between age and viewings into the simulation, we know what those widths and heights should be. Below we'll move from the fans, to a picture, to the formula.
+A mosaic plot turns a table of how many rows fall where two groups meet[^two-way] into a set of boxes.[^rect] How wide each box is, and how high it is, are both chances.[^prob] We built a link between age group and `viewings`[^dependence] into the code that makes up the data, so we know how wide and how high those boxes should be. Below we'll move from the fans, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -186,7 +186,7 @@ head(titanic_fans, 8)
 ```
 :::
 
-All five teens in this group saw the movie more than once, while two of the three adults saw it only once. The table below counts every combination of age group and viewings, then converts the counts to proportions within each age group.
+All five teens in this group saw the movie more than once, while two of the three adults saw it only once. The table below finds how many fans fall where each age group meets each number of `viewings`, then turns each number into a share of its age group.[^proportion]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -202,15 +202,15 @@ titanic_fans |>
 ```
 :::
 
-Teens split almost evenly across one, two, and three or more viewings, while about two thirds of adults saw the movie once.
+Teens fall in close to the same numbers across seeing the movie once, two times, and three or more times, while about two thirds of adults saw the movie once.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-The mosaic plot below draws the table above. The width of each column is the share of fans in that age group (adults take up more width because there are more of them), and the height of each tile is the share of that age group with each number of viewings.
+The mosaic plot below shows the table above. Each age group is as wide as its share of all the fans (adults take up more room because there are more of them).[^width-share] Each box is as high as the share of its age group that saw the movie that number of times.[^height-share]
 
-The second mosaic shuffles `viewings` with `sample()`, which keeps the same counts but breaks the link between age and viewings. Without the link, the tiles line up into straight rows: every age group has the same mix of viewings.
+The second mosaic plot puts the values of `viewings` in a new order with `sample()`.[^shuffle] That keeps how many fans saw the movie once, two times, and three or more times, but breaks the link between age group and `viewings`. Without the link, the boxes line up straight across the graph: every age group has the same shares of once, two times, and three or more times.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -243,15 +243,15 @@ titanic_fans |>
 **NAME IT:**
 :::
 
-Each tile's area is a [joint probability](https://en.wikipedia.org/wiki/Joint_probability_distribution), which we can split into a width times a height:
+The area of each box is [the chance that a fan falls in both groups at once](https://en.wikipedia.org/wiki/Joint_probability_distribution),[^joint] which we can break into how wide the box is times how high it is:
 
 $$
 P(\text{age}, \text{viewings}) = \underbrace{P(\text{age})}_{\text{width}} \times \underbrace{P(\text{viewings} \mid \text{age})}_{\text{height}}
 $$
 
-The simulation sets the widths with $P(\text{Teen}) = 0.4$ and $P(\text{Adult}) = 0.6$, and the heights with a different [conditional distribution](https://en.wikipedia.org/wiki/Conditional_probability_distribution) for each age group: $(0.35, 0.35, 0.30)$ for teens and $(0.70, 0.22, 0.08)$ for adults.
+The code that makes up the data sets how wide the boxes are with $P(\text{Teen}) = 0.4$ and $P(\text{Adult}) = 0.6$, and how high they are with [a different rule for each age group](https://en.wikipedia.org/wiki/Conditional_probability_distribution):[^conditional] $(0.35, 0.35, 0.30)$ for teens and $(0.70, 0.22, 0.08)$ for adults.
 
-When two variables are [independent](https://en.wikipedia.org/wiki/Independence_(probability_theory)), $P(\text{viewings} \mid \text{age}) = P(\text{viewings})$, so every column has the same heights. That's what the shuffled mosaic shows. The more the tiles in one column are out of line with the tiles in the next, the stronger the relationship. Try giving adults the same viewing probabilities as teens and the first mosaic will look like the second.
+When two columns have [no link](https://en.wikipedia.org/wiki/Independence_(probability_theory)),[^independent] $P(\text{viewings} \mid \text{age}) = P(\text{viewings})$, so the boxes for every age group are as high as each other. That's what the second mosaic plot shows. The more the boxes for one age group are out of line with the boxes for the next, the stronger the link.[^relationship] Try giving adults the same chances of seeing the movie once, two times, and three or more times as teens, and the first mosaic plot will look like the second.
 
 
 ## Grammar
@@ -260,17 +260,17 @@ When two variables are [independent](https://en.wikipedia.org/wiki/Independence_
 **CODE:**
 :::
 
-  -   Create labels with `labs()`
+  -   Make the words around the graph[^labels] with `labs()`
 
-  -   Initialize the graph with `ggplot()` and provide `data`
+  -   Start the graph with `ggplot()` and give it `data`
 
-  -   Map the `product()` of `viewings` and `age_group` to the `x` axis
+  -   Put the `product()` of `viewings` and `age_group` on the `x` axis[^product]
 
-  -   Map `age_group` to `fill`
+  -   Join `age_group` to `fill` so each age group gets its own color[^fill]
 
-  -   `geom_mosaic()` names the axes after the variables, so set the axis titles with `scale_x_productlist()` and `scale_y_productlist()`
+  -   `geom_mosaic()` names the axes after the columns, so set the words on each axis[^axis-titles] with `scale_x_productlist()` and `scale_y_productlist()`
 
-  -   Remove the grid lines and move the legend to the bottom with `theme(legend.position = "bottom", panel.grid.major = element_blank())`
+  -   Take away the lines behind the boxes[^grid] and move the key below the graph with `theme(legend.position = "bottom", panel.grid.major = element_blank())`
 
 
 ::: {style="font-size: 0.85em;"}
@@ -337,11 +337,11 @@ ggp2_mosaic +
 
 ### Details
 
-We've re-written the labels for the mosaic plot (`ggp2_mosaic`) to illustrate what's happening in the `aes()` of `geom_mosaic()`.
+We've changed the words around the mosaic plot (`ggp2_mosaic`) to show what's going on in the `aes()` of `geom_mosaic()`.
 
 ::: {.column-margin}
 ::: {style="font-size: 0.95em; color: #5f2042;"}
-It's a good idea to adjust the `fig-height` and `fig-width` of your graph
+It's a good idea to change the `fig-height` and `fig-width` of your graph
 :::
 :::
 
@@ -380,7 +380,7 @@ titanic_counts <- titanic_fans |>
 :::
 
 
-The table below displays the counts for each combined response. As we can see, the counts are represented by height and width in the graph.
+The table below shows how many fans fall where each age group meets each number of `viewings`. As we can see, the graph shows these numbers with how high and how wide each box is.
 
 ```{r}
 #| eval: true
@@ -393,7 +393,7 @@ kableExtra::kable_paper(
 
 ## More info
 
-I recommend reading the [`ggmosaic` vignette](https://haleyjeppson.github.io/ggmosaic/articles/ggmosaic.html), particularly the sections on ordering and conditioning.
+It's worth reading [the long help page for `ggmosaic`](https://haleyjeppson.github.io/ggmosaic/articles/ggmosaic.html),[^vignette] most of all the parts on putting groups in order and on looking at one column inside each group of another column.[^conditioning]
 
 ### Two variables
 
@@ -419,9 +419,9 @@ kableExtra::kable_paper(
 :::
 
 
-Below is another example of a two-variable mosaic plot, mapping the `product()` variables as `viewings` and `soundtrack`, and the `fill` variable as `soundtrack`.
+Below is another mosaic plot of two columns. It puts `viewings` and `soundtrack` in `product()`, and joins `soundtrack` to `fill`.[^map-2var]
 
-Once again we can see the counts for each category in the cross-tabulation:
+Once again we can see how many fans fall where two groups meet in the table:[^crosstab]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -456,7 +456,7 @@ ggp2_mosaic_2var +
 :::
 
 
-For conditional variables, we map the `product()` variable as `viewings` and the `fill` variable as `viewings`, but include a `conds` variable (as `product(soundtrack)`).
+To look at `viewings` inside each group of another column,[^cond-var] we put `viewings` in `product()` and join `viewings` to `fill`, but we also give `conds` a column (as `product(soundtrack)`).
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -491,9 +491,9 @@ ggp2_mosaic_cond +
 
 ### Facets
 
-Another option for including a conditioning variable is including facets. In the example below we use `soundtrack` in both `x` and `fill` (remember to wrap `soundtrack` in `product()`).
+Another way to look at one column inside each group of another column is with small graphs.[^facets] In the example below we use `soundtrack` in both `x` and `fill` (remember to put `soundtrack` inside `product()`).
 
-The `divider` argument let's us control the spine partitions (vertically and horizontally). Below are the two vertical orientation options for the `divider` argument.
+The `divider` choice[^argument] lets us pick how the boxes are cut up (up and down, or across).[^divider] Below are the two up and down choices for `divider`.[^vertical]
 
 ::: {style="font-size: 0.95rem;"}
 ```{r}
@@ -547,7 +547,7 @@ ggp2_mosaic_vspine +
 :::
 
 
-The two horizontal orientation options make the axis text harder to read, so these need to be manipulated manually.
+The two across choices make the words on the axes harder to read, so we have to change these by hand.[^horizontal]
 
 ::: {style="font-size: 0.95rem;"}
 ```{r}
@@ -592,3 +592,75 @@ ggp2_mosaic_hspine +
     nrow = 2, guides = 'collect')
 ```
 :::
+
+[^stacked]: A stacked bar graph.
+
+[^width]: Instead of only relying on height and color to display the relative amount for each value, mosaic plots also use width.
+
+[^legend]: The legend. Position it on top or bottom and justify it horizontally to preserve the shape of the plot and improve readability.
+
+[^ggmosaic]: The `ggmosaic` package, a `ggplot2` extension.
+
+[^packages]: Install and load the packages.
+
+[^simulate]: Simulate. The three steps are linked: each one depends on the step before it.
+
+[^runif]: `runif()` draws a uniform random number between 0 and 1, and the fan buys the soundtrack when that number is below the probability for their number of viewings (0.25, 0.50, or 0.80).
+
+[^seed]: Setting the random seed.
+
+[^two-way]: A two way table (contingency table) of the counts for each combination of the two categorical variables.
+
+[^rect]: Rectangles, also called tiles.
+
+[^prob]: Each rectangle's width and height are probabilities.
+
+[^dependence]: The dependence between `age_group` and `viewings`.
+
+[^formula]: The formula.
+
+[^proportion]: The counts for every combination of age group and viewings, converted to proportions within each age group (`share`).
+
+[^width-share]: The width of each column of tiles is the marginal proportion of fans in that age group.
+
+[^height-share]: The height of each tile is the conditional proportion of that age group with each number of viewings.
+
+[^shuffle]: Shuffling (randomly permuting) `viewings` with `sample()`.
+
+[^joint]: A joint probability, split into a width (the marginal probability) times a height (the conditional probability).
+
+[^conditional]: A conditional distribution of `viewings` for each age group.
+
+[^independent]: Independent variables.
+
+[^relationship]: The stronger the relationship (dependence) between the two variables.
+
+[^labels]: The labels (title, subtitle, caption, axis titles, and legend title).
+
+[^product]: Map the `product()` of `viewings` and `age_group` to the `x` axis.
+
+[^fill]: Map `age_group` to the `fill` aesthetic.
+
+[^axis-titles]: The axis titles. `geom_mosaic()` names the axes after the variables.
+
+[^grid]: The grid lines.
+
+[^vignette]: The `ggmosaic` vignette.
+
+[^conditioning]: The sections on ordering and conditioning.
+
+[^map-2var]: Map the `product()` variables as `viewings` and `soundtrack`, and the `fill` variable as `soundtrack`.
+
+[^crosstab]: The counts for each category in the cross tabulation.
+
+[^cond-var]: Conditional variables. `conds` is the conditioning aesthetic in `geom_mosaic()`.
+
+[^facets]: Facets, which include a conditioning variable.
+
+[^argument]: The `divider` argument.
+
+[^divider]: The spine partitions, vertical or horizontal.
+
+[^vertical]: The two vertical orientation options, `"vspine"` and `"vbar"`.
+
+[^horizontal]: The two horizontal orientation options (`"hspine"` and `"hbar"`) make the axis text harder to read, so it needs to be manipulated manually.

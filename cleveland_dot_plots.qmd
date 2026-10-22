@@ -93,9 +93,9 @@ ggp2_clev_dots +
 
 ## Description 
 
-Cleveland dot plots compare numbers with dots on a line and are more efficient than bar graphs. The graph lists the categories on the side and shows the data with dots along a line.
+A Cleveland dot plot compares numbers using dots along a line. It shows the same numbers as a bar graph, with less on the page.[^efficient] The graph lists the groups[^categories] down one side and shows the numbers as dots along a line.
 
-Typically, the graph contains two points representing the numerical value on the `y` axis, differentiated by color. A line connecting the two points represents the difference between the two categorical levels (the width of the line is the size of the difference).
+Most of the time, each row of the graph has two dots, one for each of two groups,[^levels] and each group gets its own color. The dots show their numbers along the `x` axis. A line joins the two dots and shows the difference between the two groups (how long the line is shows the size of the difference).
 
 ## Set up
 
@@ -103,7 +103,7 @@ Typically, the graph contains two points representing the numerical value on the
 **PACKAGES:**
 :::
 
-Install packages.
+Get the code we'll use and bring it in.[^packages]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -128,7 +128,7 @@ library(forcats) # for fct_rev()
 **DATA:**
 :::
 
-In the 90s, a Sony Walkman went everywhere, and the batteries never seemed to last long enough. We'll simulate a battery test: 20 tapes played until the batteries died for each combination of three Walkman models and two battery types. The [`faux`](https://debruine.github.io/faux/) package's `sim_design()` function builds this kind of experiment for us. We give it the two factors (`between`), the number of tests in each combination (`n`), the average battery life for each combination (`mu`), and the standard deviation (`sd`). Then we calculate the median battery life for each model and battery (`med_hours`). Setting the seed with `set.seed()` means you'll get the same 120 tests every time you run the code below.
+A Walkman is a small music player you can take with you, made by Sony. A battery is the small thing that gives a music player its power. Alkaline batteries are used once, and rechargeable batteries can get new power and be used again and again. From 1990 to 1999, people took a Sony Walkman with them all over the place, and the batteries never seemed to last long enough. We'll make up[^simulate] a battery test: for each of three Walkman models and each of two kinds of battery, we play music until the batteries die, 20 times. The WM-2, the WM-F45 Sports, and the WM-EX194 Mega Bass are the three Walkman models. The `sim_design()` step in the [`faux`](https://debruine.github.io/faux/) code sets up this kind of test for us.[^sim-design] We give it the two things that make one group of tests different from another (`between`),[^factors] the number of tests for each model and battery (`n`), the average battery life for each model and battery (`mu`), and how far the tests fall from each average (`sd`).[^sd] The median is the middle number when you put all the numbers in order. Then we work out the median battery life for each model and battery (`med_hours`). Starting with `set.seed()`[^seed] means you'll get the same 120 tests every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -170,7 +170,7 @@ glimpse(walkman_clev_dots)
 
 ## Distribution
 
-A Cleveland dot plot shows two summaries per row and the gap between them. Here each dot is the median of 20 battery tests, and each line is the difference between alkaline and rechargeable batteries for one model. Below we'll move from the tests, to a picture, to the formula.
+A Cleveland dot plot shows two numbers in each row, each one standing for all the tests in its group,[^summaries] and the difference between them. Here each dot is the median of 20 battery tests, and each line is the difference between alkaline and rechargeable batteries for one model. Below we'll move from the tests, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -188,7 +188,7 @@ head(walkman_tests, 5)
 ```
 :::
 
-These are alkaline batteries in the WM-2, and they lasted between about 8 and 13 hours. The table below puts the two battery types side by side for each model and calculates the gap.
+These are alkaline batteries in the WM-2, and they lasted between about 8 and 13 hours. The table below puts the two kinds of battery side by side for each model and works out the difference.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -202,13 +202,13 @@ walkman_clev_dots |>
 ```
 :::
 
-Alkaline batteries last longer in every model, and the gap grows from about 2.5 hours in the WM-2 to about 5 hours in the Mega Bass.
+Alkaline batteries last longer in every model, and the difference grows from about 2.5 hours in the WM-2 to about 5 hours in the Mega Bass.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-The graph below puts all 120 tests behind the dots. Each small point is one test, and the big dots are the medians. The medians sit in the middle of their clouds of tests, and the lines connect the two medians for each model.
+The graph below puts all 120 tests behind the dots. Each small point is one test, and the big dots are the medians. The medians fall in the middle of their groups of tests, and the lines join the two medians for each model.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -231,13 +231,13 @@ ggplot(data = walkman_clev_dots,
 **NAME IT:**
 :::
 
-`sim_design()` draws every test from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) with the mean for its model and battery type:
+A hill is a line that is high in the middle and low on both sides. `sim_design()` picks every test from a [hill](https://en.wikipedia.org/wiki/Normal_distribution)[^normal] with its middle at the mean for its model and kind of battery:
 
 $$
 \text{hours} \sim \text{Normal}(\mu_{\text{model, battery}}, \; \sigma = 2)
 $$
 
-The line in each row estimates the difference between two of these means, $\mu_{\text{alkaline}} - \mu_{\text{rechargeable}}$, which we set to 3, 4, and 5 hours. Each median is built from only 20 tests, so it wobbles. For a normal distribution, the median of $n$ values has a standard error of about $1.25\,\sigma / \sqrt{n} = 1.25 \times 2 / \sqrt{20} \approx 0.56$ hours, and the difference between two medians wobbles by about $\sqrt{2} \times 0.56 \approx 0.8$ hours. That's why the WM-2 gap came out at about 2.5 hours instead of 3. Try raising `n` in `sim_design()` and the gaps settle closer to 3, 4, and 5.
+The line in each row is our best guess[^estimate] at the difference between two of these means, $\mu_{\text{alkaline}} - \mu_{\text{rechargeable}}$, which we set to 3, 4, and 5 hours. Each median comes from only 20 tests, so it moves around from one set of tests to the next. For a hill like this, the median of $n$ values moves around by about[^se] $1.25\,\sigma / \sqrt{n} = 1.25 \times 2 / \sqrt{20} \approx 0.56$ hours, and the difference between two medians moves around by about $\sqrt{2} \times 0.56 \approx 0.8$ hours. That's why the WM-2 difference came out at about 2.5 hours instead of 3. Try making `n` bigger in `sim_design()`, and the differences will come closer to 3, 4, and 5.
 
 
 ## Grammar
@@ -246,15 +246,15 @@ The line in each row estimates the difference between two of these means, $\mu_{
 **CODE:**
 :::
 
-  -   Create labels with `labs()`
+  -   Make the words around the graph[^labels] with `labs()`
 
-  -   Initialize the graph with `ggplot()` and provide `data`
+  -   Start the graph with `ggplot()` and give it `data`
 
-  -   Map the `med_hours` to the `x` axis, and `model` to the `y` axis, but wrap `model` in `forcats::fct_rev()`.
+  -   Put `med_hours` on the `x` axis and `model` on the `y` axis,[^map] but put `model` inside `forcats::fct_rev()` so the first model is at the top.[^fct-rev]
 
-  -   Add `geom_line()`, and map `model` to the `group` aesthetic. Set the `linewidth` to `0.75`
+  -   Add `geom_line()`, and join `model` to `group` so each model gets one line.[^group] Set `linewidth` to `0.75`
 
-  -   Add `geom_point()` and map `battery` to `color` aesthetic. Set the `size` to `2.25`
+  -   Add `geom_point()` and join `battery` to `color`.[^color] Set `size` to `2.25`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -320,7 +320,7 @@ ggp2_clev_dots +
 
 ## More info
 
-Cleveland dot plots are also helpful when comparing multiple differences on a common scale.
+Cleveland dot plots also help when we compare many differences on the same number line.[^common-scale]
 
 ### Common scale
 
@@ -328,13 +328,13 @@ Cleveland dot plots are also helpful when comparing multiple differences on a co
 **SCALE:**
 :::
 
-  -   Simulate a second measurement for every test: the time it takes to rewind a 60 minute tape (`rewind_seconds`). Rewinding uses the motor, so weaker rechargeable batteries rewind more slowly.
+  -   A tape is a small box that holds music for a Walkman to play. Make up a second number for every test: the time it takes to move a 60 minute tape back to the start (`rewind_seconds`).[^rewind] Moving the tape back takes power, so the rechargeable batteries, which have less power, take more time to do it.
 
-  -   Calculate the median battery life and the median rewind time for each `battery` and `model`. These variables need to have 'showtime-ready' names because they'll be used in our facets.
+  -   Work out the median battery life and the median time to move the tape back for each `battery` and `model`. Give these columns names that are ready to show, because they'll be the names on our small graphs.[^facets]
 
-  -   Pivot the new columns into a long (tidy) format with `median_measure` containing the name of the variable, and `median_value` containing the numbers. 
+  -   Turn the two new columns into one long table,[^pivot] with `median_measure` holding the name of each column and `median_value` holding the numbers.
 
-  -   Finally, convert `median_measure` into a factor. 
+  -   Last, turn `median_measure` into a column of groups.[^factor]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -379,19 +379,19 @@ glimpse(walkman_clev_dots2)
 **`scales`:**
 :::
 
-  -   Re-create labels
+  -   Make the words around the graph again
 
-  -   Initialize the graph with `ggplot()` and provide `data`
+  -   Start the graph with `ggplot()` and give it `data`
 
-  -   Map the `median_value` to the `x` axis, and `model` to the `y` axis, but wrap `model` in `forcats::fct_rev()`.
+  -   Put `median_value` on the `x` axis and `model` on the `y` axis, but put `model` inside `forcats::fct_rev()`.
 
-  -   Add `geom_line()`, and map `model` to the `group` aesthetic. Set the `linewidth` to `0.75`
+  -   Add `geom_line()`, and join `model` to `group`. Set `linewidth` to `0.75`
 
-  -   Add `geom_point()` and map `battery` to `color` aesthetic. Set the `size` to `2.25`
+  -   Add `geom_point()` and join `battery` to `color`. Set `size` to `2.25`
 
-  -   Add `facet_wrap()` and facet by `median_measure`, setting `shrink` to `TRUE`
+  -   Add `facet_wrap()` to make one small graph for each `median_measure`,[^facet-wrap] and set `shrink` to `TRUE`
 
-  -   Move the legend with `theme(legend.position = "top")`
+  -   Move the key[^legend] with `theme(legend.position = "top")`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -425,11 +425,11 @@ ggp2_clev_dots2 +
 ```
 :::
 
-On a shared scale, the battery life differences (a few hours) are so small next to the rewind times (about 80 to 120 seconds) that the battery life dots nearly collapse into a single point.
+When both small graphs share one number line,[^shared-scale] the battery life differences (a few hours) are so small next to the times to move the tape back (about 80 to 120 seconds) that the battery life dots almost fall into one point.
 
 ::: {style="font-size: 1.00em; color: #E74A2F;"}
 **CAUTION when using `scales = "free_x"`:**
-The graph below gives each measure its own `x` axis. Alkaline batteries last longer and rewind faster in every model, but the magnitude of the differences should be interpreted with caution because the length of the lines can't be directly compared across the two panels! 
+The graph below gives each small graph its own `x` axis.[^free-x] Alkaline batteries last longer and move the tape back faster in every model, but take care when you read how big the differences are: how long a line is in one small graph can't be compared with how long a line is in the other!
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -456,3 +456,59 @@ ggp2_clev_dots2_free_x +
     labs_clev_dots2
 ```
 :::
+
+[^efficient]: Cleveland dot plots are more efficient than bar graphs: they show the same values with less ink.
+
+[^categories]: The categories (the levels of a categorical variable).
+
+[^levels]: The two levels of a categorical variable, differentiated by color. The numeric value is on the `x` axis.
+
+[^packages]: Install and load the packages.
+
+[^simulate]: Simulate.
+
+[^sim-design]: The `faux` package's `sim_design()` function simulates data for an experimental design.
+
+[^factors]: The two between-subject factors (`model` and `battery`).
+
+[^sd]: The standard deviation.
+
+[^seed]: Setting the random seed.
+
+[^summaries]: Two summary statistics per row (here, medians).
+
+[^formula]: The formula.
+
+[^normal]: A normal distribution with its own mean ($\mu$) and a standard deviation ($\sigma$) of 2.
+
+[^estimate]: Estimates.
+
+[^se]: The standard error of the median, about 1.25 times the standard error of the mean for normal data.
+
+[^labels]: Create the labels (title, subtitle, caption, axis titles, and legend title).
+
+[^map]: Map `med_hours` to the `x` aesthetic and `model` to the `y` aesthetic.
+
+[^fct-rev]: `fct_rev()` reverses the order of the factor levels, so the first level (WM-2) is drawn at the top of the `y` axis.
+
+[^group]: Map `model` to the `group` aesthetic, so `geom_line()` draws one line per model.
+
+[^color]: Map `battery` to the `color` aesthetic.
+
+[^common-scale]: A common scale.
+
+[^rewind]: Rewind the tape.
+
+[^facets]: The column names become the facet labels.
+
+[^pivot]: Pivot the columns into a long (tidy) format with `tidyr::pivot_longer()`.
+
+[^factor]: Convert `median_measure` into a factor.
+
+[^facet-wrap]: Facet by `median_measure` with `facet_wrap()`.
+
+[^legend]: The legend.
+
+[^shared-scale]: A shared (fixed) `x` scale, the `facet_wrap()` default.
+
+[^free-x]: `scales = "free_x"` gives each facet panel its own `x` axis range.

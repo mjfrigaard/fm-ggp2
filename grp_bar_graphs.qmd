@@ -88,9 +88,9 @@ ggp2_grp_col +
 
 ## Description 
 
-Grouped bar graphs compare multiple values across categories. Each category has a cluster of bars. X-axis labels show categories and y-axis values. Colors or patterns differentiate subsets, and a legend is shown on the side or top of the graph.
+A grouped bar graph uses bars to compare numbers across groups. Each group has its own set of bars standing next to each other. The words along the `x` axis name the groups, and the `y` axis gives the values.[^axis-labels] Colors or marks inside the bars show which smaller group each bar stands for,[^subsets] and a key on the side or top of the graph tells us which color goes with which group.[^legend]
 
-`geom_col()` allows us to display 'grouped' numerical values across levels (or groups) of a categorical variable. 
+`geom_col()` lets us show 'grouped' numbers for each group[^levels] in a column that puts each row in a group.[^categorical]
 
 ## Set up
 
@@ -98,7 +98,7 @@ Grouped bar graphs compare multiple values across categories. Each category has 
 **PACKAGES:**
 :::
 
-Install packages.
+Bring in the code we'll use.[^packages]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -121,7 +121,7 @@ library(tidyr) # for uncount()
 **DATA:**
 :::
 
-In *Jurassic Park* (1993), every species lives in its own paddock. We'll simulate the weight of every dinosaur in the park: each species gets a head count (`n`) and its own normal distribution of weights (`mean_tons` and `sd_tons`). `tidyr::uncount()` repeats each row `n` times (one row per dinosaur), and `rnorm()` draws each dinosaur's weight. Then we add up the weights in each paddock (`total_tons`). Setting the seed with `set.seed()` means you'll get the same dinosaurs every time you run the code below.
+A dinosaur is a living thing that walked the earth a very long time ago. *Jurassic Park* (1993) is a movie about a park full of living dinosaurs. A paddock is a piece of land with a wall around it. In the park, every kind[^species] of dinosaur lives in its own paddock. The park has five kinds of dinosaur: Brachiosaurus, Triceratops, Tyrannosaurus, Gallimimus, and Velociraptor. We'll make up[^simulate] the weight of every dinosaur in the park: each kind gets a number of dinosaurs (`n`) and its own rule for weights (`mean_tons` and `sd_tons`).[^distribution] `tidyr::uncount()` turns each row into `n` rows (one row for each dinosaur). A hill is a line that is high in the middle and low on both sides. `rnorm()` picks each dinosaur's weight from the hill for its kind.[^normal] Then we add up the weights in each paddock (`total_tons`). Starting with `set.seed()`[^seed] means you'll get the same dinosaurs every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -152,7 +152,7 @@ glimpse(jp_paddocks)
 
 ## Distribution
 
-A grouped bar graph shows one number per group, and here that number is a total. Totals depend on two things: how many dinosaurs live in a paddock and how much each one weighs. Twenty Gallimimus still weigh less than two Tyrannosaurs. Below we'll move from the dinosaurs, to a picture, to the formula.
+A grouped bar graph shows one number for each group, and here that number is a total. Each total comes from two things: how many dinosaurs live in a paddock and how heavy each one is. 20 Gallimimus are still lighter than two Tyrannosaurs. Below we'll move from the dinosaurs, to a graph, to the rule behind it.[^formula]
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -170,7 +170,7 @@ head(jp_dinos, 6)
 ```
 :::
 
-Each Brachiosaurus weighs close to 40 tons, and each Triceratops weighs close to 9. For every paddock, the total is the number of dinosaurs times their average weight.
+A ton is a way of saying how heavy something is; a small car is about one ton. Each Brachiosaurus is close to 40 tons, and each Triceratops is close to 9. For every paddock, the total is the number of dinosaurs times their average weight.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -191,7 +191,7 @@ jp_dinos |>
 **DRAW IT:**
 :::
 
-Each bar in a grouped bar graph is a bar model: a total made of parts. Below we draw every dinosaur as its own segment and stack the segments in each paddock. The height of each stack is the paddock's total, and the number of segments is its head count. The Gallimimus bar has 20 thin segments, and the Brachiosaurus bar has three thick ones.
+Each bar in a grouped bar graph is a bar model: a total made of parts. Below we show every dinosaur as its own piece and put the pieces in each paddock on top of each other.[^stack] How high each bar stands is the paddock's total, and the number of pieces is the number of dinosaurs in it. The Gallimimus bar has 20 small pieces, and the Brachiosaurus bar has three large ones.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -211,15 +211,15 @@ ggplot(data = jp_dinos,
 **NAME IT:**
 :::
 
-Each dinosaur's weight comes from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) for its species, $X_i \sim \text{Normal}(\mu, \sigma)$. A paddock's total adds up $n$ of these weights:
+Each dinosaur's weight comes from a [hill](https://en.wikipedia.org/wiki/Normal_distribution) for its kind,[^normal-2] $X_i \sim \text{Normal}(\mu, \sigma)$. A paddock's total adds up $n$ of these weights:
 
 $$
 T = X_1 + X_2 + \dots + X_n \sim \text{Normal}(n\mu, \; \sqrt{n}\,\sigma)
 $$
 
-The expected total is $n\mu$: $3 \times 40 = 120$ tons for the Brachiosaurus paddock and $20 \times 0.45 = 9$ tons for Gallimimus. The spread grows with $\sqrt{n}$, not $n$, because heavy and light dinosaurs partly cancel each other out. Our Brachiosaurus paddock weighs `r round(sum(jp_dinos$weight_tons[jp_dinos$species == "Brachiosaurus"]), 1)` tons, within one standard deviation ($\sqrt{3} \times 5 \approx 8.7$ tons) of its expected 120.
+The total we expect is $n\mu$:[^expected] $3 \times 40 = 120$ tons for the Brachiosaurus paddock and $20 \times 0.45 = 9$ tons for Gallimimus. How far the total often moves from that number[^spread] grows with $\sqrt{n}$, not $n$, because heavy and light dinosaurs even each other out in part. Our Brachiosaurus paddock comes to `r round(sum(jp_dinos$weight_tons[jp_dinos$species == "Brachiosaurus"]), 1)` tons, and the 120 we expect is less than one step[^sd] ($\sqrt{3} \times 5 \approx 8.7$ tons) away.
 
-Try changing the head counts in `n`. Doubling the Velociraptors doubles their bar, but the bar would still be the shortest in the park.
+Try changing the number of each kind in `n`. Two times as many Velociraptors makes their bar two times as high, but the bar would still be the shortest in the park.
 
 
 ## Grammar
@@ -228,17 +228,17 @@ Try changing the head counts in `n`. Doubling the Velociraptors doubles their ba
 **CODE:**
 :::
 
-Grouped bar graphs assume the statistical measure (i.e., the value that the length of the bars will be derived from) is contained in a variable and mapped to the `x` or `y` aesthetic. 
+A grouped bar graph expects the number for each bar (the value that sets how long the bar is) to be in a column, and that column to be joined to `x` or `y`.[^measure]
 
-  -   Create labels with `labs()`
+  -   Make the words around the graph[^labels] with `labs()`
 
-  -   Initialize the graph with `ggplot()` and provide `data`
+  -   Start the graph with `ggplot()` and give it `data`
 
-  -   Map `species` to the `x` and `total_tons` to the `y`
+  -   Put `species` on the `x` axis and `total_tons` on the `y` axis[^map-xy]
 
-  -   Map `species` to `fill` *inside* the `aes()` of `geom_col()` 
+  -   Join `species` to `fill`[^map-fill] *inside* the `aes()` of `geom_col()` 
 
-  -   Stagger the long paddock names over two lines with `scale_x_discrete(guide = guide_axis(n.dodge = 2))`
+  -   Put the long paddock names on two lines, moving every other name down,[^stagger] with `scale_x_discrete(guide = guide_axis(n.dodge = 2))`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -299,9 +299,9 @@ ggp2_grp_col +
 
 ## More info
 
-We didn't have to calculate `total_tons` (displayed on the `y` axis) by `species` because `ggplot2` does this for us!
+We didn't have to work out `total_tons` (shown on the `y` axis) for each `species`, because `ggplot2` does this for us!
 
-If we pass a categorical variable to the `x` (like `species`) and a continuous variable to `y` (like `weight_tons`), `geom_col()` stacks the rows in each group, which adds up `y` for each level of `x`:
+If we give `x` a column of groups[^categorical-x] (like `species`) and give `y` a column of numbers[^continuous] (like `weight_tons`), `geom_col()` puts the rows in each group on top of each other,[^stack-col] which adds up `y` for each group in `x`:[^level-x]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -320,7 +320,7 @@ jp_dinos |>
 :::
 
 
-We can see the underlying totals using `dplyr`'s `group_by()` and `summarise()` functions.
+We can see the totals behind the bars with the `group_by()` and `summarise()` steps[^functions] from `dplyr`.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -360,3 +360,57 @@ jp_dinos |>
     kableExtra::kable_minimal()
 ```
 :::
+
+[^axis-labels]: The x axis labels show the categories, and the y axis shows the values.
+
+[^subsets]: Colors or patterns differentiate subsets.
+
+[^legend]: The legend.
+
+[^levels]: Levels of a variable.
+
+[^categorical]: A categorical variable.
+
+[^packages]: Install and load the packages.
+
+[^species]: Species.
+
+[^simulate]: Simulate.
+
+[^distribution]: A normal distribution of weights for each species, set by `mean_tons` (the mean) and `sd_tons` (the standard deviation).
+
+[^normal]: A normal distribution. `rnorm()` draws each weight from the normal distribution for its species.
+
+[^seed]: Setting the random seed.
+
+[^formula]: The formula.
+
+[^stack]: Stacking (`geom_col()` stacks bars in the same `x` position by default), with each dinosaur as one segment.
+
+[^normal-2]: A normal distribution with mean $\mu$ and standard deviation $\sigma$ for each species.
+
+[^expected]: The expected value of the total.
+
+[^spread]: The spread (standard deviation) of the total.
+
+[^sd]: One standard deviation of the total, $\sqrt{n}\,\sigma$.
+
+[^measure]: Grouped bar graphs assume the statistical measure (the value the length of the bars is derived from) is contained in a variable and mapped to the `x` or `y` aesthetic.
+
+[^labels]: Create the labels (title, subtitle, caption, and axis titles).
+
+[^map-xy]: Map `species` to the `x` aesthetic and `total_tons` to the `y` aesthetic.
+
+[^map-fill]: Map `species` to the `fill` aesthetic.
+
+[^stagger]: Stagger (dodge) the axis labels over two rows.
+
+[^categorical-x]: A categorical variable.
+
+[^continuous]: A continuous variable.
+
+[^stack-col]: Stacks the rows in each group.
+
+[^level-x]: Each level of `x`.
+
+[^functions]: Functions.
