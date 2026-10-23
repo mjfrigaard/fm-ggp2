@@ -33,15 +33,15 @@ co_box(
 
 ## `ggplot2` syntax
 
-> “*making infinite use of finite means*” - Wilhelm von Humboldt
+> “*making infinite use of finite means*” (Wilhelm von Humboldt)
 
-Every language has rules for what words mean and the order to put them in.[^grammar] R is a language for working with data on a computer. `ggplot2` follows R's rules: 
+Every language has rules for what words mean and the order to put them in.[^grammar] R is a language for working with data, and `ggplot2` follows R's rules: 
 
 - a thing that holds data is like a ***naming*** word, and 
 
 - the set of steps that does something to that thing is like a ***doing*** word[^nouns-verbs]
 
-A graph is a picture of data that we make with code. `ggplot2` graphs are built one layer at a time. We can start with a few layers and keep adding more until the graph is just what we want.[^layers]
+A graph is a picture of data that we make with code. `ggplot2` graphs are built one layer at a time. A layer is one part of a graph that we put on top of the parts under it. We can start with a few layers and keep adding more until the graph is just what we want.[^layers]
 
 ### The Data Layer
 
@@ -69,7 +69,6 @@ The mapping layer joins columns in the data to things we can see in the graph, s
 ```{r}
 #| message: false
 #| warning: false
-#| dpi: 320
 #| fig-asp: 0.618
 ggplot(data = pc_sales,
   mapping = 
@@ -93,7 +92,6 @@ The `geom_*()` parts of the code pick how to show the data in the graph: as poin
 ```{r}
 #| message: false
 #| warning: false
-#| dpi: 320
 #| fig-asp: 0.618
 ggplot(data = pc_sales,
   mapping = aes(
@@ -112,7 +110,6 @@ We can put many layers (data, mapping, and ways to show the data) in one graph.
 ```{r}
 #| message: false
 #| warning: false
-#| dpi: 320
 #| fig-asp: 0.618
 ggplot(data = pc_sales,
  # layer 1
@@ -133,7 +130,7 @@ ggplot(data = pc_sales,
     )
 ```
 
--   **Plan + 1 layer**: more ways to show the data, and more mapping[^template-1]
+**Plan + 1 layer**: more ways to show the data, and more mapping[^template-1]
 
 ``` r
 ggplot(data = <DATA>) +
@@ -143,12 +140,11 @@ ggplot(data = <DATA>) +
 
 ### Position, Labels & Themes
 
-With a set number of things and steps, we can put the rules of `ggplot2` together to make graphs without end![^infinite]
+With a set number of things and steps, we can put the rules of `ggplot2` together to make graphs without end.[^infinite]
 
 ```{r}
 #| message: false
 #| warning: false
-#| dpi: 320
 #| fig-asp: 1
 ggplot(data = pc_sales,
  # layer 1
@@ -158,7 +154,7 @@ ggplot(data = pc_sales,
   ) +
   geom_point(
     aes(
-      shape = brand, color = os
+      color = os
       )
     ) +
 # layer 2
@@ -174,16 +170,14 @@ ggplot(data = pc_sales,
   # labels
   labs(
     x = 'Processor speed (MHz)', y = 'Price (USD)', 
-    title = 'Home PCs in 1998',  subtitle = 'Price vs. processor speed',
-    caption = 'Simulated data'
+    title = 'Home PCs in 1998',  subtitle = 'Faster processors cost more',
+    caption = 'Simulated data', color = 'Operating system'
     ) + 
   # themes
   theme(legend.position = "bottom", legend.box = "vertical")
 ```
 
 **Plan + 2 layers + small graphs + look + words**[^template-2]
-
-We can keep adding layers without end!
 
 ```r
 ggplot(data = <DATA>) +
@@ -223,42 +217,45 @@ I've tried to write code that you can read and understand without running it.[^i
 
 Each graph has the parts below:
 
-1. **Prerequisites**
+1. **Theme**
 
-    -   *Should I use this graph?*\
-    -   *What this graph needs:*\
+    -   *The look we give every graph on the page: its colors, its letters, and the old thing it takes them from.*
 
-2.  **Description**
+2. **Requirements**
+
+    -   *What this graph needs, and a first look at it.*
+
+3.  **Description**
 
     -   *A short note on where the graph comes from, what it's for, and what we see in it.*
 
-3.  **Set up**
+4.  **Set up**
 
     -   Packages
         -   *Code to get the newest form of the code we use, when we need it.*[^dev]
     -   Data
         -   *The code that makes up the data for the graph (with `set.seed()`, so you get the same values every time).*
 
-4.  **Distribution**
+5.  **Distribution**
 
     -   *How the rule we used to make up the data gives the graph its form, in three steps:*[^dist-steps]
         -   ***COUNT IT***: *look at a few values and a few numbers that stand for all of them.*
         -   ***DRAW IT***: *show the data as a bar model or as a graph with notes on it.*
         -   ***NAME IT***: *write down the rule and show what each number in it does to the graph.*[^name-it]
 
-5.  **The grammar**
+6.  **Grammar**
 
     -   Graph Code  
         -   *The words around the graph start with `labs_`*
         -   *The graph layers start with `ggp2_`*
 
-6.  **More info**
+7.  **More info**
 
     -   Other ways to make the graph, other choices, and other uses[^more-info]
         -   *Sets of colors*\
         -   *Other code that works well with it*
 
-The picture below shows how the parts fit together. We make up the data in **Set up**, talk about it in **Distribution**, and turn it into a graph in **The grammar**.
+The picture below shows how the parts fit together. We make up the data in **Set up**, talk about it in **Distribution**, and turn it into a graph in **Grammar**.
 
 ```{mermaid}
 %%| fig-align: 'center'
@@ -266,16 +263,17 @@ The picture below shows how the parts fit together. We make up the data in **Set
 %%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'monospace', 'fontSize': '14px', 'darkMode': false}}}%%
 
 flowchart TD
-    req(["<strong>Prerequisites</strong><br>what the graph needs"]) --> desc["<strong>Description</strong><br>what the graph shows"]
+    thm(["<strong>Theme</strong><br>colors + letters"]) --> req(["<strong>Requirements</strong><br>what the graph needs"]) --> desc["<strong>Description</strong><br>what the graph shows"]
     desc --> setup[/"<strong>Set up</strong><br>packages + simulated data"/]
     setup --> dist
     subgraph dist["<strong>Distribution</strong>"]
         count["i. COUNT IT<br>values + summaries"] --> draw["ii. DRAW IT<br>bar model or<br>annotated graph"]
         draw --> name["iii. NAME IT<br>distribution +<br>parameters"]
     end
-    dist --> grammar[["<strong>The grammar</strong><br><code>labs_*</code> + <code>ggp2_*</code>"]]
+    dist --> grammar[["<strong>Grammar</strong><br><code>labs_*</code> + <code>ggp2_*</code>"]]
     grammar --> more(["<strong>More info</strong><br>other geoms + options"])
 
+    style thm fill:#4CBB9D,color:#FFFFFF,rx:5,ry:5
     style req fill:#4CBB9D,color:#FFFFFF,rx:5,ry:5
     style desc fill:#FFFFFF,color:#000000,stroke:#333
     style setup fill:#C0C0C0,color:#000000,stroke:#333
@@ -289,7 +287,9 @@ flowchart TD
 
 I've tried to keep things short and clear, but when I have to pick one, I pick clear. I've also followed a general rule: if one of the `geom_*` steps in `ggplot2` can build a graph easily, I show that way first.
 
-[^intro-1]: This field manual follows a [Rule of Least Power Principle](https://www.w3.org/2001/tag/doc/leastPower.html), in the sense that "*a language with a straightforward syntax may be easier to analyze than an otherwise equivalent one with more complex structure.*"
+The first part of the book starts with bar graphs, which show how many times each group shows up in one column.
+
+[^intro-1]: This field manual follows [The Rule of Least Power](https://www.w3.org/2001/tag/doc/leastPower.html), in the sense that "*a language with a straightforward syntax may be easier to analyze than an otherwise equivalent one with more complex structure.*"
 
 [^grammar]: Grammar is the system of rules for a language (word meanings, internal structure, and word order). Syntax is the form, structure, and order used to build statements.
 
