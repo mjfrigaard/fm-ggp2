@@ -35,17 +35,17 @@ co_box(
 
 > “*making infinite use of finite means*” (Wilhelm von Humboldt)
 
-Every language has rules for what words mean and the order to put them in.[^grammar] R is a language for working with data, and `ggplot2` follows R's rules: 
+Every language has rules for what words mean and how to order them.[^grammar] R is a language for working with data, and `ggplot2` follows R’s rules:
 
-- a thing that holds data is like a ***naming*** word, and 
+* a thing that holds data is like a **naming** word, and
 
-- the set of steps that does something to that thing is like a ***doing*** word[^nouns-verbs]
+* the set of steps that does something to that thing is like a **doing** word[^nouns-verbs]
 
 A graph is a picture of data that we make with code. `ggplot2` graphs are built one layer at a time. A layer is one part of a graph that we put on top of the parts under it. We can start with a few layers and keep adding more until the graph is just what we want.[^layers]
 
 ### The Data Layer
 
-The data layer is a table, like a page of numbers on a computer.[^rectangular] A column is one list of values that runs down a table, and a row is one line across it. Every set of data in this book is made up,[^simulated] so we'll make one here: 150 home computers sold in 1998, with the company that made each computer (`brand`), the system it runs (`os`), how fast it works (`cpu_mhz`), and its price (`price_usd`).[^pc-columns] Faster computers cost more, and the newer system adds a little to the price.[^win98]
+The data layer is a table, like a page of numbers on a computer.[^rectangular] A column is one list of values that runs down a table, and a row is one line across it. Every set of data in this book is made up,[^simulated] so we’ll make one here: 150 home computers sold in 1998, with the company that made each computer (`brand`), the system it runs (`os`), how fast it works (`cpu_mhz`), and its price (`price_usd`).[^pc-columns] Faster computers cost more, and newer systems add a little to the price.[^win98]
 
 ```{r}
 #| message: false
