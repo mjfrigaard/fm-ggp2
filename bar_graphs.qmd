@@ -62,12 +62,10 @@ labs_bar <- labs(
   title = "Alleyway",
   caption = "Simulated data",
   subtitle = "Last stage reached by 300 players",
-  x = "Stage", y = "Count",
-  fill = "Stage")
+  x = "Stage", y = "Count")
 ggp2_bar <- ggplot(data = alleyway_games,
        aes(x = stage)) +
-    geom_bar(aes(fill = stage),
-        show.legend = FALSE)
+    geom_bar()
 ggp2_bar +
   labs_bar
 ```
@@ -258,9 +256,7 @@ The players we made up show just that: Stage 1 came in `r 90 - sum(alleyway_game
 
 3. Put `stage` on the `x` axis[^map-x]
 
-4. Inside the `aes()` of `geom_bar()`, join `stage` to `fill` so each bar gets its own color[^fill]
-
-5. Take away the key with `show.legend = FALSE`
+4. Add `geom_bar()` on top
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -276,12 +272,10 @@ labs_bar <- labs(
   title = "Alleyway",
   caption = "Simulated data",
   subtitle = "Last stage reached by 300 players",
-  x = "Stage", y = "Count",
-  fill = "Stage")
+  x = "Stage", y = "Count")
 ggp2_bar <- ggplot(data = alleyway_games,
        aes(x = stage)) +
-    geom_bar(aes(fill = stage),
-        show.legend = FALSE)
+    geom_bar()
 ggp2_bar +
   labs_bar
 ```
@@ -306,12 +300,10 @@ labs_bar <- labs(
   title = "Alleyway",
   caption = "Simulated data",
   subtitle = "Last stage reached by 300 players",
-  x = "Stage", y = "Count",
-  fill = "Stage")
+  x = "Stage", y = "Count")
 ggp2_bar <- ggplot(data = alleyway_games,
        aes(x = stage)) +
-    geom_bar(aes(fill = stage),
-        show.legend = FALSE)
+    geom_bar()
 ggp2_bar +
   labs_bar
 ```
@@ -355,7 +347,7 @@ The code below shows how `geom_`**geom_name**`(stat = "`**stat_name**`")` and `s
 ggp2_geom_bar <- ggplot(data = alleyway_games,
        aes(x = stage)) +
     geom_bar(aes(fill = stage),
-        stat = "count") +
+        stat = "count", show.legend = FALSE) +
     labs(title = "geom_bar(stat = 'count')")
 ggp2_geom_bar
 
@@ -363,7 +355,7 @@ ggp2_geom_bar
 ggp2_stat_count <- ggplot(data = alleyway_games,
        aes(x = stage)) +
     stat_count(aes(fill = stage),
-        geom = "bar") +
+        geom = "bar", show.legend = FALSE) +
     labs(title = "stat_count(geom = 'bar')")
 ggp2_stat_count
 ```
@@ -394,8 +386,7 @@ alleyway_games |>
     dplyr::count(stage, name = "count") |>
     # map into x and y
     ggplot(mapping = aes(x = stage, y = count)) +
-    geom_col(aes(fill = stage),
-        show.legend = FALSE) +
+    geom_col() +
     labs_bar +
     labs(caption = "geom_col()")
 
@@ -439,7 +430,6 @@ ggp2_bar +
 
 [^map-x]: Map `stage` to the `x` axis in `aes()`.
 
-[^fill]: Map `stage` to the `fill` aesthetic.
 
 [^geoms]: Geoms (geometric objects).
 

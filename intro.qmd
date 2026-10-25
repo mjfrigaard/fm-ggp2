@@ -78,7 +78,7 @@ ggplot(data = pc_sales,
   )
 ```
 
-**Simple plan**: data, mapping, and a way to show the data[^template]
+**Plan 1**: data, mapping, and one way to show the data[^template]
 
 ```r
 ggplot(data = <DATA>) +
@@ -130,7 +130,7 @@ ggplot(data = pc_sales,
     )
 ```
 
-**Plan + 1 layer**: more ways to show the data, and more mapping[^template-1]
+**Plan 2**: Plan 1 + a second way to show the data[^template-1]
 
 ``` r
 ggplot(data = <DATA>) +
@@ -177,7 +177,7 @@ ggplot(data = pc_sales,
   theme(legend.position = "bottom", legend.box = "vertical")
 ```
 
-**Plan + 2 layers + small graphs + look + words**[^template-2]
+**Plan 3**: Plan 2 + small graphs, a new look, and words[^template-2]
 
 ```r
 ggplot(data = <DATA>) +

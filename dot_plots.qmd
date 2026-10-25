@@ -62,6 +62,7 @@ labs_dotplot <- labs(
 ggp2_dotplot <- ggplot(data = blockbuster_rentals,
       aes(x = rentals)) + 
     geom_dotplot(binwidth = 1, dotsize = 0.2) + 
+    scale_x_continuous(breaks = 0:7) + 
     scale_y_continuous(NULL, breaks = NULL)
 ggp2_dotplot + 
   labs_dotplot
@@ -197,7 +198,7 @@ ggplot(data = blockbuster_rentals,
     aes(x = rentals)) + 
   geom_dotplot(binwidth = 1, dotsize = 0.3) + 
   geom_vline(xintercept = 3, linetype = "dashed", color = "white") + 
-  scale_x_continuous(breaks = 0:8) + 
+  scale_x_continuous(breaks = 0:7) + 
   labs(x = "Number of rentals")
 ```
 :::
@@ -239,7 +240,7 @@ This is what `dpois()` works out. For $k = 3$, $P(X = 3) = 3^3 e^{-3} / 3! \appr
 
 5. Set `binwidth` to `1` (one pile for each number of movies)[^binwidth] and change the `dotsize`[^dotsize]
 
-6. Put a mark on the `x` axis at each whole number from 0 to 8 with `scale_x_continuous(breaks = 0:8)`[^breaks]
+6. Put a mark on the `x` axis at each whole number from 0 to 7 with `scale_x_continuous(breaks = 0:7)`[^breaks]
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -257,7 +258,7 @@ labs_dotplot <- labs(
 ggp2_dotplot <- ggplot(data = blockbuster_rentals,
       aes(x = rentals)) + 
     geom_dotplot(binwidth = 1, dotsize = 0.2) + 
-    scale_x_continuous(breaks = 0:8) 
+    scale_x_continuous(breaks = 0:7) 
 ggp2_dotplot + 
   labs_dotplot
 ```
@@ -283,7 +284,7 @@ labs_dotplot <- labs(
 ggp2_dotplot <- ggplot(data = blockbuster_rentals,
       aes(x = rentals)) + 
     geom_dotplot(binwidth = 1, dotsize = 0.2) + 
-    scale_x_continuous(breaks = 0:8) 
+    scale_x_continuous(breaks = 0:7) 
 ggp2_dotplot + 
   labs_dotplot
 ```
@@ -309,6 +310,7 @@ labs_dotplot <- labs(
 ggp2_dotplot <- ggplot(data = blockbuster_rentals,
       aes(x = rentals)) + 
     geom_dotplot(binwidth = 1, dotsize = 0.2) + 
+    scale_x_continuous(breaks = 0:7) + 
     scale_y_continuous(NULL, breaks = NULL)
 ggp2_dotplot + 
   labs_dotplot
@@ -366,7 +368,7 @@ ggp2_dotplot +
 
 [^dotsize]: Adjust the `dotsize` argument, the dot diameter relative to `binwidth`.
 
-[^breaks]: Axis breaks: tick marks and labels at each integer from 0 to 8.
+[^breaks]: Axis breaks: tick marks and labels at each integer from 0 to 7.
 
 [^y-scale]: `geom_dotplot()` does not stack dots in count units on the `y` axis.
 

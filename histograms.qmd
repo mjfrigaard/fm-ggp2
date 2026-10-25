@@ -155,7 +155,7 @@ To find the ends of these groups, we take 12 cans away from the mean and add 12 
 
 * High end: $45 + 12 = 57$ cans
 
-A store that sold fewer than 33 cans is in the low group, a store that sold 33 to 56 cans is in the middle group, and a store that sold 57 or more cans is in the high group. In the code below, `cut()` uses these two ends as `breaks`, and `right = FALSE` puts a store with exactly 57 cans in the high group.
+A store that sold fewer than 33 cans is in the low group, a store that sold 33 to 57 cans is in the middle group, and a store that sold 58 or more cans is in the high group. In the code below, `cut()` puts the `breaks` half a can past each end (32.5 and 57.5), so a store with exactly 33 or 57 cans is in the middle group.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -165,9 +165,8 @@ A store that sold fewer than 33 cans is in the low group, a store that sold 33 t
 #| echo: true
 ok_soda_ranges <- ok_soda_sales |>
   mutate(range = cut(cans,
-    breaks = c(-Inf, 33, 57, Inf),
-    labels = c("under 33", "33 to 56", "57 and over"),
-    right = FALSE)) |>
+    breaks = c(-Inf, 32.5, 57.5, Inf),
+    labels = c("under 33", "33 to 57", "58 and over"))) |>
   count(range)
 ok_soda_ranges
 ```
@@ -225,7 +224,7 @@ $$
 X \sim \text{Normal}(\mu = 45, \sigma = 12)
 $$
 
-The mean ($\mu$) sets where the highest bars stand on the `x` axis. The other number ($\sigma$) is how far a store usually falls from the mean, so it sets how far out the bars reach. For a hill like this, about 68% of values fall within one $\sigma$ of $\mu$, and 95% fall within two. Our made-up stores come close: `r round(mean(ok_soda_sales$cans >= 33 & ok_soda_sales$cans < 57) * 100)`% are within one $\sigma$ and `r round(mean(ok_soda_sales$cans >= 21 & ok_soda_sales$cans < 69) * 100)`% are within two.
+The mean ($\mu$) sets where the highest bars stand on the `x` axis. The other number ($\sigma$) is how far a store usually falls from the mean, so it sets how far out the bars reach. For a hill like this, about 68% of values fall within one $\sigma$ of $\mu$, and 95% fall within two. Our made-up stores come close: `r round(mean(ok_soda_sales$cans >= 33 & ok_soda_sales$cans <= 57) * 100)`% are within one $\sigma$ and `r round(mean(ok_soda_sales$cans >= 21 & ok_soda_sales$cans <= 69) * 100)`% are within two.
 
 The small difference between the rule and our stores comes from chance alone.[^sampling] Change the number in `set.seed()` and the bars move, but the hill keeps its middle near 45 cans.
 
@@ -314,14 +313,16 @@ ggp2_hist_bins45 <- ggplot(data = ok_soda_sales,
      geom_histogram(bins = 45) 
 
 ggp2_hist_bins45 + 
-  labs_histogram
+  labs_histogram + 
+  labs(subtitle = "45 bins")
 
 ggp2_hist_bins15 <- ggplot(data = ok_soda_sales,
      aes(x = cans)) + 
      geom_histogram(bins = 15) 
 
 ggp2_hist_bins15 + 
-  labs_histogram
+  labs_histogram + 
+  labs(subtitle = "15 bins")
 ```
 
 [^bins]: Bins. Each bin is an interval of values on the `x` axis.

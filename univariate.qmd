@@ -56,12 +56,10 @@ labs_bar <- labs(
   title = "Alleyway",
   caption = "Simulated data",
   subtitle = "Last stage reached by 300 players",
-  x = "Stage", y = "Count",
-  fill = "Stage")
+  x = "Stage", y = "Count")
 ggp2_bar <- ggplot(data = alleyway_games,
        aes(x = stage)) +
-    geom_bar(aes(fill = stage),
-        show.legend = FALSE)
+    geom_bar()
 (
   ggp2_bar +
     labs_bar
@@ -97,7 +95,7 @@ labs_histogram <- labs(
   x = "Cans sold")
 ggp2_hist <- ggplot(data = ok_soda_sales,
      aes(x = cans)) + 
-     geom_histogram() 
+     geom_histogram(binwidth = 3, center = 45) 
 (
   ggp2_hist +
     labs_histogram
@@ -170,7 +168,8 @@ labs_dotplot <- labs(
 ggp2_dotplot <- ggplot(data = blockbuster_rentals,
       aes(x = rentals)) + 
     geom_dotplot(binwidth = 1, dotsize = 0.2) + 
-    scale_x_continuous(breaks = 0:8) 
+    scale_x_continuous(breaks = 0:7) + 
+    scale_y_continuous(NULL, breaks = NULL)
 (
   ggp2_dotplot +
     labs_dotplot
