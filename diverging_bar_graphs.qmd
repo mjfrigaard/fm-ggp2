@@ -93,9 +93,9 @@ ggp2_bars_diverg +
 
 ## Description
 
-A diverging bar graph shows two groups as bars that start at the same line and point away from each other. If you have two shares of a whole[^proportions] with values above and below 0,[^signs] try diverging bars with `geom_bar()`.
+If you have two proportions that contain positive and negative values, consider using diverging bars with `geom_bar()`.
 
-In most bar graphs, every bar starts at the same line and goes the same way.[^standard] In a diverging bar graph, numbers above 0 go one way from a center line, and numbers below 0 go the other way.[^baseline] We use the color of each bar, how long it is, and where it is to compare the numbers across groups (and within each group).[^levels]
+Unlike standard or stacked bar graphs, diverging bar graphs display positive and negative quantities on both sides of a reference or baseline value (zero in this example). Color, length and position are used to compare the quantities across categorical levels (and within variable values).
 
 ### Vertical bars
 
@@ -124,7 +124,7 @@ ggp2_bars_diverg +
   labs_geom_bar_diverg
 ```
 
-Orbitz was a drink with small balls of many colors in it. For example, we can use how long each bar is from the center line to compare the share for Orbitz across all weeks (that is, compare the bars below the line to each other).[^magenta]
+For example, we can use the length of the bar from the reference line to compare Orbitz's share across all weeks (i.e., comparing the magenta bars to each other).
 
 ### Horizontal bars
 
@@ -154,7 +154,7 @@ ggp2_bar_diverg_vert +
   labs_geom_bar_diverg_vert
 ```
 
-Surge was another drink that kids bought in the same years. We can also compare Surge and Orbitz within each week (that is, compare the gold bar to the right of the line and the bar to the left of it within each week).[^gold-magenta]
+We can also compare Surge vs. Orbitz within each week (i.e., compare the gold bar to the right of the line with the magenta bar to the left of it within each week).
 
 ## Set up
 
@@ -164,7 +164,7 @@ Surge was another drink that kids bought in the same years. We can also compare 
 :::
 
 
-Bring in the code we'll use.[^packages]
+Install packages.
 
 
 ::: {style="font-size: 0.85em;"}
@@ -188,9 +188,9 @@ library(tidyr) # for uncount()
 **DATA:**
 :::
 
-[Orbitz](https://en.wikipedia.org/wiki/Orbitz_(drink)) came to stores in 1997, with small balls of many colors that stayed up in the middle of a clear drink.[^gel] Kids bought it once to see the balls, and then most of them went back to [Surge](https://en.wikipedia.org/wiki/Surge_(drink)). We'll make up[^simulate] the answers of 400 kids at school each week, for the seven weeks after Orbitz came out.[^survey] Each week we ask every kid which drink they bought that week: Surge, Orbitz, or something else (`Other`).
+[Orbitz](https://en.wikipedia.org/wiki/Orbitz_(drink)) hit shelves in 1997 with colorful gel balls floating in a clear, fruity drink. Kids bought it once to see the balls, and then most of them went back to [Surge](https://en.wikipedia.org/wiki/Surge_(drink)). We'll simulate a weekly lunchroom survey of 400 kids over the seven weeks after Orbitz arrived, asking which drink they bought that week: Surge, Orbitz, or something else (`Other`).
 
-The chance that a kid picks Surge grows each week as Orbitz stops feeling new (`p_surge`).[^novelty] Orbitz gets what's left of 80% (`p_orbitz`), and `Other` stays at 20%. For each kid, `runif()` picks a number between 0 and 1,[^runif] and `case_when()` turns that number into a drink, using the chances for that week.[^probabilities] Then we keep Surge and Orbitz, work out the share of the 400 kids for each one, and turn the Orbitz share below 0 so its bar points down.[^negative] Starting with `set.seed()`[^seed] means you'll get the same 2,800 answers every time you run the code below.
+Surge's chance of being picked grows each week as the novelty wears off (`p_surge`), Orbitz gets what's left of 80% (`p_orbitz`), and `Other` stays at 20%. For each kid, `runif()` draws a number between 0 and 1, and `case_when()` turns that number into a choice using the week's probabilities. Then we keep Surge and Orbitz, calculate each one's share of the 400 kids, and make Orbitz's share negative so it points down. Setting the seed with `set.seed()` means you'll get the same 2,800 answers every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -229,13 +229,13 @@ glimpse(orbitz_diverg)
 
 ## Distribution
 
-A diverging bar graph puts two shares back to back, so the question it answers is "how do these two groups trade places?" Here, every kid picks just one drink each week, so anything Surge wins has to come from some other place. Below we'll move from the kids, to a graph, to the rule behind it.[^formula]
+A diverging bar graph puts two shares back to back, so the question it answers is "how do these two groups trade places?" Here, every kid picks exactly one drink each week, so a gain for Surge has to come from somewhere. Below we'll move from the kids, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the first ten kids we asked in week 1.
+Start with the first ten kids surveyed in week 1.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -247,7 +247,7 @@ head(lunchroom_survey$choice, 10)
 ```
 :::
 
-Seven of these ten kids bought Orbitz, two bought Surge, and one bought something else. When we add up every kid in every week, we see the trade: the number for Orbitz falls each week while the number for Surge goes up, and `Other` stays between about 60 and 100.
+Seven of these ten kids bought Orbitz, two bought Surge, and one bought something else. Counting every kid in every week shows the trade: Orbitz's count falls each week while Surge's climbs, and `Other` stays between about 60 and 100.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -265,7 +265,7 @@ lunchroom_survey |>
 **DRAW IT:**
 :::
 
-A bar model shows the 400 kids in each week as one bar cut into three parts.[^bar-model] As we read up from week 1, the Surge part grows, the Orbitz part gets smaller, and the `Other` part moves very little.
+A bar model shows each week's 400 kids as one bar split three ways. Reading up from week 1, the Surge part grows, the Orbitz part shrinks, and the `Other` part barely moves.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -283,7 +283,7 @@ lunchroom_survey |>
 ```
 :::
 
-The diverging bar graph below takes the Surge and Orbitz parts of each bar and points them away from each other, starting at 0. The points show the shares we put into the rule when we made up the data.[^expected] The two bars are just as long as each other at some point between weeks 4 and 5, which is where the two drinks traded places.
+The diverging bar graph below takes the Surge and Orbitz parts of each bar and points them in opposite directions from zero. The points mark the shares we built into the simulation. The two bars are the same length somewhere between weeks 4 and 5, which is where the two drinks traded places.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -310,7 +310,7 @@ ggplot(data = orbitz_diverg, aes(x = week, y = share)) +
 **NAME IT:**
 :::
 
-Each kid's answer is one pick from three choices, so the numbers for each week follow [a rule for how many picks land in each of a few groups](https://en.wikipedia.org/wiki/Multinomial_distribution):[^multinomial]
+Each kid's answer is a single draw from three choices, so each week's counts follow a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
 
 $$
 (N_{\text{Surge}}, N_{\text{Orbitz}}, N_{\text{Other}}) \sim \text{Multinomial}\left(400, \; (p_t, \; 0.8 - p_t, \; 0.2)\right)
@@ -320,9 +320,9 @@ $$
 p_t = 0.8 \times \text{logistic}\left(-2 + 0.6\,(t - 1)\right)
 $$
 
-The rule in `plogis()`[^logistic] makes the share for Surge go up a little at first, fastest in the middle, and then it levels off. Surge and Orbitz share the same 80%, so their bars are just as long as each other when $p_t = 0.4$. That happens when $-2 + 0.6\,(t - 1) = 0$, or $t \approx 4.3$.
+The logistic function (`plogis()`) gives Surge's share an S shaped climb: slow at first, fastest in the middle, then leveling off. Surge and Orbitz split the same 80%, so their bars are the same length when $p_t = 0.4$. That happens when $-2 + 0.6\,(t - 1) = 0$, or $t \approx 4.3$.
 
-Each share we made up moves around its point by about $\sqrt{p(1 - p) / 400}$,[^se] which is never more than 2.5 percent of the 400 kids.[^points] That's why the bars land so close to the points. Try changing the `0.6` in `plogis()`, and the week where the bars are just as long as each other moves earlier (larger values) or later (smaller values).[^crossover]
+Each simulated share wobbles around its point by about $\sqrt{p(1 - p) / 400}$, which is never more than 2.5 percentage points. That's why the bars land so close to the points. Try changing the `0.6` in `plogis()` and the crossover moves earlier (larger values) or later (smaller values).
 
 
 ## Grammar
@@ -331,19 +331,19 @@ Each share we made up moves around its point by about $\sqrt{p(1 - p) / 400}$,[^
 **CODE:**
 :::
 
-  - Make the words around the graph[^labels] with `labs()`
+  - Create labels with `labs()`
 
-  - Start the graph with `ggplot()` and give it `data`
+  - Initialize the graph with `ggplot()` and provide `data`
 
-  - Put `week` across the graph (`x`) and `share` up the side (`y`)[^map]
+  - Map the `week` to the `x` and `share` to the `y`
 
   - Inside `geom_bar()`
 
-    - join `choice` to `fill` so each drink gets its own color[^fill]
+    - map `choice` to `fill`
 
     - use `stat = "identity"` and `width = .5`
 
-  - Add `scale_y_continuous()` to set the ends of the axis by hand[^limits] and show its numbers as a percent with `scales::percent`
+  - Add `scale_y_continuous()` to manually set the limits and format the axis with `scales::percent`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -411,23 +411,23 @@ ggp2_bars_diverg +
 
 ## More info
 
-To put the bars one above the other,[^vertical] we put the column from the `x` axis on the `y` axis, and the other way around.
+For vertically arranged bars, we switch the `x` and `y` axis variables.
 
 ### Vertically arranged bars
 
 <br>
 
-  - Make the words around the graph with `labs()`
+  - Create labels with `labs()`
 
-  - Put `share` across the graph (`x`) and `week` up the side (`y`)
+  - Map the `share` to the `x` and `week` to the `y`
 
   - *Inside* `geom_bar()`
 
-    - join `choice` to `fill` so each drink gets its own color
+    - map `choice` to `fill`
 
     - use `stat = "identity"` and `width = .5`
 
-  - Add `scale_x_continuous()` to set the ends of the axis by hand and show its numbers as a percent with `scales::percent`
+  - Add `scale_x_continuous()` to manually set the limits and format the axis with `scales::percent`
 
 ::: {style="font-size: 0.85em;"}
 
@@ -460,61 +460,3 @@ ggp2_bar_diverg_vert +
 ```
 
 :::
-
-[^proportions]: Two proportions.
-
-[^signs]: Positive and negative values.
-
-[^standard]: Standard or stacked bar graphs, where every bar starts at the baseline and extends in the same direction.
-
-[^baseline]: Diverging bar graphs display positive and negative quantities on both sides of a reference or baseline value (zero in this example).
-
-[^levels]: Color, length, and position compare the quantities across the levels of a categorical variable (and within variable values).
-
-[^magenta]: The magenta (Orbitz) bars, which are negative.
-
-[^gold-magenta]: The gold (Surge) bar vs. the magenta (Orbitz) bar.
-
-[^packages]: Install and load the packages.
-
-[^gel]: Colorful gel balls suspended in a clear, fruity drink.
-
-[^simulate]: Simulate.
-
-[^survey]: A weekly lunchroom survey.
-
-[^novelty]: As the novelty of Orbitz wears off.
-
-[^runif]: `runif()` draws a random number from a uniform distribution between 0 and 1.
-
-[^probabilities]: The week's probabilities.
-
-[^negative]: Make the Orbitz share negative.
-
-[^seed]: Setting the random seed.
-
-[^formula]: The formula.
-
-[^bar-model]: A stacked bar for each week, split three ways.
-
-[^expected]: The expected shares we built into the simulation.
-
-[^multinomial]: A multinomial distribution, which gives the counts in each of several categories when each of $n$ independent draws falls in exactly one category.
-
-[^logistic]: The logistic function, which gives Surge's share an S shaped climb.
-
-[^se]: The standard error of a proportion.
-
-[^points]: 2.5 percentage points.
-
-[^crossover]: The crossover point.
-
-[^vertical]: Vertically arranged bars.
-
-[^labels]: The labels (title, subtitle, caption, axis titles, and legend title).
-
-[^map]: Map `week` to `x` and `share` to `y` in `aes()`.
-
-[^fill]: Map `choice` to the `fill` aesthetic.
-
-[^limits]: Manually set the axis limits and format the axis labels.

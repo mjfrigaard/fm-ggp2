@@ -133,7 +133,7 @@ basic_line + grp_line + pal_line + facet_line +
 
 ## Description
 
-A grouped line graph shows how a number changes over time, with one line for each group.[^grp-line] We can tell one line from another by color, by how each line looks, or by putting each group in its own small graph.[^styles]
+Grouped line graphs use color, line style, and faceting to show how a numeric variable changes over time for each group.
 
 ## Set up
 
@@ -141,7 +141,7 @@ A grouped line graph shows how a number changes over time, with one line for eac
 **PACKAGES:**
 :::
 
-Bring in the code we'll use.[^packages]
+Install packages.
 
 
 ::: {style="font-size: 0.85em;"}
@@ -165,11 +165,13 @@ library(lubridate) # for working with dates
 **DATA:**
 :::
 
-Nickelodeon makes shows for kids, and SNICK was the set of shows it put on one night each week. Every Saturday night starting in 1992, kids watched SNICK (*Clarissa Explains It All*, *Are You Afraid of the Dark?*, and *All That*).[^couch] A rating is a number that says how many out of every 100 homes were watching. We'll make up[^simulate] a rating for Nickelodeon[^nielsen] for every day from 1993 through 1999. Each night of the week gets its own average (`night_avg`), with Saturday on top. Two changes that move little by little get added to the average for each night: a `trend` that goes up through the middle of the 1990s and comes down near the end, and a `summer` change that goes up when school is out. Then `rnorm()` adds a small change that is different every day.[^noise] Starting with `set.seed()`[^seed] means you'll get the same `r scales::comma(nrow(nick_ratings))` days every time you run the code below.
+Every Saturday night starting in 1992, Nickelodeon kids parked themselves in front of SNICK (*Clarissa Explains It All*, *Are You Afraid of the Dark?*, and *All That*) and the orange couch. We'll simulate a Nielsen style rating for Nickelodeon for every day from 1993 through 1999.
 
-We'll also make the date columns we need for the groups.[^date-vars] A quarter is three months, or one of four parts of a year.
+Each night of the week gets its own average (`night_avg`), with Saturday on top. Two smooth patterns get added to the nightly averages: a `trend` that rises through the middle of the decade and falls off near the end, and a `summer` bump when school is out. Then `rnorm()` adds day to day noise. Setting the seed with `set.seed()` means you'll get the same `r scales::comma(nrow(nick_ratings))` days every time you run the code below.
 
-  - `day_of_week` (a column of groups from `wday()`,[^factor] with no order set, so the graphs use the colors that come with the look[^theme]) and `day_category` (`"Weekday"` or `"Weekend"`)
+We'll also create the date variables we need for grouping:
+
+  - `day_of_week` (a factor from `wday()`, unordered so the graphs use the theme colors) and `day_category` (`"Weekday"` or `"Weekend"`)
 
   - `yr_mnth` (the first day of each month) and `yr_qtr` (the year and quarter)
 
@@ -208,11 +210,11 @@ glimpse(nick_ratings)
 
 We'll use these data in the *More info* section for more line graphs, but for now:
 
-  - Put the rows of `nick_ratings` into groups by `year` and `day_category`
+  - Group `nick_ratings` on `year` and `day_category`
 
-  - Work out the average `rating` for each group as `avg_rating`
+  - Calculate the average `rating` as `avg_rating`
 
-  - Keep the data in `avg_rating_day_cat_yr`.
+  - Store the data in `avg_rating_day_cat_yr`.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -230,7 +232,7 @@ glimpse(avg_rating_day_cat_yr)
 
 ## Distribution
 
-A grouped line graph almost never shows each number by itself.[^raw] It shows an *average* for each group at each point in time, and averages act in a very different way from the numbers they come from. Below we'll move from the ratings for each day, to a graph, to the rule behind it,[^formula] and see why averages make the differences between groups easy to see.
+A grouped line graph rarely plots raw values. It plots an *average* for each group at each point in time, and averages behave very differently from the values they're built from. Below we'll move from the daily ratings, to a picture, to the formula, and see why averaging makes the group differences easy to see.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -251,7 +253,7 @@ nick_ratings |>
 ```
 :::
 
-Saturday is far on top this week, but the other nights are close enough that their order could change next week.[^weeknights] Below we find how many of each night there are in 1996 and work out the mean and how far ratings usually fall from it (`sd`)[^sd] for each night of the week.
+Saturday is the clear winner this week, but the weeknights are close enough that the order could flip next week. Below we count every night in 1996 and calculate the mean and standard deviation for each night of the week.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -267,13 +269,13 @@ nick_1996
 ```
 :::
 
-Each night of the week comes up `r min(nick_1996$n)` or `r max(nick_1996$n)` times in a year. The Saturday mean (`r round(nick_1996$mean[nick_1996$day_of_week == "Sat"], 2)`) is well above the Tuesday mean (`r round(nick_1996$mean[nick_1996$day_of_week == "Tue"], 2)`), but the rating for any one night moves about `r round(mean(nick_1996$sd), 1)` points away from its mean.[^sd-night]
+Each night of the week shows up `r min(nick_1996$n)` or `r max(nick_1996$n)` times in a year. The Saturday mean (`r round(nick_1996$mean[nick_1996$day_of_week == "Sat"], 2)`) is well above the Tuesday mean (`r round(nick_1996$mean[nick_1996$day_of_week == "Tue"], 2)`), but any single night wanders about `r round(mean(nick_1996$sd), 1)` rating points from its mean.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-The graph below shows every Tuesday and Saturday rating from 1996 as a light line we can see through,[^alpha] then adds the average for each month as a wide line. The lines for each day go up and down a lot, while the lines for each month move much less.[^zigzag]
+The graph below draws every Tuesday and Saturday rating from 1996 as a thin, faded line, then adds each month's average as a thick line. The daily lines zig and zag, while the monthly averages are much smoother.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -301,13 +303,15 @@ ggplot() +
 **NAME IT:**
 :::
 
-A hill is a line that is high in the middle and low on both sides. Each day's rating is picked from a [hill](https://en.wikipedia.org/wiki/Normal_distribution)[^normal] with its middle at that night's average for that time of year:
+Each day's rating is a draw from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) centered on that night's average for that time of year:
 
 $$
 \text{rating}_d \sim \text{Normal}\left(\mu_{\text{night}} + \text{trend}_{\text{year}} + \text{summer}_{\text{month}}, \; \sigma = 0.35\right)
 $$
 
-When we take the average of $n$ picks, how far the average usually falls from its middle is $\sigma / \sqrt{n}$.[^se] An average of about four Saturdays for one month moves by about $0.35 / \sqrt{4} \approx 0.18$ points. Each `avg_rating` point for one year below is an average of about 104 weekend nights or 261 other nights, so it moves by only $0.35 / \sqrt{104} \approx 0.03$ or $0.35 / \sqrt{261} \approx 0.02$ points. That's why the lines for each year move so little, and why the space between weekdays and weekends is easy to see. The `sd` column in **COUNT IT** is a little larger than 0.35 because it also has the `summer` change in it. Try changing `sd = 0.35` to `sd = 1`, and watch the lines for each day in **DRAW IT** become hard to follow,[^tangle] while the lines for each year move very little.
+The standard deviation of an average of $n$ draws is $\sigma / \sqrt{n}$ (the [standard error](https://en.wikipedia.org/wiki/Standard_error)). A monthly average of about four Saturdays wobbles by about $0.35 / \sqrt{4} \approx 0.18$ points. Each yearly `avg_rating` below averages about 104 weekend nights or 261 weekday nights, so it wobbles by only $0.35 / \sqrt{104} \approx 0.03$ or $0.35 / \sqrt{261} \approx 0.02$ points. That's why the yearly `avg_rating` lines below are so smooth, and why the gap between weekdays and weekends stands out. The `sd` column in **COUNT IT** is a little larger than 0.35 because it also includes the summer bump.
+
+Try changing `sd = 0.35` to `sd = 1` and watch the daily lines in **DRAW IT** turn into a tangle while the yearly lines barely move.
 
 ## Grammar
 
@@ -315,11 +319,11 @@ When we take the average of $n$ picks, how far the average usually falls from it
 **CODE:**
 :::
 
-  - Make the words around the graph[^labels] with `labs()`
+  - Create labels with `labs()`
 
-  - Put `year` on the `x` axis and `avg_rating` on the `y` axis, and join `day_category` to `group`[^map]
+  - Map `year` to the `x`, `avg_rating` to the `y`, and `day_category` to `group`
 
-  - Add the `geom_line()` part of the graph[^layer] and give each `day_category` its own color (*inside* `aes()`)[^color]
+  - Add the `geom_line()` layer and map `day_category` to color (*inside* `aes()`)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -382,17 +386,17 @@ ggp2_line +
 
 ## More info
 
-Line graphs work well for showing how numbers change for many groups.[^relationships] We can also break the graph into small graphs to compare many groups at once.[^facets]
+Line graphs are great for displaying relationships across variables with multiple groups (or levels). We can also use facets for multiple comparisons (i.e., small multiples).
 
 ### Groups
 
-In the last graph, we can see the ratings are highest around `1996` or `1997`.[^peak]
+In the previous graph, we can see the ratings peak around `1996` or `1997`.
 
-  - We'll make another set of averages from `nick_ratings`, but this time we keep only the ratings from `1996` and `1997`[^summarized]
+  - We'll create another summarized dataset from `nick_ratings`, but this time we restrict the observations to the ratings between `1996` and `1997`
 
-  - Put the rows into groups by `yr_qtr` and `day_of_week`
+  - Group the data on `yr_qtr` and `day_of_week`
 
-  - Then work out the average `rating` for each group as `avg_rating`
+  - Then calculate the average `rating` as `avg_rating`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -411,11 +415,11 @@ glimpse(avg_rating_dow_qtr)
 ```
 :::
 
-Now when we make our line graph, we will have a column with seven groups (`day_of_week`):[^levels]
+Now when we create our line graph, we will have a categorical variable with seven levels (`day_of_week`):
 
-  + Make the second title[^subtitle] with `paste0()`, so it stays right if the data under it changes.
+  + Create subtitle using `paste0()` to ensure it's accurate if/when the underlying data is updated.
 
-  +  Put the name of each night at the end of its line with `geom_text_repel()` (from `ggrepel`), and turn off the key that tells us which color goes with which night[^legend] with `theme(legend.position = "none")` (so we don't have to look from the key to the lines and back).
+  +  Label the end of each line with `geom_text_repel()` (from `ggrepel`), so we can drop the legend with `theme(legend.position = "none")`.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -462,13 +466,13 @@ ggp2_line_grp +
 ```
 :::
 
-The Saturday line is on top in every quarter (that's SNICK), and every night goes up and comes down with the `summer` change.
+The Saturday line sits on top of every quarter (that's SNICK), and every night rises and falls with the summer bump.
 
 ### Line Styles
 
-  - We can make the lines in our graph easier to tell from each other by changing how each line looks (`linetype` and `linewidth`),[^line-style] or by changing how much we can see through all of them (`alpha`).[^opacity]
+  - We can make it easier to distinguish between lines in our graph by adjusting the line style (`linetype` and `linewidth`), or by changing overall opacity (`alpha`).
 
-  - We'll work through some examples below with another part of `nick_ratings`.[^subset]
+  - We'll work through some examples below using another subset from `nick_ratings`.
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
@@ -518,9 +522,9 @@ labs_line_styles <- labs(
 
 ### `alpha` & `linewidth`
 
-Changing how lines look is a good way to make some lines stand out more than others.[^highlight]
+Line styles are an excellent tool for highlighting or emphasizing certain lines over others.
 
-  - We'll start by making one part of the graph[^layer] with lines for Monday (`"Mon"`), Thursday (`"Thu"`), and Friday (`"Fri"`), and use `alpha` to set how much we can see through them.[^opacity]
+  - We'll start by creating a line graph layer for Monday (`"Mon"`), Thursday (`"Thu"`), and Friday (`"Fri"`) adjusting the opacity with `alpha`.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -549,7 +553,7 @@ ggp2_line_mon_thu_fri +
 
 ### `linetype`
 
-Then we'll change the `linetype` of Saturday and Sunday to `"longdash"` (and give them a little higher `alpha`, so we can see through them *a little* less).[^transparent]
+Then we'll change the `linetype` of Saturday and Sunday to `"longdash"` (and make this *somewhat* transparent with a slightly higher `alpha`).
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -577,9 +581,9 @@ ggp2_line_sat_sun +
 
 ### Color palettes
 
-  - Add `geom_line()` for Tuesday and Wednesday, and choose the colors by hand with `scale_color_manual()` (below we use a list of SNICK colors, each with the name of its night).[^named-vector]
+  - Add `geom_line()` for Tuesday and Wednesday, and set the colors manually with `scale_color_manual()` (below we use a named vector of SNICK colors).
 
-  - We also set the order of the key by hand, by giving `breaks` the order the groups first had.[^legend-order]
+  - We also manually set the legend order by supplying the original factor levels to the `breaks` argument.
 
 
 ::: {style="font-size: 0.85em;"}
@@ -620,15 +624,15 @@ ggp2_line_pal_d +
 :::
 
 
-Changing how the lines look is a good way to make some lines stand out more than others.
+Changing the look of the lines is a great way to highlight or emphasize some lines over others.
 
 ### Labels
 
-We'll put words on the graph[^geom-label] to show the highest rating for one day and the highest average rating for one month, for a few nights of the week.
+We'll use labels to display the highest daily rating and the highest monthly average rating for a few nights of the week.
 
-  - To do this, we're going to make two small tables of words, `label_max_dow` and `label_max_avg_dow`, that we'll use to name the highest values.[^max]
+  - To accomplish this, we're going to create two small tables of labels, `label_max_dow` and `label_max_avg_dow`, that we'll use to label the maximum values.
 
-  - Each has a row for every night of the week (`label_max_dow` has one more, because the highest Sunday rating, 4.4, came on two days: `1996-08-11` and `1997-04-20`) and a column of words (`lbl`) that we can use with `geom_label()`.[^lbl]
+  - Each has a row for every night of the week and a label variable (`lbl`) which we can use with `geom_label()`. The highest Sunday rating (4.4) happened twice (`1996-08-11` and `1997-04-20`), so `label_max_dow` has one extra row.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -672,9 +676,9 @@ arrange(label_max_avg_dow, desc(max_avg_rating)) |>
 ```
 :::
 
-Now that we have a table of words for each number, we can keep only the days we want to name.[^filter-lbl]
+Now that we have label tables for each metric, we can filter them to the days we want to label.
 
-  - We'll use `filter()` to get the highest values for `"Wed"` (in `label_max_wed_dow` and `label_max_avg_wed_dow`)
+  - We'll use `filter()` to get the maximum values for `"Wed"` (in `label_max_wed_dow` and `label_max_avg_wed_dow`)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -758,7 +762,7 @@ ggp2_line_pal_d +
 :::
 
 
-We'll use `filter()` to get the highest values for `"Tue"` (in `label_max_tue_dow` and `label_max_avg_tue_dow`):
+We'll use `filter()` to get the maximum values for `"Tue"` (in `label_max_tue_dow` and `label_max_avg_tue_dow`):
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -848,13 +852,13 @@ ggp2_line_pal_d +
 ```
 :::
 
-See how the highest ratings for one day are well above the highest averages for one month. One night can be very high by chance, but an average of four or five nights almost never is[^lucky] (just like we saw in the **Distribution** section).
+Notice the highest daily ratings sit well above the highest monthly averages. A single night can get lucky, but an average of four or five nights rarely does (just like we saw in the **Distribution** section).
 
 ### Facets
 
-Last, we can use small graphs to see each of the lines on its own.[^facets]
+Finally, we can use facets to view each of the line graphs separately (or small multiples).
 
-  - We'll make a set of data with the rating for each day from `1998-07-01` to `1999-12-31` and keep it as `daily_ratings_9899`
+  - We'll create a dataset with the daily ratings between `1998-07-01` and `1999-12-31` and store it as `daily_ratings_9899`
 
 
 ::: {style="font-size: 0.85em;"}
@@ -871,7 +875,7 @@ glimpse(daily_ratings_9899)
 :::
 
 
-- `facet_wrap()` with one column of groups (`var ~ .`) makes a small graph for each group, while `facet_grid()` makes a table of small graphs, with the groups of one column down the side and the groups of another across the top (written as `var ~ var`).[^facet-grid]
+- Using `facet_wrap()` with a single categorical variable (`var ~ .`) will create a plot for each discrete level, while `facet_grid()` will create a level-by-level grid (specified as `var ~ var`).
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -913,7 +917,7 @@ ggp2_line_facet_wrap +
 :::
 
 
-  - It's always a good idea to check the words and numbers along the `x` and `y` axes when we use small graphs.[^axis-text] I've changed the `x` and `y` axes above with `scale_y_continuous()` and `scale_x_date()` before adding `facet_wrap()`
+  - It's always a good idea to check the `x` and `y` axis text when using facets. I've adjusted the `x` and `y` axes above using `scale_y_continuous()` and `scale_x_date()` before adding `facet_wrap()`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -953,98 +957,6 @@ ggp2_line_facet_grid +
 ```
 :::
 
-Seven of the 14 small graphs have no line, because each night of the week is in only one of the two groups (`Weekday` or `Weekend`).
+Seven of the 14 panels are empty, because each night of the week belongs to only one `day_category` (`Weekday` or `Weekend`).
 
-We chose the colors by hand with `scale_color_manual()` and the `snick_pal` list of named colors we made in the *Color palettes* section.[^named-vector]
-
-[^grp-line]: Grouped line graphs show group changes over time for a continuous variable across categorical levels.
-
-[^styles]: Color, line style, and faceting.
-
-[^packages]: Install and load the packages.
-
-[^simulate]: Simulate.
-
-[^nielsen]: A Nielsen style rating.
-
-[^noise]: Day to day noise: `rnorm()` draws each rating from a normal distribution with `sd = 0.35`.
-
-[^seed]: Setting the random seed.
-
-[^date-vars]: The date variables we need for grouping.
-
-[^couch]: Kids parked themselves in front of SNICK and the orange couch.
-
-[^factor]: A factor.
-
-[^theme]: Unordered, so the graphs use the theme colors.
-
-[^raw]: A grouped line graph rarely plots raw values.
-
-[^formula]: The formula.
-
-[^weeknights]: The weeknights.
-
-[^sd]: The standard deviation.
-
-[^sd-night]: Any single night wanders about this many rating points from its mean (the average of the seven standard deviations).
-
-[^alpha]: A thin, faded (partially transparent) line.
-
-[^zigzag]: The daily lines zig and zag.
-
-[^normal]: A [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) centered on that night's average for that time of year.
-
-[^se]: The standard deviation of an average of $n$ draws is the [standard error](https://en.wikipedia.org/wiki/Standard_error).
-
-[^tangle]: Turn into a tangle.
-
-[^labels]: Labels.
-
-[^layer]: The layer.
-
-[^map]: Map `year` to `x`, `avg_rating` to `y`, and `day_category` to `group`.
-
-[^color]: Map `day_category` to the `color` aesthetic.
-
-[^relationships]: Line graphs are great for displaying relationships across variables with multiple groups (or levels).
-
-[^facets]: Facets (small multiples).
-
-[^peak]: The ratings peak.
-
-[^summarized]: Another summarized dataset, with the observations restricted to the ratings between 1996 and 1997.
-
-[^levels]: A categorical variable with seven levels.
-
-[^subtitle]: The subtitle.
-
-[^legend]: The legend.
-
-[^line-style]: The line style.
-
-[^opacity]: The opacity.
-
-[^subset]: Another subset.
-
-[^highlight]: Line styles are an excellent tool for highlighting or emphasizing certain lines over others.
-
-[^transparent]: Somewhat transparent, with a slightly higher `alpha`.
-
-[^named-vector]: A named vector.
-
-[^legend-order]: Supplying the original factor levels to the `breaks` argument sets the legend order.
-
-[^geom-label]: Labels made with `geom_label()`.
-
-[^max]: The maximum values.
-
-[^lbl]: A label variable (`lbl`).
-
-[^filter-lbl]: Filter the label tables for each metric to the days we want to label.
-
-[^facet-grid]: `facet_wrap()` with a single categorical variable creates a plot for each discrete level, while `facet_grid()` creates a grid of plots, one for each pair of levels from two variables.
-
-[^lucky]: A single night can get lucky.
-
-[^axis-text]: The axis text.
+The colors have been set manually using `scale_color_manual()` and the `snick_pal` named vector we created in the *Color palettes* section.

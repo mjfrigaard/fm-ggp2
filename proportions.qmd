@@ -29,11 +29,11 @@ bare_theme <- theme(plot.title = element_blank(),
                     legend.position = "none")
 ```
 
-The graphs in this part show how a whole breaks into parts, as how many there are or as parts out of 100, inside one column or across two columns.[^proportions-def]
+**Proportions**: These graphs display grouped counts, percentages, or part-to-whole relationships of values within variables (or between variables).
 
 ## Diverging bar graphs
 
-A [diverging bar graph](diverging_bar_graphs.qmd) shows values that go out two ways from a line in the middle, most often at 0.[^diverge] Bars on one side stand for one group or answer (yes, good, more), and bars on the other side stand for the other answer. People often use these graphs for answers that run from bad to good, because they make it easy to see which side is bigger for each group.[^likert] A color for each side shows which is which.[^div-legend]
+A [diverging bar graph](diverging_bar_graphs.qmd) shows values that split in two directions from a center line, usually zero. Bars on one side represent one group or response (agree, positive, more), and bars on the other side represent the opposite. Diverging bars are common for survey responses on a scale, because they make it easy to see which way the balance tips for each category. Color separates the two sides.
 
 ```{r}
 #| label: part_diverging_bar_graphs
@@ -88,7 +88,7 @@ ggp2_bars_diverg <- ggplot(
 
 ## Stacked and filled density plots
 
-[Stacked and filled density plots](stacked_filled_density_graphs.qmd) show how the share of each group changes as the numbers along the foot of the graph go up. Each group gets its own line that goes up and down, and the lines are put one on top of the other.[^stacked-curves] In filled density plots, the parts are made bigger or smaller so together they always reach from the foot of the graph to the top, which shows each group's part of the whole at every value along the foot of the graph.[^fill-position] A color for each group shows which is which.[^dens-legend]
+[Stacked and filled density plots](stacked_filled_density_graphs.qmd) show how the share of each group changes across the range of a numeric variable. Each group gets its own smooth density curve, and the curves are stacked on top of each other. In a filled density plot, the stack is stretched so it always adds up to 100%, which shows each group's proportion at every value on the `x` axis. Color separates the groups.
 
 ```{r}
 #| label: part_stacked_filled_density_graphs
@@ -132,7 +132,7 @@ ggp2_fill_density <- ggplot(data = modem_sessions,
 
 ## Mosaic plots
 
-A [mosaic plot](mosaic_plots.qmd) shows how many rows fall into each group across two or more columns, using a set of boxes.[^mosaic-def] The boxes stand in groups side by side. How wide each group of boxes is shows the share of the first column, and how high each box inside it is shows the share of the second column.[^mosaic-tiles] Because the size of each box stands for how many there are, mosaic plots make it easy to see when the groups in one column go with the groups in another.[^association] A color for each group in one column shows which is which.[^mosaic-legend]
+A [mosaic plot](mosaic_plots.qmd) displays the counts of two or more categorical variables as a set of rectangles. The width of each column shows the share of the first variable, and the heights of the tiles inside each column show the share of the second variable within it. Because area represents the count, mosaic plots make it easy to see when two categorical variables are related. Color separates the levels of one variable.
 
 ```{r}
 #| label: part_mosaic_plots
@@ -186,7 +186,7 @@ ggp2_mosaic <- ggplot(data = titanic_fans) +
 
 ## Pie charts
 
-A [pie chart](pie_charts.qmd) shows each group's share of the whole as one piece of a round graph.[^pie-def] The bigger a group's number or part out of 100, the wider its piece and the more room it takes up.[^pie-angle] Pie charts work best with a few groups and simple parts, such as one half or one part in four.[^fractions] Words on the pieces give each group's part out of 100.[^pie-legend]
+A [pie chart](pie_charts.qmd) divides a circle into slices, and each slice shows one category's share of the whole. The angle (and area) of each slice is proportional to the category's count or percentage. Pie charts work best with a few categories and simple fractions, such as one half or one quarter. Labels on the slices give each category's percentage.
 
 ```{r}
 #| label: part_pie_charts
@@ -241,7 +241,7 @@ ggp2_pie <- ggpubr::ggpie(koosh_pie,
 
 ## Treemaps
 
-A [treemap](treemaps.qmd) shows a whole as one big box cut into smaller boxes, one for each group.[^treemap-def] The size of each box goes with its value, and groups can fall inside bigger groups.[^tm-area] Treemaps help when there are too many groups for a pie chart, or when the data has groups inside groups.[^hierarchy] Here color shows the smallest groups, and words inside the boxes name each group.[^tm-labels]
+A [treemap](treemaps.qmd) displays a whole as a rectangle divided into smaller rectangles, one for each category. The area of each rectangle is proportional to its value, and categories can be nested inside larger groups. Treemaps are handy when there are too many categories for a pie chart, or when the data have a hierarchy. Here color shows the innermost level (`channel`), and labels inside the rectangles name each category.
 
 ```{r}
 #| label: part_treemaps
@@ -316,41 +316,3 @@ ggp2_tm_subgroup2 <- ggp2_tm_subgroup +
   fmggp2::theme_j2me(base_size = 12) +
   bare_theme
 ```
-
-[^proportions-def]: Stratified counts, percentages, or part-to-whole relationships of values within variables (or between variables).
-
-[^diverge]: Diverging bars split in two directions from a center line, usually zero.
-
-[^likert]: Survey responses on an ordered scale (for example, a Likert scale); diverging bars show which way the balance tips for each category.
-
-[^div-legend]: Color separates the two sides.
-
-[^stacked-curves]: Each group gets its own smooth density curve, and the curves are stacked.
-
-[^fill-position]: The filled version (`position = "fill"`) stretches the stack so it always adds up to 100%, which shows each group's proportion at every value on the `x` axis.
-
-[^dens-legend]: Fill color separates the groups.
-
-[^mosaic-def]: Counts of two or more categorical variables shown as a set of rectangles (tiles).
-
-[^mosaic-tiles]: The width of each column shows the share of the first variable, and the heights of the tiles inside each column show the share of the second variable within it.
-
-[^association]: Because area represents the count, mosaic plots show when two categorical variables are related (associated).
-
-[^mosaic-legend]: Color separates the levels of one variable.
-
-[^pie-def]: A pie chart divides a circle into slices, one per category.
-
-[^pie-angle]: The angle (and area) of each slice is proportional to the category's count or percentage.
-
-[^fractions]: Simple fractions, such as one half or one quarter.
-
-[^pie-legend]: Percentage labels on the slices.
-
-[^treemap-def]: A rectangle divided into smaller rectangles, one for each category.
-
-[^tm-area]: The area of each rectangle is proportional to its value, and categories can be nested inside larger groups.
-
-[^hierarchy]: Hierarchical data.
-
-[^tm-labels]: Fill color shows the innermost level (`channel`), and labels inside the rectangles name each category.

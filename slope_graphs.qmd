@@ -96,16 +96,16 @@ ggp2_slope +
 :::
 
 ::: {style="font-size: 1.05em; color: #282b2d;"}
-**✅ a categorical variable with two ordered time points**
+**✅ a numeric (date) variable**
 :::
 
 ::::
 
 ## Description
 
-A slope graph shows how a number changes from one time to the next, most often across two times.[^slope] The number goes up the `y` axis, and the times go across the `x` axis. A line joins the two numbers for each group,[^unit] so how far a line goes up or down shows how much that group changed (which is where the name comes from).[^slope-name]
+Slope graphs show changes in a numeric value (displayed on the `y` axis) typically over two points in time (along the `x` axis). The values for each group or unit of measurement are connected by lines, and any differences between the two time points are represented by the slope of the lines (hence the name, 'slope chart').
 
-We can make slope graphs in `ggplot2` with `geom_line()` and `geom_point()`.
+We can build slope graphs in `ggplot2` using the `geom_line()` and `geom_point()` functions.
 
 ## Set up
 
@@ -114,7 +114,7 @@ We can make slope graphs in `ggplot2` with `geom_line()` and `geom_point()`.
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Bring in the code we'll use.[^packages]
+Install packages.
 :::
 
 
@@ -139,7 +139,9 @@ library(tidyr) # for expand_grid()
 **DATA:**
 :::
 
-Bayside High is a school from a show, run by a man named Belding. His school gave us six students who feel very different ways about school work they take home:[^homework] Zack finds ways to get out of it, Screech and Jessie do well on everything, and Slater and Kelly are in the middle. A quiz is a short test, and a score is the number of points a student gets on a quiz. A semester is half of a school year. We'll make up[^simulate] ten biology quizzes and ten history quizzes for each student in the fall of 1990 and the spring of 1991. Each student gets an average score for each semester (`avg_score`). Zack and Slater do better in the spring, Lisa does a little worse, and Kelly and Jessie stay just the same. `rnorm()` picks each quiz score close to those averages,[^rnorm] and `pmin()` keeps every score at 100 or under.[^pmin] Starting with `set.seed()`[^seed] means you'll get the same `r nrow(bayside_quizzes)` quizzes every time you run the code below.
+Mr. Belding's Bayside High gave us six students with very different relationships to homework: Zack scheming his way out of it, Screech and Jessie acing everything, and Slater and Kelly somewhere in between. We'll simulate ten biology quizzes and ten history quizzes for each student in the fall of 1990 and the spring of 1991.
+
+Each student gets an average score for each semester (`avg_score`). Zack and Slater improve in the spring, Lisa slips a little, and Kelly and Jessie stay exactly the same. `rnorm()` draws each quiz score around those averages, and `pmin()` caps the scores at 100. Setting the seed with `set.seed()` means you'll get the same `r nrow(bayside_quizzes)` quizzes every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -170,7 +172,7 @@ glimpse(bayside_quizzes)
 ```
 :::
 
-A slope graph needs one number for each student in each semester, so we'll find the average of the 20 quizzes in each semester and keep the results in `bayside_slope`.
+A slope graph needs one value per student per semester, so we'll average the 20 quizzes in each semester and store the results in `bayside_slope`.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -189,7 +191,7 @@ glimpse(bayside_slope)
 
 ## Distribution
 
-How far each line goes up or down[^slope-line] is the difference between two averages. Averages move around much less than single quiz scores, but they still move a little, so a slope graph can show a small change up or down even when nothing changed. Below we'll move from the quizzes, to a graph, to the rule behind it,[^formula] and work out how big a change needs to be before we take it seriously.
+The slope of each line is the difference between two averages. Averages are much steadier than single quiz scores, but they're not perfectly steady, so a slope graph can show a small rise or fall even when nothing changed. Below we'll move from the quizzes, to a picture, to the formula, and work out how big a slope needs to be before we take it seriously.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -210,7 +212,7 @@ bayside_quizzes |>
 ```
 :::
 
-A single quiz score usually lands about 6 points above or below the student's average, and a few land more than 14 points away. Below we compare the change in each student's average from fall to spring (`change`) with the change we built into the data we made up (`true_change`).
+Single quizzes bounce around their averages by about 6 points, and a few miss by more than 14. Below we compare each student's fall and spring averages (`change`) with the change we built into the simulation (`true_change`).
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -230,13 +232,13 @@ slope_changes
 ```
 :::
 
-Zack's and Slater's averages went up, just as they should. But Kelly's average went down by about `r abs(round(slope_changes$change[slope_changes$student == "Kelly"], 1))` points, even though the average we gave her didn't change at all.[^true-avg]
+Zack's and Slater's averages went up, just as they should. But Kelly's average dropped by about `r abs(round(slope_changes$change[slope_changes$student == "Kelly"], 1))` points, even though her true average didn't change at all.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-The graph below shows every quiz for Zack and Kelly as a point we can see through,[^alpha] with the slope graph lines going through their averages for each semester. Zack's group of points moves up in the spring. Kelly's two groups of points are in about the same place, and her line goes down only because her fall quizzes happened to land a little high (about 84) and her spring quizzes a little low (about 79), even though we gave her 82 in both.
+The graph below shows every quiz for Zack and Kelly as a faded point, with the slope graph lines drawn through their semester averages. The points are jittered a little to the side so they don't stack. Zack's cloud of points shifts up in the spring. Kelly's two clouds sit in about the same place. Her line slopes down only because her fall quizzes happened to land a little high (about 84) and her spring quizzes a little low (about 79), while her true average stayed at 82.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -259,13 +261,13 @@ ggplot(zack_kelly, aes(x = semester, y = score, color = student)) +
 **NAME IT:**
 :::
 
-A hill is a line that is high in the middle and low on both sides. Each quiz score is picked from a [hill](https://en.wikipedia.org/wiki/Normal_distribution)[^normal] with its middle at the student's average for that semester (and kept at 100 or under):
+Each quiz score is a draw from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) centered on the student's average for that semester (and capped at 100):
 
 $$
 \text{score} \sim \text{Normal}(\mu_{\text{student, semester}}, \; \sigma = 8)
 $$
 
-An average of $n = 20$ quizzes usually falls about $\sigma / \sqrt{n} = 8 / \sqrt{20} \approx 1.8$ points from the true average.[^se] A slope is the difference between two of these averages, so it usually falls about $\sqrt{1.8^2 + 1.8^2} \approx 2.5$ points from the true change.[^sd-slope] About 95% of slopes land within two times that (about 5 points) of the true change. Kelly's drop is inside that range, while Zack and Slater went up by enough to stand out. Try changing `quiz = 1:10` to `quiz = 1:40`, and every slope will move around half as much.[^noise]
+An average of $n = 20$ quizzes has a standard deviation of $\sigma / \sqrt{n} = 8 / \sqrt{20} \approx 1.8$ points (the [standard error](https://en.wikipedia.org/wiki/Standard_error)). A slope is the difference between two of these averages, so its standard deviation is $\sqrt{1.8^2 + 1.8^2} \approx 2.5$ points. About 95% of slopes land within two standard deviations (about 5 points) of the true change. Kelly's drop is inside that range, while Zack's and Slater's gains are large enough to stand out. Try changing `quiz = 1:10` to `quiz = 1:40` and the noise in every slope is cut in half.
 
 ## Grammar
 
@@ -273,15 +275,15 @@ An average of $n = 20$ quizzes usually falls about $\sigma / \sqrt{n} = 8 / \sqr
 **CODE:**
 :::
 
-  - Make the words around the graph[^labels] with `labs()`
+  - Create labels with `labs()`
 
-  - Start the graph with `ggplot()` and give it `data`
+  - Initialize the graph with `ggplot()` and provide `data`
 
-  - Put `semester` on the `x` axis and `avg_score` on the `y` axis, and join `student` to `group` so each student gets one line[^map]
+  - Map `semester` to the `x`, `avg_score` to `y`, and `student` to `group`
 
-  - Add `geom_line()` on top,[^layer] join `student` to `color`,[^color] and set `linewidth` to `2`
+  - Add a `geom_line()` layer, mapping `student` to `color`, and setting the `linewidth` to `2`
 
-  - Add `geom_point()`, join `student` to `color`, and set `size` to `4`
+  - Add a `geom_point()` layer, mapping `student` to `color`, and setting `size` to `4`
 
   - We'll move the `x` axis to the `"top"` of the graph with `scale_x_discrete()`
 
@@ -355,13 +357,13 @@ ggp2_slope +
 
 ## More info
 
-We can also cut a slope graph into small graphs[^facets] to show a third column of groups.[^categorical]
+We can also use faceting with slope graphs to add a third categorical variable.
 
 ::: {style="font-size: 1.15em; color: #1e83c8;"}
 **DATA:**
 :::
 
-We'll use the `bayside_quizzes` data again, but this time we put it into groups by `semester`, `student`, and `subject`.
+We'll use the `bayside_quizzes` data again, but this time we group it by `semester`, `student`, and `subject`.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -385,19 +387,19 @@ glimpse(bayside_grp_slope)
 **GRAPH:**
 :::
 
-  - Make the words around the graph with `labs()`
+  - Create labels with `labs()`
 
-  - Start the graph with `ggplot()` and give it `data`
+  - Initialize the graph with `ggplot()` and provide `data`
 
-  - Put `semester` on the `x` axis and `avg_score` on the `y` axis, and join `student` to `group` so each student gets one line
+  - Map `semester` to the `x`, `avg_score` to `y`, and `student` to `group`
 
-  - Add `geom_line()` on top, join `student` to `color`, and set `linewidth` to `2`
+  - Add a `geom_line()` layer, mapping `student` to `color`, and setting the `linewidth` to `2`
 
-  - Add `geom_point()`, join `student` to `color`, and set `size` to `4`
+  - Add a `geom_point()` layer, mapping `student` to `color`, and setting `size` to `4`
 
   - We'll move the `x` axis to the `"top"` of the graph with `scale_x_discrete()`
 
-  - Last, we make one small graph for each `subject`,[^facet-wrap] set the `size` of the words, and move the key[^legend] to the `"bottom"` of the graph.
+  - Finally, we facet the graph by `subject`, adjust the `size` of the text, and move the legend to the `"bottom"` of the graph.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -435,56 +437,4 @@ ggp2_grp_slope +
 ```
 :::
 
-Each average for a subject comes from only ten quizzes, so these slopes move around more than the ones above (they usually fall about $\sqrt{2} \times 8 / \sqrt{10} \approx 3.6$ points from the true change).[^sd-subject] That's why Jessie's history line goes up while her biology line goes down, even though the average we gave her is the same in both semesters.
-
-[^slope]: Slope graphs show changes in a numeric value, typically over two points in time.
-
-[^unit]: Each group or unit of measurement.
-
-[^slope-name]: Differences between the two time points are represented by the slope of the lines (hence the name).
-
-[^packages]: Install and load the packages.
-
-[^homework]: Very different relationships to homework.
-
-[^simulate]: Simulate.
-
-[^rnorm]: `rnorm()` draws each quiz score from a normal distribution around those averages, with `sd = 8`.
-
-[^pmin]: `pmin()` caps the scores at 100.
-
-[^seed]: Setting the random seed.
-
-[^slope-line]: The slope of each line.
-
-[^formula]: The formula.
-
-[^true-avg]: Her true average.
-
-[^alpha]: A faded (partially transparent) point, set with `alpha`.
-
-[^normal]: A [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) centered on the student's average.
-
-[^se]: Its standard deviation, the [standard error](https://en.wikipedia.org/wiki/Standard_error).
-
-[^sd-slope]: The standard deviation of a slope.
-
-[^noise]: The noise in every slope is cut in half.
-
-[^labels]: Labels.
-
-[^map]: Map `semester` to `x`, `avg_score` to `y`, and `student` to `group`.
-
-[^layer]: A layer.
-
-[^color]: Map `student` to the `color` aesthetic.
-
-[^facets]: Facets.
-
-[^categorical]: A third categorical variable.
-
-[^facet-wrap]: Facet by `subject` with `facet_wrap()`.
-
-[^legend]: The legend.
-
-[^sd-subject]: Their standard deviation.
+Each subject average is built from only ten quizzes, so these slopes are noisier than the ones above (their standard deviation is about $\sqrt{2} \times 8 / \sqrt{10} \approx 3.6$ points). That's why Jessie's history line climbs while her biology line falls, even though her true average is the same in both semesters.

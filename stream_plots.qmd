@@ -100,9 +100,9 @@ ggp2_stream +
 
 ## Description
 
-A stream plot shows how a number changes over time for each group,[^groups] with the groups put on top of each other. The number most often goes up the `y` axis, and time goes along the `x` axis.[^numeric] Stream plots are good when the number goes up and down a lot over time (or isn't always there).[^varies]
+Stream graphs display how a numerical variable (typically on the `y` axis) changes over time (on the `x` axis) across levels of a categorical variable. These graphs are handy if the numerical value varies wildly (or isn't always present) over the time measurement.
 
-Each group gets its own color, and the size of its colored part shows how its `y` value changes.[^area] In `ggplot2`, we can make stream plots with [`ggstream`.](https://github.com/davidsjoberg/ggstream)
+Categorical groups are differentiated by color layers, with the area of the layer representing the change in `y` value. In `ggplot2`, we can create stream graphs using [ggstream.](https://github.com/davidsjoberg/ggstream)
 
 ## Set up
 
@@ -110,7 +110,7 @@ Each group gets its own color, and the size of its colored part shows how its `y
 **PACKAGES:**
 :::
 
-Bring in the code we'll use.[^packages]
+Install packages.
 
 
 ::: {style="font-size: 0.85em;"}
@@ -136,7 +136,9 @@ library(tidyr) # for expand_grid()
 **DATA:**
 :::
 
-A fad is a thing that a lot of people want for a short time. The 1990s were ten years of fads that showed up in a day and went away just as fast. Schools would not let kids wear slap bracelets, Hypercolor tops changed color when you touched them, and you saw Koosh balls and scrunchies in every place. A thousand is 1,000. We'll make up[^simulate] the sales for each month (in thousands) for four fads from 1990 through 1999. Each fad in `fads` gets a `peak` (the year most people wanted it), a `spread` (how long it lasted, in years),[^spread] and a `total` (how many it sold in all). A hill is a line that is high in the middle and low on both sides. The mean sales for each month (`avg_sales`) follow a hill around the `peak`,[^bell] and `rpois()` picks the real sales for each month.[^poisson] Starting with `set.seed()`[^seed] means you'll get the same `r dplyr::n_distinct(fad_sales$month)` months of sales every time you run the code below.
+The 90s were a decade of fads that showed up overnight and vanished just as fast. Slap bracelets were banned from schools, Hypercolor shirts changed color when you touched them, and Koosh balls and scrunchies were everywhere.
+
+We'll simulate the monthly sales (in thousands) for four fads from 1990 through 1999. Each fad in `fads` gets a `peak` (the year it was most popular), a `spread` (how long it lasted, in years), and a `total` (how many it sold overall). The monthly average (`avg_sales`) follows a bell shaped curve around the peak, and `rpois()` draws the actual monthly sales. Setting the seed with `set.seed()` means you'll get the same `r dplyr::n_distinct(fad_sales$month)` months of sales every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -168,13 +170,13 @@ glimpse(fad_sales)
 
 ## Distribution
 
-A stream plot puts each group's numbers on top of each other[^stack] and lets them run like water over time. Each fad's colored part has its own form: a short up and down for fads that ended fast, and a long, low hill for fads that stayed around. Below we'll move from the sales for each month, to a graph, to the rule behind it,[^formula] and see where those forms come from.
+A stream plot stacks each group's values on top of one another and lets the stack flow over time. Each fad's layer has its own shape: a quick spike for fads that burned out fast, and a long, low hump for fads that hung around. Below we'll move from the monthly sales, to a picture, to the formula, and see where those shapes come from.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the Hypercolor sales for the first six months of 1991.
+Start with the first six months of Hypercolor sales in 1991.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -188,7 +190,7 @@ fad_sales |>
 ```
 :::
 
-From one month to the next the sales go up and down a little, but over these six months they go up, just like `avg_sales`. Below we add up each fad's sales and find its best month.
+Sales wobble a little from month to month, but they climb toward the summer of 1991 right along with `avg_sales`. Below we total each fad's sales and find its best month.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -205,13 +207,13 @@ fad_peaks
 ```
 :::
 
-Scrunchies sold the most in all (`r scales::comma(fad_peaks$total_sales[fad_peaks$fad == "Scrunchies"])` thousand), but slap bracelets had the biggest single month (`r fad_peaks$best_sales[fad_peaks$fad == "Slap bracelets"]` thousand). Selling the most and having the highest month are two different things.
+Scrunchies sold the most overall (`r scales::comma(fad_peaks$total_sales[fad_peaks$fad == "Scrunchies"])` thousand), but slap bracelets had the biggest single month (`r fad_peaks$best_sales[fad_peaks$fad == "Slap bracelets"]` thousand). Selling the most and peaking the highest are two different things.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-The graph below shows each fad's sales for each month as points and its `avg_sales` as a line. Every fad follows the same form of hill. Slap bracelets and Hypercolor have high hills that are not very wide, and scrunchies have a wide, low one.
+The graph below draws each fad's monthly sales as points and its `avg_sales` as a line. Every fad follows the same bell shaped curve. Slap bracelets and Hypercolor have narrow, tall bells, and scrunchies have a wide, short one.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -228,19 +230,21 @@ ggplot(fad_sales, aes(x = month, color = fad)) +
 ```
 :::
 
-A stream plot puts these four hills on top of each other (and puts the middle of the colored parts at 0),[^center] which is why the stream is widest in the early 1990s and gets small by 1999.
+A stream plot stacks these four bells on top of each other (and centers the stack), which is why the stream bulges in the early 90s and thins out by the end of the decade.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **NAME IT:**
 :::
 
-The sales for each month are [whole numbers that land near a mean](https://en.wikipedia.org/wiki/Poisson_distribution),[^poisson-dist] and the mean for each month follows the form of a [hill](https://en.wikipedia.org/wiki/Normal_distribution) over time:[^normal-dist]
+The monthly sales are [Poisson](https://en.wikipedia.org/wiki/Poisson_distribution) counts, and the average for each month follows the shape of a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) over time:
 
 $$
 \text{sales}_t \sim \text{Poisson}(\lambda_t), \quad \lambda_t = \frac{\text{total}}{12} \times \frac{1}{\text{spread}\sqrt{2\pi}} \, e^{-\frac{(t - \text{peak})^2}{2 \, \text{spread}^2}}
 $$
 
-Here we only use the hill for its form (it shows *when* the sales happen, not a number picked by chance).[^random-var] The space under the whole hill adds up to the `total`,[^area-total] so the high point is $\frac{\text{total}}{12 \times \text{spread} \sqrt{2\pi}}$. Our ten years cut off the ends of the hills, so the `avg_sales` we keep add up to a little less (`r scales::comma(round(sum(fad_sales$avg_sales[fad_sales$fad == "Slap bracelets"])))` of the `r scales::comma(fads$total[1])` for slap bracelets). Slap bracelets sold `r fads$total[1]` thousand over a `spread` of `r fads$spread[1]` years, so their high point is about `r round(fads$total[1] / (12 * fads$spread[1] * sqrt(2 * pi)))` thousand a month. Scrunchies sold three times as much, but over a `spread` of `r fads$spread[4]` years, so their high point is only about `r round(fads$total[4] / (12 * fads$spread[4] * sqrt(2 * pi)))` thousand a month. Try changing the `spread` for scrunchies to `0.5` and watch their colored part turn into a high point that comes and goes fast.
+Here we only borrow the normal curve for its shape (it describes *when* the sales happen, not a random variable). The area under the whole curve is the `total`, so the height of the peak is $\frac{\text{total}}{12 \times \text{spread} \sqrt{2\pi}}$. Our ten years trim the tails, so the `avg_sales` we keep add up to a little less (`r scales::comma(round(sum(fad_sales$avg_sales[fad_sales$fad == "Slap bracelets"])))` of the `r scales::comma(fads$total[1])` for slap bracelets).
+
+Slap bracelets sold `r fads$total[1]` thousand over a spread of `r fads$spread[1]` years, so their peak is about `r round(fads$total[1] / (12 * fads$spread[1] * sqrt(2 * pi)))` thousand a month. Scrunchies sold three times as much, but spread those sales over `r fads$spread[4]` years, so their peak is only about `r round(fads$total[4] / (12 * fads$spread[4] * sqrt(2 * pi)))` thousand a month. Try changing the `spread` for scrunchies to `0.5` and watch their layer turn into a spike.
 
 ## Grammar
 
@@ -248,17 +252,17 @@ Here we only use the hill for its form (it shows *when* the sales happen, not a 
 **CODE:**
 :::
 
-  - Make the words around the graph[^labels] with `labs()`
+  - Create labels with `labs()`
 
-    - Use `paste0()` in the `subtitle` so the years change by themselves when `fad_sales` changes
+    - Use `paste0()` in the `subtitle` to automatically update the years when `fad_sales` changes
 
-  - Start the graph with `ggplot()` and give it `data`
+  - Initialize the graph with `ggplot()` and provide `data`
 
-  - Put `month` on the `x` axis and `sales` on the `y` axis, and give each `fad` its own color with `fill`[^map]
+  - Map `month` to the `x`, `sales` to `y`, and `fad` to `fill`
 
-  - Add `geom_stream()`[^geom]
+  - Add the `geom_stream()` layer
 
-  - Finally, move the key[^legend] under the graph with `theme(legend.position = "bottom")`, and take away the numbers on the `y` axis with `axis.text.y = element_blank()`. The stream is on both sides of 0, so half of those numbers would be below 0, even though no fad sold less than nothing.
+  - Finally, move the legend with `theme(legend.position = "bottom")` and drop the `y` axis text with `axis.text.y = element_blank()`. The mirrored stream sits on both sides of 0, so half of those labels would show negative sales.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -333,21 +337,21 @@ ggp2_stream +
 
 ## More info
 
-[`ggstream`](https://github.com/davidsjoberg/ggstream) has many things we can set[^arguments] for changing the form and look of each group (and the words on them).
+The [`ggstream` package](https://github.com/davidsjoberg/ggstream) has multiple arguments for adjusting the shape and look of the categorical levels (and text labels).
 
 ### Type
 
-  - Give each `fad` its own color with `fill` (inside `forcats::fct_rev()`)[^fct-rev]
+  - Map `fad` to `fill` (wrapped in `forcats::fct_rev()`)
 
-  - We can change the look of the graph with `type` in `geom_stream()`
+  - We can adjust the look of the graph by setting the `type` argument in `geom_stream()`
 
-    - `type`: change `type` from `"mirror"` (what it uses if we don't say)[^default] to `"proportional"`
+    - `type`: change type from `"mirror"` (the default) to `"proportional"`
 
-  - Change the colors:
+  - Adjust colors:
 
-    - `scale_fill_manual()`: give `values` a list of colors, with a name for each one[^named]
+    - `scale_fill_manual()`: Add colors as a named vector to `values`
 
-  - Finally, add the `fill` to the words around the graph and move the key under the graph with `theme(legend.position = "bottom")`
+  - Finally, add the `fill` to the labels and move the legend with  `theme(legend.position = "bottom")`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -375,35 +379,35 @@ ggp2_stream_prp +
 ```
 :::
 
-The `"proportional"` stream shows each fad's *part* of the sales in each month.[^share] Scrunchies take up the whole stream by the end of the 1990s, because their wide hill is the last one still selling.
+The proportional stream shows each fad's *share* of the month's sales. Scrunchies take over the whole stream by the end of the decade, because their wide bell is the last one still selling.
 
 ### Sorting
 
-To change the order of the colored parts,[^sort] set `sorting` to `"none"`, `"onset"`, or `"inside_out"`
+To change how the categorical areas are sorted, adjust the sorting argument to either `"none"`, `"onset"`, or `"inside_out"`
 
-  - `sorting`: set `sorting` to `"inside_out"` in *both* `ggstream::geom_stream()` and `ggstream::geom_stream_label()`
+  - `sorting`: set the `sorting` method to `"inside_out"` in *both* `ggstream::geom_stream()` and `ggstream::geom_stream_label()`
 
-  - `type`: change `type` to `"ridge"` in *both* `ggstream::geom_stream()` and `ggstream::geom_stream_label()`
+  - `type`: change the type to `"ridge"` in *both* `ggstream::geom_stream()` and `ggstream::geom_stream_label()`
 
-We can also put words on the colored parts with `ggstream::geom_stream_label()`:[^text-labels]
+We can also add text labels using `ggstream::geom_stream_label()`:
 
-  - Join `fad` (inside `forcats::fct_rev()`) to `label` in `ggplot()`, so every part of the graph uses it[^global]
+  - Map `fad` (wrapped in `forcats::fct_rev()`) to `label` globally
 
   - Inside `ggstream::geom_stream_label()`:
 
-    - join `fad` to `color` and set `size` to `3`
+    - map `fad` to `color` and set the `size` to `3`
 
-    - set `n_grid` to `1000` (if we don't, it uses `100` points,[^grid] which is fewer than our 120 months and makes R stop without making the graph)
+    - set `n_grid` to `1000` (the default grid of `100` points is smaller than our 120 months, which causes an error)
 
-    - Keep the words out of the key with `show.legend = FALSE` (the key for the colors stays)
+    - Keep the labels out of the legend with `show.legend = FALSE` (the `fill` legend stays)
 
 Colors:
 
-  - Use `scale_fill_manual()` to set the colors by hand from `fad_colors`, which has a name for each color
+  - Use `scale_fill_manual()` to manually set the values using the named `fad_colors` vector
 
-  - Use `scale_color_manual()` to make the words white, but dark on the light color of the slap bracelets so we can read them
+  - Use `scale_color_manual()` to make the labels white, except dark plum on the light yellow slap bracelets layer
 
-  - Finally, add the `fill` to the words around the graph and move the key under the graph with `theme(legend.position = "bottom")`
+  - Finally, add the `fill` to the labels and move the legend with  `theme(legend.position = "bottom")`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -440,63 +444,3 @@ ggp2_stream_srt +
     theme(legend.position = "bottom")
 ```
 :::
-
-[^groups]: The levels of a categorical variable.
-
-[^numeric]: A numeric (continuous) variable, typically on the `y` axis, measured over time on the `x` axis.
-
-[^varies]: When the numeric value varies wildly (or isn't always present) over the time measurement.
-
-[^area]: Categorical groups are shown as color layers, and the area of each layer represents the change in the `y` value.
-
-[^packages]: Install and load the packages.
-
-[^simulate]: Simulate.
-
-[^spread]: `spread` is the standard deviation (`sd`) of the bell shaped curve, in years.
-
-[^bell]: A bell shaped (normal) curve, scaled by `total / 12`.
-
-[^poisson]: `rpois()` draws each month's sales from a Poisson distribution with `lambda = avg_sales`.
-
-[^seed]: Setting the random seed.
-
-[^stack]: Stacks each group's values.
-
-[^formula]: The formula.
-
-[^center]: Centers the stack around 0 (`type = "mirror"`, the default).
-
-[^poisson-dist]: Poisson counts.
-
-[^normal-dist]: A normal distribution.
-
-[^random-var]: The normal curve describes when the sales happen; it isn't a random variable here.
-
-[^area-total]: The area under the curve.
-
-[^labels]: Labels.
-
-[^map]: Map `month` to `x`, `sales` to `y`, and `fad` to the `fill` aesthetic.
-
-[^geom]: Add the `geom_stream()` layer.
-
-[^legend]: The legend.
-
-[^arguments]: Arguments.
-
-[^fct-rev]: `forcats::fct_rev()` reverses the order of the factor levels.
-
-[^default]: The default.
-
-[^named]: A named vector.
-
-[^share]: Each fad's share (proportion).
-
-[^sort]: How the categorical areas are sorted.
-
-[^text-labels]: Text labels.
-
-[^global]: Map `fad` to `label` globally, in `ggplot()`.
-
-[^grid]: The default grid of `100` points.

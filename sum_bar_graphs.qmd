@@ -84,9 +84,9 @@ ggp2_sum_col +
 
 ## Description
 
-A summary bar graph has one bar for each group, where each bar is as high as one number that stands for that group,[^statistic] such as the mean. The groups go across the graph, and the numbers go up the side.[^axes] Each bar can also have a line that runs above and below its top, to show how much the numbers move around or how sure we can be about the bar.[^error-bars]
+Bar graphs can summarize data by showing a statistic for each category. The x-axis lists the categories, and the y-axis shows the values. They can include error bars to show variation or confidence intervals.
 
-In `ggplot2`, we can make summary bar graphs with `geom_col()`.
+In `ggplot2`, we can create summary bar graphs with `geom_col()`.
 
 ## Set up
 
@@ -94,7 +94,7 @@ In `ggplot2`, we can make summary bar graphs with `geom_col()`.
 **PACKAGES:**
 :::
 
-Bring in the code we'll use.[^packages]
+Install packages.
 
 
 ::: {style="font-size: 0.85em;"}
@@ -118,7 +118,7 @@ library(tidyr) # for uncount()
 **DATA:**
 :::
 
-A Happy Meal is a box of food for a child from McDonald's, with a small toy to play with inside. In the last few years before 2000, McDonald's put a new toy in its Happy Meals every few weeks,[^promotion] and some toys (like the 1997 Teenie Beanie Babies) sold out at almost every McDonald's. We'll make up[^simulate] 28 days of Happy Meal sales at one McDonald's for four toys. Each toy gets its own average number sold in a day (`lambda`),[^rate] `tidyr::uncount()` makes one row for each day, and `rpois()` picks the number sold on each day.[^draw] Then we find the average number sold in a day for each toy (`avg_sold`). Starting with `set.seed()`[^seed] means you'll get the same 112 days every time you run the code below.
+McDonald's ran a different Happy Meal toy promotion every few weeks in the late 90s, and some toys (like the 1997 Teenie Beanie Babies) sold out almost everywhere. We'll simulate 28 days of Happy Meal sales at one restaurant for four promotions. Each promotion gets its own daily sales rate (`lambda`), `tidyr::uncount()` creates one row per day, and `rpois()` draws the number sold. Then we average the daily sales for each promotion (`avg_sold`). Setting the seed with `set.seed()` means you'll get the same 112 days every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -148,13 +148,13 @@ dplyr::glimpse(hm_sum_col)
 
 ## Distribution
 
-A summary bar graph shows one number that stands for each group[^summary] (here, the mean). Each bar covers up 28 days of sales with one number, so it's worth knowing how much those days change before we trust the difference between two bars. Below we'll move from the sales on each day, to a graph, to the rule behind it.[^formula]
+A summary bar graph shows one statistic per group (here, the mean). Each bar hides 28 days of sales behind a single height, so it's worth knowing how much those days vary before we trust the differences between bars. Below we'll move from the daily sales, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
 :::
 
-Start with the first week of the Teenie Beanie Babies toy.
+Start with the first week of the Teenie Beanie Babies promotion.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -166,7 +166,7 @@ head(happy_meals, 7)
 ```
 :::
 
-Sales on each day move up and down between about 400 and 450, but they never move far from the rate we gave `rpois()` (420). The table below shows the mean for each toy and how far a day usually falls from that mean.[^sd] It also shows how far each mean would usually move if we made up another 28 days (`se`).[^se]
+Daily sales bounce around between about 400 and 450, but they never drift far from the rate we gave `rpois()` (420). The summary below shows the mean and standard deviation for each promotion. It also shows the standard error of the mean (`se`), which measures how much each average would move if we simulated another 28 days.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -188,7 +188,7 @@ hm_stats
 **DRAW IT:**
 :::
 
-The graph below puts the 28 days for each toy back behind its bar. The bar is the mean, each point is one day, and the line on each bar runs above and below the mean by two times how far the mean would usually move.[^two-se] The points reach farther from the mean for the toys that sold more, but the lines stay short because each mean comes from 28 days.
+The graph below puts each promotion's 28 days back behind its bar. The bar is the average, the points are the individual days, and the error bars stretch two standard errors above and below the average. `geom_jitter()` nudges the points sideways so they don't pile up. The points spread out more for the busier promotions, but the error bars stay short because each average is built from 28 days.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -210,19 +210,19 @@ ggplot(data = hm_stats, aes(x = promotion, y = mean)) +
 **NAME IT:**
 :::
 
-Each day's sales come from [a rule for how many times something happens at a set rate](https://en.wikipedia.org/wiki/Poisson_distribution),[^poisson] using the rate for that toy:
+Each day's sales come from a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) with the promotion's rate:
 
 $$
 X \sim \text{Poisson}(\lambda)
 $$
 
-Under this rule, how far a day usually falls from the mean is $\sqrt{\lambda}$.[^poisson-sd] For Teenie Beanie Babies that's $\sqrt{420} \approx 20.5$ Happy Meals a day, and for the days we made up it's `r round(hm_stats$sd[1], 1)`. The mean of $n$ days moves around much less; how far it usually moves is $\sqrt{\lambda / n}$:[^se-name]
+For a Poisson distribution, the variance equals $\lambda$, so the standard deviation is $\sqrt{\lambda}$. For Teenie Beanie Babies that's $\sqrt{420} \approx 20.5$ Happy Meals a day, and our simulated days have a standard deviation of `r round(hm_stats$sd[1], 1)`. The average of $n$ days has a much smaller spread, $\sqrt{\lambda / n}$, which is the standard error:
 
 $$
 \bar{X} \approx \text{Normal}\left(\lambda, \; \sqrt{\lambda / n}\right)
 $$
 
-With $n = 28$ days, the Teenie Beanie Babies mean should land within about $2 \times \sqrt{420 / 28} \approx 7.7$ Happy Meals of 420. Our mean is `r round(hm_stats$mean[1], 1)`. That's why we can trust the bars here: the differences between toys (about 50 or more Happy Meals a day) are much larger than the lines on the bars. Try cutting the 28 in `tidyr::uncount()` down to 3 days and watch the lines grow.
+With $n = 28$ days, the Teenie Beanie Babies average should land within about $2 \times \sqrt{420 / 28} \approx 7.7$ Happy Meals of 420. Ours is `r round(hm_stats$mean[1], 1)`. That's why the bars are trustworthy here: the gaps between promotions (about 50 or more Happy Meals a day) are much larger than the error bars. Try cutting the 28 in `tidyr::uncount()` down to 3 days and watch the error bars grow.
 
 
 ## Grammar
@@ -231,15 +231,15 @@ With $n = 28$ days, the Teenie Beanie Babies mean should land within about $2 \t
 **CODE:**
 :::
 
-  -   Make the words around the graph[^labels] with `labs()`
+  -   Create labels with `labs()`
 
-  -   Start the graph with `ggplot()` and give it `data`
+  -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Put `promotion` across the graph (`x`) and `avg_sold` up the side (`y`)[^map]
+  -   Map `promotion` to `x` and `avg_sold` to `y`
 
-  -   *Inside* the `aes()` of `geom_col()`, join `promotion` to `fill` so each bar gets its own color[^fill]
+  -   *Inside* the `aes()` of `geom_col()`, map `promotion` to `fill` 
 
-  -   *Outside* the `aes()` of `geom_col()`, take away the key[^legend] with `show.legend = FALSE`
+  -   *Outside* the `aes()` of `geom_col()`, remove the legend with `show.legend = FALSE`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -300,11 +300,11 @@ ggp2_sum_col +
 
 ## More info
 
-Below is more about how `geom_bar()` and `geom_col()` are different.
+Below is more information on `geom_bar()` vs. `geom_col()`.
 
 ### Identity vs. Count
 
-  -   The `geom_bar()` way to show the data[^geom] can also make bar graphs by group, but we have to change `stat` to `"identity"`.[^identity]
+  -   The `geom_bar()` geom will also create summary bar graphs, but we have to switch the `stat` argument to `"identity"`.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -331,61 +331,7 @@ ggplot(data = hm_sum_col,
 
 <br>
 
-  -   `geom_bar()` will join a column of groups[^categorical] to `x` *or* `y` and show how many rows are in each group[^counts] (see [`stat_count()`](https://ggplot2.tidyverse.org/reference/geom_bar.html) for more)
+  -   `geom_bar()` will map a categorical variable to the `x` *or* `y` and display counts for the discrete levels (see [`stat_count()`](https://ggplot2.tidyverse.org/reference/geom_bar.html) for more info)
 
 
-  -   `geom_col()` will join columns to *both* `x` *and* `y`,[^aesthetics] and we use it when we want to show a number for each group.[^numeric] `geom_col()` expects these numbers to be in their own column already (see [`stat_identity()`](https://ggplot2.tidyverse.org/reference/stat_identity.html) for more)
-
-[^statistic]: A summary statistic, such as the mean or median.
-
-[^axes]: The categories go on the `x` axis, and the values go on the `y` axis.
-
-[^error-bars]: Error bars, which can show variation (such as the standard deviation) or confidence intervals.
-
-[^packages]: Install and load the packages.
-
-[^promotion]: A toy promotion. Each promotion is one group in the `promotion` column.
-
-[^simulate]: Simulate.
-
-[^rate]: The daily sales rate, which is the Poisson parameter $\lambda$.
-
-[^draw]: `rpois()` draws a random count from a Poisson distribution with that rate.
-
-[^seed]: Setting the random seed.
-
-[^summary]: A summary statistic (here, the mean).
-
-[^formula]: The formula.
-
-[^sd]: The standard deviation (`sd`).
-
-[^se]: The standard error of the mean (`se`).
-
-[^two-se]: Error bars that stretch two standard errors above and below the mean.
-
-[^poisson]: A Poisson distribution, which gives the number of times something happens in a fixed interval when it happens at a constant average rate.
-
-[^poisson-sd]: For a Poisson distribution, the variance equals $\lambda$, so the standard deviation is $\sqrt{\lambda}$.
-
-[^se-name]: The standard error of the mean. The formula below says the average of $n$ days is approximately normal, with mean $\lambda$ and standard deviation $\sqrt{\lambda / n}$.
-
-[^labels]: The labels (title, subtitle, caption, and axis titles).
-
-[^map]: Map `promotion` to `x` and `avg_sold` to `y` in `aes()`.
-
-[^fill]: Map `promotion` to the `fill` aesthetic.
-
-[^legend]: The legend.
-
-[^geom]: The `geom_bar()` geom.
-
-[^identity]: The `stat` argument. `"identity"` uses the `y` values as they are, instead of counting rows.
-
-[^categorical]: A categorical variable.
-
-[^counts]: Counts for the discrete levels.
-
-[^aesthetics]: The `x` and `y` aesthetics.
-
-[^numeric]: Numerical (quantitative) values across the levels of a categorical variable.
+  -   `geom_col()` will map *both* `x` *and* `y` aesthetics, and is used when we want to display numerical (quantitative) values across the levels of a categorical variable. `geom_col()` assumes these values have been created in their own column (see  [`stat_identity()`](https://ggplot2.tidyverse.org/reference/stat_identity.html) for more info)

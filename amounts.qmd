@@ -29,11 +29,11 @@ bare_theme <- theme(plot.title = element_blank(),
                     legend.position = "none")
 ```
 
-The graphs in this part show how many there are of something, or a few simple numbers that stand for one or two columns.[^amounts-def]
+These graphs display counts or simple summary statistics of one or two columns in a dataset.      
 
 ## Grouped bar graphs
 
-A grouped bar graph compares more than one set of numbers across the same groups.[^grp-vars] Each group gets a few bars that stand side by side, one for each part of the data. The names of the groups run along the foot of the graph, and the values we found run up the side.[^grp-axes] A color for each part shows which bar is which, and a key on the side or top of the graph names the colors.[^grp-legend]
+Grouped bar graphs help compare multiple variables across the same categories. Each category has a cluster of bars representing different subsets of data. The x-axis labels the categories, and the y-axis shows the measured value. Colors or patterns differentiate the subsets within each category, and a legend is usually shown on the side or top of the graph.
 
 ```{r}
 #| label: part_grp_bar_graphs
@@ -82,7 +82,7 @@ ggp2_grp_col <- ggplot(data = jp_paddocks,
 
 ## Summary bar graphs
 
-This kind of bar graph shows one number for each group.[^statistic] Each bar stands for a number we worked out from the data in one group, such as the mean, the middle number, or the total.[^median] The names of the groups run along the foot of the graph, and the numbers run up the side. These graphs quickly show the most important numbers for each group, and they can add small lines to show how much the numbers change or how sure we can be about them.[^error-bars]
+Bar graphs that summarize data show a statistic for each category. Each bar represents a value calculated for a specific group, such as the mean, median, or total. The x-axis lists the categories, and the y-axis shows the statistic values. These graphs are helpful in quickly displaying essential data points for different categories, and they can include error bars to show variation or confidence intervals.
 
 ```{r}
 #| label: part_sum_bar_graphs
@@ -129,7 +129,7 @@ ggp2_sum_col <- ggplot(data = hm_sum_col,
 
 ## Overlapping bar graphs
 
-When we show more than one set of numbers in one graph, we can put the bars over each other instead of side by side.[^overlap] This way we can compare the groups on the same number line, but the graph can be hard to read if we can't see through the bars. We often make the bars so we can see through them a little, which shows the bars behind them.[^alpha] A key can help tell us which data each bar stands for.
+When displaying multiple variables on a graph, you can use overlapping bar graphs instead of placing them side by side. This method allows you to compare the values of different groups on the same scale. However, the graph might be harder to read if the bars are entirely opaque. The bars are often made partially transparent to make it easier to see. Legends can help distinguish between the data represented by the different bars.
 
 ```{r}
 #| label: part_overlapping_bar_graphs
@@ -170,7 +170,7 @@ ggp2_bar_ovrlp <- ggplot(data = netware_offices,
 
 ## Heatmaps
 
-A heatmap shows numbers as colors. It uses a table of boxes, with groups along the foot and up the side.[^matrix] Each box gets a color from the number it holds. A heatmap helps show how big something is across two sets of groups. A color key next to the graph often tells us what the colors mean.[^color-scale]
+A heatmap is a graph that shows data as colors. It uses a matrix to represent values, with the x and y axes showing categories. Each cell in the matrix is colored according to its value. Heatmaps help show how big something is in two dimensions. A color scale (legend) is often next to the graph to explain what the colors mean.
 
 ```{r}
 #| label: part_heatmaps
@@ -219,7 +219,7 @@ ggp2_heatmap_tile <- ggplot(data = fp_heatmap,
 
 ## Waffle charts
 
-A waffle chart is made of small boxes and shows how a whole thing breaks into parts. It does the same job as a round graph cut into pieces, but it gives each part its own small boxes or little pictures and puts them in groups that make one big box.[^grid] This kind of graph works well for showing a part out of a total, like how many out of 100.[^percent] To make it easy to understand, you can add a key or words next to each group to say what it is.
+Waffle charts are a way to show how a whole thing is divided into parts, just like pie charts. Instead of using slices, waffle charts use squares or icons to represent each part and group them into categories that fill a grid. This graph type is appropriate when showing percentages or proportions out of a total. To make it easy to understand, you can add a legend or labels next to each category to explain what it is.
 
 ```{r}
 #| label: part_waffle_charts
@@ -266,7 +266,7 @@ ggp2_waffle <- ggplot(data = waffle_pogs,
 
 ## Cleveland dot plots
 
-A Cleveland dot plot shows each number as a point along a line. It helps compare a few different numbers. The graph lists the groups up the side and shows the data as points along a line. It shows the differences between groups, and it does the same work as a bar graph with less on the page.[^efficient]
+A Cleveland dot plot is a graph that helps compare a few different numbers. The graph lists the categories on the side and shows the data with dots along a line. This graph helps show the differences between groups and is more efficient than traditional bar graphs.
 
 ```{r}
 #| label: part_cleveland_dot_plots
@@ -318,31 +318,3 @@ ggp2_clev_dots <- ggplot(data = walkman_clev_dots,
   fmggp2::theme_walkman(base_size = 12) +
   bare_theme
 ```
-
-[^amounts-def]: Counts or simple summary statistics of one or two columns in a dataset.
-
-[^grp-vars]: Grouped bar graphs compare multiple variables across the same categories, with a cluster of bars for each category.
-
-[^grp-axes]: The `x` axis labels the categories, and the `y` axis shows the measured value.
-
-[^grp-legend]: Colors (or patterns) differentiate the subsets, and a legend identifies them.
-
-[^statistic]: A summary statistic for each category, like the mean, median, or total.
-
-[^median]: The median.
-
-[^error-bars]: Error bars, which show variation or confidence intervals.
-
-[^overlap]: Overlapping bar graphs.
-
-[^alpha]: Partially transparent bars (set with `alpha`), so opaque bars don't hide the ones behind them.
-
-[^matrix]: A matrix of cells, with categories on the `x` and `y` axes.
-
-[^color-scale]: A color scale (legend).
-
-[^grid]: Instead of the slices in a pie chart, waffle charts use squares or icons arranged in a grid.
-
-[^percent]: Percentages or proportions of a total.
-
-[^efficient]: Cleveland dot plots (named for William S. Cleveland) are often more efficient than traditional bar graphs.

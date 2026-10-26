@@ -87,9 +87,9 @@ ggp2_heatmap_tile +
 
 ## Description 
 
-A heatmap is made of colored boxes set out in rows and columns,[^matrix] where the color of each box stands for a number. Heatmaps put groups[^categories] on the `x` and `y` axes, and each box is where a group on the `x` axis meets a group on the `y` axis. The color of each box[^cell] comes from its number. Heatmaps are good at showing how big[^magnitude] numbers are across two sets of groups,[^dimensions] and they often come with a key that shows which color goes with which number.[^color-scale] How strong the color is[^saturation] changes from box to box to show the number where two groups meet.
+Heatmaps are color graphs that show data as a matrix with categories on the x and y axes. Each cell's color corresponds to its value. They are useful for showing magnitude in two dimensions and often include a color scale. The intersecting cells contain variations of color saturation (i.e., the grade of purity or vividness) to represent the numerical values between groups.
 
-Put the key above or below a heatmap, and run it from left to right.[^legend-position] That keeps the form of the heatmap and makes it easier to read.
+Heatmap legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability. 
 
 ## Set up
 
@@ -98,7 +98,7 @@ Put the key above or below a heatmap, and run it from left to right.[^legend-pos
 :::
 
 
-Bring in the code we'll use.[^packages]
+Install packages.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -121,7 +121,9 @@ library(tidyr) # for expand_grid()
 **DATA:**
 :::
 
-*The Fresh Prince of Bel-Air* was a funny show about a young man named Will who goes to live with his rich family. It ran for six seasons (1990 to 1996). A running gag is a funny bit that a show does again and again, and this show had a few of them. We'll make up[^simulate] whether each gag shows up in each of the 24 episodes in a season. Every gag gets a starting chance of showing up (`base`) and a `trend` that makes it show up more or less often as the show goes on. `plogis()` turns those numbers into a chance between 0 and 1,[^probability] and `rbinom()` uses that chance to pick yes or no for every gag in every episode[^weighted-coin] (`present` is 1 when the gag shows up). Then we add up the episodes that have each gag in each season (`occurrences`). Starting with `set.seed()`[^seed] means you'll get the same 144 episodes every time you run the code below.
+*The Fresh Prince of Bel-Air* ran for six seasons (1990 to 1996) and leaned on a handful of running gags. We'll simulate whether each gag shows up in each of the 24 episodes per season. Every gag gets a starting chance of appearing (`base`) and a `trend` that makes it more or less common as the show goes on.
+
+`plogis()` turns those numbers into a probability between 0 and 1, and `rbinom()` flips a weighted coin for every gag in every episode (`present` is 1 when the gag appears). Then we count the episodes with each gag in each season (`occurrences`). Setting the seed with `set.seed()` means you'll get the same 144 episodes every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -151,7 +153,7 @@ glimpse(fp_heatmap)
 
 ## Distribution
 
-Every box in a heatmap is a number, and every number here comes from adding up 24 yes or no choices.[^outcomes] A gag that shows up in most episodes gives light boxes in every season, and a gag whose chances grow over time gives boxes that get lighter from left to right. Below we'll move from the episodes, to a graph, to the rule behind it.[^formula]
+Every tile in a heatmap is a count, and every count here is built from 24 yes or no outcomes. A gag that appears in most episodes produces bright tiles in every season, and a gag whose chances grow over time produces tiles that brighten from left to right. Below we'll move from the episodes, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -172,7 +174,7 @@ fp_episodes |>
 ```
 :::
 
-Each row is one yes or no choice, and `p` is the chance it comes out 1. When Will flirts, he tries to get a girl to like him. Carlton is a young man in Will's rich family. Will flirts in almost every episode (`p` is above 0.9), while the Carlton dance has only about a 3% chance in season 1. Now look at how many episodes have each of those two gags in each of the six seasons, next to the numbers we'd expect[^expected] (24 episodes times `p`).
+Each row is one coin flip, and `p` is the chance the coin comes up 1. Will flirts in almost every episode (`p` is above 0.9), while the Carlton dance has only about a 3% chance in season 1. Now compare the counts for those two gags across all six seasons with the counts we'd expect (24 episodes times `p`).
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -189,13 +191,13 @@ fp_episodes |>
 ```
 :::
 
-The Carlton dance goes from almost never to a few times a season, while Will flirts in nearly every episode, no matter the season.
+The Carlton dance climbs from almost never to a few times a season, while Will flirts in nearly every episode no matter the season.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **DRAW IT:**
 :::
 
-Below are two heatmaps. The first shows the numbers we'd expect (24 times `p`), and the second shows what our made up data really gave us. The two look much the same: Will's flirting stays light in every season, and the Carlton dance gets lighter, a little at a time, from left to right. The made up heatmap changes more from box to box, because each box is only 24 yes or no choices.
+Below are two heatmaps. The first shows the expected counts (24 times `p`), and the second shows what our simulation actually produced. The patterns match: Will's flirting stays bright in every season, and the Carlton dance slowly lights up from left to right. The simulated heatmap is a little patchier because each tile is only 24 coin flips.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -224,15 +226,15 @@ ggplot(fp_heatmap, aes(x = season, y = gag, fill = occurrences)) +
 **NAME IT:**
 :::
 
-Each gag in each episode is [one yes or no choice](https://en.wikipedia.org/wiki/Bernoulli_trial)[^bernoulli] with a chance of $p$. Adding up 24 of these choices, where no choice changes any other,[^independent] gives us [the rule for how many times out of 24 we get a yes](https://en.wikipedia.org/wiki/Binomial_distribution):[^binomial]
+Each gag in each episode is a [Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial) (a single yes or no outcome) with probability $p$. Adding up 24 independent trials gives a [binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution):
 
 $$
 \text{occurrences} \sim \text{Binomial}(n = 24, \; p_{\text{gag, season}})
 $$
 
-The number we'd expect is $24p$, and how far the numbers usually fall from it[^sd] is $\sqrt{24p(1 - p)}$. This number is biggest when $p = 0.5$ (about 2.4 episodes) and gets close to 0 when a gag almost always or almost never shows up. That's why the Will flirts row looks so much the same from season to season, while the middle rows change a lot from one season to the next.
+The expected count is $24p$, and the standard deviation is $\sqrt{24p(1 - p)}$. That spread is largest when $p = 0.5$ (about 2.4 episodes) and shrinks toward zero when a gag almost always or almost never appears. That's why the Will flirts row looks so steady while the middle rows flicker from season to season.
 
-The chance itself comes from `plogis()`, which turns `base + trend * (season - 3.5)` into a number between 0 and 1. A `trend` above 0 (like the 0.5 for the Carlton dance) makes a gag more likely every season. Jazz is Will's friend, and in one gag he gets thrown out of the house. Try giving "Jazz thrown out" a `trend` below 0 and watch his row get darker from left to right.
+The probability itself comes from `plogis()`, which turns `base + trend * (season - 3.5)` into a number between 0 and 1. A positive `trend` (like the Carlton dance's 0.5) makes a gag more likely every season. Try giving "Jazz thrown out" a negative trend and watch his row fade to teal from left to right.
 
 
 ## Grammar
@@ -241,15 +243,15 @@ The chance itself comes from `plogis()`, which turns `base + trend * (season - 3
 **CODE:**
 :::
 
-  -  Make the words around the graph[^labels] with `labs()`
+  -  Create labels with `labs()`
 
-  -  Start the graph with `ggplot()` and give it `data`
+  -  Initialize the graph with `ggplot()` and provide `data`
 
-  -  Put `season` on the `x` axis, `gag` on the `y` axis, and `occurrences` in the color of each box[^fill]
+  -  Assign `season` to `x`, `gag` to `y`, and `occurrences` to `fill`
 
-  -  Add `geom_tile()` on top[^layer]
+  -  Add the `geom_tile()`
 
-  -  Move the key below the graph with `theme(legend.position = "bottom")`
+  -  Move the legend to the bottom with `theme(legend.position = "bottom")`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -314,21 +316,21 @@ ggp2_heatmap_tile +
 
 ## More info
 
-Along with `geom_tile()`, we can make heatmaps with `geom_raster()`.
+In addition to `geom_tile()`, heatmaps can also be created with the `geom_raster()` function.
 
 ### `geom_raster()`
 
 <br>
 
-  -  Make the words around the graph[^labels-raster] with `labs()`
+  -  Create labels with `labs()`
 
-  -  Start the graph with `ggplot()` and give it `data`
+  -  Initialize the graph with `ggplot()` and provide `data`
 
-  -  Put `season` on the `x` axis, `gag` on the `y` axis, and `occurrences` in the color of each box[^fill-raster]
+  -  Assign `season` to `x`, `gag` to `y`, and `occurrences` to fill
 
-  -  Add `geom_raster()` on top[^layer-raster]
+  -  Add the `geom_raster()`
 
-  -  Move the key below the graph with `theme(legend.position = "bottom")`
+  -  Move the legend to the bottom with `theme(legend.position = "bottom")`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -356,54 +358,4 @@ ggp2_heatmap_raster +
 ```
 :::
 
-[^matrix]: A matrix.
 
-[^categories]: Categories (categorical variables).
-
-[^cell]: A cell. `geom_tile()` draws each cell as a tile.
-
-[^magnitude]: Magnitude.
-
-[^dimensions]: Two dimensions.
-
-[^color-scale]: A color scale, shown in the legend.
-
-[^saturation]: Color saturation (the grade of purity or vividness).
-
-[^legend-position]: Position the legend on top or bottom and justify it horizontally to preserve the shape of the heatmap and improve readability.
-
-[^packages]: Install and load the packages.
-
-[^simulate]: Simulate.
-
-[^probability]: A probability. `plogis()` is the logistic (inverse logit) function.
-
-[^weighted-coin]: `rbinom()` with `size = 1` flips a weighted coin (one Bernoulli draw) for every gag in every episode.
-
-[^seed]: Setting the random seed.
-
-[^outcomes]: Each tile is a count of 24 binary (yes or no) outcomes.
-
-[^formula]: The formula.
-
-[^expected]: The expected counts, $24p$.
-
-[^bernoulli]: A Bernoulli trial: a single yes or no outcome with probability $p$.
-
-[^independent]: Independent trials.
-
-[^binomial]: A binomial distribution.
-
-[^sd]: The standard deviation, a measure of spread.
-
-[^labels]: The labels (title, subtitle, caption, axis titles, and legend title).
-
-[^fill]: Map `occurrences` to the `fill` aesthetic.
-
-[^layer]: Add the `geom_tile()` layer.
-
-[^labels-raster]: The labels (title, subtitle, caption, axis titles, and legend title).
-
-[^fill-raster]: Map `occurrences` to the `fill` aesthetic.
-
-[^layer-raster]: Add the `geom_raster()` layer.

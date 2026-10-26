@@ -82,7 +82,9 @@ ggp2_ovrlp_freq_poly +
 
 ## Description
 
-A [frequency polygon](frequency_polygons.qmd) shows where numbers fall, using points joined by straight lines. Overlapping frequency polygons do the same job as [overlapping histograms](overlapping_histograms.qmd): they let us compare the form the numbers take[^dist-shape] from one group to the next.[^groups] Instead of bars, each group gets its own line.
+Overlapping frequency polygons are similar to overlapping histograms: they allow us to compare distributions of a continuous variable across the levels of a categorical variable.
+
+Instead of using bars, frequency polygons use lines to show the shape of the distribution.
 
 ## Set up
 
@@ -90,7 +92,7 @@ A [frequency polygon](frequency_polygons.qmd) shows where numbers fall, using po
 **PACKAGES:**
 :::
 
-Bring in the code we'll use.[^packages]
+Install packages.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -112,7 +114,7 @@ library(dplyr) # for tibble() and data manipulation
 **DATA:**
 :::
 
-A Super Soaker is a big water gun. Every summer in the 1990s, water fights behind the house were won by the kid with the biggest Super Soaker. We'll make up[^simulate] 200 shots from each of three kinds of Super Soaker.[^models] Each kind gets its own mean for how far a shot goes (`avg_range`).[^range] A hill is a line that is high in the middle and low on both sides. `rnorm()` picks how far each shot goes from the hill that goes with its kind.[^normal] How far a shot usually falls from the mean is 12% of the mean,[^sd] so the shots from the stronger kinds land over more ground. Starting with `set.seed()`[^seed] means you'll get the same 600 shots every time you run the code below.
+Every summer in the early 90s, backyard water fights were won by whoever had the biggest Super Soaker. We'll simulate 200 shots from each of three models. Each model gets its own average range (`avg_range`). `rnorm()` draws each shot's range with a standard deviation equal to 12% of that average, so the more powerful models also spray a wider spread of distances. Setting the seed with `set.seed()` means you'll get the same 600 shots every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -142,7 +144,7 @@ glimpse(soaker_shots)
 
 ## Distribution
 
-Overlapping frequency polygons make it easy to compare where each group stands on the `x` axis *and* how far from each other its numbers are.[^spread] In the shots we made up, both of those change together: a bigger Super Soaker sends water farther for the most part, and its shots land farther from each other. Below we'll move from the shots, to a graph, to the rule behind it.[^formula]
+Overlapping frequency polygons make it easy to compare where groups sit *and* how spread out they are. In this simulation, both of those change together: a bigger Super Soaker shoots further on average and less consistently. Below we'll move from the shots, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -160,7 +162,7 @@ head(soaker_shots, 5)
 ```
 :::
 
-These shots landed between about 22 and 26 feet. The numbers below[^summary] show that how far shots usually fall from the mean (`sd`) grows with the mean, but `sd` as a part of the mean (`cv`)[^cv] stays close to 0.12 for every kind.
+These shots landed between about 22 and 26 feet. The summary below shows that the standard deviation (`sd`) grows with the mean, but the ratio of the two (`cv`, the [coefficient of variation](https://en.wikipedia.org/wiki/Coefficient_of_variation)) stays close to 0.12 for every model.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -178,7 +180,7 @@ soaker_shots |>
 **DRAW IT:**
 :::
 
-The first graph below shows the three lines in feet. Each one stands farther to the right than the last, and each one is lower and wider. The second graph shows every shot as a part of the mean for its kind (a shot at the mean is 1),[^relative] which puts all three on the same number line. Once we do that, the three lines fall on top of each other, because they all have the same form.
+The first graph below shows the three polygons in feet. Each one sits further to the right than the last, and each one is lower and wider. The second graph divides every shot by its model's average range, which puts all three on the same relative scale. Once we do that, the three polygons line up on top of each other, because they all have the same shape.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -206,13 +208,13 @@ soaker_shots |>
 **NAME IT:**
 :::
 
-Each kind's shots come from a [hill](https://en.wikipedia.org/wiki/Normal_distribution)[^normal-dist] where how far shots usually fall from the mean is always the same part of the mean:
+Each model's shots come from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) whose standard deviation is a fixed fraction of its mean:
 
 $$
 X_m \sim \text{Normal}(\mu_m, \; 0.12\,\mu_m), \quad \mu = (25, 35, 45)
 $$
 
-Showing each shot as a part of the mean takes away the difference between the kinds: $X_m / \mu_m \sim \text{Normal}(1, 0.12)$ for every kind, which is why the lines in the second graph fall on top of each other. 12% of the mean is about 3 feet for the SS 50 but more than 5 feet for the CPS 2000, so the CPS 2000's line is wider and, with the same 200 shots, lower. Try giving every kind the same `sd` in `rnorm()` (say, 4 feet), and the three lines in the first graph will all be as wide as each other.
+Dividing by the mean removes the difference between models: $X_m / \mu_m \sim \text{Normal}(1, 0.12)$ for every model, which is why the relative polygons line up. A 12% spread is about 3 feet for the SS 50 but more than 5 feet for the CPS 2000, so the CPS 2000's polygon is wider and, with the same 200 shots, lower. Try giving every model the same `sd` in `rnorm()` (say, 4 feet) and the three polygons in the first graph will all have the same width.
 
 
 ## Grammar
@@ -222,13 +224,13 @@ Showing each shot as a part of the mean takes away the difference between the ki
 **CODE:**
 :::
 
-  -   Make the words around the graph[^labels] with `labs()`
+  -   Create labels with `labs()`
 
-  -   Start the graph with `ggplot()` and give it `data`
+  -   Initialize the graph with `ggplot()` and provide `data`
 
-  -   Put `range_ft` on the `x` axis
+  -   Map `range_ft` to the `x`
 
-  -   Give each `model` its own color and line *inside* `geom_freqpoly()`,[^linetype] and set `binwidth` to `2` and `linewidth` to `1`
+  -   Map `model` to the `color` and `linetype` aesthetics *inside* `geom_freqpoly()`,[^linetype] and set `binwidth` to `2` and `linewidth` to `1`
 
 
 ::: {style="font-size: 0.85em;"}
@@ -286,37 +288,5 @@ ggp2_ovrlp_freq_poly <- ggplot(data = soaker_shots,
 ggp2_ovrlp_freq_poly +
   labs_ovrlp_freq_poly
 ```
-
-[^dist-shape]: The shape of the variable's distribution.
-
-[^groups]: The levels of a categorical variable.
-
-[^packages]: Install and load the packages.
-
-[^simulate]: Simulate.
-
-[^models]: Three models: the SS 50, SS 100, and CPS 2000.
-
-[^range]: The average range, in feet.
-
-[^normal]: `rnorm()` draws values from a normal distribution with `mean = avg_range`.
-
-[^sd]: The standard deviation is 12% of the mean (`sd = 0.12 * avg_range`).
-
-[^seed]: Setting the random seed.
-
-[^spread]: Where each distribution is centered *and* how spread out it is.
-
-[^formula]: The formula.
-
-[^summary]: Summary statistics.
-
-[^cv]: The [coefficient of variation](https://en.wikipedia.org/wiki/Coefficient_of_variation), the ratio of the standard deviation to the mean.
-
-[^relative]: Relative range: each shot divided by its model's average range.
-
-[^normal-dist]: A normal distribution whose standard deviation is a fixed fraction of its mean.
-
-[^labels]: Labels.
 
 [^linetype]: Mapping `model` to both `color` and `linetype` keeps the groups apart in grayscale and for colorblind readers. Giving both the same title in `labs()` merges them into one legend.

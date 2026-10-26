@@ -90,9 +90,9 @@ ggp2_pie +
 
 *“In general, pie charts work well when the goal is to emphasize simple fractions, such as one-half, one-third, or one-quarter.”*
 
-*“They also work well when we have very small datasets.”* - [Claus O. Wilke, Fundamentals of Data Visualization (2019)](https://clauswilke.com/dataviz/)
+*“They also work well when we have very small datasets.”* ([Claus O. Wilke, Fundamentals of Data Visualization (2019)](https://clauswilke.com/dataviz/))
 
-A pie chart shows how big each part of a whole is, by cutting a round space into pieces like a pie.[^slices] Each piece stands for one group in a column,[^categorical] and the size of the piece shows how much of the whole that group has.[^proportions] We can make pie charts with the code in [`ggpubr`.](https://rpkgs.datanovia.com/ggpubr/)[^ggpubr]
+Pie charts are ideal for comparing the proportions of categorical variable values, and we can build pie charts using the [`ggpubr` package.](https://rpkgs.datanovia.com/ggpubr/)
 
 ## Set up
 
@@ -100,7 +100,7 @@ A pie chart shows how big each part of a whole is, by cutting a round space into
 **PACKAGES:**
 :::
 
-Bring in the code we'll use.[^packages]
+Install packages.
 
 
 ::: {style="font-size: 0.85em;"}
@@ -123,7 +123,7 @@ library(dplyr) # for tibble() and data manipulation
 **DATA:**
 :::
 
-A [Koosh ball](https://en.wikipedia.org/wiki/Koosh_ball) is a ball made of many long hairs that is easy to catch but does not come back up when it hits the ground. In the ten years before 2000, Koosh balls came in more styles than anyone needed. Tri color balls have three colors, rainbow balls have many colors, neon balls have very strong colors, and glow balls give off light in the dark. We'll make up[^simulate] the styles of 200 Koosh balls sold at one store with `sample()`. The chances[^probabilities] are simple, and we picked them that way: one in two, one in four, one in eight, and one in eight. Then we find how many balls have each style (`cnt`)[^count] and what part of all 200 balls that is (`perc`).[^perc] Starting with `set.seed()`[^seed] means you'll get the same 200 Koosh balls every time you run the code below.
+The [Koosh ball](https://en.wikipedia.org/wiki/Koosh_ball) was a ball of rubber filaments that was easy to catch and impossible to bounce, and by the 90s it came in more styles than anyone needed. We'll simulate the styles of 200 Koosh balls sold at a toy store (tri color, rainbow, neon, and glow in the dark) with `sample()`. The probabilities are simple fractions on purpose: one half, one quarter, one eighth, and one eighth. Then we count each style (`cnt`) and convert the counts to proportions (`perc`). Setting the seed with `set.seed()` means you'll get the same 200 Koosh balls every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -154,7 +154,7 @@ glimpse(koosh_pie)
 
 ## Distribution
 
-A pie chart cuts a whole into pieces, so it only makes sense when the pieces add up to one thing (here, 200 Koosh balls). Pie charts are easiest to read when each piece is a simple part of the whole,[^fractions] and because we picked those parts in `sample()`, we know what each piece should look like. Below we'll move from the Koosh balls, to a graph, to the rule behind it.[^formula]
+A pie chart is a whole cut into slices, so it only makes sense when the slices add up to one thing (here, 200 Koosh balls). Pie charts are easiest to read when the slices are simple fractions, and because we chose those fractions in `sample()`, we know what each slice should look like. Below we'll move from the Koosh balls, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -172,7 +172,7 @@ head(koosh_balls$style, 10)
 ```
 :::
 
-Finding how many of all 200 balls have each style, and putting each number next to the number we'd expect[^expected] (200 times its chance), shows how close our made up balls come.
+Counting all 200 and comparing each count to the count we'd expect (200 times each fraction) shows how close the simulation lands.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -189,7 +189,7 @@ koosh_pie |>
 **DRAW IT:**
 :::
 
-A bar model sets the 200 Koosh balls out in a line. Tri color balls take up about half the bar, rainbow balls take up about half of what is left, and neon and glow balls share the rest.
+A bar model lays the 200 Koosh balls out in a line. Tri color balls fill about half the bar, rainbow balls about a quarter, and neon and glow balls split the last quarter.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -207,7 +207,7 @@ ggplot(data = koosh_pie, aes(x = cnt, y = "200 Koosh balls",
 ```
 :::
 
-A pie chart takes the same bar and joins its two ends to make a round pie.[^circle] Below, the pie on the left uses the chances from `sample()` just as we gave them, and the pie on the right uses the numbers we made up. The tri color piece covers about half of each pie, and the rainbow piece covers about half of what is left.
+A pie chart bends the same bar into a circle. Below, the pie on the left uses the exact fractions from `sample()`, and the pie on the right uses our simulated counts. The tri color slice covers about half the circle in both, and the rainbow slice covers about a quarter.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -240,15 +240,15 @@ ggpubr::ggpie(koosh_pie, x = "perc",
 **NAME IT:**
 :::
 
-Each Koosh ball gets one of four styles by chance,[^draw] so the four numbers follow a [rule for picking one of many kinds, again and again](https://en.wikipedia.org/wiki/Multinomial_distribution):[^multinomial]
+Each Koosh ball is one draw from four styles, so the four counts follow a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
 
 $$
 (N_{\text{tri color}}, N_{\text{rainbow}}, N_{\text{neon}}, N_{\text{glow}}) \sim \text{Multinomial}\left(200, \; \left(\tfrac{1}{2}, \tfrac{1}{4}, \tfrac{1}{8}, \tfrac{1}{8}\right)\right)
 $$
 
-How wide a piece opens at the middle of the pie[^angle] is its share of the 360 degrees around the pie: $\tfrac{1}{2}$ is 180 degrees, $\tfrac{1}{4}$ is 90 degrees, and each $\tfrac{1}{8}$ is 45 degrees. Simple parts like these line up with places our eyes already know from the face of a watch (half past the hour, 15 minutes past),[^clock] which is why pie charts work best with them.
+A slice's angle is its share of the 360 degrees in the circle: $\tfrac{1}{2}$ is 180 degrees, $\tfrac{1}{4}$ is 90 degrees, and each $\tfrac{1}{8}$ is 45 degrees. Simple fractions like these line up with the "clock positions" our eyes already know (half past, quarter past), which is why pie charts work best with them.
 
-Each share we made up moves around its chance by about $\sqrt{p(1 - p) / 200}$:[^se] about 3.5 percent of the balls for the tri color piece and 2.3 percent for the neon and glow pieces.[^points] That's why our pieces are close to the ones we expect but not the same. Try changing 200 to 20 in both `ball_id = 1:200` and `size = 200`, and the pieces move much farther from the simple parts.
+Each simulated share wobbles around its fraction by about $\sqrt{p(1 - p) / 200}$: about 3.5 percentage points for the tri color slice and 2.3 points for the neon and glow slices. That's why our slices are close to the expected ones but not exact. Try changing 200 to 20 in both `ball_id = 1:200` and `size = 200`, and the slices drift much further from the simple fractions.
 
 
 ## Grammar
@@ -257,25 +257,25 @@ Each share we made up moves around its chance by about $\sqrt{p(1 - p) / 200}$:[
 **CODE:**
 :::
 
-  -   Make the words that go on the pieces (`pie_labels`) with `paste0()`[^pie-labels]
+  -   Create the slice labels (`pie_labels`) with `paste0()`
 
-  -   `ggpie()` gives the graph its own look,[^theme] so make `pie_theme` to bring back the look of this book (and take away the words and small marks on each axis and the lines behind the pie)[^axis-parts]
+  -   `ggpie()` applies its own theme, so create `pie_theme` to add the book theme back (and remove the axis text, ticks, and grid lines)
 
-  -   Make the words around the graph[^labels] with `labs()`
+  -   Create labels with `labs()`
 
-  -   Give the data to `ggpubr::ggpie()`
+  -   Assign the data to `ggpubr::ggpie()`
 
-  -   Give `"perc"` to `x`
+  -   Assign `"perc"` to `x`
 
-  -   Give `pie_labels` to `label`
+  -   Assign `pie_labels` to `label`
 
-  -   Give `"in"` to `lab.pos`
+  -   Assign `"in"` to `lab.pos`
 
-  -   Give white (`"#FFFFFF"`) to `lab.font` and `"white"` to `color`
+  -   Assign white (`"#FFFFFF"`) to `lab.font` and `"white"` to `color`
 
-  -   Give `"style"` to `fill`
+  -   Assign `"style"` to `fill`
 
-  -   Add `pie_theme` (which also moves the key[^legend] below the pie)
+  -   Add `pie_theme` (which also moves the legend to the bottom)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -346,53 +346,3 @@ ggp2_pie <- ggpubr::ggpie(koosh_pie,
 ggp2_pie +
   labs_pie
 ```
-
-[^slices]: Slices. Each slice is one level of the variable.
-
-[^categorical]: A categorical variable.
-
-[^proportions]: The proportion of the total for each category.
-
-[^ggpubr]: The `ggpubr` package, which builds on `ggplot2`.
-
-[^packages]: Install and load the packages.
-
-[^simulate]: Simulate.
-
-[^probabilities]: The probabilities in the `prob` argument (simple fractions: 1/2, 1/4, 1/8, and 1/8).
-
-[^count]: The count for each style.
-
-[^perc]: The proportion of all 200 balls.
-
-[^seed]: Setting the random seed.
-
-[^fractions]: A simple fraction, such as one half, one quarter, or one eighth.
-
-[^formula]: The formula.
-
-[^expected]: The expected count.
-
-[^circle]: A circle.
-
-[^draw]: Each ball is one independent draw from the four styles.
-
-[^multinomial]: A multinomial distribution of the four counts.
-
-[^angle]: The angle of the slice.
-
-[^clock]: Clock positions: half past and quarter past.
-
-[^se]: The standard error of a proportion, where $p$ is the probability for that style.
-
-[^points]: Percentage points.
-
-[^pie-labels]: The slice labels.
-
-[^theme]: Its own theme.
-
-[^axis-parts]: The axis text, axis ticks, and grid lines.
-
-[^labels]: The labels (title, subtitle, and caption).
-
-[^legend]: The legend.

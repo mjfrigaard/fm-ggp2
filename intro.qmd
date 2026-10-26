@@ -35,17 +35,13 @@ co_box(
 
 > “*making infinite use of finite means*” (Wilhelm von Humboldt)
 
-Every language has rules for what words mean and how to order them.[^grammar] R is a language for working with data, and `ggplot2` follows R’s rules:
+Grammar is often defined as the system of rules for any given language and includes word meanings, internal structures, and word arrangement. Syntax is the form, structure and order used to construct statements. `ggplot2`'s syntax is built on the grammar & syntax of R. In R, objects are like nouns, and functions are like verbs (i.e., functions "do things" to objects).
 
-* a thing that holds data is like a **naming** word, and
-
-* the set of steps that does something to that thing is like a **doing** word[^nouns-verbs]
-
-A graph is a picture of data that we make with code. `ggplot2` graphs are built one layer at a time. A layer is one part of a graph that we put on top of the parts under it. We can start with a few layers and keep adding more until the graph is just what we want.[^layers]
+`ggplot2` syntax is built on layers, which we can use as templates to build increasingly customized and complex graphs.
 
 ### The Data Layer
 
-The data layer is a table, like a page of numbers on a computer.[^rectangular] A column is one list of values that runs down a table, and a row is one line across it. Every set of data in this book is made up,[^simulated] so we’ll make one here: 150 home computers sold in 1998, with the company that made each computer (`brand`), the system it runs (`os`), how fast it works (`cpu_mhz`), and its price (`price_usd`).[^pc-columns] Faster computers cost more, and newer systems add a little to the price.[^win98]
+The data layer consists of a rectangular object (like a spreadsheet) with columns and rows. Every dataset in this book is simulated, so we'll create one here: 150 home PCs sold in 1998, with each PC's `brand`, operating system (`os`), processor speed (`cpu_mhz`), and price (`price_usd`). Faster processors cost more, and Windows 98 adds a little to the price.
 
 ```{r}
 #| message: false
@@ -64,7 +60,7 @@ ggplot(data = pc_sales)
 
 ### The Mapping Layer
 
-The mapping layer joins columns in the data to things we can see in the graph, such as how far across and how far up each point goes. An axis is a number line along one side of a graph.[^aes]
+The mapping layer assigns columns (variables) from the data to a visual property (i.e. graph ’**`aes`**’ thetic).
 
 ```{r}
 #| message: false
@@ -78,7 +74,7 @@ ggplot(data = pc_sales,
   )
 ```
 
-**Plan 1**: data, mapping, and one way to show the data[^template]
+**Plan 1**: data, aesthetic mappings, and a geom
 
 ```r
 ggplot(data = <DATA>) +
@@ -87,7 +83,7 @@ ggplot(data = <DATA>) +
 
 ### The Stats/Geoms Layer
 
-The `geom_*()` parts of the code pick how to show the data in the graph: as points, lines, bars, and more.[^geoms] They can also work out new numbers from the data before they show it,[^stat] and move things so they don't cover each other.[^position]
+`geom_*()` functions include statistical transformations, shapes, and position adjustments for how to ‘draw’ the data on the graph
 
 ```{r}
 #| message: false
@@ -105,7 +101,7 @@ ggplot(data = pc_sales,
     )
 ```
 
-We can put many layers (data, mapping, and ways to show the data) in one graph.
+We can have multiple layers (data, mappings, geoms) in a single graph.
 
 ```{r}
 #| message: false
@@ -130,7 +126,7 @@ ggplot(data = pc_sales,
     )
 ```
 
-**Plan 2**: Plan 1 + a second way to show the data[^template-1]
+**Plan 2**: Plan 1 + a second geom (and its aesthetic mappings)
 
 ``` r
 ggplot(data = <DATA>) +
@@ -140,7 +136,7 @@ ggplot(data = <DATA>) +
 
 ### Position, Labels & Themes
 
-With a set number of things and steps, we can put the rules of `ggplot2` together to make graphs without end.[^infinite]
+With a finite number of objects & functions, we can combine `ggplot2`’s grammar and syntax to create an infinite number of graphs.
 
 ```{r}
 #| message: false
@@ -177,7 +173,7 @@ ggplot(data = pc_sales,
   theme(legend.position = "bottom", legend.box = "vertical")
 ```
 
-**Plan 3**: Plan 2 + small graphs, a new look, and words[^template-2]
+**Plan 3**: Plan 2 + facets, theme, and labels
 
 ```r
 ggplot(data = <DATA>) +
@@ -191,71 +187,71 @@ ggplot(data = <DATA>) +
 
 ## Graph Categories
 
-Each graph in this book is in one of the groups below (you can see them in the list of parts on the left side of the page).
+Graphs have been categorized into the following types (you can see them in the floating table of contents to your left).
 
--   **Univariate**: graphs of one column[^univariate]
+-   **Univariate**: if you have a single column you're trying to visualize
 
--   **Amounts**: how many, or a few simple numbers that stand for one or two columns[^amounts]
+-   **Amounts**: counts or simple summary statistics of one or two columns in a dataset
 
--   **Proportions**: how the parts of something make up the whole[^proportions]
+-   **Proportions**: ratio displays of part-to-whole
 
--   **Distributions**: where the values in one column fall, and the form they take[^distributions]
+-   **Distributions**: displaying the shape of a variable's values (normality, skewness, kurtosis, etc.)
 
--   **Dates & Times**: how numbers or groups change over time (by day, month, year, and so on)[^dates]
+-   **Dates & Times**: changes in quantitative or categorical variables over a dimension of time (date-time, date, year, month, quarter, etc.).
 
--   **Relationships**: how a change in the values of `x` goes with a change in the values of `y` (and sometimes `z`)
+-   **Relationships**: how does the change of values in variable `x` affect the values in variable `y` (and possibly `z`)?
 
-Some graphs could fit in more than one group. Where that's true, I've tried to add links in the notes to the other places they fit.
+Some graphs can justifiably belong to more than one category. Wherever this is the case, I've tried to include links to other applications in the notes.
 
 ## Assumptions
 
-I've tried to write code that you can read and understand without running it.[^intro-1] Still, the examples expect you to be able to look inside things in R and answer questions about how they're built.[^skimr-inspectdf]
+I’ve tried to write code so it can be read and understood without executing it.[^intro-1] However, the examples assume readers can investigate R objects and answer questions related to their structure.[^skimr-inspectdf]
 
 [^skimr-inspectdf]: If not, I highly recommend the [`skimr`](https://docs.ropensci.org/skimr/) and [`inspectdf`](https://alastairrushworth.github.io/inspectdf/) packages for getting to know your data better.
 
 ## Style & structure
 
-Each graph has the parts below:
+Each graph has the following sections:
 
 1. **Theme**
 
-    -   *The look we give every graph on the page: its colors, its letters, and the old thing it takes them from.*
+    -   *The color palette and font for the chapter's graphs, and the piece of 90s pop culture they're modeled on.*
 
 2. **Requirements**
 
-    -   *What this graph needs, and a first look at it.*
+    -   *What this graph requires, and a preview of the graph.*
 
 3.  **Description**
 
-    -   *A short note on where the graph comes from, what it's for, and what we see in it.*
+    -   *A brief summary of the graph's background, purpose, and aesthetics.*
 
 4.  **Set up**
 
     -   Packages
-        -   *Code to get the newest form of the code we use, when we need it.*[^dev]
+        -   *Code for installing development version of packages (if necessary) for graphs.*
     -   Data
-        -   *The code that makes up the data for the graph (with `set.seed()`, so you get the same values every time).*
+        -   *The code that simulates the data for the graph (with `set.seed()`, so you get the same values every time).*
 
 5.  **Distribution**
 
-    -   *How the rule we used to make up the data gives the graph its form, in three steps:*[^dist-steps]
-        -   ***COUNT IT***: *look at a few values and a few numbers that stand for all of them.*
-        -   ***DRAW IT***: *show the data as a bar model or as a graph with notes on it.*
-        -   ***NAME IT***: *write down the rule and show what each number in it does to the graph.*[^name-it]
+    -   *How the distribution we simulated from shapes the graph, in three steps:*
+        -   ***COUNT IT***: *look at a handful of values and a few summary numbers.*
+        -   ***DRAW IT***: *draw the data as a bar model or annotated graph.*
+        -   ***NAME IT***: *write down the distribution and connect each parameter to the graph.*
 
 6.  **Grammar**
 
     -   Graph Code  
-        -   *The words around the graph start with `labs_`*
-        -   *The graph layers start with `ggp2_`*
+        -   *Graph labels have the `labs_` prefix*
+        -   *Graph layers have a `ggp2_` prefix*
 
 7.  **More info**
 
-    -   Other ways to make the graph, other choices, and other uses[^more-info]
-        -   *Sets of colors*\
-        -   *Other code that works well with it*
+    -   Additional methods, arguments, or applications
+        -   *Color palettes*\
+        -   *Complementary packages*
 
-The picture below shows how the parts fit together. We make up the data in **Set up**, talk about it in **Distribution**, and turn it into a graph in **Grammar**.
+The diagram below shows how the sections fit together. The data is simulated in **Set up**, explained in **Distribution**, and graphed in **Grammar**.
 
 ```{mermaid}
 %%| fig-align: 'center'
@@ -285,57 +281,8 @@ flowchart TD
     style more fill:#4CBB9D,color:#FFFFFF,rx:5,ry:5
 ```
 
-I've tried to keep things short and clear, but when I have to pick one, I pick clear. I've also followed a general rule: if one of the `geom_*` steps in `ggplot2` can build a graph easily, I show that way first.
+I've attempted to balance brevity and clarity, but with the assumption that it's best to err on the latter. I've also followed the general principle that if a graph can be *easily* built using one of `ggplot2`'s `geom_*` functions, that method is shown first.
 
-The first part of the book starts with bar graphs, which show how many times each group shows up in one column.
+The first section (Univariate) starts with bar graphs, which count how often each category appears in a single column.
 
 [^intro-1]: This field manual follows [The Rule of Least Power](https://www.w3.org/2001/tag/doc/leastPower.html), in the sense that "*a language with a straightforward syntax may be easier to analyze than an otherwise equivalent one with more complex structure.*"
-
-[^grammar]: Grammar is the system of rules for a language (word meanings, internal structure, and word order). Syntax is the form, structure, and order used to build statements.
-
-[^nouns-verbs]: Objects are like nouns, and functions are like verbs (functions "do things" to objects).
-
-
-[^layers]: Layers work like templates we can use to build increasingly customized and complex graphs.
-
-[^rectangular]: A rectangular object (like a spreadsheet) with columns and rows.
-
-[^simulated]: Simulated.
-
-[^pc-columns]: `os` is the operating system (Windows 95 or Windows 98), and `cpu_mhz` is the processor speed in megahertz.
-
-[^win98]: Windows 98 adds $150 to the price compared with Windows 95.
-
-[^aes]: The mapping layer assigns columns (variables) to visual properties, or aesthetics, with `aes()`. Here `cpu_mhz` goes on the `x` axis and `price_usd` goes on the `y` axis.
-
-[^template]: Basic template: data, aesthetic mappings, and a geom.
-
-[^geoms]: Geoms (geometric objects), like `geom_point()`, `geom_line()`, and `geom_bar()`.
-
-[^stat]: Statistical transformations, like counting values for a bar graph or fitting a smooth line.
-
-[^position]: Position adjustments, like stacking or dodging bars.
-
-[^template-1]: Template + 1 layer: more geoms and more aesthetic mappings.
-
-[^infinite]: With a finite number of objects and functions, we can combine the grammar and syntax of `ggplot2` to create an infinite number of graphs (see the quote above).
-
-[^template-2]: Template + 2 layers + facets + theme + labels. `facet_wrap()` splits the graph into small panels (one per `brand`), `theme()` changes the look (here, where the legend goes), and `labs()` adds the labels.
-
-[^univariate]: A single variable.
-
-[^amounts]: Counts or simple summary statistics.
-
-[^proportions]: Part to whole ratios.
-
-[^distributions]: The shape of a variable's values (normality, skewness, kurtosis, etc.).
-
-[^dates]: Changes in quantitative or categorical variables over a time dimension (date-time, date, year, month, quarter, etc.).
-
-[^dev]: Installing development versions of packages (if necessary).
-
-[^dist-steps]: How the distribution we simulated from shapes the graph.
-
-[^name-it]: Write down the distribution and connect each parameter to the graph.
-
-[^more-info]: Additional methods, arguments, or applications.
