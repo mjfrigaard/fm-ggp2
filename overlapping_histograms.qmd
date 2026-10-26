@@ -54,6 +54,7 @@ labs_ovrlp_hist <- labs(
   caption = "Simulated data",
   subtitle = "450 virtual pets and how they were cared for",
   x = "Lifespan (days)",
+  y = "Pets",
   fill = "Care")
 ggp2_ovrlp_hist <- ggplot(data = tamagotchi_pets,
      aes(x = lifespan_days,
@@ -249,6 +250,7 @@ labs_ovrlp_hist <- labs(
   caption = "Simulated data",
   subtitle = "450 virtual pets and how they were cared for",
   x = "Lifespan (days)",
+  y = "Pets",
   fill = "Care")
 ggp2_ovrlp_hist <- ggplot(data = tamagotchi_pets,
      aes(x = lifespan_days,
@@ -286,6 +288,7 @@ labs_ovrlp_hist <- labs(
   caption = "Simulated data",
   subtitle = "450 virtual pets and how they were cared for",
   x = "Lifespan (days)",
+  y = "Pets",
   fill = "Care")
 ggp2_ovrlp_hist <- ggplot(data = tamagotchi_pets,
      aes(x = lifespan_days,
