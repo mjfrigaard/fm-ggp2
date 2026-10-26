@@ -56,6 +56,7 @@ labs_ovrlp_freq_poly <- labs(
   caption = "Simulated data",
   subtitle = "200 shots from each model",
   x = "Range (feet)",
+  y = "Shots",
   color = "Model",
   linetype = "Model")
 ggp2_ovrlp_freq_poly <- ggplot(data = soaker_shots,
@@ -191,8 +192,8 @@ The first graph below shows the three polygons in feet. Each one sits further to
 #| layout-ncol: 2
 ggplot(soaker_shots, aes(x = range_ft, color = model, linetype = model)) + 
   geom_freqpoly(binwidth = 2, linewidth = 1) + 
-  labs(title = "Feet", x = "Range (feet)", color = "Model", 
-    linetype = "Model")
+  labs(title = "Feet", x = "Range (feet)", y = "Shots", 
+    color = "Model", linetype = "Model")
 
 soaker_shots |> 
   group_by(model) |> 
@@ -200,7 +201,8 @@ soaker_shots |>
   ggplot(aes(x = relative_range, color = model, linetype = model)) + 
   geom_freqpoly(binwidth = 0.05, linewidth = 1) + 
   labs(title = "Relative to the average", 
-    x = "Range / average range", color = "Model", linetype = "Model")
+    x = "Range / average range", y = "Shots", 
+    color = "Model", linetype = "Model")
 ```
 :::
 
@@ -248,6 +250,7 @@ labs_ovrlp_freq_poly <- labs(
   caption = "Simulated data",
   subtitle = "200 shots from each model",
   x = "Range (feet)",
+  y = "Shots",
   color = "Model",
   linetype = "Model")
 ggp2_ovrlp_freq_poly <- ggplot(data = soaker_shots,
@@ -279,6 +282,7 @@ labs_ovrlp_freq_poly <- labs(
   caption = "Simulated data",
   subtitle = "200 shots from each model",
   x = "Range (feet)",
+  y = "Shots",
   color = "Model",
   linetype = "Model")
 ggp2_ovrlp_freq_poly <- ggplot(data = soaker_shots,
