@@ -430,7 +430,6 @@ Once again we can see the counts for each category in the cross-tabulation:
 #| label: ggp2_mosaic_2var
 #| eval: true
 #| echo: true
-#| error: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
@@ -503,7 +502,6 @@ The `divider` argument lets us control how the tiles are split (vertically and h
 #| fig-asp: 1.1
 #| eval: true
 #| echo: false
-#| error: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
@@ -557,7 +555,6 @@ The two horizontal orientation options make the axis text harder to read, so the
 #| fig-asp: 1.1
 #| eval: true
 #| echo: false
-#| error: true
 #| warning: false
 #| message: false
 #| out-height: '100%'
