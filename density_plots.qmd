@@ -246,10 +246,12 @@ The density plot below draws each format's reading times as its own curve. The n
 ggplot(data = wired_stories, 
     aes(x = minutes)) + 
   geom_density(aes(y = after_stat(count), fill = format), 
-    alpha = 0.6, color = NA) + 
+    alpha = 0.6, color = NA, show.legend = FALSE) + 
   geom_density(aes(y = after_stat(count)), fill = NA) + 
   geom_vline(xintercept = mean(wired_stories$minutes), linetype = "dashed") + 
-  labs(x = "Reading time (minutes)", y = "Stories per minute", fill = "Format")
+  annotate("text", x = c(6, 30), y = c(62, 12), 
+    label = c("News", "Feature")) + 
+  labs(x = "Reading time (minutes)", y = "Stories per minute")
 ```
 :::
 
