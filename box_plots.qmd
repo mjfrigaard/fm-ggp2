@@ -242,7 +242,29 @@ The 45 sets the center (the median lap) and the 2 sets the spread. The degrees o
 
 The outlier rule shows the difference. For a normal distribution, only about 0.7% of values land past the fences, so we'd expect about 1 outlier in 200 laps. For a t distribution with 3 degrees of freedom, about 5.5% land past the fences, or about 11 laps in 200. We got `r lap_stats$outliers`.
 
-Try `df = 30` in `rt()`. We'd expect only about 2 outliers in 200 laps, but this seed still gives 6. A single sample of 200 laps can land far from what we expect.
+Try `df = 30` in `rt()`. We'd expect only about 2 outliers in 200 laps, but this seed still gives 6. A single sample of 200 laps can land far from what we expect, so the code below draws 5,000 laps for each `df` and counts the laps past the fences.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: df_compare_box
+#| code-fold: show
+#| eval: true
+#| echo: true
+set.seed(64)
+tibble(
+  df = rep(c(3, 30), each = 5000), # 5,000 laps for each df
+  seconds = 45 + 2 * rt(n = 10000, df = df)) |>
+  group_by(df) |>
+  summarise(
+    q1 = quantile(seconds, 0.25),
+    q3 = quantile(seconds, 0.75),
+    iqr = IQR(seconds),
+    outliers = sum(seconds < q1 - 1.5 * iqr | seconds > q3 + 1.5 * iqr),
+    percent = round(100 * outliers / n(), 1))
+```
+:::
+
+With more laps, the drop is clear: 5.3% of the `df = 3` laps are outliers, compared with 1.2% of the `df = 30` laps.
 
 
 ## Grammar
