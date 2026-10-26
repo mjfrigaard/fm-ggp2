@@ -13,8 +13,6 @@ library(kableExtra)
 library(extrafont)
 library(sysfonts)
 source("_common.R")
-# wider canvas so the pixel font fits
-knitr::opts_chunk$set(fig.width = 9)
 # use font
 showtext::showtext_auto()
 # set theme
