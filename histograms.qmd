@@ -211,7 +211,7 @@ ggplot(data = ok_soda_sales,
     aes(x = cans)) +
   geom_histogram() +
   geom_vline(xintercept = c(33, 57), linetype = "dashed") +
-  labs(x = "Cans sold")
+  labs(x = "Cans sold", y = "Number of stores")
 ```
 :::
 
