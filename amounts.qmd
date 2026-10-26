@@ -48,29 +48,31 @@ library(ggplot2)
 library(dplyr)
 set.seed(1993)
 jp_dinos <- tibble(
-  species = c("Brachiosaurus", "Triceratops", "Tyrannosaurus",
-              "Gallimimus", "Velociraptor"),
-  n = c(3, 5, 2, 20, 8),
-  mean_tons = c(40, 9, 8, 0.45, 0.15),
-  sd_tons = c(5, 1.2, 1, 0.08, 0.03)) |>
+  island = rep(c("Isla Nublar", "Isla Sorna"), each = 5),
+  species = rep(c("Brachiosaurus", "Triceratops", "Tyrannosaurus",
+              "Gallimimus", "Velociraptor"), times = 2),
+  n = c(3, 5, 2, 20, 8,
+        2, 7, 3, 14, 12),
+  mean_tons = rep(c(40, 9, 8, 0.45, 0.15), times = 2),
+  sd_tons = rep(c(5, 1.2, 1, 0.08, 0.03), times = 2)) |>
   tidyr::uncount(n) |>
   mutate(weight_tons = round(rnorm(n(), mean = mean_tons, sd = sd_tons), 2)) |>
-  select(species, weight_tons)
+  select(island, species, weight_tons)
 jp_paddocks <- jp_dinos |>
-  group_by(species) |>
-  summarise(total_tons = sum(weight_tons)) |>
-  ungroup()
+  group_by(island, species) |>
+  summarise(total_tons = sum(weight_tons), .groups = "drop")
 labs_grp_col <- labs(
     title = "Jurassic Park",
     caption = "Simulated data",
-    subtitle = "Total weight of the dinosaurs in each paddock",
+    subtitle = "Total weight of the dinosaurs in each paddock, by island",
     x = "Paddock",
-    y = "Total weight (tons)")
+    y = "Total weight (tons)",
+    fill = "Island")
 ggp2_grp_col <- ggplot(data = jp_paddocks,
               aes(x = species, 
                   y = total_tons)) + 
-        geom_col(aes(fill = species),
-            show.legend = FALSE) +
+        geom_col(aes(fill = island),
+            position = "dodge") +
         scale_x_discrete(guide = guide_axis(n.dodge = 2))
 (
   ggp2_grp_col +
@@ -159,7 +161,7 @@ labs_bar_ovrlp <- labs(
   fill = "Year")
 ggp2_bar_ovrlp <- ggplot(data = netware_offices,
           aes(x = nodes, fill = year)) +
-                geom_bar() 
+                geom_bar(position = "identity", alpha = 0.5)
 (
   ggp2_bar_ovrlp +
     labs_bar_ovrlp

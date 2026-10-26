@@ -56,29 +56,31 @@ library(ggplot2)
 library(dplyr)
 set.seed(1993)
 jp_dinos <- tibble(
-  species = c("Brachiosaurus", "Triceratops", "Tyrannosaurus",
-              "Gallimimus", "Velociraptor"),
-  n = c(3, 5, 2, 20, 8),
-  mean_tons = c(40, 9, 8, 0.45, 0.15),
-  sd_tons = c(5, 1.2, 1, 0.08, 0.03)) |>
+  island = rep(c("Isla Nublar", "Isla Sorna"), each = 5),
+  species = rep(c("Brachiosaurus", "Triceratops", "Tyrannosaurus",
+              "Gallimimus", "Velociraptor"), times = 2),
+  n = c(3, 5, 2, 20, 8,
+        2, 7, 3, 14, 12),
+  mean_tons = rep(c(40, 9, 8, 0.45, 0.15), times = 2),
+  sd_tons = rep(c(5, 1.2, 1, 0.08, 0.03), times = 2)) |>
   tidyr::uncount(n) |>
   mutate(weight_tons = round(rnorm(n(), mean = mean_tons, sd = sd_tons), 2)) |>
-  select(species, weight_tons)
+  select(island, species, weight_tons)
 jp_paddocks <- jp_dinos |>
-  group_by(species) |>
-  summarise(total_tons = sum(weight_tons)) |>
-  ungroup()
+  group_by(island, species) |>
+  summarise(total_tons = sum(weight_tons), .groups = "drop")
 labs_grp_col <- labs(
     title = "Jurassic Park",
     caption = "Simulated data",
-    subtitle = "Total weight of the dinosaurs in each paddock",
+    subtitle = "Total weight of the dinosaurs in each paddock, by island",
     x = "Paddock",
-    y = "Total weight (tons)")
+    y = "Total weight (tons)",
+    fill = "Island")
 ggp2_grp_col <- ggplot(data = jp_paddocks,
               aes(x = species, 
                   y = total_tons)) + 
-        geom_col(aes(fill = species),
-            show.legend = FALSE) +
+        geom_col(aes(fill = island),
+            position = "dodge") +
         scale_x_discrete(guide = guide_axis(n.dodge = 2))
 ggp2_grp_col + 
     labs_grp_col
@@ -121,7 +123,7 @@ library(tidyr) # for uncount()
 **DATA:**
 :::
 
-In *Jurassic Park* (1993), every species lives in its own paddock. We'll simulate the weight of every dinosaur in the park: each species gets a head count (`n`) and its own normal distribution of weights (`mean_tons` and `sd_tons`). `tidyr::uncount()` repeats each row `n` times (one row per dinosaur), and `rnorm()` draws each dinosaur's weight. Then we add up the weights in each paddock (`total_tons`). Setting the seed with `set.seed()` means you'll get the same dinosaurs every time you run the code below.
+In *Jurassic Park* (1993), every species lives in its own paddock. We'll simulate the weight of every dinosaur on two islands: Isla Nublar (the park) and Isla Sorna (Site B from *The Lost World*). Both islands have the same five species, and each species gets a head count on each island (`n`) and its own normal distribution of weights (`mean_tons` and `sd_tons`). `tidyr::uncount()` repeats each row `n` times (one row per dinosaur), and `rnorm()` draws each dinosaur's weight. Then we add up the weights in each paddock on each island (`total_tons`). Setting the seed with `set.seed()` means you'll get the same dinosaurs every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -131,21 +133,22 @@ In *Jurassic Park* (1993), every species lives in its own paddock. We'll simulat
 #| echo: true
 set.seed(1993) # same dinosaur weights every time the code runs
 jp_dinos <- tibble(
-  species = c("Brachiosaurus", "Triceratops", "Tyrannosaurus", # five species in the park
-              "Gallimimus", "Velociraptor"),
-  n = c(3, 5, 2, 20, 8), # number of animals of each species
-  mean_tons = c(40, 9, 8, 0.45, 0.15), # average weight (tons)
-  sd_tons = c(5, 1.2, 1, 0.08, 0.03) # spread of each species' weights
+  island = rep(c("Isla Nublar", "Isla Sorna"), each = 5), # the park and the second island
+  species = rep(c("Brachiosaurus", "Triceratops", "Tyrannosaurus", # five species on each island
+                  "Gallimimus", "Velociraptor"), times = 2),
+  n = c(3, 5, 2, 20, 8, # number of animals of each species on Isla Nublar
+        2, 7, 3, 14, 12), # number of animals of each species on Isla Sorna
+  mean_tons = rep(c(40, 9, 8, 0.45, 0.15), times = 2), # average weight (tons), same on both islands
+  sd_tons = rep(c(5, 1.2, 1, 0.08, 0.03), times = 2) # spread of each species' weights
   ) |>
   tidyr::uncount(n) |> # one row per animal
   mutate(
     weight_tons = round(rnorm(n(), mean = mean_tons, sd = sd_tons), 2) # each animal's weight
     ) |>
-  select(species, weight_tons)
+  select(island, species, weight_tons)
 jp_paddocks <- jp_dinos |>
-  group_by(species) |> # one group per species
-  summarise(total_tons = sum(weight_tons)) |> # total weight in each paddock
-  ungroup()
+  group_by(island, species) |> # one group per paddock on each island
+  summarise(total_tons = sum(weight_tons), .groups = "drop") # total weight in each paddock
 glimpse(jp_paddocks)
 ```
 :::
@@ -179,7 +182,7 @@ Each Brachiosaurus weighs close to 40 tons, and each Triceratops weighs close to
 #| eval: true
 #| echo: true
 jp_dinos |> 
-  group_by(species) |> 
+  group_by(island, species) |> 
   summarise(
     dinosaurs = n(), 
     mean_tons = mean(weight_tons),
@@ -191,7 +194,7 @@ jp_dinos |>
 **DRAW IT:**
 :::
 
-Each bar in a grouped bar graph is a bar model: a total made of parts. Below we draw every dinosaur as its own segment and stack the segments in each paddock. The height of each stack is the paddock's total, and the number of segments is its head count. The Gallimimus bar has 20 thin segments, and the Brachiosaurus bar has three thick ones.
+Each bar in a grouped bar graph is a bar model: a total made of parts. Below we draw every dinosaur on Isla Nublar as its own segment and stack the segments in each paddock. The height of each stack is the paddock's total, and the number of segments is its head count. The Gallimimus bar has 20 thin segments, and the Brachiosaurus bar has three thick ones.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -199,8 +202,9 @@ Each bar in a grouped bar graph is a bar model: a total made of parts. Below we 
 #| code-fold: show
 #| eval: true
 #| echo: true
-ggplot(data = jp_dinos, 
-    aes(x = species, y = weight_tons, fill = species)) + 
+jp_dinos |> 
+  filter(island == "Isla Nublar") |> 
+  ggplot(aes(x = species, y = weight_tons, fill = species)) + 
   geom_col(color = "#111111", linewidth = 0.3, show.legend = FALSE) + 
   scale_x_discrete(guide = guide_axis(n.dodge = 2)) + 
   labs(x = "Paddock", y = "Total weight (tons)")
@@ -217,7 +221,7 @@ $$
 T = X_1 + X_2 + \dots + X_n \sim \text{Normal}(n\mu, \; \sqrt{n}\,\sigma)
 $$
 
-The expected total is $n\mu$: $3 \times 40 = 120$ tons for the Brachiosaurus paddock and $20 \times 0.45 = 9$ tons for Gallimimus. The spread grows with $\sqrt{n}$, not $n$, because heavy and light dinosaurs partly cancel each other out. Our Brachiosaurus paddock weighs `r round(sum(jp_dinos$weight_tons[jp_dinos$species == "Brachiosaurus"]), 1)` tons, within one standard deviation ($\sqrt{3} \times 5 \approx 8.7$ tons) of its expected 120.
+The expected total is $n\mu$: $3 \times 40 = 120$ tons for the Brachiosaurus paddock and $20 \times 0.45 = 9$ tons for Gallimimus. The spread grows with $\sqrt{n}$, not $n$, because heavy and light dinosaurs partly cancel each other out. Our Brachiosaurus paddock on Isla Nublar weighs `r round(sum(jp_dinos$weight_tons[jp_dinos$species == "Brachiosaurus" & jp_dinos$island == "Isla Nublar"]), 1)` tons, within one standard deviation ($\sqrt{3} \times 5 \approx 8.7$ tons) of its expected 120.
 
 Try changing the head counts in `n`. Doubling the Velociraptors doubles their bar, but the bar would still be the shortest in the park.
 
@@ -236,7 +240,9 @@ Grouped bar graphs assume the statistical measure (i.e., the value that the leng
 
   -   Map `species` to the `x` and `total_tons` to the `y`
 
-  -   Map `species` to `fill` *inside* the `aes()` of `geom_col()` 
+  -   Map `island` to `fill` *inside* the `aes()` of `geom_col()` 
+
+  -   Place each island's bars side by side with `position = "dodge"`
 
   -   Stagger the long paddock names over two lines with `scale_x_discrete(guide = guide_axis(n.dodge = 2))`
 
@@ -253,14 +259,15 @@ Grouped bar graphs assume the statistical measure (i.e., the value that the leng
 labs_grp_col <- labs(
     title = "Jurassic Park",
     caption = "Simulated data",
-    subtitle = "Total weight of the dinosaurs in each paddock",
+    subtitle = "Total weight of the dinosaurs in each paddock, by island",
     x = "Paddock",
-    y = "Total weight (tons)")
+    y = "Total weight (tons)",
+    fill = "Island")
 ggp2_grp_col <- ggplot(data = jp_paddocks,
               aes(x = species, 
                   y = total_tons)) + 
-        geom_col(aes(fill = species),
-            show.legend = FALSE) +
+        geom_col(aes(fill = island),
+            position = "dodge") +
         scale_x_discrete(guide = guide_axis(n.dodge = 2))
 ggp2_grp_col + 
     labs_grp_col
@@ -283,14 +290,15 @@ ggp2_grp_col +
 labs_grp_col <- labs(
     title = "Jurassic Park",
     caption = "Simulated data",
-    subtitle = "Total weight of the dinosaurs in each paddock",
+    subtitle = "Total weight of the dinosaurs in each paddock, by island",
     x = "Paddock",
-    y = "Total weight (tons)")
+    y = "Total weight (tons)",
+    fill = "Island")
 ggp2_grp_col <- ggplot(data = jp_paddocks,
               aes(x = species, 
                   y = total_tons)) + 
-        geom_col(aes(fill = species),
-            show.legend = FALSE) +
+        geom_col(aes(fill = island),
+            position = "dodge") +
         scale_x_discrete(guide = guide_axis(n.dodge = 2))
 ggp2_grp_col + 
     labs_grp_col
@@ -301,7 +309,7 @@ ggp2_grp_col +
 
 We didn't have to calculate `total_tons` (displayed on the `y` axis) by `species` because `ggplot2` does this for us!
 
-If we pass a categorical variable to the `x` (like `species`) and a continuous variable to `y` (like `weight_tons`), `geom_col()` stacks the rows in each group, which adds up `y` for each level of `x`:
+If we pass a categorical variable to the `x` (like `species`) and a continuous variable to `y` (like `weight_tons`), `stat_summary()` with `fun = "sum"` adds up `y` for each level of `x` and each `island`. `geom_col()` can't do this with `position = "dodge"`, because it draws each dinosaur's bar on top of the others instead of adding them up:
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -312,8 +320,9 @@ If we pass a categorical variable to the `x` (like `species`) and a continuous v
 #| message: false
 jp_dinos |> 
   ggplot(aes(x = species, y = weight_tons)) + 
-        geom_col(aes(fill = species),
-            show.legend = FALSE) + 
+        stat_summary(aes(fill = island),
+            fun = "sum", geom = "col",
+            position = "dodge") + 
         scale_x_discrete(guide = guide_axis(n.dodge = 2)) + 
   labs_grp_col
 ```
@@ -330,12 +339,13 @@ We can see the underlying totals using `dplyr`'s `group_by()` and `summarise()` 
 #| warning: false
 #| message: false
 jp_dinos |> 
-    dplyr::group_by(species) |>
+    dplyr::group_by(island, species) |>
     dplyr::summarise(
         `Total weight (tons)` = sum(weight_tons)
         ) |>
     dplyr::ungroup() |> 
-    dplyr::select(`Paddock` = species, 
+    dplyr::select(Island = island,
+        `Paddock` = species, 
         `Total weight (tons)`)
 ```
 :::
@@ -349,12 +359,13 @@ jp_dinos |>
 #| message: false
 #| layout-nrow: 1
 jp_dinos |> 
-    dplyr::group_by(species) |>
+    dplyr::group_by(island, species) |>
     dplyr::summarise(
         `Total weight (tons)` = sum(weight_tons)
         ) |>
     dplyr::ungroup() |> 
-    dplyr::select(`Paddock` = species, 
+    dplyr::select(Island = island,
+        `Paddock` = species, 
         `Total weight (tons)`) |> 
     knitr::kable() |> 
     kableExtra::kable_minimal()

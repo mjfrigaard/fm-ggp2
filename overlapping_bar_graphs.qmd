@@ -68,7 +68,7 @@ labs_bar_ovrlp <- labs(
   fill = "Year")
 ggp2_bar_ovrlp <- ggplot(data = netware_offices,
           aes(x = nodes, fill = year)) +
-                geom_bar() 
+                geom_bar(position = "identity", alpha = 0.5)
 ggp2_bar_ovrlp + 
   labs_bar_ovrlp
 ```
@@ -230,7 +230,7 @@ So a 1994 office runs more workstations than a 1998 office about 20% of the time
 
   -  Map `nodes` to the `x` and `year` to `fill`
 
-  -  Add the `geom_bar()` layer
+  -  Add the `geom_bar()` layer with `position = "identity"` (so the bars overlap instead of stacking) and `alpha = 0.5` (so the bars behind show through)
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -251,7 +251,7 @@ labs_bar_ovrlp <- labs(
   fill = "Year")
 ggp2_bar_ovrlp <- ggplot(data = netware_offices,
           aes(x = nodes, fill = year)) +
-                geom_bar() 
+                geom_bar(position = "identity", alpha = 0.5)
 ggp2_bar_ovrlp + 
   labs_bar_ovrlp
 ```
@@ -279,7 +279,7 @@ labs_bar_ovrlp <- labs(
   fill = "Year")
 ggp2_bar_ovrlp <- ggplot(data = netware_offices,
           aes(x = nodes, fill = year)) +
-                geom_bar() 
+                geom_bar(position = "identity", alpha = 0.5)
 ggp2_bar_ovrlp + 
   labs_bar_ovrlp
 ```
@@ -309,7 +309,7 @@ netware_col <- netware_offices |>
 :::
 
 
-  -  Map the counts to the `y` axis, `nodes` to the `x` axis, and `year` to `fill`
+  -  Map the counts to the `y` axis, `nodes` to the `x` axis, and `year` to `fill`, and use the same `position` and `alpha` in `geom_col()`
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -328,7 +328,7 @@ ggp2_col_ovrlp <- ggplot(data = netware_col,
     mapping = aes(y = Offices, 
         x = nodes, 
         fill = year)) + 
-    geom_col()
+    geom_col(position = "identity", alpha = 0.5)
 ggp2_col_ovrlp + 
     labs_col_ovrlp
 ```
