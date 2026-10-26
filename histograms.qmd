@@ -59,8 +59,8 @@ labs_histogram <- labs(
   title = "OK Soda",
   caption = "Simulated data",
   subtitle = "Cans sold per store in one day",
-  x = "Cans sold", # <- changed
-  y = "Number of stores") # <- new
+  x = "Cans sold",
+  y = "Number of stores")
 ggp2_hist <- ggplot(data = ok_soda_sales,
       aes(x = cans)) + 
       geom_histogram(binwidth = 3, center = 45) 
@@ -260,8 +260,8 @@ labs_histogram <- labs(
   title = "OK Soda",
   caption = "Simulated data",
   subtitle = "Cans sold per store in one day",
-  x = "Cans sold", # <- changed
-  y = "Number of stores") # <- new
+  x = "Cans sold",
+  y = "Number of stores")
 
 ggp2_hist <- ggplot(data = ok_soda_sales,
       aes(x = cans)) + 
@@ -288,8 +288,8 @@ labs_histogram <- labs(
   title = "OK Soda",
   caption = "Simulated data",
   subtitle = "Cans sold per store in one day",
-  x = "Cans sold", # <- changed
-  y = "Number of stores") # <- new
+  x = "Cans sold",
+  y = "Number of stores")
 
 ggp2_hist <- ggplot(data = ok_soda_sales,
       aes(x = cans)) + 
