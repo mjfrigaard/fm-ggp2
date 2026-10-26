@@ -190,17 +190,17 @@ ggplot(data = stage_counts,
     aes(x = n, y = "300 players", fill = stage)) +
 
   geom_col(
-    position = position_stack(reverse = TRUE), # <- changed
-    show.legend = FALSE) + # <- new
+    position = position_stack(reverse = TRUE),
+    show.legend = FALSE) +
 
   geom_text(
-    aes(label = paste(stage, n, sep = "\n")), # <- changed
+    aes(label = paste(stage, n, sep = "\n")),
     color = c("#9BBC0F", "#9BBC0F", "#0F380F"),
     position = position_stack(vjust = 0.5, reverse = TRUE)
     ) +
   labs(
     x = "Number of players", 
-    y = NULL) # <- changed (fill = "Stage" removed)
+    y = NULL)
 ```
 :::
 
