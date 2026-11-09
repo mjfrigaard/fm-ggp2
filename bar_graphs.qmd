@@ -74,7 +74,7 @@ ggp2_bar +
 
 A bar graph compares data in different categories using rectangular bars that vary in length or height. The bars can be vertical or horizontal. With vertical bars (which we'll cover here), the vertical axis shows the quantities being measured and the horizontal axis lists the categories. Bar graphs often include a legend explaining the colors or patterns used when comparing multiple variables.
 
-In `ggplot2`, bar graphs can be built using [`geom_bar()`](https://ggplot2.tidyverse.org/reference/geom_bar.html).
+In `ggplot2`, we build bar graphs with [`geom_bar()`](https://ggplot2.tidyverse.org/reference/geom_bar.html).
 
 ## Set up
 
@@ -243,6 +243,58 @@ The expected height of each bar is $n \times p$: $300 \times 0.30 = 90$ for Stag
 
 Our simulated players show exactly that trade off: Stage 1 came in `r 90 - sum(alleyway_games$stage == "Stage 1")` below its expected count, and Stage 3 came in `r sum(alleyway_games$stage == "Stage 3") - 84` above. Change the number in `set.seed()` and the bars move around their dashed lines, but they always add to 300.
 
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**CHANGE IT:**
+:::
+
+Everything so far is what we expected: 300 games, and bars that land near their dashed lines. Now we keep the same three probabilities but record only 30 games. The expected counts shrink to 9, 12.6, and 8.4, and I expect the bars to wander much farther from them.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: concrete_counts_small_bar
+#| code-fold: show
+#| eval: true
+#| echo: true
+set.seed(1998)
+alleyway_games_30 <- tibble(
+  player_id = 1:30,
+  stage = sample(c("Stage 1", "Stage 2", "Stage 3"),
+    size = 30, replace = TRUE, prob = c(0.30, 0.42, 0.28))
+)
+stage_counts_30 <- alleyway_games_30 |>
+  count(stage) |>
+  mutate(expected = 30 * c(0.30, 0.42, 0.28))
+stage_counts_30
+```
+:::
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: pictorial_small_bar
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+ggplot(data = alleyway_games_30,
+    aes(x = stage)) +
+  geom_bar(aes(fill = stage), show.legend = FALSE) +
+  geom_errorbar(
+    data = stage_counts_30,
+    aes(
+      y = expected,
+      ymin = expected,
+      ymax = expected),
+    linetype = "dashed",
+    width = 0.9) +
+  labs(x = "Stage", y = "Count")
+```
+:::
+
+The Stage 1 bar above stops at 5 players, almost half of its expected 9. Stage 2 overshoots with 16 players instead of 12.6. Nothing about the game changed, only the number of games. With 300 players, Stage 1 missed its line by about 7%; with 30, it missed by about 44%.
+
+I've found this is the first thing to check when one bar looks surprisingly tall or short: how many observations sit behind it. Small samples make bar heights jumpy, so a gap between two short bars can come from chance alone.
+
 ## Grammar
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
@@ -329,7 +381,7 @@ The connection between statistical transformations and geoms is an important pri
 
 The default `stat` argument in `geom_bar()` is set to `"count"`, which '*counts the number of cases at each `x` position*', so it's ideal for categorical variables (or factors).
 
-The `stat_count()` function can also be used to create bar graphs using the `geom` argument.
+We can also build bar graphs with `stat_count()` by setting its `geom` argument.
 
 The link between `geom_`**geom_name**`(stat = "`**stat_name**`")` and `stat_`**stat_name**`(geom = "`**geom_name**`")` is shown below:
 
@@ -367,7 +419,7 @@ ggp2_stat_count
 **geom_col():**
 :::
 
-To create a bar graph with `geom_col()`, the `count` variable needs to be computed before being mapped into the graph `y` aesthetic.
+`geom_col()` doesn't count anything for us, so we compute a `count` column first and then map it to the `y` aesthetic.
 
 
 ::: {style="font-size: 0.85em;"}

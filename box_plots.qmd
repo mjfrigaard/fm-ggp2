@@ -173,7 +173,7 @@ Half of all laps fall inside a window only `r round(lap_stats$iqr, 1)` seconds w
 **DRAW IT:**
 :::
 
-The box plot below labels each of those numbers. The box runs from Q1 to Q3, the line inside it is the median, the whiskers stop at the last lap inside the fences, and every lap past a fence is drawn as a point.
+The box plot below labels each of those numbers. The box runs from Q1 to Q3, and the line inside it is the median. The whiskers stop at the last lap inside the fences, and every lap past a fence is drawn as a point.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -238,11 +238,13 @@ $$
 X = 45 + 2T, \quad T \sim t(\nu = 3)
 $$
 
-The 45 sets the center (the median lap) and the 2 sets the spread. The degrees of freedom ($\nu$) control the tails: a small $\nu$ like 3 gives "heavy" tails with more extreme values than a normal distribution, and as $\nu$ grows the t distribution turns into the normal. 
+The 45 sets the center (the median lap) and the 2 sets the spread. The degrees of freedom ($\nu$) control the tails. A small $\nu$ like 3 gives "heavy" tails with more extreme values than a normal distribution. As $\nu$ grows, the t distribution turns into the normal.
+
+Steady laps are what we expect, and a normal distribution is the right model for them. The mushroom boosts and blue shells are the unexpected part, and the heavy tails of `df = 3` add them in.
 
 The outlier rule shows the difference. For a normal distribution, only about 0.7% of values land past the fences, so we'd expect about 1 outlier in 200 laps. For a t distribution with 3 degrees of freedom, about 5.5% land past the fences, or about 11 laps in 200. We got `r lap_stats$outliers`.
 
-Try `df = 30` in `rt()`. We'd expect only about 2 outliers in 200 laps, but this seed still gives 6. A single sample of 200 laps can land far from what we expect, so the code below draws 5,000 laps for each `df` and counts the laps past the fences.
+Try `df = 30` in `rt()`. We'd expect only about 2 outliers in 200 laps, but this seed still gives 6. A single sample of 200 laps can land far from what we expect. The code below draws 5,000 laps for each `df` and counts the laps past the fences.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -265,6 +267,34 @@ tibble(
 :::
 
 With more laps, the drop is clear: 5.3% of the `df = 3` laps are outliers, compared with 1.2% of the `df = 30` laps.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**CHANGE IT:**
+:::
+
+The table above counts the outliers, but we can also see them. Below we draw 200 steady laps (`df = 30`, what we expect) next to 200 laps with mushrooms and blue shells (`df = 3`, the unexpected) on one shared axis.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: change_box
+#| code-fold: show
+#| eval: true
+#| echo: true
+set.seed(64)
+mario_kart_compare <- tibble(
+  df = rep(c(30, 3), each = 200), # 200 laps for each df
+  seconds = round(45 + 2 * rt(n = 400, df = df), 2))
+
+ggplot(data = mario_kart_compare, 
+  aes(x = factor(df, levels = c(30, 3), 
+                 labels = c("df = 30 (expected)", "df = 3 (unexpected)")), 
+      y = seconds)) + 
+  geom_boxplot(width = 0.4) + 
+  labs(x = NULL, y = "Lap time (seconds)")
+```
+:::
+
+The two boxes are about the same size (IQRs of 2.54 and 2.81 seconds), so the middle half of the laps barely changes. The difference is past the whiskers. The steady laps leave 6 points outside the fences, while the unexpected laps leave 14, and one of them is a 20.8 second lap. That matches the 1.2% and 5.3% above: changing only the tails fills a box plot with dots and leaves the box alone.
 
 
 ## Grammar

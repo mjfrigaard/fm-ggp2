@@ -74,7 +74,7 @@ ggp2_hist +
 
 A histogram is a graph that displays numerical data spread over a continuous interval. Each bar shows the frequency of data points within a specific range. Unlike bar graphs, histograms do not have gaps between the bars, indicating that data covers a continuous interval. The x-axis displays the variable range, while the y-axis represents observation frequency.
 
-Unlike a typical bar graph, histograms can be used to visually assess a variable's distribution. We can check its '[normality](https://en.wikipedia.org/wiki/Normal_distribution)' (i.e. *are the bars symmetrical, with a single peak in the middle of the `x` axis?* Or *do the bars form multiple peaks?*) or its '[skewness](https://en.wikipedia.org/wiki/Skewness)' (i.e., *is there a long 'tail' of bars with decreasing length on either end of the `x` axis?*).
+Unlike a typical bar graph, a histogram shows the shape of a variable's distribution. We can check its '[normality](https://en.wikipedia.org/wiki/Normal_distribution)' (i.e. *are the bars symmetrical, with a single peak in the middle of the `x` axis?* Or *do the bars form multiple peaks?*). We can also check its '[skewness](https://en.wikipedia.org/wiki/Skewness)' (i.e., *is there a long 'tail' of bars with decreasing length on either end of the `x` axis?*).
 
 In `ggplot2`, histograms can be built using [`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html).
 
@@ -130,7 +130,7 @@ glimpse(ok_soda_sales)
 
 ## Distribution
 
-You don't have to be a math whiz or statistician to read a histogram, but it helps to know what shape to expect. Because we generated `cans` ourselves, we already know the answer: every value came from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) with a mean of 45 cans and a standard deviation of 12 cans. Below we'll move from the numbers, to a picture, to the formula.
+You don't have to be a math whiz or statistician to read a histogram, but it helps to know what shape to expect. Because we generated `cans` ourselves, we already know the answer. Every value came from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) with a mean of 45 cans and a standard deviation of 12 cans. Below we'll move from the numbers, to a picture, to the formula. Once we know what the expected shape looks like, we'll change the data and see what the unexpected does to it.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -148,7 +148,7 @@ head(ok_soda_sales$cans, 10)
 ```
 :::
 
-Most of these values land within 12 cans of 45, and a few (like 16 and 23) sit further out. If we sort all 300 stores into three ranges (below one standard deviation, within one standard deviation, and above one standard deviation), the middle range holds most of the stores.
+Most of these values land within 12 cans of 45, and a few (like 16 and 23) sit further out. Let's sort all 300 stores into three ranges: below, within, and above one standard deviation of the mean. The middle range holds most of the stores.
 
 To find the edges of these ranges, we subtract and add one standard deviation to the mean:
 
@@ -156,7 +156,7 @@ To find the edges of these ranges, we subtract and add one standard deviation to
 
 * Upper edge: $45 + 12 = 57$ cans
 
-A store with fewer than 33 cans is below one standard deviation, a store with 33 to 57 cans is within one standard deviation, and a store with 58 or more cans is above one standard deviation. In the code below, `cut()` places the `breaks` half a can past each edge (32.5 and 57.5), so a store with exactly 33 or 57 cans lands in the middle range.
+A store with fewer than 33 cans is below one standard deviation. A store with 33 to 57 cans is within it, and a store with 58 or more cans is above it. In the code below, `cut()` places the `breaks` half a can past each edge (32.5 and 57.5), so a store with exactly 33 or 57 cans lands in the middle range.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -225,9 +225,51 @@ $$
 X \sim \text{Normal}(\mu = 45, \sigma = 12)
 $$
 
-The mean ($\mu$) sets where the tallest bars sit on the `x` axis, and the standard deviation ($\sigma$) sets how far the bars spread out from it. For a normal distribution, roughly 68% of values fall within one $\sigma$ of $\mu$ and 95% fall within two. Our simulated stores come close: `r round(mean(ok_soda_sales$cans >= 33 & ok_soda_sales$cans <= 57) * 100)`% are within one $\sigma$ and `r round(mean(ok_soda_sales$cans >= 21 & ok_soda_sales$cans <= 69) * 100)`% are within two.
+The mean ($\mu$) sets where the tallest bars sit on the `x` axis. The standard deviation ($\sigma$) sets how far the bars spread out from it. For a normal distribution, roughly 68% of values fall within one $\sigma$ of $\mu$ and 95% fall within two. Our simulated stores come close: `r round(mean(ok_soda_sales$cans >= 33 & ok_soda_sales$cans <= 57) * 100)`% are within one $\sigma$ and `r round(mean(ok_soda_sales$cans >= 21 & ok_soda_sales$cans <= 69) * 100)`% are within two.
 
 The small gap between the rule and our sample is just sampling variation. Change the number in `set.seed()` and the bars shift, but the bell shape stays centered near 45 cans.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**CHANGE IT:**
+:::
+
+So far the histogram shows exactly what we expect: one bell centered on 45 cans. Now we'll change the data. Suppose the last 60 stores sit near college campuses, where OK Soda sold far better (about 85 cans a day). We expect a second hump of bars on the right side of the graph.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: unexpected_data_histogram
+#| code-fold: show
+#| eval: true
+#| echo: true
+set.seed(1014)
+ok_soda_campus <- ok_soda_sales
+ok_soda_campus$cans[241:300] <- round(
+  rnorm(n = 60, mean = 85, sd = 8) # 60 campus stores
+  )
+summarise(ok_soda_campus,
+  mean = mean(cans), sd = sd(cans), median = median(cans))
+```
+:::
+
+The dashed line below marks the new mean.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: unexpected_graph_histogram
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+ggplot(data = ok_soda_campus,
+    aes(x = cans)) +
+  geom_histogram(binwidth = 3, center = 45) +
+  geom_vline(xintercept = mean(ok_soda_campus$cans), linetype = "dashed") +
+  labs(x = "Cans sold", y = "Number of stores")
+```
+:::
+
+The campus stores pull the mean up to about 53 cans and stretch the standard deviation to almost 20. The numbers alone still look ordinary: `r round(mean(abs(ok_soda_campus$cans - mean(ok_soda_campus$cans)) <= sd(ok_soda_campus$cans)) * 100)`% of stores fall within one standard deviation of the mean, right where the 68% rule says they should. The histogram tells a different story. It has two peaks, and the mean sits between them, describing neither the typical store nor the typical campus store. I've found this is the main reason to graph a distribution before summarizing it. A mean and standard deviation can't show a second group, but the bars can.
 
 
 ## Grammar 

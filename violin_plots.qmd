@@ -72,11 +72,11 @@ ggp2_violin +
 
 ## Description
 
-Violin plots show data distribution and probability density. They are like box plots (@sec-box-plots) but have a rotated kernel density plot on each side. We can use them to compare data distribution across categories.
+Violin plots show data distribution and probability density. They are like box plots (@sec-box-plots) but have a rotated kernel density plot on each side. We can use them to compare distributions across categories.
 
 ::: {.column-margin}
 
-The violin plot is essentially a mirrored density plot, in which a smoothed distribution is plotted symmetrically around its own center line, creating a Rorschach-like inkblot area for the distribution:
+The violin plot is a mirrored density plot. It draws a smoothed distribution on both sides of a center line, which creates a Rorschach-like inkblot:
 
 ![source: Rorschach test, Wikipedia](https://upload.wikimedia.org/wikipedia/commons/7/70/Rorschach_blot_01.jpg){fig-align="right" width="80%"}
 :::
@@ -113,7 +113,7 @@ library(dplyr) # for tibble() and data manipulation
 :::
 
 ::: {style="font-size: 0.95rem;"}
-In 1999, IBM's 340MB Microdrive squeezed a tiny spinning hard disk into a CompactFlash Type II card, giving digital camera owners room for hundreds of photos. The photo files varied a lot in size: most JPEGs came in under a megabyte, but detailed scenes and high quality settings produced a few much larger files. We'll simulate 300 photo files with `rlnorm()`, rounding each size to the nearest hundredth of a megabyte. Setting the seed with `set.seed()` means you'll get the same 300 file sizes every time you run the code below.
+In 1999, IBM's 340MB Microdrive squeezed a tiny spinning hard disk into a CompactFlash Type II card, giving digital camera owners room for hundreds of photos. The photo files varied a lot in size. Most JPEGs came in under a megabyte, but detailed scenes and high quality settings produced a few much larger files. We'll simulate 300 photo files with `rlnorm()`, rounding each size to the nearest hundredth of a megabyte. Setting the seed with `set.seed()` means you'll get the same 300 file sizes every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -136,7 +136,7 @@ glimpse(microdrive_photos)
 
 ## Distribution
 
-File sizes are a classic example of data that can't go below zero but can stretch a long way above it. That gives the violin a wide base and a long, thin neck. The trick to understanding this shape is the logarithm: on a log scale, these file sizes turn into the familiar bell curve from @sec-histograms. Below we'll move from the file sizes, to a picture, to the formula.
+File sizes are a classic example of data that can't go below zero but can stretch a long way above it. That gives the violin a wide base and a long, thin neck. The trick to understanding this shape is the logarithm: on a log scale, these file sizes turn into the familiar bell curve from @sec-histograms. Below we'll move from the file sizes, to a picture, to the formula. Then we'll change the data to see what the violin shows when the photos stop following the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -234,6 +234,57 @@ The two parameters describe the log scale, not the megabyte scale. Back on the m
 
 Our simulated photos come close: the median is `r round(median(microdrive_photos$size_mb), 2)` MB and the mean is `r round(mean(microdrive_photos$size_mb), 2)` MB.
 
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**CHANGE IT:**
+:::
+
+So far the file sizes look the way the formula says they should. Now suppose the photographer switches the camera to uncompressed TIFF for the last 50 photos. TIFFs fill a card fast, so she swaps in a second Microdrive. Each TIFF lands near 3.6 MB, and we'd expect them to add a second bump high on the violin's neck.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: change_data_violin
+#| code-fold: show
+#| eval: true
+#| echo: true
+set.seed(1999)
+tiff_photos <- microdrive_photos
+tiff_photos$size_mb[251:300] <- round(
+  rnorm(n = 50, mean = 3.6, sd = 0.2), # uncompressed TIFF files near 3.6 MB
+  2)
+tiff_photos |> 
+  summarise(
+    mean = mean(size_mb), 
+    median = median(size_mb),
+    q3 = quantile(size_mb, 0.75))
+```
+:::
+
+Below are the same two violins, drawn with the TIFF photos.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: change_violin
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| layout-ncol: 2
+ggplot(data = tiff_photos, aes(x = "", y = size_mb)) + 
+  geom_violin() + 
+  geom_hline(yintercept = 0.75, linetype = "dashed") + 
+  labs(title = "Megabyte scale", x = NULL, y = "File size (MB)")
+
+ggplot(data = tiff_photos, aes(x = "", y = size_mb)) + 
+  geom_violin() + 
+  geom_hline(yintercept = 0.75, linetype = "dashed") + 
+  scale_y_log10() + 
+  labs(title = "Log scale", x = NULL, y = "File size (MB, log scale)")
+```
+:::
+
+The TIFF files give the violin a second bulge between about 3.2 and 4.1 MB. Even the log scale can't make this shape symmetric. The summary numbers barely hint at this. The median moves from 0.81 to 0.97 MB, and the mean moves from 1.07 to 1.51 MB. A box plot of the same data would only show a taller box, because the third quartile jumps from 1.35 to 2.30 MB.
+
+I've found this is where violins earn their place. When data come from two different processes, the violin draws both shapes, while the summary numbers blend them into one.
+
 
 ## Grammar 
 
@@ -246,8 +297,6 @@ Our simulated photos come close: the median is `r round(median(microdrive_photos
 Create labels with `labs()`
 
 Initialize the graph with `ggplot()` and provide `data`
-
-  - Place an empty string (`""`) in the `x` argument
 
 Map an empty string (`""`) to the `x` and `size_mb` to the `y` (every photo shares one `x` value, so all 300 sizes make one unlabeled violin)
 

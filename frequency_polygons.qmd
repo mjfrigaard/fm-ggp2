@@ -72,7 +72,7 @@ ggp2_freqpoly +
 
 ## Description
 
-A frequency polygon is a plot that displays data distributions using points connected by straight lines. It's similar to a histogram but is more commonly used to compare data across multiple sets. A legend is often included to differentiate between various data sets. Frequency polygons are used to assess [symmetry](https://en.wikipedia.org/wiki/Symmetric_probability_distribution) and [skewness](https://en.wikipedia.org/wiki/Skewness).
+A frequency polygon shows a distribution as points joined by straight lines. It's a close cousin of the histogram, but I've found it works better for comparing several groups on one graph. A legend tells the groups apart. We use frequency polygons to check a distribution for [symmetry](https://en.wikipedia.org/wiki/Symmetric_probability_distribution) and [skewness](https://en.wikipedia.org/wiki/Skewness).
 
 ## Set up
 
@@ -135,7 +135,7 @@ glimpse(talkboy_clips)
 
 ## Distribution
 
-If you ever handed a kid a tape recorder, you already know the shape of this distribution. Most messages last under 12 seconds, but every so often someone rambles on for 15 or 20. Those long messages stretch the right side of the distribution into a long tail, which makes it [right skewed](https://en.wikipedia.org/wiki/Skewness). Below we'll move from the numbers, to a picture, to the formula.
+If you ever handed a kid a tape recorder, you already know the shape of this distribution. Most messages last under 12 seconds, but every so often someone rambles on for 15 or 20. Those long messages stretch the right side of the distribution into a long tail, which makes it [right skewed](https://en.wikipedia.org/wiki/Skewness). Below we'll move from the numbers, to a picture, to the formula. Then we'll change the data and see what the unexpected looks like.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -244,6 +244,56 @@ $$
 The [gamma distribution](https://en.wikipedia.org/wiki/Gamma_distribution) has two parameters. The shape ($k$) controls how lopsided the polygon is, and the rate ($\lambda$) controls how far it stretches along the `x` axis. From these two numbers we can calculate the mean ($k / \lambda = 8$ seconds), the peak ($(k - 1) / \lambda = 6$ seconds), and the standard deviation ($\sqrt{k} / \lambda = 4$ seconds). The peak comes before the mean, which is what right skew looks like in a formula.
 
 Our simulated messages come close: the mean is `r round(mean(talkboy_clips$seconds), 1)` seconds and the standard deviation is `r round(sd(talkboy_clips$seconds), 1)` seconds. Try raising `shape` in `rgamma()` and the polygon becomes more symmetric. A gamma distribution with a large shape looks a lot like the normal distribution from @sec-histograms.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**CHANGE IT:**
+:::
+
+Everything above is what we expect from a kid with a tape recorder. Now we'll swap the last 60 messages for longer pranks, like Kevin's fake voice of his dad on the hotel phone, that run about 25 seconds each. We still expect a right skew, but we should also see something the mean and median can't show us.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: unexpected_data_freq_poly
+#| code-fold: show
+#| eval: true
+#| echo: true
+set.seed(1999)
+talkboy_pranks <- tibble(
+  clip_id = 1:300,
+  seconds = round(c(
+    rgamma(n = 240, shape = 4, rate = 0.5), # everyday messages
+    rnorm(n = 60, mean = 25, sd = 2)), # 60 long pranks
+    1)
+)
+talkboy_pranks |>
+  summarise(
+    mean = mean(seconds),
+    median = median(seconds))
+```
+:::
+
+The mean climbs from `r round(mean(talkboy_clips$seconds), 1)` to 11.7 seconds and the median from `r median(talkboy_clips$seconds)` to 9.25. On their own, these numbers only say the skew got stronger. The polygon below tells a different story.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: unexpected_freq_poly
+#| code-fold: show
+#| eval: true
+#| echo: true
+#| warning: false
+#| message: false
+ggplot(data = talkboy_pranks,
+    aes(x = seconds)) +
+  geom_freqpoly() +
+  geom_vline(xintercept = median(talkboy_pranks$seconds),
+    linetype = "dashed", color = "#1E1012") +
+  geom_vline(xintercept = mean(talkboy_pranks$seconds),
+    color = "#1E1012") +
+  labs(x = "Message length (seconds)")
+```
+:::
+
+The long tail is gone. In its place is a second peak near 25 seconds, with a valley around 20 seconds where few messages land. The mean of 11.7 seconds now describes neither group: it's too long for an everyday message and less than half a prank. The pranks are a separate group, not a stretched tail, and a gamma distribution can't describe them. When a polygon has two peaks, I've found it's worth asking whether the data mixes two kinds of things before reporting a single mean.
 
 
 ## Grammar
