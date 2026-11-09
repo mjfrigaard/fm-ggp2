@@ -93,9 +93,9 @@ ggp2_clev_dots +
 
 ## Description 
 
-Cleveland dot plots compare numbers with dots on a line and are more efficient than bar graphs. The graph lists the categories on the side and shows the data with dots along a line.
+Cleveland dot plots list the categories on the side and compare numbers with dots along a line. They're often more efficient than bar graphs.
 
-Typically, each row contains two points representing the numerical values on the `x` axis, differentiated by color. A line connecting the two points represents the difference between the two categorical levels (the length of the line is the size of the difference).
+Each row typically holds two points on the `x` axis, one for each level of a categorical variable, told apart by color. A line connects the two points, and its length is the size of the difference.
 
 ## Set up
 
@@ -239,7 +239,69 @@ $$
 \text{hours} \sim \text{Normal}(\mu_{\text{model, battery}}, \; \sigma = 2)
 $$
 
-The line in each row estimates the difference between two of these means, $\mu_{\text{alkaline}} - \mu_{\text{rechargeable}}$, which we set to 3, 4, and 5 hours. Each median is built from only 20 tests, so it wobbles. For a normal distribution, the median of $n$ values has a standard error of about $1.25\,\sigma / \sqrt{n} = 1.25 \times 2 / \sqrt{20} \approx 0.56$ hours, and the difference between two medians wobbles by about $\sqrt{2} \times 0.56 \approx 0.8$ hours. That's why the WM-2 gap came out at about 2.5 hours instead of 3. Try raising `n` in `sim_design()` and the gaps settle closer to 3, 4, and 5.
+The line in each row estimates the difference between two of these means, $\mu_{\text{alkaline}} - \mu_{\text{rechargeable}}$, which we set to 3, 4, and 5 hours. Each median is built from only 20 tests, so it wobbles. For a normal distribution, the median of $n$ values has a standard error of about $1.25\,\sigma / \sqrt{n} = 1.25 \times 2 / \sqrt{20} \approx 0.56$ hours. The difference between two medians wobbles by about $\sqrt{2} \times 0.56 \approx 0.8$ hours. That's why the WM-2 gap came out at about 2.5 hours instead of 3. Try raising `n` in `sim_design()` and the gaps settle closer to 3, 4, and 5.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**CHANGE IT:**
+:::
+
+The graph so far shows what we expect: alkaline batteries win in every model. Below we'll suppose the Sports was tested with a newer batch of rechargeable batteries that averaged 19 hours instead of 12. We should see the two dots trade places in the Sports row while the other rows stay the same.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: change_data_clev_dots
+#| code-fold: show
+#| eval: true
+#| echo: true
+set.seed(1979) # same seed as above
+walkman_tests_flip <- faux::sim_design(
+  between = list(model = c("WM2", "Sports", "MegaBass"),
+                 battery = c("Alkaline", "Rechargeable")),
+  n = 20,
+  mu = c(WM2_Alkaline = 10, WM2_Rechargeable = 7,
+         Sports_Alkaline = 16, Sports_Rechargeable = 19, # newer rechargeables
+         MegaBass_Alkaline = 22, MegaBass_Rechargeable = 17),
+  sd = 2, dv = "hours", long = TRUE, plot = FALSE) |>
+  as_tibble() |>
+  mutate(model = factor(model, levels = c("WM2", "Sports", "MegaBass"),
+    labels = c("WM-2", "WM-F45 Sports", "WM-EX194 Mega Bass")))
+walkman_clev_dots_flip <- walkman_tests_flip |>
+  group_by(battery, model) |>
+  summarise(med_hours = median(hours), .groups = "drop")
+walkman_clev_dots_flip |>
+  tidyr::pivot_wider(names_from = battery, values_from = med_hours) |>
+  mutate(difference = Alkaline - Rechargeable)
+```
+:::
+
+```{r}
+#| label: change_numbers_clev_dots
+#| include: false
+flip_wide <- tidyr::pivot_wider(walkman_clev_dots_flip,
+  names_from = battery, values_from = med_hours)
+flip_sports <- flip_wide[flip_wide$model == "WM-F45 Sports", ]
+flip_wm2 <- flip_wide[flip_wide$model == "WM-2", ]
+```
+
+The Sports gap is now negative: the rechargeable median (`r round(flip_sports$Rechargeable, 1)` hours) beats the alkaline median (`r round(flip_sports$Alkaline, 1)` hours). We'll redraw the same graph with the changed data.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: change_draw_clev_dots
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(data = walkman_clev_dots_flip,
+    aes(x = med_hours, y = fct_rev(model))) +
+  geom_line(aes(group = model), linewidth = 0.75) +
+  geom_point(aes(color = battery), size = 3.5) +
+  labs(x = "Median battery life (hours)", y = "Model", color = "Battery")
+```
+:::
+
+The Sports line is about as long as the WM-2 line (`r round(abs(flip_sports$Alkaline - flip_sports$Rechargeable), 1)` hours versus `r round(flip_wm2$Alkaline - flip_wm2$Rechargeable, 1)` hours), so the lengths alone look like nothing changed. Only the colors give it away: in the Sports row the rechargeable dot now sits on the right. `geom_line()` draws the same line whichever dot is bigger, so the line shows the size of a gap but never its direction.
+
+I've found this is the easiest thing to miss in a Cleveland dot plot. Before comparing line lengths, check which color sits on the right in each row. If the order flips in one row, that row is telling a different story than the others.
 
 
 ## Grammar
@@ -431,7 +493,7 @@ On a shared scale, the battery life differences (a few hours) are tiny next to t
 
 ::: {style="font-size: 1.00em; color: #E74A2F;"}
 **CAUTION when using `scales = "free_x"`:**
-The graph below gives each measure its own `x` axis. Alkaline batteries last longer and rewind faster in every model. However, the magnitude of the differences should be interpreted with caution, because the length of the lines can't be directly compared across the two panels! 
+The graph below gives each measure its own `x` axis. Alkaline batteries last longer and rewind faster in every model. However, interpret the size of the differences with caution, because the line lengths can't be directly compared across the two panels! 
 :::
 
 ::: {style="font-size: 0.85em;"}

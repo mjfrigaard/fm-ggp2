@@ -87,9 +87,9 @@ ggp2_heatmap_tile +
 
 ## Description 
 
-Heatmaps are color graphs that show data as a matrix with categories on the x and y axes. Each cell's color corresponds to its value. They are useful for showing magnitude in two dimensions and often include a color scale. The intersecting cells contain variations of color saturation (i.e., the grade of purity or vividness) to represent the numerical values between groups.
+Heatmaps are color graphs that show data as a matrix with categories on the x and y axes. Each cell's color corresponds to its value. They show magnitude in two dimensions and often include a color scale. Where the categories intersect, each cell varies in color saturation (i.e., the grade of purity or vividness) to represent the numerical values between groups.
 
-Heatmap legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability. 
+I've found heatmap legends work best on the top or bottom, justified horizontally, because this keeps the grid's shape and makes it easier to read.
 
 ## Set up
 
@@ -153,7 +153,7 @@ glimpse(fp_heatmap)
 
 ## Distribution
 
-Every tile in a heatmap is a count, and every count here is built from 24 yes or no outcomes. A gag that appears in most episodes produces bright tiles in every season, and a gag whose chances grow over time produces tiles that brighten from left to right. Below we'll move from the episodes, to a picture, to the formula.
+Every tile in a heatmap is a count, and every count here is built from 24 yes or no outcomes. A gag that appears in most episodes produces bright tiles in every season. A gag whose chances grow over time produces tiles that brighten from left to right. Below we'll move from the episodes, to a picture, to the formula.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -235,6 +235,49 @@ $$
 The expected count is $24p$, and the standard deviation is $\sqrt{24p(1 - p)}$. That spread is largest when $p = 0.5$ (about 2.4 episodes) and shrinks toward zero when a gag almost always or almost never appears. That's why the Will flirts row looks so steady while the middle rows flicker from season to season.
 
 The probability itself comes from `plogis()`, which turns `base + trend * (season - 3.5)` into a number between 0 and 1. A positive `trend` (like the Carlton dance's 0.5) makes a gag more likely every season. Try giving "Jazz thrown out" a negative trend and watch his row fade to teal from left to right.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**CHANGE IT:**
+:::
+
+So far the heatmap shows what we expect: each row changes slowly from one season to the next. Now we'll change the data. Suppose in season 3 the writers had Phil throw Jazz out of the house in almost every episode (a 90% chance instead of about 40%). We expect one bright tile in the middle of a dim row.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: change_data_heatmap
+#| code-fold: show
+#| eval: true
+#| echo: true
+set.seed(1990) # same seed as above
+fp_heatmap_jazz <- fp_episodes |>
+  mutate(present = if_else(
+    gag == "Jazz thrown out" & season == 3, # one gag in one season
+    rbinom(n(), size = 1, prob = 0.9), # thrown out 90% of the time
+    present)) |>
+  group_by(season, gag) |>
+  summarise(occurrences = sum(present), .groups = "drop")
+fp_heatmap_jazz |>
+  filter(gag == "Jazz thrown out")
+```
+:::
+
+Jazz now gets thrown out in `r fp_heatmap_jazz$occurrences[fp_heatmap_jazz$gag == "Jazz thrown out" & fp_heatmap_jazz$season == 3]` of the 24 episodes in season 3. Below we redraw the simulated heatmap with the same fill scale (0 to 24).
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: change_draw_heatmap
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(fp_heatmap_jazz, aes(x = season, y = gag, fill = occurrences)) +
+  geom_tile() +
+  scale_fill_continuous(limits = c(0, 24)) +
+  labs(title = "Jazz's bad year", x = "Season", y = NULL, fill = "Episodes") +
+  theme(legend.position = "bottom")
+```
+:::
+
+The season 3 tile in the Jazz row is now the brightest tile on the graph, sitting between two dim neighbors. Yet his average per season only moves from `r round(mean(fp_heatmap$occurrences[fp_heatmap$gag == "Jazz thrown out"]), 1)` to `r round(mean(fp_heatmap_jazz$occurrences[fp_heatmap_jazz$gag == "Jazz thrown out"]), 1)` episodes, still well below Geoffrey's zingers. I've found this is what heatmaps do best. A row or column summary smooths one odd cell away. The grid puts every cell next to its neighbors, so a break in the pattern jumps out.
 
 
 ## Grammar

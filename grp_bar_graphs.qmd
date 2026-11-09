@@ -92,7 +92,7 @@ ggp2_grp_col +
 
 Grouped bar graphs compare multiple values across categories. Each category has a cluster of bars. X-axis labels show categories and y-axis values. Colors or patterns differentiate subsets, and a legend is shown on the side or top of the graph.
 
-`geom_col()` allows us to display 'grouped' numerical values across levels (or groups) of a categorical variable. 
+`geom_col()` displays 'grouped' numbers across the levels (or groups) of a categorical variable.
 
 ## Set up
 
@@ -123,7 +123,9 @@ library(tidyr) # for uncount()
 **DATA:**
 :::
 
-In *Jurassic Park* (1993), every species lives in its own paddock. We'll simulate the weight of every dinosaur on two islands: Isla Nublar (the park) and Isla Sorna (Site B from *The Lost World*). Both islands have the same five species, and each species gets a head count on each island (`n`) and its own normal distribution of weights (`mean_tons` and `sd_tons`). `tidyr::uncount()` repeats each row `n` times (one row per dinosaur), and `rnorm()` draws each dinosaur's weight. Then we add up the weights in each paddock on each island (`total_tons`). Setting the seed with `set.seed()` means you'll get the same dinosaurs every time you run the code below.
+In *Jurassic Park* (1993), every species lives in its own paddock. We'll simulate the weight of every dinosaur on two islands: Isla Nublar (the park) and Isla Sorna (Site B from *The Lost World*). Both islands have the same five species, and each species gets a head count on each island (`n`) and its own normal distribution of weights (`mean_tons` and `sd_tons`).
+
+`tidyr::uncount()` repeats each row `n` times (one row per dinosaur), and `rnorm()` draws each dinosaur's weight. Then we add up the weights in each paddock on each island (`total_tons`). Setting the seed with `set.seed()` means you'll get the same dinosaurs every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -225,6 +227,58 @@ The expected total is $n\mu$: $3 \times 40 = 120$ tons for the Brachiosaurus pad
 
 Try changing the head counts in `n`. Doubling the Velociraptors doubles their bar, but the bar would still be the shortest in the park.
 
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**CHANGE IT:**
+:::
+
+So far the graph shows what we expect: the heavy species have the tallest bars on both islands. Now we'll change the head counts. Isla Sorna has no fences, and in the 1997 sequel its dinosaurs have been breeding on their own for years. Suppose the Gallimimus herd there grew from 14 to 300. We still expect each Gallimimus to weigh under half a ton, so the herd's bar should grow, but how much?
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: change_data_grp_col
+#| code-fold: show
+#| eval: true
+#| echo: true
+set.seed(1993) # same seed as above
+jp_herd <- jp_dinos |>
+  bind_rows(tibble(
+    island = "Isla Sorna",
+    species = "Gallimimus",
+    weight_tons = round(rnorm(286, mean = 0.45, sd = 0.08), 2))) # 286 more Gallimimus
+jp_paddocks_herd <- jp_herd |>
+  group_by(island, species) |>
+  summarise(dinosaurs = n(), total_tons = sum(weight_tons), .groups = "drop")
+jp_paddocks_herd
+```
+:::
+
+Below we redraw the same grouped bar graph with the new totals.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: change_graph_grp_col
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(data = jp_paddocks_herd,
+    aes(x = species, y = total_tons)) +
+  geom_col(aes(fill = island), position = "dodge") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  labs(x = "Paddock", y = "Total weight (tons)", fill = "Island")
+```
+:::
+
+```{r}
+#| label: change_numbers_grp_col
+#| include: false
+herd_tons <- with(jp_paddocks_herd,
+  total_tons[island == "Isla Sorna" & species == "Gallimimus"])
+brach_tons <- with(jp_paddocks_herd,
+  total_tons[island == "Isla Nublar" & species == "Brachiosaurus"])
+```
+
+The lightest species now has the tallest bar in the graph. The Isla Sorna Gallimimus weigh `r round(herd_tons, 1)` tons together, more than the `r round(brach_tons, 1)` tons of Brachiosaurus on Isla Nublar. Nothing about a single Gallimimus changed; only the head count did. The bar can't tell us whether its height comes from a few heavy animals or hundreds of light ones. I've found it's worth checking the counts (like the `dinosaurs` column above) before reading a tall bar of totals as a sign of big animals.
+
 
 ## Grammar
 
@@ -232,7 +286,7 @@ Try changing the head counts in `n`. Doubling the Velociraptors doubles their ba
 **CODE:**
 :::
 
-Grouped bar graphs assume the statistical measure (i.e., the value that the length of the bars will be derived from) is contained in a variable and mapped to the `x` or `y` aesthetic. 
+Grouped bar graphs expect the bar heights to already sit in a variable. We map that variable to the `x` or `y` aesthetic.
 
   -   Create labels with `labs()`
 

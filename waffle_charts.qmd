@@ -82,7 +82,7 @@ ggp2_waffle +
 
 ## Description 
 
-Waffle charts use small squares or icons to show how a whole thing is divided into parts, grouped into categories that fill a grid. They're useful for visualizing percentages or proportions from a total and can include a legend or labels to explain each category. Waffle chart legends should be positioned on top or bottom and justified horizontally to preserve shape and improve readability. 
+Waffle charts split a whole into parts with small squares (or icons) that fill a grid, one color per category. They're useful for showing percentages or proportions of a total, and a legend or labels can explain each category. Put the legend on the top or bottom and lay it out horizontally, so the grid keeps its shape and stays easy to read. 
 
 We’ll build a waffle chart using the [`ggwaffle` package.](https://liamgilbey.github.io/ggwaffle/)
 
@@ -122,7 +122,7 @@ library(dplyr) # for tibble() and data manipulation
 
 In the mid 90s, kids traded and battled with Pogs: cardboard milk caps, printed and holographic pogs, and heavy plastic "slammers" used to flip them. We'll simulate a collection of 100 pieces with `sample()`, giving each type its own chance of turning up.
 
-Waffle charts require a special data transformation with `ggwaffle::waffle_iron()`. Set the `group` argument in `ggwaffle::aes_d()` to the categorical variable you want to see the relative counts for, and set `rows = 10` so 100 pieces fill a 10 by 10 grid. Setting the seed with `set.seed()` means you'll get the same collection every time you run the code below.
+Before we can draw a waffle, the data needs a special transformation with `ggwaffle::waffle_iron()`. Set the `group` argument in `ggwaffle::aes_d()` to the categorical variable you want to see the relative counts for, and set `rows = 10` so 100 pieces fill a 10 by 10 grid. Setting the seed with `set.seed()` means you'll get the same collection every time you run the code below.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -204,7 +204,7 @@ pog_collection |>
 ```
 :::
 
-A waffle chart is the same bar folded into columns of 10. Each column of the waffle below is ten pieces, so the milk caps fill a little more than four columns and the slammers fill a little more than one.
+A waffle chart is the same bar folded into columns of 10. Each column of the waffle below is ten pieces. The milk caps fill a little more than four columns, and the slammers fill a little more than one.
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -235,6 +235,59 @@ $$
 $$
 
 With $n = 100$, the expected count for each type is its probability times 100, which is the same number as its percentage. The counts wobble around those expectations by about $\sqrt{100\,p\,(1 - p)}$ pieces: about 5 for milk caps and 3 for slammers. Our collection has `r sum(pog_collection$type == "Slammers")` slammers instead of the expected 10, a difference of a little more than one standard deviation. Change the number in `set.seed()` and the squares trade places, but they always add to 100.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**CHANGE IT:**
+:::
+
+The waffle above is what we expect: 100 pieces, so every square is one percent. Real collections rarely land on 100. Below we'll keep the same four types and the same chances but shrink the collection to 47 pieces (a kid who just started trading at recess). We should still see the milk caps fill about half the grid, but the squares will stop being percentages.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: change_data_waffle
+#| code-fold: show
+#| eval: true
+#| echo: true
+set.seed(1993) # same seed as above
+pog_starter <- tibble(
+  pog_id = 1:47, # a smaller collection
+  type = sample(
+    c("Milk caps", "Printed pogs", "Holographic", "Slammers"),
+    size = 47, replace = TRUE,
+    prob = c(0.45, 0.30, 0.15, 0.10) # same chances as above
+    )
+  )
+waffle_starter <- ggwaffle::waffle_iron(pog_starter,
+                      aes_d(group = type), rows = 10)
+pog_starter |>
+  count(type) |>
+  mutate(percent = round(100 * n / sum(n), 1))
+```
+:::
+
+We'll redraw the same waffle with the smaller collection.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: change_draw_waffle
+#| fig-asp: 1
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(data = waffle_starter, aes(x = x, y = y, fill = group)) +
+  ggwaffle::geom_waffle() +
+  coord_equal() +
+  labs(x = NULL, y = NULL, fill = NULL) +
+  theme(axis.text = element_blank(),
+        panel.grid = element_blank(),
+        legend.position = "top") +
+  guides(fill = guide_legend(nrow = 2))
+```
+:::
+
+The grid is now `r max(waffle_starter$x)` columns wide, and the last column holds only `r sum(waffle_starter$x == max(waffle_starter$x))` squares, so the waffle has a bite taken out of it. Counting squares no longer gives a percentage. The `r sum(pog_starter$type == "Milk caps")` milk cap squares are `r round(100 * mean(pog_starter$type == "Milk caps"))` percent of the collection, and each square is worth about `r round(100 / 47, 1)` percent. The `r sum(pog_starter$type == "Holographic")` holographic squares look like a rounding error, but they're `r round(100 * mean(pog_starter$type == "Holographic"))` percent.
+
+The shape of the collection survived (milk caps still fill about half the grid), but the reader can't count their way to the numbers anymore. I've found it's worth checking the total before drawing a waffle. If it isn't 100, say what one square is worth in the subtitle, or report the percentages next to the graph.
 
 
 ## Grammar

@@ -77,7 +77,7 @@ ggp2_bar_ovrlp +
 
 ## Description
 
-Overlapping bar graphs display multiple variables on the same graph. Bars overlap instead of being placed side by side. Bars are often made partially transparent to aid visibility. A legend is essential to distinguish between data.
+Overlapping bar graphs show several groups on the same graph. The bars overlap instead of sitting side by side, so we usually make them partly transparent to let the bars behind show through. A legend tells the groups apart.
 
 In `ggplot2`, we can build overlapping bar graphs using the `fill` argument in `geom_bar()` or `geom_col()`.
 
@@ -112,7 +112,9 @@ library(tidyr) # for uncount()
 :::
 
 ::: {style="font-size: 0.95rem;"}
-Novell NetWare was the most popular network operating system of the early 90s, and office LANs grew as more desks got a PC and a network card. We'll simulate the number of workstations on the LAN for 24 offices in 1990, 1994, and 1998. Each year gets its own average LAN size (`mean_nodes`), `tidyr::uncount()` creates one row per office, and `rnorm()` draws each office's workstation count, rounded to a whole workstation. We'll also flag whether each office ran 25 workstations or more (`lan_size`). Setting the seed with `set.seed()` means you'll get the same 72 offices every time you run the code below.
+Novell NetWare was the most popular network operating system of the early 90s. Office LANs grew as more desks got a PC and a network card.
+
+We'll simulate the number of workstations on the LAN for 24 offices in 1990, 1994, and 1998. Each year gets its own average LAN size (`mean_nodes`), `tidyr::uncount()` creates one row per office, and `rnorm()` draws each office's workstation count, rounded to a whole workstation. We'll also flag whether each office ran 25 workstations or more (`lan_size`). Setting the seed with `set.seed()` means you'll get the same 72 offices every time you run the code below.
 :::
 
 ::: {style="font-size: 0.85em;"}
@@ -138,7 +140,9 @@ glimpse(netware_offices)
 
 ## Distribution
 
-Overlapping bars only overlap when groups share values. Three years with very different LAN sizes would sit side by side with no stacking at all, and three years with the same LAN size would stack into a single pile. How much the bars overlap depends on how far apart the years' averages are compared to how much offices vary within a year. Below we'll move from the offices, to a picture, to the formula.
+Overlapping bars only overlap when groups share values. Three years with very different LAN sizes would sit side by side with no stacking at all. Three years with the same LAN size would stack into a single pile.
+
+How much the bars overlap depends on how far apart the years' averages are compared to how much offices vary within a year. Below we'll move from the offices, to a picture, to the formula. Then we'll change the data and see what the graph does with an unexpected year.
 
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **COUNT IT:**
@@ -215,6 +219,55 @@ P(X_{1994} > X_{1998}) = \Phi\left(\frac{24 - 27}{2.5\sqrt{2}}\right) \approx 0.
 $$
 
 So a 1994 office runs more workstations than a 1998 office about 20% of the time, while a 1990 office does so only about 8% of the time. Try moving the three means in `mean_nodes` closer together and the bars stack into a single colorful pile.
+
+::: {style="font-size: 1.10em; color: #1e83c8;"}
+**CHANGE IT:**
+:::
+
+So far the graph shows what we expect: each year is one pile, and the piles move right as LANs grow. Now we'll change the 1998 offices. Suppose the head offices kept growing to about 32 workstations, but the branch offices stayed small at about 21. We expect two 1998 piles, one far right and one back on top of the 1990 offices, with almost nothing near the 1998 average.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: change_data_bar_ovrlp
+#| code-fold: show
+#| eval: true
+#| echo: true
+set.seed(1990) # same seed as above
+netware_split <- netware_offices |>
+  mutate(
+    split_mean = if_else(office <= 12, 32, 21), # 12 head offices, 12 branches
+    nodes = if_else(year == "1998",
+      round(rnorm(n(), mean = split_mean, sd = 1.5)), nodes),
+    lan_size = if_else(nodes >= 25, "25 or more", "Under 25")) |>
+  select(-split_mean)
+netware_split |>
+  group_by(year) |>
+  summarise(mean = mean(nodes), sd = sd(nodes),
+    min = min(nodes), max = max(nodes))
+```
+:::
+
+The 1998 mean barely moved, to `r round(mean(netware_split$nodes[netware_split$year == "1998"]), 1)` workstations, but its standard deviation jumped to `r round(sd(netware_split$nodes[netware_split$year == "1998"]), 1)`. We'll redraw the same graph below with the same dashed lines.
+
+::: {style="font-size: 0.85em;"}
+```{r}
+#| label: change_draw_bar_ovrlp
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(data = netware_split,
+    aes(x = nodes, fill = year)) +
+  geom_bar() +
+  geom_vline(xintercept = c(22, 24, 27),
+    color = c("#69100A", "#A91E28", "#B3575A"),
+    linetype = "dashed", linewidth = 1) +
+  labs(x = "Workstations", y = "Offices", fill = "Year")
+```
+:::
+
+The 1998 dashed line now sits in an empty stretch. None of the 1998 offices ran between 24 and 29 workstations. The `r sum(netware_split$year == "1998" & netware_split$nodes < 24)` branch offices pile up with the 1990 offices on the left, and the head offices sit alone on the right.
+
+The mean says 1998 offices were a little bigger than 1994 offices, but the bars show that no 1998 office was typical. I've found this is the reason to look at the bars before comparing group means. A mean can't tell us when one group has split in two, but the overlapping colors can.
 
 
 ## Grammar
