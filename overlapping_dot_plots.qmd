@@ -195,7 +195,7 @@ The graph below gives each grade its own row of dot stacks (with `facet_wrap()`)
 #| eval: true
 #| echo: true
 ggplot(goosebumps_readers, aes(x = books_read, fill = grade)) + 
-  geom_dotplot(method = "histodot", binwidth = 1, dotsize = 0.55,
+  geom_dotplot(method = "histodot", binwidth = 1, dotsize = 0.45,
     show.legend = FALSE) + 
   geom_vline(data = tibble(grade = factor(c("3rd grade", "4th grade", 
       "5th grade")), lambda = c(3, 6, 9)), 

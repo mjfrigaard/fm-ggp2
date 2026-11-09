@@ -20,7 +20,7 @@ ggplot2::theme_set(theme_ggp2g(
 
 Welcome to the `ggplot2` field manual! 
 
-I created this book as a sort of online 'quick reference' to help me answer questions like:[^tidytuesday-callout]  
+I created this book as a sort of 'quick reference' to help me answer questions like:[^tidytuesday-callout]  
 
   - "*What graph should I use?*"  
   
@@ -32,15 +32,15 @@ I created this book as a sort of online 'quick reference' to help me answer ques
 
 ## What's new in this edition
 
-Previous versions of this book used datasets from data packages, and a single, consistent plot theme. I've rebuilt the examples in this manual around simulated data, and each section has its own theme. 
+Previous iterations of this manual used datasets from data packages, and a single, consistent plot theme. I've rebuilt the examples in this manual around simulated data, and each section has its own theme. 
 
 ### Why simulated data? 
 
-Earlier versions borrowed datasets from packages like `palmerpenguins`, `fivethirtyeight`, and `ggplot2movies`. Those are great example datasets, but each one meant another package to install, and the shape of the data was whatever the real world handed us. 
+Earlier versions borrowed datasets from packages like `palmerpenguins`, `fivethirtyeight`, and `ggplot2movies`. Those are great examples, but each one meant another package to install, and the shape of the data was whatever the package authors included. 
 
-I've built many data visualizations since writing the first edition of this book, and found myself asking questions like, "*What **should** this graph be showing?* Or *what if the data were collected under slightly different conditions?*?
+After building hundreds of data visualizations since writing the first edition of this book, and found myself asking questions like, "*What should this graph be showing?* Or *what if the data were collected under slightly different conditions?*? Data visualization should have the ability to show us the unexpected and complicated, and to do that, sometimes its best to start by graphing what to expect. 
 
-Simulating the data gave me control over the distribution and structure, something I couldn't do with real datasets. Building the distributions also forced me to think about each graph differently before I started drawing it. I highly recommend reviewing the code I used in each chapter to create the data. It’s usually only a few lines of code; most of it uses base R (like `rnorm()`, `rpois()`, and `sample()`) or a handful of user-written packages (like [`faux`](https://debruine.github.io/faux/)).
+Simulating the data gives us control over the distribution and structure, something we couldn't do with real datasets. Building the distributions also forces us to think about each graph differently before we started drawing it. I highly recommend reviewing the code I used in each chapter to create the data. It’s usually only a few lines, and most of it uses base R (like `rnorm()`, `rpois()`, and `sample()`) or a handful of user-written packages (like [`faux`](https://debruine.github.io/faux/)).
 
 The simulated data connects the numbers to the picture in a new **Distribution** section, so you’ll see why a histogram is shaped like a bell and why a box plot shows so many outliers, not just how to build it.
 
