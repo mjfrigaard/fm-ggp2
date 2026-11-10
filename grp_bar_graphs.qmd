@@ -18,7 +18,7 @@ source("_common.R")
 showtext::showtext_auto()
 # set theme
 ggplot2::theme_set(fmggp2::theme_jurassic(
-    base_size = 15))
+    base_size = 17))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
@@ -123,7 +123,7 @@ library(tidyr) # for uncount()
 **DATA:**
 :::
 
-In *Jurassic Park* (1993), every species lives in its own paddock. We'll simulate the weight of every dinosaur on two islands: Isla Nublar (the park) and Isla Sorna (Site B from *The Lost World*). Both islands have the same five species, and each species gets a head count on each island (`n`) and its own normal distribution of weights (`mean_tons` and `sd_tons`).
+In [*Jurassic Park* (1993)](https://www.imdb.com/title/tt0107290/), every species lives in its own paddock. We'll simulate the weight of every dinosaur on two islands: Isla Nublar (the park) and Isla Sorna (Site B from [*The Lost World* (1997)](https://www.imdb.com/title/tt0119567/)). Both islands have the same five species, and each species gets a head count on each island (`n`) and its own normal distribution of weights (`mean_tons` and `sd_tons`).
 
 `tidyr::uncount()` repeats each row `n` times (one row per dinosaur), and `rnorm()` draws each dinosaur's weight. Then we add up the weights in each paddock on each island (`total_tons`). Setting the seed with `set.seed()` means you'll get the same dinosaurs every time you run the code below.
 
@@ -225,13 +225,13 @@ $$
 
 The expected total is $n\mu$: $3 \times 40 = 120$ tons for the Brachiosaurus paddock and $20 \times 0.45 = 9$ tons for Gallimimus. The spread grows with $\sqrt{n}$, not $n$, because heavy and light dinosaurs partly cancel each other out. Our Brachiosaurus paddock on Isla Nublar weighs `r round(sum(jp_dinos$weight_tons[jp_dinos$species == "Brachiosaurus" & jp_dinos$island == "Isla Nublar"]), 1)` tons, within one standard deviation ($\sqrt{3} \times 5 \approx 8.7$ tons) of its expected 120.
 
-Try changing the head counts in `n`. Doubling the Velociraptors doubles their bar, but the bar would still be the shortest in the park.
-
 ::: {style="font-size: 1.10em; color: #1e83c8;"}
 **CHANGE IT:**
 :::
 
-So far the graph shows what we expect: the heavy species have the tallest bars on both islands. Now we'll change the head counts. Isla Sorna has no fences, and in the 1997 sequel its dinosaurs have been breeding on their own for years. Suppose the Gallimimus herd there grew from 14 to 300. We still expect each Gallimimus to weigh under half a ton, so the herd's bar should grow, but how much?
+So far the graph shows what we expect: the heavy species have the tallest bars on both islands. Now we'll change the head counts of each dinosaur. Isla Sorna has no fences, and in the 1997 sequel its dinosaurs have been breeding on their own for years. 
+
+Suppose the Gallimimus herd there grew from 14 to 300. We still expect each Gallimimus to weigh under half a ton, so the herd's bar should grow, but how much?
 
 ::: {style="font-size: 0.85em;"}
 ```{r}

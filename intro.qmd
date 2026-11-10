@@ -234,24 +234,28 @@ Each graph has the following sections:
 
 5.  **Distribution**
 
-    -   *How the distribution we simulated from shapes the graph, in three steps:*
+    -   *How the distribution we simulated from shapes the graph, in four steps:*
         -   ***COUNT IT***: *look at a handful of values and a few summary numbers.*
         -   ***DRAW IT***: *draw the data as a bar model or annotated graph.*
         -   ***NAME IT***: *write down the distribution and connect each parameter to the graph.*
+        -   ***CHANGE IT***: *change the data (a smaller sample, a new group, a different distribution) and redraw the same graph to show something unexpected.*
 
 6.  **Grammar**
 
-    -   Graph Code  
+    -   Code
+        -   *The steps for building the graph, followed by the code.*
         -   *Graph labels have the `labs_` prefix*
         -   *Graph layers have a `ggp2_` prefix*
+    -   Graph
+        -   *The finished graph.*
 
-7.  **More info**
+7.  **More info** (in some chapters)
 
     -   Additional methods, arguments, or applications
         -   *Color palettes*\
         -   *Complementary packages*
 
-The diagram below shows how the sections fit together. The data is simulated in **Set up**, explained in **Distribution**, and graphed in **Grammar**.
+The diagram below shows how the sections fit together. The data is simulated in **Set up**, explained and then changed in **Distribution**, and graphed in **Grammar**.
 
 ```{mermaid}
 %%| fig-align: 'center'
@@ -265,9 +269,10 @@ flowchart TD
     subgraph dist["<strong>Distribution</strong>"]
         count["i. COUNT IT<br>values + summaries"] --> draw["ii. DRAW IT<br>bar model or<br>annotated graph"]
         draw --> name["iii. NAME IT<br>distribution +<br>parameters"]
+        name --> change["iv. CHANGE IT<br>new data +<br>same graph"]
     end
     dist --> grammar[["<strong>Grammar</strong><br><code>labs_*</code> + <code>ggp2_*</code>"]]
-    grammar --> more(["<strong>More info</strong><br>other geoms + options"])
+    grammar --> more(["<strong>More info</strong><br>other geoms + options<br>(some chapters)"])
 
     style thm fill:#4CBB9D,color:#FFFFFF,rx:5,ry:5
     style req fill:#4CBB9D,color:#FFFFFF,rx:5,ry:5
@@ -277,6 +282,7 @@ flowchart TD
     style count fill:#000080,color:#FFFFFF,rx:5,ry:5
     style draw fill:#000080,color:#FFFFFF,rx:5,ry:5
     style name fill:#000080,color:#FFFFFF,rx:5,ry:5
+    style change fill:#000080,color:#FFFFFF,rx:5,ry:5
     style grammar fill:#FFFFFF,color:#000000,stroke:#333
     style more fill:#4CBB9D,color:#FFFFFF,rx:5,ry:5
 ```
