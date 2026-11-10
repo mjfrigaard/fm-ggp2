@@ -16,14 +16,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_hypercolor(
+ggplot2::theme_set(ggrewindr::theme_hypercolor(
     base_size = 14))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_hypercolor()`
 
-Graphs in this chapter use `fmggp2::theme_hypercolor()`, built from Generra Hypercolor shirts: a deep purple background, a magenta frame, heat changing magenta, orange, purple, blue, green, and yellow marks, and a Gill Sans title.
+Graphs in this chapter use `ggrewindr::theme_hypercolor()`, built from Generra Hypercolor shirts: a deep purple background, a magenta frame, heat changing magenta, orange, purple, blue, green, and yellow marks, and a Gill Sans title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

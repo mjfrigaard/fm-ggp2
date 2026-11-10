@@ -17,7 +17,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_talkboy(
+ggplot2::theme_set(ggrewindr::theme_talkboy(
     base_size = 15))
 ```
 
@@ -25,7 +25,7 @@ ggplot2::theme_set(fmggp2::theme_talkboy(
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_talkboy()`
 
-Graphs in this chapter use `fmggp2::theme_talkboy()`, built from the Deluxe Talkboy cassette recorder: a dark walnut background, a silver frame and panel, button blue marks, and a Brush Script title.
+Graphs in this chapter use `ggrewindr::theme_talkboy()`, built from the Deluxe Talkboy cassette recorder: a dark walnut background, a silver frame and panel, button blue marks, and a Brush Script title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

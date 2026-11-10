@@ -16,14 +16,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_bopit(
+ggplot2::theme_set(ggrewindr::theme_bopit(
     base_size = 13))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_bopit()`
 
-Graphs in this chapter use `fmggp2::theme_bopit()`, built from the Bop It toy: a deep purple background, a yellow frame and title, yellow, blue, green, orange, and pink marks, a purple to yellow continuous scale, and a Rockwell title.
+Graphs in this chapter use `ggrewindr::theme_bopit()`, built from the Bop It toy: a deep purple background, a yellow frame and title, yellow, blue, green, orange, and pink marks, a purple to yellow continuous scale, and a Rockwell title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

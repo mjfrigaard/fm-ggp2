@@ -16,14 +16,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_doom(
+ggplot2::theme_set(ggrewindr::theme_doom(
     base_size = 14))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_doom()`
 
-Graphs in this chapter use `fmggp2::theme_doom()`, built from Doom (1993): a scorched brown background, a hellfire red frame and title, red, orange, gunmetal, armor green, blue key, and yellow key marks, and an Impact title.
+Graphs in this chapter use `ggrewindr::theme_doom()`, built from Doom (1993): a scorched brown background, a hellfire red frame and title, red, orange, gunmetal, armor green, blue key, and yellow key marks, and an Impact title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

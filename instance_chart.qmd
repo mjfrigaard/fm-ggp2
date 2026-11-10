@@ -16,14 +16,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_gushers(
+ggplot2::theme_set(ggrewindr::theme_gushers(
     base_size = 14))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_gushers()`
 
-Graphs in this chapter use `fmggp2::theme_gushers()`, built from Fruit Gushers: a white plate background, a red frame and title, red, green, teal, orange, and pink fruit snack marks, and a Chalkboard title.
+Graphs in this chapter use `ggrewindr::theme_gushers()`, built from Fruit Gushers: a white plate background, a red frame and title, red, green, teal, orange, and pink fruit snack marks, and a Chalkboard title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

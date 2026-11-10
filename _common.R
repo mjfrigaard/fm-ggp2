@@ -30,7 +30,8 @@ suppressMessages(fmggp2::add_fonts("Ubuntu"))
 theme_ggp2g <- fmggp2::theme_fmggp2
 
 # book helpers ----
-library(fmggp2) # %nin%, status(), co_box(), and the 90s themes
+library(fmggp2) # %nin%, status(), and co_box()
+library(ggrewindr) # the 90s themes
 
 options(width = 50L,
   pillar.width = 50L)

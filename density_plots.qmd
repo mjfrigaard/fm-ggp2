@@ -17,14 +17,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_wired(
+ggplot2::theme_set(ggrewindr::theme_wired(
     base_size = 15))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_wired()`
 
-Graphs in this chapter use `fmggp2::theme_wired()`, built from the WIRED (US) November/December 2024 cover: a black background, a white frame and bold Helvetica Neue title, and red, blue, pink, gray, and steel blue marks.
+Graphs in this chapter use `ggrewindr::theme_wired()`, built from the WIRED (US) November/December 2024 cover: a black background, a white frame and bold Helvetica Neue title, and red, blue, pink, gray, and steel blue marks.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

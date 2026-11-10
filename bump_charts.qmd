@@ -16,14 +16,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_visor(
+ggplot2::theme_set(ggrewindr::theme_visor(
     base_size = 13))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_visor()`
 
-Graphs in this chapter use `fmggp2::theme_visor()`, built from a green Handspring Visor Deluxe: a pale lavender background, a translucent green frame, a gray LCD panel, green, gray, mint, and silver marks, and a Trebuchet MS title.
+Graphs in this chapter use `ggrewindr::theme_visor()`, built from a green Handspring Visor Deluxe: a pale lavender background, a translucent green frame, a gray LCD panel, green, gray, mint, and silver marks, and a Trebuchet MS title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

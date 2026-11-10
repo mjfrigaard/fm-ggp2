@@ -78,7 +78,7 @@ ggp2_grp_col <- ggplot(data = jp_paddocks,
   ggp2_grp_col +
       labs_grp_col
 ) +
-  fmggp2::theme_jurassic(base_size = 12) +
+  ggrewindr::theme_jurassic(base_size = 12) +
   bare_theme
 ```
 
@@ -125,7 +125,7 @@ ggp2_sum_col <- ggplot(data = hm_sum_col,
   ggp2_sum_col +
       labs_sum_col
 ) +
-  fmggp2::theme_happymeal(base_size = 12) +
+  ggrewindr::theme_happymeal(base_size = 12) +
   bare_theme
 ```
 
@@ -166,7 +166,7 @@ ggp2_bar_ovrlp <- ggplot(data = netware_offices,
   ggp2_bar_ovrlp +
     labs_bar_ovrlp
 ) +
-  fmggp2::theme_netware(base_size = 12) +
+  ggrewindr::theme_netware(base_size = 12) +
   bare_theme
 ```
 
@@ -215,7 +215,7 @@ ggp2_heatmap_tile <- ggplot(data = fp_heatmap,
   ggp2_heatmap_tile +
     labs_heatmap_tile
 ) +
-  fmggp2::theme_freshprince(base_size = 12) +
+  ggrewindr::theme_freshprince(base_size = 12) +
   bare_theme
 ```
 
@@ -262,7 +262,7 @@ ggp2_waffle <- ggplot(data = waffle_pogs,
           legend.position = "top") +
     guides(fill = guide_legend(nrow = 2))
 ) +
-  fmggp2::theme_pogs(base_size = 12) +
+  ggrewindr::theme_pogs(base_size = 12) +
   bare_theme
 ```
 
@@ -317,6 +317,6 @@ ggp2_clev_dots <- ggplot(data = walkman_clev_dots,
   ggp2_clev_dots +
       labs_clev_dots
 ) +
-  fmggp2::theme_walkman(base_size = 12) +
+  ggrewindr::theme_walkman(base_size = 12) +
   bare_theme
 ```

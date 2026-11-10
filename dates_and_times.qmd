@@ -64,7 +64,7 @@ ggp2_line <- ggplot(data = batman_box,
   ggp2_line +
       labs_line
 ) +
-  fmggp2::theme_batman(base_size = 12) +
+  ggrewindr::theme_batman(base_size = 12) +
   bare_theme
 ```
 
@@ -154,7 +154,7 @@ mini_theme <- theme(axis.text = element_blank(),
       patchwork::plot_layout(nrow = 2) &
       mini_theme
 ) &
-  fmggp2::theme_snick(base_size = 12) &
+  ggrewindr::theme_snick(base_size = 12) &
   bare_theme
 ```
 
@@ -213,7 +213,7 @@ ggp2_bump <- ggplot(springboard_sales,
   ggp2_bump +
     labs_bump
 ) +
-  fmggp2::theme_visor(base_size = 12) +
+  ggrewindr::theme_visor(base_size = 12) +
   bare_theme
 ```
 
@@ -273,7 +273,7 @@ ggp2_slope <- ggplot(data = bayside_slope,
   ggp2_slope +
       labs_slope
 ) +
-  fmggp2::theme_savedbythebell(base_size = 12) +
+  ggrewindr::theme_savedbythebell(base_size = 12) +
   bare_theme
 ```
 
@@ -330,7 +330,7 @@ ggp2_stream <- ggplot(data = fad_sales,
       labs_stream +
       theme(legend.position = "bottom")
 ) +
-  fmggp2::theme_hypercolor(base_size = 12) +
+  ggrewindr::theme_hypercolor(base_size = 12) +
   bare_theme
 ```
 
@@ -396,7 +396,7 @@ ggp2_alluvial_w <- ggplot(data = y2k_wide,
     labs_alluvial_y +
     labs_alluvial_fill
 ) +
-  fmggp2::theme_y2k(base_size = 12) +
+  ggrewindr::theme_y2k(base_size = 12) +
   bare_theme
 ```
 
@@ -447,6 +447,6 @@ ggp2_inst_gushers <- ggplot(data = gushers_trades,
   ggp2_inst_gushers +
     labs_inst_gushers
 ) +
-  fmggp2::theme_gushers(base_size = 12) +
+  ggrewindr::theme_gushers(base_size = 12) +
   bare_theme
 ```

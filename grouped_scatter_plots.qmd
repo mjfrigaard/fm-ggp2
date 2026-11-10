@@ -16,14 +16,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_consolewars(
+ggplot2::theme_set(ggrewindr::theme_consolewars(
     base_size = 13))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_consolewars()`
 
-Graphs in this chapter use `fmggp2::theme_consolewars()`, built from the Sega vs. Nintendo console wars: a charcoal background, a Sega blue frame, a Nintendo red title, Sega blue, Nintendo red, Super Nintendo purple, gray, and gold marks, and a Krungthep title.
+Graphs in this chapter use `ggrewindr::theme_consolewars()`, built from the Sega vs. Nintendo console wars: a charcoal background, a Sega blue frame, a Nintendo red title, Sega blue, Nintendo red, Super Nintendo purple, gray, and gold marks, and a Krungthep title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

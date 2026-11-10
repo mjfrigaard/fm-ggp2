@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_cuseeme(
+ggplot2::theme_set(ggrewindr::theme_cuseeme(
     base_size = 12))
 # pak::pak("thomasp85/ggforce")
 library(ggforce)
@@ -25,7 +25,7 @@ library(ggforce)
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_cuseeme()`
 
-Graphs in this chapter use `fmggp2::theme_cuseeme()`, built from the CU-SeeMe phone book window: a dithered gray background, a black frame, a white panel, black, magenta, and gray marks, and a magenta Tahoma title.
+Graphs in this chapter use `ggrewindr::theme_cuseeme()`, built from the CU-SeeMe phone book window: a dithered gray background, a black frame, a white panel, black, magenta, and gray marks, and a magenta Tahoma title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

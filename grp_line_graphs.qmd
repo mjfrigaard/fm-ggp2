@@ -17,14 +17,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_snick(
+ggplot2::theme_set(ggrewindr::theme_snick(
     base_size = 12))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_snick()`
 
-Graphs in this chapter use `fmggp2::theme_snick()`, built from Nickelodeon's Saturday night block (SNICK): a night purple background, a Nickelodeon orange frame and title, slime green, purple, blue, yellow, and pink marks, and an Arial Black title.
+Graphs in this chapter use `ggrewindr::theme_snick()`, built from Nickelodeon's Saturday night block (SNICK): a night purple background, a Nickelodeon orange frame and title, slime green, purple, blue, yellow, and pink marks, and an Arial Black title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

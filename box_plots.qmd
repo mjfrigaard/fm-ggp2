@@ -16,14 +16,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_n64(
+ggplot2::theme_set(ggrewindr::theme_n64(
     base_size = 15))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_n64()`
 
-Graphs in this chapter use `fmggp2::theme_n64()`, modeled on the Nintendo 64: controller gray background, charcoal frame, the red, green, blue, and yellow logo colors, and an Arial Black title.
+Graphs in this chapter use `ggrewindr::theme_n64()`, modeled on the Nintendo 64: controller gray background, charcoal frame, the red, green, blue, and yellow logo colors, and an Arial Black title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

@@ -16,14 +16,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_blockbuster(
+ggplot2::theme_set(ggrewindr::theme_blockbuster(
     base_size = 15))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_blockbuster()`
 
-Graphs in this chapter use `fmggp2::theme_blockbuster()`, modeled on a Blockbuster Video store: royal blue background, yellow ticket stub marks, white Arial text, and an Impact title.
+Graphs in this chapter use `ggrewindr::theme_blockbuster()`, modeled on a Blockbuster Video store: royal blue background, yellow ticket stub marks, white Arial text, and an Impact title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

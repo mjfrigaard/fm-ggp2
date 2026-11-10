@@ -16,14 +16,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_goosebumps(
+ggplot2::theme_set(ggrewindr::theme_goosebumps(
     base_size = 15))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_goosebumps()`
 
-Graphs in this chapter use `fmggp2::theme_goosebumps()`, modeled on the Goosebumps books: a black background, a slime green frame and title, a dark purple plot area, slime green, purple, pale green, orchid, and moss marks, and a Trattatello title.
+Graphs in this chapter use `ggrewindr::theme_goosebumps()`, modeled on the Goosebumps books: a black background, a slime green frame and title, a dark purple plot area, slime green, purple, pale green, orchid, and moss marks, and a Trattatello title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

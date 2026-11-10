@@ -61,7 +61,7 @@ I wrote all of the narrative, description, and code explanations, so the thought
 ```
 
 
-I also wanted the examples to be fun to read, so every dataset is a late 90s throwback. You'll find Talkboy messages, Blockbuster rentals, Pokémon starters, and Mario Kart 64 lap times, and each one is drawn with a matching theme (Windows 98, the original Game Boy, the Nintendo 64, and more). The themes live in the [`fmggp2`](https://mjfrigaard.github.io/fmggp2/) package, which also holds the helpers used throughout the book.
+I also wanted the examples to be fun to read, so every dataset is a late 90s throwback. You'll find Talkboy messages, Blockbuster rentals, Pokémon starters, and Mario Kart 64 lap times, and each one is drawn with a matching theme (Windows 98, the original Game Boy, the Nintendo 64, and more). The themes live in the [`ggrewindr`](https://mjfrigaard.github.io/ggrewindr/) package, and the helpers used throughout the book live in [`fmggp2`](https://mjfrigaard.github.io/fmggp2/).
 
 ```{mermaid}
 %%| fig-align: 'center'
@@ -72,7 +72,7 @@ flowchart TB
     dist(["<strong>Distribution</strong><br>normal, Poisson,<br>gamma, ..."]) -->|"i. set.seed()"| sim["<strong>Simulate</strong><br>base R or <code>faux</code>"]
     sim --> dset[("<strong>90s dataset</strong><br>OK Soda, Pogs,<br>Happy Meals, ...")]
     dset -->|"ii. Distribution section"| connect["<strong>Connect</strong><br>count it, draw it,<br>name it"]
-    connect -->|"iii. Grammar section"| gg[["<strong>ggplot2 graph</strong><br><code>fmggp2::theme_*()</code>"]]
+    connect -->|"iii. Grammar section"| gg[["<strong>ggplot2 graph</strong><br><code>ggrewindr::theme_*()</code>"]]
 
     style dist fill:#4CBB9D,color:#FFFFFF,rx:5,ry:5
     style sim fill:#FFFFFF,color:#000000,stroke:#333
@@ -116,15 +116,16 @@ flowchart TB
 :::
 
 
--   Install `fmggp2` to use the 90s themes from the book:
+-   Install `ggrewindr` for the 90s themes and `fmggp2` for the book helpers:
 
     ```{r}
-    #| label: fmggp2-pkg
+    #| label: ggrewindr-pkg
     #| eval: false
     #| echo: true
     #| code-fold: false
     install.packages("pak")
-    pak::pak("mjfrigaard/fmggp2")
+    pak::pak(c("mjfrigaard/ggrewindr", "mjfrigaard/fmggp2"))
+    library(ggrewindr)
     library(fmggp2)
     ```
 

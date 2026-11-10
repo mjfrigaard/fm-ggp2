@@ -82,7 +82,7 @@ ggp2_bars_diverg <- ggplot(
   ggp2_bars_diverg +
     labs_geom_bar_diverg
 ) +
-  fmggp2::theme_orbitz(base_size = 12) +
+  ggrewindr::theme_orbitz(base_size = 12) +
   bare_theme
 ```
 
@@ -126,7 +126,7 @@ ggp2_fill_density <- ggplot(data = modem_sessions,
   ggp2_fill_density +
     labs_fill_density
 ) +
-  fmggp2::theme_netscape(base_size = 12) +
+  ggrewindr::theme_netscape(base_size = 12) +
   bare_theme
 ```
 
@@ -180,7 +180,7 @@ ggp2_mosaic <- ggplot(data = titanic_fans) +
   ggp2_mosaic +
       labs_mosaic
 ) +
-  fmggp2::theme_titanic(base_size = 12) +
+  ggrewindr::theme_titanic(base_size = 12) +
   bare_theme
 ```
 
@@ -215,7 +215,7 @@ koosh_pie <- koosh_balls |>
       levels = c("Tri color", "Rainbow", "Neon", "Glow"))) |>
   arrange(style)
 pie_labels <- paste0(round(100 * koosh_pie$perc), "%")
-pie_theme <- fmggp2::theme_koosh(base_size = 14) +
+pie_theme <- ggrewindr::theme_koosh(base_size = 14) +
   theme(axis.text = element_blank(), axis.title = element_blank(),
         axis.ticks = element_blank(), panel.grid.major = element_blank(),
         legend.position = "bottom")
@@ -234,7 +234,7 @@ ggp2_pie <- ggpubr::ggpie(koosh_pie,
   ggp2_pie +
     labs_pie
 ) +
-  fmggp2::theme_koosh(base_size = 12) +
+  ggrewindr::theme_koosh(base_size = 12) +
   bare_theme +
   theme(panel.grid.major = element_blank())
 ```
@@ -313,6 +313,6 @@ ggp2_tm_subgroup2 <- ggp2_tm_subgroup +
   ggp2_tm_subgroup2 +
     labs_treemap
 ) +
-  fmggp2::theme_j2me(base_size = 12) +
+  ggrewindr::theme_j2me(base_size = 12) +
   bare_theme
 ```

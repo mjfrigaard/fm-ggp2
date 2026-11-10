@@ -16,14 +16,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_seinfeld(
+ggplot2::theme_set(ggrewindr::theme_seinfeld(
     base_size = 14))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_seinfeld()`
 
-Graphs in this chapter use `fmggp2::theme_seinfeld()`, built from Seinfeld: a comedy club brick background, a yellow frame and title, the yellow, red, blue, and green logo colors for marks, cream text, and an American Typewriter title.
+Graphs in this chapter use `ggrewindr::theme_seinfeld()`, built from Seinfeld: a comedy club brick background, a yellow frame and title, the yellow, red, blue, and green logo colors for marks, cream text, and an American Typewriter title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

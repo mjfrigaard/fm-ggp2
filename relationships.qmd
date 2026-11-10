@@ -67,7 +67,7 @@ ggp2_scatter <- doom_pcs |>
   ggp2_scatter +
     labs_scatter
 ) +
-  fmggp2::theme_doom(base_size = 12) +
+  ggrewindr::theme_doom(base_size = 12) +
   bare_theme
 ```
 
@@ -116,7 +116,7 @@ ggp2_grp_scatter <- console_kids |>
   ggp2_grp_scatter +
     labs_grp_scatter
 ) +
-  fmggp2::theme_consolewars(base_size = 12) +
+  ggrewindr::theme_consolewars(base_size = 12) +
   bare_theme
 ```
 
@@ -164,7 +164,7 @@ ggp2_bubble <- seinfeld_eps |>
   ggp2_bubble +
     labs_bubble
 ) +
-  fmggp2::theme_seinfeld(base_size = 12) +
+  ggrewindr::theme_seinfeld(base_size = 12) +
   bare_theme
 ```
 
@@ -217,7 +217,7 @@ ggp2_grp_bubble <- ranger_fights |>
   ggp2_grp_bubble +
     labs_grp_bubble
 ) +
-  fmggp2::theme_powerrangers(base_size = 12) +
+  ggrewindr::theme_powerrangers(base_size = 12) +
   bare_theme
 ```
 
@@ -291,7 +291,7 @@ ggp2_psets_labs <- ggp2_psets_axes +
   ggp2_psets_labs +
       labs_psets
 ) +
-  fmggp2::theme_cuseeme(base_size = 12) +
+  ggrewindr::theme_cuseeme(base_size = 12) +
   bare_theme
 ```
 
@@ -367,7 +367,7 @@ ggp2_dnsty_2d_fill <- ggplot(
   ggp2_dnsty_2d_fill +
     labs_dnsty_2d
 ) +
-  fmggp2::theme_bopit(base_size = 12) +
+  ggrewindr::theme_bopit(base_size = 12) +
   bare_theme
 ```
 
@@ -413,7 +413,7 @@ ggp2_base <- ggplot(data = geocities_pages,
        geom_bin2d(bins = 30) +
        labs_2dhist
 ) +
-  fmggp2::theme_geocities(base_size = 12) +
+  ggrewindr::theme_geocities(base_size = 12) +
   bare_theme
 ```
 
@@ -462,6 +462,6 @@ ggp2_hex_b15 <- ggplot(data = surge_teens,
   ggp2_hex_b15 +
       labs_hex
 ) +
-  fmggp2::theme_surge(base_size = 12) +
+  ggrewindr::theme_surge(base_size = 12) +
   bare_theme
 ```

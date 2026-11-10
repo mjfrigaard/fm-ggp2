@@ -18,20 +18,20 @@ ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
 ```
 
-Every chapter in this book has its own late 90s `ggplot2` theme to match its simulated data (Game Boy greens for Alleyway, silver comic book cans for OK Soda, and so on). The themes and the small helpers the book uses live in the [`fmggp2` package](https://mjfrigaard.github.io/fmggp2/), so every chapter loads the same tested code.
+Every chapter in this book has its own late 90s `ggplot2` theme to match its simulated data (Game Boy greens for Alleyway, silver comic book cans for OK Soda, and so on). The themes live in the [`ggrewindr` package](https://mjfrigaard.github.io/ggrewindr/), and the small helpers the book uses live in the [`fmggp2` package](https://mjfrigaard.github.io/fmggp2/), so every chapter loads the same tested code.
 
-## Installing `fmggp2`
+## Installing `ggrewindr` and `fmggp2`
 
-Install the development version of `fmggp2` from GitHub:
+Install the development versions of `ggrewindr` and `fmggp2` from GitHub:
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
-#| label: install_fmggp2
+#| label: install_ggrewindr
 #| eval: false
 #| echo: true
 #| code-fold: show
 # install.packages("pak")
-pak::pak("mjfrigaard/fmggp2")
+pak::pak(c("mjfrigaard/ggrewindr", "mjfrigaard/fmggp2"))
 ```
 :::
 
@@ -45,7 +45,7 @@ Each chapter sets its theme once in the setup chunk with `ggplot2::theme_set()`,
 #| eval: false
 #| echo: true
 #| code-fold: show
-ggplot2::theme_set(fmggp2::theme_gameboy(base_size = 14))
+ggplot2::theme_set(ggrewindr::theme_gameboy(base_size = 14))
 ```
 :::
 
@@ -64,7 +64,7 @@ ggplot(home_pcs, aes(x = mhz, y = price)) +
   geom_point() +
   labs(title = "Home PCs in 1998", caption = "Simulated data",
        x = "Processor speed (MHz)", y = "Price (USD)") +
-  fmggp2::theme_netscape(base_size = 14)
+  ggrewindr::theme_netscape(base_size = 14)
 ```
 :::
 
@@ -98,12 +98,12 @@ The display fonts are system fonts that ship with macOS. Each theme registers it
 #| eval: false
 #| echo: true
 #| code-fold: show
-fmggp2::theme_oksoda(base_family = "sans", title_family = "sans")
-fmggp2::theme_batman(base_family = "sans", title_family = "sans")
+ggrewindr::theme_oksoda(base_family = "sans", title_family = "sans")
+ggrewindr::theme_batman(base_family = "sans", title_family = "sans")
 ```
 :::
 
-The `showtext` package draws the registered fonts in the graphs, so each chapter calls `showtext::showtext_auto()` in its setup chunk. The [themes vignette](https://mjfrigaard.github.io/fmggp2/articles/themes.html) lists every theme's fonts.
+The `showtext` package draws the registered fonts in the graphs, so each chapter calls `showtext::showtext_auto()` in its setup chunk. The [themes vignette](https://mjfrigaard.github.io/ggrewindr/articles/themes.html) lists every theme's fonts.
 
 ## Themes by chapter
 

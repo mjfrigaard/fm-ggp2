@@ -4,7 +4,7 @@ This repository holds the source for [*ggplot2: field manual*](https://mjfrigaar
 
 ## How the book is built
 
-Every chapter creates its own data with a few lines of R code (using base R functions like `rnorm()`, `rpois()`, and `sample()`, or packages like [`faux`](https://debruine.github.io/faux/)). The simulated data is themed around the late 80s and 90s, and each chapter has a matching `ggplot2` theme from the [`fmggp2` package](https://mjfrigaard.github.io/fmggp2/).
+Every chapter creates its own data with a few lines of R code (using base R functions like `rnorm()`, `rpois()`, and `sample()`, or packages like [`faux`](https://debruine.github.io/faux/)). The simulated data is themed around the late 80s and 90s, and each chapter has a matching `ggplot2` theme from the [`ggrewindr` package](https://mjfrigaard.github.io/ggrewindr/).
 
 The book uses [Quarto](https://quarto.org/) with `freeze: auto`, so R code only runs locally. The results are stored in `_freeze/` and committed with the chapters.
 

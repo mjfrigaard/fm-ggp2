@@ -17,14 +17,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_geocities(
+ggplot2::theme_set(ggrewindr::theme_geocities(
     base_size = 14))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_geocities()`
 
-Graphs in this chapter use `fmggp2::theme_geocities()`, built from a GeoCities home page: a black background, a web gray frame, a dark navy panel, lime green text, a yellow Comic Sans title, web safe marks, and a blue to yellow continuous scale.
+Graphs in this chapter use `ggrewindr::theme_geocities()`, built from a GeoCities home page: a black background, a web gray frame, a dark navy panel, lime green text, a yellow Comic Sans title, web safe marks, and a blue to yellow continuous scale.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

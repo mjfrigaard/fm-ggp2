@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_y2k(
+ggplot2::theme_set(ggrewindr::theme_y2k(
     base_size = 13))
 # pak::pak("corybrunson/ggalluvial")
 ```
@@ -24,7 +24,7 @@ ggplot2::theme_set(fmggp2::theme_y2k(
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_y2k()`
 
-Graphs in this chapter use `fmggp2::theme_y2k()`, built from the Y2K countdown: a black terminal background, a red LED frame and title, red, amber, green, silver, and blue screen marks, and a PT Mono title.
+Graphs in this chapter use `ggrewindr::theme_y2k()`, built from the Y2K countdown: a black terminal background, a red LED frame and title, red, amber, green, silver, and blue screen marks, and a PT Mono title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

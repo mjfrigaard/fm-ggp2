@@ -16,14 +16,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_savedbythebell(
+ggplot2::theme_set(ggrewindr::theme_savedbythebell(
     base_size = 14))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_savedbythebell()`
 
-Graphs in this chapter use `fmggp2::theme_savedbythebell()`, built from the Saved by the Bell logo: a black background with a royal blue frame, a yellow title, a white classroom panel, sky blue, pink, yellow, orange, royal blue, and navy marks, and a SignPainter title.
+Graphs in this chapter use `ggrewindr::theme_savedbythebell()`, built from the Saved by the Bell logo: a black background with a royal blue frame, a yellow title, a white classroom panel, sky blue, pink, yellow, orange, royal blue, and navy marks, and a SignPainter title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

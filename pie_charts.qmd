@@ -16,14 +16,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_koosh(
+ggplot2::theme_set(ggrewindr::theme_koosh(
     base_size = 14))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_koosh()`
 
-Graphs in this chapter use `fmggp2::theme_koosh()`, built from a tri color Koosh ball: a white background, an orange frame, orange, purple, and black filament marks, peach and lilac accents, and an Arial Rounded title.
+Graphs in this chapter use `ggrewindr::theme_koosh()`, built from a tri color Koosh ball: a white background, an orange frame, orange, purple, and black filament marks, peach and lilac accents, and an Arial Rounded title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}
@@ -57,7 +57,7 @@ koosh_pie <- koosh_balls |>
       levels = c("Tri color", "Rainbow", "Neon", "Glow"))) |>
   arrange(style)
 pie_labels <- paste0(round(100 * koosh_pie$perc), "%")
-pie_theme <- fmggp2::theme_koosh(base_size = 14) +
+pie_theme <- ggrewindr::theme_koosh(base_size = 14) +
   theme(axis.text = element_blank(), axis.title = element_blank(),
         axis.ticks = element_blank(), panel.grid.major = element_blank(),
         legend.position = "bottom")
@@ -288,7 +288,7 @@ Each simulated share wobbles around its fraction by about $\sqrt{p(1 - p) / 200}
 #| out-height: '100%'
 #| out-width: '100%'
 pie_labels <- paste0(round(100 * koosh_pie$perc), "%")
-pie_theme <- fmggp2::theme_koosh(base_size = 14) +
+pie_theme <- ggrewindr::theme_koosh(base_size = 14) +
   theme(axis.text = element_blank(), axis.title = element_blank(),
         axis.ticks = element_blank(), panel.grid.major = element_blank(),
         legend.position = "bottom")
@@ -327,7 +327,7 @@ ggp2_pie +
 #| out-width: '100%'
 #| layout-nrow: 1
 pie_labels <- paste0(round(100 * koosh_pie$perc), "%")
-pie_theme <- fmggp2::theme_koosh(base_size = 14) +
+pie_theme <- ggrewindr::theme_koosh(base_size = 14) +
   theme(axis.text = element_blank(), axis.title = element_blank(),
         axis.ticks = element_blank(), panel.grid.major = element_blank(),
         legend.position = "bottom")

@@ -16,14 +16,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_happymeal(
+ggplot2::theme_set(ggrewindr::theme_happymeal(
     base_size = 15))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_happymeal()`
 
-Graphs in this chapter use `fmggp2::theme_happymeal()`, modeled on a McDonald's Happy Meal box: red box, golden yellow marks, a cream plot area, and an Arial Rounded title.
+Graphs in this chapter use `ggrewindr::theme_happymeal()`, modeled on a McDonald's Happy Meal box: red box, golden yellow marks, a cream plot area, and an Arial Rounded title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

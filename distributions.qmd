@@ -68,7 +68,7 @@ ggp2_ovrlp_hist <- ggplot(data = tamagotchi_pets,
   ggp2_ovrlp_hist +
     labs_ovrlp_hist
 ) +
-  fmggp2::theme_tamagotchi(base_size = 12) +
+  ggrewindr::theme_tamagotchi(base_size = 12) +
   bare_theme
 ```
 
@@ -111,7 +111,7 @@ ggp2_ovrlp_freq_poly <- ggplot(data = soaker_shots,
   ggp2_ovrlp_freq_poly +
     labs_ovrlp_freq_poly
 ) +
-  fmggp2::theme_supersoaker(base_size = 12) +
+  ggrewindr::theme_supersoaker(base_size = 12) +
   bare_theme
 ```
 
@@ -156,7 +156,7 @@ ggp2_ovrlp_dotplot <- ggplot(data = goosebumps_readers,
   ggp2_ovrlp_dotplot +
     labs_ovrlp_dotplot
 ) +
-  fmggp2::theme_goosebumps(base_size = 12) +
+  ggrewindr::theme_goosebumps(base_size = 12) +
   bare_theme
 ```
 
@@ -206,7 +206,7 @@ ggp2_beeswarm <-  ggplot(data = tetris_games,
 (
   ggp2_beeswarm
 ) +
-  fmggp2::theme_tetris(base_size = 12) +
+  ggrewindr::theme_tetris(base_size = 12) +
   bare_theme
 ```
 
@@ -265,7 +265,7 @@ stack_density <- ggp2_stack_density +
   ovrlp_density + stack_density +
       patchwork::plot_layout(ncol = 1)
 ) &
-  fmggp2::theme_pager(base_size = 12) &
+  ggrewindr::theme_pager(base_size = 12) &
   bare_theme
 ```
 
@@ -313,7 +313,7 @@ ggp2_ridges <- ggplot(data = squeezit_drinks,
   ggp2_ridges +
     labs_ridges
 ) +
-  fmggp2::theme_squeezit(base_size = 12) +
+  ggrewindr::theme_squeezit(base_size = 12) +
   bare_theme
 ```
 
@@ -359,7 +359,7 @@ ggp2_grp_boxplots <- ggplot(data = oregon_trail,
   ggp2_grp_boxplots +
     labs_grp_boxplots
 ) +
-  fmggp2::theme_oregontrail(base_size = 12) +
+  ggrewindr::theme_oregontrail(base_size = 12) +
   bare_theme
 ```
 
@@ -407,7 +407,7 @@ ggp2_grp_violin <- ggplot(data = aim_buddies,
   ggp2_grp_violin +
     labs_grp_violin
 ) +
-  fmggp2::theme_aim(base_size = 12) +
+  ggrewindr::theme_aim(base_size = 12) +
   bare_theme
 ```
 
@@ -466,6 +466,6 @@ labs_raincloud_2 <- ggplot2::labs(
       theme(legend.position = "none") +
       labs_raincloud_2
 ) +
-  fmggp2::theme_rzone(base_size = 12) +
+  ggrewindr::theme_rzone(base_size = 12) +
   bare_theme
 ```

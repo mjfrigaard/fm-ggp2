@@ -16,7 +16,7 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_oregontrail(
+ggplot2::theme_set(ggrewindr::theme_oregontrail(
     base_size = 15))
 ```
 
@@ -33,7 +33,7 @@ status("polish")
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_oregontrail()`
 
-Graphs in this chapter use `fmggp2::theme_oregontrail()`, modeled on The Oregon Trail on an Apple II emulator: a gray window frame, a black screen, phosphor green text and marks in three shades, and an Andale Mono title.
+Graphs in this chapter use `ggrewindr::theme_oregontrail()`, modeled on The Oregon Trail on an Apple II emulator: a gray window frame, a black screen, phosphor green text and marks in three shades, and an Andale Mono title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

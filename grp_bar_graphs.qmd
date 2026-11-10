@@ -17,14 +17,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_jurassic(
+ggplot2::theme_set(ggrewindr::theme_jurassic(
     base_size = 17))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_jurassic()`
 
-Graphs in this chapter use `fmggp2::theme_jurassic()`, modeled on the Jurassic Park (1993) Post Office souvenir stamp sheet: a black sheet with a logo red frame, a dark jungle plot area, stamp yellow titles, red, yellow, sunset orange, cream, and tan marks, and a Herculanum title.
+Graphs in this chapter use `ggrewindr::theme_jurassic()`, modeled on the Jurassic Park (1993) Post Office souvenir stamp sheet: a black sheet with a logo red frame, a dark jungle plot area, stamp yellow titles, red, yellow, sunset orange, cream, and tan marks, and a Herculanum title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}

@@ -17,14 +17,14 @@ source("_common.R")
 # use font
 showtext::showtext_auto()
 # set theme
-ggplot2::theme_set(fmggp2::theme_surge(
+ggplot2::theme_set(ggrewindr::theme_surge(
     base_size = 14))
 ```
 
 ::: {.callout-tip collapse="true" appearance="simple"}
 ## Theme: `theme_surge()`
 
-Graphs in this chapter use `fmggp2::theme_surge()`, built from Surge soda: a black background, a Surge green frame and title, green, red, orange, yellow, and white marks, a dark to bright green continuous scale, and a DIN Alternate title.
+Graphs in this chapter use `ggrewindr::theme_surge()`, built from Surge soda: a black background, a Surge green frame and title, green, red, orange, yellow, and white marks, a dark to bright green continuous scale, and a DIN Alternate title.
 :::
 
 :::: {.callout-note collapse="false" icon=false}
