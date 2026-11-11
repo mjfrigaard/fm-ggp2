@@ -67,15 +67,15 @@ ggp2_ovrlp_freq_poly +
   labs_ovrlp_freq_poly
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
@@ -89,13 +89,10 @@ Instead of using bars, frequency polygons use lines to show the shape of the dis
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 Install packages.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_freq_poly
 #| code-fold: show
@@ -107,17 +104,13 @@ Install packages.
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 Every summer in the early 90s, backyard water fights were won by whoever had the biggest Super Soaker. We'll simulate 200 shots from each of three models. Each model gets its own average range (`avg_range`). `rnorm()` draws each shot's range with a standard deviation equal to 12% of that average, so the more powerful models also spray a wider spread of distances. Setting the seed with `set.seed()` means you'll get the same 600 shots every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_freq_poly
 #| code-fold: show
@@ -141,19 +134,15 @@ soaker_shots <- tibble(
   select(shot_id, model, range_ft)
 glimpse(soaker_shots)
 ```
-:::
 
 ## Distribution
 
 Overlapping frequency polygons make it easy to compare where groups sit *and* how spread out they are. In this simulation, both of those change together: a bigger Super Soaker shoots further on average and less consistently. Below we'll move from the shots, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first five shots (all from the SS 50).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_freq_poly
 #| code-fold: show
@@ -161,11 +150,9 @@ Start with the first five shots (all from the SS 50).
 #| echo: true
 head(soaker_shots, 5)
 ```
-:::
 
 These shots landed between about 22 and 26 feet. The summary below shows that the standard deviation (`sd`) grows with the mean, but the ratio of the two (`cv`, the [coefficient of variation](https://en.wikipedia.org/wiki/Coefficient_of_variation)) stays close to 0.12 for every model.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_freq_poly
 #| code-fold: show
@@ -175,15 +162,11 @@ soaker_shots |>
   group_by(model) |> 
   summarise(mean = mean(range_ft), sd = sd(range_ft), cv = sd / mean)
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The first graph below shows the three polygons in feet. Each one sits further to the right than the last, and each one is lower and wider. The second graph divides every shot by its model's average range, which puts all three on the same relative scale. Once we do that, the three polygons line up on top of each other, because they all have the same shape.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_freq_poly
 #| code-fold: show
@@ -204,11 +187,8 @@ soaker_shots |>
     x = "Range / average range", y = "Shots", 
     color = "Model", linetype = "Model")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each model's shots come from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) whose standard deviation is a fixed fraction of its mean:
 
@@ -222,9 +202,7 @@ Dividing by the mean removes the difference between models: $X_m / \mu_m \sim \t
 ## Grammar
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   -   Create labels with `labs()`
 
@@ -235,7 +213,6 @@ Dividing by the mean removes the difference between models: $X_m / \mu_m \sim \t
   -   Map `model` to the `color` and `linetype` aesthetics *inside* `geom_freqpoly()`,[^linetype] and set `binwidth` to `2` and `linewidth` to `1`
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_freq_poly
 #| code-fold: show
@@ -260,13 +237,10 @@ ggp2_ovrlp_freq_poly <- ggplot(data = soaker_shots,
 ggp2_ovrlp_freq_poly +
   labs_ovrlp_freq_poly
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ```{r}
 #| label: create_graph_freq_poly

@@ -19,4 +19,24 @@ $code-color:              $fm-strawberry;
 $code-block-bg:           $fm-surface;
 $code-block-border-left:  #F28C28;
 $small-font-size:         .80rem;
-$code-font-size:          .85em;
+$code-font-size:          .95em;
+
+/*-- scss:rules --*/
+// the diagrams use mermaid's light 'base' theme, so we darken the edge
+// labels and lighten the edges for dark mode
+svg.mermaid-js .edgeLabel,
+svg.mermaid-js .edgeLabel p,
+svg.mermaid-js .labelBkg {
+  background-color: $fm-surface !important;
+  color: $fm-ink !important;
+}
+svg.mermaid-js .edgeLabel rect {
+  fill: $fm-surface !important;
+}
+svg.mermaid-js .flowchart-link {
+  stroke: $fm-muted !important;
+}
+svg.mermaid-js marker path {
+  fill: $fm-muted !important;
+  stroke: $fm-muted !important;
+}

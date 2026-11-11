@@ -85,19 +85,19 @@ ggp2_bump +
   labs_bump
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (date) variable**
 :::
 
@@ -112,16 +112,13 @@ We can build bump charts in `ggplot2` with the [`ggbump` package:](https://githu
 ## Set up
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_bump
 #| code-fold: show
@@ -136,21 +133,17 @@ library(ggplot2)
 library(dplyr) # for data manipulation
 library(tidyr) # for expand_grid()
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Handspring launched the Visor in 1999, and the Springboard expansion slot on its back turned the handheld into whatever module you slid in. By the end of 2000 there was a modem, a games cartridge, an MP3 player, a GPS receiver, a camera, and the new VisorPhone (which turned the Visor into a cell phone).
 
 We'll simulate 12 weeks of module sales (the number of units sold across a panel of retailers) for six Springboard modules. Each module gets a weekly average (`avg_sales`) that rises, falls, or holds steady, and `rpois()` draws each week's actual sales around that average. Then we rank the modules within each week (`rank`), with `1` for the most units sold. Setting the seed with `set.seed()` means you'll get the same 72 module weeks every time you run the code below.
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_bump
 #| code-fold: show
@@ -182,19 +175,15 @@ springboard_sales <- expand_grid(
   ungroup()
 glimpse(springboard_sales)
 ```
-:::
 
 ## Distribution
 
 A bump chart throws away the raw numbers and keeps only the order. That makes it easy to see who passed whom, but it also hides *how close* the race was. When two modules have similar sales, random week to week noise can swap their ranks even though nothing real changed. Below we'll move from the sales, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first week.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_bump
 #| code-fold: show
@@ -205,11 +194,9 @@ springboard_sales |>
   select(module, avg_sales, sales, rank) |>
   arrange(rank)
 ```
-:::
 
 Every module landed within a few dozen units of its average, and the ranks match the order of the averages. Below we count how many times each module changed rank from one week to the next.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_bump
 #| code-fold: show
@@ -221,17 +208,13 @@ rank_changes <- springboard_sales |>
             first_rank = first(rank), last_rank = last(rank))
 rank_changes
 ```
-:::
 
 The VisorPhone and GPS climb because their averages climb, and the Modem and Camera slide because theirs slide. But Games changes rank `r rank_changes$rank_changes[rank_changes$module == "Games"]` times even though its average never changes.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The graph below plots the raw sales for Games and the MP3 Player. The ribbon around each line covers the average plus or minus two standard deviations (more on that below). Wherever the two ribbons overlap, either module could come out ahead in a given week.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_bump
 #| code-fold: show
@@ -252,13 +235,10 @@ ggplot(two_modules, aes(x = week_of, color = module, fill = module)) +
        caption = "Simulated data",
        x = "Week of", y = "Units sold", color = "Module", fill = "Module")
 ```
-:::
 
 The ribbons overlap for all 12 weeks, which is why these two modules trade places in the bump chart.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each module's weekly sales follow a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) with its own average for that week ($\lambda$):
 
@@ -276,9 +256,7 @@ By week seven, both modules average 330 units and the chance is a coin flip (0.5
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   - Create labels with `labs()`
 
@@ -294,7 +272,6 @@ By week seven, both modules average 330 units and the chance is a coin flip (0.5
 
   - Remove the legend with `theme(legend.position = "none")`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_bump
 #| code-fold: show
@@ -326,13 +303,10 @@ ggp2_bump <- ggplot(springboard_sales,
 ggp2_bump +
   labs_bump
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ```{r}
 #| label: create_graph_bump

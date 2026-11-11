@@ -30,12 +30,12 @@ Graphs in this chapter use `ggrewindr::theme_pogs()`, modeled on Pogs: a cardboa
 
 <br>
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable** 
 :::
 
@@ -88,14 +88,11 @@ We’ll build a waffle chart using the [`ggwaffle` package.](https://liamgilbey.
 
 ## Set up
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-step}
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_waffle
 #| code-fold: show
@@ -111,20 +108,16 @@ library(ggwaffle)
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-step}
 
 
 In the mid 90s, kids traded and battled with Pogs: cardboard milk caps, printed and holographic pogs, and heavy plastic "slammers" used to flip them. We'll simulate a collection of 100 pieces with `sample()`, giving each type its own chance of turning up.
 
 Before we can draw a waffle, the data needs a special transformation with `ggwaffle::waffle_iron()`. Set the `group` argument in `ggwaffle::aes_d()` to the categorical variable you want to see the relative counts for, and set `rows = 10` so 100 pieces fill a 10 by 10 grid. Setting the seed with `set.seed()` means you'll get the same collection every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_waffle
 #| code-fold: show
@@ -145,19 +138,15 @@ waffle_pogs <- ggwaffle::waffle_iron(pog_collection,
 
 glimpse(waffle_pogs)
 ```
-:::
 
 ## Distribution
 
 A waffle chart is built for one special total: 100. When there are 100 squares, every square is one percent, so you can read a percentage just by counting squares. Below we'll move from the collection, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first ten pieces in the collection.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_waffle
 #| code-fold: show
@@ -165,11 +154,9 @@ Start with the first ten pieces in the collection.
 #| echo: true
 head(pog_collection$type, 10)
 ```
-:::
 
 Six of these ten are milk caps, three are printed pogs, and one is holographic. Counting all 100 pieces gives us counts that are also percentages. The `expected` column is what we'd get if the collection matched the probabilities in `sample()` exactly.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_waffle
 #| code-fold: show
@@ -179,15 +166,11 @@ pog_collection |>
   count(type) |> 
   mutate(expected = c(15, 45, 30, 10)) 
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 A bar model shows the collection as one bar of 100 pieces split into four parts.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_bar_model_waffle
 #| code-fold: show
@@ -202,11 +185,9 @@ pog_collection |>
     position = position_stack(vjust = 0.5)) + 
   labs(x = "Number of pieces", y = NULL, fill = "Type")
 ```
-:::
 
 A waffle chart is the same bar folded into columns of 10. Each column of the waffle below is ten pieces. The milk caps fill a little more than four columns, and the slammers fill a little more than one.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_waffle
 #| fig-asp: 1
@@ -222,11 +203,8 @@ ggplot(data = waffle_pogs, aes(x = x, y = y, fill = group)) +
         legend.position = "top") +
   guides(fill = guide_legend(nrow = 2))
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Every piece in the collection is an independent draw from four types, so the four counts follow a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
 
@@ -236,13 +214,10 @@ $$
 
 With $n = 100$, the expected count for each type is its probability times 100, which is the same number as its percentage. The counts wobble around those expectations by about $\sqrt{100\,p\,(1 - p)}$ pieces: about 5 for milk caps and 3 for slammers. Our collection has `r sum(pog_collection$type == "Slammers")` slammers instead of the expected 10, a difference of a little more than one standard deviation. Change the number in `set.seed()` and the squares trade places, but they always add to 100.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CHANGE IT:**
-:::
+### CHANGE IT {.unnumbered .fm-step}
 
 The waffle above is what we expect: 100 pieces, so every square is one percent. Real collections rarely land on 100. Below we'll keep the same four types and the same chances but shrink the collection to 47 pieces (a kid who just started trading at recess). We should still see the milk caps fill about half the grid, but the squares will stop being percentages.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_data_waffle
 #| code-fold: show
@@ -263,11 +238,9 @@ pog_starter |>
   count(type) |>
   mutate(percent = round(100 * n / sum(n), 1))
 ```
-:::
 
 We'll redraw the same waffle with the smaller collection.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_draw_waffle
 #| fig-asp: 1
@@ -283,7 +256,6 @@ ggplot(data = waffle_starter, aes(x = x, y = y, fill = group)) +
         legend.position = "top") +
   guides(fill = guide_legend(nrow = 2))
 ```
-:::
 
 The grid is now `r max(waffle_starter$x)` columns wide, and the last column holds only `r sum(waffle_starter$x == max(waffle_starter$x))` squares, so the waffle has a bite taken out of it. Counting squares no longer gives a percentage. The `r sum(pog_starter$type == "Milk caps")` milk cap squares are `r round(100 * mean(pog_starter$type == "Milk caps"))` percent of the collection, and each square is worth about `r round(100 / 47, 1)` percent. The `r sum(pog_starter$type == "Holographic")` holographic squares look like a rounding error, but they're `r round(100 * mean(pog_starter$type == "Holographic"))` percent.
 
@@ -292,11 +264,9 @@ The shape of the collection survived (milk caps still fill about half the grid),
 
 ## Grammar
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-step}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
   -   Create labels with `labs()`
 
@@ -316,7 +286,6 @@ The shape of the collection survived (milk caps still fill about half the grid),
 
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_waffle
 #| code-fold: show
@@ -344,13 +313,10 @@ ggp2_waffle +
         legend.position = "top") +
   guides(fill = guide_legend(nrow = 2))
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-step}
 
 ```{r}
 #| label: create_graph_waffle

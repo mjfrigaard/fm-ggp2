@@ -30,11 +30,11 @@ Graphs in this chapter use `ggrewindr::theme_netware()`, built from Novell NetWa
 
 <br>
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 
 **✅ a categorical variable** 
@@ -83,16 +83,13 @@ In `ggplot2`, we can build overlapping bar graphs using the `fill` argument in `
 
 ## Set up
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-step}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_bar_ovrlp
 #| code-fold: show
@@ -105,19 +102,15 @@ library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 library(tidyr) # for uncount()
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-step}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Novell NetWare was the most popular network operating system of the early 90s. Office LANs grew as more desks got a PC and a network card.
 
 We'll simulate the number of workstations on the LAN for 24 offices in 1990, 1994, and 1998. Each year gets its own average LAN size (`mean_nodes`), `tidyr::uncount()` creates one row per office, and `rnorm()` draws each office's workstation count, rounded to a whole workstation. We'll also flag whether each office ran 25 workstations or more (`lan_size`). Setting the seed with `set.seed()` means you'll get the same 72 offices every time you run the code below.
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_bar_ovrlp
 #| code-fold: show
@@ -136,7 +129,6 @@ netware_offices <- tibble(
   select(year, office, nodes, lan_size)
 glimpse(netware_offices)
 ```
-:::
 
 ## Distribution
 
@@ -144,13 +136,10 @@ Overlapping bars only overlap when groups share values. Three years with very di
 
 How much the bars overlap depends on how far apart the years' averages are compared to how much offices vary within a year. Below we'll move from the offices, to a picture, to the formula. Then we'll change the data and see what the graph does with an unexpected year.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first six offices from 1990.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_bar_ovrlp
 #| code-fold: show
@@ -158,11 +147,9 @@ Start with the first six offices from 1990.
 #| echo: true
 head(netware_offices, 6)
 ```
-:::
 
 These offices ran between 20 and 26 workstations. The summary below shows each year's mean, standard deviation, and range.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_bar_ovrlp
 #| code-fold: show
@@ -176,17 +163,13 @@ netware_offices |>
     min = min(nodes), 
     max = max(nodes))
 ```
-:::
 
 In each year, the largest office runs 8 to 11 more workstations than the smallest, but the means are only about 2 to 5 workstations apart. So the ranges overlap, which is what puts more than one color in the same bar.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The overlapping bar graph below stacks the offices from all three years at each LAN size. The dashed lines mark the average LAN size we gave each year in `rnorm()`. The 1990 offices sit mostly on the left, the 1998 offices mostly on the right, and the 1994 offices land in the middle, sharing bars with both.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_bar_ovrlp
 #| code-fold: show
@@ -200,11 +183,8 @@ ggplot(data = netware_offices,
     linetype = "dashed", linewidth = 1) + 
   labs(x = "Workstations", y = "Offices", fill = "Year")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each year's LAN size comes from its own [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) with a shared standard deviation:
 
@@ -220,13 +200,10 @@ $$
 
 So a 1994 office runs more workstations than a 1998 office about 20% of the time, while a 1990 office does so only about 8% of the time. Try moving the three means in `mean_nodes` closer together and the bars stack into a single colorful pile.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CHANGE IT:**
-:::
+### CHANGE IT {.unnumbered .fm-step}
 
 So far the graph shows what we expect: each year is one pile, and the piles move right as LANs grow. Now we'll change the 1998 offices. Suppose the head offices kept growing to about 32 workstations, but the branch offices stayed small at about 21. We expect two 1998 piles, one far right and one back on top of the 1990 offices, with almost nothing near the 1998 average.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_data_bar_ovrlp
 #| code-fold: show
@@ -245,11 +222,9 @@ netware_split |>
   summarise(mean = mean(nodes), sd = sd(nodes),
     min = min(nodes), max = max(nodes))
 ```
-:::
 
 The 1998 mean barely moved, to `r round(mean(netware_split$nodes[netware_split$year == "1998"]), 1)` workstations, but its standard deviation jumped to `r round(sd(netware_split$nodes[netware_split$year == "1998"]), 1)`. We'll redraw the same graph below with the same dashed lines.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_draw_bar_ovrlp
 #| code-fold: show
@@ -263,7 +238,6 @@ ggplot(data = netware_split,
     linetype = "dashed", linewidth = 1) +
   labs(x = "Workstations", y = "Offices", fill = "Year")
 ```
-:::
 
 The 1998 dashed line now sits in an empty stretch. None of the 1998 offices ran between 24 and 29 workstations. The `r sum(netware_split$year == "1998" & netware_split$nodes < 24)` branch offices pile up with the 1990 offices on the left, and the head offices sit alone on the right.
 
@@ -273,9 +247,7 @@ The mean says 1998 offices were a little bigger than 1994 offices, but the bars 
 ## Grammar
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-step}
 
   -  Create labels with `labs()`
 
@@ -285,7 +257,6 @@ The mean says 1998 offices were a little bigger than 1994 offices, but the bars 
 
   -  Add the `geom_bar()` layer with `position = "identity"` (so the bars overlap instead of stacking) and `alpha = 0.5` (so the bars behind show through)
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_bar_ovrlp
 #| code-fold: show
@@ -308,11 +279,8 @@ ggp2_bar_ovrlp <- ggplot(data = netware_offices,
 ggp2_bar_ovrlp + 
   labs_bar_ovrlp
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-step}
 
 ```{r}
 #| label: create_graph_bar_ovrlp
@@ -351,7 +319,6 @@ To build an overlapping bar graph with `geom_col()`, we need to create a column 
 
   -  Create the `netware_col` data:
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: netware_col
 #| eval: true
@@ -359,12 +326,10 @@ To build an overlapping bar graph with `geom_col()`, we need to create a column 
 netware_col <- netware_offices |>
     count(year, nodes, name = "Offices")
 ```
-:::
 
 
   -  Map the counts to the `y` axis, `nodes` to the `x` axis, and `year` to `fill`, and use the same `position` and `alpha` in `geom_col()`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_bar_netware_col
 #| eval: true
@@ -385,7 +350,6 @@ ggp2_col_ovrlp <- ggplot(data = netware_col,
 ggp2_col_ovrlp + 
     labs_col_ovrlp
 ```
-:::
 
 
 Compare the two graphs below:
@@ -413,11 +377,10 @@ ggp2_col_ovrlp +
 
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 We'll use the `lan_size` column, which splits offices into those with 25 workstations or more and those with fewer.
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: netware_dodge
 #| eval: true
@@ -426,7 +389,6 @@ We'll use the `lan_size` column, which splits offices into those with 25 worksta
 #| message: false
 count(netware_offices, lan_size, year)
 ```
-:::
 
   -  Create labels with `labs()`
 
@@ -436,7 +398,6 @@ count(netware_offices, lan_size, year)
 
   -  Inside the `geom_bar()` function, set `position` to `"dodge"`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_dodge
 #| eval: true
@@ -462,7 +423,6 @@ ggp2_bar_dodge <- ggplot(data = netware_offices,
 ggp2_bar_dodge +
   labs_bar_dodge
 ```
-:::
 
 ### `dodge2`
 
@@ -486,7 +446,6 @@ ggp2_bar_dodge +
 
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_dodge2
 #| eval: true
@@ -511,7 +470,6 @@ ggp2_bar_dodge2 <- ggplot(data = netware_offices,
 ggp2_bar_dodge2 +
   labs_bar_dodge2
 ```
-:::
 
 Compare the two graphs below:
 

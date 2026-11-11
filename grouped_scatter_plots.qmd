@@ -71,15 +71,15 @@ ggp2_grp_scatter +
   labs_grp_scatter
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ two numeric (continuous) variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
@@ -93,14 +93,11 @@ The `x` and `y` position displays the relationship between the two continuous va
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_grp_scatter
 #| code-fold: show
@@ -114,16 +111,12 @@ library(faux)
 library(ggplot2)
 library(dplyr) # for data manipulation
 ```
-:::
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 In the early 90s, every kid picked a side: Sega or Nintendo. We'll simulate 120 Sega Genesis kids and 120 Super Nintendo kids, and record how many games each one owned (`games_owned`) and how many hours a week they played (`hours_per_week`). The two numbers go together, so we'll draw them in pairs with [`faux::rnorm_multi()`](https://debruine.github.io/faux/reference/rnorm_multi.html), which takes a mean (`mu`) and standard deviation (`sd`) for each variable and a correlation (`r`) between them. Genesis kids own a few more games, Super Nintendo kids play a few more hours, and the link between games and hours is stronger for the Genesis kids (a correlation of 0.6) than the Super Nintendo kids (a correlation of 0.3). Setting the seed with `set.seed()` means you'll get the same 240 kids every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_grp_scatter
 #| code-fold: show
@@ -151,19 +144,15 @@ console_kids <- bind_rows(genesis, snes) |> # stack both consoles
   select(kid_id, console, games_owned, hours_per_week)
 glimpse(console_kids)
 ```
-:::
 
 ## Distribution
 
 A grouped scatter plot puts two clouds of points on the same axes. To compare the groups, we compare three things about each cloud: its center, its spread in each direction, and its tilt. Below we'll move from the kids, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first three kids on each side.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_grp_scatter
 #| code-fold: show
@@ -173,11 +162,9 @@ console_kids |>
   group_by(console) |>
   slice_head(n = 3)
 ```
-:::
 
 Below we calculate the center (`mean_games` and `mean_hours`), the spread (`sd_games` and `sd_hours`), and the tilt (the correlation, `r`) for each console.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_grp_scatter
 #| code-fold: show
@@ -192,17 +179,13 @@ console_stats <- console_kids |>
             r = cor(games_owned, hours_per_week))
 console_stats
 ```
-:::
 
 The Genesis kids own about `r round(console_stats$mean_games[1], 1)` games on average and play about `r round(console_stats$mean_hours[1], 1)` hours a week, while the Super Nintendo kids own about `r round(console_stats$mean_games[2], 1)` games and play about `r round(console_stats$mean_hours[2], 1)` hours. The correlation for the Genesis kids (`r round(console_stats$r[1], 2)`) is about twice the correlation for the Super Nintendo kids (`r round(console_stats$r[2], 2)`).
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The graph below adds an ellipse around each cloud with `stat_ellipse()`. Each ellipse is drawn to hold about 95% of its group's points. The Genesis ellipse is longer and more tilted (a stronger correlation), and the Super Nintendo ellipse is rounder and sits higher on the `y` axis.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_grp_scatter
 #| code-fold: show
@@ -218,13 +201,10 @@ ggplot(console_kids, aes(x = games_owned, y = hours_per_week,
   labs(x = "Games owned", y = "Hours played per week",
        color = "Console")
 ```
-:::
 
 The `x` in the middle of each ellipse marks the group means from **COUNT IT**.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each console's pairs come from a [bivariate normal distribution](https://en.wikipedia.org/wiki/Multivariate_normal_distribution), which is described by a vector of means and a covariance matrix:
 
@@ -237,9 +217,7 @@ The means set the center of each cloud, the standard deviations ($\sigma_g$ and 
 ## Grammar
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   - Create labels with `labs()`
 
@@ -251,7 +229,6 @@ The means set the center of each cloud, the standard deviations ($\sigma_g$ and 
 
   - Map `console` to `color` inside the `geom_point()`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_grp_scatter
 #| code-fold: show
@@ -278,13 +255,10 @@ ggp2_grp_scatter <- console_kids |>
 ggp2_grp_scatter +
   labs_grp_scatter
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 Adjust over-plotting with transparency (`alpha`).
 

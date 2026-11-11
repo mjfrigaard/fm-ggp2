@@ -69,11 +69,11 @@ ggp2_base +
      labs_2dhist
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ two numeric (continuous) variables**
 :::
 
@@ -90,14 +90,11 @@ When we extend this display to two numerical/quantitative variables, the bins ar
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_2dhist
 #| code-fold: show
@@ -111,13 +108,10 @@ library(colorspace)
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 In the late 90s, anyone could build a home page on GeoCities, and most people loaded those pages (animated GIFs, MIDI files, and all) over a dial-up modem. We'll simulate 5,000 page loads with three variables:
 
@@ -129,7 +123,6 @@ In the late 90s, anyone could build a home page on GeoCities, and most people lo
 
 Setting the seed with `set.seed()` means you'll get the same 5,000 page loads every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_2dhist
 #| code-fold: show
@@ -159,19 +152,15 @@ geocities_pages <- tibble(
   select(-kbps) # drop the helper column
 glimpse(geocities_pages)
 ```
-:::
 
 ## Distribution
 
 With 5,000 points, a scatter plot turns into a solid blob. A 2D histogram counts how many points land in each square of a grid and colors the squares by those counts. The counts reveal a pattern the blob would hide: there are two kinds of page loads, one for each modem. Below we'll move from the page loads, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first five page loads.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_2dhist
 #| code-fold: show
@@ -179,11 +168,9 @@ Start with the first five page loads.
 #| echo: true
 head(geocities_pages, 5)
 ```
-:::
 
 Below we build a small 2D histogram by hand. We cut the page sizes into 25 KB bins and the load times into 5 second bins with `cut_width()`, then count the page loads in each pair of bins (only the most crowded cells are shown).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_2dhist
 #| code-fold: show
@@ -195,17 +182,13 @@ geocities_cells <- geocities_pages |>
   count(kb_bin, sec_bin, sort = TRUE)
 head(geocities_cells, 6)
 ```
-:::
 
 The busiest cell holds `r geocities_cells$n[1]` page loads, and `r sum(geocities_cells$n == 1)` of the `r nrow(geocities_cells)` cells hold only a single page load. Each of these counts becomes one colored square in the graph.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The graph below shows the same 5,000 page loads with `geom_bin2d()`, split into two panels by `modem`. Each modem draws its own straight band: the band for the slow 28.8k modem climbs almost twice as steeply as the band for the 56k modem.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_2dhist
 #| code-fold: show
@@ -216,11 +199,8 @@ ggplot(geocities_pages, aes(x = page_kb, y = load_sec)) +
   facet_wrap(~ modem) +
   labs(x = "Page size (KB)", y = "Seconds to load")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 The page sizes follow a [lognormal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution), and the load times follow a normal distribution centered on a straight line whose slope depends on the modem:
 
@@ -232,9 +212,7 @@ The slopes are $8 / 24 \approx 0.33$ seconds per kilobyte for a 28.8k modem and 
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   - Create labels with `labs()`
 
@@ -244,7 +222,6 @@ The slopes are $8 / 24 \approx 0.33$ seconds per kilobyte for a 28.8k modem and 
 
   - Add the `geom_bin2d()` layer
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_2dhist
 #| code-fold: show
@@ -269,13 +246,10 @@ ggp2_2dhist <- ggplot(data = geocities_pages,
 ggp2_2dhist +
     labs_2dhist
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ```{r}
 #| label: create_graph_2dhist
@@ -314,7 +288,6 @@ The value for `bins` will vary depending on the variable values (there is no cor
 
   - Below we change the `bins` to `15`, `45` and `60` to compare the display:
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_2dhist_bins
 #| code-fold: show
@@ -343,15 +316,12 @@ ggp2_2dhist_bins60 +
   labs_2dhist
 ```
 
-:::
-
 ### Scale
 
 `scale_fill_continuous_sequential()` from the [`colorspace` package](https://colorspace.r-forge.r-project.org/) comes with a variety of palettes to choose from (run `hcl_palettes(type = "sequential")` to view the full list).
 
 We can also reverse the order of the fill color scale with `rev` (`TRUE` or `FALSE`).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_2dhist_scale
 #| code-fold: show
@@ -370,8 +340,6 @@ ggp2_2dhist_bins45 +
     labs_2dhist
 ```
 
-:::
-
 ### Options
 
 ::: {.column-margin}
@@ -384,7 +352,6 @@ In the previous example we showed how to `rev`erse the color scale for the `pale
 
   - We also add a `geom_point()` layer (with a small `size` and `alpha`, because there are 5,000 points).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_2dhist_options
 #| code-fold: show
@@ -404,4 +371,3 @@ ggp2_2dhist_bins45 +
     alpha = 0.25) +
   labs_2dhist
 ```
-:::

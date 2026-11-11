@@ -123,11 +123,11 @@ plygn + rct + rbn +
 :::
 :::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
@@ -148,11 +148,11 @@ library(ggplot2)
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **DATA:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Load the `ggplot2::economics` data.
 :::
 
@@ -175,7 +175,7 @@ dplyr::glimpse(economics)
 
 ### Basic Use
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **BASICS:**
 :::
 
@@ -202,7 +202,7 @@ ggp2_ribbon_base +
 
 ### Aesthetics
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **AESTHETICS:**
 :::
 
@@ -253,7 +253,7 @@ corr_data <- tibble::tribble(
 ```
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
 The required aesthetics are: 
 
@@ -286,7 +286,7 @@ ggp2_ribbon_base +
 ```
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Optional aesthetics include: 
 
 `alpha`
@@ -432,7 +432,7 @@ ggp2_ribbon_base +
 
 ### Additional Arguments
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **ARGUMENTS:**
 :::
 

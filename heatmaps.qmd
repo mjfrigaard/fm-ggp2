@@ -32,11 +32,11 @@ Graphs in this chapter use `ggrewindr::theme_freshprince()`, modeled on The Fres
 
 <br>
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ two numeric (continuous) variables**
 
 **✅ a categorical variable** 
@@ -93,14 +93,11 @@ I've found heatmap legends work best on the top or bottom, justified horizontall
 
 ## Set up
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-step}
 
 
 Install packages.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_heatmap
 #| code-fold: show
@@ -113,19 +110,15 @@ library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 library(tidyr) # for expand_grid()
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-step}
 
 *The Fresh Prince of Bel-Air* ran for six seasons (1990 to 1996) and leaned on a handful of running gags. We'll simulate whether each gag shows up in each of the 24 episodes per season. Every gag gets a starting chance of appearing (`base`) and a `trend` that makes it more or less common as the show goes on.
 
 `plogis()` turns those numbers into a probability between 0 and 1, and `rbinom()` flips a weighted coin for every gag in every episode (`present` is 1 when the gag appears). Then we count the episodes with each gag in each season (`occurrences`). Setting the seed with `set.seed()` means you'll get the same 144 episodes every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_heatmap
 #| code-fold: show
@@ -149,19 +142,15 @@ fp_heatmap <- fp_episodes |>
   summarise(occurrences = sum(present), .groups = "drop") # episodes with the gag
 glimpse(fp_heatmap)
 ```
-:::
 
 ## Distribution
 
 Every tile in a heatmap is a count, and every count here is built from 24 yes or no outcomes. A gag that appears in most episodes produces bright tiles in every season. A gag whose chances grow over time produces tiles that brighten from left to right. Below we'll move from the episodes, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first four episodes of season 1.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_heatmap
 #| code-fold: show
@@ -172,11 +161,9 @@ fp_episodes |>
   select(gag, episode, p, present) |> 
   arrange(episode)
 ```
-:::
 
 Each row is one coin flip, and `p` is the chance the coin comes up 1. Will flirts in almost every episode (`p` is above 0.9), while the Carlton dance has only about a 3% chance in season 1. Now compare the counts for those two gags across all six seasons with the counts we'd expect (24 episodes times `p`).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_heatmap
 #| code-fold: show
@@ -189,17 +176,13 @@ fp_episodes |>
             expected = round(24 * first(p), 1), 
             .groups = "drop")
 ```
-:::
 
 The Carlton dance climbs from almost never to a few times a season, while Will flirts in nearly every episode no matter the season.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 Below are two heatmaps. The first shows the expected counts (24 times `p`), and the second shows what our simulation actually produced. The patterns match: Will's flirting stays bright in every season, and the Carlton dance slowly lights up from left to right. The simulated heatmap is a little patchier because each tile is only 24 coin flips.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_heatmap
 #| code-fold: show
@@ -220,11 +203,8 @@ ggplot(fp_heatmap, aes(x = season, y = gag, fill = occurrences)) +
   labs(title = "Simulated", x = "Season", y = NULL, fill = "Episodes") + 
   theme(legend.position = "bottom")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each gag in each episode is a [Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial) (a single yes or no outcome) with probability $p$. Adding up 24 independent trials gives a [binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution):
 
@@ -236,13 +216,10 @@ The expected count is $24p$, and the standard deviation is $\sqrt{24p(1 - p)}$. 
 
 The probability itself comes from `plogis()`, which turns `base + trend * (season - 3.5)` into a number between 0 and 1. A positive `trend` (like the Carlton dance's 0.5) makes a gag more likely every season. Try giving "Jazz thrown out" a negative trend and watch his row fade to teal from left to right.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CHANGE IT:**
-:::
+### CHANGE IT {.unnumbered .fm-step}
 
 So far the heatmap shows what we expect: each row changes slowly from one season to the next. Now we'll change the data. Suppose in season 3 the writers had Phil throw Jazz out of the house in almost every episode (a 90% chance instead of about 40%). We expect one bright tile in the middle of a dim row.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_data_heatmap
 #| code-fold: show
@@ -259,11 +236,9 @@ fp_heatmap_jazz <- fp_episodes |>
 fp_heatmap_jazz |>
   filter(gag == "Jazz thrown out")
 ```
-:::
 
 Jazz now gets thrown out in `r fp_heatmap_jazz$occurrences[fp_heatmap_jazz$gag == "Jazz thrown out" & fp_heatmap_jazz$season == 3]` of the 24 episodes in season 3. Below we redraw the simulated heatmap with the same fill scale (0 to 24).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_draw_heatmap
 #| code-fold: show
@@ -275,16 +250,13 @@ ggplot(fp_heatmap_jazz, aes(x = season, y = gag, fill = occurrences)) +
   labs(title = "Jazz's bad year", x = "Season", y = NULL, fill = "Episodes") +
   theme(legend.position = "bottom")
 ```
-:::
 
 The season 3 tile in the Jazz row is now the brightest tile on the graph, sitting between two dim neighbors. Yet his average per season only moves from `r round(mean(fp_heatmap$occurrences[fp_heatmap$gag == "Jazz thrown out"]), 1)` to `r round(mean(fp_heatmap_jazz$occurrences[fp_heatmap_jazz$gag == "Jazz thrown out"]), 1)` episodes, still well below Geoffrey's zingers. I've found this is what heatmaps do best. A row or column summary smooths one odd cell away. The grid puts every cell next to its neighbors, so a break in the pattern jumps out.
 
 
 ## Grammar
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-step}
 
   -  Create labels with `labs()`
 
@@ -296,7 +268,6 @@ The season 3 tile in the Jazz row is now the brightest tile on the graph, sittin
 
   -  Move the legend to the bottom with `theme(legend.position = "bottom")`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_heatmap
 #| code-fold: show
@@ -322,13 +293,10 @@ ggp2_heatmap_tile <- ggplot(data = fp_heatmap,
 ggp2_heatmap_tile +
   labs_heatmap_tile
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-step}
 
 ```{r}
 #| label: create_graph_heatmap
@@ -375,7 +343,6 @@ In addition to `geom_tile()`, heatmaps can also be created with the `geom_raster
 
   -  Move the legend to the bottom with `theme(legend.position = "bottom")`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_raster
 #| eval: true
@@ -399,6 +366,5 @@ ggp2_heatmap_raster <- ggplot(data = fp_heatmap,
 ggp2_heatmap_raster + 
   labs_heatmap_raster
 ```
-:::
 
 

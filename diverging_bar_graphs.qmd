@@ -77,15 +77,15 @@ ggp2_bars_diverg +
   labs_geom_bar_diverg
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
@@ -159,15 +159,12 @@ We can also compare Surge vs. Orbitz within each week (i.e., compare the gold ba
 ## Set up
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_diverging_bar
 #| code-fold: show
@@ -180,19 +177,15 @@ library(ggplot2)
 library(dplyr) # for data manipulation
 library(tidyr) # for uncount()
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 [Orbitz](https://en.wikipedia.org/wiki/Orbitz_(drink)) hit shelves in 1997 with colorful gel balls floating in a clear, fruity drink. Kids bought it once to see the balls, and then most of them went back to [Surge](https://en.wikipedia.org/wiki/Surge_(drink)). We'll simulate a weekly lunchroom survey of 400 kids over the seven weeks after Orbitz arrived, asking which drink they bought that week: Surge, Orbitz, or something else (`Other`).
 
 Surge's chance of being picked grows each week as the novelty wears off (`p_surge`), Orbitz gets what's left of 80% (`p_orbitz`), and `Other` stays at 20%. For each kid, `runif()` draws a number between 0 and 1, and `case_when()` turns that number into a choice using the week's probabilities. Then we keep Surge and Orbitz, calculate each one's share of the 400 kids, and make Orbitz's share negative so it points down. Setting the seed with `set.seed()` means you'll get the same 2,800 answers every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_diverging_bar
 #| code-fold: show
@@ -225,19 +218,15 @@ orbitz_diverg <- lunchroom_survey |>
     )
 glimpse(orbitz_diverg)
 ```
-:::
 
 ## Distribution
 
 A diverging bar graph puts two shares back to back, so the question it answers is "how do these two groups trade places?" Here, every kid picks exactly one drink each week, so a gain for Surge has to come from somewhere. Below we'll move from the kids, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first ten kids surveyed in week 1.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_diverging_bar
 #| code-fold: show
@@ -245,11 +234,9 @@ Start with the first ten kids surveyed in week 1.
 #| echo: true
 head(lunchroom_survey$choice, 10)
 ```
-:::
 
 Seven of these ten kids bought Orbitz, two bought Surge, and one bought something else. Counting every kid in every week shows the trade: Orbitz's count falls each week while Surge's climbs, and `Other` stays between about 60 and 100.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_diverging_bar
 #| code-fold: show
@@ -259,15 +246,11 @@ lunchroom_survey |>
   count(week, choice) |>
   tidyr::pivot_wider(names_from = choice, values_from = n)
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 A bar model shows each week's 400 kids as one bar split three ways. Reading up from week 1, the Surge part grows, the Orbitz part shrinks, and the `Other` part barely moves.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_bar_model_diverging_bar
 #| code-fold: show
@@ -281,11 +264,9 @@ lunchroom_survey |>
   geom_col(position = position_stack(reverse = TRUE)) +
   labs(x = "Kids", y = "Week", fill = "Drink")
 ```
-:::
 
 The diverging bar graph below takes the Surge and Orbitz parts of each bar and points them in opposite directions from zero. The points mark the shares we built into the simulation. The two bars are the same length somewhere between weeks 4 and 5, which is where the two drinks traded places.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_diverging_bar
 #| code-fold: show
@@ -304,11 +285,8 @@ ggplot(data = orbitz_diverg, aes(x = week, y = share)) +
   scale_y_continuous(limits = c(-1, 1), labels = scales::percent) +
   labs(x = "Week", y = "Share of kids", fill = "Drink")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each kid's answer is a single draw from three choices, so each week's counts follow a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
 
@@ -324,12 +302,86 @@ The logistic function (`plogis()`) gives Surge's share an S shaped climb: slow a
 
 Each simulated share wobbles around its point by about $\sqrt{p(1 - p) / 400}$, which is never more than 2.5 percentage points. That's why the bars land so close to the points. Try changing the `0.6` in `plogis()` and the crossover moves earlier (larger values) or later (smaller values).
 
+### CHANGE IT {.unnumbered .fm-step}
+
+So far the graph shows what we expect: the kids who drop Orbitz pick up Surge, so the two bars trade places. Now we'll change where those kids go.
+
+Suppose Surge never gains a single fan and stays at 30% every week. The kids who tire of the floating balls switch to other drinks instead (Snapple, Fruitopia, or plain milk). Orbitz still falls from 60% to 15%, and `Other` grows from 10% to 55%. We'll keep the same 400 kids, the same seven weeks, and the same seed.
+
+```{r}
+#| label: change_data_diverging_bar
+#| code-fold: show
+#| eval: true
+#| echo: true
+set.seed(1993) # same seed as above
+lunchroom_switch <- tibble(week = 1:7) |>
+  mutate(
+    p_surge = 0.3, # Surge stays flat
+    p_orbitz = 0.6 - 0.075 * (week - 1) # Orbitz falls from 60% to 15%
+    ) |>
+  tidyr::uncount(400, .id = "kid") |>
+  mutate(
+    u = runif(n()),
+    choice = case_when(
+      u < p_surge ~ "Surge",
+      u < p_surge + p_orbitz ~ "Orbitz",
+      TRUE ~ "Other" # grows as Orbitz falls
+      )
+    ) |>
+  select(week, kid, choice)
+orbitz_switch <- lunchroom_switch |>
+  filter(choice != "Other") |>
+  count(week, choice) |>
+  mutate(
+    share = n / 400,
+    share = if_else(choice == "Orbitz", -share, share),
+    choice = factor(choice, levels = c("Surge", "Orbitz")),
+    week = factor(week)
+    )
+lunchroom_switch |>
+  count(week, choice) |>
+  tidyr::pivot_wider(names_from = choice, values_from = n)
+```
+
+Below we redraw the same diverging bar graph with the new survey.
+
+```{r}
+#| label: change_graph_diverging_bar
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(data = orbitz_switch, aes(x = week, y = share)) +
+  geom_bar(aes(fill = choice), stat = "identity", width = .5) +
+  geom_hline(yintercept = 0) +
+  scale_y_continuous(limits = c(-1, 1), labels = scales::percent) +
+  labs(x = "Week", y = "Share of kids", fill = "Drink")
+```
+
+```{r}
+#| label: change_numbers_diverging_bar
+#| include: false
+switch_counts <- lunchroom_switch |>
+  count(week, choice) |>
+  tidyr::pivot_wider(names_from = choice, values_from = n)
+surge_low <- min(switch_counts$Surge)
+surge_high <- max(switch_counts$Surge)
+orbitz_wk1 <- switch_counts$Orbitz[switch_counts$week == 1]
+orbitz_wk7 <- switch_counts$Orbitz[switch_counts$week == 7]
+other_wk1 <- switch_counts$Other[switch_counts$week == 1]
+other_wk7 <- switch_counts$Other[switch_counts$week == 7]
+cross_week <- min(switch_counts$week[switch_counts$Surge > switch_counts$Orbitz])
+```
+
+The graph tells the same story as before: Orbitz's bars shrink, and by week `r cross_week` Surge's bar is the longer one. It looks like Surge won the lunchroom.
+
+But Surge sold to between `r surge_low` and `r surge_high` kids every week. Orbitz fell from `r orbitz_wk1` kids to `r orbitz_wk7`, and nearly all of them went to `Other`. That group grew from `r other_wk1` kids to `r other_wk7`, the biggest group by week 7. The graph has no bar for it.
+
+A diverging bar graph only shows the two groups we put on it. When those two don't add up to the whole, the crossover can look like a trade that never happened. I've found it's worth checking the group we dropped before reading two bars as winner and loser. If it changes, give it a bar or put its share in the subtitle.
+
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   - Create labels with `labs()`
 
@@ -345,7 +397,6 @@ Each simulated share wobbles around its point by about $\sqrt{p(1 - p) / 400}$, 
 
   - Add `scale_y_continuous()` to manually set the limits and format the axis with `scales::percent`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_diverging_bar
 #| code-fold: show
@@ -373,13 +424,10 @@ ggp2_bars_diverg <- ggplot(
 ggp2_bars_diverg +
   labs_geom_bar_diverg
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ```{r}
 #| label: create_graph_diverging_bar
@@ -429,8 +477,6 @@ For vertically arranged bars, we switch the `x` and `y` axis variables.
 
   - Add `scale_x_continuous()` to manually set the limits and format the axis with `scales::percent`
 
-::: {style="font-size: 0.85em;"}
-
 ```{r}
 #| label: create_graph_vert_diverg_bars
 #| eval: true
@@ -458,5 +504,3 @@ ggp2_bar_diverg_vert <- ggplot(
 ggp2_bar_diverg_vert +
   labs_geom_bar_diverg_vert
 ```
-
-:::

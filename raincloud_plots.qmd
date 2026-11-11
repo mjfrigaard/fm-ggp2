@@ -129,15 +129,15 @@ ggp2_raincloud_x +
          x = NULL, y = "Seconds to clear the first level")
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
@@ -151,15 +151,12 @@ We can use the [`raincloudplots` package](https://github.com/jorvlan/raincloudpl
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_raincloud
 #| code-fold: show
@@ -177,11 +174,8 @@ library(faux) # for rnorm_multi()
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 Tiger's [R-Zone](https://en.wikipedia.org/wiki/R-Zone) (1995) was a game console you wore on your head: a cartridge projected red LCD graphics onto a small visor in front of one eye. The games were simple, so most players cleared the first level much faster on their second try (if their eyes held out). We'll simulate how many seconds it took 100 players to clear the first level on their first and second tries.
 
@@ -189,7 +183,6 @@ Tiger's [R-Zone](https://en.wikipedia.org/wiki/R-Zone) (1995) was a game console
 
 The `raincloudplots` package has a `data_1x1()` function we can use to build the dataset for a 1x1 repeated measure graph (`rzone_1x1`). This function takes two array arguments (`array_1` and `array_2`), which we create from the `first_try` and `second_try` columns. The `jit_distance` and `jit_seed` refer to the points in the plot.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_raincloud
 #| code-fold: show
@@ -215,19 +208,15 @@ rzone_1x1 <- raincloudplots::data_1x1(
   jit_seed = 2736) # used in set.seed()
 glimpse(rzone_1x1)
 ```
-:::
 
 ## Distribution
 
 A raincloud plot shows a whole distribution three ways at once (the cloud, the box, and the rain). The R-Zone data adds a twist: the two groups are the *same* 100 players measured twice, so each first try has a partner second try. Comparing the two clouds only tells part of the story; the pairs tell the rest. Below we'll move from the players, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first five players.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_raincloud
 #| code-fold: show
@@ -235,11 +224,9 @@ Start with the first five players.
 #| echo: true
 head(rzone_tries, 5)
 ```
-:::
 
 Four of these five players cleared the level much faster on their second try, but player 3 took more than twice as long. The summary below compares the two tries for all 100 players. The median drops by about half, almost every player was faster the second time, and the correlation shows that slow first tries go with slow second tries.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_raincloud
 #| code-fold: show
@@ -251,15 +238,11 @@ rzone_tries |>
             share_faster = mean(second_try < first_try),
             correlation = cor(log(first_try), log(second_try)))
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The graph below plots each player's two tries against each other on log scales. The solid line is "no change" (second try = first try), and the dashed line is "twice as fast" (second try = half the first try). The points cluster around the dashed line, and they fall along a band rather than a blob because of the correlation.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_raincloud
 #| code-fold: show
@@ -282,11 +265,8 @@ ggplot(rzone_tries, aes(x = first_try, y = second_try)) +
        color = NULL, linetype = NULL) +
   theme(legend.position = "top")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 The two log times come from a [bivariate normal distribution](https://en.wikipedia.org/wiki/Multivariate_normal_distribution), which makes each try [log normal](https://en.wikipedia.org/wiki/Log-normal_distribution) on the seconds scale:
 
@@ -299,9 +279,7 @@ The difference between the two logs is the log of the speed up, $\log(\text{seco
 
 ## Grammar (`raincloudplots`)
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
 Create labels with `labs()`
 
@@ -313,7 +291,6 @@ Use the `raincloudplots::raincloud_1x1_repmes()` to build the plot, assigning `r
 
   - set the size (of the points) and alpha (for opacity)
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_raincloud
 #| code-fold: show
@@ -344,13 +321,10 @@ ggp2_raincloud_x +
         x = NULL,
         y = "Seconds to clear the first level")
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ```{r}
 #| label: create_graph_raincloud
@@ -385,13 +359,10 @@ ggp2_raincloud_x +
 
 ## More info
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 We'll simulate first tries for 80 players on each of three kinds of R-Zone games (`rzone_games`). Each kind of game gets its own typical time (15, 30, or 60 seconds), and `rlnorm()` draws each player's time.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_ggdist
 #| eval: true
@@ -413,7 +384,6 @@ rzone_games <- tibble(
     )
 glimpse(rzone_games)
 ```
-:::
 
 ### Box-plot
 
@@ -423,7 +393,6 @@ glimpse(rzone_games)
 
   -   For the first layer, we create a box plot with `geom_boxplot()`, but include notches and remove the outliers (the points we add below still show them).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_raincloud2_box
 #| eval: true
@@ -449,13 +418,11 @@ ggp2_box <- ggplot(rzone_games,
 ggp2_box +
     labs_raincloud_2
 ```
-:::
 
 ### Density
 
 We then add a horizontal density curve with `ggdist::stat_halfeye()`, mapping `game` to `fill`, and adjusting the size and shape of the density curve and shifting it slightly above the box plot.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_raincloud2_halfeye
 #| eval: true
@@ -478,7 +445,6 @@ ggp2_stat_halfeye <- ggp2_box +
 ggp2_stat_halfeye +
     labs_raincloud_2
 ```
-:::
 
 ### Points
 
@@ -488,7 +454,6 @@ The final layer is a `geom_point()`, mapping `fill` to `game` and setting `posit
 
 - Manually set the `height`, which refers to the vertical area for the points, and set `width = 0` so each point stays at its true number of seconds
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_raincloud2_jitter
 #| eval: true
@@ -512,7 +477,6 @@ ggp2_jitter <- ggp2_stat_halfeye +
 ggp2_jitter +
     labs_raincloud_2
 ```
-:::
 
 ## More examples & resources
 
@@ -524,7 +488,6 @@ Cédric also covers some alternative methods for plotting the points (I particul
 
 We can switch to this layout by applying `ggplot2::coord_flip()` to the `ggp2_stat_halfeye` layer, then adding `geom_point()` with `shape` set to `95`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_raincloud2_point_lines
 #| eval: true
@@ -543,7 +506,6 @@ ggplot2::geom_point(
     theme(legend.position = "none") +
     labs_raincloud_2
 ```
-:::
 
 ### #TidyTuesday example
 
@@ -553,11 +515,9 @@ The code to re-create the #TidyTuesday graph is contained in this [gist.](https:
 
 ### More resources
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**MORE RESOURCES**
-:::
+#### MORE RESOURCES {.unnumbered .fm-label}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
 1. Raincloud plots: a multi-platform tool for robust data visualization. [1](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6480976/)
 

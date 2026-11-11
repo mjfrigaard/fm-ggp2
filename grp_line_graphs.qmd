@@ -113,19 +113,19 @@ basic_line + grp_line + pal_line + facet_line +
     mini_theme
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (date) variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ at least one categorical variable**
 :::
 
@@ -137,14 +137,11 @@ Grouped line graphs use color, line style, and faceting to show how a numeric va
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_line_graph
 #| code-fold: show
@@ -157,13 +154,10 @@ library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 library(lubridate) # for working with dates
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 Every Saturday night starting in 1992, Nickelodeon kids parked themselves in front of SNICK (*Clarissa Explains It All*, *Are You Afraid of the Dark?*, and *All That*) and the orange couch. We'll simulate a Nielsen style rating for Nickelodeon for every day from 1993 through 1999.
 
@@ -175,7 +169,6 @@ We'll also create the date variables we need for grouping:
 
   - `yr_mnth` (the first day of each month) and `yr_qtr` (the year and quarter)
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_nick_ratings
 #| code-fold: show
@@ -206,7 +199,6 @@ nick_ratings <- tibble(
   select(-night_avg, -trend, -summer) # drop the helper columns
 glimpse(nick_ratings)
 ```
-:::
 
 We'll use these data in the *More info* section for more line graphs, but for now:
 
@@ -216,7 +208,6 @@ We'll use these data in the *More info* section for more line graphs, but for no
 
   - Store the data in `avg_rating_day_cat_yr`.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_avg_rating_day_cat_yr
 #| code-fold: show
@@ -228,19 +219,15 @@ avg_rating_day_cat_yr <- nick_ratings |>
     ungroup()
 glimpse(avg_rating_day_cat_yr)
 ```
-:::
 
 ## Distribution
 
 A grouped line graph rarely plots raw values. It plots an *average* for each group at each point in time, and averages behave very differently from the values they're built from. Below we'll move from the daily ratings, to a picture, to the formula, and see why averaging makes the group differences easy to see.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first week of 1996.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_grp_line
 #| code-fold: show
@@ -251,11 +238,9 @@ nick_ratings |>
   select(date, day_of_week, rating) |>
   head(7)
 ```
-:::
 
 Saturday is the clear winner this week, but the weeknights are close enough that the order could flip next week. Below we count every night in 1996 and calculate the mean and standard deviation for each night of the week.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_grp_line
 #| code-fold: show
@@ -267,17 +252,13 @@ nick_1996 <- nick_ratings |>
   summarise(n = n(), mean = mean(rating), sd = sd(rating))
 nick_1996
 ```
-:::
 
 Each night of the week shows up `r min(nick_1996$n)` or `r max(nick_1996$n)` times in a year. The Saturday mean (`r round(nick_1996$mean[nick_1996$day_of_week == "Sat"], 2)`) is well above the Tuesday mean (`r round(nick_1996$mean[nick_1996$day_of_week == "Tue"], 2)`), but any single night wanders about `r round(mean(nick_1996$sd), 1)` rating points from its mean.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The graph below draws every Tuesday and Saturday rating from 1996 as a thin, faded line, then adds each month's average as a thick line. The daily lines zig and zag, while the monthly averages are much smoother.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_grp_line
 #| code-fold: show
@@ -297,11 +278,8 @@ ggplot() +
             linewidth = 1.5) +
   labs(x = "1996", y = "Rating", color = "Night")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each day's rating is a draw from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) centered on that night's average for that time of year:
 
@@ -315,9 +293,7 @@ Try changing `sd = 0.35` to `sd = 1` and watch the daily lines in **DRAW IT** tu
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   - Create labels with `labs()`
 
@@ -325,7 +301,6 @@ Try changing `sd = 0.35` to `sd = 1` and watch the daily lines in **DRAW IT** tu
 
   - Add the `geom_line()` layer and map `day_category` to color (*inside* `aes()`)
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_line
 #| code-fold: show
@@ -350,13 +325,10 @@ ggp2_line <- ggplot(data = avg_rating_day_cat_yr,
 ggp2_line +
     labs_line_graph
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ```{r}
 #| label: create_graph_line
@@ -398,7 +370,6 @@ In the previous graph, we can see the ratings peak around `1996` or `1997`.
 
   - Then calculate the average `rating` as `avg_rating`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: avg_rating_dow_qtr
 #| code-fold: show
@@ -413,7 +384,6 @@ avg_rating_dow_qtr <- nick_ratings |>
     ungroup()
 glimpse(avg_rating_dow_qtr)
 ```
-:::
 
 Now when we create our line graph, we will have a categorical variable with seven levels (`day_of_week`):
 
@@ -421,7 +391,6 @@ Now when we create our line graph, we will have a categorical variable with seve
 
   +  Label the end of each line with `geom_text_repel()` (from `ggrepel`), so we can drop the legend with `theme(legend.position = "none")`.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: labs_line_graph_grp
 #| code-fold: show
@@ -438,9 +407,7 @@ labs_line_graph_grp <- labs(title = "Nickelodeon ratings",
                         x = "Year/Quarter",
                         color = "Day of Week")
 ```
-:::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_line_grp
 #| code-fold: show
@@ -464,7 +431,6 @@ ggp2_line_grp +
     labs_line_graph_grp +
     theme(legend.position = "none")
 ```
-:::
 
 The Saturday line sits on top of every quarter (that's SNICK), and every night rises and falls with the summer bump.
 
@@ -474,11 +440,8 @@ The Saturday line sits on top of every quarter (that's SNICK), and every night r
 
   - We'll work through some examples below using another subset from `nick_ratings`.
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+#### DATA {.unnumbered .fm-label}
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: avg_rating_dow_mnth
 #| code-fold: show
@@ -493,11 +456,9 @@ avg_rating_dow_mnth <- nick_ratings |>
     ungroup()
 glimpse(avg_rating_dow_mnth)
 ```
-:::
 
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: labs_line_styles
 #| code-fold: show
@@ -517,7 +478,6 @@ labs_line_styles <- labs(
     color = "Day of Week"
 )
 ```
-:::
 
 
 ### `alpha` & `linewidth`
@@ -526,7 +486,6 @@ Line styles are an excellent tool for highlighting or emphasizing certain lines 
 
   - We'll start by creating a line graph layer for Monday (`"Mon"`), Thursday (`"Thu"`), and Friday (`"Fri"`) adjusting the opacity with `alpha`.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_line_mon_thu_fri
 #| code-fold: show
@@ -548,14 +507,12 @@ ggp2_line_mon_thu_fri +
     labs_line_styles +
     theme(legend.position = "top")
 ```
-:::
 
 
 ### `linetype`
 
 Then we'll change the `linetype` of Saturday and Sunday to `"longdash"` (and make this *somewhat* transparent with a slightly higher `alpha`).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_line_sat_sun
 #| code-fold: show
@@ -577,7 +534,6 @@ ggp2_line_sat_sun +
     labs_line_styles +
     theme(legend.position = "top")
 ```
-:::
 
 ### Color palettes
 
@@ -586,7 +542,6 @@ ggp2_line_sat_sun +
   - We also manually set the legend order by supplying the original factor levels to the `breaks` argument.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_line_pal_d
 #| code-fold: show
@@ -621,7 +576,6 @@ ggp2_line_pal_d +
     # legend position
     theme(legend.position = "top")
 ```
-:::
 
 
 Changing the look of the lines is a great way to highlight or emphasize some lines over others.
@@ -634,7 +588,6 @@ We'll use labels to display the highest daily rating and the highest monthly ave
 
   - Each has a row for every night of the week and a label variable (`lbl`) which we can use with `geom_label()`. The highest Sunday rating (4.4) happened twice (`1996-08-11` and `1997-04-20`), so `label_max_dow` has one extra row.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: label_max_dow
 #| code-fold: show
@@ -653,9 +606,7 @@ label_max_dow <- nick_ratings |>
 arrange(label_max_dow, desc(max_rating)) |>
     slice(1:2)
 ```
-:::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: label_max_avg_dow
 #| code-fold: show
@@ -674,13 +625,11 @@ label_max_avg_dow <- avg_rating_dow_mnth |>
 arrange(label_max_avg_dow, desc(max_avg_rating)) |>
     slice(1:2)
 ```
-:::
 
 Now that we have label tables for each metric, we can filter them to the days we want to label.
 
   - We'll use `filter()` to get the maximum values for `"Wed"` (in `label_max_wed_dow` and `label_max_avg_wed_dow`)
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: label_max_wed
 #| code-fold: show
@@ -694,12 +643,10 @@ label_max_avg_wed_dow <- label_max_avg_dow |>
     filter(day_of_week == "Wed")
 label_max_avg_wed_dow
 ```
-:::
 
 
 Add `geom_point()` and `geom_label()` for Wednesday.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_line_wed_labels
 #| code-fold: show
@@ -759,12 +706,10 @@ ggp2_line_pal_d +
     # move legend to top
     theme(legend.position = "top")
 ```
-:::
 
 
 We'll use `filter()` to get the maximum values for `"Tue"` (in `label_max_tue_dow` and `label_max_avg_tue_dow`):
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: label_max_tue
 #| code-fold: show
@@ -778,12 +723,10 @@ label_max_avg_tue_dow <- label_max_avg_dow |>
     filter(day_of_week == "Tue")
 label_max_avg_tue_dow
 ```
-:::
 
 
 Add `geom_point()` and `geom_label()` for Tuesday
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_line_tue_labels
 #| code-fold: show
@@ -850,7 +793,6 @@ ggp2_line_pal_d +
     # move legend to top
     theme(legend.position = "top")
 ```
-:::
 
 Notice the highest daily ratings sit well above the highest monthly averages. A single night can get lucky, but an average of four or five nights rarely does (just like we saw in the **Distribution** section).
 
@@ -861,7 +803,6 @@ Finally, we can use facets to view each of the line graphs separately (or small 
   - We'll create a dataset with the daily ratings between `1998-07-01` and `1999-12-31` and store it as `daily_ratings_9899`
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: daily_ratings_9899
 #| code-fold: show
@@ -872,12 +813,10 @@ daily_ratings_9899 <- nick_ratings |>
     select(date, day_category, day_of_week, rating)
 glimpse(daily_ratings_9899)
 ```
-:::
 
 
 - Using `facet_wrap()` with a single categorical variable (`var ~ .`) will create a plot for each discrete level, while `facet_grid()` will create a level-by-level grid (specified as `var ~ var`).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_line_facet_wrap
 #| code-fold: show
@@ -914,12 +853,10 @@ ggp2_line_facet_wrap +
     labs_line_graph_facet_wrap +
     theme(legend.position = "none") # the small graph names already say which night
 ```
-:::
 
 
   - It's always a good idea to check the `x` and `y` axis text when using facets. I've adjusted the `x` and `y` axes above using `scale_y_continuous()` and `scale_x_date()` before adding `facet_wrap()`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_line_facet_grid
 #| code-fold: show
@@ -955,7 +892,6 @@ ggp2_line_facet_grid <- ggplot(data = daily_ratings_9899,
 ggp2_line_facet_grid +
     labs_line_graph_facet_grid
 ```
-:::
 
 Seven of the 14 panels are empty, because each night of the week belongs to only one `day_category` (`Weekday` or `Weekend`).
 

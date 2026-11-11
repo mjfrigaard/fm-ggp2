@@ -28,11 +28,11 @@ Graphs in this chapter use `ggrewindr::theme_blockbuster()`, modeled on a Blockb
 
 :::: {.callout-note collapse="false" icon=false}
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
@@ -78,15 +78,12 @@ In `ggplot2`, we can build dot plots with [`geom_dotplot()`](https://ggplot2.tid
 
 ## Set up
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-step}
 
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_dotplot
 #| code-fold: show
@@ -98,13 +95,10 @@ Install packages.
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-step}
 
 In the late 90s, most Friday nights started at [Blockbuster Video](https://en.wikipedia.org/wiki/Blockbuster_(retailer)). 
 
@@ -116,7 +110,6 @@ In the late 90s, most Friday nights started at [Blockbuster Video](https://en.wi
 
 We'll simulate how many movies 60 households rented in one week with `rpois()`, which generates whole number counts (0, 1, 2, and so on). Setting the seed with `set.seed()` means you'll get the same 60 households every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_dotplot
 #| code-fold: show
@@ -129,7 +122,6 @@ blockbuster_rentals <- tibble(
 )
 glimpse(blockbuster_rentals)
 ```
-:::
 
 ## Distribution
 
@@ -139,13 +131,10 @@ Rentals are counts: a household rents 0, 1, 2, or more movies, but never 2.5. Do
 
 Because we picked the rental rate in `rpois()`, we know what the piles should look like before we draw them. Below we'll move from the counts, to a picture, to the formula. Then we'll change the data and see what the same graph shows when households don't behave the way we expected.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first ten households.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_dotplot
 #| code-fold: show
@@ -153,11 +142,9 @@ Start with the first ten households.
 #| echo: true
 head(blockbuster_rentals$rentals, 10)
 ```
-:::
 
 Most of these households rented two or three movies, two rented none, and one rented five. If we count all 60 households, we can compare each pile to the number of households we'd expect (we'll see where `dpois()` comes from below).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_table_dotplot
 #| code-fold: show
@@ -167,11 +154,9 @@ blockbuster_rentals |>
   count(rentals) |> 
   mutate(expected = round(60 * dpois(rentals, lambda = 3), 1))
 ```
-:::
 
 The observed piles stay close to the expected ones. Counts like these have one more property worth checking: the mean and the variance should be about the same.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_dotplot
 #| code-fold: show
@@ -180,15 +165,11 @@ The observed piles stay close to the expected ones. Counts like these have one m
 blockbuster_rentals |> 
   summarise(mean = mean(rentals), variance = var(rentals))
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The dot plot below stacks one dot per household above its number of rentals. The tallest piles sit at two and three rentals, and the piles get shorter on both sides. The dashed line marks the rental rate we used in `rpois()` (3 per week). The right side trails out further than the left because a household can't rent fewer than zero movies.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_dotplot
 #| code-fold: show
@@ -201,11 +182,8 @@ ggplot(data = blockbuster_rentals,
   scale_x_continuous(breaks = 0:7) + 
   labs(x = "Number of rentals")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 The `rpois()` call that created the data is a single statement: 
 
@@ -223,13 +201,10 @@ $$
 
 This is what `dpois()` calculates. For $k = 3$, $P(X = 3) = 3^3 e^{-3} / 3! \approx 0.224$, so we'd expect about $60 \times 0.224 \approx 13$ of our 60 households to rent three movies. We got `r sum(blockbuster_rentals$rentals == 3)`. Try a larger `lambda` in `rpois()` and the piles move right and spread out, because the mean and the variance grow together.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CHANGE IT:**
-:::
+### CHANGE IT {.unnumbered .fm-step}
 
 The Poisson piles above are what we expected. Real stores rarely behave this way: some households never came in, and a few rented a stack of new releases every Friday. Below we'll keep the average near three rentals but let households differ, using `rnbinom()` (a [negative binomial](https://en.wikipedia.org/wiki/Negative_binomial_distribution) count). We should see more zeros, a longer right tail, and a variance much larger than the mean.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_data_dotplot
 #| code-fold: show
@@ -243,11 +218,9 @@ blockbuster_bingers <- tibble(
 blockbuster_bingers |>
   summarise(mean = mean(rentals), variance = var(rentals))
 ```
-:::
 
 The mean dropped a little, to `r round(mean(blockbuster_bingers$rentals), 2)`, but the variance jumped to `r round(var(blockbuster_bingers$rentals), 2)`. We'll redraw the same dot plot with the same dashed line at three rentals.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_draw_dotplot
 #| code-fold: show
@@ -260,7 +233,6 @@ ggplot(data = blockbuster_bingers,
   scale_x_continuous(breaks = 0:13) +
   labs(x = "Number of rentals")
 ```
-:::
 
 The dashed line no longer sits near the tallest pile. The tallest pile is now at zero: `r sum(blockbuster_bingers$rentals == 0)` households rented nothing, where the Poisson model expects about 3. Half of the 60 households rented zero or one movie, and the piles at two and three shrank. On the right, `r sum(blockbuster_bingers$rentals >= 7)` households rented seven or more (the Poisson model expects about 2), and two rented 13.
 
@@ -269,9 +241,7 @@ Because every dot is one household, the graph shows what the average alone would
 
 ## Grammar
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-step}
 
 1. Create labels with `labs()`
 
@@ -285,7 +255,6 @@ Because every dot is one household, the graph shows what the average alone would
 
 6. Set the `x` axis breaks with `scale_x_continuous(breaks = 0:7)`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_dotplot
 #| code-fold: show
@@ -305,12 +274,9 @@ ggp2_dotplot <- ggplot(data = blockbuster_rentals,
 ggp2_dotplot + 
   labs_dotplot
 ```
-:::
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-step}
 
 ```{r}
 #| label: create_graph_dotplot

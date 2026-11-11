@@ -30,11 +30,11 @@ Graphs in this chapter use `ggrewindr::theme_walkman()`, modeled on the Sony Spo
 
 <br>
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 
 **✅ a numeric (continuous) variable**
 
@@ -99,13 +99,10 @@ Each row typically holds two points on the `x` axis, one for each level of a cat
 
 ## Set up
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-step}
 
 Install packages.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_clev_dots
 #| code-fold: show
@@ -120,19 +117,15 @@ library(ggplot2)
 library(dplyr) # for data manipulation
 library(forcats) # for fct_rev()
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-step}
 
 In the 90s, a Sony Walkman went everywhere, and the batteries never seemed to last long enough. We'll simulate a battery test: 20 tapes played until the batteries died for each combination of three Walkman models and two battery types.
 
 The [`faux`](https://debruine.github.io/faux/) package's `sim_design()` function builds this kind of experiment for us. We give it the two factors (`between`), the number of tests in each combination (`n`), the average battery life for each combination (`mu`), and the standard deviation (`sd`). Then we calculate the median battery life for each model and battery (`med_hours`). Setting the seed with `set.seed()` means you'll get the same 120 tests every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_clev_dots
 #| code-fold: show
@@ -168,19 +161,15 @@ walkman_clev_dots <- walkman_tests |>
     )
 glimpse(walkman_clev_dots)
 ```
-:::
 
 ## Distribution
 
 A Cleveland dot plot shows two summaries per row and the gap between them. Here each dot is the median of 20 battery tests, and each line is the difference between alkaline and rechargeable batteries for one model. Below we'll move from the tests, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first five tests.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_clev_dots
 #| code-fold: show
@@ -188,11 +177,9 @@ Start with the first five tests.
 #| echo: true
 head(walkman_tests, 5)
 ```
-:::
 
 These are alkaline batteries in the WM-2, and they lasted between about 8 and 13 hours. The table below puts the two battery types side by side for each model and calculates the gap.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_clev_dots
 #| code-fold: show
@@ -202,17 +189,13 @@ walkman_clev_dots |>
   tidyr::pivot_wider(names_from = battery, values_from = med_hours) |> 
   mutate(difference = Alkaline - Rechargeable)
 ```
-:::
 
 Alkaline batteries last longer in every model, and the gap grows from about 2.5 hours in the WM-2 to about 5 hours in the Mega Bass.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The graph below puts all 120 tests behind the dots. Each small point is one test, and the big dots are the medians. The medians sit in the middle of their clouds of tests, and the lines connect the two medians for each model.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_clev_dots
 #| code-fold: show
@@ -227,11 +210,8 @@ ggplot(data = walkman_clev_dots,
   geom_point(aes(color = battery), size = 3.5) + 
   labs(x = "Battery life (hours)", y = "Model", color = "Battery")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 `sim_design()` draws every test from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) with the mean for its model and battery type:
 
@@ -241,13 +221,10 @@ $$
 
 The line in each row estimates the difference between two of these means, $\mu_{\text{alkaline}} - \mu_{\text{rechargeable}}$, which we set to 3, 4, and 5 hours. Each median is built from only 20 tests, so it wobbles. For a normal distribution, the median of $n$ values has a standard error of about $1.25\,\sigma / \sqrt{n} = 1.25 \times 2 / \sqrt{20} \approx 0.56$ hours. The difference between two medians wobbles by about $\sqrt{2} \times 0.56 \approx 0.8$ hours. That's why the WM-2 gap came out at about 2.5 hours instead of 3. Try raising `n` in `sim_design()` and the gaps settle closer to 3, 4, and 5.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CHANGE IT:**
-:::
+### CHANGE IT {.unnumbered .fm-step}
 
 The graph so far shows what we expect: alkaline batteries win in every model. Below we'll suppose the Sports was tested with a newer batch of rechargeable batteries that averaged 19 hours instead of 12. We should see the two dots trade places in the Sports row while the other rows stay the same.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_data_clev_dots
 #| code-fold: show
@@ -272,7 +249,6 @@ walkman_clev_dots_flip |>
   tidyr::pivot_wider(names_from = battery, values_from = med_hours) |>
   mutate(difference = Alkaline - Rechargeable)
 ```
-:::
 
 ```{r}
 #| label: change_numbers_clev_dots
@@ -285,7 +261,6 @@ flip_wm2 <- flip_wide[flip_wide$model == "WM-2", ]
 
 The Sports gap is now negative: the rechargeable median (`r round(flip_sports$Rechargeable, 1)` hours) beats the alkaline median (`r round(flip_sports$Alkaline, 1)` hours). We'll redraw the same graph with the changed data.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_draw_clev_dots
 #| code-fold: show
@@ -297,7 +272,6 @@ ggplot(data = walkman_clev_dots_flip,
   geom_point(aes(color = battery), size = 3.5) +
   labs(x = "Median battery life (hours)", y = "Model", color = "Battery")
 ```
-:::
 
 The Sports line is about as long as the WM-2 line (`r round(abs(flip_sports$Alkaline - flip_sports$Rechargeable), 1)` hours versus `r round(flip_wm2$Alkaline - flip_wm2$Rechargeable, 1)` hours), so the lengths alone look like nothing changed. Only the colors give it away: in the Sports row the rechargeable dot now sits on the right. `geom_line()` draws the same line whichever dot is bigger, so the line shows the size of a gap but never its direction.
 
@@ -306,9 +280,7 @@ I've found this is the easiest thing to miss in a Cleveland dot plot. Before com
 
 ## Grammar
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-step}
 
   -   Create labels with `labs()`
 
@@ -320,7 +292,6 @@ I've found this is the easiest thing to miss in a Cleveland dot plot. Before com
 
   -   Add `geom_point()` and map `battery` to `color` aesthetic. Set the `size` to `2.25`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_clev_dots
 #| code-fold: show
@@ -347,13 +318,10 @@ ggp2_clev_dots <- ggplot(data = walkman_clev_dots,
 ggp2_clev_dots +
     labs_clev_dots
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-step}
 
 ```{r}
 #| label: create_graph_clev_dots
@@ -388,9 +356,7 @@ Cleveland dot plots are also helpful when comparing multiple differences on a co
 
 ### Common scale
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**SCALE:**
-:::
+#### SCALE {.unnumbered .fm-step}
 
   -   Simulate a second measurement for every test: the time it takes to rewind a 60 minute tape (`rewind_seconds`). Rewinding uses the motor, so weaker rechargeable batteries rewind more slowly.
 
@@ -400,7 +366,6 @@ Cleveland dot plots are also helpful when comparing multiple differences on a co
 
   -   Finally, convert `median_measure` into a factor. 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_clev_dots2
 #| eval: true
@@ -435,13 +400,10 @@ walkman_clev_dots2 <- walkman_tests |>
     dplyr::mutate(median_measure = factor(median_measure))
 glimpse(walkman_clev_dots2)
 ```
-:::
 
 ### Scales
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**`scales`:**
-:::
+#### `scales` {.unnumbered .fm-step}
 
   -   Re-create labels
 
@@ -457,7 +419,6 @@ glimpse(walkman_clev_dots2)
 
   -   Move the legend with `theme(legend.position = "top")`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: graph_run_clev_dots_nrow_2
 #| eval: true
@@ -487,16 +448,14 @@ ggp2_clev_dots2 <- ggplot(data = walkman_clev_dots2,
 ggp2_clev_dots2 +
     labs_clev_dots2
 ```
-:::
 
 On a shared scale, the battery life differences (a few hours) are tiny next to the rewind times (about 80 to 120 seconds). The battery life dots get squeezed against the left side of the axis.
 
-::: {style="font-size: 1.00em; color: #E74A2F;"}
+::: {.fm-caution}
 **CAUTION when using `scales = "free_x"`:**
 The graph below gives each measure its own `x` axis. Alkaline batteries last longer and rewind faster in every model. However, interpret the size of the differences with caution, because the line lengths can't be directly compared across the two panels! 
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: graph_run_clev_dots2_free_x
 #| eval: true
@@ -519,4 +478,3 @@ ggp2_clev_dots2_free_x <- ggplot(data = walkman_clev_dots2,
 ggp2_clev_dots2_free_x +
     labs_clev_dots2
 ```
-:::

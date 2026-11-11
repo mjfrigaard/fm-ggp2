@@ -53,7 +53,7 @@ install.packages("palmerpenguins")
 
 :::: {.callout-tip collapse="false" icon=false}
 ## Geom info
-::: {style="font-size: 1.25em; color: #02577A;"}
+::: {.fm-req-title}
 **What does this geom do?**
 :::
 
@@ -124,7 +124,7 @@ ggp2_bar_fill +
 
 <br>
 
-::: {style="font-size: 1.25em; color: #02577A;"}
+::: {.fm-req-title}
 **Use this geom with:**
 :::
 
@@ -157,11 +157,11 @@ dplyr::distinct(peng_bar, island)
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
@@ -182,7 +182,7 @@ library(ggplot2)
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **DATA:**
 :::
 
@@ -200,7 +200,7 @@ library(ggplot2)
 
 
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Remove the missing values from `island`, `species`, and `sex` from `palmerpenguins::penguins`
 :::
 
@@ -226,7 +226,7 @@ glimpse(peng_bar)
 
 ### `ggplot_build()`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **`ggplot_build()`:**
 :::
 
@@ -256,11 +256,11 @@ names(bld_ggp2_bar_x)
 
 ### `"data"`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **`geom_bar()`: data**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
 Extract the data from the `ggplot2` object.
 
@@ -281,11 +281,11 @@ select(bar_x_data, fill)
 
 ### `"plot"`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **`geom_bar()`: plot**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Extract the `"plot"` from `bld_` object:
 :::
 
@@ -313,11 +313,11 @@ bld_ggp2_bar_x[["plot"]]
 
 ### `ggplot_build()`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **`ggplot_build()`:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Build `geom_bar(fill)` layers: 
 
 `ggp2_bar_fill` and `ggp2_bar_fill2`
@@ -339,7 +339,7 @@ ggp2_bar_fill2 <- ggp2_bar_base +
 ```
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Create `bld_bar_fill` and `bld_bar_fill2` objects
 :::
 
@@ -359,7 +359,7 @@ names(bld_bar_fill2)
 
 ### `"data"`
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Extract `"data"` from `bld_` objects
 :::
 
@@ -376,7 +376,7 @@ dplyr::select(bar_fill_data, x, y, fill)
 ```
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Extract `"data"` from `bld_` objects
 :::
 
@@ -397,7 +397,7 @@ dplyr::count(bar_fill2_data, x, y, fill) |>
 
 ### `"plot"`
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Extract `"plot"` from `bld_` objects
 :::
 
@@ -412,7 +412,7 @@ bld_bar_fill[["plot"]]
 ```
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Extract `"plot"` from `bld_` objects
 :::
 
@@ -436,11 +436,11 @@ bld_bar_fill2[["plot"]]
 
 ### `ggplot_build()`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **`ggplot_build()`:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Build `geom_bar(position = "dodge")` layer:
 :::
 
@@ -459,7 +459,7 @@ ggp2_bar_dodge <- ggp2_bar_base +
 ```
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Create `bld_bar_dodge` object:
 :::
 
@@ -477,11 +477,11 @@ names(bld_bar_dodge)
 
 ### `"data"`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **`geom_bar(position = "dodge")`: data:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
 Extract the `"data"` from the `bld_bar_dodge` object.
 
@@ -502,11 +502,11 @@ select(bar_dodge_data, x, y, fill)
 
 ### `"plot"`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **`geom_bar(position = "dodge")`: plot:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
 Extract the `"plot"` from the `bld_bar_dodge` object.
 
@@ -532,11 +532,11 @@ bld_bar_dodge[["plot"]]
 
 ### `ggplot_build()`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **`ggplot_build()`:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Build `geom_bar(position = "dodge2")` layer:
 :::
 
@@ -555,7 +555,7 @@ ggp2_bar_dodge2 <- ggp2_bar_base +
 ```
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Create `bld_bar_dodge2` object:
 :::
 
@@ -573,11 +573,11 @@ names(bld_bar_dodge2)
 
 ### `"data"`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **`geom_bar(position = "dodge2")`: data:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
 Extract the `"data"` from the `bld_bar_dodge2` object.
 
@@ -598,11 +598,11 @@ select(bar_dodge2_data, x, y, fill)
 
 ### `"plot"`
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **`geom_bar(position = "dodge2")`: plot:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
 Extract the `"plot"` from the `bld_bar_dodge2` object.
 

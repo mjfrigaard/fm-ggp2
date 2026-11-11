@@ -29,15 +29,15 @@ Graphs in this chapter use `ggrewindr::theme_jurassic()`, modeled on the Jurassi
 
 :::: {.callout-note collapse="false" icon=false}
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**      
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
@@ -96,13 +96,10 @@ Grouped bar graphs compare multiple values across categories. Each category has 
 
 ## Set up
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-step}
 
 Install packages.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_grp_col
 #| code-fold: show
@@ -115,19 +112,15 @@ library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 library(tidyr) # for uncount()
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-step}
 
 In [*Jurassic Park* (1993)](https://www.imdb.com/title/tt0107290/), every species lives in its own paddock. We'll simulate the weight of every dinosaur on two islands: Isla Nublar (the park) and Isla Sorna (Site B from [*The Lost World* (1997)](https://www.imdb.com/title/tt0119567/)). Both islands have the same five species, and each species gets a head count on each island (`n`) and its own normal distribution of weights (`mean_tons` and `sd_tons`).
 
 `tidyr::uncount()` repeats each row `n` times (one row per dinosaur), and `rnorm()` draws each dinosaur's weight. Then we add up the weights in each paddock on each island (`total_tons`). Setting the seed with `set.seed()` means you'll get the same dinosaurs every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_grp_col
 #| code-fold: show
@@ -153,19 +146,15 @@ jp_paddocks <- jp_dinos |>
   summarise(total_tons = sum(weight_tons), .groups = "drop") # total weight in each paddock
 glimpse(jp_paddocks)
 ```
-:::
 
 ## Distribution
 
 A grouped bar graph shows one number per group, and here that number is a total. Totals depend on two things: how many dinosaurs live in a paddock and how much each one weighs. Twenty Gallimimus still weigh less than two Tyrannosaurs. Below we'll move from the dinosaurs, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first six dinosaurs.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_grp_col
 #| code-fold: show
@@ -173,11 +162,9 @@ Start with the first six dinosaurs.
 #| echo: true
 head(jp_dinos, 6)
 ```
-:::
 
 Each Brachiosaurus weighs close to 40 tons, and each Triceratops weighs close to 9. For every paddock, the total is the number of dinosaurs times their average weight.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_grp_col
 #| code-fold: show
@@ -190,15 +177,11 @@ jp_dinos |>
     mean_tons = mean(weight_tons),
     total_tons = sum(weight_tons))
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 Each bar in a grouped bar graph is a bar model: a total made of parts. Below we draw every dinosaur on Isla Nublar as its own segment and stack the segments in each paddock. The height of each stack is the paddock's total, and the number of segments is its head count. The Gallimimus bar has 20 thin segments, and the Brachiosaurus bar has three thick ones.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_grp_col
 #| code-fold: show
@@ -211,11 +194,8 @@ jp_dinos |>
   scale_x_discrete(guide = guide_axis(n.dodge = 2)) + 
   labs(x = "Paddock", y = "Total weight (tons)")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each dinosaur's weight comes from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) for its species, $X_i \sim \text{Normal}(\mu, \sigma)$. A paddock's total adds up $n$ of these weights:
 
@@ -225,15 +205,12 @@ $$
 
 The expected total is $n\mu$: $3 \times 40 = 120$ tons for the Brachiosaurus paddock and $20 \times 0.45 = 9$ tons for Gallimimus. The spread grows with $\sqrt{n}$, not $n$, because heavy and light dinosaurs partly cancel each other out. Our Brachiosaurus paddock on Isla Nublar weighs `r round(sum(jp_dinos$weight_tons[jp_dinos$species == "Brachiosaurus" & jp_dinos$island == "Isla Nublar"]), 1)` tons, within one standard deviation ($\sqrt{3} \times 5 \approx 8.7$ tons) of its expected 120.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CHANGE IT:**
-:::
+### CHANGE IT {.unnumbered .fm-step}
 
 So far the graph shows what we expect: the heavy species have the tallest bars on both islands. Now we'll change the head counts of each dinosaur. Isla Sorna has no fences, and in the 1997 sequel its dinosaurs have been breeding on their own for years. 
 
 Suppose the Gallimimus herd there grew from 14 to 300. We still expect each Gallimimus to weigh under half a ton, so the herd's bar should grow, but how much?
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_data_grp_col
 #| code-fold: show
@@ -250,11 +227,9 @@ jp_paddocks_herd <- jp_herd |>
   summarise(dinosaurs = n(), total_tons = sum(weight_tons), .groups = "drop")
 jp_paddocks_herd
 ```
-:::
 
 Below we redraw the same grouped bar graph with the new totals.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_graph_grp_col
 #| code-fold: show
@@ -266,7 +241,6 @@ ggplot(data = jp_paddocks_herd,
   scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
   labs(x = "Paddock", y = "Total weight (tons)", fill = "Island")
 ```
-:::
 
 ```{r}
 #| label: change_numbers_grp_col
@@ -282,9 +256,7 @@ The lightest species now has the tallest bar in the graph. The Isla Sorna Gallim
 
 ## Grammar
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-step}
 
 Grouped bar graphs expect the bar heights to already sit in a variable. We map that variable to the `x` or `y` aesthetic.
 
@@ -300,7 +272,6 @@ Grouped bar graphs expect the bar heights to already sit in a variable. We map t
 
   -   Stagger the long paddock names over two lines with `scale_x_discrete(guide = guide_axis(n.dodge = 2))`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_grp_col
 #| code-fold: show
@@ -326,11 +297,8 @@ ggp2_grp_col <- ggplot(data = jp_paddocks,
 ggp2_grp_col + 
     labs_grp_col
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-step}
 
 ```{r}
 #| label: create_graph_grp_col
@@ -365,7 +333,6 @@ We didn't have to calculate `total_tons` (displayed on the `y` axis) by `species
 
 If we pass a categorical variable to the `x` (like `species`) and a continuous variable to `y` (like `weight_tons`), `stat_summary()` with `fun = "sum"` adds up `y` for each level of `x` and each `island`. `geom_col()` can't do this with `position = "dodge"`, because it draws each dinosaur's bar on top of the others instead of adding them up:
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_summary_sum_col_graph
 #| eval: true
@@ -380,12 +347,10 @@ jp_dinos |>
         scale_x_discrete(guide = guide_axis(n.dodge = 2)) + 
   labs_grp_col
 ```
-:::
 
 
 We can see the underlying totals using `dplyr`'s `group_by()` and `summarise()` functions.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_summary_sum_col
 #| eval: false
@@ -402,9 +367,7 @@ jp_dinos |>
         `Paddock` = species, 
         `Total weight (tons)`)
 ```
-:::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: show_summary_sum_col
 #| eval: true
@@ -424,4 +387,3 @@ jp_dinos |>
     knitr::kable() |> 
     kableExtra::kable_minimal()
 ```
-:::

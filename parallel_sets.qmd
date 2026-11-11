@@ -98,15 +98,15 @@ ggp2_psets_labs +
     labs_psets
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ three categorical variables**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric variable of counts**
 :::
 
@@ -124,14 +124,11 @@ Also check out [alluvial charts.](alluvial_charts.qmd)
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_psets
 #| code-fold: show
@@ -145,12 +142,9 @@ library(ggforce)
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 CU-SeeMe was a video conferencing program developed at Cornell University starting in 1992. Early versions sent grayscale video over the internet, and groups could meet through a reflector (a server that passed each video stream to everyone in the conference). We'll simulate 300 CU-SeeMe calls with three categorical variables:
 
@@ -162,7 +156,6 @@ CU-SeeMe was a video conferencing program developed at Cornell University starti
 
 Setting the seed with `set.seed()` means you'll get the same 300 calls every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_psets
 #| code-fold: show
@@ -194,7 +187,6 @@ cuseeme_calls <- tibble(
     )
 glimpse(cuseeme_calls)
 ```
-:::
 
 Next we count the categorical variables (`connection`, `video`, `call_type`) with `count()` and rename its `n` column to `value`.
 
@@ -202,7 +194,6 @@ Next we count the categorical variables (`connection`, `video`, `call_type`) wit
 
   - `gather_set_data()` stores the variable names in `x` as text (which would sort them alphabetically), so we convert `x` to a factor in the order we want the sets
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_psets_gather
 #| code-fold: show
@@ -219,19 +210,15 @@ para_set_cuseeme <- ggforce::gather_set_data(
     )
 glimpse(para_set_cuseeme)
 ```
-:::
 
 ## Distribution
 
 Parallel sets are good at showing whether two categorical variables are *related*. When one variable depends on another, the bands leaving each category split up in different ways. When they're unrelated, every category splits up the same way. Our data has one of each, so below we'll move from the calls, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first five calls.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_psets
 #| code-fold: show
@@ -239,11 +226,9 @@ Start with the first five calls.
 #| echo: true
 head(cuseeme_calls, 5)
 ```
-:::
 
 Below we use `prop.table()` to turn two cross tables into row percentages. Each row adds up to one, so we can compare how each connection splits.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_psets
 #| code-fold: show
@@ -256,17 +241,13 @@ connection_type <- prop.table(table(cuseeme_calls$connection,
                                 cuseeme_calls$call_type), margin = 1)
 round(connection_type, 2)
 ```
-:::
 
 The video rows look very different from connection to connection (`r round(100 * connection_video["28.8k modem", "Choppy"])`% of the modem calls had choppy video, but only `r round(100 * connection_video["T1", "Choppy"])`% of the T1 calls did). The call type rows look almost the same for every connection (about 70% were one to one).
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The two graphs below draw each pair of variables as parallel sets, with the bands colored by connection. On the left, the connection bands spread across the video outcomes in very different ways. On the right, every connection splits into one to one and reflector calls in about the same proportion.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_psets
 #| code-fold: show
@@ -289,11 +270,8 @@ two_sets <- function(var) {
 two_sets("video")
 two_sets("call_type")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each call's video comes from a [categorical distribution](https://en.wikipedia.org/wiki/Categorical_distribution) with probabilities that depend on its connection, so the video outcomes within each connection follow a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
 
@@ -305,9 +283,7 @@ The call type is [independent](https://en.wikipedia.org/wiki/Independence_(proba
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   - Create labels with `labs()`
 
@@ -325,7 +301,6 @@ The call type is [independent](https://en.wikipedia.org/wiki/Independence_(proba
 
   - Finally, remove the `x` title with `axis.title.x = element_blank()`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_psets
 #| code-fold: show
@@ -366,13 +341,10 @@ ggp2_psets_labs <- ggp2_psets_axes +
 ggp2_psets_labs +
     labs_psets
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ```{r}
 #| label: create_graph_psets
@@ -425,7 +397,6 @@ If the categories have long names, use the `angle`, `nudge_x`/`nudge_y` and `hju
 
   - Manually setting the `expand` argument of the `x` axis in `scale_x_discrete()` will also give more room for the labels.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_psets_labels
 #| code-fold: show
@@ -445,4 +416,3 @@ ggp2_psets_axes +
   theme(axis.title.x = element_blank()) +
     labs_psets
 ```
-:::

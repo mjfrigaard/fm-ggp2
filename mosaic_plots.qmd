@@ -78,11 +78,11 @@ ggp2_mosaic +
     labs_mosaic
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 ✅ at least two categorical variables
 :::
 
@@ -98,16 +98,13 @@ We can build mosaic plots using the [`ggmosaic` package.](https://haleyjeppson.g
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_mosaic
 #| code-fold: show
@@ -121,21 +118,17 @@ library(ggmosaic)
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 *Titanic* (1997) stayed in theaters for months, and plenty of fans (especially teenagers) went back to see it again and again.
 
 We'll simulate 500 moviegoers in three linked steps. First, `sample()` decides each fan's `age_group`. Next, each age group gets its own chances of seeing the movie once, twice, or three or more times (`viewings`). Finally, the more times a fan saw the movie, the more likely they were to buy the soundtrack (`soundtrack`). For each fan, `runif()` draws a number between 0 and 1 and compares it to the chance for that fan's number of viewings. Setting the seed with `set.seed()` means you'll get the same 500 fans every time you run the code below.
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_mosaic
 #| code-fold: show
@@ -166,19 +159,15 @@ titanic_fans <- tibble(
     )
 glimpse(titanic_fans)
 ```
-:::
 
 ## Distribution
 
 A mosaic plot draws a two way table as a set of rectangles, and each rectangle's width and height are probabilities. Because we built the dependence between age and viewings into the simulation, we know what those widths and heights should be. Below we'll move from the fans, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first eight fans.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_mosaic
 #| code-fold: show
@@ -186,11 +175,9 @@ Start with the first eight fans.
 #| echo: true
 head(titanic_fans, 8)
 ```
-:::
 
 All five teens in this group saw the movie more than once, while two of the three adults saw it only once. The table below counts every combination of age group and viewings, then converts the counts to proportions within each age group.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_mosaic
 #| code-fold: show
@@ -202,19 +189,15 @@ titanic_fans |>
   mutate(share = round(n / sum(n), 2)) |>
   ungroup()
 ```
-:::
 
 Teens split almost evenly across one, two, and three or more viewings, while about two thirds of adults saw the movie once.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The mosaic plot below draws the table above. The width of each column is the share of fans in that age group (adults take up more width because there are more of them). The height of each tile is the share of that age group with each number of viewings.
 
 The second mosaic shuffles `viewings` with `sample()`, which keeps the same counts but breaks the link between age and viewings. Without the link, the tiles line up into nearly straight rows: every age group has the same mix of viewings.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_mosaic
 #| code-fold: show
@@ -239,11 +222,8 @@ titanic_fans |>
   labs(title = "Shuffled", fill = "Viewings") +
   theme(legend.position = "bottom", panel.grid.major = element_blank())
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each tile's area is a [joint probability](https://en.wikipedia.org/wiki/Joint_probability_distribution), which we can split into a width times a height:
 
@@ -255,12 +235,80 @@ The simulation sets the widths with $P(\text{Teen}) = 0.4$ and $P(\text{Adult}) 
 
 When two variables are [independent](https://en.wikipedia.org/wiki/Independence_(probability_theory)), $P(\text{viewings} \mid \text{age}) = P(\text{viewings})$, so every column has the same heights. That's what the shuffled mosaic shows. The more the tiles in one column are out of line with the tiles in the next, the stronger the relationship. Try giving adults the same viewing probabilities as teens and the first mosaic will look like the second.
 
+### CHANGE IT {.unnumbered .fm-step}
+
+So far the mosaic shows what we expect. Teens went back to the theater more often than adults, so the tiles in the two columns are out of line. Now we'll change who answers the survey. In March 1998, *Titanic* was still playing at weekday matinees, when most teens were in school.
+
+Suppose a theater surveyed 500 matinee fans, and only 5 percent were teens. Each age group keeps the same viewing chances as above. The link between age and viewings hasn't changed, so we should still see the teen tiles out of line with the adult tiles.
+
+```{r}
+#| label: change_data_mosaic
+#| code-fold: show
+#| eval: true
+#| echo: true
+set.seed(1997) # same seed as above
+matinee_fans <- tibble(
+  fan_id = 1:500,
+  age_group = sample(
+    c("Teen", "Adult"), 500,
+    replace = TRUE,
+    prob = c(0.05, 0.95) # teens are in school
+    )
+  ) |>
+  mutate(
+    viewings = if_else(age_group == "Teen",
+      sample(c("Once", "Twice", "3+ times"), n(), replace = TRUE,
+        prob = c(0.35, 0.35, 0.30)), # same chances as above
+      sample(c("Once", "Twice", "3+ times"), n(), replace = TRUE,
+        prob = c(0.70, 0.22, 0.08))
+      ),
+    age_group = factor(age_group, levels = c("Teen", "Adult")),
+    viewings = factor(viewings, levels = c("Once", "Twice", "3+ times"))
+    )
+matinee_fans |>
+  count(age_group, viewings) |>
+  group_by(age_group) |>
+  mutate(share = round(n / sum(n), 2)) |>
+  ungroup()
+```
+
+We'll redraw the same mosaic with the matinee fans.
+
+```{r}
+#| label: change_graph_mosaic
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(data = matinee_fans) +
+  ggmosaic::geom_mosaic(aes(x = product(viewings, age_group),
+                            fill = viewings)) +
+  scale_x_productlist("Age group") +
+  scale_y_productlist("Viewings") +
+  labs(title = "Matinee", fill = "Viewings") +
+  theme(legend.position = "bottom", panel.grid.major = element_blank())
+```
+
+```{r}
+#| label: change_numbers_mosaic
+#| include: false
+n_teens <- sum(matinee_fans$age_group == "Teen")
+teen_repeat <- with(matinee_fans,
+  round(100 * mean(viewings[age_group == "Teen"] == "3+ times")))
+adult_repeat <- with(matinee_fans,
+  round(100 * mean(viewings[age_group == "Adult"] == "3+ times")))
+n_repeat <- sum(matinee_fans$viewings == "3+ times")
+n_teen_repeat <- with(matinee_fans,
+  sum(viewings == "3+ times" & age_group == "Teen"))
+```
+
+The teen column is now a thin strip on the left, and the mosaic looks a lot like the shuffled one above. The relationship is still there: `r teen_repeat` percent of the `r n_teens` teens saw the movie three or more times, compared to `r adult_repeat` percent of adults. Teens are also `r n_teen_repeat` of the `r n_repeat` fans who saw it three or more times.
+
+But a tile's area follows the size of its group, so a strong pattern in a small group shrinks to a sliver. I've found it's worth reading the column widths before reading the heights. A narrow column can hide the biggest difference in the graph, so report its counts next to the mosaic.
+
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   -   Create labels with `labs()`
 
@@ -275,7 +323,6 @@ When two variables are [independent](https://en.wikipedia.org/wiki/Independence_
   -   Remove the grid lines and move the legend to the bottom with `theme(legend.position = "bottom", panel.grid.major = element_blank())`
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_mosaic
 #| code-fold: show
@@ -301,15 +348,11 @@ ggp2_mosaic <- ggplot(data = titanic_fans) +
 ggp2_mosaic +
     labs_mosaic
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: run_graph_mosaic
 #| eval: true
@@ -335,19 +378,17 @@ ggp2_mosaic <- ggplot(data = titanic_fans) +
 ggp2_mosaic +
     labs_mosaic
 ```
-:::
 
 ### Details
 
 We've re-written the labels for the mosaic plot (`ggp2_mosaic`) to illustrate what's happening in the `aes()` of `geom_mosaic()`.
 
 ::: {.column-margin}
-::: {style="font-size: 0.95em; color: #5f2042;"}
+::: {.fm-tip}
 It's a good idea to adjust the `fig-height` and `fig-width` of your graph
 :::
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_table_mosaic
 #| eval: true
@@ -379,7 +420,6 @@ titanic_counts <- titanic_fans |>
     tidyr::pivot_wider(names_from = age_group, values_from = n) |>
     dplyr::arrange(desc(viewings))
 ```
-:::
 
 
 The table below displays the counts for each combined response. As we can see, the counts are represented by height and width in the graph.
@@ -399,7 +439,6 @@ I recommend reading the [`ggmosaic` vignette](https://haleyjeppson.github.io/ggm
 
 ### Two variables
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: titanic_2var_counts_table
 #| eval: true
@@ -418,14 +457,12 @@ kableExtra::kable_paper(
   kable_input = knitr::kable(titanic_2var_counts),
   font_size = 12)
 ```
-:::
 
 
 Below is another example of a two-variable mosaic plot, mapping the `product()` variables as `viewings` and `soundtrack`, and the `fill` variable as `soundtrack`.
 
 Once again we can see the counts for each category in the cross-tabulation:
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_mosaic_2var
 #| eval: true
@@ -454,12 +491,10 @@ ggp2_mosaic_2var <- ggplot(data = titanic_fans) +
 ggp2_mosaic_2var +
     labs_mosaic_2var
 ```
-:::
 
 
 For conditional variables, we map the `product()` variable as `viewings` and the `fill` variable as `viewings`, but include a `conds` variable (as `product(soundtrack)`).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: ggp2_mosaic_cond
 #| eval: true
@@ -488,7 +523,6 @@ ggp2_mosaic_cond <- ggplot(data = titanic_fans) +
 ggp2_mosaic_cond +
     labs_mosaic_cond
 ```
-:::
 
 ### Facets
 
@@ -496,7 +530,7 @@ Another option for including a conditioning variable is including facets. In the
 
 The `divider` argument lets us control how the tiles are split (vertically and horizontally). Below are the two vertical orientation options for the `divider` argument.
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 ```{r}
 #| label: patchwork_mosaic_run_v
 #| fig-asp: 1.1
@@ -549,7 +583,7 @@ ggp2_mosaic_vspine +
 
 The two horizontal orientation options make the axis text harder to read, so these need to be manipulated manually.
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 ```{r}
 #| label: patchwork_mosaic_run_h
 #| fig-asp: 1.1

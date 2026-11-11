@@ -75,15 +75,15 @@ ggp2_grp_bubble +
   labs_grp_bubble
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ two numeric (continuous) variables**
 :::
 
@@ -97,14 +97,11 @@ The position on the x and y axis captures the relationship between two numerical
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_grp_bubble
 #| code-fold: show
@@ -117,12 +114,9 @@ library(ggplot2)
 library(dplyr) # for data manipulation
 library(tidyr) # for expand_grid()
 ```
-:::
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 Every episode of *Mighty Morphin Power Rangers* had the same rhythm: Rita Repulsa sent down a squad of Putties, and the Rangers kicked their way through them. We'll simulate 24 fights for each of the five original Rangers with four variables:
 
@@ -136,7 +130,6 @@ Every episode of *Mighty Morphin Power Rangers* had the same rhythm: Rita Repuls
 
 Setting the seed with `set.seed()` means you'll get the same 120 fights every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_grp_bubble
 #| code-fold: show
@@ -158,19 +151,15 @@ ranger_fights <- expand_grid(
     )
 glimpse(ranger_fights)
 ```
-:::
 
 ## Distribution
 
 In this grouped bubble chart, the `y` variable is a count that piles up over time. Longer fights don't just give more putties on average; they also give a wider range of possible counts, so each Ranger's points fan out as they move to the right. Below we'll move from the fights, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the Red Ranger's first five fights.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_grp_bubble
 #| code-fold: show
@@ -181,11 +170,9 @@ ranger_fights |>
   select(fight, fight_minutes, putties_defeated, hits_taken) |>
   head(5)
 ```
-:::
 
 Below we divide each Ranger's total putties by their total fight minutes to estimate their rate (`putties_per_min`), and compare it to the rate we built in (`putty_rate`).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_grp_bubble
 #| code-fold: show
@@ -198,17 +185,13 @@ ranger_rates <- ranger_fights |>
             hits_per_min = sum(hits_taken) / sum(fight_minutes))
 ranger_rates
 ```
-:::
 
 Every putty estimate lands within a few tenths of the rate we built in. The hits per minute range from about `r round(min(ranger_rates$hits_per_min), 1)` to `r round(max(ranger_rates$hits_per_min), 1)` around the true rate of 0.6 (hits are rarer than putties, so their estimates bounce around more).
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The graph below shows the Red and Blue Rangers' fights. Each line is the putty rate times the fight length, and each ribbon covers two standard deviations above and below the line. Both ribbons get wider as the fights get longer.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_grp_bubble
 #| code-fold: show
@@ -227,11 +210,8 @@ ggplot(red_blue, aes(x = fight_minutes, fill = ranger, color = ranger)) +
   labs(x = "Fight length (minutes)", y = "Putties defeated",
        color = "Ranger", fill = "Ranger")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 The putties in each fight follow a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) whose average is the Ranger's rate ($\lambda$) times the length of the fight ($t$):
 
@@ -244,9 +224,7 @@ A Poisson count has a variance equal to its mean, so its standard deviation is $
 ## Grammar
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   - Create labels with `labs()`
 
@@ -265,7 +243,6 @@ A Poisson count has a variance equal to its mean, so its standard deviation is $
     - set `range` to `c(.04, 6)`
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_grp_bubble
 #| code-fold: show
@@ -297,11 +274,8 @@ ggp2_grp_bubble <- ranger_fights |>
 ggp2_grp_bubble +
   labs_grp_bubble
 ```
-:::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ```{r}
 #| label: create_graph_grp_bubble
@@ -343,7 +317,6 @@ We can change the `shape` of the points for more control of the `color` and `fil
 
 Inside `geom_point()`, we can set `shape` to `21`, and `color` to `"#000000"` to outline the points in black
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_grp_bubble_s21
 #| code-fold: show
@@ -360,14 +333,12 @@ ggp2_grp_bubble_s21 <- ranger_fights |>
 ggp2_grp_bubble_s21 +
   labs_grp_bubble
 ```
-:::
 
 ### Color
 
 
 Inside the `aes()` of `geom_point()`, we can set `shape` to `21`, and map `color` to `ranger` to outline the points in the same colors as `fill`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_grp_bubble_s21_color
 #| code-fold: show
@@ -386,4 +357,3 @@ ggp2_grp_bubble_s21_color <- ranger_fights |>
 ggp2_grp_bubble_s21_color +
   labs_grp_bubble
 ```
-:::

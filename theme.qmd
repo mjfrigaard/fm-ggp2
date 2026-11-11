@@ -24,7 +24,6 @@ Every chapter in this book has its own late 90s `ggplot2` theme to match its sim
 
 Install the development versions of `ggrewindr` and `fmutils` from GitHub:
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: install_ggrewindr
 #| eval: false
@@ -33,13 +32,11 @@ Install the development versions of `ggrewindr` and `fmutils` from GitHub:
 # install.packages("pak")
 pak::pak(c("mjfrigaard/ggrewindr", "mjfrigaard/fmutils"))
 ```
-:::
 
 ## Using a theme
 
 Each chapter sets its theme once in the setup chunk with `ggplot2::theme_set()`, so every graph in the chapter picks it up and we don't have to add the theme to each plot:
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: theme_set_example
 #| eval: false
@@ -47,11 +44,9 @@ Each chapter sets its theme once in the setup chunk with `ggplot2::theme_set()`,
 #| code-fold: show
 ggplot2::theme_set(ggrewindr::theme_gameboy(base_size = 14))
 ```
-:::
 
 We can also add a theme to a single graph like any other `ggplot2` theme. Below we simulate a few home PCs from 1998 and add `theme_netscape()`:
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: theme_example
 #| eval: true
@@ -66,7 +61,6 @@ ggplot(home_pcs, aes(x = mhz, y = price)) +
        x = "Processor speed (MHz)", y = "Price (USD)") +
   ggrewindr::theme_netscape(base_size = 14)
 ```
-:::
 
 ## What the themes set
 
@@ -92,7 +86,6 @@ Ordered factors use the viridis scale by default, which overrides the theme's di
 
 The display fonts are system fonts that ship with macOS. Each theme registers its fonts with `sysfonts::font_add()`. When a font file can't be found (on Linux or Windows, for example), the theme falls back to `"sans"` so the graphs still render. You can also pass any font family you've registered yourself:
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: theme_fonts
 #| eval: false
@@ -101,7 +94,6 @@ The display fonts are system fonts that ship with macOS. Each theme registers it
 ggrewindr::theme_oksoda(base_family = "sans", title_family = "sans")
 ggrewindr::theme_batman(base_family = "sans", title_family = "sans")
 ```
-:::
 
 The `showtext` package draws the registered fonts in the graphs, so each chapter calls `showtext::showtext_auto()` in its setup chunk. The [themes vignette](https://mjfrigaard.github.io/ggrewindr/articles/themes.html) lists every theme's fonts.
 
@@ -111,7 +103,7 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 
 ### Univariate
 
-::: {style="font-size: 0.90rem;"}
+::: {.fm-table}
 
 | Chapter | Theme | Reference |
 |---|---|---|
@@ -127,7 +119,7 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 
 ### Amounts
 
-::: {style="font-size: 0.90rem;"}
+::: {.fm-table}
 
 | Chapter | Theme | Reference |
 |---|---|---|
@@ -142,7 +134,7 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 
 ### Proportions
 
-::: {style="font-size: 0.90rem;"}
+::: {.fm-table}
 
 | Chapter | Theme | Reference |
 |---|---|---|
@@ -156,7 +148,7 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 
 ### Distributions
 
-::: {style="font-size: 0.90rem;"}
+::: {.fm-table}
 
 | Chapter | Theme | Reference |
 |---|---|---|
@@ -174,7 +166,7 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 
 ### Dates & times
 
-::: {style="font-size: 0.90rem;"}
+::: {.fm-table}
 
 | Chapter | Theme | Reference |
 |---|---|---|
@@ -190,7 +182,7 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 
 ### Relationships
 
-::: {style="font-size: 0.90rem;"}
+::: {.fm-table}
 
 | Chapter | Theme | Reference |
 |---|---|---|

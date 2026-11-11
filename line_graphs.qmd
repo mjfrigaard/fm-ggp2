@@ -59,15 +59,15 @@ ggp2_line +
     labs_line
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (date) variable**
 :::
 
@@ -79,15 +79,12 @@ Line graphs display changes in a numeric variable (on the `y` axis) over time (o
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_line_graph
 #| code-fold: show
@@ -99,19 +96,15 @@ Install packages.
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 Tim Burton's *Batman* opened on June 23, 1989, and the bat signal was everywhere that summer (t-shirts, hats, cereal boxes, and a soundtrack by Prince). Like most blockbusters, it made the most money in its first week and a little less every week after that.
 
 We'll simulate 26 weeks of box office gross (in millions of dollars) along a trend that starts at \$55 million and shrinks by about the same percent each week. Each week also gets a random nudge from `rnorm()`, because no week's ticket sales land exactly on the trend. That nudge is why our first week comes in at \$`r round(batman_box$gross[1], 1)` million instead of \$55 million. Setting the seed with `set.seed()` means you'll get the same 26 weeks every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_line
 #| code-fold: show
@@ -129,19 +122,15 @@ batman_box <- tibble(
   )
 glimpse(batman_box)
 ```
-:::
 
 ## Distribution
 
 A line graph connects each value to the one that came before it, so it's built to show *change*. For the Batman data, the question is how fast the weekly gross falls. The answer isn't a fixed number of dollars per week; it's a fixed *share* of the previous week. Below we'll move from the box office numbers, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first six weeks.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_line
 #| code-fold: show
@@ -149,11 +138,9 @@ Start with the first six weeks.
 #| echo: true
 head(batman_box, 6)
 ```
-:::
 
 The drop from week one to week two is about \$`r round(batman_box$gross[1] - batman_box$gross[2], 1)` million, but the drop from week five to week six is only about \$`r round(batman_box$gross[5] - batman_box$gross[6], 1)` million. The dollar drops bounce around from week to week and shrink over time, so we'll divide each week by the week before it instead (`ratio`).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_line
 #| code-fold: show
@@ -165,17 +152,13 @@ batman_ratios |>
   summarise(median_ratio = median(ratio, na.rm = TRUE),
             total_gross = sum(gross))
 ```
-:::
 
 The median ratio is about `r round(median(batman_ratios$ratio, na.rm = TRUE), 2)`, which means a typical week keeps about `r round(100 * median(batman_ratios$ratio, na.rm = TRUE))`% of the previous week's gross. The 26 weeks add up to about \$`r round(sum(batman_box$gross))` million.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 On a regular `y` axis the line drops fast and then flattens out, which makes the late weeks hard to read. Below we draw the same line on a log scale with `scale_y_log10()`. On a log scale, equal *ratios* are equal distances, so a gross that keeps the same share every week becomes a straight line (the wiggles are the random nudges).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_line
 #| code-fold: show
@@ -187,11 +170,8 @@ ggplot(data = batman_box, aes(x = week_of, y = gross)) +
   scale_y_log10() +
   labs(x = "Week of", y = "Weekly gross ($ millions, log10 scale)")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 The weekly gross follows [exponential decay](https://en.wikipedia.org/wiki/Exponential_decay) with a random multiplier for each week:
 
@@ -204,9 +184,7 @@ Each week keeps $e^{-0.25} \approx 0.78$ of the week before, which is why the me
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
 
   - Create labels with `labs()`
@@ -217,7 +195,6 @@ Each week keeps $e^{-0.25} \approx 0.78$ of the week before, which is why the me
 
   - Add `geom_line()` (with a gold `color` and a thicker `linewidth`, because the default black line disappears into the Gotham night)
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_line
 #| code-fold: show
@@ -238,13 +215,10 @@ ggp2_line <- ggplot(data = batman_box,
 ggp2_line +
     labs_line
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ```{r}
 #| label: create_graph_line

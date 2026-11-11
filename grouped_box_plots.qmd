@@ -78,15 +78,15 @@ ggp2_grp_boxplots +
   labs_grp_boxplots
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
@@ -100,13 +100,10 @@ The five statistical measures are 1) the first quartile, 2) the second quartile,
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 Install packages.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_grp_boxplots
 #| code-fold: show
@@ -118,17 +115,13 @@ Install packages.
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 In *The Oregon Trail*, you picked a profession before you set out, and it decided how much money (and how many supplies) your party started with. We'll simulate how many days it took 100 parties of each profession to reach Oregon. Each profession gets its own typical trip length (`median_days`), and `rlnorm()` draws each trip from a log normal distribution, so a few unlucky parties (dysentery, broken axles, lost oxen) take much longer than the rest. Setting the seed with `set.seed()` means you'll get the same 300 trips every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_grp_boxplots
 #| code-fold: show
@@ -152,19 +145,15 @@ oregon_trail <- tibble(
   select(party_id, profession, days_to_oregon)
 glimpse(oregon_trail)
 ```
-:::
 
 ## Distribution
 
 Grouped box plots compare five summary numbers across groups. When the data are skewed, those five numbers aren't evenly spaced: the median sits closer to the bottom of the box, and the upper whisker is longer than the lower one. With only 100 trips per profession, sampling noise can hide this, so not every box below looks this way. Below we'll move from the trips, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first eight trips (all bankers).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_grp_boxplots
 #| code-fold: show
@@ -172,11 +161,9 @@ Start with the first eight trips (all bankers).
 #| echo: true
 head(oregon_trail$days_to_oregon, 8)
 ```
-:::
 
 These trips took between 112 and 180 days. The summary below shows each profession's quartiles. Only for bankers is the distance from the median up to the third quartile (`upper_gap`) larger than the distance down to the first quartile (`lower_gap`). For carpenters and farmers, the distance down is about the same or larger.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_grp_boxplots
 #| code-fold: show
@@ -189,15 +176,11 @@ oregon_trail |>
             q3 = quantile(days_to_oregon, 0.75)) |> 
   mutate(lower_gap = median - q1, upper_gap = q3 - median)
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The box plots on the left use days. The bankers' box is lopsided: the median line sits low in the box, and the long trips stretch the upper whisker. The farmers' box leans the other way: the median sits high and the lower whisker is longer. The farmers also have a few outliers above the rest. The box plots on the right put the same trips on a log scale with `scale_y_log10()`. The log scale doesn't make every box symmetric: 100 simulated trips are too few to match the formula, and the bankers and farmers each still have one low outlier.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_grp_boxplots
 #| code-fold: show
@@ -215,11 +198,8 @@ ggplot(oregon_trail, aes(x = profession, y = days_to_oregon,
   scale_y_log10() + 
   labs(title = "Log scale", x = NULL, y = "Days (log10 scale)")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each profession's trips come from a [log normal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution), like the Microdrive photo sizes in @sec-violin-plots:
 
@@ -232,9 +212,7 @@ On the log scale, the quartiles sit $0.674\,\sigma$ above and below the center, 
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   -   Create labels with `labs()`
 
@@ -252,7 +230,6 @@ On the log scale, the quartiles sit $0.674\,\sigma$ above and below the center, 
 
   -   Remove the legend with `show.legend = FALSE`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_grp_boxplots
 #| code-fold: show
@@ -280,18 +257,14 @@ ggp2_grp_boxplots <- ggplot(data = oregon_trail,
 ggp2_grp_boxplots +
   labs_grp_boxplots
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 
 When a categorical variable is supplied, the plot will contain a box for each level or group. Each point is one trip, jittered left and right so the points don't overlap (`height = 0` keeps each trip at its true number of days).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_grp_boxplots
 #| eval: true
@@ -319,7 +292,6 @@ ggp2_grp_boxplots <- ggplot(data = oregon_trail,
 ggp2_grp_boxplots +
   labs_grp_boxplots
 ```
-:::
 
 ## More info
 
@@ -328,7 +300,6 @@ ggp2_grp_boxplots +
 Add notches to the box plot using the `notch = TRUE` and `notchwidth` arguments.[^notches]
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: notches_boxplots
 #| eval: true
@@ -350,13 +321,11 @@ ggp2_grp_box_notch <- ggplot(data = oregon_trail,
 ggp2_grp_box_notch +
     labs_grp_boxplots
 ```
-:::
 
 ### Outliers
 
 Box plots display outliers using points, and we can change the color of these using the `outlier.colour` argument. Inside the `geom_boxplot()`, we map `profession` to `color` and set `outlier.colour` to `NULL` (so the outlier points take the mapped color):
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: outliers_boxplots
 #| eval: true
@@ -380,6 +349,5 @@ ggp2_grp_box_outliers <- ggplot(data = oregon_trail,
 ggp2_grp_box_outliers +
     labs_grp_boxplots
 ```
-:::
 
 [^notches]: Each notch spans the median ± 1.58 × IQR / √n, a rough confidence interval for the median, and `notchwidth` sets how narrow the notch is compared to the box.

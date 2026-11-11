@@ -98,15 +98,15 @@ ggp2_dnsty_2d_fill +
   labs_dnsty_2d
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ two numeric (continuous) variables**
 :::
 
@@ -122,14 +122,11 @@ Specifically, the contour lines outline areas on the graph with differing point 
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_geom_density_2d
 #| code-fold: show
@@ -143,17 +140,13 @@ library(faux)
 library(ggplot2)
 library(dplyr) # for data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 *Bop It* (1996) shouted commands at you ("Bop it!", "Twist it!", "Pull it!") and sped up until you missed one. We'll simulate the reaction times (in milliseconds) of 450 players to the "Bop it!" (`bop_ms`) and "Twist it!" (`twist_ms`) commands. A player who's quick on one command tends to be quick on the other, so we'll draw the two times in pairs with [`faux::rnorm_multi()`](https://debruine.github.io/faux/reference/rnorm_multi.html). The `make_group()` function does this for one age group at a time, with its own means (`mu`), standard deviations (`sd`), and correlation (`r`). Teens are the fastest, parents are the slowest, and kids land in between. Setting the seed with `set.seed()` means you'll get the same 450 players every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_geom_density_2d
 #| code-fold: show
@@ -181,19 +174,15 @@ bopit_players <- bind_rows(
   select(player_id, age_group, bop_ms, twist_ms)
 glimpse(bopit_players)
 ```
-:::
 
 ## Distribution
 
 A density contour is a map of where the points are crowded. Each contour line connects spots with the same density, like the lines on a hiking map connect spots at the same elevation. The Bop It data has three hills (one for each age group), and each hill has the shape of a bivariate normal distribution. Below we'll move from the players, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first two players in each age group.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_dnsty_2d
 #| code-fold: show
@@ -203,11 +192,9 @@ bopit_players |>
   group_by(age_group) |>
   slice_head(n = 2)
 ```
-:::
 
 Below we calculate the center, spread, and correlation for each age group.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_dnsty_2d
 #| code-fold: show
@@ -220,17 +207,13 @@ bopit_stats <- bopit_players |>
             r = cor(bop_ms, twist_ms))
 bopit_stats
 ```
-:::
 
 The teens average about `r round(bopit_stats$mean_bop[1])` milliseconds to bop and the parents average about `r round(bopit_stats$mean_bop[3])`. The groups are far enough apart that they form separate crowds, but close enough that their edges overlap.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The graph below shows only the teens, with their points and their density contours. The contour lines are ellipses stacked inside each other, tilted because the two reaction times are correlated. The innermost ellipse surrounds the most crowded spot, right around the teens' means.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_dnsty_2d
 #| code-fold: show
@@ -246,11 +229,8 @@ ggplot(teens, aes(x = bop_ms, y = twist_ms)) +
              shape = 4, size = 5, stroke = 2, color = "#FF8C00") +
   labs(x = "'Bop it!' (ms)", y = "'Twist it!' (ms)")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each age group's reaction times come from a [bivariate normal distribution](https://en.wikipedia.org/wiki/Multivariate_normal_distribution). Its density (the height of the hill) at any point depends on how far that point is from the center, measured in standard deviations and adjusted for the correlation:
 
@@ -262,9 +242,7 @@ Points where the part in square brackets takes the same value share the same den
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   - Create labels with `labs()`
 
@@ -278,7 +256,6 @@ Points where the part in square brackets takes the same value share the same den
 
   - Add the `geom_density_2d()`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_geom_density_2d
 #| eval: false
@@ -321,12 +298,9 @@ ggp2_dnsty_2d <- ggplot(
 ggp2_dnsty_2d +
   labs_dnsty_2d
 ```
-:::
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ```{r}
 #| label: create_graph_geom_density_2d
@@ -388,7 +362,6 @@ We're going to break down how to create the density contour layer-by-layer using
     - Expand the `x` and `y` values with `expand_limits()` (using the values we created above)
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_base_layer
 #| code-fold: show
@@ -416,7 +389,6 @@ base_sdens_2d <- ggplot(
 base_sdens_2d +
   labs_sdens_2d
 ```
-:::
 
 ### Stat
 
@@ -431,7 +403,6 @@ Add the `stat_density_2d()` layer:
 - adjust the `linewidth` to `0.35`
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_stat_layer
 #| code-fold: show
@@ -447,7 +418,6 @@ stat_sdens_2d <- base_sdens_2d +
 stat_sdens_2d +
   labs_sdens_2d
 ```
-:::
 
 ### Fill
 
@@ -465,7 +435,6 @@ Now that we have a color gradient for our contour lines, we can adjust the range
 
 We'll set these to purple (`"#5B2A9A"`) and Bop It yellow (`"#FFD400"`)
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_fill_layer
 #| code-fold: show
@@ -480,7 +449,6 @@ fill_sdens_2d <- stat_sdens_2d +
 fill_sdens_2d +
   labs_sdens_2d
 ```
-:::
 
 ### Points
 
@@ -495,7 +463,6 @@ The bright areas in the contour lines are the areas with higher value density, b
     - Change the `alpha` to `2/3`
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_points_layer
 #| code-fold: show
@@ -512,7 +479,6 @@ pnts_sdens_2d <- fill_sdens_2d +
 pnts_sdens_2d +
   labs_sdens_2d
 ```
-:::
 
 We set the point colors with `scale_color_manual()` so they stand out from the yellow and purple fill.
 
@@ -540,7 +506,6 @@ Build the `geom_point()` layer:
 
   - set the `alpha` and remove the `legend`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_points
 #| code-fold: show
@@ -577,7 +542,6 @@ ggp2_dnsty_2d_pnts <- ggp2_dnsty_2d_grp +
 ggp2_dnsty_2d_pnts +
   labs_dnsty_2d_grp
 ```
-:::
 
 ### Facets
 
@@ -605,7 +569,6 @@ ggp2_dnsty_2d_pnts +
 
     - Add `facet_wrap()`, and place `age_group` in the [`vars()`](https://ggplot2.tidyverse.org/reference/vars.html)
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_facets
 #| code-fold: show
@@ -649,7 +612,6 @@ ggp2_dnsty_2d_facet +
     legend.title = element_text(size = 8, face = "bold")
   )
 ```
-:::
 
 Setting `contour_var` to `"ndensity"` scales each panel's density so its highest point is `1`, which is why every age group gets the full range of colors.
 
@@ -671,7 +633,6 @@ In the previous section, we defined the color values used in `geom_density_2d_fi
 
   - Add the `geom_density_2d_filled()`, setting `alpha` to `0.8`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_fill
 #| code-fold: show
@@ -708,7 +669,6 @@ ggp2_dnsty_2d_fill +
     legend.title = element_text(size = 9, face = "bold")
   )
 ```
-:::
 
 ### Lines
 
@@ -718,7 +678,6 @@ We can also outline the contours by adding color to the lines using another `geo
 
   - Set `color` to `"#FFF6D6"`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_lines
 #| code-fold: show
@@ -736,4 +695,3 @@ ggp2_dnsty_2d_fill_lns +
     legend.title = element_text(size = 9, face = "bold")
   )
 ```
-:::

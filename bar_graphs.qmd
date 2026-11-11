@@ -29,11 +29,11 @@ Graphs in this chapter use `ggrewindr::theme_gameboy()`, modeled on the original
 
 :::: {.callout-note collapse="false" icon=false}
 
-::: {style="font-size: 1.25em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
@@ -78,15 +78,12 @@ In `ggplot2`, we build bar graphs with [`geom_bar()`](https://ggplot2.tidyverse.
 
 ## Set up
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-step}
 
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_bar
 #| code-fold: show
@@ -98,11 +95,8 @@ Install packages.
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-step}
 
 ::: {.column-margin}
 
@@ -118,7 +112,6 @@ library(dplyr) # for tibble() and data manipulation
 
 We'll simulate the last stage reached by 300 players with `sample()`, giving each of the first three stages its own probability. Setting the seed with `set.seed()` means you'll get the same 300 games every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_bar
 #| code-fold: show
@@ -136,19 +129,15 @@ alleyway_games <- tibble(
 )
 glimpse(alleyway_games)
 ```
-:::
 
 ## Distribution
 
 The histograms and frequency polygons in the following chapters count numbers that fall into bins. A bar graph is simpler: it counts how many times each category shows up. Because we chose the probabilities in `sample()`, we know what those counts should be before we draw anything. Below we'll move from the choices, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first ten players.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: concrete_values_bar
 #| code-fold: show
@@ -156,11 +145,9 @@ Start with the first ten players.
 #| echo: true
 head(alleyway_games$stage, 10)
 ```
-:::
 
 Six of these ten players lost their last ball in Stage 2. Ten games is too few to trust, so we count all 300. Then we compare each count to the count we'd expect: the number of players (300) times the probability we gave each stage.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: concrete_counts_bar
 #| code-fold: show
@@ -171,15 +158,11 @@ stage_counts <- alleyway_games |>
   mutate(expected = 300 * c(0.30, 0.42, 0.28))
 stage_counts
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 A bar model shows the three counts as parts of one whole. The full bar is all 300 players, and Stage 2 takes up the biggest part.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pictorial_bar_model_bar
 #| code-fold: show
@@ -202,11 +185,9 @@ ggplot(data = stage_counts,
     x = "Number of players", 
     y = NULL)
 ```
-:::
 
 A bar graph takes the same three parts, stands each one upright, and puts them side by side. The dashed lines below mark the expected counts. Each bar lands near its line, and the Stage 2 bar matches its line exactly.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pictorial_bar
 #| code-fold: show
@@ -227,11 +208,8 @@ ggplot(data = alleyway_games,
     width = 0.9) +
   labs(x = "Stage", y = "Count")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each game is like rolling an uneven three sided die. Counting the results of 300 rolls gives a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution):
 
@@ -243,13 +221,10 @@ The expected height of each bar is $n \times p$: $300 \times 0.30 = 90$ for Stag
 
 Our simulated players show exactly that trade off: Stage 1 came in `r 90 - sum(alleyway_games$stage == "Stage 1")` below its expected count, and Stage 3 came in `r sum(alleyway_games$stage == "Stage 3") - 84` above. Change the number in `set.seed()` and the bars move around their dashed lines, but they always add to 300.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CHANGE IT:**
-:::
+### CHANGE IT {.unnumbered .fm-step}
 
 Everything so far is what we expected: 300 games, and bars that land near their dashed lines. Now we keep the same three probabilities but record only 30 games. The expected counts shrink to 9, 12.6, and 8.4, and I expect the bars to wander much farther from them.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: concrete_counts_small_bar
 #| code-fold: show
@@ -266,9 +241,7 @@ stage_counts_30 <- alleyway_games_30 |>
   mutate(expected = 30 * c(0.30, 0.42, 0.28))
 stage_counts_30
 ```
-:::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pictorial_small_bar
 #| code-fold: show
@@ -289,7 +262,6 @@ ggplot(data = alleyway_games_30,
     width = 0.9) +
   labs(x = "Stage", y = "Count")
 ```
-:::
 
 The Stage 1 bar above stops at 5 players, almost half of its expected 9. Stage 2 overshoots with 16 players instead of 12.6. Nothing about the game changed, only the number of games. With 300 players, Stage 1 missed its line by about 7%; with 30, it missed by about 44%.
 
@@ -297,9 +269,7 @@ I've found this is the first thing to check when one bar looks surprisingly tall
 
 ## Grammar
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-step}
 
 1. Create labels with `labs()`
 
@@ -309,7 +279,6 @@ I've found this is the first thing to check when one bar looks surprisingly tall
 
 4. Add `geom_bar()`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_bar
 #| code-fold: show
@@ -330,13 +299,10 @@ ggp2_bar <- ggplot(data = alleyway_games,
 ggp2_bar +
   labs_bar
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-step}
 
 ```{r}
 #| label: create_graph_bar
@@ -374,9 +340,7 @@ The connection between statistical transformations and geoms is an important pri
 
 ### Stats and geoms
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**stat_count():**
-:::
+#### stat_count() {.unnumbered .fm-step}
 
 
 The default `stat` argument in `geom_bar()` is set to `"count"`, which '*counts the number of cases at each `x` position*', so it's ideal for categorical variables (or factors).
@@ -385,7 +349,6 @@ We can also build bar graphs with `stat_count()` by setting its `geom` argument.
 
 The link between `geom_`**geom_name**`(stat = "`**stat_name**`")` and `stat_`**stat_name**`(geom = "`**geom_name**`")` is shown below:
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: stat_vs_geom_bar
 #| eval: true
@@ -410,19 +373,15 @@ ggp2_stat_count <- ggplot(data = alleyway_games,
     labs(title = "stat_count(geom = 'bar')")
 ggp2_stat_count
 ```
-:::
 
 
 ### `geom_col()`
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**geom_col():**
-:::
+#### geom_col() {.unnumbered .fm-step}
 
 `geom_col()` doesn't count anything for us, so we compute a `count` column first and then map it to the `y` aesthetic.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: bar_with_geom_col
 #| eval: true
@@ -446,4 +405,3 @@ alleyway_games |>
 ggp2_bar +
   labs_bar
 ```
-:::

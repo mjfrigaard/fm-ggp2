@@ -35,7 +35,7 @@ status("draft")
 
 :::: {.callout-note collapse="false" icon=false}
 
-::: {style="font-size: 1.25em; color: #02577A;"}
+::: {.fm-req-title}
 
 :::
 
@@ -68,15 +68,15 @@ ggp2_graph +
     labs_graph
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **`r emo::ji("check")` a categorical variable**      
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **`r emo::ji("check")` a numeric (continuous) variable**
 :::
 
@@ -92,11 +92,11 @@ Description of graph aesthetics, appropriate use, similar graphs, etc.
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
@@ -117,7 +117,7 @@ library(ggplot2)
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **DATA:**
 :::
 
@@ -131,7 +131,7 @@ library(ggplot2)
 
 
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 <!-- Description of data -->
 :::
 
@@ -153,11 +153,11 @@ dplyr::glimpse(df)
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **CODE:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
 Create labels with `labs()`
 
@@ -192,12 +192,12 @@ ggp2_graph +
 
 
 :::: {.column-margin}
-::: {style="font-size: 0.80em; color: #02577A;"}
+::: {.fm-note}
 More description of graph and code. 
 :::
 ::::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **GRAPH:**
 :::
 
@@ -232,16 +232,16 @@ ggp2_graph +
 ### Info
 
 :::: {.column-margin}
-::: {style="font-size: 0.80em; color: #02577A;"}
+::: {.fm-note}
 Info 
 :::
 ::::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **INFO:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
 :::
 
@@ -263,11 +263,11 @@ Info
 
 ### More 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **MORE:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
 :::
 

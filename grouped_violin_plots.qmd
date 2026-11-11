@@ -70,15 +70,15 @@ ggp2_grp_violin +
   labs_grp_violin
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
@@ -90,16 +90,13 @@ A ‘violin plot’ is a variation of a density or ridgeline plot, where the dis
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_grp_violin
 #| code-fold: show
@@ -111,19 +108,15 @@ Install packages.
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 In the late 90s, your AOL Instant Messenger (AIM) buddy list was a status symbol. We'll simulate buddy list sizes for 150 users at each level of school, and each level gets a different *kind* of distribution. Middle schoolers' lists are counts from `rpois()`. High schoolers' lists come from `rlnorm()`, so a few popular kids have much longer lists. College students are a mix of two groups (`runif()` decides which): most have about 60 buddies, and about 30% are heavy users with about 150. Setting the seed with `set.seed()` means you'll get the same 450 users every time you run the code below.
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_grp_violin
 #| code-fold: show
@@ -148,19 +141,15 @@ aim_buddies <- tibble(
     )
 glimpse(aim_buddies)
 ```
-:::
 
 ## Distribution
 
 Violin plots are at their best when groups differ in *shape*, not just in center and spread. Summary numbers (and box plots built from them) can make three very different distributions look alike. Below we'll move from the users, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first eight users (all middle schoolers).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_grp_violin
 #| code-fold: show
@@ -168,11 +157,9 @@ Start with the first eight users (all middle schoolers).
 #| echo: true
 head(aim_buddies$buddies, 8)
 ```
-:::
 
 These middle schoolers have between 11 and 25 buddies. The summary below shows each group's mean, median, and standard deviation. For middle schoolers the mean and median are close, for high schoolers the mean is a little higher, and for college students the mean is almost 20 buddies higher than the median. The numbers hint that something is different about the college group, but they don't tell us what.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_grp_violin
 #| code-fold: show
@@ -183,15 +170,11 @@ aim_buddies |>
   summarise(mean = mean(buddies), median = median(buddies), 
             sd = sd(buddies))
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The graph below draws a narrow box plot inside each violin. The middle school violin is a short, symmetric diamond. The high school violin has a wide base and a tail that stretches up. The college violin has *two* bulges, one near 60 buddies and one near 150, with almost nobody in between. The college box plot hides that gap completely: it looks like one long, lopsided box.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_grp_violin
 #| code-fold: show
@@ -202,11 +185,8 @@ ggplot(aim_buddies, aes(x = school, y = buddies, fill = school)) +
   geom_boxplot(width = 0.12, fill = "#FFFFFF", outlier.shape = NA) + 
   labs(x = NULL, y = "Buddies")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each level of school has its own distribution:
 
@@ -223,9 +203,7 @@ The [Poisson](https://en.wikipedia.org/wiki/Poisson_distribution) gives a narrow
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   -   Create labels with `labs()`
 
@@ -237,7 +215,6 @@ The [Poisson](https://en.wikipedia.org/wiki/Poisson_distribution) gives a narrow
 
   -   Remove the legend with `show.legend = FALSE`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_grp_violin
 #| code-fold: show
@@ -262,18 +239,14 @@ ggp2_grp_violin <- ggplot(data = aim_buddies,
 ggp2_grp_violin +
   labs_grp_violin
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 
 Violin plots can allow us to compare the 'center' and 'spread' of continuous variables across categorical groups.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_grp_violin
 #| eval: true
@@ -298,7 +271,6 @@ ggp2_grp_violin <- ggplot(data = aim_buddies,
 ggp2_grp_violin +
   labs_grp_violin
 ```
-:::
 
 ## More info
 
@@ -311,7 +283,6 @@ Change the shape of the line with [`linetype` and `linewidth`](https://ggplot2.t
 
 We can include lines for the 25th, 50th, and 75th percentiles (the three quartiles) using the `quantiles` argument, and draw them with `quantile.linetype = 1`.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: grp_violin_draw_quantiles
 #| eval: true
@@ -332,14 +303,12 @@ ggplot(data = aim_buddies,
       linewidth = 0.5,
       show.legend = FALSE)
 ```
-:::
 
 ### Kernel
 
 
 The [`kernel` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments) lets us change the "*kernel density estimate*" used to create the violin shape. The possible [kernel density estimates](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/density.html) are `"gaussian"`, `"epanechnikov"`, `"rectangular"`, `"triangular"`, `"biweight"`, `"cosine"`, and `"optcosine"`.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: grp_violin_kernel
 #| eval: true
@@ -360,14 +329,12 @@ ggplot(data = aim_buddies,
   labs_grp_violin +
   labs(caption = "kernel = rectangular")
 ```
-:::
 
 ### Bandwidth
 
 
 We can directly adjust the shape of the violin with the [`bw` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments), which is the *standard deviation of the smoothing kernel.* The [`trim` argument](https://ggplot2.tidyverse.org/reference/geom_violin.html#arguments) *trim(s) the tails of the violins to the range of the data.*
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: grp_violin_bw
 #| eval: true
@@ -402,4 +369,3 @@ grp_violin_bw20 +
     labs_grp_violin +
     labs(caption = "bw = 20")
 ```
-:::

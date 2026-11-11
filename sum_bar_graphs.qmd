@@ -30,12 +30,12 @@ Graphs in this chapter use `ggrewindr::theme_happymeal()`, modeled on a McDonald
 
 <br>
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 
 **✅ a categorical variable** 
@@ -90,14 +90,11 @@ In `ggplot2`, we can create summary bar graphs with `geom_col()`.
 
 ## Set up
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-step}
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_sum_col
 #| code-fold: show
@@ -110,19 +107,15 @@ library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 library(tidyr) # for uncount()
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-step}
 
 McDonald's ran a different Happy Meal toy promotion every few weeks in the late 90s. Some toys (like the 1997 Teenie Beanie Babies) sold out almost everywhere.
 
 We'll simulate 28 days of Happy Meal sales at one restaurant for four promotions. Each promotion gets its own daily sales rate (`lambda`). `tidyr::uncount()` creates one row per day, and `rpois()` draws the number sold. Then we average the daily sales for each promotion (`avg_sold`). Setting the seed with `set.seed()` means you'll get the same 112 days every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_sum_col
 #| code-fold: show
@@ -146,19 +139,15 @@ hm_sum_col <- happy_meals |>
   ungroup()
 dplyr::glimpse(hm_sum_col)
 ```
-:::
 
 ## Distribution
 
 A summary bar graph shows one statistic per group (here, the mean). Each bar hides 28 days of sales behind a single height. Before we trust the differences between bars, it's worth knowing how much those days vary. Below we'll move from the daily sales, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first week of the Teenie Beanie Babies promotion.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_sum_col
 #| code-fold: show
@@ -166,11 +155,9 @@ Start with the first week of the Teenie Beanie Babies promotion.
 #| echo: true
 head(happy_meals, 7)
 ```
-:::
 
 Daily sales bounce around between about 400 and 450, but they never drift far from the rate we gave `rpois()` (420). The summary below shows the mean and standard deviation for each promotion. It also shows the standard error of the mean (`se`). The standard error measures how much each average would move if we simulated another 28 days.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_sum_col
 #| code-fold: show
@@ -184,15 +171,11 @@ hm_stats <- happy_meals |>
     se = sd(sold) / sqrt(n()))
 hm_stats
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The graph below puts each promotion's 28 days back behind its bar. The bar is the average, the points are the individual days, and the error bars stretch two standard errors above and below the average. `geom_jitter()` nudges the points sideways so they don't pile up. The points spread out more for the busier promotions, but the error bars stay short because each average is built from 28 days.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_sum_col
 #| code-fold: show
@@ -206,11 +189,8 @@ ggplot(data = hm_stats, aes(x = promotion, y = mean)) +
     width = 0.3, linewidth = 0.8) + 
   labs(x = "Toy promotion", y = "Happy Meals sold per day")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each day's sales come from a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) with the promotion's rate:
 
@@ -226,13 +206,10 @@ $$
 
 With $n = 28$ days, the Teenie Beanie Babies average should land within about $2 \times \sqrt{420 / 28} \approx 7.7$ Happy Meals of 420. Ours is `r round(hm_stats$mean[1], 1)`. That's why the bars are trustworthy here: the gaps between promotions (about 50 or more Happy Meals a day) are much larger than the error bars. Try cutting the 28 in `tidyr::uncount()` down to 3 days and watch the error bars grow.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CHANGE IT:**
-:::
+### CHANGE IT {.unnumbered .fm-step}
 
 So far each bar shows what we expect: steady days of sales, with the average sitting in the middle of them. Now we'll change the data. Suppose our restaurant runs out of Teenie Beanie Babies after 10 days. For the rest of the promotion, sales drop to about 120 Happy Meals a day. We expect a shorter Teenie Beanie Babies bar.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_data_sum_col
 #| code-fold: show
@@ -251,11 +228,9 @@ hm_sellout_stats <- hm_sellout |>
     se = sd(sold) / sqrt(n()))
 hm_sellout_stats
 ```
-:::
 
 Below we redraw the graph from DRAW IT with the sellout data.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_graph_sum_col
 #| code-fold: show
@@ -269,7 +244,6 @@ ggplot(data = hm_sellout_stats, aes(x = promotion, y = mean)) +
     width = 0.3, linewidth = 0.8) +
   labs(x = "Toy promotion", y = "Happy Meals sold per day")
 ```
-:::
 
 The Teenie Beanie Babies bar drops to `r round(hm_sellout_stats$mean[1])` Happy Meals a day, nearly the same height as Hot Wheels (`r round(hm_sellout_stats$mean[3])`). On their own, those two bars tell us the promotions sold about the same. The points tell a different story. Hot Wheels had `r nrow(filter(hm_sellout, promotion == "Hot Wheels"))` ordinary days, but Teenie Beanie Babies had 10 busy days near 420 and 18 slow days near 120. Its average describes none of them.
 
@@ -278,9 +252,7 @@ The error bar grows to about `r round(2 * hm_sellout_stats$se[1])` Happy Meals a
 
 ## Grammar
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-step}
 
   -   Create labels with `labs()`
 
@@ -292,7 +264,6 @@ The error bar grows to about `r round(2 * hm_sellout_stats$se[1])` Happy Meals a
 
   -   *Outside* the `aes()` of `geom_col()`, remove the legend with `show.legend = FALSE`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_sum_col
 #| code-fold: show
@@ -316,13 +287,10 @@ ggp2_sum_col <- ggplot(data = hm_sum_col,
 ggp2_sum_col + 
     labs_sum_col
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-step}
 
 ```{r}
 #| label: create_graph_sum_col
@@ -357,7 +325,6 @@ Below is more information on `geom_bar()` vs. `geom_col()`.
 
   -   The `geom_bar()` geom will also create summary bar graphs, but we have to switch the `stat` argument to `"identity"`.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: show_stat_sum_col
 #| eval: true
@@ -375,7 +342,6 @@ ggplot(data = hm_sum_col,
         stat = "identity") +
     labs_sum_col
 ```
-:::
 
 
 ### `geom_bar()` vs. `geom_col()`

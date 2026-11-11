@@ -102,15 +102,15 @@ ggp2_tm_subgroup2 +
   labs_treemap
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ at least two categorical variables**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric variable of counts (for each level of the categorical variables)**
 :::
 
@@ -124,13 +124,10 @@ We'll build a treemap using the [`treemapify` package.](http://wilkox.org/treema
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 Install packages.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_treemap
 #| code-fold: show
@@ -145,19 +142,15 @@ library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 library(tidyr) # for expand_grid()
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 In the early to mid 2000s, most mobile phone games were small J2ME (Java ME) apps that a phone downloaded over the air. Most were bought from the carrier's deck (the games menu on the operator's portal). They held on until the iPhone App Store and Android Market replaced them.
 
 We'll simulate one year of downloads for six made up titles in three genres. Each title gets a `yearly_rate` (the downloads we'd expect in a year) and a `deck_share` (the part of those downloads bought through the carrier deck instead of directly from the publisher's site). `tidyr::expand_grid()` creates a row for each title in each `channel`, `lambda` splits the yearly rate between the two channels, and `rpois()` draws the downloads. Setting the seed with `set.seed()` means you'll get the same downloads every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_treemap
 #| code-fold: show
@@ -181,19 +174,15 @@ j2me_downloads <- tibble(
   select(genre, title, channel, lambda, downloads)
 glimpse(j2me_downloads)
 ```
-:::
 
 ## Distribution
 
 A treemap nests counts inside counts: channels inside titles, and titles inside genres. Every tile's area is a share of the total downloads, so the question behind the graph is "how much of the whole does each piece take up?" Below we'll move from the downloads, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the rows for Block Drop and Street Rally.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_treemap
 #| code-fold: show
@@ -202,11 +191,9 @@ Start with the rows for Block Drop and Street Rally.
 j2me_downloads |>
   filter(title %in% c("Block Drop", "Street Rally"))
 ```
-:::
 
 Each simulated count (`downloads`) lands within a few percent of the rate we gave `rpois()` (`lambda`). Block Drop got most of its downloads through the carrier deck, while Street Rally got most of its downloads directly. Adding up the counts inside each genre gives the genre totals, and dividing by the overall total turns them into the shares the treemap draws.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_treemap
 #| code-fold: show
@@ -217,15 +204,11 @@ j2me_downloads |>
   summarise(downloads = sum(downloads), expected = sum(lambda)) |>
   mutate(share = round(downloads / sum(downloads), 3))
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 A bar model shows the hierarchy one level at a time. Each genre is a bar, each title is a part of its genre's bar, and each part is split by channel.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_bar_model_treemap
 #| code-fold: show
@@ -237,11 +220,9 @@ ggplot(j2me_downloads, aes(x = downloads, y = title, fill = channel)) +
   labs(x = "Downloads", y = NULL, fill = "Channel") +
   theme(legend.position = "bottom")
 ```
-:::
 
 A treemap takes the same parts and packs them into one rectangle. Below, the silver borders outline the genres, the black borders outline the titles, and the red and tan fills split each title by channel. The Block Drop tile is about four fifths carrier deck downloads, and the Street Rally tile is mostly direct downloads.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_treemap
 #| code-fold: show
@@ -257,11 +238,8 @@ ggplot(j2me_downloads, aes(area = downloads, fill = channel,
   labs(fill = "Channel") +
   theme(legend.position = "bottom")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each title and channel count comes from a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution):
 
@@ -273,13 +251,72 @@ Poisson counts have a useful property for treemaps: the sum of independent Poiss
 
 The standard deviation of a Poisson count is $\sqrt{\lambda}$, so its relative wobble is $\sqrt{\lambda} / \lambda = 1 / \sqrt{\lambda}$. For the Block Drop carrier deck tile ($\lambda = 1{,}440$) that's under 3%, which is why the treemap's tiles barely change shape from one simulation to the next. Try dividing every `yearly_rate` by 100 and the small tiles start to jump around.
 
+### CHANGE IT {.unnumbered .fm-step}
+
+So far the treemap shows what we expect: racing is the biggest genre, and no single tile fills more than a fifth of the rectangle. Now we'll change the downloads for one title. In 2005, a game at the top of the carrier deck sold far more copies than one buried a few screens down.
+
+Suppose a carrier moved Moto Sprint to the top of its games menu for the whole year. Its carrier deck rate grows tenfold (from 420 to 4,200). We'll draw a new count for that one tile and leave the other eleven tiles alone. Block Drop still has the same downloads, so we'd expect its tile to stay the same size, but does it?
+
+```{r}
+#| label: change_data_treemap
+#| code-fold: show
+#| eval: true
+#| echo: true
+set.seed(2003) # same seed as above
+moto_deck <- j2me_downloads$title == "Moto Sprint" &
+  j2me_downloads$channel == "Carrier deck" # the one tile we change
+j2me_featured <- j2me_downloads |>
+  mutate(
+    lambda = if_else(moto_deck, 4200, lambda), # ten times the old rate
+    downloads = if_else(moto_deck, rpois(n(), lambda), downloads) # new count for that tile only
+    )
+j2me_featured |>
+  group_by(genre) |>
+  summarise(downloads = sum(downloads)) |>
+  mutate(share = round(downloads / sum(downloads), 3))
+```
+
+Below we redraw the same treemap with the new downloads.
+
+```{r}
+#| label: change_graph_treemap
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(j2me_featured, aes(area = downloads, fill = channel,
+    subgroup = genre, subgroup2 = title)) +
+  treemapify::geom_treemap() +
+  treemapify::geom_treemap_subgroup2_border(color = "#15110E", size = 3) +
+  treemapify::geom_treemap_subgroup2_text(color = "#FFFFFF",
+    place = "center", min.size = 0, family = "sans") +
+  treemapify::geom_treemap_subgroup_border(color = "#9A9791", size = 6) +
+  labs(fill = "Channel") +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+#| label: change_numbers_treemap
+#| include: false
+block_deck <- j2me_downloads$downloads[j2me_downloads$title == "Block Drop" &
+  j2me_downloads$channel == "Carrier deck"]
+block_share_before <- block_deck / sum(j2me_downloads$downloads)
+block_share_after <- block_deck / sum(j2me_featured$downloads)
+moto_share <- j2me_featured$downloads[moto_deck] / sum(j2me_featured$downloads)
+puzzle_share_before <- sum(j2me_downloads$downloads[j2me_downloads$genre == "Puzzle"]) /
+  sum(j2me_downloads$downloads)
+puzzle_share_after <- sum(j2me_featured$downloads[j2me_featured$genre == "Puzzle"]) /
+  sum(j2me_featured$downloads)
+```
+
+One tile now fills about a third of the rectangle. The Moto Sprint carrier deck tile holds `r format(j2me_featured$downloads[moto_deck], big.mark = ",")` downloads, or `r round(100 * moto_share)` percent of the total. Block Drop sold the same `r format(block_deck, big.mark = ",")` copies through the carrier deck, but its tile shrank from `r round(100 * block_share_before)` to `r round(100 * block_share_after)` percent of the area. The puzzle genre shrank from `r round(100 * puzzle_share_before)` to `r round(100 * puzzle_share_after)` percent and moved to a new corner.
+
+Every tile is a share of the whole, so one big tile squeezes all the others. The graph can't tell us whether a title lost downloads or just lost space to a hit. I've found it's worth printing the totals next to a treemap (like the `downloads` column above). Then readers can tell a shrinking title from a growing neighbor.
+
 
 ## Grammar
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
 
   -   Create labels with `labs()`
@@ -304,7 +341,6 @@ The standard deviation of a Poisson count is $\sqrt{\lambda}$, so its relative w
 
       - `family`: `"sans"`/`"sansserif"`/`"mono"`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_treemap
 #| code-fold: show
@@ -335,15 +371,11 @@ ggp2_treemap <- ggplot(j2me_downloads,
 ggp2_treemap +
   labs_treemap
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_treemap
 #| eval: true
@@ -374,7 +406,6 @@ ggp2_treemap <- ggplot(j2me_downloads,
 ggp2_treemap +
   labs_treemap
 ```
-:::
 
 ## More info
 
@@ -405,7 +436,6 @@ ggp2_treemap +
 
 See full list of arguments [here](http://wilkox.org/treemapify/).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_treemap_sgb
 #| eval: true
@@ -428,7 +458,6 @@ ggp2_tm_subgroup <- ggp2_treemap +
 ggp2_tm_subgroup +
   labs_treemap
 ```
-:::
 
 ### Subgroup
 
@@ -450,7 +479,6 @@ ggp2_tm_subgroup +
 
     - `family`: `"sans"`/`"sansserif"`/`"mono"`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_tmap_sgb_2
 #| eval: true
@@ -476,4 +504,3 @@ ggp2_tm_subgroup2 <- ggp2_tm_subgroup +
 ggp2_tm_subgroup2 +
   labs_treemap
 ```
-:::

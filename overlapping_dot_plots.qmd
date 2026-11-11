@@ -69,15 +69,15 @@ ggp2_ovrlp_dotplot +
   labs_ovrlp_dotplot
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (count) variable**
 :::
 
@@ -92,16 +92,13 @@ To adjust the dot plot display to look similar to a histogram, change the `metho
 ## Set up
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_ovrlp_dot_plots
 #| code-fold: show
@@ -113,17 +110,13 @@ Install packages.
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 R.L. Stine's *Goosebumps* books were everywhere in the mid 90s, and older kids tended to tear through more of them. We'll simulate how many Goosebumps books 40 students in each of three grades read in one school year. `rpois()` draws each student's count from a Poisson distribution with a different average (`lambda`) for each grade: 3, 6, and 9 books. Setting the seed with `set.seed()` means you'll get the same 120 students every time you run the code below.
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_ovrlp_dot_plots
 #| code-fold: show
@@ -144,19 +137,15 @@ goosebumps_readers <- tibble(
     )
 dplyr::glimpse(goosebumps_readers)
 ```
-:::
 
 ## Distribution
 
 Dot plots are a natural fit for small counts: every student gets one dot, and every number of books gets its own stack. With three grades stacked together, we can see two things change from grade to grade: where the stacks are centered, and how far they spread out. Below we'll move from the students, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first ten students (all in 3rd grade).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_ovrlp_dot_plots
 #| code-fold: show
@@ -164,11 +153,9 @@ Start with the first ten students (all in 3rd grade).
 #| echo: true
 head(goosebumps_readers$books_read, 10)
 ```
-:::
 
 These 3rd graders read between two and five books. The summary below compares each grade's mean and variance. For counts like these, the variance grows along with the mean, so the older students' counts are more spread out.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_ovrlp_dot_plots
 #| code-fold: show
@@ -179,15 +166,11 @@ goosebumps_readers |>
   summarise(mean = mean(books_read), variance = var(books_read),
             min = min(books_read), max = max(books_read))
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The graph below gives each grade its own row of dot stacks (with `facet_wrap()`), and the dashed lines mark the average we gave each grade in `rpois()`. The 3rd grade stacks are tall and bunched together near three books, and the 5th grade stacks are short and spread from three books to well past a dozen.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_ovrlp_dot_plots
 #| fig-asp: 1.4
@@ -204,11 +187,8 @@ ggplot(goosebumps_readers, aes(x = books_read, fill = grade)) +
   scale_y_continuous(NULL, breaks = NULL) + 
   labs(x = "Books read")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each grade's counts come from a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution):
 
@@ -229,9 +209,7 @@ When we stack the three grades into one dot plot, the middle grade overlaps both
 - [`binpositions`](https://ggplot2.tidyverse.org/reference/geom_dotplot.html) = *"all" determines positions of the bins with all the data taken together; this is used for aligning dot stacks across multiple groups.*
 :::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   -   Create labels with `labs()`
 
@@ -245,7 +223,6 @@ When we stack the three grades into one dot plot, the middle grade overlaps both
 
   -   Remove the `y` axis with `scale_y_continuous(NULL, breaks = NULL)` (its 0 to 1 scale isn't a count of students)
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_ovrlp_dot_plots
 #| code-fold: show
@@ -274,13 +251,10 @@ ggp2_ovrlp_dotplot <- ggplot(data = goosebumps_readers,
 ggp2_ovrlp_dotplot +
   labs_ovrlp_dotplot
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ```{r}
 #| label: create_graph_ovrlp_dot_plots

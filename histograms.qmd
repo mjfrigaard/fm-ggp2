@@ -29,11 +29,11 @@ Graphs in this chapter use `ggrewindr::theme_oksoda()`, built from OK Soda cans 
 
 :::: {.callout-note collapse="false" icon=false}
 
-::: {style="font-size: 1.25em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
@@ -80,14 +80,11 @@ In `ggplot2`, histograms can be built using [`geom_histogram()`](https://ggplot2
 
 ## Set up
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-step}
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_histogram
 #| code-fold: show
@@ -99,19 +96,15 @@ Install packages.
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-step}
 
 OK Soda was Coca-Cola's 1993 soda for Gen X, sold in gray comic book cans with slogans like "Things are going to be OK." If you don't remember this, it's worth reading this article in [Mental Floss](https://www.mentalfloss.com/food/beverages/ok-soda-coca-cola-history) or watching these hilarious [commercials on YouTube](https://www.youtube.com/watch?v=U5_MuBQDy44&t=52s). 
 
 We'll simulate one day of sales at 300 test market stores with `rnorm()`, rounding each store's sales to a whole number of cans. Setting the seed with `set.seed()` means you'll get the same 300 values every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_histogram
 #| code-fold: show
@@ -126,19 +119,15 @@ ok_soda_sales <- tibble(
 )
 glimpse(ok_soda_sales)
 ```
-:::
 
 ## Distribution
 
 You don't have to be a math whiz or statistician to read a histogram, but it helps to know what shape to expect. Because we generated `cans` ourselves, we already know the answer. Every value came from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) with a mean of 45 cans and a standard deviation of 12 cans. Below we'll move from the numbers, to a picture, to the formula. Once we know what the expected shape looks like, we'll change the data and see what the unexpected does to it.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first ten stores.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: concrete_values_histogram
 #| code-fold: show
@@ -146,7 +135,6 @@ Start with the first ten stores.
 #| echo: true
 head(ok_soda_sales$cans, 10)
 ```
-:::
 
 Most of these values land within 12 cans of 45, and a few (like 16 and 23) sit further out. Let's sort all 300 stores into three ranges: below, within, and above one standard deviation of the mean. The middle range holds most of the stores.
 
@@ -158,7 +146,6 @@ To find the edges of these ranges, we subtract and add one standard deviation to
 
 A store with fewer than 33 cans is below one standard deviation. A store with 33 to 57 cans is within it, and a store with 58 or more cans is above it. In the code below, `cut()` places the `breaks` half a can past each edge (32.5 and 57.5), so a store with exactly 33 or 57 cans lands in the middle range.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: concrete_counts_histogram
 #| code-fold: show
@@ -171,15 +158,11 @@ ok_soda_ranges <- ok_soda_sales |>
   count(range)
 ok_soda_ranges
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 A bar model shows these counts as parts of one whole. The full bar is all 300 stores, and the middle part takes up roughly two thirds of it.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pictorial_bar_model_histogram
 #| code-fold: show
@@ -195,11 +178,9 @@ ggplot(data = ok_soda_ranges,
   labs(x = "Number of stores", y = NULL,
     fill = "Cans sold")
 ```
-:::
 
 A histogram is the same idea, cut into 30 thinner pieces and stood upright. The dashed lines below mark 33 and 57 cans, the edges of the middle part of the bar model.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pictorial_histogram
 #| code-fold: show
@@ -213,11 +194,8 @@ ggplot(data = ok_soda_sales,
   geom_vline(xintercept = c(33, 57), linetype = "dashed") +
   labs(x = "Cans sold", y = "Number of stores")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 The `rnorm()` call that created the data is a single statement:
 
@@ -229,13 +207,10 @@ The mean ($\mu$) sets where the tallest bars sit on the `x` axis. The standard d
 
 The small gap between the rule and our sample is just sampling variation. Change the number in `set.seed()` and the bars shift, but the bell shape stays centered near 45 cans.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CHANGE IT:**
-:::
+### CHANGE IT {.unnumbered .fm-step}
 
 So far the histogram shows exactly what we expect: one bell centered on 45 cans. Now we'll change the data. Suppose the last 60 stores sit near college campuses, where OK Soda sold far better (about 85 cans a day). We expect a second hump of bars on the right side of the graph.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: unexpected_data_histogram
 #| code-fold: show
@@ -249,11 +224,9 @@ ok_soda_campus$cans[241:300] <- round(
 summarise(ok_soda_campus,
   mean = mean(cans), sd = sd(cans), median = median(cans))
 ```
-:::
 
 The dashed line below marks the new mean.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: unexpected_graph_histogram
 #| code-fold: show
@@ -267,16 +240,13 @@ ggplot(data = ok_soda_campus,
   geom_vline(xintercept = mean(ok_soda_campus$cans), linetype = "dashed") +
   labs(x = "Cans sold", y = "Number of stores")
 ```
-:::
 
 The campus stores pull the mean up to about 53 cans and stretch the standard deviation to almost 20. The numbers alone still look ordinary: `r round(mean(abs(ok_soda_campus$cans - mean(ok_soda_campus$cans)) <= sd(ok_soda_campus$cans)) * 100)`% of stores fall within one standard deviation of the mean, right where the 68% rule says they should. The histogram tells a different story. It has two peaks, and the mean sits between them, describing neither the typical store nor the typical campus store. I've found this is the main reason to graph a distribution before summarizing it. A mean and standard deviation can't show a second group, but the bars can.
 
 
 ## Grammar 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-step}
 
 
 
@@ -290,7 +260,6 @@ The campus stores pull the mean up to about 53 cans and stretch the standard dev
 
 5. Set the width of each bin (`binwidth = 3`) and center one bin on 45 cans (`center = 45`)
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_histogram
 #| code-fold: show
@@ -312,12 +281,9 @@ ggp2_hist <- ggplot(data = ok_soda_sales,
 ggp2_hist + 
   labs_histogram
 ```
-:::
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-step}
 
 ```{r}
 #| label: create_graph_histogram

@@ -22,7 +22,7 @@ Most graphs in this book only need `ggplot2` and `dplyr`, but some graph types l
 
 ## Graph extensions
 
-::: {style="font-size: 0.90rem;"}
+::: {.fm-table}
 | Graph | Package | Install |
 |----|----|----|
 | [Waffle charts](waffle_charts.qmd) | [`ggwaffle`](https://liamgilbey.github.io/ggwaffle/) | `pak::pak("liamgilbey/ggwaffle")` |
@@ -43,7 +43,7 @@ Most graphs in this book only need `ggplot2` and `dplyr`, but some graph types l
 
 These packages don't add new graph types, but a few chapters rely on them to simulate data, combine graphs, or choose colors.
 
-::: {style="font-size: 0.90rem;"}
+::: {.fm-table}
 | Package | What it's used for | Chapters | Install |
 |----|----|----|----|
 | [`faux`](https://debruine.github.io/faux/) | Simulating correlated variables (`rnorm_multi()`) and designs (`sim_design()`) | [Cleveland dot plots](cleveland_dot_plots.qmd), [raincloud plots](raincloud_plots.qmd), [grouped scatter plots](grouped_scatter_plots.qmd), [density contours](density_contours.qmd) | `pak::pak("faux")` |
@@ -55,7 +55,6 @@ These packages don't add new graph types, but a few chapters rely on them to sim
 
 The code below installs everything at once.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: install_all
 #| eval: false
@@ -67,4 +66,3 @@ pak::pak(c(
   "davidsjoberg/ggbump", "davidsjoberg/ggstream", "ggalluvial", "ggforce", "hexbin",
   "faux", "patchwork", "colorspace", "mjfrigaard/ggrewindr", "mjfrigaard/fmutils"))
 ```
-:::

@@ -28,11 +28,11 @@ Graphs in this chapter use `ggrewindr::theme_microdrive()`, built from IBM and H
 
 :::: {.callout-note collapse="false" icon=false}
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
@@ -83,16 +83,13 @@ The violin plot is a mirrored density plot. It draws a smoothed distribution on 
 
 ## Set up
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-step}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_violin
 #| code-fold: show
@@ -104,19 +101,15 @@ Install packages.
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-step}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 In 1999, IBM's 340MB Microdrive squeezed a tiny spinning hard disk into a CompactFlash Type II card, giving digital camera owners room for hundreds of photos. The photo files varied a lot in size. Most JPEGs came in under a megabyte, but detailed scenes and high quality settings produced a few much larger files. We'll simulate 300 photo files with `rlnorm()`, rounding each size to the nearest hundredth of a megabyte. Setting the seed with `set.seed()` means you'll get the same 300 file sizes every time you run the code below.
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_violin
 #| code-fold: show
@@ -132,19 +125,15 @@ microdrive_photos <- tibble(
 )
 glimpse(microdrive_photos)
 ```
-:::
 
 ## Distribution
 
 File sizes are a classic example of data that can't go below zero but can stretch a long way above it. That gives the violin a wide base and a long, thin neck. The trick to understanding this shape is the logarithm: on a log scale, these file sizes turn into the familiar bell curve from @sec-histograms. Below we'll move from the file sizes, to a picture, to the formula. Then we'll change the data to see what the violin shows when the photos stop following the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first ten photos.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_violin
 #| code-fold: show
@@ -152,11 +141,9 @@ Start with the first ten photos.
 #| echo: true
 head(microdrive_photos$size_mb, 10)
 ```
-:::
 
 Most of these are under 1.5 MB, but three are near or above 2 MB. A few large files like these pull the mean well above the median. Taking the log of each file size shrinks the gap.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_violin
 #| code-fold: show
@@ -169,17 +156,13 @@ microdrive_photos |>
     mean_log = mean(log(size_mb)),
     median_log = median(log(size_mb)))
 ```
-:::
 
 On the megabyte scale, the mean is about `r round(mean(microdrive_photos$size_mb) - median(microdrive_photos$size_mb), 2)` MB higher than the median. On the log scale, the mean and median are almost identical, which is what we'd expect from a symmetric distribution.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 A bar model splits the photos at 0.75 MB (we'll see why in a moment). The two parts are close to equal, so 0.75 MB sits near the middle of the file sizes.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_bar_model_violin
 #| code-fold: show
@@ -196,11 +179,9 @@ microdrive_photos |>
     position = position_stack(vjust = 0.5, reverse = TRUE)) + 
   labs(x = "Number of photos", y = NULL, fill = "File size")
 ```
-:::
 
 Below are two violins of the same 300 file sizes. The first uses megabytes, so most of the area is squashed near the bottom and the neck stretches up past 5 MB. The second puts the `y` axis on a log scale with `scale_y_log10()`, which turns the same file sizes into a symmetric shape centered near 0.75 MB.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_violin
 #| code-fold: show
@@ -218,11 +199,8 @@ ggplot(data = microdrive_photos, aes(x = "", y = size_mb)) +
   scale_y_log10() + 
   labs(title = "Log scale", x = NULL, y = "File size (MB, log scale)")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 The `rlnorm()` call that created the data draws from a [log normal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution). A file size is log normal when its logarithm is normal:
 
@@ -234,13 +212,10 @@ The two parameters describe the log scale, not the megabyte scale. Back on the m
 
 Our simulated photos come close: the median is `r round(median(microdrive_photos$size_mb), 2)` MB and the mean is `r round(mean(microdrive_photos$size_mb), 2)` MB.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CHANGE IT:**
-:::
+### CHANGE IT {.unnumbered .fm-step}
 
 So far the file sizes look the way the formula says they should. Now suppose the photographer switches the camera to uncompressed TIFF for the last 50 photos. TIFFs fill a card fast, so she swaps in a second Microdrive. Each TIFF lands near 3.6 MB, and we'd expect them to add a second bump high on the violin's neck.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_data_violin
 #| code-fold: show
@@ -257,11 +232,9 @@ tiff_photos |>
     median = median(size_mb),
     q3 = quantile(size_mb, 0.75))
 ```
-:::
 
 Below are the same two violins, drawn with the TIFF photos.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: change_violin
 #| code-fold: show
@@ -279,7 +252,6 @@ ggplot(data = tiff_photos, aes(x = "", y = size_mb)) +
   scale_y_log10() + 
   labs(title = "Log scale", x = NULL, y = "File size (MB, log scale)")
 ```
-:::
 
 The TIFF files give the violin a second bulge between about 3.2 and 4.1 MB. Even the log scale can't make this shape symmetric. The summary numbers barely hint at this. The median moves from 0.81 to 0.97 MB, and the mean moves from 1.07 to 1.51 MB. A box plot of the same data would only show a taller box, because the third quartile jumps from 1.35 to 2.30 MB.
 
@@ -288,11 +260,9 @@ I've found this is where violins earn their place. When data come from two diffe
 
 ## Grammar 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-step}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
 Create labels with `labs()`
 
@@ -304,7 +274,6 @@ Add `geom_violin()`
 
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_violin
 #| code-fold: show
@@ -325,13 +294,10 @@ ggp2_violin <- ggplot(data = microdrive_photos,
 ggp2_violin + 
   labs_violin
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-step}
 
 ```{r}
 #| label: create_graph_violin

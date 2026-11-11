@@ -64,15 +64,15 @@ ggp2_ovrlp_hist +
   labs_ovrlp_hist
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
@@ -84,15 +84,12 @@ Overlapping histograms allow us to compare distributions across the groups of a 
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_ovrlp_hist
 #| code-fold: show
@@ -104,17 +101,13 @@ Install packages.
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 In 1997, kids everywhere were feeding, cleaning, and playing with Tamagotchis, and how long a virtual pet lived depended on how well it was cared for. We'll simulate the lifespans of 450 pets, 150 for each level of care. `rweibull()` draws each lifespan from a Weibull distribution, and the `scale` for each level of care (6, 13, or 21 days) stretches the lifespans of better cared for pets. Setting the seed with `set.seed()` means you'll get the same 450 pets every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_ovrlp_hist
 #| code-fold: show
@@ -136,19 +129,15 @@ tamagotchi_pets <- tibble(
     )
 glimpse(tamagotchi_pets)
 ```
-:::
 
 ## Distribution
 
 Overlapping histograms compare the shape of one variable across groups. Here the groups have the same *kind* of shape (they all come from the same distribution), but each one is stretched by a different amount. Below we'll move from the pets, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first five pets (all neglected).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_ovrlp_hist
 #| code-fold: show
@@ -156,11 +145,9 @@ Start with the first five pets (all neglected).
 #| echo: true
 head(tamagotchi_pets, 5)
 ```
-:::
 
 None of these neglected pets made it past nine days. The summary below compares the three levels of care. Each mean is a little higher than its median, and the longest lived pet in each group lasted more than twice as long as the median.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_ovrlp_hist
 #| code-fold: show
@@ -173,15 +160,11 @@ tamagotchi_pets |>
     median = median(lifespan_days), 
     max = max(lifespan_days))
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The histograms below are drawn on top of each other (`position = "identity"`), and the lines are the Weibull curves we drew the lifespans from, scaled to match the counts. Every group has the same lopsided hump with a tail to the right. Better care doesn't change the shape; it stretches the hump to the right and flattens it out.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_ovrlp_hist
 #| code-fold: show
@@ -203,11 +186,8 @@ ggplot(data = tamagotchi_pets, aes(x = lifespan_days, fill = care)) +
     linewidth = 1, show.legend = FALSE) + 
   labs(x = "Lifespan (days)", y = "Pets", fill = "Care")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 The [Weibull distribution](https://en.wikipedia.org/wiki/Weibull_distribution) is a common model for lifetimes. It has a shape ($k$) and a scale ($\lambda$):
 
@@ -222,9 +202,7 @@ Try changing `shape` in `rweibull()`. A shape of 1 turns the hump into a steady 
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
 
   -   Create labels with `labs()`
@@ -235,7 +213,6 @@ Try changing `shape` in `rweibull()`. A shape of 1 turns the hump into a steady 
 
   -   Inside `geom_histogram()`, set `alpha` to `2/3`, `position` to `"identity"` (so the bars overlap instead of stacking), and `bins` to `40`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_ovrlp_hist
 #| code-fold: show
@@ -259,7 +236,6 @@ ggp2_ovrlp_hist <- ggplot(data = tamagotchi_pets,
 ggp2_ovrlp_hist +
   labs_ovrlp_hist
 ```
-:::
 
 
 
@@ -267,13 +243,11 @@ ggp2_ovrlp_hist +
 Experiment with different `binwidth`s when comparing distributions across groups.
 :::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 Histograms work by dividing the variable provided to `x` [*into bins and counting the number of observations in each bin.*](https://ggplot2.tidyverse.org/reference/geom_histogram.html)
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 ```{r}
 #| label: create_graph_ovrlp_hist
 #| eval: true

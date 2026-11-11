@@ -53,7 +53,7 @@ install.packages("palmerpenguins")
 :::: {.callout-tip collapse="false" icon=false}
 ## **[topic]**
 
-::: {style="font-size: 1.25em; color: #02577A;"}
+::: {.fm-req-title}
 
 :::
 
@@ -80,7 +80,7 @@ peng_lines <- palmerpenguins::penguins |>
 
 <br>
 
-::: {style="font-size: 1.25em; color: #02577A;"}
+::: {.fm-req-title}
 **geoms:**
 :::
 
@@ -99,11 +99,11 @@ peng_lines <- palmerpenguins::penguins |>
 :::
 :::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
@@ -122,11 +122,11 @@ library(ggplot2)
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **DATA:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 <!--Load the `ggplot2::economics` data.-->
 :::
 
@@ -150,7 +150,7 @@ dplyr::glimpse(economics)
 
 ### Basic use
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **BASICS:**
 :::
 
@@ -169,11 +169,11 @@ ggp2_basic_blank
 
 ### Aesthetics
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **AESTHETICS:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
 The required aesthetics are: 
 
@@ -194,11 +194,11 @@ Optional aesthetics include:
 
 ### Additional Arguments
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **ARGUMENTS:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Below ...
 :::
 
@@ -258,7 +258,7 @@ Below ...
 
 ### Basic use
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **BASICS:**
 :::
 
@@ -278,7 +278,7 @@ Below ...
 
 ### Arguments
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **ARGUMENTS:**
 :::
 
@@ -304,11 +304,11 @@ Below ...
 
 ### Aesthetics
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **AESTHETICS:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
 The required aesthetics are: 
 

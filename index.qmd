@@ -72,7 +72,7 @@ flowchart TB
     dist(["<strong>Distribution</strong><br>normal, Poisson,<br>gamma, ..."]) -->|"i. set.seed()"| sim["<strong>Simulate</strong><br>base R or <code>faux</code>"]
     sim --> dset[("<strong>90s dataset</strong><br>OK Soda, Pogs,<br>Happy Meals, ...")]
     dset -->|"ii. Distribution section"| connect["<strong>Connect</strong><br>count it, draw it,<br>name it"]
-    connect -->|"iii. Grammar section"| gg[["<strong>ggplot2 graph</strong><br><code>ggrewindr::theme_*()</code>"]]
+    connect -->|"iii. Grammar section"| gg[["<strong>ggplot2 graph</strong><br><code>ggrewindr theme_*</code>"]]
 
     style dist fill:#4CBB9D,color:#FFFFFF,rx:5,ry:5
     style sim fill:#FFFFFF,color:#000000,stroke:#333

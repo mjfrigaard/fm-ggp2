@@ -28,7 +28,7 @@ Graphs in this chapter use `ggrewindr::theme_tetris()`, modeled on Tetris: a bla
 
 :::: {.callout-note collapse="false" icon=false}
 
-::: {style="font-size: 1.25em; color: #02577A;"}
+::: {.fm-req-title}
 
 :::
 
@@ -69,15 +69,15 @@ ggp2_beeswarm +
     labs_beeswarm
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
@@ -93,15 +93,12 @@ We can create a beeswarm plot using the [`ggbeeswarm` package](https://github.co
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_beeswarm
 #| code-fold: show
@@ -115,17 +112,13 @@ library(ggbeeswarm)
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 Tetris came bundled with every Game Boy, and by the 90s everyone had a high score to brag about. We'll simulate the number of lines cleared in 80 games by each of three players. `rnbinom()` draws each game's count from a negative binomial distribution, with a different average (`mu`) for each player: 25 lines for a casual player, 60 for a regular, and 120 for an expert. Setting the seed with `set.seed()` means you'll get the same 240 games every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_beeswarm
 #| code-fold: show
@@ -146,19 +139,15 @@ tetris_games <- tibble(
     )
 glimpse(tetris_games)
 ```
-:::
 
 ## Distribution
 
 A beeswarm plot draws every game as its own point, so it shows the spread of each group directly. Tetris scores are counts, but they're much more spread out than the counts in the dot plot chapters: one bad drop can end a game early, and one good streak can keep it going for a long time. Below we'll move from the games, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first ten games (all from the casual player).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_beeswarm
 #| code-fold: show
@@ -166,11 +155,9 @@ Start with the first ten games (all from the casual player).
 #| echo: true
 head(tetris_games$lines_cleared, 10)
 ```
-:::
 
 The casual player averages about 25 lines, but these games range from 6 to 42. The summary below shows the variance for each player. For Poisson counts (like the Goosebumps books), the variance would be close to the mean. Here the variance is 5 to 29 times larger than the mean, and the gap grows with the player's skill.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_beeswarm
 #| code-fold: show
@@ -181,15 +168,11 @@ tetris_games |>
   summarise(mean = mean(lines_cleared), variance = var(lines_cleared),
             min = min(lines_cleared), max = max(lines_cleared))
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The beeswarms below compare our regular player's 80 games to 80 games drawn from a Poisson distribution with the same average (60 lines). The Poisson swarm is a tight cluster around 60. The negative binomial swarm stretches from single digits to more than twice the average, with a long tail of great games at the top.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_beeswarm
 #| code-fold: show
@@ -209,11 +192,8 @@ ggplot(regular_games, aes(x = model, y = lines_cleared)) +
   labs(title = "Same average, wider spread",
        x = NULL, y = "Lines cleared")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 The [negative binomial distribution](https://en.wikipedia.org/wiki/Negative_binomial_distribution) is a common model for counts that are more spread out than a Poisson distribution allows (called *overdispersion*). With an average $\mu$ and a size (or dispersion) parameter $r$, its variance is:
 
@@ -226,9 +206,7 @@ The first term ($\mu$) is the Poisson variance, and the second term ($\mu^2 / r$
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   -   Create labels with `labs()`
 
@@ -240,7 +218,6 @@ The first term ($\mu$) is the Poisson variance, and the second term ($\mu^2 / r$
 
   -   Add the `ggbeeswarm::geom_beeswarm()` layer (with `alpha`) and set the point `color`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_beeswarm
 #| code-fold: show
@@ -263,17 +240,13 @@ ggp2_beeswarm <- ggplot(data = tetris_games,
 ggp2_beeswarm +
     labs_beeswarm
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 Adjust the shape of the swarm using `method` (below), or place the points with the `geom_quasirandom()` function (not shown here).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_beeswarm
 #| eval: true
@@ -296,7 +269,6 @@ ggp2_beeswarm <- ggplot(data = tetris_games,
 ggp2_beeswarm +
     labs_beeswarm
 ```
-:::
 
 
 ## More info
@@ -310,12 +282,11 @@ Below are some additional arguments and methods for beeswarm plots.
 Use method to adjust the shape of the beeswarm (`swarm`, `compactswarm`, `hex`, `square`, `center`, or `centre`)
 
 :::: {.column-margin}
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Set the point `shape` to `21` to control the `fill` and `color`
 :::
 ::::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_beeswarm_method
 #| eval: true
@@ -339,7 +310,6 @@ ggp2_compact_swarm +
     # add labels
     labs_beeswarm
 ```
-:::
 
 ### `side`
 
@@ -347,7 +317,6 @@ ggp2_compact_swarm +
 
 To place the points on only one side of each group, use the `side` argument (`1` for the right side, `-1` for the left, and `0`, the default, for both).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_beeswarm_side
 #| eval: true
@@ -372,7 +341,6 @@ ggp2_rside_swarm +
     # add labels
     labs_beeswarm
 ```
-:::
 
 ### `cex`
 
@@ -380,7 +348,6 @@ ggp2_rside_swarm +
 
 The `cex` argument controls the "*scaling for adjusting point spacing*"
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_beeswarm_cex
 #| eval: true
@@ -406,15 +373,12 @@ ggp2_beeswarm_cex +
     labs_beeswarm
 ```
 
-:::
-
 ### `geom_jitter()`
 
 <br>
 
 `geom_jitter()` isn't a true beeswarm: it adds random noise to each point's position, so points can still land on top of each other. Below we set `width` to spread the points sideways and `height` to `0` so no count moves up or down (the caption notes the jitter).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: create_graph_beeswarm_jitter
 #| eval: true
@@ -441,4 +405,3 @@ ggp2_jitter_swarm +
     labs_beeswarm +
     labs(caption = "Simulated data; points jittered to the side at random")
 ```
-:::

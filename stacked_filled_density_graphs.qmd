@@ -66,15 +66,15 @@ ggp2_fill_density +
   labs_fill_density
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**      
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
@@ -86,14 +86,11 @@ Density graphs are typically used to visualize the distribution of a single vari
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_fill_density
 #| code-fold: show
@@ -105,17 +102,13 @@ Install packages.
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 In 1996, most people opened Netscape Navigator over a dial up modem, and the modem you owned set how fast the web loaded. We'll simulate 600 browsing sessions in two steps. First, `sample()` decides which modem each session used (14.4k, 28.8k, or 56k). Then `rnorm()` draws the connection speed from that modem's own normal distribution: no modem ever connects at its full rated speed, and phone line noise spreads the speeds out. Setting the seed with `set.seed()` means you'll get the same 600 sessions every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_fill_density
 #| code-fold: show
@@ -141,19 +134,15 @@ modem_sessions <- tibble(
   mutate(modem = factor(modem, levels = c("14.4k", "28.8k", "56k"))) # slowest to fastest
 dplyr::glimpse(modem_sessions)
 ```
-:::
 
 ## Distribution
 
 A filled density graph answers a different question than a regular density plot. Instead of asking "how common is each speed?", it asks "at this speed, which modem is a session most likely using?" The answer depends on two things: how common each modem is, and how its speeds are spread out. Below we'll move from the sessions, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first six sessions.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_fill_density
 #| code-fold: show
@@ -161,11 +150,9 @@ Start with the first six sessions.
 #| echo: true
 head(modem_sessions, 6)
 ```
-:::
 
 The 28.8k sessions connect in the mid to high 20s, and the 56k sessions connect around 40 to 45. Counting all 600 sessions shows how common each modem is overall.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_fill_density
 #| code-fold: show
@@ -175,11 +162,9 @@ modem_sessions |>
   count(modem) |> 
   mutate(share = n / sum(n))
 ```
-:::
 
 Now zoom in on the sessions that connected between 30 and 36 kbps. This is the overlap zone: a fast 28.8k connection and a slow 56k connection both land here. The two modems split these sessions roughly in half.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_window_fill_density
 #| code-fold: show
@@ -190,15 +175,11 @@ modem_sessions |>
   count(modem) |> 
   mutate(share = n / sum(n))
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 Below are two views of the same 600 sessions. The first stacks the count densities, so the height of each color at a speed is about how many sessions fall in a 1 kbps wide slice there.[^count-density] The second uses `position = "fill"`, which stretches every vertical slice to 100% and turns the counts into shares. The dashed line at 33 kbps sits in the overlap zone, where the filled graph splits between 28.8k and 56k.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_fill_density
 #| code-fold: show
@@ -217,11 +198,8 @@ ggplot(modem_sessions, aes(x = speed_kbps, after_stat(count), fill = modem)) +
   labs(title = "Filled shares", x = "Speed (kbps)", y = "Share", 
     fill = "Modem")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 The speeds come from a [mixture](https://en.wikipedia.org/wiki/Mixture_distribution) of three normal distributions, one per modem $k$, each with its own share of the sessions ($\pi_k$):
 
@@ -238,13 +216,83 @@ $$
 At 33 kbps, the 14.4k curve is essentially zero, so the share splits between the other two: $0.45 \times \text{Normal}(33; 26, 2.5)$ for 28.8k and $0.30 \times \text{Normal}(33; 44, 5)$ for 56k. That works out to about 40% for 28.8k and 60% for 56k, close to the split the filled graph shows at the dashed line. Try raising the 56k share in `sample()` and the 56k band at 33 kbps grows, even though no modem got faster.
 
 
+### CHANGE IT {.unnumbered .fm-step}
+
+So far the filled graph shows what we expect: each modem's band is widest where its speeds land, and 56k owns the fast end. But the first 56k modems only went on sale in early 1997. Suppose we sample 600 sessions from that spring, when only 2 in 100 users owned one. More people were still on 14.4k, and each modem's speeds stay the same. We should see the 56k band shrink to a sliver.
+
+```{r}
+#| label: change_data_fill_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+set.seed(1996) # same seed as above
+modem_early <- tibble(
+  session_id = 1:600,
+  modem = sample(
+    c("14.4k", "28.8k", "56k"), 600,
+    replace = TRUE,
+    prob = c(0.40, 0.58, 0.02) # 56k modems are brand new
+    ),
+  speed_kbps = round(
+    case_when( # same speeds for each modem as above
+      modem == "14.4k" ~ rnorm(600, mean = 13, sd = 1.2),
+      modem == "28.8k" ~ rnorm(600, mean = 26, sd = 2.5),
+      TRUE ~ rnorm(600, mean = 44, sd = 5)
+      ),
+    1
+    )
+  ) |>
+  mutate(modem = factor(modem, levels = c("14.4k", "28.8k", "56k")))
+modem_early |> 
+  count(modem) |> 
+  mutate(share = n / sum(n))
+```
+
+Below we redraw the same filled density graph with the 1997 sessions.
+
+```{r}
+#| label: change_graph_fill_density
+#| code-fold: show
+#| eval: true
+#| echo: true
+ggplot(data = modem_early, 
+       aes(x = speed_kbps, 
+           after_stat(count),
+          fill = modem)) +
+      geom_density(position = "fill") + 
+  labs_fill_density
+```
+
+```{r}
+#| label: change_numbers_fill_density
+#| include: false
+early_layer <- ggplot2::get_layer_data(
+  ggplot(modem_early, aes(x = speed_kbps, after_stat(count), fill = modem)) +
+    geom_density(position = "fill"))
+early_56k <- early_layer |> 
+  filter(group == 3) |> 
+  mutate(share = ymax - ymin)
+n_56k <- sum(modem_early$modem == "56k")
+start_56k <- min(early_56k$x[early_56k$share > 0.5])
+width_56k <- (max(early_layer$x) - start_56k) / diff(range(early_layer$x))
+share_33 <- function(layer) {
+  slice <- layer |> filter(group == 3, abs(x - 33) == min(abs(x - 33)))
+  slice$ymax - slice$ymin
+}
+before_33 <- share_33(ggplot2::get_layer_data(ggp2_fill_density))
+after_33 <- share_33(early_layer)
+```
+
+Only `r n_56k` of the 600 sessions (`r round(100 * n_56k / 600, 1)` percent) used a 56k modem. Yet the 56k band holds most of every slice above `r round(start_56k)` kbps, about `r round(100 * width_56k)` percent of the graph's width. At 33 kbps its share fell from `r round(100 * before_33)` to `r round(100 * after_33)` percent.
+
+The filled graph stretches every slice to 100%, so `r n_56k` fast sessions get the same height as hundreds of slow ones. It shows the share at each speed, but it hides how many sessions stand behind that share. I've found it's worth drawing the stacked counts next to a filled density graph, so readers can see where the data runs thin.
+
+
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
   -   Create labels with `labs()`
 
@@ -258,7 +306,6 @@ At 33 kbps, the 14.4k curve is essentially zero, so the share splits between the
 
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_fill_density
 #| code-fold: show
@@ -282,13 +329,10 @@ ggp2_fill_density <- ggplot(data = modem_sessions,
 ggp2_fill_density + 
   labs_fill_density
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ```{r}
 #| label: create_graph_fill_density

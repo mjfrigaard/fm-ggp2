@@ -71,11 +71,11 @@ ggp2_bubble +
 ```
 
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ three numeric (continuous) variables**
 :::
 
@@ -89,14 +89,11 @@ The position on the `x` and `y` axis illustrates the relationship between the fi
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_bubble
 #| code-fold: show
@@ -108,12 +105,9 @@ Install packages.
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 *Seinfeld* was famously a show about nothing, and every episode got a bump whenever Kramer slid through Jerry's door. We'll simulate 180 episodes across nine seasons (20 per season) with three numeric variables:
 
@@ -125,7 +119,6 @@ library(dplyr) # for tibble() and data manipulation
 
 Setting the seed with `set.seed()` means you'll get the same 180 episodes every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_bubble
 #| code-fold: show
@@ -154,19 +147,15 @@ seinfeld_eps <- tibble(
     )
 glimpse(seinfeld_eps)
 ```
-:::
 
 ## Distribution
 
 A bubble chart adds a third variable to a scatter plot with the size of each point. Our eyes read the *area* of a bubble, not its width, so how a value gets turned into a size matters as much as the value itself. Below we'll move from the viewers, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first five episodes.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_bubble
 #| code-fold: show
@@ -174,11 +163,9 @@ Start with the first five episodes.
 #| echo: true
 head(seinfeld_eps, 5)
 ```
-:::
 
 Below we summarise the `viewers` for each season. The mean grows each season, and so does the standard deviation, but their ratio (`cv`) stays close to 0.15.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_bubble
 #| code-fold: show
@@ -191,15 +178,11 @@ seinfeld_seasons <- seinfeld_eps |>
             cv = sd_viewers / mean_viewers)
 seinfeld_seasons
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The graph below draws three bubbles for 10, 20, and 40 million viewers, two ways. On the left, `scale_size()` makes the *area* of each bubble proportional to the value (so 40 million looks four times bigger than 10 million). On the right, `scale_radius()` makes the *width* proportional to the value, and 40 million looks sixteen times bigger than 10 million.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_bubble
 #| code-fold: show
@@ -220,13 +203,10 @@ ggplot(three_bubbles, aes(x = x, y = y, size = viewers)) +
   labs(title = "scale_radius()", x = NULL, y = NULL) +
   theme(legend.position = "none", axis.text = element_blank())
 ```
-:::
 
 `scale_size()` is the default for `size` in `ggplot2`, and it's the right choice for bubble charts.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 The viewers come from a [lognormal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution) (normal on the log scale), with a median that grows each season:
 
@@ -244,9 +224,7 @@ A season nine episode with about `r round(seinfeld_seasons$mean_viewers[9])` mil
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   - Create labels with `labs()`
 
@@ -262,7 +240,6 @@ A season nine episode with about `r round(seinfeld_seasons$mean_viewers[9])` mil
 
   - Move the legend to the bottom of the graph with `theme(legend.position = "bottom")`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_bubble
 #| code-fold: show
@@ -290,12 +267,9 @@ ggp2_bubble <- seinfeld_eps |>
 ggp2_bubble +
   labs_bubble
 ```
-:::
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ```{r}
 #| label: create_graph_bubble

@@ -71,15 +71,15 @@ ggp2_ridges +
   labs_ridges
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
@@ -91,16 +91,13 @@ If we want to plot density curves but retain the interpretability of the axes, c
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_ridges
 #| code-fold: show
@@ -114,17 +111,13 @@ library(ggridges)
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Squeezit was General Mills' fruit drink in a squeezable plastic bottle shaped like a little character, and every flavor came in a different color. We'll simulate how many seconds it took kids to squeeze out 60 bottles of each of six flavors. Each flavor gets its own average (`avg_seconds`), and `rgamma()` draws each bottle's time from a gamma distribution with the same shape (2.5) for every flavor. Setting the seed with `set.seed()` means you'll get the same 360 bottles every time you run the code below.
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_ridges
 #| code-fold: show
@@ -148,19 +141,15 @@ squeezit_drinks <- tibble(
   select(bottle_id, flavor, seconds_to_finish)
 glimpse(squeezit_drinks)
 ```
-:::
 
 ## Distribution
 
 Ridgeline plots stack one density curve per group, which makes them good for comparing many groups at once. All six flavors here share the same *kind* of distribution: most bottles are empty fairly quickly, and a few take a long time. What changes from flavor to flavor is the scale. Below we'll move from the bottles, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first five tropical bottles.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_ridges
 #| code-fold: show
@@ -168,11 +157,9 @@ Start with the first five tropical bottles.
 #| echo: true
 head(squeezit_drinks, 5)
 ```
-:::
 
 These five bottles took anywhere from 11 to 55 seconds. The summary below shows that the mean is above the median for every flavor (a sign of right skew), and that the standard deviation grows with the mean. The ratio of the two (`cv`, the [coefficient of variation](https://en.wikipedia.org/wiki/Coefficient_of_variation)) stays between about 0.54 and 0.72 for every flavor.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_ridges
 #| code-fold: show
@@ -184,15 +171,11 @@ squeezit_drinks |>
             median = median(seconds_to_finish),
             sd = sd(seconds_to_finish), cv = sd / mean)
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The ridgeline plot below adds a line at each flavor's median (`quantile_lines = TRUE` with `quantiles = 2`). Every ridge has a hump on the left and a tail on the right. Moving up from cherry to tropical, the humps slide right and the tails generally get longer (strawberry's reaches the farthest), but the overall shape stays the same. The extra bumps (like the one in the tropical ridge) are noise from having only 60 bottles per flavor. No bottle can take less than 0 seconds, so `from = 0` starts each ridge at 0.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_ridges
 #| code-fold: show
@@ -204,11 +187,8 @@ ggplot(squeezit_drinks, aes(x = seconds_to_finish, y = flavor, fill = flavor)) +
     quantiles = 2, color = "#F5F5F5", from = 0, show.legend = FALSE) + 
   labs(x = "Seconds to finish", y = NULL)
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each flavor's times come from a [gamma distribution](https://en.wikipedia.org/wiki/Gamma_distribution) with a shared shape ($k$) and its own scale ($\theta$):
 
@@ -221,9 +201,7 @@ The mean of a gamma distribution is $k\theta$ and its standard deviation is $\sq
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   -   Create labels with `labs()`
 
@@ -237,7 +215,6 @@ The mean of a gamma distribution is $k\theta$ and its standard deviation is $\sq
 
   -   Remove the legend with `show.legend = FALSE`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_ridges
 #| code-fold: show
@@ -262,13 +239,10 @@ ggp2_ridges <- ggplot(data = squeezit_drinks,
 ggp2_ridges +
   labs_ridges
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 Ridgeline plots are excellent for comparing continuous distributions across groups.
 

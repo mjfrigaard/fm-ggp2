@@ -62,15 +62,15 @@ ggp2_ovrlp_density +
   labs_ovrlp_density
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
@@ -84,16 +84,13 @@ Density plots are [*smoothed version(s) of  histogram(s)*](https://ggplot2.tidyv
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_ovrlp_density
 #| code-fold: show
@@ -105,19 +102,15 @@ Install packages.
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 In 1998, Research In Motion (RIM) released the Inter@ctive Pager 950, a two way pager with a tiny keyboard you typed on with your thumbs (and the ancestor of the BlackBerry). Its main rival was the Motorola PageWriter. We'll simulate 300 messages: 180 sent from a RIM 950 and 120 sent from a PageWriter. Each pager model gets its own normal distribution of message lengths in characters (`rnorm()`), and RIM 950 messages are both longer and more consistent. Setting the seed with `set.seed()` means you'll get the same 300 messages every time you run the code below.
 :::
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_ovrlp_density
 #| code-fold: show
@@ -139,19 +132,15 @@ pager_messages <- tibble(
     )
 dplyr::glimpse(pager_messages)
 ```
-:::
 
 ## Distribution
 
 Overlapping and stacked density plots can tell two different stories about the same data. By default, each group's curve covers an area of 1, which hides the fact that one group might be much bigger than the other. Our two pager models aren't the same size (180 messages vs. 120), so the choice matters here. Below we'll move from the messages, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first five messages (all sent from a RIM 950).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_ovrlp_density
 #| code-fold: show
@@ -159,11 +148,9 @@ Start with the first five messages (all sent from a RIM 950).
 #| echo: true
 head(pager_messages, 5)
 ```
-:::
 
 These five messages range from 23 to 57 characters. The summary below compares the two pager models: the RIM 950 has more messages, longer messages on average, and a smaller standard deviation.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_ovrlp_density
 #| code-fold: show
@@ -174,15 +161,11 @@ pager_messages |>
   summarise(messages = n(), mean = mean(msg_length), 
             sd = sd(msg_length))
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 A bar model shows the two groups as parts of all 300 messages. The RIM 950 takes up 60% of the bar and the PageWriter takes up 40%.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_bar_model_ovrlp_density
 #| code-fold: show
@@ -197,11 +180,9 @@ pager_messages |>
     position = position_stack(vjust = 0.5, reverse = TRUE)) + 
   labs(x = "Messages", y = NULL, fill = "Pager model")
 ```
-:::
 
 The two graphs below show why the bar model matters. On the left, the default densities each cover an area of 1, so the PageWriter curve looks almost as big as the RIM 950 curve. On the right, `after_stat(count)` scales each curve by its number of messages, so the RIM 950 curve is 1.5 times the size of the PageWriter curve, just like the bar model.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_ovrlp_density
 #| code-fold: show
@@ -221,11 +202,8 @@ ggplot(pager_messages, aes(x = msg_length, after_stat(count),
     fill = "Pager model") + 
   theme(legend.position = "bottom")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 Each pager model has its own [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution), and the two are mixed in proportion to their number of messages:
 
@@ -238,9 +216,7 @@ $$
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
 
 
@@ -256,7 +232,6 @@ $$
 
   -   Set `bounds` to `c(0, Inf)` (a message can't have fewer than 0 characters)
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_ovrlp_density
 #| code-fold: show
@@ -278,13 +253,10 @@ ggp2_ovrlp_density <- ggplot(data = pager_messages,
 ggp2_ovrlp_density +
   labs_ovrlp_density
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ::: {.column-margin}
 *A downside of density plots is a `y` axis that's hard to interpret*
@@ -323,8 +295,6 @@ ggp2_ovrlp_density +
 
 If we change the `position` to `"stack"` we can see the smoothed estimates are 'stacked' on top of each other (and the `y` axis shifts slightly).
 
-::: {style="font-size: 0.85em;"}
-
 ```{r}
 #| label: code_graph_stack_density
 #| eval: true
@@ -347,9 +317,8 @@ ggp2_stack_density <- ggplot(data = pager_messages,
 ggp2_stack_density +
     labs_stack_density
 ```
-:::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Setting `position` to `'stack'` [loses marginal densities](https://ggplot2.tidyverse.org/reference/geom_density.html#ref-examples): the top curve is the sum of the group densities, not the density of all 300 messages.
 :::
 
@@ -358,7 +327,6 @@ Setting `position` to `'stack'` [loses marginal densities](https://ggplot2.tidyv
 
 If we include `after_stat(count)` as one of our mapped aesthetics, the mapping is postponed until after statistical transformation, and uses the [*`density * n` instead of the default density*](https://ggplot2.tidyverse.org/reference/geom_density.html#computed-variables).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_after_stat_density
 #| eval: true
@@ -383,7 +351,6 @@ ggp2_after_stat_density <- ggplot(data = pager_messages,
 ggp2_after_stat_density +
   labs_after_stat_density
 ```
-:::
 
 
 Adding [`after_stat(count)`](https://ggplot2.tidyverse.org/reference/geom_density.html#computed-variables) *'preserves marginal densities.'*, which results in a more interpretable `y` axis (depending on the audience).
@@ -393,7 +360,6 @@ Adding [`after_stat(count)`](https://ggplot2.tidyverse.org/reference/geom_densit
 
 Using `after_stat(count)` with `position = "fill"` creates a conditional density estimate (each group's share of the messages at every message length).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_fill_density
 #| eval: true
@@ -419,7 +385,6 @@ ggp2_fill_density <- ggplot(data = pager_messages,
 ggp2_fill_density +
   labs_fill_density
 ```
-:::
 
 
 This results in a `y` axis ranging from 0 to 1, and the area filled with the relative proportional values.

@@ -87,15 +87,15 @@ ggp2_alluvial_w +
   labs_alluvial_y
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ multiple categorical variables**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a date or time variable**
 :::
 
@@ -111,14 +111,11 @@ See also: [parallel sets](parallel_sets.qmd)
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_alluvial
 #| code-fold: show
@@ -132,11 +129,8 @@ library(ggalluvial)
 library(ggplot2)
 library(dplyr) # for data manipulation
 ```
-:::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 As 1999 went on, the news filled up with warnings about the Y2K bug: computers that stored years with two digits might think January 1, 2000 was January 1, 1900, and nobody was quite sure what would break. We'll simulate 300 households surveyed three times in 1999 (January, July, and December) about how prepared they were: `"Not worried"`, `"Some supplies"` (extra batteries and bottled water), or `"Bunker ready"`.
 
@@ -144,7 +138,6 @@ In January, most households aren't worried (we draw these with `sample()`). Afte
 
 For example, a household that isn't worried has a 70% chance of staying that way, a 25% chance of picking up some supplies, and a 5% chance of going all the way to the bunker. The `next_survey()` function uses `sample()` to draw each household's next answer from its row. Setting the seed with `set.seed()` means you'll get the same 300 households every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_alluvial
 #| code-fold: show
@@ -181,11 +174,9 @@ y2k_households <- tibble(
     )
 glimpse(y2k_households)
 ```
-:::
 
 Below we count every combination of the three answers (as `y2k_wide`). Each row is a path through the three surveys, and `freq` is how many households took it.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_y2k_wide
 #| code-fold: show
@@ -197,19 +188,15 @@ y2k_wide <- y2k_households |>
     )
 glimpse(y2k_wide)
 ```
-:::
 
 ## Distribution
 
 An alluvial chart shows how things move between categories. The width of each flow is a count, and the counts come from a chain of random moves: every household rolls the dice at every survey. Below we'll move from the households, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first five households.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_alluvial
 #| code-fold: show
@@ -217,11 +204,9 @@ Start with the first five households.
 #| echo: true
 head(y2k_households, 5)
 ```
-:::
 
 Some households stay put and some move. Below we cross January's answers (rows) with July's answers (columns) using `table()`.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_alluvial
 #| code-fold: show
@@ -231,17 +216,13 @@ jan_jul <- table(January = y2k_households$jan_1999,
                  July = y2k_households$jul_1999)
 jan_jul
 ```
-:::
 
 Of the `r sum(jan_jul["Not worried", ])` households that weren't worried in January, `r jan_jul["Not worried", "Not worried"]` still weren't worried in July. That's about `r round(100 * jan_jul["Not worried", "Not worried"] / sum(jan_jul["Not worried", ]))`%, close to the 70% in the first row of `move_probs`.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The alluvial chart below draws the same table. Each cell in `jan_jul` that isn't 0 becomes a flow from January to July, and the width of the flow is the count in that cell. That's `r sum(jan_jul > 0)` of the nine cells, because no household went from `"Bunker ready"` to `"Not worried"`.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_alluvial
 #| code-fold: show
@@ -258,13 +239,10 @@ y2k_households |>
   labs(y = "Households") +
   theme(legend.position = "none")
 ```
-:::
 
 The large numbers on the diagonal of `move_probs` make staying put the most likely move, but the width of a flow also depends on how many households start in that category. That's why the flow from `"Not worried"` to `"Some supplies"` (`r jan_jul["Not worried", "Some supplies"]` households) is wider than the flow of households that stay `"Bunker ready"` (`r jan_jul["Bunker ready", "Bunker ready"]`).
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 A process where the next step depends only on the current step is a [Markov chain](https://en.wikipedia.org/wiki/Markov_chain). The households in each starting category split across the three categories according to a [multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution) (the same distribution we used for the last Alleyway stage each player reached in @sec-bar-graphs), with probabilities from that category's row of `move_probs`:
 
@@ -274,7 +252,6 @@ $$
 
 Multiplying January's counts by the matrix gives the counts we'd expect in July:
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: name_alluvial
 #| code-fold: show
@@ -284,15 +261,12 @@ expected_jul <- as.vector(table(y2k_households$jan_1999)) %*% move_probs
 rbind(expected = round(expected_jul[1, ], 1),
       observed = table(y2k_households$jul_1999))
 ```
-:::
 
 The observed July counts land close to the expected ones. Because the off diagonal chances of moving toward the bunker (0.25 and 0.20) are bigger than the chances of moving back (0.15 and 0.15), each survey pushes more households toward the right side of the matrix. Try changing the first row of `move_probs` to `c(0.95, 0.04, 0.01)` and most of the flows stay flat.
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
 
 
@@ -306,7 +280,6 @@ The observed July counts land close to the expected ones. Because the off diagon
 
   - Remove the legend with `theme(legend.position = "none")` (the labels on the strata already name each category)
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_alluvial
 #| code-fold: show
@@ -338,11 +311,8 @@ ggp2_alluvial_w +
   labs_alluvial +
   labs_alluvial_y
 ```
-:::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 The `ggalluvial` functions can handle wide or long data.
 
@@ -386,7 +356,6 @@ The `ggalluvial` package can also help reshape data with the `to_lodes_form()` f
 
 Below we create `y2k_lodes` from the `y2k_wide` data using the `to_lodes_form()` from the `ggalluvial` package. We'll keep a copy of each household's January answer (`January`) so we can still use it for `fill` after the reshaping.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_y2k_lodes
 #| code-fold: show
@@ -402,7 +371,6 @@ y2k_lodes <- y2k_wide |>
     )
 glimpse(y2k_lodes)
 ```
-:::
 
 Create labels with `labs()`
 
@@ -416,7 +384,6 @@ Create labels with `labs()`
 
   - Remove the legend with `theme(legend.position = "none")`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_alluvial_lf
 #| code-fold: show
@@ -441,7 +408,6 @@ ggp2_alluvial_lf +
     labs_alluvial +
     theme(legend.position = "none")
 ```
-:::
 
 ### `geom_flow()`
 
@@ -449,7 +415,6 @@ If you'd like to arrange the date or time variable across the `x`, you can use t
 
   - First create `y2k_long`, a long version of `y2k_households` with one row per household per survey (and `survey` as a factor in the order the surveys happened).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_y2k_long
 #| code-fold: show
@@ -470,7 +435,6 @@ y2k_long <- y2k_households |>
     )
 glimpse(y2k_long)
 ```
-:::
 
   - Create labels with `labs()`
 
@@ -480,7 +444,6 @@ glimpse(y2k_long)
 
   - Add the `geom_flow()`, with `stat` set to `"alluvium"` and `lode.guidance` set to `"frontback"` (with 300 households, each flow is only one household wide, so we leave the outline `color` off or it covers the fill)
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_alluvial_flow
 #| code-fold: show
@@ -503,11 +466,9 @@ ggp2_alluvial_flow <- ggplot(data = y2k_long,
 ggp2_alluvial_flow +
   labs_alluvial
 ```
-:::
 
   - Add `ggalluvial::geom_stratum()`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_alluvial_stratum
 #| code-fold: show
@@ -519,13 +480,11 @@ ggp2_alluvial_stratum <- ggp2_alluvial_flow +
 ggp2_alluvial_stratum +
   labs_alluvial
 ```
-:::
 
 ### `legend.position`
 
 Move legend to bottom with `theme(legend.position = "bottom")`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_alluvial_legend
 #| code-fold: show
@@ -535,4 +494,3 @@ ggp2_alluvial_stratum +
   labs_alluvial +
   theme(legend.position = "bottom")
 ```
-:::

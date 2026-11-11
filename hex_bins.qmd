@@ -72,11 +72,11 @@ ggp2_hex_b15 +
     labs_hex
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ two numeric (continuous) variable**
 :::
 
@@ -90,13 +90,10 @@ Hexagon bins (or hex-bins) are very similar to 2-D histograms, but instead of di
 ## Set up
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 Install packages.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_hex
 #| code-fold: show
@@ -110,12 +107,9 @@ library(colorspace)
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 Surge launched in 1997 as Coca-Cola's answer to Mountain Dew, and it was marketed straight at teenagers who played a lot of video games. We'll simulate 3,000 students with four variables:
 
@@ -127,7 +121,6 @@ Surge launched in 1997 as Coca-Cola's answer to Mountain Dew, and it was markete
 
 Setting the seed with `set.seed()` means you'll get the same 3,000 students every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_hex
 #| code-fold: show
@@ -163,19 +156,15 @@ surge_teens <- tibble(
   select(-avg_cans) # drop the helper column
 glimpse(surge_teens)
 ```
-:::
 
 ## Distribution
 
 Every hexagon in a hex bin plot is a count, and the size of the hexagons controls how big those counts are. Big hexagons hold lots of students each, so their colors are steady but blurry. Small hexagons show more detail, but each one holds only a few students, so their colors are noisy. Below we'll move from the counts, to a picture, to the formula.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first five students.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_hex
 #| code-fold: show
@@ -183,11 +172,9 @@ Start with the first five students.
 #| echo: true
 head(surge_teens, 5)
 ```
-:::
 
 `layer_data()` returns the data behind a `ggplot2` layer, including the `count` in every hexagon. Below we compare the counts for 15 bins and 40 bins.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_hex
 #| code-fold: show
@@ -204,17 +191,13 @@ hex_counts <- function(bins) {
 hex_compare <- bind_rows(hex_counts(15), hex_counts(40))
 hex_compare
 ```
-:::
 
 With 15 bins, `r hex_compare$hexagons[1]` hexagons hold the 3,000 students, and the median hexagon holds `r hex_compare$median_count[1]` of them. With 40 bins, there are `r hex_compare$hexagons[2]` hexagons, the median hexagon holds only `r hex_compare$median_count[2]` students, and `r round(100 * hex_compare$under_5[2])`% of the hexagons hold fewer than five.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The two graphs below draw the same students with 15 and 40 bins. Both show the same rising cloud (more Surge, more video games) that's crowded in the lower left. The 15 bin version is smooth. The 40 bin version shows more of the shape, but it speckles at the edges, where neighboring hexagons with counts of 1, 2, and 3 sit side by side.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_hex
 #| code-fold: show
@@ -230,11 +213,8 @@ ggplot(surge_teens, aes(x = cans_per_week, y = game_hours)) +
   labs(title = "40 bins", x = "Cans per week", y = "Hours of games") +
   theme(legend.position = "bottom")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 The cans come from a [gamma distribution](https://en.wikipedia.org/wiki/Gamma_distribution) (right skewed), and the hours come from a normal distribution centered on a straight line:
 
@@ -246,9 +226,7 @@ The skew in the cans is why the hexagons pile up in the lower left and thin out 
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   - Create labels with `labs()`
 
@@ -258,7 +236,6 @@ The skew in the cans is why the hexagons pile up in the lower left and thin out 
 
   - Add the `geom_hex()` layer
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_hex
 #| code-fold: show
@@ -282,11 +259,8 @@ ggp2_hex <- ggplot(data = surge_teens,
 ggp2_hex +
     labs_hex
 ```
-:::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ```{r}
 #| label: create_graph_hex
@@ -320,7 +294,6 @@ Below we change the `bins` to `20` and `15` and save these layers as `ggp2_hex_b
 
 *Decreasing* the number of `bins` *increases* the size of the hexagons.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_hex_bins
 #| code-fold: show
@@ -340,15 +313,12 @@ ggp2_hex_b15 +
     labs_hex
 ```
 
-:::
-
 ### Scale
 
   - We can adjust the color scale using `scale_color_discrete_sequential()` from the `colorspace` package and setting `aesthetics` to `"fill"`.
 
   - If the hexagons overlap, we can use the `alpha` to make them slightly transparent.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_hex_scale
 #| code-fold: show
@@ -372,7 +342,6 @@ ggplot(data = surge_teens,
         palette = "Viridis") +
     labs_hex2
 ```
-:::
 
 Get a full list of available color palettes using `hcl_palettes(type = "sequential")`
 
@@ -382,7 +351,6 @@ Get a full list of available color palettes using `hcl_palettes(type = "sequenti
 
   - `linewidth` is also helpful when using `alpha` for overlapping values.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_hex_options
 #| code-fold: show
@@ -408,7 +376,6 @@ ggplot(data = surge_teens,
         palette = "Dark Mint") +
     labs_hex3
 ```
-:::
 
 
 Bins can be set with `bins` (a single number) or `binwidth` (a numeric vector of `c(x, y)`)

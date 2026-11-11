@@ -80,19 +80,19 @@ ggp2_stream +
           axis.text.y = element_blank())
 ```
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a categorical variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (date) variable**
 :::
 
@@ -106,14 +106,11 @@ Categorical groups are differentiated by color layers, with the area of the laye
 
 ## Set up
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-label}
 
 Install packages.
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_stream
 #| code-fold: show
@@ -128,19 +125,15 @@ library(ggplot2)
 library(dplyr) # for data manipulation
 library(tidyr) # for expand_grid()
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-label}
 
 The 90s were a decade of fads that showed up overnight and vanished just as fast. Slap bracelets were banned from schools, Hypercolor shirts changed color when you touched them, and Koosh balls and scrunchies were everywhere.
 
 We'll simulate the monthly sales (in thousands) for four fads from 1990 through 1999. Each fad in `fads` gets a `peak` (the year it was most popular), a `spread` (how long it lasted, in years), and a `total` (how many it sold overall). The monthly average (`avg_sales`) follows a bell shaped curve around the peak, and `rpois()` draws the actual monthly sales. Setting the seed with `set.seed()` means you'll get the same `r dplyr::n_distinct(fad_sales$month)` months of sales every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_stream
 #| code-fold: show
@@ -166,19 +159,15 @@ fad_sales <- expand_grid(
   select(month, fad, avg_sales, sales)
 glimpse(fad_sales)
 ```
-:::
 
 ## Distribution
 
 A stream plot stacks each group's values on top of one another and lets the stack flow over time. Each fad's layer has its own shape: a quick spike for fads that burned out fast, and a long, low hump for fads that hung around. Below we'll move from the monthly sales, to a picture, to the formula, and see where those shapes come from.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first six months of Hypercolor sales in 1991.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_values_stream
 #| code-fold: show
@@ -188,11 +177,9 @@ fad_sales |>
   filter(fad == "Hypercolor", month >= as.Date("1991-01-01")) |>
   head(6)
 ```
-:::
 
 Sales wobble a little from month to month, but they climb toward the summer of 1991 right along with `avg_sales`. Below we total each fad's sales and find its best month.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: count_summary_stream
 #| code-fold: show
@@ -205,17 +192,13 @@ fad_peaks <- fad_sales |>
             best_sales = max(sales))
 fad_peaks
 ```
-:::
 
 Scrunchies sold the most overall (`r scales::comma(fad_peaks$total_sales[fad_peaks$fad == "Scrunchies"])` thousand), but slap bracelets had the biggest single month (`r fad_peaks$best_sales[fad_peaks$fad == "Slap bracelets"]` thousand). Selling the most and peaking the highest are two different things.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 The graph below draws each fad's monthly sales as points and its `avg_sales` as a line. Every fad follows the same bell shaped curve. Slap bracelets and Hypercolor have narrow, tall bells, and scrunchies have a wide, short one.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: draw_stream
 #| code-fold: show
@@ -228,13 +211,10 @@ ggplot(fad_sales, aes(x = month, color = fad)) +
   labs(x = "Month", y = "Sales (thousands)") +
   theme(legend.position = "none")
 ```
-:::
 
 A stream plot stacks these four bells on top of each other (and centers the stack), which is why the stream bulges in the early 90s and thins out by the end of the decade.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 The monthly sales are [Poisson](https://en.wikipedia.org/wiki/Poisson_distribution) counts, and the average for each month follows the shape of a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) over time:
 
@@ -248,9 +228,7 @@ Slap bracelets sold `r fads$total[1]` thousand over a spread of `r fads$spread[1
 
 ## Grammar
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-label}
 
   - Create labels with `labs()`
 
@@ -264,7 +242,6 @@ Slap bracelets sold `r fads$total[1]` thousand over a spread of `r fads$spread[1
 
   - Finally, move the legend with `theme(legend.position = "bottom")` and drop the `y` axis text with `axis.text.y = element_blank()`. The mirrored stream sits on both sides of 0, so half of those labels would show negative sales.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_stream
 #| code-fold: show
@@ -296,13 +273,10 @@ ggp2_stream +
     theme(legend.position = "bottom",
           axis.text.y = element_blank())
 ```
-:::
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-label}
 
 ```{r}
 #| label: create_graph_stream
@@ -353,7 +327,6 @@ The [`ggstream` package](https://github.com/davidsjoberg/ggstream) has multiple 
 
   - Finally, add the `fill` to the labels and move the legend with  `theme(legend.position = "bottom")`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_stream_prp
 #| code-fold: show
@@ -377,7 +350,6 @@ ggp2_stream_prp +
     labs(y = "Share of sales", fill = "Fad") +
     theme(legend.position = "bottom")
 ```
-:::
 
 The proportional stream shows each fad's *share* of the month's sales. Scrunchies take over the whole stream by the end of the decade, because their wide bell is the last one still selling.
 
@@ -409,7 +381,6 @@ Colors:
 
   - Finally, add the `fill` to the labels and move the legend with  `theme(legend.position = "bottom")`
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_stream_srt
 #| code-fold: show
@@ -443,4 +414,3 @@ ggp2_stream_srt +
     labs(fill = "Fad") +
     theme(legend.position = "bottom")
 ```
-:::

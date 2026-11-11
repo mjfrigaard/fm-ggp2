@@ -124,11 +124,11 @@ pth + ln + stp +
 :::
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
@@ -149,11 +149,11 @@ library(ggplot2)
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **DATA:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Load the `ggplot2::economics` data.
 :::
 
@@ -177,16 +177,16 @@ dplyr::glimpse(economics)
 ### Basic Use
 
 :::: {.column-margin}
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
  [`geom_path()` *connects the observations in the order in which they appear in the data.*](https://ggplot2.tidyverse.org/reference/geom_path.html)
 :::
 ::::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **BASICS:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Below is a demonstration of a line graph using `geom_path()`, with a date variable mapped to the `x` axis, and a numeric (double) variable on the `y` axis. 
 :::
 
@@ -209,11 +209,11 @@ ggp2_path_base + geom_path()
 
 ### Aesthetics
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **AESTHETICS:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 The required aesthetics are: `x` and `y` positions 
 :::
 
@@ -233,11 +233,11 @@ ggp2_path_base + geom_path()
 ```
 :::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **OPTIONAL AESTHETICS:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Optional aesthetics include: 
 
   - `group`  
@@ -254,7 +254,7 @@ Optional aesthetics include:
 
 #### `group`
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 To explore `group`, we'll load some data on *Building Permit Data for United States* from [Texas A & M's Real Estate Research Center](https://www.recenter.tamu.edu/data/building-permits#!/state/United_States). 
 :::
 
@@ -272,7 +272,7 @@ dplyr::glimpse(permits_raw)
 ```
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 First we'll create the `yr_shift` and `yr_mnth` variables, and limit the data to `2010` - `2020`.
 :::
 
@@ -301,7 +301,7 @@ utils::head(permits, 10)
 ```
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 `yr_shift` leaves `01/2010` as `2010.000`, but  `02/2010` becomes `2010.083`, and `03/2010` shifts a little bit more to `2010.167`, and so on.
 
 If we try to view the change in `f1units` using `geom_path()` with `yr_shift` and `yr_mnth`, we see the following:
@@ -329,7 +329,7 @@ ggplot(data = permits,
 ```
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 We can see the lines aren't acting like we expected, but if we map the `area` variable to `group`...
 :::
 
@@ -353,13 +353,13 @@ ggplot(data = permits,
 ```
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 We can see the lines are now separated by `area`.
 :::
 
 #### `color`
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 The `color` aesthetic can be set or mapped, and is useful for differentiating categorical levels.
 :::
 
@@ -406,7 +406,7 @@ ggp2_path_base +
 
 #### `linewidth`
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 The `linewidth` determines the size of the line. 
 :::
 
@@ -432,7 +432,7 @@ ggp2_path_base_long +
 
 #### `alpha`
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 The alpha sets the opacity of the line (and is useful for overlapping lines).
 :::
 
@@ -459,7 +459,7 @@ ggp2_path_base_long +
 
 #### `linetype`
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 The `linetype` can be mapped or set with values from [ggplot2-specs](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html#lines)
 :::
 
@@ -488,17 +488,17 @@ ggp2_path_base_long +
 
 ### Arguments
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **ARGUMENTS:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 We've defined two functions for displaying the arguments in `geom_path()`: `path_linetype()` displays the different `linetype` options, and `path_lines()` displays the options for `lineend` and `linejoin`.
 :::
 
 #### `linetype`
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 We've defined `path_linetype()`, a function that lets us quickly specify the `linetype` aesthetic for `geom_path()`:
 :::
 
@@ -531,7 +531,7 @@ path_linetype <- function(type = "solid") {
 ```
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 The white line displays the `linetype` against a black backdrop to enhance visibility. See the `lineend` argument in the section below: 
 :::
 
@@ -558,7 +558,7 @@ path_linetype(type = "solid")
 ```
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Below the define `path_lines()`, which builds line graphs with  `geom_path()`'s `lineend` and `linejoin` arguments set to `"round"`, `"butt"`, or `"square"` and `"bevel"`, `"round"`, and `"mitre"`. 
 
 The `linewidth` (`lw`) and `linemitre` (`lnmtr`) can be adjusted to exaggerate their effects.
@@ -606,7 +606,7 @@ path_lines <- function(lw = 5, lend = 'r', ljoin = 'r', lnmtr = NULL) {
 
 #### Lineend: `round`
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 A "round" line ending extends the line width slightly and produces curved caps at the start and end of the line (with the intersecting values at the center).
 
 *The white line/points are the data points*
@@ -631,7 +631,7 @@ path_lines(lw = 15, lend = "r", ljoin = "b") # round/bevel
 
 #### Linejoin: `round`
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 A "round" line join produces a curve at the intersection of points on the line.
 
 *The white line/points are the data points*
@@ -656,7 +656,7 @@ path_lines(lw = 15, lend = "s", ljoin = "r") # square/round
 
 #### Lineend: `butt`
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 A "butt" line end produces an abrupt ending at the start and end of the data points along the line.
 
 *The white line/points are the data points*
@@ -681,7 +681,7 @@ path_lines(lw = 15, lend = "b", ljoin = "b") # butt/bevel
 
 #### Linejoin: `mitre`
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 A "mitre" line join extends the area of the line width between intersecting points, giving each connecting point a straight edge. 
 
 *The white line/points are the data points*
@@ -706,7 +706,7 @@ path_lines(lw = 15, lend = "r", ljoin = "m") # round/mitre
 
 #### Lineend: `square`
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 A "square" line ending extends the line width slightly and produces a square cap at the start and end of the line (with the intersecting values at the center).
 
 *The white line/points are the data points*
@@ -731,7 +731,7 @@ path_lines(lw = 15, lend = "s", ljoin = "b") # square/bevel
 
 #### Linejoin: `bevel`
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 A "bevel" line join 'shaves' the line width at the intersection of data points and curves the line with by producing two additional angles (with the intersecting values at the center of the two angles).
 
 *The white line/points are the data points*
@@ -758,7 +758,7 @@ path_lines(lw = 15, lend = "r", ljoin = "b") # round/bevel
 
 #### Multiple `x` variables
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 [`geom_path()` *lets you explore how two variables are related over time, e.g. unemployment and personal savings rate*](https://ggplot2.tidyverse.org/reference/geom_path.html)
 :::
 

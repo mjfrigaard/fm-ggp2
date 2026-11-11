@@ -116,11 +116,11 @@ pth + ln + stp +
 :::
 :::
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
@@ -142,11 +142,11 @@ library(ggplot2)
 
 
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **DATA:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Load the `ggplot2::economics` data.
 :::
 
@@ -170,7 +170,7 @@ dplyr::glimpse(economics)
 
 ### Basic Use
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **BASICS:**
 :::
 
@@ -193,11 +193,11 @@ ggp2_step_base +
 
 ### Additional Aesthetics
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **AESTHETICS:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
 The required aesthetics are: 
 
@@ -220,7 +220,7 @@ Optional aesthetics include:
 
 ### Arguments
 
-::: {style="font-size: 1.15em; color: #1e83c8;"}
+::: {.fm-label}
 **ARGUMENTS:**
 :::
 

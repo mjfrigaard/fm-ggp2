@@ -30,11 +30,11 @@ Graphs in this chapter use `ggrewindr::theme_talkboy()`, built from the Deluxe T
 
 :::: {.callout-note collapse="false" icon=false}
 
-::: {style="font-size: 1.10em; color: #02577A;"}
+::: {.fm-req-title}
 **Requirements:**
 :::
 
-::: {style="font-size: 1.05em; color: #282b2d;"}
+::: {.fm-req}
 **✅ a numeric (continuous) variable**
 :::
 
@@ -76,13 +76,10 @@ A frequency polygon shows a distribution as points joined by straight lines. It'
 
 ## Set up
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**PACKAGES:**
-:::
+### PACKAGES {.unnumbered .fm-step}
 
 Install packages.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pkg_code_freq_poly
 #| code-fold: false
@@ -94,13 +91,10 @@ Install packages.
 library(ggplot2)
 library(dplyr) # for tibble() and data manipulation
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DATA:**
-:::
+### DATA {.unnumbered .fm-step}
 
 ::: {.column-margin}
 
@@ -112,7 +106,6 @@ The [Talkboy](https://en.wikipedia.org/wiki/Talkboy) was the handheld cassette r
 
 We'll simulate 300 messages recorded on a Talkboy with `rgamma()`, rounding each message length to a tenth of a second. Setting the seed with `set.seed()` means you'll get the same 300 messages every time you run the code below.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: data_code_freq_poly
 #| code-fold: false
@@ -131,19 +124,15 @@ talkboy_clips <- tibble(
 )
 glimpse(talkboy_clips)
 ```
-:::
 
 ## Distribution
 
 If you ever handed a kid a tape recorder, you already know the shape of this distribution. Most messages last under 12 seconds, but every so often someone rambles on for 15 or 20. Those long messages stretch the right side of the distribution into a long tail, which makes it [right skewed](https://en.wikipedia.org/wiki/Skewness). Below we'll move from the numbers, to a picture, to the formula. Then we'll change the data and see what the unexpected looks like.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**COUNT IT:**
-:::
+### COUNT IT {.unnumbered .fm-step}
 
 Start with the first ten messages.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: concrete_values_freq_poly
 #| code-fold: show
@@ -151,11 +140,9 @@ Start with the first ten messages.
 #| echo: true
 head(talkboy_clips$seconds, 10)
 ```
-:::
 
 Most of these are under 12 seconds, but one (14.5) runs much longer. Long messages like this pull the mean up, while the median (the middle message) barely moves. Comparing the two is a quick way to check for skew.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: concrete_summary_freq_poly
 #| code-fold: show
@@ -166,11 +153,9 @@ talkboy_clips |>
     mean = mean(seconds),
     median = median(seconds))
 ```
-:::
 
 The mean is larger than the median, so more than half of the messages are shorter than the mean. We can count them by splitting the messages at the mean (about `r round(mean(talkboy_clips$seconds), 1)` seconds).
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: concrete_counts_freq_poly
 #| code-fold: show
@@ -184,15 +169,11 @@ talkboy_split <- talkboy_clips |>
   count(speed)
 talkboy_split
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**DRAW IT:**
-:::
+### DRAW IT {.unnumbered .fm-step}
 
 A bar model shows the split as two parts of one whole. If the distribution were symmetric, the two parts would be about the same size. Here the short messages take up the bigger part of the bar.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pictorial_bar_model_freq_poly
 #| code-fold: show
@@ -208,11 +189,9 @@ ggplot(data = talkboy_split,
   labs(x = "Number of messages", y = NULL,
     fill = "Message length")
 ```
-:::
 
 The frequency polygon below shows the same imbalance as a line. The dashed line marks the median and the solid line marks the mean. The tallest points sit at or left of the median, and the long tail trails off to the right, past the mean.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: pictorial_freq_poly
 #| code-fold: show
@@ -229,11 +208,8 @@ ggplot(data = talkboy_clips,
     color = "#1E1012") +
   labs(x = "Message length (seconds)")
 ```
-:::
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**NAME IT:**
-:::
+### NAME IT {.unnumbered .fm-step}
 
 The `rgamma()` call that created the data is a single statement:
 
@@ -245,13 +221,10 @@ The [gamma distribution](https://en.wikipedia.org/wiki/Gamma_distribution) has t
 
 Our simulated messages come close: the mean is `r round(mean(talkboy_clips$seconds), 1)` seconds and the standard deviation is `r round(sd(talkboy_clips$seconds), 1)` seconds. Try raising `shape` in `rgamma()` and the polygon becomes more symmetric. A gamma distribution with a large shape looks a lot like the normal distribution from @sec-histograms.
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CHANGE IT:**
-:::
+### CHANGE IT {.unnumbered .fm-step}
 
 Everything above is what we expect from a kid with a tape recorder. Now we'll swap the last 60 messages for longer pranks, like Kevin's fake voice of his dad on the hotel phone, that run about 25 seconds each. We still expect a right skew, but we should also see something the mean and median can't show us.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: unexpected_data_freq_poly
 #| code-fold: show
@@ -270,11 +243,9 @@ talkboy_pranks |>
     mean = mean(seconds),
     median = median(seconds))
 ```
-:::
 
 The mean climbs from `r round(mean(talkboy_clips$seconds), 1)` to 11.7 seconds and the median from `r median(talkboy_clips$seconds)` to 9.25. On their own, these numbers only say the skew got stronger. The polygon below tells a different story.
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: unexpected_freq_poly
 #| code-fold: show
@@ -291,16 +262,13 @@ ggplot(data = talkboy_pranks,
     color = "#1E1012") +
   labs(x = "Message length (seconds)")
 ```
-:::
 
 The long tail is gone. In its place is a second peak near 25 seconds, with a valley around 20 seconds where few messages land. The mean of 11.7 seconds now describes neither group: it's too long for an everyday message and less than half a prank. The pranks are a separate group, not a stretched tail, and a gamma distribution can't describe them. When a polygon has two peaks, I've found it's worth asking whether the data mixes two kinds of things before reporting a single mean.
 
 
 ## Grammar
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**CODE:**
-:::
+### CODE {.unnumbered .fm-step}
 
 
 1. Create labels with `labs()`
@@ -312,7 +280,6 @@ The long tail is gone. In its place is a second peak near 25 seconds, with a val
 4. Add the `geom_freqpoly()` layer
 
 
-::: {style="font-size: 0.85em;"}
 ```{r}
 #| label: code_graph_freq_poly
 #| code-fold: false
@@ -331,13 +298,10 @@ ggp2_freqpoly <- ggplot(data = talkboy_clips,
 ggp2_freqpoly +
   labs_freqpoly
 ```
-:::
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
-**GRAPH:**
-:::
+### GRAPH {.unnumbered .fm-step}
 
 ```{r}
 #| label: create_graph_freq_poly

@@ -24,28 +24,33 @@ code {
   color: #FFFFFF;
 }
 
-// the chapters use inline colors chosen for a white page, so we remap
-// them here to work in both light and dark mode
-[style*="color: #1e83c8"],
-[style*="color: #5f2042"] {
-  color: $fm-grape !important;
-}
-
-[style*="color: #02577A"] {
-  color: $fm-bondi !important;
-}
-
-[style*="color: #282b2d"] {
-  color: $fm-ink !important;
-}
-
-[style*="color: #E74A2F"] {
-  color: $fm-tangerine !important;
-}
+// chapter labels and notes (colors work in light and dark mode)
+:is(h3, h4).fm-label { font-size: 1.15rem; color: $fm-grape; }  // PACKAGES, DATA, CODE, GRAPH headings
+:is(h3, h4).fm-step  { font-size: 1.10rem; color: $fm-grape; }  // COUNT IT, DRAW IT, NAME IT, CHANGE IT headings
+.fm-req-title { font-size: 1.10em; color: $fm-bondi; }   // Requirements:
+.fm-req      { font-size: 1.05em; color: $fm-ink; }      // each requirement
+.fm-small    { font-size: 0.95rem; }
+.fm-table    { font-size: 0.90rem; }
+.fm-note     { font-size: 0.80em; color: $fm-bondi; }
+.fm-caution  { color: $fm-tangerine; }
+.fm-tip      { font-size: 0.95em; color: $fm-grape; }
 
 // keep the graphs exactly as the ggrewindr themes drew them
 .cell-output-display img,
 figure img {
   background: transparent;
   filter: none;
+}
+
+// inline code inside diagram nodes keeps the node's text color, so it
+// doesn't spill past the node's edge
+svg.mermaid-js .node code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+// code chunks and their output, a little smaller than body text
+pre {
+  font-size: .85em;
 }

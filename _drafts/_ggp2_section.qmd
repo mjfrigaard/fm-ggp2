@@ -72,11 +72,11 @@ Description of the graph
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
+::: {.fm-step}
 **PACKAGES:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Install packages.
 :::
 
@@ -95,7 +95,7 @@ library(ggplot2)
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
+::: {.fm-step}
 **DATA:**
 :::
 
@@ -105,7 +105,7 @@ library(ggplot2)
 ![](../www/imdb.png){fig-align="right" width="20%" height="20%"}
 -->
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 Description of data
 :::
 
@@ -126,11 +126,11 @@ df <- tibble::tibble(X = sample(x = 1:100, 10, FALSE),
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
+::: {.fm-step}
 **CODE:**
 :::
 
-::: {style="font-size: 0.95rem;"}
+::: {.fm-small}
 
 Code for creating graph
 
@@ -160,7 +160,7 @@ ggp2_graph +
 
 
 
-::: {style="font-size: 1.10em; color: #1e83c8;"}
+::: {.fm-step}
 **GRAPH:**
 :::
 
