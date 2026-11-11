@@ -8,7 +8,8 @@ knitr::opts_chunk$set(
   fig.width = 9,
   out.width = "100%",
   fig.asp = 2/3,
-  fig.show = "hold"
+  fig.show = "hold",
+  fig.showtext = TRUE # draw showtext fonts at knitr's figure resolution
 )
 # options  ----
 options(
@@ -23,14 +24,14 @@ options(
 )
 
 # add font ----
-suppressMessages(fmggp2::add_fonts("Ubuntu"))
+suppressMessages(fmutils::add_fonts("Ubuntu"))
 
 # add theme ----
-# the original book theme now lives in fmggp2 as theme_fmggp2()
-theme_ggp2g <- fmggp2::theme_fmggp2
+# the original book theme now lives in fmutils as theme_fmggp2()
+theme_ggp2g <- fmutils::theme_fmggp2
 
 # book helpers ----
-library(fmggp2) # %nin%, status(), and co_box()
+library(fmutils) # %nin%, status(), and co_box()
 library(ggrewindr) # the 90s themes
 
 options(width = 50L,

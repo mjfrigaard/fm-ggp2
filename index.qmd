@@ -61,7 +61,7 @@ I wrote all of the narrative, description, and code explanations, so the thought
 ```
 
 
-I also wanted the examples to be fun to read, so every dataset is a late 90s throwback. You'll find Talkboy messages, Blockbuster rentals, Pokémon starters, and Mario Kart 64 lap times, and each one is drawn with a matching theme (Windows 98, the original Game Boy, the Nintendo 64, and more). The themes live in the [`ggrewindr`](https://mjfrigaard.github.io/ggrewindr/) package, and the helpers used throughout the book live in [`fmggp2`](https://mjfrigaard.github.io/fmggp2/).
+I also wanted the examples to be fun to read, so every dataset is a late 90s throwback. You'll find Talkboy messages, Blockbuster rentals, Pokémon starters, and Mario Kart 64 lap times, and each one is drawn with a matching theme (Windows 98, the original Game Boy, the Nintendo 64, and more). The themes live in the [`ggrewindr`](https://mjfrigaard.github.io/ggrewindr/) package, and the helpers used throughout the book live in [`fmutils`](https://mjfrigaard.github.io/fmutils/).
 
 ```{mermaid}
 %%| fig-align: 'center'
@@ -116,7 +116,7 @@ flowchart TB
 :::
 
 
--   Install `ggrewindr` for the 90s themes and `fmggp2` for the book helpers:
+-   Install `ggrewindr` for the 90s themes and `fmutils` for the book helpers:
 
     ```{r}
     #| label: ggrewindr-pkg
@@ -124,9 +124,9 @@ flowchart TB
     #| echo: true
     #| code-fold: false
     install.packages("pak")
-    pak::pak(c("mjfrigaard/ggrewindr", "mjfrigaard/fmggp2"))
+    pak::pak(c("mjfrigaard/ggrewindr", "mjfrigaard/fmutils"))
     library(ggrewindr)
-    library(fmggp2)
+    library(fmutils)
     ```
 
 ## Who this book was written for

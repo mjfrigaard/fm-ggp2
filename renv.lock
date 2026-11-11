@@ -2310,20 +2310,16 @@
       "Author": "Albert Y. Kim [aut, cre] (<https://orcid.org/0000-0001-7824-306X>), Chester Ismay [aut] (<https://orcid.org/0000-0003-2820-2547>), Jennifer Chunn [aut], Meredith Manley [ctb] (<https://orcid.org/0000-0001-7707-0654>), Maggie Shea [ctb], Starry Yujia Zhou [ctb], Andrew Flowers [ctb], Jonathan Bouchet [ctb], G. Elliott Morris [ctb], Adam Spannbauer [ctb], Pradeep Adhokshaja [ctb], Olivia Barrows [ctb], Jojo Miller [ctb], Jayla Nakayama [ctb], Ben Baumer [ctb] (<https://orcid.org/0000-0002-3279-0516>), Rana Gahwagy [ctb] (<https://orcid.org/0000-0002-6331-2840>), Natalia Iannucci [ctb] (<https://orcid.org/0000-0001-5663-1731>), Marium Tapal [ctb] (<https://orcid.org/0000-0001-5093-6462>), Irene Ryan [ctb], Alina Barylsky [ctb], Danica Miguel [ctb], Sunni Raleigh [ctb], Anna Ballou [ctb], Jane Bang [ctb], Jordan Moody [ctb], Kara Van Allen [ctb], Jessica Keast [ctb], Lizette Carpenter [ctb], Fatima Keita [ctb]",
       "Repository": "CRAN"
     },
-    "fmggp2": {
-      "Package": "fmggp2",
-      "Version": "1.0.0",
+    "fmutils": {
+      "Package": "fmutils",
+      "Version": "0.2.0",
       "Source": "GitHub",
-      "Title": "Support package for ggplot2: field manual",
-      "Author": "Martin Frigaard <mjfrigaard@pm.me> [aut, cre]",
-      "Maintainer": "Martin Frigaard <mjfrigaard@pm.me>",
-      "Description": "Utility functions and helpers for the fm-ggp2 book.",
+      "Title": "Helpers for the Field Manual Books",
+      "Authors@R": "person(\"Martin\", \"Frigaard\", email = \"mjfrigaard@pm.me\", role = c(\"aut\", \"cre\"))",
+      "Description": "Small helpers the field manual books share: Quarto callout boxes, chapter status callouts, a negated %in%, the Ubuntu fonts, and the book theme for ggplot2: field manual.",
       "License": "MIT + file LICENSE",
       "Encoding": "UTF-8",
       "Roxygen": "list(markdown = TRUE)",
-      "Depends": [
-        "R (>= 2.10)"
-      ],
       "Imports": [
         "cli",
         "extrafont",
@@ -2334,22 +2330,23 @@
       ],
       "Suggests": [
         "knitr",
-        "quarto",
-        "testthat (>= 3.0.0)"
+        "testthat (>= 3.0.0)",
+        "withr"
       ],
-      "VignetteBuilder": "quarto",
       "Config/testthat/edition": "3",
-      "URL": "https://mjfrigaard.github.io/fmggp2/, https://github.com/mjfrigaard/fmggp2",
-      "BugReports": "https://github.com/mjfrigaard/fmggp2/issues",
+      "URL": "https://mjfrigaard.github.io/fmutils/, https://github.com/mjfrigaard/fmutils",
+      "BugReports": "https://github.com/mjfrigaard/fmutils/issues",
       "Config/roxygen2/version": "8.1.1",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
-      "RemoteRepo": "fmggp2",
+      "RemoteRepo": "fmutils",
       "RemoteUsername": "mjfrigaard",
-      "RemotePkgRef": "mjfrigaard/fmggp2",
+      "RemotePkgRef": "mjfrigaard/fmutils",
       "RemoteRef": "HEAD",
-      "RemoteSha": "b351905ed97018f633c00b78b8f4ec856f2a792d",
-      "NeedsCompilation": "no"
+      "RemoteSha": "5279315692f959b6bf57a48f2d9d172233533697",
+      "NeedsCompilation": "no",
+      "Author": "Martin Frigaard [aut, cre]",
+      "Maintainer": "Martin Frigaard <mjfrigaard@pm.me>"
     },
     "fontawesome": {
       "Package": "fontawesome",
@@ -3188,7 +3185,7 @@
     },
     "ggrewindr": {
       "Package": "ggrewindr",
-      "Version": "0.1.0",
+      "Version": "0.2.0",
       "Source": "GitHub",
       "Title": "Late 90s Themes for ggplot2",
       "Authors@R": "person(\"Martin\", \"Frigaard\", email = \"mjfrigaard@pm.me\", role = c(\"aut\", \"cre\"))",
@@ -3220,7 +3217,7 @@
       "RemoteUsername": "mjfrigaard",
       "RemotePkgRef": "mjfrigaard/ggrewindr",
       "RemoteRef": "HEAD",
-      "RemoteSha": "5f66bab84d9cff109798325d618fc2bd9ef1f87f",
+      "RemoteSha": "053cd9f3fb23512151770ebcb0f80c77bbc528d9",
       "NeedsCompilation": "no",
       "Author": "Martin Frigaard [aut, cre]",
       "Maintainer": "Martin Frigaard <mjfrigaard@pm.me>"

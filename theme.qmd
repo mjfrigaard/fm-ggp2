@@ -18,11 +18,11 @@ ggplot2::theme_set(theme_ggp2g(
     base_size = 15))
 ```
 
-Every chapter in this book has its own late 90s `ggplot2` theme to match its simulated data (Game Boy greens for Alleyway, silver comic book cans for OK Soda, and so on). The themes live in the [`ggrewindr` package](https://mjfrigaard.github.io/ggrewindr/), and the small helpers the book uses live in the [`fmggp2` package](https://mjfrigaard.github.io/fmggp2/), so every chapter loads the same tested code.
+Every chapter in this book has its own late 90s `ggplot2` theme to match its simulated data (Game Boy greens for Alleyway, silver comic book cans for OK Soda, and so on). The themes live in the [`ggrewindr` package](https://mjfrigaard.github.io/ggrewindr/), and the small helpers the book uses live in the [`fmutils` package](https://mjfrigaard.github.io/fmutils/). Every chapter loads the same tested code from these two packages.
 
-## Installing `ggrewindr` and `fmggp2`
+## Installing `ggrewindr` and `fmutils`
 
-Install the development versions of `ggrewindr` and `fmggp2` from GitHub:
+Install the development versions of `ggrewindr` and `fmutils` from GitHub:
 
 ::: {style="font-size: 0.85em;"}
 ```{r}
@@ -31,7 +31,7 @@ Install the development versions of `ggrewindr` and `fmggp2` from GitHub:
 #| echo: true
 #| code-fold: show
 # install.packages("pak")
-pak::pak(c("mjfrigaard/ggrewindr", "mjfrigaard/fmggp2"))
+pak::pak(c("mjfrigaard/ggrewindr", "mjfrigaard/fmutils"))
 ```
 :::
 
@@ -74,7 +74,7 @@ The 90s themes are built on `ggplot2::theme_bw()` and use features from `ggplot2
 
   - **Colors**: the plot background, the frame around the plot, the panel, and the grid lines all come from a palette sampled from the 90s reference.
 
-  - **Fonts**: most themes pair Arial body text with a title display font that fits the reference (Impact for Blockbuster, Gill Sans for NetWare, Comic Sans for GeoCities).
+  - **Fonts**: most themes pair Arimo body text with a title display font that fits the reference (Anton for Blockbuster, Cabin for NetWare, Comic Neue for GeoCities). Every font is open source and ships with `ggrewindr`, so the graphs look the same on any computer.
 
   - **Discrete palettes**: `palette.fill.discrete` and `palette.colour.discrete` set the colors for categorical variables, so mapping a variable to `fill` or `color` uses the theme's colors automatically.
 
@@ -207,4 +207,4 @@ The tables below list the theme used in each chapter and the 90s reference it's 
 
 ## The original book theme
 
-The pages outside the chapters (like this appendix) use `fmggp2::theme_fmggp2()`, the original custom theme for this book. It combines elements from `ggplot2::theme_minimal()` and `ggplot2::theme_void()` with the Ubuntu font, thin light gray grid lines, and no axis ticks. You can view the source code [here](https://github.com/mjfrigaard/fmggp2/blob/main/R/theme_fmggp2.R).
+The pages outside the chapters (like this appendix) use `fmutils::theme_fmggp2()`, the original custom theme for this book. It combines elements from `ggplot2::theme_minimal()` and `ggplot2::theme_void()` with the Ubuntu font, thin light gray grid lines, and no axis ticks. You can view the source code [here](https://github.com/mjfrigaard/fmutils/blob/main/R/theme_fmggp2.R).
